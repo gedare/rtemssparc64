@@ -264,7 +264,7 @@
 
 typedef uint_least8_t 	Byte;
 typedef uint_least16_t	uInt;
-typedef uint_least32_t	uLong;
+typedef unsigned long	uLong;
 
 #else
 #if !defined(__MACTYPES__)
