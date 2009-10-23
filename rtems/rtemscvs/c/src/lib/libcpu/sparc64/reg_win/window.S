@@ -179,16 +179,16 @@ SYM(window_flush_trap_handler):
          */
 
         mov     %g1, %l3
-        mov     %g2, %l4
-        mov     %g3, %l5
+!        mov     %g2, %l4
+!        mov     %g3, %l5
         mov     %g4, %l6
         mov     %g5, %l7
 
         mov     %l0, %g1                      ! g1 = psr
-        mov     %wim, %g2                     ! g2 = wim
-        and     %l0, SPARC_PSR_CWP_MASK, %g3  ! g3 = CWP
+!        mov     %wim, %g2                     ! g2 = wim
+!        and     %l0, SPARC_PSR_CWP_MASK, %g3  ! g3 = CWP
 
-        add     %g3, 1, %g5                   ! g5 = CWP + 1
+!        add     %g3, 1, %g5                   ! g5 = CWP + 1
         and     %g5, SPARC_NUMBER_OF_REGISTER_WINDOWS - 1, %g5
 
         mov     1, %g4
@@ -205,7 +205,7 @@ save_frame_loop:
          *  If a restore would not underflow, then continue.
          */
  
-        andcc   %g4, %g2, %g0                 ! Any windows to flush?
+!        andcc   %g4, %g2, %g0                 ! Any windows to flush?
         bnz     done_flushing                 ! No, then continue
         nop
  
@@ -230,10 +230,10 @@ save_frame_loop:
  
 done_flushing:
  
-        add     %g3, 2, %g3                   ! calculate desired WIM
-        and     %g3, SPARC_NUMBER_OF_REGISTER_WINDOWS - 1, %g3
+!        add     %g3, 2, %g3                   ! calculate desired WIM
+!        and     %g3, SPARC_NUMBER_OF_REGISTER_WINDOWS - 1, %g3
         mov     1, %g4
-        sll     %g4, %g3, %g4                 ! g4 = new WIM
+!        sll     %g4, %g3, %g4                 ! g4 = new WIM
         mov     %g4, %wim
  
         mov     %g1, %psr                     ! restore PSR
@@ -246,8 +246,8 @@ done_flushing:
          */
 
         mov     %l3, %g1
-        mov     %l4, %g2
-        mov     %l5, %g3
+!        mov     %l4, %g2
+!        mov     %l5, %g3
         mov     %l6, %g4
         mov     %l7, %g5
 
