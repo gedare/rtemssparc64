@@ -1,0 +1,14 @@
+/.cvsignore/1.4/Mon Jul 14 05:53:42 2008//
+/ChangeLog/1.106/Thu Oct 15 09:15:17 2009//
+/Makefile.am/1.35/Tue Sep 30 10:34:31 2008//
+/README/1.1/Fri May 24 20:34:25 1996//
+/bsp_specs/1.13/Thu Dec  4 20:30:58 2008//
+/configure.ac/1.20/Tue Sep 15 14:44:38 2009//
+/preinstall.am/1.6/Fri Sep 26 04:56:17 2008//
+/times/1.1/Fri May 24 20:34:26 1996//
+D/clock////
+D/console////
+D/include////
+D/make////
+D/startup////
+D/timer////

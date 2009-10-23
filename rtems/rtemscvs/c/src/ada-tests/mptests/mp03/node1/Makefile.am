@@ -1,0 +1,20 @@
+## $Id: Makefile.am,v 1.5 2008/02/01 21:28:06 joel Exp $
+
+include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
+include $(top_srcdir)/../../../testsuites/automake/compile.am
+
+include $(top_srcdir)/ada.am
+
+AM_ADAFLAGS += -I$(srcdir)/..
+
+noinst_PROGRAMS = mp03_ada_mp03_node1.exe
+mp03_ada_mp03_node1_exe_SOURCES = mp03_node1.adb ../mptest.adb config.h ../mptest.ads
+mp03_ada_mp03_node1_exe_SOURCES += ../../../support/init.c
+
+mp03_ada_mp03_node1.exe: mp03_node1.adb ../mptest.adb init.$(OBJEXT)
+	$(GNATCOMPILE) -margs -a $< -o $@
+
+scndir = $(rtems_ada_testsdir)
+dist_scn_DATA = ada_mp03-node1.scn
+
+include $(top_srcdir)/../../../testsuites/automake/local.am

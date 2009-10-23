@@ -1,0 +1,6 @@
+## $Id: local.am,v 1.5 2005/11/13 09:10:24 ralf Exp $
+
+preinstall:
+.PHONY: preinstall
+
+PROJECT_TOOLS = $(PROJECT_RELEASE)/build-tools

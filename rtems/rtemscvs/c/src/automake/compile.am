@@ -1,0 +1,16 @@
+##
+## $Id: compile.am,v 1.16 2006/10/18 11:56:36 ralf Exp $
+##
+
+## -------------------------------------------------------------------------
+
+CC = @CC@ $(GCCSPECS)
+CXX = @CXX@ $(GCCSPECS)
+CPP = @CPP@ $(GCCSPECS)
+CCAS = @CCAS@ $(GCCSPECS)
+
+##
+AM_CPPFLAGS = @RTEMS_CPPFLAGS@
+AM_CFLAGS = @RTEMS_CFLAGS@
+AM_CXXFLAGS = @RTEMS_CFLAGS@
+AM_CCASFLAGS = @RTEMS_CCASFLAGS@

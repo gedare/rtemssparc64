@@ -1,0 +1,18 @@
+/.cvsignore/1.1/Thu Apr 13 14:46:46 2000//
+/Makefile.am/1.21/Wed Oct 14 12:16:34 2009//
+D/arm////
+D/avr////
+D/bfin////
+D/c4x////
+D/h8300////
+D/i386////
+D/lm32////
+D/m32c////
+D/m32r////
+D/m68k////
+D/mips////
+D/nios2////
+D/no_cpu////
+D/powerpc////
+D/sh////
+D/sparc////

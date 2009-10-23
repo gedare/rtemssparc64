@@ -1,0 +1,13 @@
+/.cvsignore/1.2/Mon Jul 14 06:02:09 2008//
+/ChangeLog/1.66/Fri Sep 18 01:37:44 2009//
+/Makefile.am/1.15/Fri Jul 17 13:52:16 2009//
+/configure.ac/1.15/Thu Jun  4 16:33:31 2009//
+/preinstall.am/1.12/Fri Jun  5 22:10:42 2009//
+D/at91rm9200////
+D/lpc22xx////
+D/mc9328mxl////
+D/pxa255////
+D/s3c2400////
+D/s3c2410////
+D/s3c24xx////
+D/shared////

@@ -1,0 +1,14 @@
+/.cvsignore/1.4/Mon Jul 14 06:02:09 2008//
+/ChangeLog/1.94/Wed Sep 30 04:15:41 2009//
+/Makefile.am/1.24/Thu Jun  8 17:58:44 2006//
+/configure.ac/1.27/Sat Dec  2 06:02:42 2006//
+/preinstall.am/1.6/Mon Jan  8 08:43:28 2007//
+D/au1x00////
+D/clock////
+D/mongoosev////
+D/r46xx////
+D/rm52xx////
+D/shared////
+D/timer////
+D/tx39////
+D/tx49////

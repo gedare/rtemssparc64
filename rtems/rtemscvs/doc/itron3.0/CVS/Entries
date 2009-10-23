@@ -1,0 +1,22 @@
+/.cvsignore/1.7/Thu Oct 26 18:36:40 2006//
+/Makefile.am/1.11/Fri Dec 12 13:09:44 2003//
+/config.t/1.9/Thu Jan 17 21:47:45 2002//
+/eventflags.t/1.15/Thu Jan 17 21:47:45 2002//
+/fixedblock.t/1.12/Thu Jan 17 21:47:45 2002//
+/gen_all/1.1/Wed May 26 19:45:42 1999//
+/gen_section/1.7/Tue Jan  4 23:33:04 2000//
+/gen_status_shell/1.2/Thu Jan 17 21:47:45 2002//
+/interrupt.t/1.9/Thu Jan 17 21:47:45 2002//
+/itron.texi/1.14/Thu Jun 21 18:53:00 2007//
+/mailbox.t/1.13/Thu Jan 17 21:47:45 2002//
+/memorypool.t/1.12/Thu Jan 17 21:47:45 2002//
+/msgbuffer.t/1.10/Thu Jan 17 21:47:45 2002//
+/network.t/1.9/Thu Jan 17 21:47:45 2002//
+/preface.texi/1.2/Thu Jan 17 21:47:45 2002//
+/rendezvous.t/1.9/Thu Jan 17 21:47:45 2002//
+/semaphore.t/1.12/Thu Jan 17 21:47:45 2002//
+/status.t/1.8/Thu Jan 17 21:47:45 2002//
+/task.t/1.12/Thu Jan 17 21:47:45 2002//
+/tasksync.t/1.10/Thu Jan 17 21:47:45 2002//
+/time.t/1.9/Thu Jan 17 21:47:45 2002//
+D

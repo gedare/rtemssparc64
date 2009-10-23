@@ -1,0 +1,31 @@
+# DO NOT DELETE
+
+main.o: main.h ../../../genarch/ofw.h ./types.h ../../../generic/gentypes.h
+main.o: ../../../generic/stdarg.h ../../../genarch/ofw_tree.h
+main.o: ../../../genarch/balloc.h ../../../generic/printf.h asm.h ofwarch.h
+main.o: ../../../generic/align.h ../../../generic/string.h
+../../../generic/printf.o: ../../../generic/printf.h
+../../../generic/printf.o: ../../../generic/stdarg.h ./types.h
+../../../generic/printf.o: ../../../generic/gentypes.h
+../../../generic/string.o: ../../../generic/string.h ./types.h
+../../../generic/string.o: ../../../generic/gentypes.h
+../../../genarch/balloc.o: ../../../genarch/balloc.h ./types.h
+../../../genarch/balloc.o: ../../../generic/gentypes.h
+../../../genarch/balloc.o: ../../../generic/align.h
+../../../genarch/ofw.o: ../../../genarch/ofw.h ./types.h
+../../../genarch/ofw.o: ../../../generic/gentypes.h ../../../generic/stdarg.h
+../../../genarch/ofw.o: ofwarch.h main.h ../../../genarch/ofw_tree.h
+../../../genarch/ofw.o: ../../../genarch/balloc.h ../../../generic/printf.h
+../../../genarch/ofw.o: asm.h
+../../../genarch/ofw_tree.o: ../../../genarch/ofw_tree.h ./types.h
+../../../genarch/ofw_tree.o: ../../../generic/gentypes.h
+../../../genarch/ofw_tree.o: ../../../genarch/ofw.h ../../../generic/stdarg.h
+../../../genarch/ofw_tree.o: ../../../generic/string.h
+../../../genarch/ofw_tree.o: ../../../genarch/balloc.h asm.h main.h
+ofwarch.o: ofwarch.h main.h ../../../genarch/ofw.h ./types.h
+ofwarch.o: ../../../generic/gentypes.h ../../../generic/stdarg.h
+ofwarch.o: ../../../genarch/ofw_tree.h ../../../genarch/balloc.h
+ofwarch.o: ../../../generic/printf.h ../../../generic/string.h ./register.h
+ofwarch.o: asm.h
+asm.o: ./stack.h ./register.h
+boot.o: ./stack.h ./register.h

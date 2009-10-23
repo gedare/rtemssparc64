@@ -1,0 +1,127 @@
+--- gcc-4.4.1-orig/gcc/config.gcc    2009-04-17 06:58:41.000000000 -0500
++++ gcc-4.4.1/gcc/config.gcc    2009-10-15 09:47:36.000000000 -0500
+@@ -2285,6 +2302,12 @@
+    tmake_file="${tmake_file} sparc/t-crtfm"
+    extra_parts="crtbegin.o crtend.o"
+    ;;
++sparc64-*-rtems*)
++    tm_file="${tm_file} dbxelf.h elfos.h svr4.h sparc/sysv4.h sparc/sp64-elf.h sparc/sp64-rtemself.h rtems.h"
++    extra_options="${extra_options} sparc/little-endian.opt"
++    tmake_file="${tmake_file} sparc/t-crtfm t-rtems"
++    extra_parts="crtbegin.o crtend.o"
++    ;;
+sparc64-*-freebsd*|ultrasparc-*-freebsd*)
+    tm_file="${tm_file} ${fbsd_tm_file} dbxelf.h elfos.h sparc/sysv4.h sparc/freebsd.h"
+    extra_options="${extra_options} sparc/long-double-switch.opt"
+
+
+
+
+diff -uNr gcc-4.4.1-orig/gcc/config/sparc/sp64-rtemself.h gcc-4.4.1/gcc/config/sparc/sp64-rtemself.h
+--- gcc-4.4.1-orig/gcc/config/sparc/sp64-rtemself.h    1969-12-31 18:00:00.000000000 -0600
++++ gcc-4.4.1/gcc/config/sparc/sp64-rtemself.h    2009-10-15 07:25:07.000000000 -0500
+@@ -0,0 +1,37 @@
++/* Definitions for rtems targeting a SPARC64 using ELF.
++   Copyright (C) 2009 Free Software Foundation, Inc.
++   Contributed by Joel Sherrill (joel@OARcorp.com).
++
++This file is part of GCC.
++
++GCC is free software; you can redistribute it and/or modify
++it under the terms of the GNU General Public License as published by
++the Free Software Foundation; either version 3, or (at your option)
++any later version.
++
++GCC is distributed in the hope that it will be useful,
++but WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++GNU General Public License for more details.
++
++You should have received a copy of the GNU General Public License
++along with GCC; see the file COPYING3.  If not see
++<http://www.gnu.org/licenses/>.  */
++
++/* Target OS builtins.  */
++#undef TARGET_OS_CPP_BUILTINS
++#define TARGET_OS_CPP_BUILTINS()        \
++  do                        \
++    {                        \
++    builtin_define ("__rtems__");        \
++    builtin_define ("__USE_INIT_FINI__");    \
++    builtin_assert ("system=rtems");    \
++    }                        \
++  while (0)
++
++/* Use the default */
++#undef LINK_GCC_C_SEQUENCE_SPEC
++
++/* we are not svr4 */
++#undef CPP_SUBTARGET_SPEC
++#define CPP_SUBTARGET_SPEC ""
+
+
+
+diff -uNr gcc-4.4.1-orig/libgcc/config/lm32/t-elf gcc-4.4.1/libgcc/config/lm32/t-elf
+--- gcc-4.4.1-orig/libgcc/config/lm32/t-elf    1969-12-31 18:00:00.000000000 -0600
++++ gcc-4.4.1/libgcc/config/lm32/t-elf    2009-08-10 07:58:50.000000000 -0500
+@@ -0,0 +1,12 @@
++# Assemble startup files.
++
++$(T)crti.o: $(gcc_srcdir)/config/lm32/crti.S $(GCC_PASSES)
++    $(GCC_FOR_TARGET) $(GCC_CFLAGS) $(MULTILIB_CFLAGS) $(INCLUDES) \
++    -c -o $(T)crti.o -x assembler-with-cpp $(gcc_srcdir)/config/lm32/crti.S
++
++$(T)crtn.o: $(gcc_srcdir)/config/lm32/crtn.S $(GCC_PASSES)
++    $(GCC_FOR_TARGET) $(GCC_CFLAGS) $(MULTILIB_CFLAGS) $(INCLUDES) \
++    -c -o $(T)crtn.o -x assembler-with-cpp $(gcc_srcdir)/config/lm32/crtn.S
++
++CRTSTUFF_T_CFLAGS = -G 0
++TARGET_LIBGCC2_CFLAGS = -G 0
+
+
+diff -uNr gcc-4.4.1-orig/libgcc/config/lm32/t-uclinux gcc-4.4.1/libgcc/config/lm32/t-uclinux
+--- gcc-4.4.1-orig/libgcc/config/lm32/t-uclinux    1969-12-31 18:00:00.000000000 -0600
++++ gcc-4.4.1/libgcc/config/lm32/t-uclinux    2009-08-10 07:58:50.000000000 -0500
+@@ -0,0 +1,2 @@
++CRTSTUFF_T_CFLAGS = -fPIC
++TARGET_LIBGCC2_CFLAGS = -fPIC
+
+
+
+diff -uNr gcc-4.4.1-orig/libgcc/config.host gcc-4.4.1/libgcc/config.host
+--- gcc-4.4.1-orig/libgcc/config.host    2009-04-17 06:58:41.000000000 -0500
++++ gcc-4.4.1/libgcc/config.host    2009-10-14 22:34:51.000000000 -0500
+@@ -95,6 +95,9 @@
+hppa*-*-*)
+    cpu_type=pa
+    ;;
++lm32*-*-*)
++    cpu_type=lm32
++    ;;
+m32r*-*-*)
+         cpu_type=m32r
+         ;;
+@@ -355,6 +358,14 @@
+    ;;
+iq2000*-*-elf*)
+         ;;
++lm32-*-elf* | lm32-*-rtems*)
++    extra_parts="crtbegin.o crtend.o crti.o crtn.o"
++    tmake_file="lm32/t-elf"
++    ;;
++lm32-*-uclinux*)
++    extra_parts="crtbegin.o crtend.o crtbeginS.o crtendS.o crtbeginT.o"
++    tmake_file="lm32/t-uclinux"
++    ;;    
+m32r-*-elf*|m32r-*-rtems*)
+      ;;
+m32rle-*-elf*)
+@@ -531,7 +542,7 @@
+    extra_parts="$extra_parts crtfastmath.o"
+    tmake_file="${tmake_file} sparc/t-crtfm"
+    ;;
+-sparc-*-rtems*)
++sparc-*-rtems* | sparc64-*-rtems*)
+    ;;
+sparc64-*-solaris2* | sparcv9-*-solaris2*)
+    ;;
