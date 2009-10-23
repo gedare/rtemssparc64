@@ -1,0 +1,36 @@
+/*
+ *  Console declarations
+ *
+ *
+ *  MPC5xx port sponsored by Defence Research and Development Canada - Suffield
+ *  Copyright (C) 2004, Real-Time Systems Inc. (querbach@realtime.bc.ca)
+ *
+ *  The license and distribution terms for this file may be
+ *  found in found in the file LICENSE in this distribution or at
+ *  http://www.rtems.com/license/LICENSE.
+ *  
+ *  $Id: console.h,v 1.3 2008/04/23 21:51:42 joel Exp $
+ */
+
+#ifndef _MPC5XX_CONSOLE_H
+#define _MPC5XX_CONSOLE_H
+
+#include <rtems/libio.h>
+#include <rtems/termiostypes.h>
+
+void m5xx_uart_initialize(int minor);
+
+/* Termios callbacks */
+int m5xx_uart_firstOpen(int maj, int min, void *arg);
+int m5xx_uart_lastClose(int maj, int min, void *arg);
+int m5xx_uart_pollRead(int minor);
+int m5xx_uart_pollWrite(int minor, const char* buf, int len);
+int m5xx_uart_write(int minor, const char *buf, int len);
+int m5xx_uart_setAttributes(int, const struct termios* t);
+
+#define NUM_PORTS	2	/* number of serial ports */
+
+#define SCI1_MINOR	0
+#define SCI2_MINOR	1
+
+#endif /* _MPC5XX_CONSOLE_H */

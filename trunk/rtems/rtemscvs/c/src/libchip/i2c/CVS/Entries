@@ -1,0 +1,13 @@
+/i2c-2b-eeprom.c/1.4/Wed Jan 17 06:04:14 2007//
+/i2c-2b-eeprom.h/1.2/Wed Jan 17 06:04:14 2007//
+/i2c-ds1621.c/1.3/Wed Jan 17 06:04:14 2007//
+/i2c-ds1621.h/1.2/Wed Jan 17 06:04:14 2007//
+/spi-flash-m25p40.c/1.4/Sun Sep  7 03:42:13 2008//
+/spi-flash-m25p40.h/1.3/Thu May 15 15:10:38 2008//
+/spi-fram-fm25l256.c/1.2/Sun Sep  7 03:42:13 2008//
+/spi-fram-fm25l256.h/1.1/Thu May 15 15:10:38 2008//
+/spi-memdrv.c/1.2/Thu Mar 12 15:42:51 2009//
+/spi-memdrv.h/1.2/Sun Sep  7 03:42:13 2008//
+/spi-sd-card.c/1.12/Tue Oct 13 08:00:11 2009//
+/spi-sd-card.h/1.4/Wed Jan 21 18:08:32 2009//
+D

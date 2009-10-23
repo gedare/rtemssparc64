@@ -1,0 +1,32 @@
+# $Id: Makefile.am,v 1.88 2009/10/17 06:14:53 ralf Exp $
+
+TARGET = bfin-rtems4.10
+
+include $(top_srcdir)/mkspec.am
+
+BINUTILS_VERS = 2.20
+BINUTILS_PKGVERS = $(BINUTILS_VERS)
+BINUTILS_RPMREL = 1
+include ../binutils.am
+BINUTILS_OPTS +=
+
+GCC_VERS = 4.4.2
+GCC_PKGVERS = $(GCC_VERS)
+GCC_RPMREL = 2
+NEWLIB_VERS = 1.17.0
+NEWLIB_PKGVERS = $(NEWLIB_VERS)
+NEWLIB_RPMREL = `expr 58 + $(GCC_RPMREL)`
+include ../gcc.am
+GCC_OPTS += --languages=cxx
+
+GDB_VERS = 6.5
+GDB_PKGVERS = $(GDB_VERS)
+GDB_RPMREL = 11
+include ../gdb.am
+GDB_OPTS += --disable-infos
+
+CPUKIT_VERS = 4.9.99.0
+CPUKIT_PKGVERS = $(CPUKIT_VERS)-20090206-2
+CPUKIT_RPMREL = 1
+include ../cpukit.am
+CPUKIT_OPTS +=

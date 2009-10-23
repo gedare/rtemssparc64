@@ -1,0 +1,50 @@
+? gas/j.diff
+Index: bfd/config.bfd
+===================================================================
+RCS file: /cvs/src/src/bfd/config.bfd,v
+retrieving revision 1.256
+diff -u -r1.256 config.bfd
+--- bfd/config.bfd    8 Oct 2009 12:46:17 -0000    1.256
++++ bfd/config.bfd    15 Oct 2009 14:48:18 -0000
+@@ -1435,7 +1435,7 @@
+     targ_selvecs="bfd_elf32_sparc_vec sparclinux_vec sunos_big_vec"
+     want64=true
+     ;;
+-  sparc64-*-elf*)
++  sparc64-*-elf* | sparc64-*-rtems* )
+     targ_defvec=bfd_elf64_sparc_vec
+     targ_selvecs=bfd_elf32_sparc_vec
+     want64=true
+@@ -1444,7 +1444,7 @@
+   sparc*-*-coff*)
+     targ_defvec=sparccoff_vec
+     ;;
+-  sparc*-*-rtems*)
++  sparc-*-rtems*)
+     targ_defvec=bfd_elf32_sparc_vec
+     targ_selvecs="sunos_big_vec sparccoff_vec"
+     ;;
+Index: ld/configure.tgt
+===================================================================
+RCS file: /cvs/src/src/ld/configure.tgt,v
+retrieving revision 1.230
+diff -u -r1.230 configure.tgt
+--- ld/configure.tgt    29 Sep 2009 14:17:17 -0000    1.230
++++ ld/configure.tgt    15 Oct 2009 14:48:20 -0000
+@@ -565,6 +565,7 @@
+            targ_extra_libpath=$targ_extra_emuls ;;
+sparc64-*-aout*)    targ_emul=sparcaout ;;
+sparc64-*-elf*)        targ_emul=elf64_sparc ;;
++sparc64-*-rtems*)    targ_emul=elf64_sparc ;;
+sparc-sun-sunos4*)     targ_emul=sun4 ;;
+sparclite*-*-elf)    targ_emul=elf32_sparc ;;
+sparclite*-*-coff)    targ_emul=coff_sparc ;;
+@@ -613,7 +614,7 @@
+            tdir_elf32_sparc=`echo ${targ_alias} | sed -e 's/64//'` ;;
+sparc*-*-solaris2*)    targ_emul=elf32_sparc ;;
+sparc*-wrs-vxworks*)    targ_emul=sparcaout ;;
+-sparc*-*-rtems*)        targ_emul=elf32_sparc
++sparc-*-rtems*)         targ_emul=elf32_sparc
+            ;;
+spu-*-elf*)        targ_emul=elf32_spu ;;
+tic30-*-*aout*)        targ_emul=tic30aout ;;

@@ -1,0 +1,27 @@
+/.cvsignore/1.2/Wed Jan 21 06:24:50 2009//
+/Makefile.am/1.18/Fri Jul 17 14:34:08 2009//
+/gmp.add/1.2/Fri Jul 17 14:33:21 2009//
+/i686-pc-mingw32-binutils-helper.spec/1.2/Fri Jul 17 13:20:53 2009//
+/i686-pc-mingw32-binutils-helper.spec.in/1.3/Fri Jul 17 13:20:54 2009//
+/i686-pc-mingw32-curses-helper.spec/1.1/Fri Jul 17 09:49:06 2009//
+/i686-pc-mingw32-curses-helper.spec.in/1.2/Fri Jul 17 10:15:46 2009//
+/i686-pc-mingw32-expat-helper.spec/1.1/Fri Jul 17 09:49:06 2009//
+/i686-pc-mingw32-expat-helper.spec.in/1.2/Fri Jul 17 10:17:13 2009//
+/i686-pc-mingw32-gcc-helper.spec/1.2/Fri Jul 17 13:40:04 2009//
+/i686-pc-mingw32-gcc-helper.spec.in/1.3/Fri Jul 17 13:40:05 2009//
+/i686-pc-mingw32-gmp.spec/1.2/Fri Jul 17 14:33:21 2009//
+/i686-pc-mingw32-libs-helper.spec/1.1/Fri Jul 17 09:38:07 2009//
+/i686-pc-mingw32-libs-helper.spec.in/1.2/Fri Jul 17 10:17:13 2009//
+/i686-pc-mingw32-mpfr.spec/1.1/Fri Jul 17 14:34:08 2009//
+/i686-pc-mingw32-readline-helper.spec/1.1/Fri Jul 17 09:49:06 2009//
+/i686-pc-mingw32-readline-helper.spec.in/1.2/Fri Jul 17 10:17:13 2009//
+/i686-pc-mingw32-termcap-helper.spec/1.2/Fri Jul 17 12:07:58 2009//
+/i686-pc-mingw32-termcap-helper.spec.in/1.2/Fri Jul 17 12:08:02 2009//
+/i686-pc-mingw32-w32api-helper.spec/1.1/Fri Jul 17 09:49:06 2009//
+/i686-pc-mingw32-w32api-helper.spec.in/1.2/Fri Jul 17 10:17:13 2009//
+/i686-pc-mingw32-zlib-helper.spec/1.1/Fri Jul 17 09:49:06 2009//
+/i686-pc-mingw32-zlib-helper.spec.in/1.2/Fri Jul 17 10:17:13 2009//
+/mpfr.add/1.1/Wed Jan 21 06:27:06 2009//
+/target-gmp.add/1.1/Wed Jan 21 06:27:06 2009//
+/target-mpfr.add/1.1/Wed Jan 21 06:27:06 2009//
+D

@@ -1,0 +1,21 @@
+##
+## $Id: compile.am,v 1.21 2005/11/22 14:13:42 ralf Exp $
+##
+
+CC = @CC@ $(GCCSPECS)
+CXX = @CXX@ $(GCCSPECS)
+CPP = @CPP@ $(GCCSPECS)
+
+LD = @LD@
+OBJCOPY = @OBJCOPY@
+NM = @NM@
+SIZE = @SIZE@
+STRIP = @STRIP@
+
+##
+AM_CPPFLAGS =
+AM_CFLAGS =
+AM_CXXFLAGS =
+
+clean-local:
+	$(RM) *.num *.nxe *.elf *.srec* *.bin *.bt

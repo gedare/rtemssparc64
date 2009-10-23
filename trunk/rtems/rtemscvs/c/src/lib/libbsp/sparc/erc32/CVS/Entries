@@ -1,0 +1,17 @@
+/.cvsignore/1.4/Mon Jul 14 05:53:43 2008//
+/Makefile.am/1.48/Wed Aug 19 16:05:38 2009//
+/README/1.1/Mon Dec  2 22:35:20 1996//
+/bsp_specs/1.15/Thu Dec  4 15:51:20 2008//
+/configure.ac/1.25/Tue Sep 15 14:45:41 2009//
+/preinstall.am/1.7/Thu Oct  2 16:38:15 2008//
+/times/1.1/Mon Dec  2 22:35:22 1996//
+D/clock////
+D/console////
+D/erc32sonic////
+D/gnatsupp////
+D/include////
+D/make////
+D/startup////
+D/timer////
+D/tools////
+/ChangeLog/1.146/Mon Oct 19 13:06:17 2009//

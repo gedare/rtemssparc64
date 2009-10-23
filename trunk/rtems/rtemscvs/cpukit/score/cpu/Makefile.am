@@ -1,0 +1,12 @@
+##
+##  $Id: Makefile.am,v 1.21 2009/10/14 12:16:34 ralf Exp $
+##
+
+SUBDIRS = @RTEMS_CPU@
+
+DIST_SUBDIRS = arm bfin h8300 i386 lm32 m68k m32c m32r mips nios2 no_cpu \
+    powerpc sh sparc
+DIST_SUBDIRS += avr
+
+include $(top_srcdir)/automake/subdirs.am
+include $(top_srcdir)/automake/local.am

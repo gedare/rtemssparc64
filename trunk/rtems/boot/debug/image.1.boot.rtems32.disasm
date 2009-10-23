@@ -1,0 +1,3352 @@
+
+image.1.boot:     file format elf32-sparc
+
+
+Disassembly of section .boot:
+
+00004000 <start>:
+    4000:	10 80 00 08 	b  4020 <silo_ramdisk_size+0x4>
+    4004:	01 00 00 00 	nop 
+    4008:	48 64 72 53 	call  21920954 <ofw_mmu+0x219172f8>
+    400c:	00 00 00 00 	illtrap  0
+	...
+
+00004018 <silo_ramdisk_image>:
+    4018:	00 00 00 00 	illtrap  0
+
+0000401c <silo_ramdisk_size>:
+    401c:	00 00 00 00 	illtrap  0
+    4020:	8d 90 20 04 	wrpr  4, %pstate
+    4024:	95 90 20 06 	wrpr  6, %cansave
+    4028:	97 90 20 00 	wrpr  0, %canrestore
+    402c:	9b 90 20 00 	wrpr  0, %otherwin
+    4030:	99 90 20 07 	wrpr  7, %cleanwin
+    4034:	1d 00 00 18 	sethi  %hi(0x6000), %sp
+    4038:	9c 13 a0 60 	or  %sp, 0x60, %sp	! 6060 <initial_stack_top>
+    403c:	9c 03 b8 01 	add  %sp, -2047, %sp
+    4040:	21 00 00 25 	sethi  %hi(0x9400), %l0
+    4044:	a0 14 22 58 	or  %l0, 0x258, %l0	! 9658 <ofw_cif>
+    4048:	40 00 0e f6 	call  7c20 <ofw_init>
+    404c:	d8 74 00 00 	stx  %o4, [ %l0 ]
+    4050:	10 80 08 24 	b  60e0 <bootstrap>
+    4054:	01 00 00 00 	nop 
+    4058:	01 00 00 00 	nop 
+    405c:	01 00 00 00 	nop 
+
+00004060 <initial_stack>:
+	...
+
+00006060 <initial_stack_top>:
+	...
+
+000060e0 <bootstrap>:
+    60e0:	9d e3 bf 60 	save  %sp, -160, %sp
+    60e4:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    60e8:	40 00 06 be 	call  7be0 <ofw_find_device>
+    60ec:	90 12 20 18 	or  %o0, 0x18, %o0	! 8c18 <ofw+0x30>
+    60f0:	a0 07 bf c0 	add  %fp, -64, %l0
+    60f4:	13 00 00 23 	sethi  %hi(0x8c00), %o1
+    60f8:	92 12 60 20 	or  %o1, 0x20, %o1	! 8c20 <ofw+0x38>
+    60fc:	94 10 00 10 	mov  %l0, %o2
+    6100:	40 00 06 58 	call  7a60 <ofw_get_property>
+    6104:	96 10 20 40 	mov  0x40, %o3
+    6108:	80 a2 20 00 	cmp  %o0, 0
+    610c:	04 40 01 a9 	ble,pn   %icc, 67b0 <bootstrap+0x6d0>
+    6110:	13 00 00 23 	sethi  %hi(0x8c00), %o1
+    6114:	90 10 00 10 	mov  %l0, %o0
+    6118:	40 00 03 b2 	call  6fe0 <strcmp>
+    611c:	92 12 60 68 	or  %o1, 0x68, %o1
+    6120:	80 a2 20 00 	cmp  %o0, 0
+    6124:	02 48 01 60 	be  %icc, 66a4 <bootstrap+0x5c4>
+    6128:	33 00 00 24 	sethi  %hi(0x9000), %i1
+    612c:	31 00 00 24 	sethi  %hi(0x9000), %i0
+    6130:	82 10 20 0a 	mov  0xa, %g1
+    6134:	c2 2e 22 61 	stb  %g1, [ %i0 + 0x261 ]
+    6138:	33 00 00 24 	sethi  %hi(0x9000), %i1
+    613c:	40 00 01 c9 	call  6860 <init_components>
+    6140:	90 16 63 90 	or  %i1, 0x390, %o0	! 9390 <components>
+    6144:	2d 00 00 25 	sethi  %hi(0x9400), %l6
+    6148:	40 00 09 8e 	call  8780 <ofw_get_physmem_start>
+    614c:	90 15 a0 20 	or  %l6, 0x20, %o0	! 9420 <bootinfo>
+    6150:	80 a2 20 00 	cmp  %o0, 0
+    6154:	22 40 01 60 	be,a,pn   %icc, 66d4 <bootstrap+0x5f4>
+    6158:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    615c:	11 00 00 25 	sethi  %hi(0x9400), %o0
+    6160:	40 00 08 00 	call  8160 <ofw_memmap>
+    6164:	90 12 21 28 	or  %o0, 0x128, %o0	! 9528 <bootinfo+0x108>
+    6168:	80 a2 20 00 	cmp  %o0, 0
+    616c:	02 40 01 65 	be,pn   %icc, 6700 <bootstrap+0x620>
+    6170:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6174:	a6 15 a0 20 	or  %l6, 0x20, %l3
+    6178:	c2 04 e1 08 	ld  [ %l3 + 0x108 ], %g1
+    617c:	80 a0 60 00 	cmp  %g1, 0
+    6180:	02 40 01 69 	be,pn   %icc, 6724 <bootstrap+0x644>
+    6184:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6188:	35 00 00 10 	sethi  %hi(0x4000), %i2
+    618c:	c2 06 a0 18 	ld  [ %i2 + 0x18 ], %g1	! 4018 <silo_ramdisk_image>
+    6190:	80 a0 60 00 	cmp  %g1, 0
+    6194:	12 40 01 6d 	bne,pn   %icc, 6748 <bootstrap+0x668>
+    6198:	c4 05 a0 20 	ld  [ %l6 + 0x20 ], %g2
+    619c:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    61a0:	40 00 02 20 	call  6a20 <printf>
+    61a4:	90 12 21 10 	or  %o0, 0x110, %o0	! 8d10 <ofw+0x128>
+    61a8:	d2 04 e1 08 	ld  [ %l3 + 0x108 ], %o1
+    61ac:	d4 05 a0 20 	ld  [ %l6 + 0x20 ], %o2
+    61b0:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    61b4:	93 32 60 14 	srl  %o1, 0x14, %o1
+    61b8:	40 00 02 1a 	call  6a20 <printf>
+    61bc:	90 12 21 20 	or  %o0, 0x120, %o0
+    61c0:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    61c4:	40 00 02 17 	call  6a20 <printf>
+    61c8:	90 12 21 40 	or  %o0, 0x140, %o0	! 8d40 <ofw+0x158>
+    61cc:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    61d0:	90 12 21 58 	or  %o0, 0x158, %o0	! 8d58 <ofw+0x170>
+    61d4:	40 00 02 13 	call  6a20 <printf>
+    61d8:	13 00 10 00 	sethi  %hi(0x400000), %o1
+    61dc:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    61e0:	90 12 21 78 	or  %o0, 0x178, %o0	! 8d78 <ofw+0x190>
+    61e4:	92 10 00 13 	mov  %l3, %o1
+    61e8:	40 00 02 0e 	call  6a20 <printf>
+    61ec:	21 00 00 24 	sethi  %hi(0x9000), %l0
+    61f0:	a0 14 23 9c 	or  %l0, 0x39c, %l0	! 939c <components+0xc>
+    61f4:	39 00 00 23 	sethi  %hi(0x8c00), %i4
+    61f8:	d2 04 3f f8 	ld  [ %l0 + -8 ], %o1
+    61fc:	d4 04 3f f4 	ld  [ %l0 + -12 ], %o2
+    6200:	d6 04 00 00 	ld  [ %l0 ], %o3
+    6204:	b8 17 21 98 	or  %i4, 0x198, %i4
+    6208:	90 10 00 1c 	mov  %i4, %o0
+    620c:	c0 24 e0 04 	clr  [ %l3 + 4 ]
+    6210:	40 00 02 04 	call  6a20 <printf>
+    6214:	3b 00 00 0f 	sethi  %hi(0x3c00), %i5
+    6218:	ba 17 63 ff 	or  %i5, 0x3ff, %i5	! 3fff <start-0x1>
+    621c:	a4 10 20 01 	mov  1, %l2
+    6220:	a2 10 20 00 	clr  %l1
+    6224:	2f 3f ff f0 	sethi  %hi(0xffffc000), %l7
+    6228:	a2 04 40 1d 	add  %l1, %i5, %l1
+    622c:	80 a4 a0 01 	cmp  %l2, 1
+    6230:	aa 10 00 13 	mov  %l3, %l5
+    6234:	37 00 10 00 	sethi  %hi(0x400000), %i3
+    6238:	02 40 00 1c 	be,pn   %icc, 62a8 <bootstrap+0x1c8>
+    623c:	a2 0c 40 17 	and  %l1, %l7, %l1
+    6240:	c2 04 e0 04 	ld  [ %l3 + 4 ], %g1
+    6244:	80 a0 60 20 	cmp  %g1, 0x20
+    6248:	02 40 00 1d 	be,pn   %icc, 62bc <bootstrap+0x1dc>
+    624c:	83 28 60 03 	sll  %g1, 3, %g1
+    6250:	c4 04 00 00 	ld  [ %l0 ], %g2
+    6254:	82 05 40 01 	add  %l5, %g1, %g1
+    6258:	c4 20 60 0c 	st  %g2, [ %g1 + 0xc ]
+    625c:	e8 05 60 04 	ld  [ %l5 + 4 ], %l4
+    6260:	86 04 40 1b 	add  %l1, %i3, %g3
+    6264:	a8 05 20 01 	inc  %l4
+    6268:	c6 20 60 08 	st  %g3, [ %g1 + 8 ]
+    626c:	e8 25 60 04 	st  %l4, [ %l5 + 4 ]
+    6270:	80 a4 a0 08 	cmp  %l2, 8
+    6274:	14 40 00 16 	bg,pn   %icc, 62cc <bootstrap+0x1ec>
+    6278:	a2 04 40 02 	add  %l1, %g2, %l1
+    627c:	a0 04 20 10 	add  %l0, 0x10, %l0
+    6280:	a4 04 a0 01 	inc  %l2
+    6284:	d2 04 3f f8 	ld  [ %l0 + -8 ], %o1
+    6288:	d4 04 3f f4 	ld  [ %l0 + -12 ], %o2
+    628c:	d6 04 00 00 	ld  [ %l0 ], %o3
+    6290:	40 00 01 e4 	call  6a20 <printf>
+    6294:	90 10 00 1c 	mov  %i4, %o0
+    6298:	a2 04 40 1d 	add  %l1, %i5, %l1
+    629c:	80 a4 a0 01 	cmp  %l2, 1
+    62a0:	12 4f ff e8 	bne  %icc, 6240 <bootstrap+0x160>
+    62a4:	a2 0c 40 17 	and  %l1, %l7, %l1
+    62a8:	c2 04 00 00 	ld  [ %l0 ], %g1
+    62ac:	a4 04 a0 01 	inc  %l2
+    62b0:	a2 04 40 01 	add  %l1, %g1, %l1
+    62b4:	10 6f ff f4 	b  %xcc, 6284 <bootstrap+0x1a4>
+    62b8:	a0 04 20 10 	add  %l0, 0x10, %l0
+    62bc:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    62c0:	40 00 01 d8 	call  6a20 <printf>
+    62c4:	90 12 21 b8 	or  %o0, 0x1b8, %o0	! 8db8 <ofw+0x1d0>
+    62c8:	e8 05 60 04 	ld  [ %l5 + 4 ], %l4
+    62cc:	c2 06 a0 18 	ld  [ %i2 + 0x18 ], %g1
+    62d0:	80 a0 60 00 	cmp  %g1, 0
+    62d4:	02 48 00 2b 	be  %icc, 6380 <bootstrap+0x2a0>
+    62d8:	21 00 00 23 	sethi  %hi(0x8c00), %l0
+    62dc:	80 a5 20 20 	cmp  %l4, 0x20
+    62e0:	02 40 01 3b 	be,pn   %icc, 67cc <bootstrap+0x6ec>
+    62e4:	25 00 00 10 	sethi  %hi(0x4000), %l2
+    62e8:	c2 04 e0 04 	ld  [ %l3 + 4 ], %g1
+    62ec:	c4 04 a0 1c 	ld  [ %l2 + 0x1c ], %g2
+    62f0:	83 28 60 03 	sll  %g1, 3, %g1
+    62f4:	82 04 c0 01 	add  %l3, %g1, %g1
+    62f8:	c4 20 60 0c 	st  %g2, [ %g1 + 0xc ]
+    62fc:	05 00 00 0f 	sethi  %hi(0x3c00), %g2
+    6300:	84 10 a3 ff 	or  %g2, 0x3ff, %g2	! 3fff <start-0x1>
+    6304:	c2 04 e0 04 	ld  [ %l3 + 4 ], %g1
+    6308:	a2 04 40 02 	add  %l1, %g2, %l1
+    630c:	05 3f ff f0 	sethi  %hi(0xffffc000), %g2
+    6310:	a2 0c 40 02 	and  %l1, %g2, %l1
+    6314:	2b 00 10 00 	sethi  %hi(0x400000), %l5
+    6318:	85 2d 20 03 	sll  %l4, 3, %g2
+    631c:	aa 04 40 15 	add  %l1, %l5, %l5
+    6320:	84 04 c0 02 	add  %l3, %g2, %g2
+    6324:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6328:	82 00 60 01 	inc  %g1
+    632c:	ea 20 a0 08 	st  %l5, [ %g2 + 8 ]
+    6330:	90 12 21 f8 	or  %o0, 0x1f8, %o0
+    6334:	40 00 01 bb 	call  6a20 <printf>
+    6338:	c2 24 e0 04 	st  %g1, [ %l3 + 4 ]
+    633c:	d2 04 a0 1c 	ld  [ %l2 + 0x1c ], %o1
+    6340:	40 00 04 b0 	call  7600 <ofw_claim_phys>
+    6344:	90 10 00 15 	mov  %l5, %o0
+    6348:	d4 04 a0 1c 	ld  [ %l2 + 0x1c ], %o2
+    634c:	96 10 3f ff 	mov  -1, %o3
+    6350:	92 10 00 15 	mov  %l5, %o1
+    6354:	40 00 05 0b 	call  7780 <ofw_map>
+    6358:	90 10 00 15 	mov  %l5, %o0
+    635c:	03 00 00 10 	sethi  %hi(0x4000), %g1
+    6360:	d2 00 60 18 	ld  [ %g1 + 0x18 ], %o1	! 4018 <silo_ramdisk_image>
+    6364:	d4 04 a0 1c 	ld  [ %l2 + 0x1c ], %o2
+    6368:	40 00 04 36 	call  7440 <memmove>
+    636c:	90 10 00 15 	mov  %l5, %o0
+    6370:	40 00 01 ac 	call  6a20 <printf>
+    6374:	90 14 22 10 	or  %l0, 0x210, %o0
+    6378:	c2 04 a0 1c 	ld  [ %l2 + 0x1c ], %g1
+    637c:	a2 04 40 01 	add  %l1, %g1, %l1
+    6380:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6384:	90 12 22 18 	or  %o0, 0x218, %o0	! 8e18 <ofw+0x230>
+    6388:	40 00 01 a6 	call  6a20 <printf>
+    638c:	b2 16 63 90 	or  %i1, 0x390, %i1
+    6390:	d2 06 60 80 	ld  [ %i1 + 0x80 ], %o1
+    6394:	2f 00 00 23 	sethi  %hi(0x8c00), %l7
+    6398:	90 15 e2 38 	or  %l7, 0x238, %o0	! 8e38 <ofw+0x250>
+    639c:	40 00 01 a1 	call  6a20 <printf>
+    63a0:	ba 05 3f ff 	add  %l4, -1, %i5
+    63a4:	bb 2f 60 03 	sll  %i5, 3, %i5
+    63a8:	ba 04 c0 1d 	add  %l3, %i5, %i5
+    63ac:	d2 06 60 8c 	ld  [ %i1 + 0x8c ], %o1
+    63b0:	c2 05 a0 20 	ld  [ %l6 + 0x20 ], %g1
+    63b4:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    63b8:	2b 00 00 0f 	sethi  %hi(0x3c00), %l5
+    63bc:	aa 15 63 ff 	or  %l5, 0x3ff, %l5	! 3fff <start-0x1>
+    63c0:	25 3f ff f0 	sethi  %hi(0xffffc000), %l2
+    63c4:	92 02 40 15 	add  %o1, %l5, %o1
+    63c8:	90 02 00 01 	add  %o0, %g1, %o0
+    63cc:	40 00 04 8d 	call  7600 <ofw_claim_phys>
+    63d0:	92 0a 40 12 	and  %o1, %l2, %o1
+    63d4:	d4 06 60 8c 	ld  [ %i1 + 0x8c ], %o2
+    63d8:	d2 06 60 84 	ld  [ %i1 + 0x84 ], %o1
+    63dc:	40 00 09 c3 	call  8ae8 <memcpy>
+    63e0:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    63e4:	40 00 01 8f 	call  6a20 <printf>
+    63e8:	90 14 22 10 	or  %l0, 0x210, %o0
+    63ec:	d2 06 60 70 	ld  [ %i1 + 0x70 ], %o1
+    63f0:	90 15 e2 38 	or  %l7, 0x238, %o0
+    63f4:	40 00 01 8b 	call  6a20 <printf>
+    63f8:	ba 05 3f fe 	add  %l4, -2, %i5
+    63fc:	bb 2f 60 03 	sll  %i5, 3, %i5
+    6400:	ba 04 c0 1d 	add  %l3, %i5, %i5
+    6404:	d2 06 60 7c 	ld  [ %i1 + 0x7c ], %o1
+    6408:	c2 05 a0 20 	ld  [ %l6 + 0x20 ], %g1
+    640c:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    6410:	92 02 40 15 	add  %o1, %l5, %o1
+    6414:	90 02 00 01 	add  %o0, %g1, %o0
+    6418:	40 00 04 7a 	call  7600 <ofw_claim_phys>
+    641c:	92 0a 40 12 	and  %o1, %l2, %o1
+    6420:	d4 06 60 7c 	ld  [ %i1 + 0x7c ], %o2
+    6424:	d2 06 60 74 	ld  [ %i1 + 0x74 ], %o1
+    6428:	40 00 09 b0 	call  8ae8 <memcpy>
+    642c:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    6430:	40 00 01 7c 	call  6a20 <printf>
+    6434:	90 14 22 10 	or  %l0, 0x210, %o0
+    6438:	d2 06 60 60 	ld  [ %i1 + 0x60 ], %o1
+    643c:	90 15 e2 38 	or  %l7, 0x238, %o0
+    6440:	40 00 01 78 	call  6a20 <printf>
+    6444:	ba 05 3f fd 	add  %l4, -3, %i5
+    6448:	bb 2f 60 03 	sll  %i5, 3, %i5
+    644c:	ba 04 c0 1d 	add  %l3, %i5, %i5
+    6450:	d2 06 60 6c 	ld  [ %i1 + 0x6c ], %o1
+    6454:	c2 05 a0 20 	ld  [ %l6 + 0x20 ], %g1
+    6458:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    645c:	92 02 40 15 	add  %o1, %l5, %o1
+    6460:	90 02 00 01 	add  %o0, %g1, %o0
+    6464:	40 00 04 67 	call  7600 <ofw_claim_phys>
+    6468:	92 0a 40 12 	and  %o1, %l2, %o1
+    646c:	d4 06 60 6c 	ld  [ %i1 + 0x6c ], %o2
+    6470:	d2 06 60 64 	ld  [ %i1 + 0x64 ], %o1
+    6474:	40 00 09 9d 	call  8ae8 <memcpy>
+    6478:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    647c:	40 00 01 69 	call  6a20 <printf>
+    6480:	90 14 22 10 	or  %l0, 0x210, %o0
+    6484:	d2 06 60 50 	ld  [ %i1 + 0x50 ], %o1
+    6488:	90 15 e2 38 	or  %l7, 0x238, %o0
+    648c:	40 00 01 65 	call  6a20 <printf>
+    6490:	ba 05 3f fc 	add  %l4, -4, %i5
+    6494:	bb 2f 60 03 	sll  %i5, 3, %i5
+    6498:	ba 04 c0 1d 	add  %l3, %i5, %i5
+    649c:	d2 06 60 5c 	ld  [ %i1 + 0x5c ], %o1
+    64a0:	c2 05 a0 20 	ld  [ %l6 + 0x20 ], %g1
+    64a4:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    64a8:	92 02 40 15 	add  %o1, %l5, %o1
+    64ac:	90 02 00 01 	add  %o0, %g1, %o0
+    64b0:	40 00 04 54 	call  7600 <ofw_claim_phys>
+    64b4:	92 0a 40 12 	and  %o1, %l2, %o1
+    64b8:	d4 06 60 5c 	ld  [ %i1 + 0x5c ], %o2
+    64bc:	d2 06 60 54 	ld  [ %i1 + 0x54 ], %o1
+    64c0:	40 00 09 8a 	call  8ae8 <memcpy>
+    64c4:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    64c8:	40 00 01 56 	call  6a20 <printf>
+    64cc:	90 14 22 10 	or  %l0, 0x210, %o0
+    64d0:	d2 06 60 40 	ld  [ %i1 + 0x40 ], %o1
+    64d4:	90 15 e2 38 	or  %l7, 0x238, %o0
+    64d8:	40 00 01 52 	call  6a20 <printf>
+    64dc:	ba 05 3f fb 	add  %l4, -5, %i5
+    64e0:	bb 2f 60 03 	sll  %i5, 3, %i5
+    64e4:	ba 04 c0 1d 	add  %l3, %i5, %i5
+    64e8:	d2 06 60 4c 	ld  [ %i1 + 0x4c ], %o1
+    64ec:	c2 05 a0 20 	ld  [ %l6 + 0x20 ], %g1
+    64f0:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    64f4:	92 02 40 15 	add  %o1, %l5, %o1
+    64f8:	90 02 00 01 	add  %o0, %g1, %o0
+    64fc:	40 00 04 41 	call  7600 <ofw_claim_phys>
+    6500:	92 0a 40 12 	and  %o1, %l2, %o1
+    6504:	d4 06 60 4c 	ld  [ %i1 + 0x4c ], %o2
+    6508:	d2 06 60 44 	ld  [ %i1 + 0x44 ], %o1
+    650c:	40 00 09 77 	call  8ae8 <memcpy>
+    6510:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    6514:	40 00 01 43 	call  6a20 <printf>
+    6518:	90 14 22 10 	or  %l0, 0x210, %o0
+    651c:	d2 06 60 30 	ld  [ %i1 + 0x30 ], %o1
+    6520:	90 15 e2 38 	or  %l7, 0x238, %o0
+    6524:	40 00 01 3f 	call  6a20 <printf>
+    6528:	ba 05 3f fa 	add  %l4, -6, %i5
+    652c:	bb 2f 60 03 	sll  %i5, 3, %i5
+    6530:	ba 04 c0 1d 	add  %l3, %i5, %i5
+    6534:	d2 06 60 3c 	ld  [ %i1 + 0x3c ], %o1
+    6538:	c2 05 a0 20 	ld  [ %l6 + 0x20 ], %g1
+    653c:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    6540:	92 02 40 15 	add  %o1, %l5, %o1
+    6544:	90 02 00 01 	add  %o0, %g1, %o0
+    6548:	40 00 04 2e 	call  7600 <ofw_claim_phys>
+    654c:	92 0a 40 12 	and  %o1, %l2, %o1
+    6550:	d4 06 60 3c 	ld  [ %i1 + 0x3c ], %o2
+    6554:	d2 06 60 34 	ld  [ %i1 + 0x34 ], %o1
+    6558:	40 00 09 64 	call  8ae8 <memcpy>
+    655c:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    6560:	40 00 01 30 	call  6a20 <printf>
+    6564:	90 14 22 10 	or  %l0, 0x210, %o0
+    6568:	d2 06 60 20 	ld  [ %i1 + 0x20 ], %o1
+    656c:	90 15 e2 38 	or  %l7, 0x238, %o0
+    6570:	40 00 01 2c 	call  6a20 <printf>
+    6574:	ba 05 3f f9 	add  %l4, -7, %i5
+    6578:	bb 2f 60 03 	sll  %i5, 3, %i5
+    657c:	ba 04 c0 1d 	add  %l3, %i5, %i5
+    6580:	d2 06 60 2c 	ld  [ %i1 + 0x2c ], %o1
+    6584:	c2 05 a0 20 	ld  [ %l6 + 0x20 ], %g1
+    6588:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    658c:	92 02 40 15 	add  %o1, %l5, %o1
+    6590:	90 02 00 01 	add  %o0, %g1, %o0
+    6594:	40 00 04 1b 	call  7600 <ofw_claim_phys>
+    6598:	92 0a 40 12 	and  %o1, %l2, %o1
+    659c:	d4 06 60 2c 	ld  [ %i1 + 0x2c ], %o2
+    65a0:	d2 06 60 24 	ld  [ %i1 + 0x24 ], %o1
+    65a4:	40 00 09 51 	call  8ae8 <memcpy>
+    65a8:	d0 07 60 08 	ld  [ %i5 + 8 ], %o0
+    65ac:	40 00 01 1d 	call  6a20 <printf>
+    65b0:	90 14 22 10 	or  %l0, 0x210, %o0
+    65b4:	d2 06 60 10 	ld  [ %i1 + 0x10 ], %o1
+    65b8:	90 15 e2 38 	or  %l7, 0x238, %o0
+    65bc:	40 00 01 19 	call  6a20 <printf>
+    65c0:	a8 05 3f f8 	add  %l4, -8, %l4
+    65c4:	a9 2d 20 03 	sll  %l4, 3, %l4
+    65c8:	a8 04 c0 14 	add  %l3, %l4, %l4
+    65cc:	d2 06 60 1c 	ld  [ %i1 + 0x1c ], %o1
+    65d0:	c2 05 a0 20 	ld  [ %l6 + 0x20 ], %g1
+    65d4:	d0 05 20 08 	ld  [ %l4 + 8 ], %o0
+    65d8:	92 02 40 15 	add  %o1, %l5, %o1
+    65dc:	90 02 00 01 	add  %o0, %g1, %o0
+    65e0:	40 00 04 08 	call  7600 <ofw_claim_phys>
+    65e4:	92 0a 40 12 	and  %o1, %l2, %o1
+    65e8:	d4 06 60 1c 	ld  [ %i1 + 0x1c ], %o2
+    65ec:	d2 06 60 14 	ld  [ %i1 + 0x14 ], %o1
+    65f0:	40 00 09 3e 	call  8ae8 <memcpy>
+    65f4:	d0 05 20 08 	ld  [ %l4 + 8 ], %o0
+    65f8:	40 00 01 0a 	call  6a20 <printf>
+    65fc:	90 14 22 10 	or  %l0, 0x210, %o0
+    6600:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6604:	40 00 01 07 	call  6a20 <printf>
+    6608:	90 12 22 40 	or  %o0, 0x240, %o0	! 8e40 <ofw+0x258>
+    660c:	d2 06 60 0c 	ld  [ %i1 + 0xc ], %o1
+    6610:	d0 05 a0 20 	ld  [ %l6 + 0x20 ], %o0
+    6614:	29 00 10 00 	sethi  %hi(0x400000), %l4
+    6618:	92 02 40 15 	add  %o1, %l5, %o1
+    661c:	92 0a 40 12 	and  %o1, %l2, %o1
+    6620:	40 00 03 f8 	call  7600 <ofw_claim_phys>
+    6624:	90 02 00 14 	add  %o0, %l4, %o0
+    6628:	d4 06 60 0c 	ld  [ %i1 + 0xc ], %o2
+    662c:	d2 06 60 04 	ld  [ %i1 + 4 ], %o1
+    6630:	40 00 09 2e 	call  8ae8 <memcpy>
+    6634:	90 10 00 14 	mov  %l4, %o0
+    6638:	40 00 00 fa 	call  6a20 <printf>
+    663c:	90 14 22 10 	or  %l0, 0x210, %o0
+    6640:	c2 0e 22 61 	ldub  [ %i0 + 0x261 ], %g1
+    6644:	80 a0 60 0a 	cmp  %g1, 0xa
+    6648:	02 40 00 66 	be,pn   %icc, 67e0 <bootstrap+0x700>
+    664c:	05 00 00 25 	sethi  %hi(0x9400), %g2
+    6650:	80 a0 60 14 	cmp  %g1, 0x14
+    6654:	32 48 00 51 	bne,a   %icc, 6798 <bootstrap+0x6b8>
+    6658:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    665c:	c6 00 a0 20 	ld  [ %g2 + 0x20 ], %g3
+    6660:	c8 04 e1 10 	ld  [ %l3 + 0x110 ], %g4
+    6664:	c2 04 e1 14 	ld  [ %l3 + 0x114 ], %g1
+    6668:	86 00 c0 14 	add  %g3, %l4, %g3
+    666c:	82 20 40 14 	sub  %g1, %l4, %g1
+    6670:	a8 01 00 14 	add  %g4, %l4, %l4
+    6674:	c6 20 a0 20 	st  %g3, [ %g2 + 0x20 ]
+    6678:	e8 24 e1 10 	st  %l4, [ %l3 + 0x110 ]
+    667c:	c2 24 e1 14 	st  %g1, [ %l3 + 0x114 ]
+    6680:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6684:	40 00 00 e7 	call  6a20 <printf>
+    6688:	90 12 22 98 	or  %o0, 0x298, %o0	! 8e98 <ofw+0x2b0>
+    668c:	d2 05 a0 20 	ld  [ %l6 + 0x20 ], %o1
+    6690:	94 10 00 13 	mov  %l3, %o2
+    6694:	92 12 60 01 	or  %o1, 1, %o1
+    6698:	11 00 10 00 	sethi  %hi(0x400000), %o0
+    669c:	40 00 09 41 	call  8ba0 <jump_to_kernel>
+    66a0:	96 10 22 1c 	mov  0x21c, %o3
+    66a4:	82 10 20 14 	mov  0x14, %g1
+    66a8:	90 16 63 90 	or  %i1, 0x390, %o0
+    66ac:	31 00 00 24 	sethi  %hi(0x9000), %i0
+    66b0:	40 00 00 6c 	call  6860 <init_components>
+    66b4:	c2 2e 22 61 	stb  %g1, [ %i0 + 0x261 ]	! 9261 <architecture>
+    66b8:	2d 00 00 25 	sethi  %hi(0x9400), %l6
+    66bc:	40 00 08 31 	call  8780 <ofw_get_physmem_start>
+    66c0:	90 15 a0 20 	or  %l6, 0x20, %o0	! 9420 <bootinfo>
+    66c4:	80 a2 20 00 	cmp  %o0, 0
+    66c8:	32 4f fe a6 	bne,a   %icc, 6160 <bootstrap+0x80>
+    66cc:	11 00 00 25 	sethi  %hi(0x9400), %o0
+    66d0:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    66d4:	40 00 00 d3 	call  6a20 <printf>
+    66d8:	90 12 20 70 	or  %o0, 0x70, %o0	! 8c70 <ofw+0x88>
+    66dc:	40 00 09 01 	call  8ae0 <halt>
+    66e0:	01 00 00 00 	nop 
+    66e4:	11 00 00 25 	sethi  %hi(0x9400), %o0
+    66e8:	40 00 06 9e 	call  8160 <ofw_memmap>
+    66ec:	90 12 21 28 	or  %o0, 0x128, %o0	! 9528 <bootinfo+0x108>
+    66f0:	80 a2 20 00 	cmp  %o0, 0
+    66f4:	12 4f fe a1 	bne  %icc, 6178 <bootstrap+0x98>
+    66f8:	a6 15 a0 20 	or  %l6, 0x20, %l3
+    66fc:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6700:	40 00 00 c8 	call  6a20 <printf>
+    6704:	90 12 20 a0 	or  %o0, 0xa0, %o0	! 8ca0 <ofw+0xb8>
+    6708:	40 00 08 f6 	call  8ae0 <halt>
+    670c:	a6 15 a0 20 	or  %l6, 0x20, %l3
+    6710:	c2 04 e1 08 	ld  [ %l3 + 0x108 ], %g1
+    6714:	80 a0 60 00 	cmp  %g1, 0
+    6718:	12 4f fe 9d 	bne  %icc, 618c <bootstrap+0xac>
+    671c:	35 00 00 10 	sethi  %hi(0x4000), %i2
+    6720:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6724:	40 00 00 bf 	call  6a20 <printf>
+    6728:	90 12 20 d0 	or  %o0, 0xd0, %o0	! 8cd0 <ofw+0xe8>
+    672c:	40 00 08 ed 	call  8ae0 <halt>
+    6730:	35 00 00 10 	sethi  %hi(0x4000), %i2
+    6734:	c2 06 a0 18 	ld  [ %i2 + 0x18 ], %g1	! 4018 <silo_ramdisk_image>
+    6738:	80 a0 60 00 	cmp  %g1, 0
+    673c:	02 4f fe 99 	be  %icc, 61a0 <bootstrap+0xc0>
+    6740:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6744:	c4 05 a0 20 	ld  [ %l6 + 0x20 ], %g2
+    6748:	82 00 40 02 	add  %g1, %g2, %g1
+    674c:	05 3f f0 00 	sethi  %hi(0xffc00000), %g2
+    6750:	82 00 40 02 	add  %g1, %g2, %g1
+    6754:	05 00 00 10 	sethi  %hi(0x4000), %g2
+    6758:	d4 00 a0 1c 	ld  [ %g2 + 0x1c ], %o2	! 401c <silo_ramdisk_size>
+    675c:	90 10 00 01 	mov  %g1, %o0
+    6760:	92 10 00 01 	mov  %g1, %o1
+    6764:	96 10 3f ff 	mov  -1, %o3
+    6768:	40 00 04 06 	call  7780 <ofw_map>
+    676c:	c2 26 a0 18 	st  %g1, [ %i2 + 0x18 ]
+    6770:	80 a2 20 00 	cmp  %o0, 0
+    6774:	22 4f fe 8b 	be,a   %icc, 61a0 <bootstrap+0xc0>
+    6778:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    677c:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6780:	40 00 00 a8 	call  6a20 <printf>
+    6784:	90 12 20 f8 	or  %o0, 0xf8, %o0	! 8cf8 <ofw+0x110>
+    6788:	40 00 08 d6 	call  8ae0 <halt>
+    678c:	01 00 00 00 	nop 
+    6790:	10 6f fe 84 	b  %xcc, 61a0 <bootstrap+0xc0>
+    6794:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6798:	40 00 00 a2 	call  6a20 <printf>
+    679c:	90 12 22 80 	or  %o0, 0x280, %o0	! 8e80 <ofw+0x298>
+    67a0:	40 00 08 d0 	call  8ae0 <halt>
+    67a4:	01 00 00 00 	nop 
+    67a8:	10 6f ff b7 	b  %xcc, 6684 <bootstrap+0x5a4>
+    67ac:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    67b0:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    67b4:	40 00 00 9b 	call  6a20 <printf>
+    67b8:	90 12 20 30 	or  %o0, 0x30, %o0	! 8c30 <ofw+0x48>
+    67bc:	31 00 00 24 	sethi  %hi(0x9000), %i0
+    67c0:	82 10 20 0a 	mov  0xa, %g1
+    67c4:	10 6f fe 5d 	b  %xcc, 6138 <bootstrap+0x58>
+    67c8:	c2 2e 22 61 	stb  %g1, [ %i0 + 0x261 ]
+    67cc:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    67d0:	40 00 00 94 	call  6a20 <printf>
+    67d4:	90 12 21 e0 	or  %o0, 0x1e0, %o0	! 8de0 <ofw+0x1f8>
+    67d8:	10 6f fe eb 	b  %xcc, 6384 <bootstrap+0x2a4>
+    67dc:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    67e0:	d0 00 a0 20 	ld  [ %g2 + 0x20 ], %o0
+    67e4:	a0 04 40 15 	add  %l1, %l5, %l0
+    67e8:	a0 0c 00 12 	and  %l0, %l2, %l0
+    67ec:	a0 04 00 14 	add  %l0, %l4, %l0
+    67f0:	90 04 00 08 	add  %l0, %o0, %o0
+    67f4:	40 00 03 83 	call  7600 <ofw_claim_phys>
+    67f8:	13 00 00 80 	sethi  %hi(0x20000), %o1
+    67fc:	15 00 00 80 	sethi  %hi(0x20000), %o2
+    6800:	96 10 3f ff 	mov  -1, %o3
+    6804:	92 10 00 10 	mov  %l0, %o1
+    6808:	40 00 03 de 	call  7780 <ofw_map>
+    680c:	90 10 00 10 	mov  %l0, %o0
+    6810:	92 10 00 10 	mov  %l0, %o1
+    6814:	40 00 03 5b 	call  7580 <balloc_init>
+    6818:	90 04 e2 10 	add  %l3, 0x210, %o0
+    681c:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6820:	40 00 00 80 	call  6a20 <printf>
+    6824:	90 12 22 58 	or  %o0, 0x258, %o0	! 8e58 <ofw+0x270>
+    6828:	40 00 07 ae 	call  86e0 <ofw_tree_build>
+    682c:	01 00 00 00 	nop 
+    6830:	d0 24 e2 18 	st  %o0, [ %l3 + 0x218 ]
+    6834:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6838:	40 00 00 7a 	call  6a20 <printf>
+    683c:	90 12 22 10 	or  %o0, 0x210, %o0	! 8e10 <ofw+0x228>
+    6840:	40 00 05 88 	call  7e60 <setup_palette>
+    6844:	01 00 00 00 	nop 
+    6848:	10 6f ff 8f 	b  %xcc, 6684 <bootstrap+0x5a4>
+    684c:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    6850:	30 68 00 04 	b,a   %xcc, 6860 <init_components>
+    6854:	01 00 00 00 	nop 
+    6858:	01 00 00 00 	nop 
+    685c:	01 00 00 00 	nop 
+
+00006860 <init_components>:
+    6860:	81 c3 e0 08 	retl 
+    6864:	01 00 00 00 	nop 
+    6868:	30 68 00 06 	b,a   %xcc, 6880 <init_components+0x20>
+    686c:	01 00 00 00 	nop 
+    6870:	01 00 00 00 	nop 
+    6874:	01 00 00 00 	nop 
+    6878:	01 00 00 00 	nop 
+    687c:	01 00 00 00 	nop 
+    6880:	00 00 6a 94 	illtrap  0x6a94
+    6884:	00 00 6a bc 	illtrap  0x6abc
+    6888:	00 00 6a bc 	illtrap  0x6abc
+    688c:	00 00 6a bc 	illtrap  0x6abc
+    6890:	00 00 6a bc 	illtrap  0x6abc
+    6894:	00 00 6a bc 	illtrap  0x6abc
+    6898:	00 00 6a bc 	illtrap  0x6abc
+    689c:	00 00 6a bc 	illtrap  0x6abc
+    68a0:	00 00 6a bc 	illtrap  0x6abc
+    68a4:	00 00 6a bc 	illtrap  0x6abc
+    68a8:	00 00 6a bc 	illtrap  0x6abc
+    68ac:	00 00 6a bc 	illtrap  0x6abc
+    68b0:	00 00 6a bc 	illtrap  0x6abc
+    68b4:	00 00 6a bc 	illtrap  0x6abc
+    68b8:	00 00 6a bc 	illtrap  0x6abc
+    68bc:	00 00 6a bc 	illtrap  0x6abc
+    68c0:	00 00 6a bc 	illtrap  0x6abc
+    68c4:	00 00 6a bc 	illtrap  0x6abc
+    68c8:	00 00 6a bc 	illtrap  0x6abc
+    68cc:	00 00 6a bc 	illtrap  0x6abc
+    68d0:	00 00 6a bc 	illtrap  0x6abc
+    68d4:	00 00 6a bc 	illtrap  0x6abc
+    68d8:	00 00 6a bc 	illtrap  0x6abc
+    68dc:	00 00 6a bc 	illtrap  0x6abc
+    68e0:	00 00 6a bc 	illtrap  0x6abc
+    68e4:	00 00 6a bc 	illtrap  0x6abc
+    68e8:	00 00 6a bc 	illtrap  0x6abc
+    68ec:	00 00 6a bc 	illtrap  0x6abc
+    68f0:	00 00 6a bc 	illtrap  0x6abc
+    68f4:	00 00 6c 1c 	illtrap  0x6c1c
+    68f8:	00 00 6a bc 	illtrap  0x6abc
+    68fc:	00 00 6a bc 	illtrap  0x6abc
+    6900:	00 00 6a bc 	illtrap  0x6abc
+    6904:	00 00 6a bc 	illtrap  0x6abc
+    6908:	00 00 6a bc 	illtrap  0x6abc
+    690c:	00 00 6a bc 	illtrap  0x6abc
+    6910:	00 00 6a bc 	illtrap  0x6abc
+    6914:	00 00 6a bc 	illtrap  0x6abc
+    6918:	00 00 6a bc 	illtrap  0x6abc
+    691c:	00 00 6a f0 	illtrap  0x6af0
+    6920:	00 00 6a bc 	illtrap  0x6abc
+    6924:	00 00 6a bc 	illtrap  0x6abc
+    6928:	00 00 6a bc 	illtrap  0x6abc
+    692c:	00 00 6e 70 	illtrap  0x6e70
+    6930:	00 00 6c 68 	illtrap  0x6c68
+    6934:	00 00 6a bc 	illtrap  0x6abc
+    6938:	00 00 6a bc 	illtrap  0x6abc
+    693c:	00 00 6a bc 	illtrap  0x6abc
+    6940:	00 00 6a bc 	illtrap  0x6abc
+    6944:	00 00 6a bc 	illtrap  0x6abc
+    6948:	00 00 6b d0 	illtrap  0x6bd0
+    694c:	00 00 6d d8 	illtrap  0x6dd8
+    6950:	00 00 6a bc 	illtrap  0x6abc
+    6954:	00 00 6a bc 	illtrap  0x6abc
+    6958:	00 00 6a bc 	illtrap  0x6abc
+    695c:	00 00 6a bc 	illtrap  0x6abc
+    6960:	00 00 6a bc 	illtrap  0x6abc
+    6964:	00 00 6a bc 	illtrap  0x6abc
+    6968:	00 00 6a bc 	illtrap  0x6abc
+    696c:	00 00 6a bc 	illtrap  0x6abc
+    6970:	00 00 6a bc 	illtrap  0x6abc
+    6974:	00 00 6c 44 	illtrap  0x6c44
+    6978:	00 00 6f 6c 	illtrap  0x6f6c
+    697c:	00 00 6e e4 	illtrap  0x6ee4
+    6980:	00 00 6a bc 	illtrap  0x6abc
+    6984:	00 00 6a bc 	illtrap  0x6abc
+    6988:	00 00 6a bc 	illtrap  0x6abc
+    698c:	00 00 6a bc 	illtrap  0x6abc
+    6990:	00 00 6a bc 	illtrap  0x6abc
+    6994:	00 00 6a bc 	illtrap  0x6abc
+    6998:	00 00 6a bc 	illtrap  0x6abc
+    699c:	00 00 6b 18 	illtrap  0x6b18
+    69a0:	00 00 6a bc 	illtrap  0x6abc
+    69a4:	00 00 6a bc 	illtrap  0x6abc
+    69a8:	00 00 6a bc 	illtrap  0x6abc
+    69ac:	00 00 6b 18 	illtrap  0x6b18
+    69b0:	00 00 6c 90 	illtrap  0x6c90
+    69b4:	00 00 6a bc 	illtrap  0x6abc
+    69b8:	00 00 6e a0 	illtrap  0x6ea0
+    69bc:	00 00 6a bc 	illtrap  0x6abc
+    69c0:	00 00 6a bc 	illtrap  0x6abc
+    69c4:	00 00 6a bc 	illtrap  0x6abc
+    69c8:	00 00 6b f8 	illtrap  0x6bf8
+    69cc:	00 00 6e 00 	illtrap  0x6e00
+    69d0:	30 68 00 04 	b,a   %xcc, 69e0 <puts>
+    69d4:	01 00 00 00 	nop 
+    69d8:	01 00 00 00 	nop 
+    69dc:	01 00 00 00 	nop 
+
+000069e0 <puts>:
+    69e0:	c2 4a 00 00 	ldsb  [ %o0 ], %g1
+    69e4:	80 a0 60 00 	cmp  %g1, 0
+    69e8:	02 40 00 07 	be,pn   %icc, 6a04 <puts+0x24>
+    69ec:	92 10 20 00 	clr  %o1
+    69f0:	92 02 60 01 	inc  %o1
+    69f4:	c2 4a 00 09 	ldsb  [ %o0 + %o1 ], %g1
+    69f8:	80 a0 60 00 	cmp  %g1, 0
+    69fc:	32 4f ff fe 	bne,a   %icc, 69f4 <puts+0x14>
+    6a00:	92 02 60 01 	inc  %o1
+    6a04:	82 13 c0 00 	mov  %o7, %g1
+    6a08:	40 00 08 16 	call  8a60 <write>
+    6a0c:	9e 10 40 00 	mov  %g1, %o7
+    6a10:	01 00 00 00 	nop 
+    6a14:	30 68 00 03 	b,a   %xcc, 6a20 <printf>
+    6a18:	01 00 00 00 	nop 
+    6a1c:	01 00 00 00 	nop 
+
+00006a20 <printf>:
+    6a20:	9d e3 bf 60 	save  %sp, -160, %sp
+    6a24:	21 00 00 23 	sethi  %hi(0x8c00), %l0
+    6a28:	a0 14 22 e9 	or  %l0, 0x2e9, %l0	! 8ee9 <ofw+0x301>
+    6a2c:	82 07 a0 48 	add  %fp, 0x48, %g1
+    6a30:	2f 00 00 1a 	sethi  %hi(0x6800), %l7
+    6a34:	23 00 00 24 	sethi  %hi(0x9000), %l1
+    6a38:	29 33 33 33 	sethi  %hi(0xcccccc00), %l4
+    6a3c:	fa 27 a0 58 	st  %i5, [ %fp + 0x58 ]
+    6a40:	f2 27 a0 48 	st  %i1, [ %fp + 0x48 ]
+    6a44:	f4 27 a0 4c 	st  %i2, [ %fp + 0x4c ]
+    6a48:	f6 27 a0 50 	st  %i3, [ %fp + 0x50 ]
+    6a4c:	f8 27 a0 54 	st  %i4, [ %fp + 0x54 ]
+    6a50:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+    6a54:	ae 15 e0 80 	or  %l7, 0x80, %l7
+    6a58:	a2 14 62 48 	or  %l1, 0x248, %l1
+    6a5c:	a8 15 20 cd 	or  %l4, 0xcd, %l4
+    6a60:	a4 10 20 00 	clr  %l2
+    6a64:	ac 07 bf ff 	add  %fp, -1, %l6
+    6a68:	a6 07 bf d0 	add  %fp, -48, %l3
+    6a6c:	ba 04 3f ff 	add  %l0, -1, %i5
+    6a70:	c2 0e 00 12 	ldub  [ %i0 + %l2 ], %g1
+    6a74:	85 28 60 18 	sll  %g1, 0x18, %g2
+    6a78:	85 38 a0 18 	sra  %g2, 0x18, %g2
+    6a7c:	80 a0 a0 00 	cmp  %g2, 0
+    6a80:	02 40 00 0f 	be,pn   %icc, 6abc <printf+0x9c>
+    6a84:	c2 2f bf ff 	stb  %g1, [ %fp + -1 ]
+    6a88:	80 a0 a0 25 	cmp  %g2, 0x25
+    6a8c:	02 40 00 0e 	be,pn   %icc, 6ac4 <printf+0xa4>
+    6a90:	a4 04 a0 01 	inc  %l2
+    6a94:	90 10 00 16 	mov  %l6, %o0
+    6a98:	92 10 20 01 	mov  1, %o1
+    6a9c:	40 00 07 f1 	call  8a60 <write>
+    6aa0:	01 00 00 00 	nop 
+    6aa4:	c2 0e 00 12 	ldub  [ %i0 + %l2 ], %g1
+    6aa8:	85 28 60 18 	sll  %g1, 0x18, %g2
+    6aac:	85 38 a0 18 	sra  %g2, 0x18, %g2
+    6ab0:	80 a0 a0 00 	cmp  %g2, 0
+    6ab4:	12 4f ff f5 	bne  %icc, 6a88 <printf+0x68>
+    6ab8:	c2 2f bf ff 	stb  %g1, [ %fp + -1 ]
+    6abc:	81 cf e0 08 	rett  %i7 + 8
+    6ac0:	01 00 00 00 	nop 
+    6ac4:	c2 0e 00 12 	ldub  [ %i0 + %l2 ], %g1
+    6ac8:	84 00 7f db 	add  %g1, -37, %g2
+    6acc:	84 08 a0 ff 	and  %g2, 0xff, %g2
+    6ad0:	c2 2f bf ff 	stb  %g1, [ %fp + -1 ]
+    6ad4:	80 a0 a0 53 	cmp  %g2, 0x53
+    6ad8:	18 4f ff f9 	bgu  %icc, 6abc <printf+0x9c>
+    6adc:	a4 04 a0 01 	inc  %l2
+    6ae0:	85 28 a0 02 	sll  %g2, 2, %g2
+    6ae4:	c2 05 c0 02 	ld  [ %l7 + %g2 ], %g1
+    6ae8:	81 c0 40 00 	jmp  %g1
+    6aec:	01 00 00 00 	nop 
+    6af0:	82 10 00 10 	mov  %l0, %g1
+    6af4:	92 10 20 00 	clr  %o1
+    6af8:	c4 08 40 00 	ldub  [ %g1 ], %g2
+    6afc:	85 28 a0 18 	sll  %g2, 0x18, %g2
+    6b00:	80 a0 a0 00 	cmp  %g2, 0
+    6b04:	92 02 60 01 	inc  %o1
+    6b08:	12 4f ff fc 	bne  %icc, 6af8 <printf+0xd8>
+    6b0c:	82 00 60 01 	inc  %g1
+    6b10:	40 00 07 d4 	call  8a60 <write>
+    6b14:	90 10 00 1d 	mov  %i5, %o0
+    6b18:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+    6b1c:	ea 00 40 00 	ld  [ %g1 ], %l5
+    6b20:	91 35 60 1c 	srl  %l5, 0x1c, %o0
+    6b24:	82 00 60 04 	add  %g1, 4, %g1
+    6b28:	90 04 40 08 	add  %l1, %o0, %o0
+    6b2c:	92 10 20 01 	mov  1, %o1
+    6b30:	40 00 07 cc 	call  8a60 <write>
+    6b34:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+    6b38:	91 35 60 18 	srl  %l5, 0x18, %o0
+    6b3c:	90 0a 20 0f 	and  %o0, 0xf, %o0
+    6b40:	90 04 40 08 	add  %l1, %o0, %o0
+    6b44:	40 00 07 c7 	call  8a60 <write>
+    6b48:	92 10 20 01 	mov  1, %o1
+    6b4c:	91 35 60 14 	srl  %l5, 0x14, %o0
+    6b50:	90 0a 20 0f 	and  %o0, 0xf, %o0
+    6b54:	90 04 40 08 	add  %l1, %o0, %o0
+    6b58:	40 00 07 c2 	call  8a60 <write>
+    6b5c:	92 10 20 01 	mov  1, %o1
+    6b60:	91 35 60 10 	srl  %l5, 0x10, %o0
+    6b64:	90 0a 20 0f 	and  %o0, 0xf, %o0
+    6b68:	90 04 40 08 	add  %l1, %o0, %o0
+    6b6c:	40 00 07 bd 	call  8a60 <write>
+    6b70:	92 10 20 01 	mov  1, %o1
+    6b74:	91 35 60 0c 	srl  %l5, 0xc, %o0
+    6b78:	90 0a 20 0f 	and  %o0, 0xf, %o0
+    6b7c:	90 04 40 08 	add  %l1, %o0, %o0
+    6b80:	92 10 20 01 	mov  1, %o1
+    6b84:	40 00 07 b7 	call  8a60 <write>
+    6b88:	01 00 00 00 	nop 
+    6b8c:	91 35 60 08 	srl  %l5, 8, %o0
+    6b90:	90 0a 20 0f 	and  %o0, 0xf, %o0
+    6b94:	90 04 40 08 	add  %l1, %o0, %o0
+    6b98:	40 00 07 b2 	call  8a60 <write>
+    6b9c:	92 10 20 01 	mov  1, %o1
+    6ba0:	91 35 60 04 	srl  %l5, 4, %o0
+    6ba4:	90 0a 20 0f 	and  %o0, 0xf, %o0
+    6ba8:	90 04 40 08 	add  %l1, %o0, %o0
+    6bac:	92 10 20 01 	mov  1, %o1
+    6bb0:	40 00 07 ac 	call  8a60 <write>
+    6bb4:	01 00 00 00 	nop 
+    6bb8:	90 0d 60 0f 	and  %l5, 0xf, %o0
+    6bbc:	90 04 40 08 	add  %l1, %o0, %o0
+    6bc0:	40 00 07 a8 	call  8a60 <write>
+    6bc4:	92 10 20 01 	mov  1, %o1
+    6bc8:	10 6f ff ab 	b  %xcc, 6a74 <printf+0x54>
+    6bcc:	c2 0e 00 12 	ldub  [ %i0 + %l2 ], %g1
+    6bd0:	82 10 00 10 	mov  %l0, %g1
+    6bd4:	92 10 20 00 	clr  %o1
+    6bd8:	c4 08 40 00 	ldub  [ %g1 ], %g2
+    6bdc:	85 28 a0 18 	sll  %g2, 0x18, %g2
+    6be0:	80 a0 a0 00 	cmp  %g2, 0
+    6be4:	92 02 60 01 	inc  %o1
+    6be8:	12 4f ff fc 	bne  %icc, 6bd8 <printf+0x1b8>
+    6bec:	82 00 60 01 	inc  %g1
+    6bf0:	40 00 07 9c 	call  8a60 <write>
+    6bf4:	90 10 00 1d 	mov  %i5, %o0
+    6bf8:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+    6bfc:	ea 00 40 00 	ld  [ %g1 ], %l5
+    6c00:	91 35 60 0c 	srl  %l5, 0xc, %o0
+    6c04:	90 0a 20 0f 	and  %o0, 0xf, %o0
+    6c08:	82 00 60 04 	add  %g1, 4, %g1
+    6c0c:	90 04 40 08 	add  %l1, %o0, %o0
+    6c10:	92 10 20 01 	mov  1, %o1
+    6c14:	10 6f ff dc 	b  %xcc, 6b84 <printf+0x164>
+    6c18:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+    6c1c:	82 10 00 10 	mov  %l0, %g1
+    6c20:	92 10 20 00 	clr  %o1
+    6c24:	c4 08 40 00 	ldub  [ %g1 ], %g2
+    6c28:	85 28 a0 18 	sll  %g2, 0x18, %g2
+    6c2c:	80 a0 a0 00 	cmp  %g2, 0
+    6c30:	92 02 60 01 	inc  %o1
+    6c34:	12 4f ff fc 	bne  %icc, 6c24 <printf+0x204>
+    6c38:	82 00 60 01 	inc  %g1
+    6c3c:	40 00 07 89 	call  8a60 <write>
+    6c40:	90 10 00 1d 	mov  %i5, %o0
+    6c44:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+    6c48:	ea 00 40 00 	ld  [ %g1 ], %l5
+    6c4c:	91 35 60 04 	srl  %l5, 4, %o0
+    6c50:	90 0a 20 0f 	and  %o0, 0xf, %o0
+    6c54:	82 00 60 04 	add  %g1, 4, %g1
+    6c58:	90 04 40 08 	add  %l1, %o0, %o0
+    6c5c:	92 10 20 01 	mov  1, %o1
+    6c60:	10 6f ff d4 	b  %xcc, 6bb0 <printf+0x190>
+    6c64:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+    6c68:	82 10 00 10 	mov  %l0, %g1
+    6c6c:	92 10 20 00 	clr  %o1
+    6c70:	c4 08 40 00 	ldub  [ %g1 ], %g2
+    6c74:	85 28 a0 18 	sll  %g2, 0x18, %g2
+    6c78:	80 a0 a0 00 	cmp  %g2, 0
+    6c7c:	92 02 60 01 	inc  %o1
+    6c80:	12 4f ff fc 	bne  %icc, 6c70 <printf+0x250>
+    6c84:	82 00 60 01 	inc  %g1
+    6c88:	40 00 07 76 	call  8a60 <write>
+    6c8c:	90 10 00 1d 	mov  %i5, %o0
+    6c90:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+    6c94:	ea 00 40 00 	ld  [ %g1 ], %l5
+    6c98:	87 35 60 1c 	srl  %l5, 0x1c, %g3
+    6c9c:	86 04 40 03 	add  %l1, %g3, %g3
+    6ca0:	90 10 00 03 	mov  %g3, %o0
+    6ca4:	82 00 60 04 	add  %g1, 4, %g1
+    6ca8:	92 10 20 01 	mov  1, %o1
+    6cac:	c6 27 bf cc 	st  %g3, [ %fp + -52 ]
+    6cb0:	40 00 07 6c 	call  8a60 <write>
+    6cb4:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+    6cb8:	85 35 60 18 	srl  %l5, 0x18, %g2
+    6cbc:	84 08 a0 0f 	and  %g2, 0xf, %g2
+    6cc0:	84 04 40 02 	add  %l1, %g2, %g2
+    6cc4:	90 10 00 02 	mov  %g2, %o0
+    6cc8:	92 10 20 01 	mov  1, %o1
+    6ccc:	40 00 07 65 	call  8a60 <write>
+    6cd0:	c4 27 bf c8 	st  %g2, [ %fp + -56 ]
+    6cd4:	83 35 60 14 	srl  %l5, 0x14, %g1
+    6cd8:	82 08 60 0f 	and  %g1, 0xf, %g1
+    6cdc:	82 04 40 01 	add  %l1, %g1, %g1
+    6ce0:	90 10 00 01 	mov  %g1, %o0
+    6ce4:	92 10 20 01 	mov  1, %o1
+    6ce8:	b3 35 60 10 	srl  %l5, 0x10, %i1
+    6cec:	c2 27 bf c4 	st  %g1, [ %fp + -60 ]
+    6cf0:	40 00 07 5c 	call  8a60 <write>
+    6cf4:	b2 0e 60 0f 	and  %i1, 0xf, %i1
+    6cf8:	b2 04 40 19 	add  %l1, %i1, %i1
+    6cfc:	90 10 00 19 	mov  %i1, %o0
+    6d00:	92 10 20 01 	mov  1, %o1
+    6d04:	40 00 07 57 	call  8a60 <write>
+    6d08:	b5 35 60 0c 	srl  %l5, 0xc, %i2
+    6d0c:	b4 0e a0 0f 	and  %i2, 0xf, %i2
+    6d10:	b4 04 40 1a 	add  %l1, %i2, %i2
+    6d14:	90 10 00 1a 	mov  %i2, %o0
+    6d18:	92 10 20 01 	mov  1, %o1
+    6d1c:	40 00 07 51 	call  8a60 <write>
+    6d20:	b7 35 60 08 	srl  %l5, 8, %i3
+    6d24:	b6 0e e0 0f 	and  %i3, 0xf, %i3
+    6d28:	b6 04 40 1b 	add  %l1, %i3, %i3
+    6d2c:	90 10 00 1b 	mov  %i3, %o0
+    6d30:	92 10 20 01 	mov  1, %o1
+    6d34:	40 00 07 4b 	call  8a60 <write>
+    6d38:	b9 35 60 04 	srl  %l5, 4, %i4
+    6d3c:	b8 0f 20 0f 	and  %i4, 0xf, %i4
+    6d40:	b8 04 40 1c 	add  %l1, %i4, %i4
+    6d44:	90 10 00 1c 	mov  %i4, %o0
+    6d48:	40 00 07 46 	call  8a60 <write>
+    6d4c:	92 10 20 01 	mov  1, %o1
+    6d50:	aa 0d 60 0f 	and  %l5, 0xf, %l5
+    6d54:	aa 04 40 15 	add  %l1, %l5, %l5
+    6d58:	90 10 00 15 	mov  %l5, %o0
+    6d5c:	40 00 07 41 	call  8a60 <write>
+    6d60:	92 10 20 01 	mov  1, %o1
+    6d64:	c6 07 bf cc 	ld  [ %fp + -52 ], %g3
+    6d68:	92 10 20 01 	mov  1, %o1
+    6d6c:	40 00 07 3d 	call  8a60 <write>
+    6d70:	90 10 00 03 	mov  %g3, %o0
+    6d74:	c4 07 bf c8 	ld  [ %fp + -56 ], %g2
+    6d78:	92 10 20 01 	mov  1, %o1
+    6d7c:	40 00 07 39 	call  8a60 <write>
+    6d80:	90 10 00 02 	mov  %g2, %o0
+    6d84:	c2 07 bf c4 	ld  [ %fp + -60 ], %g1
+    6d88:	92 10 20 01 	mov  1, %o1
+    6d8c:	40 00 07 35 	call  8a60 <write>
+    6d90:	90 10 00 01 	mov  %g1, %o0
+    6d94:	90 10 00 19 	mov  %i1, %o0
+    6d98:	40 00 07 32 	call  8a60 <write>
+    6d9c:	92 10 20 01 	mov  1, %o1
+    6da0:	90 10 00 1a 	mov  %i2, %o0
+    6da4:	40 00 07 2f 	call  8a60 <write>
+    6da8:	92 10 20 01 	mov  1, %o1
+    6dac:	90 10 00 1b 	mov  %i3, %o0
+    6db0:	40 00 07 2c 	call  8a60 <write>
+    6db4:	92 10 20 01 	mov  1, %o1
+    6db8:	90 10 00 1c 	mov  %i4, %o0
+    6dbc:	40 00 07 29 	call  8a60 <write>
+    6dc0:	92 10 20 01 	mov  1, %o1
+    6dc4:	90 10 00 15 	mov  %l5, %o0
+    6dc8:	40 00 07 26 	call  8a60 <write>
+    6dcc:	92 10 20 01 	mov  1, %o1
+    6dd0:	10 6f ff 29 	b  %xcc, 6a74 <printf+0x54>
+    6dd4:	c2 0e 00 12 	ldub  [ %i0 + %l2 ], %g1
+    6dd8:	82 10 00 10 	mov  %l0, %g1
+    6ddc:	92 10 20 00 	clr  %o1
+    6de0:	c4 08 40 00 	ldub  [ %g1 ], %g2
+    6de4:	85 28 a0 18 	sll  %g2, 0x18, %g2
+    6de8:	80 a0 a0 00 	cmp  %g2, 0
+    6dec:	92 02 60 01 	inc  %o1
+    6df0:	12 4f ff fc 	bne  %icc, 6de0 <printf+0x3c0>
+    6df4:	82 00 60 01 	inc  %g1
+    6df8:	40 00 07 1a 	call  8a60 <write>
+    6dfc:	90 10 00 1d 	mov  %i5, %o0
+    6e00:	c4 07 bf f8 	ld  [ %fp + -8 ], %g2
+    6e04:	c2 00 80 00 	ld  [ %g2 ], %g1
+    6e08:	84 00 a0 04 	add  %g2, 4, %g2
+    6e0c:	c4 27 bf f8 	st  %g2, [ %fp + -8 ]
+    6e10:	84 10 20 1f 	mov  0x1f, %g2
+    6e14:	86 08 60 0f 	and  %g1, 0xf, %g3
+    6e18:	c6 0c 40 03 	ldub  [ %l1 + %g3 ], %g3
+    6e1c:	83 30 60 04 	srl  %g1, 4, %g1
+    6e20:	c6 2c c0 02 	stb  %g3, [ %l3 + %g2 ]
+    6e24:	80 a0 60 00 	cmp  %g1, 0
+    6e28:	12 4f ff fb 	bne  %icc, 6e14 <printf+0x3f4>
+    6e2c:	84 00 bf ff 	add  %g2, -1, %g2
+    6e30:	84 00 a0 01 	inc  %g2
+    6e34:	c0 2f bf f0 	clrb  [ %fp + -16 ]
+    6e38:	c6 4c c0 02 	ldsb  [ %l3 + %g2 ], %g3
+    6e3c:	80 a0 e0 00 	cmp  %g3, 0
+    6e40:	90 04 c0 02 	add  %l3, %g2, %o0
+    6e44:	02 40 00 52 	be,pn   %icc, 6f8c <printf+0x56c>
+    6e48:	92 10 20 00 	clr  %o1
+    6e4c:	92 02 60 01 	inc  %o1
+    6e50:	c2 4a 00 09 	ldsb  [ %o0 + %o1 ], %g1
+    6e54:	80 a0 60 00 	cmp  %g1, 0
+    6e58:	32 4f ff fe 	bne,a   %icc, 6e50 <printf+0x430>
+    6e5c:	92 02 60 01 	inc  %o1
+    6e60:	40 00 07 00 	call  8a60 <write>
+    6e64:	01 00 00 00 	nop 
+    6e68:	10 6f ff 10 	b  %xcc, 6aa8 <printf+0x88>
+    6e6c:	c2 0e 00 12 	ldub  [ %i0 + %l2 ], %g1
+    6e70:	82 10 00 10 	mov  %l0, %g1
+    6e74:	92 10 20 00 	clr  %o1
+    6e78:	c4 08 40 00 	ldub  [ %g1 ], %g2
+    6e7c:	85 28 a0 18 	sll  %g2, 0x18, %g2
+    6e80:	80 a0 a0 00 	cmp  %g2, 0
+    6e84:	92 02 60 01 	inc  %o1
+    6e88:	12 4f ff fc 	bne  %icc, 6e78 <printf+0x458>
+    6e8c:	82 00 60 01 	inc  %g1
+    6e90:	40 00 06 f4 	call  8a60 <write>
+    6e94:	90 10 00 1d 	mov  %i5, %o0
+    6e98:	10 6f ff 21 	b  %xcc, 6b1c <printf+0xfc>
+    6e9c:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+    6ea0:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+    6ea4:	d0 00 40 00 	ld  [ %g1 ], %o0
+    6ea8:	82 00 60 04 	add  %g1, 4, %g1
+    6eac:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+    6eb0:	c2 4a 00 00 	ldsb  [ %o0 ], %g1
+    6eb4:	80 a0 60 00 	cmp  %g1, 0
+    6eb8:	02 47 fe f9 	be,pn   %icc, 6a9c <printf+0x7c>
+    6ebc:	92 10 20 00 	clr  %o1
+    6ec0:	92 02 60 01 	inc  %o1
+    6ec4:	c2 4a 00 09 	ldsb  [ %o0 + %o1 ], %g1
+    6ec8:	80 a0 60 00 	cmp  %g1, 0
+    6ecc:	32 4f ff fe 	bne,a   %icc, 6ec4 <printf+0x4a4>
+    6ed0:	92 02 60 01 	inc  %o1
+    6ed4:	40 00 06 e3 	call  8a60 <write>
+    6ed8:	01 00 00 00 	nop 
+    6edc:	10 6f fe f3 	b  %xcc, 6aa8 <printf+0x88>
+    6ee0:	c2 0e 00 12 	ldub  [ %i0 + %l2 ], %g1
+    6ee4:	c4 07 bf f8 	ld  [ %fp + -8 ], %g2
+    6ee8:	c2 00 80 00 	ld  [ %g2 ], %g1
+    6eec:	84 00 a0 04 	add  %g2, 4, %g2
+    6ef0:	c4 27 bf f8 	st  %g2, [ %fp + -8 ]
+    6ef4:	86 10 20 1f 	mov  0x1f, %g3
+    6ef8:	80 50 40 14 	umul  %g1, %l4, %g0
+    6efc:	85 40 00 00 	rd  %y, %g2
+    6f00:	85 30 a0 03 	srl  %g2, 3, %g2
+    6f04:	9b 28 a0 01 	sll  %g2, 1, %o5
+    6f08:	89 28 a0 03 	sll  %g2, 3, %g4
+    6f0c:	88 03 40 04 	add  %o5, %g4, %g4
+    6f10:	82 20 40 04 	sub  %g1, %g4, %g1
+    6f14:	c8 0c 40 01 	ldub  [ %l1 + %g1 ], %g4
+    6f18:	80 a0 a0 00 	cmp  %g2, 0
+    6f1c:	c8 2c c0 03 	stb  %g4, [ %l3 + %g3 ]
+    6f20:	82 10 00 02 	mov  %g2, %g1
+    6f24:	12 4f ff f5 	bne  %icc, 6ef8 <printf+0x4d8>
+    6f28:	86 00 ff ff 	add  %g3, -1, %g3
+    6f2c:	86 00 e0 01 	inc  %g3
+    6f30:	c0 2f bf f0 	clrb  [ %fp + -16 ]
+    6f34:	c4 4c c0 03 	ldsb  [ %l3 + %g3 ], %g2
+    6f38:	80 a0 a0 00 	cmp  %g2, 0
+    6f3c:	90 04 c0 03 	add  %l3, %g3, %o0
+    6f40:	02 40 00 13 	be,pn   %icc, 6f8c <printf+0x56c>
+    6f44:	92 10 20 00 	clr  %o1
+    6f48:	92 02 60 01 	inc  %o1
+    6f4c:	c2 4a 00 09 	ldsb  [ %o0 + %o1 ], %g1
+    6f50:	80 a0 60 00 	cmp  %g1, 0
+    6f54:	32 4f ff fe 	bne,a   %icc, 6f4c <printf+0x52c>
+    6f58:	92 02 60 01 	inc  %o1
+    6f5c:	40 00 06 c1 	call  8a60 <write>
+    6f60:	01 00 00 00 	nop 
+    6f64:	10 6f fe d1 	b  %xcc, 6aa8 <printf+0x88>
+    6f68:	c2 0e 00 12 	ldub  [ %i0 + %l2 ], %g1
+    6f6c:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+    6f70:	c4 00 40 00 	ld  [ %g1 ], %g2
+    6f74:	82 00 60 04 	add  %g1, 4, %g1
+    6f78:	c4 2f bf ff 	stb  %g2, [ %fp + -1 ]
+    6f7c:	c2 27 bf f8 	st  %g1, [ %fp + -8 ]
+    6f80:	90 10 00 16 	mov  %l6, %o0
+    6f84:	10 6f fe c6 	b  %xcc, 6a9c <printf+0x7c>
+    6f88:	92 10 20 01 	mov  1, %o1
+    6f8c:	40 00 06 b5 	call  8a60 <write>
+    6f90:	92 10 00 01 	mov  %g1, %o1
+    6f94:	10 6f fe c5 	b  %xcc, 6aa8 <printf+0x88>
+    6f98:	c2 0e 00 12 	ldub  [ %i0 + %l2 ], %g1
+    6f9c:	01 00 00 00 	nop 
+
+00006fa0 <strlen>:
+    6fa0:	c2 4a 00 00 	ldsb  [ %o0 ], %g1
+    6fa4:	80 a0 60 00 	cmp  %g1, 0
+    6fa8:	84 10 20 00 	clr  %g2
+    6fac:	02 40 00 07 	be,pn   %icc, 6fc8 <strlen+0x28>
+    6fb0:	82 10 20 00 	clr  %g1
+    6fb4:	82 00 60 01 	inc  %g1
+    6fb8:	c4 4a 00 01 	ldsb  [ %o0 + %g1 ], %g2
+    6fbc:	80 a0 a0 00 	cmp  %g2, 0
+    6fc0:	12 4f ff fd 	bne  %icc, 6fb4 <strlen+0x14>
+    6fc4:	84 10 00 01 	mov  %g1, %g2
+    6fc8:	81 c3 e0 08 	retl 
+    6fcc:	90 10 00 02 	mov  %g2, %o0
+    6fd0:	30 68 00 04 	b,a   %xcc, 6fe0 <strcmp>
+    6fd4:	01 00 00 00 	nop 
+    6fd8:	01 00 00 00 	nop 
+    6fdc:	01 00 00 00 	nop 
+
+00006fe0 <strcmp>:
+    6fe0:	c2 4a 00 00 	ldsb  [ %o0 ], %g1
+    6fe4:	80 a0 60 00 	cmp  %g1, 0
+    6fe8:	22 40 00 1a 	be,a,pn   %icc, 7050 <strcmp+0x70>
+    6fec:	c2 4a 40 00 	ldsb  [ %o1 ], %g1
+    6ff0:	c4 4a 40 00 	ldsb  [ %o1 ], %g2
+    6ff4:	80 a0 a0 00 	cmp  %g2, 0
+    6ff8:	02 40 00 1b 	be,pn   %icc, 7064 <strcmp+0x84>
+    6ffc:	80 a0 80 01 	cmp  %g2, %g1
+    7000:	34 40 00 17 	bg,a,pn   %icc, 705c <strcmp+0x7c>
+    7004:	90 10 3f ff 	mov  -1, %o0
+    7008:	36 48 00 0d 	bge,a   %icc, 703c <strcmp+0x5c>
+    700c:	90 02 20 01 	inc  %o0
+    7010:	81 c3 e0 08 	retl 
+    7014:	90 10 20 01 	mov  1, %o0
+    7018:	c4 4a 40 00 	ldsb  [ %o1 ], %g2
+    701c:	80 a0 a0 00 	cmp  %g2, 0
+    7020:	02 40 00 11 	be,pn   %icc, 7064 <strcmp+0x84>
+    7024:	80 a0 40 02 	cmp  %g1, %g2
+    7028:	26 40 00 0d 	bl,a,pn   %icc, 705c <strcmp+0x7c>
+    702c:	90 10 3f ff 	mov  -1, %o0
+    7030:	14 40 00 0d 	bg,pn   %icc, 7064 <strcmp+0x84>
+    7034:	01 00 00 00 	nop 
+    7038:	90 02 20 01 	inc  %o0
+    703c:	c2 4a 00 00 	ldsb  [ %o0 ], %g1
+    7040:	80 a0 60 00 	cmp  %g1, 0
+    7044:	12 4f ff f5 	bne  %icc, 7018 <strcmp+0x38>
+    7048:	92 02 60 01 	inc  %o1
+    704c:	c2 4a 40 00 	ldsb  [ %o1 ], %g1
+    7050:	80 a0 60 00 	cmp  %g1, 0
+    7054:	12 40 00 06 	bne,pn   %icc, 706c <strcmp+0x8c>
+    7058:	90 10 20 00 	clr  %o0
+    705c:	81 c3 e0 08 	retl 
+    7060:	01 00 00 00 	nop 
+    7064:	81 c3 e0 08 	retl 
+    7068:	90 10 20 01 	mov  1, %o0	! 1 <start-0x3fff>
+    706c:	90 10 3f ff 	mov  -1, %o0
+    7070:	81 c3 e0 08 	retl 
+    7074:	01 00 00 00 	nop 
+    7078:	01 00 00 00 	nop 
+    707c:	01 00 00 00 	nop 
+
+00007080 <strncmp>:
+    7080:	9d e3 bf a0 	save  %sp, -96, %sp
+    7084:	c2 0e 00 00 	ldub  [ %i0 ], %g1
+    7088:	83 28 60 18 	sll  %g1, 0x18, %g1
+    708c:	85 38 60 18 	sra  %g1, 0x18, %g2
+    7090:	80 a0 a0 00 	cmp  %g2, 0
+    7094:	02 40 00 25 	be,pn   %icc, 7128 <strncmp+0xa8>
+    7098:	96 10 20 00 	clr  %o3
+    709c:	c6 4e 40 00 	ldsb  [ %i1 ], %g3
+    70a0:	80 a0 00 03 	cmp  %g0, %g3
+    70a4:	9a 40 20 00 	addc  %g0, 0, %o5
+    70a8:	80 a0 00 1a 	cmp  %g0, %i2
+    70ac:	88 40 20 00 	addc  %g0, 0, %g4
+    70b0:	80 8b 40 04 	btst  %o5, %g4
+    70b4:	02 40 00 1d 	be,pn   %icc, 7128 <strncmp+0xa8>
+    70b8:	80 a0 80 03 	cmp  %g2, %g3
+    70bc:	26 40 00 28 	bl,a,pn   %icc, 715c <strncmp+0xdc>
+    70c0:	b0 10 3f ff 	mov  -1, %i0
+    70c4:	04 48 00 11 	ble  %icc, 7108 <strncmp+0x88>
+    70c8:	84 10 20 00 	clr  %g2
+    70cc:	81 cf e0 08 	rett  %i7 + 8
+    70d0:	90 10 20 01 	mov  1, %o0
+    70d4:	80 a6 80 02 	cmp  %i2, %g2
+    70d8:	98 10 20 00 	clr  %o4
+    70dc:	99 67 20 01 	movgu  %icc, 1, %o4
+    70e0:	c8 4e 40 00 	ldsb  [ %i1 ], %g4
+    70e4:	80 a0 00 04 	cmp  %g0, %g4
+    70e8:	9a 40 20 00 	addc  %g0, 0, %o5
+    70ec:	80 8b 00 0d 	btst  %o4, %o5
+    70f0:	02 40 00 0e 	be,pn   %icc, 7128 <strncmp+0xa8>
+    70f4:	80 a0 c0 04 	cmp  %g3, %g4
+    70f8:	26 40 00 19 	bl,a,pn   %icc, 715c <strncmp+0xdc>
+    70fc:	b0 10 3f ff 	mov  -1, %i0
+    7100:	14 40 00 15 	bg,pn   %icc, 7154 <strncmp+0xd4>
+    7104:	01 00 00 00 	nop 
+    7108:	84 00 a0 01 	inc  %g2
+    710c:	c2 0e 00 02 	ldub  [ %i0 + %g2 ], %g1
+    7110:	83 28 60 18 	sll  %g1, 0x18, %g1
+    7114:	87 38 60 18 	sra  %g1, 0x18, %g3
+    7118:	80 a0 e0 00 	cmp  %g3, 0
+    711c:	b2 06 60 01 	inc  %i1
+    7120:	12 4f ff ed 	bne  %icc, 70d4 <strncmp+0x54>
+    7124:	96 10 00 02 	mov  %g2, %o3
+    7128:	80 a6 80 0b 	cmp  %i2, %o3
+    712c:	02 40 00 06 	be,pn   %icc, 7144 <strncmp+0xc4>
+    7130:	83 38 60 18 	sra  %g1, 0x18, %g1
+    7134:	c4 4e 40 00 	ldsb  [ %i1 ], %g2
+    7138:	80 a0 40 02 	cmp  %g1, %g2
+    713c:	12 40 00 04 	bne,pn   %icc, 714c <strncmp+0xcc>
+    7140:	80 a0 60 00 	cmp  %g1, 0
+    7144:	81 cf e0 08 	rett  %i7 + 8
+    7148:	90 10 20 00 	clr  %o0
+    714c:	22 40 00 04 	be,a,pn   %icc, 715c <strncmp+0xdc>
+    7150:	b0 10 3f ff 	mov  -1, %i0
+    7154:	81 cf e0 08 	rett  %i7 + 8
+    7158:	90 10 20 01 	mov  1, %o0
+    715c:	81 cf e0 08 	rett  %i7 + 8
+    7160:	01 00 00 00 	nop 
+    7164:	30 68 00 07 	b,a   %xcc, 7180 <strncpy>
+    7168:	01 00 00 00 	nop 
+    716c:	01 00 00 00 	nop 
+    7170:	01 00 00 00 	nop 
+    7174:	01 00 00 00 	nop 
+    7178:	01 00 00 00 	nop 
+    717c:	01 00 00 00 	nop 
+
+00007180 <strncpy>:
+    7180:	80 a2 a0 00 	cmp  %o2, 0
+    7184:	02 40 00 13 	be,pn   %icc, 71d0 <strncpy+0x50>
+    7188:	82 10 3f ff 	mov  -1, %g1
+    718c:	c2 0a 40 00 	ldub  [ %o1 ], %g1
+    7190:	85 28 60 18 	sll  %g1, 0x18, %g2
+    7194:	c2 2a 00 00 	stb  %g1, [ %o0 ]
+    7198:	80 a0 a0 00 	cmp  %g2, 0
+    719c:	12 48 00 08 	bne  %icc, 71bc <strncpy+0x3c>
+    71a0:	82 10 20 00 	clr  %g1
+    71a4:	10 68 00 0d 	b  %xcc, 71d8 <strncpy+0x58>
+    71a8:	01 00 00 00 	nop 
+    71ac:	87 28 a0 18 	sll  %g2, 0x18, %g3
+    71b0:	80 a0 e0 00 	cmp  %g3, 0
+    71b4:	02 40 00 09 	be,pn   %icc, 71d8 <strncpy+0x58>
+    71b8:	c4 2a 00 01 	stb  %g2, [ %o0 + %g1 ]
+    71bc:	82 00 60 01 	inc  %g1
+    71c0:	80 a2 80 01 	cmp  %o2, %g1
+    71c4:	38 4f ff fa 	bgu,a   %icc, 71ac <strncpy+0x2c>
+    71c8:	c4 0a 40 01 	ldub  [ %o1 + %g1 ], %g2
+    71cc:	82 00 7f ff 	add  %g1, -1, %g1
+    71d0:	81 c3 e0 08 	retl 
+    71d4:	c0 2a 00 01 	clrb  [ %o0 + %g1 ]
+    71d8:	81 c3 e0 08 	retl 
+    71dc:	01 00 00 00 	nop 
+
+000071e0 <atoi>:
+    71e0:	9d e3 bf a0 	save  %sp, -96, %sp
+    71e4:	c2 0e 00 00 	ldub  [ %i0 ], %g1
+    71e8:	85 28 60 18 	sll  %g1, 0x18, %g2
+    71ec:	89 38 a0 18 	sra  %g2, 0x18, %g4
+    71f0:	80 a1 20 30 	cmp  %g4, 0x30
+    71f4:	86 10 00 18 	mov  %i0, %g3
+    71f8:	98 10 20 0a 	mov  0xa, %o4
+    71fc:	02 40 00 52 	be,pn   %icc, 7344 <atoi+0x164>
+    7200:	88 10 20 0a 	mov  0xa, %g4
+    7204:	80 a0 a0 00 	cmp  %g2, 0
+    7208:	02 40 00 31 	be,pn   %icc, 72cc <atoi+0xec>
+    720c:	b0 10 20 00 	clr  %i0
+    7210:	80 a1 20 10 	cmp  %g4, 0x10
+    7214:	02 40 00 41 	be,pn   %icc, 7318 <atoi+0x138>
+    7218:	80 a1 20 08 	cmp  %g4, 8
+    721c:	02 40 00 58 	be,pn   %icc, 737c <atoi+0x19c>
+    7220:	9a 00 7f bf 	add  %g1, -65, %o5
+    7224:	10 68 00 11 	b  %xcc, 7268 <atoi+0x88>
+    7228:	01 00 00 00 	nop 
+    722c:	32 48 00 6f 	bne,a   %icc, 73e8 <atoi+0x208>
+    7230:	b0 5e 00 0c 	smul  %i0, %o4, %i0
+    7234:	80 a1 20 00 	cmp  %g4, 0
+    7238:	02 40 00 7f 	be,pn   %icc, 7434 <atoi+0x254>
+    723c:	01 00 00 00 	nop 
+    7240:	b0 5e 00 0c 	smul  %i0, %o4, %i0
+    7244:	84 06 00 0b 	add  %i0, %o3, %g2
+    7248:	b0 00 bf a9 	add  %g2, -87, %i0
+    724c:	86 00 e0 01 	inc  %g3
+    7250:	c2 08 c0 00 	ldub  [ %g3 ], %g1
+    7254:	85 28 60 18 	sll  %g1, 0x18, %g2
+    7258:	80 a0 a0 00 	cmp  %g2, 0
+    725c:	02 40 00 76 	be,pn   %icc, 7434 <atoi+0x254>
+    7260:	01 00 00 00 	nop 
+    7264:	9a 00 7f bf 	add  %g1, -65, %o5
+    7268:	9a 0b 60 ff 	and  %o5, 0xff, %o5
+    726c:	88 00 7f 9f 	add  %g1, -97, %g4
+    7270:	80 a3 60 05 	cmp  %o5, 5
+    7274:	88 09 20 ff 	and  %g4, 0xff, %g4
+    7278:	9a 10 20 00 	clr  %o5
+    727c:	9b 65 20 01 	movleu  %icc, 1, %o5
+    7280:	80 a1 20 05 	cmp  %g4, 5
+    7284:	88 10 20 00 	clr  %g4
+    7288:	89 65 20 01 	movleu  %icc, 1, %g4
+    728c:	82 00 7f d0 	add  %g1, -48, %g1
+    7290:	80 91 00 0d 	orcc  %g4, %o5, %g0
+    7294:	82 08 60 ff 	and  %g1, 0xff, %g1
+    7298:	12 40 00 0d 	bne,pn   %icc, 72cc <atoi+0xec>
+    729c:	97 38 a0 18 	sra  %g2, 0x18, %o3
+    72a0:	80 a0 60 09 	cmp  %g1, 9
+    72a4:	18 4f ff e2 	bgu  %icc, 722c <atoi+0x4c>
+    72a8:	80 a3 60 00 	cmp  %o5, 0
+    72ac:	b0 5e 00 0c 	smul  %i0, %o4, %i0
+    72b0:	86 00 e0 01 	inc  %g3
+    72b4:	c2 08 c0 00 	ldub  [ %g3 ], %g1
+    72b8:	85 28 60 18 	sll  %g1, 0x18, %g2
+    72bc:	b0 06 00 0b 	add  %i0, %o3, %i0
+    72c0:	80 a0 a0 00 	cmp  %g2, 0
+    72c4:	12 4f ff e8 	bne  %icc, 7264 <atoi+0x84>
+    72c8:	b0 06 3f d0 	add  %i0, -48, %i0
+    72cc:	81 cf e0 08 	rett  %i7 + 8
+    72d0:	01 00 00 00 	nop 
+    72d4:	82 00 7f 9f 	add  %g1, -97, %g1
+    72d8:	80 a3 60 05 	cmp  %o5, 5
+    72dc:	82 08 60 ff 	and  %g1, 0xff, %g1
+    72e0:	08 48 00 4b 	bleu  %icc, 740c <atoi+0x22c>
+    72e4:	89 38 a0 18 	sra  %g2, 0x18, %g4
+    72e8:	80 a0 60 05 	cmp  %g1, 5
+    72ec:	18 40 00 52 	bgu,pn   %icc, 7434 <atoi+0x254>
+    72f0:	01 00 00 00 	nop 
+    72f4:	b0 5b 00 18 	smul  %o4, %i0, %i0
+    72f8:	84 06 00 04 	add  %i0, %g4, %g2
+    72fc:	b0 00 bf a9 	add  %g2, -87, %i0
+    7300:	86 00 e0 01 	inc  %g3
+    7304:	c2 08 c0 00 	ldub  [ %g3 ], %g1
+    7308:	85 28 60 18 	sll  %g1, 0x18, %g2
+    730c:	80 a0 a0 00 	cmp  %g2, 0
+    7310:	02 40 00 49 	be,pn   %icc, 7434 <atoi+0x254>
+    7314:	01 00 00 00 	nop 
+    7318:	88 00 7f d0 	add  %g1, -48, %g4
+    731c:	88 09 20 ff 	and  %g4, 0xff, %g4
+    7320:	9a 00 7f bf 	add  %g1, -65, %o5
+    7324:	80 a1 20 09 	cmp  %g4, 9
+    7328:	18 4f ff eb 	bgu  %icc, 72d4 <atoi+0xf4>
+    732c:	9a 0b 60 ff 	and  %o5, 0xff, %o5
+    7330:	b0 5b 00 18 	smul  %o4, %i0, %i0
+    7334:	85 38 a0 18 	sra  %g2, 0x18, %g2
+    7338:	b0 06 00 02 	add  %i0, %g2, %i0
+    733c:	10 6f ff f1 	b  %xcc, 7300 <atoi+0x120>
+    7340:	b0 06 3f d0 	add  %i0, -48, %i0
+    7344:	c8 4e 20 01 	ldsb  [ %i0 + 1 ], %g4
+    7348:	80 a1 20 78 	cmp  %g4, 0x78
+    734c:	02 40 00 34 	be,pn   %icc, 741c <atoi+0x23c>
+    7350:	98 10 20 08 	mov  8, %o4
+    7354:	10 68 00 0a 	b  %xcc, 737c <atoi+0x19c>
+    7358:	b0 10 20 00 	clr  %i0
+    735c:	84 06 00 02 	add  %i0, %g2, %g2
+    7360:	b0 00 bf d0 	add  %g2, -48, %i0
+    7364:	86 00 e0 01 	inc  %g3
+    7368:	c2 08 c0 00 	ldub  [ %g3 ], %g1
+    736c:	85 28 60 18 	sll  %g1, 0x18, %g2
+    7370:	80 a0 a0 00 	cmp  %g2, 0
+    7374:	02 40 00 30 	be,pn   %icc, 7434 <atoi+0x254>
+    7378:	01 00 00 00 	nop 
+    737c:	9a 00 7f bf 	add  %g1, -65, %o5
+    7380:	9a 0b 60 ff 	and  %o5, 0xff, %o5
+    7384:	88 00 7f 9f 	add  %g1, -97, %g4
+    7388:	80 a3 60 05 	cmp  %o5, 5
+    738c:	88 09 20 ff 	and  %g4, 0xff, %g4
+    7390:	9a 10 20 00 	clr  %o5
+    7394:	9b 65 20 01 	movleu  %icc, 1, %o5
+    7398:	80 a1 20 05 	cmp  %g4, 5
+    739c:	88 10 20 00 	clr  %g4
+    73a0:	89 65 20 01 	movleu  %icc, 1, %g4
+    73a4:	82 00 7f d0 	add  %g1, -48, %g1
+    73a8:	80 91 00 0d 	orcc  %g4, %o5, %g0
+    73ac:	85 38 a0 18 	sra  %g2, 0x18, %g2
+    73b0:	12 47 ff c7 	bne,pn   %icc, 72cc <atoi+0xec>
+    73b4:	82 08 60 ff 	and  %g1, 0xff, %g1
+    73b8:	80 a0 a0 37 	cmp  %g2, 0x37
+    73bc:	14 47 ff c4 	bg,pn   %icc, 72cc <atoi+0xec>
+    73c0:	80 a0 60 09 	cmp  %g1, 9
+    73c4:	28 4f ff e6 	bleu,a   %icc, 735c <atoi+0x17c>
+    73c8:	b0 5e 00 0c 	smul  %i0, %o4, %i0
+    73cc:	80 a3 60 00 	cmp  %o5, 0
+    73d0:	02 48 00 09 	be  %icc, 73f4 <atoi+0x214>
+    73d4:	80 a1 20 00 	cmp  %g4, 0
+    73d8:	b0 5e 00 0c 	smul  %i0, %o4, %i0
+    73dc:	84 06 00 02 	add  %i0, %g2, %g2
+    73e0:	10 6f ff e1 	b  %xcc, 7364 <atoi+0x184>
+    73e4:	b0 00 bf c9 	add  %g2, -55, %i0
+    73e8:	b0 06 00 0b 	add  %i0, %o3, %i0
+    73ec:	10 6f ff 98 	b  %xcc, 724c <atoi+0x6c>
+    73f0:	b0 06 3f c9 	add  %i0, -55, %i0
+    73f4:	02 40 00 10 	be,pn   %icc, 7434 <atoi+0x254>
+    73f8:	01 00 00 00 	nop 
+    73fc:	b0 5e 00 0c 	smul  %i0, %o4, %i0
+    7400:	84 06 00 02 	add  %i0, %g2, %g2
+    7404:	10 6f ff d8 	b  %xcc, 7364 <atoi+0x184>
+    7408:	b0 00 bf a9 	add  %g2, -87, %i0
+    740c:	b0 5b 00 18 	smul  %o4, %i0, %i0
+    7410:	88 06 00 04 	add  %i0, %g4, %g4
+    7414:	10 6f ff bb 	b  %xcc, 7300 <atoi+0x120>
+    7418:	b0 01 3f c9 	add  %g4, -55, %i0
+    741c:	86 06 20 02 	add  %i0, 2, %g3
+    7420:	c2 08 c0 00 	ldub  [ %g3 ], %g1
+    7424:	98 10 20 10 	mov  0x10, %o4
+    7428:	88 10 20 10 	mov  0x10, %g4
+    742c:	10 6f ff 76 	b  %xcc, 7204 <atoi+0x24>
+    7430:	85 28 60 18 	sll  %g1, 0x18, %g2
+    7434:	81 cf e0 08 	rett  %i7 + 8
+    7438:	01 00 00 00 	nop 
+    743c:	01 00 00 00 	nop 
+
+00007440 <memmove>:
+    7440:	9d e3 bf a0 	save  %sp, -96, %sp
+    7444:	80 a6 00 19 	cmp  %i0, %i1
+    7448:	88 10 00 18 	mov  %i0, %g4
+    744c:	18 48 00 33 	bgu  %icc, 7518 <memmove+0xd8>
+    7450:	86 10 00 19 	mov  %i1, %g3
+    7454:	80 a6 a0 00 	cmp  %i2, 0
+    7458:	02 40 00 2e 	be,pn   %icc, 7510 <memmove+0xd0>
+    745c:	82 16 40 18 	or  %i1, %i0, %g1
+    7460:	80 a6 a0 03 	cmp  %i2, 3
+    7464:	82 08 60 03 	and  %g1, 3, %g1
+    7468:	98 10 20 00 	clr  %o4
+    746c:	99 67 20 01 	movgu  %icc, 1, %o4
+    7470:	80 a0 00 01 	cmp  %g0, %g1
+    7474:	82 06 60 04 	add  %i1, 4, %g1
+    7478:	84 60 3f ff 	subc  %g0, -1, %g2
+    747c:	9a 10 20 00 	clr  %o5
+    7480:	80 a6 00 01 	cmp  %i0, %g1
+    7484:	82 06 20 04 	add  %i0, 4, %g1
+    7488:	9b 67 20 01 	movgu  %icc, 1, %o5
+    748c:	80 a6 40 01 	cmp  %i1, %g1
+    7490:	82 10 20 00 	clr  %g1
+    7494:	83 67 20 01 	movgu  %icc, 1, %g1
+    7498:	84 0b 00 02 	and  %o4, %g2, %g2
+    749c:	82 13 40 01 	or  %o5, %g1, %g1
+    74a0:	80 88 80 01 	btst  %g2, %g1
+    74a4:	02 40 00 29 	be,pn   %icc, 7548 <memmove+0x108>
+    74a8:	96 06 bf ff 	add  %i2, -1, %o3
+    74ac:	9b 36 a0 02 	srl  %i2, 2, %o5
+    74b0:	99 2b 60 02 	sll  %o5, 2, %o4
+    74b4:	80 a3 20 00 	cmp  %o4, 0
+    74b8:	02 40 00 0e 	be,pn   %icc, 74f0 <memmove+0xb0>
+    74bc:	82 10 20 00 	clr  %g1
+    74c0:	84 10 20 00 	clr  %g2
+    74c4:	c6 06 40 01 	ld  [ %i1 + %g1 ], %g3
+    74c8:	84 00 a0 01 	inc  %g2
+    74cc:	c6 26 00 01 	st  %g3, [ %i0 + %g1 ]
+    74d0:	80 a0 80 0d 	cmp  %g2, %o5
+    74d4:	0a 4f ff fc 	bcs  %icc, 74c4 <memmove+0x84>
+    74d8:	82 00 60 04 	add  %g1, 4, %g1
+    74dc:	80 a6 80 0c 	cmp  %i2, %o4
+    74e0:	86 06 40 0c 	add  %i1, %o4, %g3
+    74e4:	96 22 c0 0c 	sub  %o3, %o4, %o3
+    74e8:	02 40 00 0a 	be,pn   %icc, 7510 <memmove+0xd0>
+    74ec:	88 06 00 0c 	add  %i0, %o4, %g4
+    74f0:	9a 02 e0 01 	add  %o3, 1, %o5
+    74f4:	82 10 20 00 	clr  %g1
+    74f8:	c4 08 c0 01 	ldub  [ %g3 + %g1 ], %g2
+    74fc:	c4 29 00 01 	stb  %g2, [ %g4 + %g1 ]
+    7500:	82 00 60 01 	inc  %g1
+    7504:	80 a3 40 01 	cmp  %o5, %g1
+    7508:	32 4f ff fd 	bne,a   %icc, 74fc <memmove+0xbc>
+    750c:	c4 08 c0 01 	ldub  [ %g3 + %g1 ], %g2
+    7510:	81 cf e0 08 	rett  %i7 + 8
+    7514:	01 00 00 00 	nop 
+    7518:	80 a6 a0 00 	cmp  %i2, 0
+    751c:	02 47 ff fd 	be,pn   %icc, 7510 <memmove+0xd0>
+    7520:	b2 06 40 1a 	add  %i1, %i2, %i1
+    7524:	82 06 00 1a 	add  %i0, %i2, %g1
+    7528:	c4 0e 7f ff 	ldub  [ %i1 + -1 ], %g2
+    752c:	b4 86 bf ff 	addcc  %i2, -1, %i2
+    7530:	c4 28 7f ff 	stb  %g2, [ %g1 + -1 ]
+    7534:	b2 06 7f ff 	add  %i1, -1, %i1
+    7538:	12 4f ff fc 	bne  %icc, 7528 <memmove+0xe8>
+    753c:	82 00 7f ff 	add  %g1, -1, %g1
+    7540:	81 cf e0 08 	rett  %i7 + 8
+    7544:	01 00 00 00 	nop 
+    7548:	82 10 20 00 	clr  %g1	! 0 <start-0x4000>
+    754c:	c4 0e 40 01 	ldub  [ %i1 + %g1 ], %g2
+    7550:	c4 2e 00 01 	stb  %g2, [ %i0 + %g1 ]
+    7554:	82 00 60 01 	inc  %g1
+    7558:	80 a6 80 01 	cmp  %i2, %g1
+    755c:	32 4f ff fd 	bne,a   %icc, 7550 <memmove+0x110>
+    7560:	c4 0e 40 01 	ldub  [ %i1 + %g1 ], %g2
+    7564:	81 cf e0 08 	rett  %i7 + 8
+    7568:	01 00 00 00 	nop 
+    756c:	30 68 00 05 	b,a   %xcc, 7580 <balloc_init>
+    7570:	01 00 00 00 	nop 
+    7574:	01 00 00 00 	nop 
+    7578:	01 00 00 00 	nop 
+    757c:	01 00 00 00 	nop 
+
+00007580 <balloc_init>:
+    7580:	03 00 00 24 	sethi  %hi(0x9000), %g1
+    7584:	d0 20 62 64 	st  %o0, [ %g1 + 0x264 ]	! 9264 <ballocs>
+    7588:	d2 22 00 00 	st  %o1, [ %o0 ]
+    758c:	81 c3 e0 08 	retl 
+    7590:	c0 22 20 04 	clr  [ %o0 + 4 ]
+    7594:	30 68 00 03 	b,a   %xcc, 75a0 <balloc>
+    7598:	01 00 00 00 	nop 
+    759c:	01 00 00 00 	nop 
+
+000075a0 <balloc>:
+    75a0:	03 00 00 24 	sethi  %hi(0x9000), %g1
+    75a4:	c2 00 62 64 	ld  [ %g1 + 0x264 ], %g1	! 9264 <ballocs>
+    75a8:	c4 00 60 04 	ld  [ %g1 + 4 ], %g2
+    75ac:	86 02 60 03 	add  %o1, 3, %g3
+    75b0:	86 08 ff fc 	and  %g3, -4, %g3
+    75b4:	84 00 bf ff 	add  %g2, -1, %g2
+    75b8:	84 00 80 03 	add  %g2, %g3, %g2
+    75bc:	86 20 00 03 	neg  %g3
+    75c0:	86 08 c0 02 	and  %g3, %g2, %g3
+    75c4:	84 00 c0 08 	add  %g3, %o0, %g2
+    75c8:	09 00 00 80 	sethi  %hi(0x20000), %g4
+    75cc:	80 a0 80 04 	cmp  %g2, %g4
+    75d0:	90 10 20 00 	clr  %o0
+    75d4:	18 40 00 04 	bgu,pn   %icc, 75e4 <balloc+0x44>
+    75d8:	c8 00 40 00 	ld  [ %g1 ], %g4
+    75dc:	c4 20 60 04 	st  %g2, [ %g1 + 4 ]
+    75e0:	90 00 c0 04 	add  %g3, %g4, %o0
+    75e4:	81 c3 e0 08 	retl 
+    75e8:	01 00 00 00 	nop 
+    75ec:	30 68 00 05 	b,a   %xcc, 7600 <ofw_claim_phys>
+    75f0:	01 00 00 00 	nop 
+    75f4:	01 00 00 00 	nop 
+    75f8:	01 00 00 00 	nop 
+    75fc:	01 00 00 00 	nop 
+
+00007600 <ofw_claim_phys>:
+    7600:	9d e3 bf a0 	save  %sp, -96, %sp
+    7604:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    7608:	90 12 22 f0 	or  %o0, 0x2f0, %o0	! 8ef0 <ofw+0x308>
+    760c:	7f ff fc f5 	call  69e0 <puts>
+    7610:	b0 10 20 00 	clr  %i0
+    7614:	40 00 05 33 	call  8ae0 <halt>
+    7618:	01 00 00 00 	nop 
+    761c:	81 cf e0 08 	rett  %i7 + 8
+    7620:	01 00 00 00 	nop 
+    7624:	30 68 00 07 	b,a   %xcc, 7640 <ofw_call>
+    7628:	01 00 00 00 	nop 
+    762c:	01 00 00 00 	nop 
+    7630:	01 00 00 00 	nop 
+    7634:	01 00 00 00 	nop 
+    7638:	01 00 00 00 	nop 
+    763c:	01 00 00 00 	nop 
+
+00007640 <ofw_call>:
+    7640:	9d e3 bf 60 	save  %sp, -160, %sp
+    7644:	82 07 a0 54 	add  %fp, 0x54, %g1
+    7648:	f8 27 a0 54 	st  %i4, [ %fp + 0x54 ]
+    764c:	fa 27 a0 58 	st  %i5, [ %fp + 0x58 ]
+    7650:	f0 27 bf c0 	st  %i0, [ %fp + -64 ]
+    7654:	f2 27 bf c4 	st  %i1, [ %fp + -60 ]
+    7658:	f4 27 bf c8 	st  %i2, [ %fp + -56 ]
+    765c:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+    7660:	80 a6 60 00 	cmp  %i1, 0
+    7664:	04 40 00 0c 	ble,pn   %icc, 7694 <ofw_call+0x54>
+    7668:	a2 07 bf c0 	add  %fp, -64, %l1
+    766c:	9b 2e 60 02 	sll  %i1, 2, %o5
+    7670:	84 10 20 00 	clr  %g2
+    7674:	c8 00 40 02 	ld  [ %g1 + %g2 ], %g4
+    7678:	86 04 40 02 	add  %l1, %g2, %g3
+    767c:	84 00 a0 04 	add  %g2, 4, %g2
+    7680:	80 a0 80 0d 	cmp  %g2, %o5
+    7684:	12 4f ff fc 	bne  %icc, 7674 <ofw_call+0x34>
+    7688:	c8 20 e0 0c 	st  %g4, [ %g3 + 0xc ]
+    768c:	82 00 40 02 	add  %g1, %g2, %g1
+    7690:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+    7694:	80 a6 a0 00 	cmp  %i2, 0
+    7698:	04 40 00 22 	ble,pn   %icc, 7720 <ofw_call+0xe0>
+    769c:	90 10 00 11 	mov  %l1, %o0
+    76a0:	a4 06 60 02 	add  %i1, 2, %l2
+    76a4:	83 2c a0 02 	sll  %l2, 2, %g1
+    76a8:	82 04 40 01 	add  %l1, %g1, %g1
+    76ac:	82 00 60 04 	add  %g1, 4, %g1
+    76b0:	a0 10 20 00 	clr  %l0
+    76b4:	a0 04 20 01 	inc  %l0
+    76b8:	c0 20 40 00 	clr  [ %g1 ]
+    76bc:	80 a4 00 1a 	cmp  %l0, %i2
+    76c0:	12 4f ff fd 	bne  %icc, 76b4 <ofw_call+0x74>
+    76c4:	82 00 60 04 	add  %g1, 4, %g1
+    76c8:	40 00 05 48 	call  8be8 <ofw>
+    76cc:	90 10 00 11 	mov  %l1, %o0
+    76d0:	80 a4 20 01 	cmp  %l0, 1
+    76d4:	04 40 00 0e 	ble,pn   %icc, 770c <ofw_call+0xcc>
+    76d8:	b2 06 60 03 	add  %i1, 3, %i1
+    76dc:	b3 2e 60 02 	sll  %i1, 2, %i1
+    76e0:	a2 04 40 19 	add  %l1, %i1, %l1
+    76e4:	a0 04 3f ff 	add  %l0, -1, %l0
+    76e8:	a2 04 60 04 	add  %l1, 4, %l1
+    76ec:	a1 2c 20 02 	sll  %l0, 2, %l0
+    76f0:	82 10 20 00 	clr  %g1
+    76f4:	c4 04 40 00 	ld  [ %l1 ], %g2
+    76f8:	c4 26 c0 01 	st  %g2, [ %i3 + %g1 ]
+    76fc:	82 00 60 04 	add  %g1, 4, %g1
+    7700:	80 a0 40 10 	cmp  %g1, %l0
+    7704:	12 4f ff fc 	bne  %icc, 76f4 <ofw_call+0xb4>
+    7708:	a2 04 60 04 	add  %l1, 4, %l1
+    770c:	a5 2c a0 02 	sll  %l2, 2, %l2
+    7710:	a4 07 80 12 	add  %fp, %l2, %l2
+    7714:	f0 04 bf c4 	ld  [ %l2 + -60 ], %i0
+    7718:	81 cf e0 08 	rett  %i7 + 8
+    771c:	01 00 00 00 	nop 
+    7720:	40 00 05 32 	call  8be8 <ofw>
+    7724:	a4 06 60 02 	add  %i1, 2, %l2
+    7728:	10 6f ff fa 	b  %xcc, 7710 <ofw_call+0xd0>
+    772c:	a5 2c a0 02 	sll  %l2, 2, %l2
+    7730:	30 68 00 04 	b,a   %xcc, 7740 <ofw_quiesce>
+    7734:	01 00 00 00 	nop 
+    7738:	01 00 00 00 	nop 
+    773c:	01 00 00 00 	nop 
+
+00007740 <ofw_quiesce>:
+    7740:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    7744:	90 12 23 20 	or  %o0, 0x320, %o0	! 8f20 <ofw+0x338>
+    7748:	92 10 20 00 	clr  %o1
+    774c:	94 10 20 00 	clr  %o2
+    7750:	96 10 20 00 	clr  %o3
+    7754:	82 13 c0 00 	mov  %o7, %g1
+    7758:	7f ff ff ba 	call  7640 <ofw_call>
+    775c:	9e 10 40 00 	mov  %g1, %o7
+    7760:	01 00 00 00 	nop 
+    7764:	30 68 00 07 	b,a   %xcc, 7780 <ofw_map>
+    7768:	01 00 00 00 	nop 
+    776c:	01 00 00 00 	nop 
+    7770:	01 00 00 00 	nop 
+    7774:	01 00 00 00 	nop 
+    7778:	01 00 00 00 	nop 
+    777c:	01 00 00 00 	nop 
+
+00007780 <ofw_map>:
+    7780:	9d e3 bf 88 	save  %sp, -120, %sp
+    7784:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7788:	da 00 62 5c 	ld  [ %g1 + 0x25c ], %o5	! 965c <ofw_mmu>
+    778c:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    7790:	19 00 00 23 	sethi  %hi(0x8c00), %o4
+    7794:	98 13 23 38 	or  %o4, 0x338, %o4	! 8f38 <ofw+0x350>
+    7798:	92 10 20 07 	mov  7, %o1
+    779c:	94 10 20 01 	mov  1, %o2
+    77a0:	96 10 20 00 	clr  %o3
+    77a4:	90 12 23 28 	or  %o0, 0x328, %o0
+    77a8:	f0 23 a0 6c 	st  %i0, [ %sp + 0x6c ]
+    77ac:	f6 23 a0 5c 	st  %i3, [ %sp + 0x5c ]
+    77b0:	f4 23 a0 60 	st  %i2, [ %sp + 0x60 ]
+    77b4:	f2 23 a0 64 	st  %i1, [ %sp + 0x64 ]
+    77b8:	7f ff ff a2 	call  7640 <ofw_call>
+    77bc:	c0 23 a0 68 	clr  [ %sp + 0x68 ]
+    77c0:	81 c7 e0 08 	ret 
+    77c4:	91 e8 00 08 	restore  %g0, %o0, %o0
+    77c8:	30 68 00 06 	b,a   %xcc, 77e0 <ofw_claim_virt>
+    77cc:	01 00 00 00 	nop 
+    77d0:	01 00 00 00 	nop 
+    77d4:	01 00 00 00 	nop 
+    77d8:	01 00 00 00 	nop 
+    77dc:	01 00 00 00 	nop 
+
+000077e0 <ofw_claim_virt>:
+    77e0:	9d e3 bf 88 	save  %sp, -120, %sp
+    77e4:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    77e8:	da 00 62 5c 	ld  [ %g1 + 0x25c ], %o5	! 965c <ofw_mmu>
+    77ec:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    77f0:	19 00 00 23 	sethi  %hi(0x8c00), %o4
+    77f4:	90 12 23 28 	or  %o0, 0x328, %o0
+    77f8:	98 13 23 40 	or  %o4, 0x340, %o4
+    77fc:	92 10 20 05 	mov  5, %o1
+    7800:	94 10 20 02 	mov  2, %o2
+    7804:	96 07 bf fc 	add  %fp, -4, %o3
+    7808:	f2 23 a0 60 	st  %i1, [ %sp + 0x60 ]
+    780c:	f0 23 a0 64 	st  %i0, [ %sp + 0x64 ]
+    7810:	7f ff ff 8c 	call  7640 <ofw_call>
+    7814:	c0 23 a0 5c 	clr  [ %sp + 0x5c ]
+    7818:	80 a2 20 00 	cmp  %o0, 0
+    781c:	22 48 00 08 	be,a   %icc, 783c <ofw_claim_virt+0x5c>
+    7820:	f0 07 bf fc 	ld  [ %fp + -4 ], %i0
+    7824:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    7828:	7f ff fc 6e 	call  69e0 <puts>
+    782c:	90 12 23 48 	or  %o0, 0x348, %o0	! 8f48 <ofw+0x360>
+    7830:	40 00 04 ac 	call  8ae0 <halt>
+    7834:	01 00 00 00 	nop 
+    7838:	f0 07 bf fc 	ld  [ %fp + -4 ], %i0
+    783c:	81 cf e0 08 	rett  %i7 + 8
+    7840:	01 00 00 00 	nop 
+    7844:	30 68 00 07 	b,a   %xcc, 7860 <ofw_translate>
+    7848:	01 00 00 00 	nop 
+    784c:	01 00 00 00 	nop 
+    7850:	01 00 00 00 	nop 
+    7854:	01 00 00 00 	nop 
+    7858:	01 00 00 00 	nop 
+    785c:	01 00 00 00 	nop 
+
+00007860 <ofw_translate>:
+    7860:	9d e3 bf 88 	save  %sp, -120, %sp
+    7864:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7868:	da 00 62 5c 	ld  [ %g1 + 0x25c ], %o5	! 965c <ofw_mmu>
+    786c:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    7870:	19 00 00 23 	sethi  %hi(0x8c00), %o4
+    7874:	90 12 23 28 	or  %o0, 0x328, %o0
+    7878:	98 13 23 78 	or  %o4, 0x378, %o4
+    787c:	92 10 20 03 	mov  3, %o1
+    7880:	94 10 20 05 	mov  5, %o2
+    7884:	96 07 bf f0 	add  %fp, -16, %o3
+    7888:	7f ff ff 6e 	call  7640 <ofw_call>
+    788c:	f0 23 a0 5c 	st  %i0, [ %sp + 0x5c ]
+    7890:	80 a2 20 00 	cmp  %o0, 0
+    7894:	12 40 00 0c 	bne,pn   %icc, 78c4 <ofw_translate+0x64>
+    7898:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    789c:	40 00 03 b1 	call  8760 <ofw_translate_failed>
+    78a0:	d0 07 bf f0 	ld  [ %fp + -16 ], %o0
+    78a4:	80 a2 20 00 	cmp  %o0, 0
+    78a8:	12 40 00 05 	bne,pn   %icc, 78bc <ofw_translate+0x5c>
+    78ac:	b0 10 20 00 	clr  %i0
+    78b0:	c2 07 bf f8 	ld  [ %fp + -8 ], %g1
+    78b4:	f0 07 bf fc 	ld  [ %fp + -4 ], %i0
+    78b8:	b0 16 00 01 	or  %i0, %g1, %i0
+    78bc:	81 cf e0 08 	rett  %i7 + 8
+    78c0:	01 00 00 00 	nop 
+    78c4:	7f ff fc 47 	call  69e0 <puts>
+    78c8:	90 12 23 88 	or  %o0, 0x388, %o0
+    78cc:	40 00 04 85 	call  8ae0 <halt>
+    78d0:	01 00 00 00 	nop 
+    78d4:	10 6f ff f2 	b  %xcc, 789c <ofw_translate+0x3c>
+    78d8:	01 00 00 00 	nop 
+    78dc:	01 00 00 00 	nop 
+
+000078e0 <ofw_write>:
+    78e0:	9d e3 bf 98 	save  %sp, -104, %sp
+    78e4:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    78e8:	d8 00 62 4c 	ld  [ %g1 + 0x24c ], %o4	! 964c <ofw_stdout>
+    78ec:	80 a3 20 00 	cmp  %o4, 0
+    78f0:	02 48 00 09 	be  %icc, 7914 <ofw_write+0x34>
+    78f4:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    78f8:	9a 10 00 18 	mov  %i0, %o5
+    78fc:	92 10 20 03 	mov  3, %o1
+    7900:	94 10 20 01 	mov  1, %o2
+    7904:	96 10 20 00 	clr  %o3
+    7908:	90 12 23 b8 	or  %o0, 0x3b8, %o0
+    790c:	7f ff ff 4d 	call  7640 <ofw_call>
+    7910:	f2 23 a0 5c 	st  %i1, [ %sp + 0x5c ]
+    7914:	81 cf e0 08 	rett  %i7 + 8
+    7918:	01 00 00 00 	nop 
+    791c:	01 00 00 00 	nop 
+
+00007920 <ofw_get_peer_node>:
+    7920:	98 10 00 08 	mov  %o0, %o4
+    7924:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    7928:	90 12 23 c0 	or  %o0, 0x3c0, %o0	! 8fc0 <ofw+0x3d8>
+    792c:	92 10 20 01 	mov  1, %o1
+    7930:	94 10 20 01 	mov  1, %o2
+    7934:	96 10 20 00 	clr  %o3
+    7938:	82 13 c0 00 	mov  %o7, %g1
+    793c:	7f ff ff 41 	call  7640 <ofw_call>
+    7940:	9e 10 40 00 	mov  %g1, %o7
+    7944:	01 00 00 00 	nop 
+    7948:	30 68 00 06 	b,a   %xcc, 7960 <ofw_get_child_node>
+    794c:	01 00 00 00 	nop 
+    7950:	01 00 00 00 	nop 
+    7954:	01 00 00 00 	nop 
+    7958:	01 00 00 00 	nop 
+    795c:	01 00 00 00 	nop 
+
+00007960 <ofw_get_child_node>:
+    7960:	98 10 00 08 	mov  %o0, %o4
+    7964:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    7968:	90 12 23 c8 	or  %o0, 0x3c8, %o0	! 8fc8 <ofw+0x3e0>
+    796c:	92 10 20 01 	mov  1, %o1
+    7970:	94 10 20 01 	mov  1, %o2
+    7974:	96 10 20 00 	clr  %o3
+    7978:	82 13 c0 00 	mov  %o7, %g1
+    797c:	7f ff ff 31 	call  7640 <ofw_call>
+    7980:	9e 10 40 00 	mov  %g1, %o7
+    7984:	01 00 00 00 	nop 
+    7988:	30 68 00 06 	b,a   %xcc, 79a0 <ofw_package_to_path>
+    798c:	01 00 00 00 	nop 
+    7990:	01 00 00 00 	nop 
+    7994:	01 00 00 00 	nop 
+    7998:	01 00 00 00 	nop 
+    799c:	01 00 00 00 	nop 
+
+000079a0 <ofw_package_to_path>:
+    79a0:	9d e3 bf 98 	save  %sp, -104, %sp
+    79a4:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    79a8:	98 10 00 18 	mov  %i0, %o4
+    79ac:	9a 10 00 19 	mov  %i1, %o5
+    79b0:	92 10 20 03 	mov  3, %o1
+    79b4:	94 10 20 01 	mov  1, %o2
+    79b8:	96 10 20 00 	clr  %o3
+    79bc:	90 12 23 d0 	or  %o0, 0x3d0, %o0
+    79c0:	7f ff ff 20 	call  7640 <ofw_call>
+    79c4:	f4 23 a0 5c 	st  %i2, [ %sp + 0x5c ]
+    79c8:	81 c7 e0 08 	ret 
+    79cc:	91 e8 00 08 	restore  %g0, %o0, %o0
+    79d0:	30 68 00 04 	b,a   %xcc, 79e0 <ofw_next_property>
+    79d4:	01 00 00 00 	nop 
+    79d8:	01 00 00 00 	nop 
+    79dc:	01 00 00 00 	nop 
+
+000079e0 <ofw_next_property>:
+    79e0:	9d e3 bf 98 	save  %sp, -104, %sp
+    79e4:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    79e8:	98 10 00 18 	mov  %i0, %o4
+    79ec:	9a 10 00 19 	mov  %i1, %o5
+    79f0:	92 10 20 03 	mov  3, %o1
+    79f4:	94 10 20 01 	mov  1, %o2
+    79f8:	96 10 20 00 	clr  %o3
+    79fc:	90 12 23 e0 	or  %o0, 0x3e0, %o0
+    7a00:	7f ff ff 10 	call  7640 <ofw_call>
+    7a04:	f4 23 a0 5c 	st  %i2, [ %sp + 0x5c ]
+    7a08:	81 c7 e0 08 	ret 
+    7a0c:	91 e8 00 08 	restore  %g0, %o0, %o0
+    7a10:	30 68 00 04 	b,a   %xcc, 7a20 <ofw_get_proplen>
+    7a14:	01 00 00 00 	nop 
+    7a18:	01 00 00 00 	nop 
+    7a1c:	01 00 00 00 	nop 
+
+00007a20 <ofw_get_proplen>:
+    7a20:	98 10 00 08 	mov  %o0, %o4
+    7a24:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    7a28:	9a 10 00 09 	mov  %o1, %o5
+    7a2c:	90 12 23 f0 	or  %o0, 0x3f0, %o0
+    7a30:	92 10 20 02 	mov  2, %o1
+    7a34:	94 10 20 01 	mov  1, %o2
+    7a38:	96 10 20 00 	clr  %o3
+    7a3c:	82 13 c0 00 	mov  %o7, %g1
+    7a40:	7f ff ff 00 	call  7640 <ofw_call>
+    7a44:	9e 10 40 00 	mov  %g1, %o7
+    7a48:	01 00 00 00 	nop 
+    7a4c:	30 68 00 05 	b,a   %xcc, 7a60 <ofw_get_property>
+    7a50:	01 00 00 00 	nop 
+    7a54:	01 00 00 00 	nop 
+    7a58:	01 00 00 00 	nop 
+    7a5c:	01 00 00 00 	nop 
+
+00007a60 <ofw_get_property>:
+    7a60:	9d e3 bf 98 	save  %sp, -104, %sp
+    7a64:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    7a68:	98 10 00 18 	mov  %i0, %o4
+    7a6c:	9a 10 00 19 	mov  %i1, %o5
+    7a70:	92 10 20 04 	mov  4, %o1
+    7a74:	94 10 20 01 	mov  1, %o2
+    7a78:	96 10 20 00 	clr  %o3
+    7a7c:	90 12 20 00 	mov  %o0, %o0
+    7a80:	f4 23 a0 5c 	st  %i2, [ %sp + 0x5c ]
+    7a84:	7f ff fe ef 	call  7640 <ofw_call>
+    7a88:	f6 23 a0 60 	st  %i3, [ %sp + 0x60 ]
+    7a8c:	81 c7 e0 08 	ret 
+    7a90:	91 e8 00 08 	restore  %g0, %o0, %o0
+    7a94:	30 68 00 03 	b,a   %xcc, 7aa0 <ofw_get_size_cells>
+    7a98:	01 00 00 00 	nop 
+    7a9c:	01 00 00 00 	nop 
+
+00007aa0 <ofw_get_size_cells>:
+    7aa0:	9d e3 bf 90 	save  %sp, -112, %sp
+    7aa4:	23 00 00 24 	sethi  %hi(0x9000), %l1
+    7aa8:	21 00 00 24 	sethi  %hi(0x9000), %l0
+    7aac:	98 10 00 18 	mov  %i0, %o4
+    7ab0:	a6 07 bf fc 	add  %fp, -4, %l3
+    7ab4:	a4 10 20 04 	mov  4, %l2
+    7ab8:	90 14 60 00 	mov  %l1, %o0
+    7abc:	92 10 20 04 	mov  4, %o1
+    7ac0:	94 10 20 01 	mov  1, %o2
+    7ac4:	96 10 20 00 	clr  %o3
+    7ac8:	9a 14 20 08 	or  %l0, 8, %o5
+    7acc:	e6 23 a0 5c 	st  %l3, [ %sp + 0x5c ]
+    7ad0:	7f ff fe dc 	call  7640 <ofw_call>
+    7ad4:	e4 23 a0 60 	st  %l2, [ %sp + 0x60 ]
+    7ad8:	80 a2 20 00 	cmp  %o0, 0
+    7adc:	04 40 00 05 	ble,pn   %icc, 7af0 <ofw_get_size_cells+0x50>
+    7ae0:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7ae4:	f0 07 bf fc 	ld  [ %fp + -4 ], %i0
+    7ae8:	81 cf e0 08 	rett  %i7 + 8
+    7aec:	01 00 00 00 	nop 
+    7af0:	d8 00 62 54 	ld  [ %g1 + 0x254 ], %o4
+    7af4:	90 14 60 00 	mov  %l1, %o0
+    7af8:	9a 14 20 08 	or  %l0, 8, %o5
+    7afc:	92 10 20 04 	mov  4, %o1
+    7b00:	94 10 20 01 	mov  1, %o2
+    7b04:	96 10 20 00 	clr  %o3
+    7b08:	e6 23 a0 5c 	st  %l3, [ %sp + 0x5c ]
+    7b0c:	7f ff fe cd 	call  7640 <ofw_call>
+    7b10:	e4 23 a0 60 	st  %l2, [ %sp + 0x60 ]
+    7b14:	f0 07 bf fc 	ld  [ %fp + -4 ], %i0
+    7b18:	80 a2 20 00 	cmp  %o0, 0
+    7b1c:	81 cf e0 08 	rett  %i7 + 8
+    7b20:	91 64 a0 02 	movle  %icc, 2, %o0
+    7b24:	30 68 00 07 	b,a   %xcc, 7b40 <ofw_get_address_cells>
+    7b28:	01 00 00 00 	nop 
+    7b2c:	01 00 00 00 	nop 
+    7b30:	01 00 00 00 	nop 
+    7b34:	01 00 00 00 	nop 
+    7b38:	01 00 00 00 	nop 
+    7b3c:	01 00 00 00 	nop 
+
+00007b40 <ofw_get_address_cells>:
+    7b40:	9d e3 bf 90 	save  %sp, -112, %sp
+    7b44:	23 00 00 24 	sethi  %hi(0x9000), %l1
+    7b48:	21 00 00 24 	sethi  %hi(0x9000), %l0
+    7b4c:	82 10 20 01 	mov  1, %g1
+    7b50:	98 10 00 18 	mov  %i0, %o4
+    7b54:	a6 07 bf fc 	add  %fp, -4, %l3
+    7b58:	a4 10 20 04 	mov  4, %l2
+    7b5c:	90 14 60 00 	mov  %l1, %o0
+    7b60:	92 10 20 04 	mov  4, %o1
+    7b64:	94 10 20 01 	mov  1, %o2
+    7b68:	96 10 20 00 	clr  %o3
+    7b6c:	9a 14 20 18 	or  %l0, 0x18, %o5
+    7b70:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+    7b74:	e6 23 a0 5c 	st  %l3, [ %sp + 0x5c ]
+    7b78:	7f ff fe b2 	call  7640 <ofw_call>
+    7b7c:	e4 23 a0 60 	st  %l2, [ %sp + 0x60 ]
+    7b80:	80 a2 20 00 	cmp  %o0, 0
+    7b84:	04 40 00 05 	ble,pn   %icc, 7b98 <ofw_get_address_cells+0x58>
+    7b88:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7b8c:	f0 07 bf fc 	ld  [ %fp + -4 ], %i0
+    7b90:	81 cf e0 08 	rett  %i7 + 8
+    7b94:	01 00 00 00 	nop 
+    7b98:	d8 00 62 54 	ld  [ %g1 + 0x254 ], %o4
+    7b9c:	90 14 60 00 	mov  %l1, %o0
+    7ba0:	9a 14 20 18 	or  %l0, 0x18, %o5
+    7ba4:	92 10 20 04 	mov  4, %o1
+    7ba8:	94 10 20 01 	mov  1, %o2
+    7bac:	96 10 20 00 	clr  %o3
+    7bb0:	e6 23 a0 5c 	st  %l3, [ %sp + 0x5c ]
+    7bb4:	7f ff fe a3 	call  7640 <ofw_call>
+    7bb8:	e4 23 a0 60 	st  %l2, [ %sp + 0x60 ]
+    7bbc:	f0 07 bf fc 	ld  [ %fp + -4 ], %i0
+    7bc0:	80 a2 20 00 	cmp  %o0, 0
+    7bc4:	81 cf e0 08 	rett  %i7 + 8
+    7bc8:	91 64 a0 02 	movle  %icc, 2, %o0
+    7bcc:	30 68 00 05 	b,a   %xcc, 7be0 <ofw_find_device>
+    7bd0:	01 00 00 00 	nop 
+    7bd4:	01 00 00 00 	nop 
+    7bd8:	01 00 00 00 	nop 
+    7bdc:	01 00 00 00 	nop 
+
+00007be0 <ofw_find_device>:
+    7be0:	98 10 00 08 	mov  %o0, %o4
+    7be4:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    7be8:	90 12 20 28 	or  %o0, 0x28, %o0	! 9028 <ofw+0x440>
+    7bec:	92 10 20 01 	mov  1, %o1
+    7bf0:	94 10 20 01 	mov  1, %o2
+    7bf4:	96 10 20 00 	clr  %o3
+    7bf8:	82 13 c0 00 	mov  %o7, %g1
+    7bfc:	7f ff fe 91 	call  7640 <ofw_call>
+    7c00:	9e 10 40 00 	mov  %g1, %o7
+    7c04:	01 00 00 00 	nop 
+    7c08:	30 68 00 06 	b,a   %xcc, 7c20 <ofw_init>
+    7c0c:	01 00 00 00 	nop 
+    7c10:	01 00 00 00 	nop 
+    7c14:	01 00 00 00 	nop 
+    7c18:	01 00 00 00 	nop 
+    7c1c:	01 00 00 00 	nop 
+
+00007c20 <ofw_init>:
+    7c20:	9d e3 bf 98 	save  %sp, -104, %sp
+    7c24:	21 00 00 24 	sethi  %hi(0x9000), %l0
+    7c28:	19 00 00 24 	sethi  %hi(0x9000), %o4
+    7c2c:	98 13 20 38 	or  %o4, 0x38, %o4	! 9038 <ofw+0x450>
+    7c30:	90 14 20 28 	or  %l0, 0x28, %o0
+    7c34:	92 10 20 01 	mov  1, %o1
+    7c38:	94 10 20 01 	mov  1, %o2
+    7c3c:	7f ff fe 81 	call  7640 <ofw_call>
+    7c40:	96 10 20 00 	clr  %o3
+    7c44:	23 00 00 25 	sethi  %hi(0x9400), %l1
+    7c48:	d0 24 62 44 	st  %o0, [ %l1 + 0x244 ]	! 9644 <ofw_chosen>
+    7c4c:	80 a2 3f ff 	cmp  %o0, -1
+    7c50:	02 40 00 72 	be,pn   %icc, 7e18 <ofw_init+0x1f8>
+    7c54:	98 10 00 08 	mov  %o0, %o4
+    7c58:	27 00 00 25 	sethi  %hi(0x9400), %l3
+    7c5c:	82 14 e2 4c 	or  %l3, 0x24c, %g1	! 964c <ofw_stdout>
+    7c60:	25 00 00 24 	sethi  %hi(0x9000), %l2
+    7c64:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    7c68:	c2 23 a0 5c 	st  %g1, [ %sp + 0x5c ]
+    7c6c:	9a 13 60 40 	or  %o5, 0x40, %o5
+    7c70:	82 10 20 04 	mov  4, %g1
+    7c74:	90 14 a0 00 	mov  %l2, %o0
+    7c78:	92 10 20 04 	mov  4, %o1
+    7c7c:	94 10 20 01 	mov  1, %o2
+    7c80:	96 10 20 00 	clr  %o3
+    7c84:	7f ff fe 6f 	call  7640 <ofw_call>
+    7c88:	c2 23 a0 60 	st  %g1, [ %sp + 0x60 ]
+    7c8c:	80 a2 20 00 	cmp  %o0, 0
+    7c90:	04 40 00 44 	ble,pn   %icc, 7da0 <ofw_init+0x180>
+    7c94:	19 00 00 23 	sethi  %hi(0x8c00), %o4
+    7c98:	98 13 20 18 	or  %o4, 0x18, %o4	! 8c18 <ofw+0x30>
+    7c9c:	90 14 20 28 	or  %l0, 0x28, %o0
+    7ca0:	92 10 20 01 	mov  1, %o1
+    7ca4:	94 10 20 01 	mov  1, %o2
+    7ca8:	7f ff fe 66 	call  7640 <ofw_call>
+    7cac:	96 10 20 00 	clr  %o3
+    7cb0:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7cb4:	80 a2 3f ff 	cmp  %o0, -1
+    7cb8:	02 40 00 45 	be,pn   %icc, 7dcc <ofw_init+0x1ac>
+    7cbc:	d0 20 62 54 	st  %o0, [ %g1 + 0x254 ]
+    7cc0:	d8 04 62 44 	ld  [ %l1 + 0x244 ], %o4
+    7cc4:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7cc8:	82 10 62 5c 	or  %g1, 0x25c, %g1	! 965c <ofw_mmu>
+    7ccc:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    7cd0:	c2 23 a0 5c 	st  %g1, [ %sp + 0x5c ]
+    7cd4:	9a 13 60 78 	or  %o5, 0x78, %o5
+    7cd8:	82 10 20 04 	mov  4, %g1
+    7cdc:	90 14 a0 00 	mov  %l2, %o0
+    7ce0:	92 10 20 04 	mov  4, %o1
+    7ce4:	94 10 20 01 	mov  1, %o2
+    7ce8:	96 10 20 00 	clr  %o3
+    7cec:	7f ff fe 55 	call  7640 <ofw_call>
+    7cf0:	c2 23 a0 60 	st  %g1, [ %sp + 0x60 ]
+    7cf4:	80 a2 20 00 	cmp  %o0, 0
+    7cf8:	04 40 00 4c 	ble,pn   %icc, 7e28 <ofw_init+0x208>
+    7cfc:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    7d00:	d8 04 62 44 	ld  [ %l1 + 0x244 ], %o4
+    7d04:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7d08:	82 10 62 48 	or  %g1, 0x248, %g1	! 9648 <ofw_memory_prop>
+    7d0c:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    7d10:	c2 23 a0 5c 	st  %g1, [ %sp + 0x5c ]
+    7d14:	90 14 a0 00 	mov  %l2, %o0
+    7d18:	82 10 20 04 	mov  4, %g1
+    7d1c:	9a 13 60 b0 	or  %o5, 0xb0, %o5
+    7d20:	92 10 20 04 	mov  4, %o1
+    7d24:	94 10 20 01 	mov  1, %o2
+    7d28:	96 10 20 00 	clr  %o3
+    7d2c:	7f ff fe 45 	call  7640 <ofw_call>
+    7d30:	c2 23 a0 60 	st  %g1, [ %sp + 0x60 ]
+    7d34:	80 a2 20 00 	cmp  %o0, 0
+    7d38:	04 40 00 42 	ble,pn   %icc, 7e40 <ofw_init+0x220>
+    7d3c:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    7d40:	19 00 00 24 	sethi  %hi(0x9000), %o4
+    7d44:	98 13 20 f0 	or  %o4, 0xf0, %o4	! 90f0 <ofw+0x508>
+    7d48:	90 14 20 28 	or  %l0, 0x28, %o0
+    7d4c:	92 10 20 01 	mov  1, %o1
+    7d50:	94 10 20 01 	mov  1, %o2
+    7d54:	7f ff fe 3b 	call  7640 <ofw_call>
+    7d58:	96 10 20 00 	clr  %o3
+    7d5c:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7d60:	80 a2 3f ff 	cmp  %o0, -1
+    7d64:	02 40 00 26 	be,pn   %icc, 7dfc <ofw_init+0x1dc>
+    7d68:	d0 20 62 50 	st  %o0, [ %g1 + 0x250 ]
+    7d6c:	19 00 00 24 	sethi  %hi(0x9000), %o4
+    7d70:	90 14 20 28 	or  %l0, 0x28, %o0
+    7d74:	98 13 21 30 	or  %o4, 0x130, %o4
+    7d78:	92 10 20 01 	mov  1, %o1
+    7d7c:	94 10 20 01 	mov  1, %o2
+    7d80:	7f ff fe 30 	call  7640 <ofw_call>
+    7d84:	96 10 20 00 	clr  %o3
+    7d88:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7d8c:	80 a2 3f ff 	cmp  %o0, -1
+    7d90:	02 40 00 16 	be,pn   %icc, 7de8 <ofw_init+0x1c8>
+    7d94:	d0 20 62 40 	st  %o0, [ %g1 + 0x240 ]
+    7d98:	81 cf e0 08 	rett  %i7 + 8
+    7d9c:	01 00 00 00 	nop 
+    7da0:	98 13 20 18 	or  %o4, 0x18, %o4
+    7da4:	90 14 20 28 	or  %l0, 0x28, %o0
+    7da8:	92 10 20 01 	mov  1, %o1
+    7dac:	94 10 20 01 	mov  1, %o2
+    7db0:	96 10 20 00 	clr  %o3
+    7db4:	7f ff fe 23 	call  7640 <ofw_call>
+    7db8:	c0 24 e2 4c 	clr  [ %l3 + 0x24c ]
+    7dbc:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7dc0:	80 a2 3f ff 	cmp  %o0, -1
+    7dc4:	12 4f ff bf 	bne  %icc, 7cc0 <ofw_init+0xa0>
+    7dc8:	d0 20 62 54 	st  %o0, [ %g1 + 0x254 ]
+    7dcc:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    7dd0:	7f ff fb 04 	call  69e0 <puts>
+    7dd4:	90 12 20 48 	or  %o0, 0x48, %o0	! 9048 <ofw+0x460>
+    7dd8:	40 00 03 42 	call  8ae0 <halt>
+    7ddc:	01 00 00 00 	nop 
+    7de0:	10 6f ff b9 	b  %xcc, 7cc4 <ofw_init+0xa4>
+    7de4:	d8 04 62 44 	ld  [ %l1 + 0x244 ], %o4
+    7de8:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    7dec:	7f ff fa fd 	call  69e0 <puts>
+    7df0:	90 12 21 40 	or  %o0, 0x140, %o0	! 9140 <ofw+0x558>
+    7df4:	40 00 03 3b 	call  8ae0 <halt>
+    7df8:	81 e8 00 00 	restore 
+    7dfc:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    7e00:	7f ff fa f8 	call  69e0 <puts>
+    7e04:	90 12 20 f8 	or  %o0, 0xf8, %o0	! 90f8 <ofw+0x510>
+    7e08:	40 00 03 36 	call  8ae0 <halt>
+    7e0c:	01 00 00 00 	nop 
+    7e10:	10 6f ff d8 	b  %xcc, 7d70 <ofw_init+0x150>
+    7e14:	19 00 00 24 	sethi  %hi(0x9000), %o4
+    7e18:	40 00 03 32 	call  8ae0 <halt>
+    7e1c:	27 00 00 25 	sethi  %hi(0x9400), %l3
+    7e20:	10 6f ff 8f 	b  %xcc, 7c5c <ofw_init+0x3c>
+    7e24:	d8 04 62 44 	ld  [ %l1 + 0x244 ], %o4
+    7e28:	7f ff fa ee 	call  69e0 <puts>
+    7e2c:	90 12 20 80 	or  %o0, 0x80, %o0
+    7e30:	40 00 03 2c 	call  8ae0 <halt>
+    7e34:	01 00 00 00 	nop 
+    7e38:	10 6f ff b3 	b  %xcc, 7d04 <ofw_init+0xe4>
+    7e3c:	d8 04 62 44 	ld  [ %l1 + 0x244 ], %o4
+    7e40:	7f ff fa e8 	call  69e0 <puts>
+    7e44:	90 12 20 b8 	or  %o0, 0xb8, %o0
+    7e48:	40 00 03 26 	call  8ae0 <halt>
+    7e4c:	01 00 00 00 	nop 
+    7e50:	10 6f ff bd 	b  %xcc, 7d44 <ofw_init+0x124>
+    7e54:	19 00 00 24 	sethi  %hi(0x9000), %o4
+    7e58:	01 00 00 00 	nop 
+    7e5c:	01 00 00 00 	nop 
+
+00007e60 <setup_palette>:
+    7e60:	9d e3 bb 88 	save  %sp, -1144, %sp
+    7e64:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7e68:	d8 00 62 40 	ld  [ %g1 + 0x240 ], %o4	! 9640 <ofw_aliases>
+    7e6c:	23 00 00 24 	sethi  %hi(0x9000), %l1
+    7e70:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    7e74:	82 10 24 00 	mov  0x400, %g1
+    7e78:	9a 13 61 78 	or  %o5, 0x178, %o5
+    7e7c:	a0 07 bb f8 	add  %fp, -1032, %l0
+    7e80:	90 14 60 00 	mov  %l1, %o0
+    7e84:	92 10 20 04 	mov  4, %o1
+    7e88:	94 10 20 01 	mov  1, %o2
+    7e8c:	96 10 20 00 	clr  %o3
+    7e90:	c2 23 a0 60 	st  %g1, [ %sp + 0x60 ]
+    7e94:	7f ff fd eb 	call  7640 <ofw_call>
+    7e98:	e0 23 a0 5c 	st  %l0, [ %sp + 0x5c ]
+    7e9c:	80 a2 20 00 	cmp  %o0, 0
+    7ea0:	04 40 00 1c 	ble,pn   %icc, 7f10 <setup_palette+0xb0>
+    7ea4:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    7ea8:	98 10 00 10 	mov  %l0, %o4
+    7eac:	90 12 20 28 	or  %o0, 0x28, %o0
+    7eb0:	92 10 20 01 	mov  1, %o1
+    7eb4:	94 10 20 01 	mov  1, %o2
+    7eb8:	7f ff fd e2 	call  7640 <ofw_call>
+    7ebc:	96 10 20 00 	clr  %o3
+    7ec0:	80 a2 3f ff 	cmp  %o0, -1
+    7ec4:	02 40 00 13 	be,pn   %icc, 7f10 <setup_palette+0xb0>
+    7ec8:	98 10 00 08 	mov  %o0, %o4
+    7ecc:	82 07 bf fc 	add  %fp, -4, %g1
+    7ed0:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    7ed4:	c2 23 a0 5c 	st  %g1, [ %sp + 0x5c ]
+    7ed8:	90 14 60 00 	mov  %l1, %o0
+    7edc:	82 10 20 04 	mov  4, %g1
+    7ee0:	9a 13 61 80 	or  %o5, 0x180, %o5
+    7ee4:	92 10 20 04 	mov  4, %o1
+    7ee8:	94 10 20 01 	mov  1, %o2
+    7eec:	96 10 20 00 	clr  %o3
+    7ef0:	7f ff fd d4 	call  7640 <ofw_call>
+    7ef4:	c2 23 a0 60 	st  %g1, [ %sp + 0x60 ]
+    7ef8:	80 a2 20 00 	cmp  %o0, 0
+    7efc:	04 40 00 05 	ble,pn   %icc, 7f10 <setup_palette+0xb0>
+    7f00:	c2 07 bf fc 	ld  [ %fp + -4 ], %g1
+    7f04:	80 a0 60 08 	cmp  %g1, 8
+    7f08:	02 40 00 04 	be,pn   %icc, 7f18 <setup_palette+0xb8>
+    7f0c:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    7f10:	81 cf e0 08 	rett  %i7 + 8
+    7f14:	90 10 20 00 	clr  %o0
+    7f18:	90 12 21 88 	or  %o0, 0x188, %o0
+    7f1c:	98 10 00 10 	mov  %l0, %o4
+    7f20:	92 10 20 01 	mov  1, %o1
+    7f24:	94 10 20 01 	mov  1, %o2
+    7f28:	7f ff fd c6 	call  7640 <ofw_call>
+    7f2c:	96 10 20 00 	clr  %o3
+    7f30:	80 a2 3f ff 	cmp  %o0, -1
+    7f34:	02 47 ff f7 	be,pn   %icc, 7f10 <setup_palette+0xb0>
+    7f38:	a2 10 00 08 	mov  %o0, %l1
+    7f3c:	29 00 00 23 	sethi  %hi(0x8c00), %l4
+    7f40:	27 00 00 24 	sethi  %hi(0x9000), %l3
+    7f44:	a8 15 23 28 	or  %l4, 0x328, %l4
+    7f48:	a6 14 e1 90 	or  %l3, 0x190, %l3
+    7f4c:	a0 10 20 00 	clr  %l0
+    7f50:	a4 10 20 ff 	mov  0xff, %l2
+    7f54:	85 34 20 03 	srl  %l0, 3, %g2
+    7f58:	88 24 80 10 	sub  %l2, %l0, %g4
+    7f5c:	87 2c 20 05 	sll  %l0, 5, %g3
+    7f60:	82 0c 3f e0 	and  %l0, -32, %g1
+    7f64:	85 28 a0 06 	sll  %g2, 6, %g2
+    7f68:	90 10 00 14 	mov  %l4, %o0
+    7f6c:	92 10 20 06 	mov  6, %o1
+    7f70:	94 10 20 01 	mov  1, %o2
+    7f74:	96 10 20 00 	clr  %o3
+    7f78:	98 10 00 13 	mov  %l3, %o4
+    7f7c:	9a 10 00 11 	mov  %l1, %o5
+    7f80:	c8 23 a0 5c 	st  %g4, [ %sp + 0x5c ]
+    7f84:	c6 23 a0 60 	st  %g3, [ %sp + 0x60 ]
+    7f88:	c4 23 a0 64 	st  %g2, [ %sp + 0x64 ]
+    7f8c:	7f ff fd ad 	call  7640 <ofw_call>
+    7f90:	c2 23 a0 68 	st  %g1, [ %sp + 0x68 ]
+    7f94:	a0 04 20 01 	inc  %l0
+    7f98:	80 a4 21 00 	cmp  %l0, 0x100
+    7f9c:	12 4f ff ef 	bne  %icc, 7f58 <setup_palette+0xf8>
+    7fa0:	85 34 20 03 	srl  %l0, 3, %g2
+    7fa4:	81 cf e0 08 	rett  %i7 + 8
+    7fa8:	90 10 20 01 	mov  1, %o0
+    7fac:	30 68 00 05 	b,a   %xcc, 7fc0 <ofw_screen>
+    7fb0:	01 00 00 00 	nop 
+    7fb4:	01 00 00 00 	nop 
+    7fb8:	01 00 00 00 	nop 
+    7fbc:	01 00 00 00 	nop 
+
+00007fc0 <ofw_screen>:
+    7fc0:	9d e3 bb 90 	save  %sp, -1136, %sp
+    7fc4:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    7fc8:	d8 00 62 40 	ld  [ %g1 + 0x240 ], %o4	! 9640 <ofw_aliases>
+    7fcc:	21 00 00 24 	sethi  %hi(0x9000), %l0
+    7fd0:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    7fd4:	82 10 24 00 	mov  0x400, %g1
+    7fd8:	9a 13 61 78 	or  %o5, 0x178, %o5
+    7fdc:	a2 07 bb f8 	add  %fp, -1032, %l1
+    7fe0:	90 14 20 00 	mov  %l0, %o0
+    7fe4:	92 10 20 04 	mov  4, %o1
+    7fe8:	94 10 20 01 	mov  1, %o2
+    7fec:	96 10 20 00 	clr  %o3
+    7ff0:	c2 23 a0 60 	st  %g1, [ %sp + 0x60 ]
+    7ff4:	7f ff fd 93 	call  7640 <ofw_call>
+    7ff8:	e2 23 a0 5c 	st  %l1, [ %sp + 0x5c ]
+    7ffc:	80 a2 20 00 	cmp  %o0, 0
+    8000:	04 40 00 51 	ble,pn   %icc, 8144 <ofw_screen+0x184>
+    8004:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    8008:	98 10 00 11 	mov  %l1, %o4
+    800c:	90 12 20 28 	or  %o0, 0x28, %o0
+    8010:	92 10 20 01 	mov  1, %o1
+    8014:	94 10 20 01 	mov  1, %o2
+    8018:	7f ff fd 8a 	call  7640 <ofw_call>
+    801c:	96 10 20 00 	clr  %o3
+    8020:	80 a2 3f ff 	cmp  %o0, -1
+    8024:	02 40 00 48 	be,pn   %icc, 8144 <ofw_screen+0x184>
+    8028:	a2 10 00 08 	mov  %o0, %l1
+    802c:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    8030:	82 07 bf fc 	add  %fp, -4, %g1
+    8034:	9a 13 61 98 	or  %o5, 0x198, %o5
+    8038:	a4 10 20 04 	mov  4, %l2
+    803c:	90 14 20 00 	mov  %l0, %o0
+    8040:	92 10 20 04 	mov  4, %o1
+    8044:	94 10 20 01 	mov  1, %o2
+    8048:	96 10 20 00 	clr  %o3
+    804c:	98 10 00 11 	mov  %l1, %o4
+    8050:	c2 23 a0 5c 	st  %g1, [ %sp + 0x5c ]
+    8054:	7f ff fd 7b 	call  7640 <ofw_call>
+    8058:	e4 23 a0 60 	st  %l2, [ %sp + 0x60 ]
+    805c:	80 a2 20 00 	cmp  %o0, 0
+    8060:	04 40 00 39 	ble,pn   %icc, 8144 <ofw_screen+0x184>
+    8064:	c2 07 bf fc 	ld  [ %fp + -4 ], %g1
+    8068:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    806c:	c2 26 00 00 	st  %g1, [ %i0 ]
+    8070:	9a 13 61 a0 	or  %o5, 0x1a0, %o5
+    8074:	82 06 20 04 	add  %i0, 4, %g1
+    8078:	90 14 20 00 	mov  %l0, %o0
+    807c:	92 10 20 04 	mov  4, %o1
+    8080:	94 10 20 01 	mov  1, %o2
+    8084:	96 10 20 00 	clr  %o3
+    8088:	98 10 00 11 	mov  %l1, %o4
+    808c:	c2 23 a0 5c 	st  %g1, [ %sp + 0x5c ]
+    8090:	7f ff fd 6c 	call  7640 <ofw_call>
+    8094:	e4 23 a0 60 	st  %l2, [ %sp + 0x60 ]
+    8098:	80 a2 20 00 	cmp  %o0, 0
+    809c:	04 40 00 2a 	ble,pn   %icc, 8144 <ofw_screen+0x184>
+    80a0:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    80a4:	82 06 20 08 	add  %i0, 8, %g1
+    80a8:	9a 13 61 a8 	or  %o5, 0x1a8, %o5
+    80ac:	90 14 20 00 	mov  %l0, %o0
+    80b0:	92 10 20 04 	mov  4, %o1
+    80b4:	94 10 20 01 	mov  1, %o2
+    80b8:	96 10 20 00 	clr  %o3
+    80bc:	98 10 00 11 	mov  %l1, %o4
+    80c0:	c2 23 a0 5c 	st  %g1, [ %sp + 0x5c ]
+    80c4:	7f ff fd 5f 	call  7640 <ofw_call>
+    80c8:	e4 23 a0 60 	st  %l2, [ %sp + 0x60 ]
+    80cc:	80 a2 20 00 	cmp  %o0, 0
+    80d0:	04 40 00 1d 	ble,pn   %icc, 8144 <ofw_screen+0x184>
+    80d4:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    80d8:	82 06 20 0c 	add  %i0, 0xc, %g1
+    80dc:	9a 13 61 80 	or  %o5, 0x180, %o5
+    80e0:	90 14 20 00 	mov  %l0, %o0
+    80e4:	92 10 20 04 	mov  4, %o1
+    80e8:	94 10 20 01 	mov  1, %o2
+    80ec:	96 10 20 00 	clr  %o3
+    80f0:	98 10 00 11 	mov  %l1, %o4
+    80f4:	c2 23 a0 5c 	st  %g1, [ %sp + 0x5c ]
+    80f8:	7f ff fd 52 	call  7640 <ofw_call>
+    80fc:	e4 23 a0 60 	st  %l2, [ %sp + 0x60 ]
+    8100:	80 a2 20 00 	cmp  %o0, 0
+    8104:	04 40 00 10 	ble,pn   %icc, 8144 <ofw_screen+0x184>
+    8108:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    810c:	b0 06 20 10 	add  %i0, 0x10, %i0
+    8110:	90 14 20 00 	mov  %l0, %o0
+    8114:	98 10 00 11 	mov  %l1, %o4
+    8118:	9a 13 61 b0 	or  %o5, 0x1b0, %o5
+    811c:	92 10 20 04 	mov  4, %o1
+    8120:	94 10 20 01 	mov  1, %o2
+    8124:	96 10 20 00 	clr  %o3
+    8128:	f0 23 a0 5c 	st  %i0, [ %sp + 0x5c ]
+    812c:	7f ff fd 45 	call  7640 <ofw_call>
+    8130:	e4 23 a0 60 	st  %l2, [ %sp + 0x60 ]
+    8134:	b0 10 20 00 	clr  %i0
+    8138:	80 a2 20 00 	cmp  %o0, 0
+    813c:	81 cf e0 08 	rett  %i7 + 8
+    8140:	91 66 a0 01 	movg  %icc, 1, %o0
+    8144:	81 cf e0 08 	rett  %i7 + 8
+    8148:	90 10 20 00 	clr  %o0
+    814c:	30 68 00 05 	b,a   %xcc, 8160 <ofw_memmap>
+    8150:	01 00 00 00 	nop 
+    8154:	01 00 00 00 	nop 
+    8158:	01 00 00 00 	nop 
+    815c:	01 00 00 00 	nop 
+
+00008160 <ofw_memmap>:
+    8160:	9d e3 bf 90 	save  %sp, -112, %sp
+    8164:	23 00 00 25 	sethi  %hi(0x9400), %l1
+    8168:	d8 04 62 50 	ld  [ %l1 + 0x250 ], %o4	! 9650 <ofw_memory>
+    816c:	21 00 00 24 	sethi  %hi(0x9000), %l0
+    8170:	29 00 00 24 	sethi  %hi(0x9000), %l4
+    8174:	82 10 20 01 	mov  1, %g1
+    8178:	a4 07 bf fc 	add  %fp, -4, %l2
+    817c:	a6 10 20 04 	mov  4, %l3
+    8180:	90 14 20 00 	mov  %l0, %o0
+    8184:	92 10 20 04 	mov  4, %o1
+    8188:	94 10 20 01 	mov  1, %o2
+    818c:	96 10 20 00 	clr  %o3
+    8190:	9a 15 20 18 	or  %l4, 0x18, %o5
+    8194:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+    8198:	e4 23 a0 5c 	st  %l2, [ %sp + 0x5c ]
+    819c:	7f ff fd 29 	call  7640 <ofw_call>
+    81a0:	e6 23 a0 60 	st  %l3, [ %sp + 0x60 ]
+    81a4:	80 a2 20 00 	cmp  %o0, 0
+    81a8:	04 40 00 78 	ble,pn   %icc, 8388 <ofw_memmap+0x228>
+    81ac:	aa 10 00 18 	mov  %i0, %l5
+    81b0:	e6 07 bf fc 	ld  [ %fp + -4 ], %l3
+    81b4:	d8 04 62 50 	ld  [ %l1 + 0x250 ], %o4
+    81b8:	2d 00 00 24 	sethi  %hi(0x9000), %l6
+    81bc:	a8 10 20 04 	mov  4, %l4
+    81c0:	90 14 20 00 	mov  %l0, %o0
+    81c4:	92 10 20 04 	mov  4, %o1
+    81c8:	94 10 20 01 	mov  1, %o2
+    81cc:	96 10 20 00 	clr  %o3
+    81d0:	9a 15 a0 08 	or  %l6, 8, %o5
+    81d4:	e4 23 a0 5c 	st  %l2, [ %sp + 0x5c ]
+    81d8:	7f ff fd 1a 	call  7640 <ofw_call>
+    81dc:	e8 23 a0 60 	st  %l4, [ %sp + 0x60 ]
+    81e0:	80 a2 20 00 	cmp  %o0, 0
+    81e4:	04 40 00 58 	ble,pn   %icc, 8344 <ofw_memmap+0x1e4>
+    81e8:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    81ec:	e4 07 bf fc 	ld  [ %fp + -4 ], %l2
+    81f0:	d8 04 62 50 	ld  [ %l1 + 0x250 ], %o4
+    81f4:	a2 04 80 13 	add  %l2, %l3, %l1
+    81f8:	83 2c 60 07 	sll  %l1, 7, %g1
+    81fc:	9c 23 80 01 	sub  %sp, %g1, %sp
+    8200:	1b 00 00 24 	sethi  %hi(0x9000), %o5
+    8204:	90 14 20 00 	mov  %l0, %o0
+    8208:	9a 13 61 c0 	or  %o5, 0x1c0, %o5
+    820c:	a0 03 a0 68 	add  %sp, 0x68, %l0
+    8210:	92 10 20 04 	mov  4, %o1
+    8214:	94 10 20 01 	mov  1, %o2
+    8218:	96 10 20 00 	clr  %o3
+    821c:	c2 23 a0 60 	st  %g1, [ %sp + 0x60 ]
+    8220:	7f ff fd 08 	call  7640 <ofw_call>
+    8224:	e0 23 a0 5c 	st  %l0, [ %sp + 0x5c ]
+    8228:	80 a2 20 00 	cmp  %o0, 0
+    822c:	04 40 00 44 	ble,pn   %icc, 833c <ofw_memmap+0x1dc>
+    8230:	b0 10 20 00 	clr  %i0
+    8234:	91 32 20 02 	srl  %o0, 2, %o0
+    8238:	c0 25 40 00 	clr  [ %l5 ]
+    823c:	80 a2 20 00 	cmp  %o0, 0
+    8240:	02 40 00 3e 	be,pn   %icc, 8338 <ofw_memmap+0x1d8>
+    8244:	c0 25 60 04 	clr  [ %l5 + 4 ]
+    8248:	03 0f ff ff 	sethi  %hi(0x3ffffc00), %g1
+    824c:	82 10 63 ff 	or  %g1, 0x3ff, %g1	! 3fffffff <ofw_mmu+0x3fff69a3>
+    8250:	a6 04 ff ff 	add  %l3, -1, %l3
+    8254:	82 04 40 01 	add  %l1, %g1, %g1
+    8258:	85 2c e0 02 	sll  %l3, 2, %g2
+    825c:	a4 04 c0 12 	add  %l3, %l2, %l2
+    8260:	83 28 60 02 	sll  %g1, 2, %g1
+    8264:	da 04 00 02 	ld  [ %l0 + %g2 ], %o5
+    8268:	a4 04 80 11 	add  %l2, %l1, %l2
+    826c:	c4 04 00 01 	ld  [ %l0 + %g1 ], %g2
+    8270:	a6 04 40 13 	add  %l1, %l3, %l3
+    8274:	86 10 00 11 	mov  %l1, %g3
+    8278:	88 10 20 00 	clr  %g4
+    827c:	10 68 00 18 	b  %xcc, 82dc <ofw_memmap+0x17c>
+    8280:	82 10 20 00 	clr  %g1
+    8284:	89 28 60 03 	sll  %g1, 3, %g4
+    8288:	80 a2 00 03 	cmp  %o0, %g3
+    828c:	96 05 40 04 	add  %l5, %g4, %o3
+    8290:	85 2c e0 02 	sll  %l3, 2, %g2
+    8294:	08 40 00 29 	bleu,pn   %icc, 8338 <ofw_memmap+0x1d8>
+    8298:	99 2c a0 02 	sll  %l2, 2, %o4
+    829c:	80 a0 60 1f 	cmp  %g1, 0x1f
+    82a0:	18 40 00 26 	bgu,pn   %icc, 8338 <ofw_memmap+0x1d8>
+    82a4:	80 a0 60 00 	cmp  %g1, 0
+    82a8:	da 04 00 02 	ld  [ %l0 + %g2 ], %o5
+    82ac:	86 00 c0 11 	add  %g3, %l1, %g3
+    82b0:	02 40 00 08 	be,pn   %icc, 82d0 <ofw_memmap+0x170>
+    82b4:	c4 04 00 0c 	ld  [ %l0 + %o4 ], %g2
+    82b8:	d8 02 e0 04 	ld  [ %o3 + 4 ], %o4
+    82bc:	c8 05 40 04 	ld  [ %l5 + %g4 ], %g4
+    82c0:	88 01 00 0c 	add  %g4, %o4, %g4
+    82c4:	80 a3 40 04 	cmp  %o5, %g4
+    82c8:	18 40 00 1d 	bgu,pn   %icc, 833c <ofw_memmap+0x1dc>
+    82cc:	b0 10 20 01 	mov  1, %i0
+    82d0:	a6 04 c0 11 	add  %l3, %l1, %l3
+    82d4:	a4 04 80 11 	add  %l2, %l1, %l2
+    82d8:	88 10 00 01 	mov  %g1, %g4
+    82dc:	80 a0 a0 00 	cmp  %g2, 0
+    82e0:	22 4f ff e9 	be,a   %icc, 8284 <ofw_memmap+0x124>
+    82e4:	82 10 00 04 	mov  %g4, %g1
+    82e8:	c8 05 60 04 	ld  [ %l5 + 4 ], %g4
+    82ec:	88 01 20 01 	inc  %g4
+    82f0:	89 29 20 03 	sll  %g4, 3, %g4
+    82f4:	88 05 40 04 	add  %l5, %g4, %g4
+    82f8:	c4 21 20 04 	st  %g2, [ %g4 + 4 ]
+    82fc:	d8 05 60 04 	ld  [ %l5 + 4 ], %o4
+    8300:	d6 05 40 00 	ld  [ %l5 ], %o3
+    8304:	88 00 60 01 	add  %g1, 1, %g4
+    8308:	84 02 c0 02 	add  %o3, %g2, %g2
+    830c:	82 03 20 01 	add  %o4, 1, %g1
+    8310:	89 29 20 03 	sll  %g4, 3, %g4
+    8314:	da 25 40 04 	st  %o5, [ %l5 + %g4 ]
+    8318:	c4 25 40 00 	st  %g2, [ %l5 ]
+    831c:	89 28 60 03 	sll  %g1, 3, %g4
+    8320:	c2 25 60 04 	st  %g1, [ %l5 + 4 ]
+    8324:	80 a2 00 03 	cmp  %o0, %g3
+    8328:	96 05 40 04 	add  %l5, %g4, %o3
+    832c:	85 2c e0 02 	sll  %l3, 2, %g2
+    8330:	18 4f ff db 	bgu  %icc, 829c <ofw_memmap+0x13c>
+    8334:	99 2c a0 02 	sll  %l2, 2, %o4
+    8338:	b0 10 20 01 	mov  1, %i0
+    833c:	81 cf e0 08 	rett  %i7 + 8
+    8340:	01 00 00 00 	nop 
+    8344:	d8 00 62 54 	ld  [ %g1 + 0x254 ], %o4
+    8348:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    834c:	90 12 20 00 	mov  %o0, %o0	! 9000 <ofw+0x418>
+    8350:	9a 15 a0 08 	or  %l6, 8, %o5
+    8354:	92 10 20 04 	mov  4, %o1
+    8358:	94 10 20 01 	mov  1, %o2
+    835c:	96 10 20 00 	clr  %o3
+    8360:	e4 23 a0 5c 	st  %l2, [ %sp + 0x5c ]
+    8364:	7f ff fc b7 	call  7640 <ofw_call>
+    8368:	e8 23 a0 60 	st  %l4, [ %sp + 0x60 ]
+    836c:	80 a2 20 00 	cmp  %o0, 0
+    8370:	34 4f ff a0 	bg,a   %icc, 81f0 <ofw_memmap+0x90>
+    8374:	e4 07 bf fc 	ld  [ %fp + -4 ], %l2
+    8378:	82 10 20 02 	mov  2, %g1
+    837c:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+    8380:	10 6f ff 9c 	b  %xcc, 81f0 <ofw_memmap+0x90>
+    8384:	a4 10 20 02 	mov  2, %l2
+    8388:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    838c:	d8 00 62 54 	ld  [ %g1 + 0x254 ], %o4	! 9654 <ofw_root>
+    8390:	9a 15 20 18 	or  %l4, 0x18, %o5
+    8394:	90 14 20 00 	mov  %l0, %o0
+    8398:	92 10 20 04 	mov  4, %o1
+    839c:	94 10 20 01 	mov  1, %o2
+    83a0:	96 10 20 00 	clr  %o3
+    83a4:	e6 23 a0 60 	st  %l3, [ %sp + 0x60 ]
+    83a8:	7f ff fc a6 	call  7640 <ofw_call>
+    83ac:	e4 23 a0 5c 	st  %l2, [ %sp + 0x5c ]
+    83b0:	80 a2 20 00 	cmp  %o0, 0
+    83b4:	34 4f ff 80 	bg,a   %icc, 81b4 <ofw_memmap+0x54>
+    83b8:	e6 07 bf fc 	ld  [ %fp + -4 ], %l3
+    83bc:	82 10 20 02 	mov  2, %g1
+    83c0:	c2 27 bf fc 	st  %g1, [ %fp + -4 ]
+    83c4:	10 6f ff 7c 	b  %xcc, 81b4 <ofw_memmap+0x54>
+    83c8:	a6 10 20 02 	mov  2, %l3
+    83cc:	30 68 00 05 	b,a   %xcc, 83e0 <ofw_tree_node_process>
+    83d0:	01 00 00 00 	nop 
+    83d4:	01 00 00 00 	nop 
+    83d8:	01 00 00 00 	nop 
+    83dc:	01 00 00 00 	nop 
+
+000083e0 <ofw_tree_node_process>:
+    83e0:	9d e3 bf a0 	save  %sp, -96, %sp
+    83e4:	80 a6 20 00 	cmp  %i0, 0
+    83e8:	02 40 00 96 	be,pn   %icc, 8640 <ofw_tree_node_process+0x260>
+    83ec:	2d 00 00 24 	sethi  %hi(0x9000), %l6
+    83f0:	ac 15 a2 88 	or  %l6, 0x288, %l6	! 9288 <path.1000>
+    83f4:	f2 26 00 00 	st  %i1, [ %i0 ]
+    83f8:	c0 26 20 04 	clr  [ %i0 + 4 ]
+    83fc:	c0 26 20 08 	clr  [ %i0 + 8 ]
+    8400:	f4 26 20 0c 	st  %i2, [ %i0 + 0xc ]
+    8404:	c0 26 20 14 	clr  [ %i0 + 0x14 ]
+    8408:	c0 26 20 18 	clr  [ %i0 + 0x18 ]
+    840c:	c0 26 20 1c 	clr  [ %i0 + 0x1c ]
+    8410:	90 10 00 1a 	mov  %i2, %o0
+    8414:	92 10 00 16 	mov  %l6, %o1
+    8418:	7f ff fd 62 	call  79a0 <ofw_package_to_path>
+    841c:	94 10 21 00 	mov  0x100, %o2
+    8420:	21 00 00 24 	sethi  %hi(0x9000), %l0
+    8424:	80 a2 3f ff 	cmp  %o0, -1
+    8428:	a0 14 22 68 	or  %l0, 0x268, %l0
+    842c:	aa 10 00 16 	mov  %l6, %l5
+    8430:	02 40 00 84 	be,pn   %icc, 8640 <ofw_tree_node_process+0x260>
+    8434:	a8 10 00 16 	mov  %l6, %l4
+    8438:	a4 82 3f ff 	addcc  %o0, -1, %l2
+    843c:	0c 40 00 11 	bneg,pn   %icc, 8480 <ofw_tree_node_process+0xa0>
+    8440:	c0 2d 40 08 	clrb  [ %l5 + %o0 ]
+    8444:	c2 4d 00 12 	ldsb  [ %l4 + %l2 ], %g1
+    8448:	80 a0 60 2f 	cmp  %g1, 0x2f
+    844c:	02 40 00 0d 	be,pn   %icc, 8480 <ofw_tree_node_process+0xa0>
+    8450:	82 02 3f fe 	add  %o0, -2, %g1
+    8454:	10 68 00 07 	b  %xcc, 8470 <ofw_tree_node_process+0x90>
+    8458:	82 00 40 14 	add  %g1, %l4, %g1
+    845c:	85 28 a0 18 	sll  %g2, 0x18, %g2
+    8460:	85 38 a0 18 	sra  %g2, 0x18, %g2
+    8464:	80 a0 a0 2f 	cmp  %g2, 0x2f
+    8468:	02 40 00 06 	be,pn   %icc, 8480 <ofw_tree_node_process+0xa0>
+    846c:	82 00 7f ff 	add  %g1, -1, %g1
+    8470:	a4 04 bf ff 	add  %l2, -1, %l2
+    8474:	80 a4 bf ff 	cmp  %l2, -1
+    8478:	32 4f ff f9 	bne,a   %icc, 845c <ofw_tree_node_process+0x7c>
+    847c:	c4 08 40 00 	ldub  [ %g1 ], %g2
+    8480:	a4 04 a0 01 	inc  %l2
+    8484:	a2 22 00 12 	sub  %o0, %l2, %l1
+    8488:	a6 04 60 01 	add  %l1, 1, %l3
+    848c:	90 04 60 02 	add  %l1, 2, %o0
+    8490:	7f ff fc 44 	call  75a0 <balloc>
+    8494:	92 10 00 13 	mov  %l3, %o1
+    8498:	82 92 20 00 	orcc  %o0, 0, %g1
+    849c:	02 40 00 88 	be,pn   %icc, 86bc <ofw_tree_node_process+0x2dc>
+    84a0:	92 05 40 12 	add  %l5, %l2, %o1
+    84a4:	c0 28 40 13 	clrb  [ %g1 + %l3 ]
+    84a8:	c2 26 20 10 	st  %g1, [ %i0 + 0x10 ]
+    84ac:	40 00 01 8f 	call  8ae8 <memcpy>
+    84b0:	94 10 00 11 	mov  %l1, %o2
+    84b4:	c2 06 20 10 	ld  [ %i0 + 0x10 ], %g1
+    84b8:	90 10 00 1a 	mov  %i2, %o0
+    84bc:	7f ff fd 29 	call  7960 <ofw_get_child_node>
+    84c0:	c0 28 40 11 	clrb  [ %g1 + %l1 ]
+    84c4:	82 02 3f ff 	add  %o0, -1, %g1
+    84c8:	80 a0 7f fd 	cmp  %g1, -3
+    84cc:	08 40 00 5f 	bleu,pn   %icc, 8648 <ofw_tree_node_process+0x268>
+    84d0:	a4 10 00 08 	mov  %o0, %l2
+    84d4:	10 68 00 04 	b  %xcc, 84e4 <ofw_tree_node_process+0x104>
+    84d8:	c0 2c 00 00 	clrb  [ %l0 ]
+    84dc:	82 00 60 01 	inc  %g1
+    84e0:	c2 26 20 14 	st  %g1, [ %i0 + 0x14 ]
+    84e4:	90 10 00 1a 	mov  %i2, %o0
+    84e8:	92 10 00 10 	mov  %l0, %o1
+    84ec:	7f ff fd 3d 	call  79e0 <ofw_next_property>
+    84f0:	94 10 00 10 	mov  %l0, %o2
+    84f4:	80 a2 20 01 	cmp  %o0, 1
+    84f8:	02 4f ff f9 	be  %icc, 84dc <ofw_tree_node_process+0xfc>
+    84fc:	c2 06 20 14 	ld  [ %i0 + 0x14 ], %g1
+    8500:	80 a0 60 00 	cmp  %g1, 0
+    8504:	02 40 00 4f 	be,pn   %icc, 8640 <ofw_tree_node_process+0x260>
+    8508:	85 28 60 05 	sll  %g1, 5, %g2
+    850c:	83 28 60 03 	sll  %g1, 3, %g1
+    8510:	90 00 40 02 	add  %g1, %g2, %o0
+    8514:	7f ff fc 23 	call  75a0 <balloc>
+    8518:	92 10 20 28 	mov  0x28, %o1
+    851c:	80 a2 20 00 	cmp  %o0, 0
+    8520:	02 40 00 48 	be,pn   %icc, 8640 <ofw_tree_node_process+0x260>
+    8524:	d0 26 20 18 	st  %o0, [ %i0 + 0x18 ]
+    8528:	92 10 00 10 	mov  %l0, %o1
+    852c:	94 10 00 10 	mov  %l0, %o2
+    8530:	90 10 00 1a 	mov  %i2, %o0
+    8534:	7f ff fd 2b 	call  79e0 <ofw_next_property>
+    8538:	c0 2c 00 00 	clrb  [ %l0 ]
+    853c:	80 a2 20 01 	cmp  %o0, 1
+    8540:	a2 10 20 00 	clr  %l1
+    8544:	a6 10 20 00 	clr  %l3
+    8548:	94 10 20 20 	mov  0x20, %o2
+    854c:	12 40 00 20 	bne,pn   %icc, 85cc <ofw_tree_node_process+0x1ec>
+    8550:	92 10 00 10 	mov  %l0, %o1
+    8554:	c2 06 20 14 	ld  [ %i0 + 0x14 ], %g1
+    8558:	80 a0 40 13 	cmp  %g1, %l3
+    855c:	22 40 00 1e 	be,a,pn   %icc, 85d4 <ofw_tree_node_process+0x1f4>
+    8560:	c2 26 20 14 	st  %g1, [ %i0 + 0x14 ]
+    8564:	d0 06 20 18 	ld  [ %i0 + 0x18 ], %o0
+    8568:	40 00 01 60 	call  8ae8 <memcpy>
+    856c:	90 02 00 11 	add  %o0, %l1, %o0
+    8570:	c2 06 20 18 	ld  [ %i0 + 0x18 ], %g1
+    8574:	82 00 40 11 	add  %g1, %l1, %g1
+    8578:	c0 28 60 20 	clrb  [ %g1 + 0x20 ]
+    857c:	92 10 00 10 	mov  %l0, %o1
+    8580:	7f ff fd 28 	call  7a20 <ofw_get_proplen>
+    8584:	90 10 00 1a 	mov  %i2, %o0
+    8588:	c2 06 20 18 	ld  [ %i0 + 0x18 ], %g1
+    858c:	82 00 40 11 	add  %g1, %l1, %g1
+    8590:	80 a2 20 00 	cmp  %o0, 0
+    8594:	d0 20 60 20 	st  %o0, [ %g1 + 0x20 ]
+    8598:	12 40 00 36 	bne,pn   %icc, 8670 <ofw_tree_node_process+0x290>
+    859c:	a4 10 00 08 	mov  %o0, %l2
+    85a0:	c0 20 60 24 	clr  [ %g1 + 0x24 ]
+    85a4:	a6 04 e0 01 	inc  %l3
+    85a8:	a2 04 60 28 	add  %l1, 0x28, %l1
+    85ac:	92 10 00 10 	mov  %l0, %o1
+    85b0:	94 10 00 10 	mov  %l0, %o2
+    85b4:	7f ff fd 0b 	call  79e0 <ofw_next_property>
+    85b8:	90 10 00 1a 	mov  %i2, %o0
+    85bc:	80 a2 20 01 	cmp  %o0, 1
+    85c0:	94 10 20 20 	mov  0x20, %o2
+    85c4:	02 4f ff e4 	be  %icc, 8554 <ofw_tree_node_process+0x174>
+    85c8:	92 10 00 10 	mov  %l0, %o1
+    85cc:	82 10 00 13 	mov  %l3, %g1
+    85d0:	c2 26 20 14 	st  %g1, [ %i0 + 0x14 ]
+    85d4:	7f ff fc d3 	call  7920 <ofw_get_peer_node>
+    85d8:	90 10 00 1a 	mov  %i2, %o0
+    85dc:	82 02 3f ff 	add  %o0, -1, %g1
+    85e0:	80 a0 7f fd 	cmp  %g1, -3
+    85e4:	18 40 00 17 	bgu,pn   %icc, 8640 <ofw_tree_node_process+0x260>
+    85e8:	b4 10 00 08 	mov  %o0, %i2
+    85ec:	90 10 20 20 	mov  0x20, %o0
+    85f0:	7f ff fb ec 	call  75a0 <balloc>
+    85f4:	92 10 20 20 	mov  0x20, %o1
+    85f8:	80 a2 20 00 	cmp  %o0, 0
+    85fc:	02 40 00 11 	be,pn   %icc, 8640 <ofw_tree_node_process+0x260>
+    8600:	92 10 00 16 	mov  %l6, %o1
+    8604:	d0 26 20 04 	st  %o0, [ %i0 + 4 ]
+    8608:	b0 10 00 08 	mov  %o0, %i0
+    860c:	f2 22 00 00 	st  %i1, [ %o0 ]
+    8610:	c0 26 20 04 	clr  [ %i0 + 4 ]
+    8614:	c0 26 20 08 	clr  [ %i0 + 8 ]
+    8618:	f4 26 20 0c 	st  %i2, [ %i0 + 0xc ]
+    861c:	c0 26 20 14 	clr  [ %i0 + 0x14 ]
+    8620:	c0 26 20 18 	clr  [ %i0 + 0x18 ]
+    8624:	c0 26 20 1c 	clr  [ %i0 + 0x1c ]
+    8628:	90 10 00 1a 	mov  %i2, %o0
+    862c:	7f ff fc dd 	call  79a0 <ofw_package_to_path>
+    8630:	94 10 21 00 	mov  0x100, %o2
+    8634:	80 a2 3f ff 	cmp  %o0, -1
+    8638:	12 4f ff 81 	bne  %icc, 843c <ofw_tree_node_process+0x5c>
+    863c:	a4 82 3f ff 	addcc  %o0, -1, %l2
+    8640:	81 cf e0 08 	rett  %i7 + 8
+    8644:	01 00 00 00 	nop 
+    8648:	90 10 20 20 	mov  0x20, %o0	! 20 <start-0x3fe0>
+    864c:	7f ff fb d5 	call  75a0 <balloc>
+    8650:	92 10 20 20 	mov  0x20, %o1
+    8654:	a2 92 20 00 	orcc  %o0, 0, %l1
+    8658:	02 47 ff 9f 	be,pn   %icc, 84d4 <ofw_tree_node_process+0xf4>
+    865c:	94 10 00 12 	mov  %l2, %o2
+    8660:	7f ff ff 60 	call  83e0 <ofw_tree_node_process>
+    8664:	92 10 00 18 	mov  %i0, %o1
+    8668:	10 6f ff 9b 	b  %xcc, 84d4 <ofw_tree_node_process+0xf4>
+    866c:	e2 26 20 08 	st  %l1, [ %i0 + 8 ]
+    8670:	92 10 00 08 	mov  %o0, %o1
+    8674:	7f ff fb cb 	call  75a0 <balloc>
+    8678:	90 02 20 01 	inc  %o0
+    867c:	82 92 20 00 	orcc  %o0, 0, %g1
+    8680:	94 10 00 01 	mov  %g1, %o2
+    8684:	96 10 00 12 	mov  %l2, %o3
+    8688:	90 10 00 1a 	mov  %i2, %o0
+    868c:	02 40 00 03 	be,pn   %icc, 8698 <ofw_tree_node_process+0x2b8>
+    8690:	92 10 00 10 	mov  %l0, %o1
+    8694:	c0 28 40 12 	clrb  [ %g1 + %l2 ]
+    8698:	c4 06 20 18 	ld  [ %i0 + 0x18 ], %g2
+    869c:	84 00 80 11 	add  %g2, %l1, %g2
+    86a0:	80 a0 60 00 	cmp  %g1, 0
+    86a4:	02 47 ff c0 	be,pn   %icc, 85a4 <ofw_tree_node_process+0x1c4>
+    86a8:	c2 20 a0 24 	st  %g1, [ %g2 + 0x24 ]
+    86ac:	7f ff fc ed 	call  7a60 <ofw_get_property>
+    86b0:	a6 04 e0 01 	inc  %l3
+    86b4:	10 6f ff be 	b  %xcc, 85ac <ofw_tree_node_process+0x1cc>
+    86b8:	a2 04 60 28 	add  %l1, 0x28, %l1
+    86bc:	c0 26 20 10 	clr  [ %i0 + 0x10 ]
+    86c0:	81 cf e0 08 	rett  %i7 + 8
+    86c4:	01 00 00 00 	nop 
+    86c8:	30 68 00 06 	b,a   %xcc, 86e0 <ofw_tree_build>
+    86cc:	01 00 00 00 	nop 
+    86d0:	01 00 00 00 	nop 
+    86d4:	01 00 00 00 	nop 
+    86d8:	01 00 00 00 	nop 
+    86dc:	01 00 00 00 	nop 
+
+000086e0 <ofw_tree_build>:
+    86e0:	9d e3 bf a0 	save  %sp, -96, %sp
+    86e4:	90 10 20 20 	mov  0x20, %o0
+    86e8:	7f ff fb ae 	call  75a0 <balloc>
+    86ec:	92 10 20 20 	mov  0x20, %o1
+    86f0:	b0 92 20 00 	orcc  %o0, 0, %i0
+    86f4:	02 40 00 05 	be,pn   %icc, 8708 <ofw_tree_build+0x28>
+    86f8:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    86fc:	d4 00 62 54 	ld  [ %g1 + 0x254 ], %o2	! 9654 <ofw_root>
+    8700:	7f ff ff 38 	call  83e0 <ofw_tree_node_process>
+    8704:	92 10 20 00 	clr  %o1
+    8708:	23 00 00 24 	sethi  %hi(0x9000), %l1
+    870c:	7f ff fd 35 	call  7be0 <ofw_find_device>
+    8710:	90 14 61 c8 	or  %l1, 0x1c8, %o0	! 91c8 <ofw+0x5e0>
+    8714:	80 a2 3f ff 	cmp  %o0, -1
+    8718:	02 40 00 10 	be,pn   %icc, 8758 <ofw_tree_build+0x78>
+    871c:	90 10 20 20 	mov  0x20, %o0
+    8720:	7f ff fb a0 	call  75a0 <balloc>
+    8724:	92 10 20 20 	mov  0x20, %o1
+    8728:	a0 92 20 00 	orcc  %o0, 0, %l0
+    872c:	02 40 00 0b 	be,pn   %icc, 8758 <ofw_tree_build+0x78>
+    8730:	01 00 00 00 	nop 
+    8734:	7f ff fd 2b 	call  7be0 <ofw_find_device>
+    8738:	90 14 61 c8 	or  %l1, 0x1c8, %o0
+    873c:	92 10 00 18 	mov  %i0, %o1
+    8740:	94 10 00 08 	mov  %o0, %o2
+    8744:	7f ff ff 27 	call  83e0 <ofw_tree_node_process>
+    8748:	90 10 00 10 	mov  %l0, %o0
+    874c:	c2 06 20 08 	ld  [ %i0 + 8 ], %g1
+    8750:	e0 26 20 08 	st  %l0, [ %i0 + 8 ]
+    8754:	c2 24 20 04 	st  %g1, [ %l0 + 4 ]
+    8758:	81 cf e0 08 	rett  %i7 + 8
+    875c:	01 00 00 00 	nop 
+
+00008760 <ofw_translate_failed>:
+    8760:	90 38 00 08 	xnor  %g0, %o0, %o0
+    8764:	80 a0 00 08 	cmp  %g0, %o0
+    8768:	81 c3 e0 08 	retl 
+    876c:	90 40 20 00 	addc  %g0, 0, %o0
+    8770:	30 68 00 04 	b,a   %xcc, 8780 <ofw_get_physmem_start>
+    8774:	01 00 00 00 	nop 
+    8778:	01 00 00 00 	nop 
+    877c:	01 00 00 00 	nop 
+
+00008780 <ofw_get_physmem_start>:
+    8780:	9d e3 bf 90 	save  %sp, -112, %sp
+    8784:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    8788:	d0 00 62 50 	ld  [ %g1 + 0x250 ], %o0	! 9650 <ofw_memory>
+    878c:	13 00 00 24 	sethi  %hi(0x9000), %o1
+    8790:	92 12 61 c0 	or  %o1, 0x1c0, %o1	! 91c0 <ofw+0x5d8>
+    8794:	94 07 bf f0 	add  %fp, -16, %o2
+    8798:	7f ff fc b2 	call  7a60 <ofw_get_property>
+    879c:	96 10 20 10 	mov  0x10, %o3
+    87a0:	80 a2 20 00 	cmp  %o0, 0
+    87a4:	04 40 00 05 	ble,pn   %icc, 87b8 <ofw_get_physmem_start+0x38>
+    87a8:	82 10 20 00 	clr  %g1
+    87ac:	c2 07 bf f0 	ld  [ %fp + -16 ], %g1
+    87b0:	c2 26 00 00 	st  %g1, [ %i0 ]
+    87b4:	82 10 20 01 	mov  1, %g1
+    87b8:	81 cf e0 08 	rett  %i7 + 8
+    87bc:	90 10 00 01 	mov  %g1, %o0
+
+000087c0 <wake_cpus_in_node>:
+    87c0:	9d e3 bb 90 	save  %sp, -1136, %sp
+    87c4:	82 06 3f ff 	add  %i0, -1, %g1
+    87c8:	80 a0 7f fd 	cmp  %g1, -3
+    87cc:	a0 10 00 18 	mov  %i0, %l0
+    87d0:	a2 07 bb f8 	add  %fp, -1032, %l1
+    87d4:	18 40 00 41 	bgu,pn   %icc, 88d8 <wake_cpus_in_node+0x118>
+    87d8:	b0 10 20 00 	clr  %i0
+    87dc:	27 00 00 24 	sethi  %hi(0x9000), %l3
+    87e0:	25 00 00 24 	sethi  %hi(0x9000), %l2
+    87e4:	2b 00 00 24 	sethi  %hi(0x9000), %l5
+    87e8:	2f 00 00 25 	sethi  %hi(0x9400), %l7
+    87ec:	2d 00 00 24 	sethi  %hi(0x9000), %l6
+    87f0:	3b 00 00 24 	sethi  %hi(0x9000), %i5
+    87f4:	39 00 00 24 	sethi  %hi(0x9000), %i4
+    87f8:	a6 14 e1 d8 	or  %l3, 0x1d8, %l3
+    87fc:	a4 14 a1 e8 	or  %l2, 0x1e8, %l2
+    8800:	aa 15 61 f0 	or  %l5, 0x1f0, %l5
+    8804:	ae 15 e0 20 	or  %l7, 0x20, %l7
+    8808:	ac 15 a2 10 	or  %l6, 0x210, %l6
+    880c:	ba 17 62 00 	or  %i5, 0x200, %i5
+    8810:	b8 17 22 08 	or  %i4, 0x208, %i4
+    8814:	10 68 00 09 	b  %xcc, 8838 <wake_cpus_in_node+0x78>
+    8818:	a8 07 bf fc 	add  %fp, -4, %l4
+    881c:	7f ff fc 41 	call  7920 <ofw_get_peer_node>
+    8820:	90 10 00 10 	mov  %l0, %o0
+    8824:	82 02 3f ff 	add  %o0, -1, %g1
+    8828:	80 a0 7f fd 	cmp  %g1, -3
+    882c:	b0 06 20 01 	inc  %i0
+    8830:	18 40 00 2a 	bgu,pn   %icc, 88d8 <wake_cpus_in_node+0x118>
+    8834:	a0 10 00 08 	mov  %o0, %l0
+    8838:	92 10 00 13 	mov  %l3, %o1
+    883c:	94 10 00 11 	mov  %l1, %o2
+    8840:	96 10 24 00 	mov  0x400, %o3
+    8844:	7f ff fc 87 	call  7a60 <ofw_get_property>
+    8848:	90 10 00 10 	mov  %l0, %o0
+    884c:	80 a2 20 00 	cmp  %o0, 0
+    8850:	92 10 00 12 	mov  %l2, %o1
+    8854:	04 47 ff f2 	ble,pn   %icc, 881c <wake_cpus_in_node+0x5c>
+    8858:	90 10 00 11 	mov  %l1, %o0
+    885c:	7f ff f9 e1 	call  6fe0 <strcmp>
+    8860:	01 00 00 00 	nop 
+    8864:	80 a2 20 00 	cmp  %o0, 0
+    8868:	12 4f ff ed 	bne  %icc, 881c <wake_cpus_in_node+0x5c>
+    886c:	92 10 00 15 	mov  %l5, %o1
+    8870:	94 10 00 14 	mov  %l4, %o2
+    8874:	96 10 20 04 	mov  4, %o3
+    8878:	7f ff fc 7a 	call  7a60 <ofw_get_property>
+    887c:	90 10 00 10 	mov  %l0, %o0
+    8880:	80 a2 20 00 	cmp  %o0, 0
+    8884:	04 40 00 17 	ble,pn   %icc, 88e0 <wake_cpus_in_node+0x120>
+    8888:	92 10 00 1d 	mov  %i5, %o1
+    888c:	c2 07 bf fc 	ld  [ %fp + -4 ], %g1
+    8890:	80 a6 40 01 	cmp  %i1, %g1
+    8894:	92 10 20 03 	mov  3, %o1
+    8898:	94 10 20 01 	mov  1, %o2
+    889c:	96 10 20 00 	clr  %o3
+    88a0:	98 10 00 10 	mov  %l0, %o4
+    88a4:	1b 00 10 00 	sethi  %hi(0x400000), %o5
+    88a8:	02 47 ff dd 	be,pn   %icc, 881c <wake_cpus_in_node+0x5c>
+    88ac:	90 10 00 16 	mov  %l6, %o0
+    88b0:	c2 05 c0 00 	ld  [ %l7 ], %g1
+    88b4:	7f ff fb 63 	call  7640 <ofw_call>
+    88b8:	c2 23 a0 5c 	st  %g1, [ %sp + 0x5c ]
+    88bc:	7f ff fc 19 	call  7920 <ofw_get_peer_node>
+    88c0:	90 10 00 10 	mov  %l0, %o0
+    88c4:	82 02 3f ff 	add  %o0, -1, %g1
+    88c8:	80 a0 7f fd 	cmp  %g1, -3
+    88cc:	b0 06 20 01 	inc  %i0
+    88d0:	08 4f ff da 	bleu  %icc, 8838 <wake_cpus_in_node+0x78>
+    88d4:	a0 10 00 08 	mov  %o0, %l0
+    88d8:	81 cf e0 08 	rett  %i7 + 8
+    88dc:	01 00 00 00 	nop 
+    88e0:	94 10 00 14 	mov  %l4, %o2
+    88e4:	96 10 20 04 	mov  4, %o3
+    88e8:	7f ff fc 5e 	call  7a60 <ofw_get_property>
+    88ec:	90 10 00 10 	mov  %l0, %o0
+    88f0:	80 a2 20 00 	cmp  %o0, 0
+    88f4:	14 4f ff e7 	bg  %icc, 8890 <wake_cpus_in_node+0xd0>
+    88f8:	c2 07 bf fc 	ld  [ %fp + -4 ], %g1
+    88fc:	92 10 00 1c 	mov  %i4, %o1
+    8900:	94 10 00 14 	mov  %l4, %o2
+    8904:	96 10 20 04 	mov  4, %o3
+    8908:	7f ff fc 56 	call  7a60 <ofw_get_property>
+    890c:	90 10 00 10 	mov  %l0, %o0
+    8910:	80 a2 20 00 	cmp  %o0, 0
+    8914:	14 4f ff df 	bg  %icc, 8890 <wake_cpus_in_node+0xd0>
+    8918:	c2 07 bf fc 	ld  [ %fp + -4 ], %g1
+    891c:	10 6f ff c0 	b  %xcc, 881c <wake_cpus_in_node+0x5c>
+    8920:	01 00 00 00 	nop 
+    8924:	30 68 00 07 	b,a   %xcc, 8940 <ofw_cpu>
+    8928:	01 00 00 00 	nop 
+    892c:	01 00 00 00 	nop 
+    8930:	01 00 00 00 	nop 
+    8934:	01 00 00 00 	nop 
+    8938:	01 00 00 00 	nop 
+    893c:	01 00 00 00 	nop 
+
+00008940 <ofw_cpu>:
+    8940:	9d e3 bb a0 	save  %sp, -1120, %sp
+    8944:	a8 10 20 00 	clr  %l4
+    8948:	e8 dd 09 40 	ldxa  [ %l4 ] #ASI_UPA_CONFIG, %l4
+    894c:	03 00 00 25 	sethi  %hi(0x9400), %g1
+    8950:	c2 10 62 3c 	lduh  [ %g1 + 0x23c ], %g1	! 963c <mid_mask>
+    8954:	11 00 00 24 	sethi  %hi(0x9000), %o0
+    8958:	a9 35 20 11 	srl  %l4, 0x11, %l4
+    895c:	90 12 21 c8 	or  %o0, 0x1c8, %o0
+    8960:	7f ff fc a0 	call  7be0 <ofw_find_device>
+    8964:	a8 0d 00 01 	and  %l4, %g1, %l4
+    8968:	82 02 3f ff 	add  %o0, -1, %g1
+    896c:	80 a0 7f fd 	cmp  %g1, -3
+    8970:	38 40 00 32 	bgu,a,pn   %icc, 8a38 <ofw_cpu+0xf8>
+    8974:	11 00 00 23 	sethi  %hi(0x8c00), %o0
+    8978:	7f ff fb fa 	call  7960 <ofw_get_child_node>
+    897c:	01 00 00 00 	nop 
+    8980:	92 10 00 14 	mov  %l4, %o1
+    8984:	7f ff ff 8f 	call  87c0 <wake_cpus_in_node>
+    8988:	a0 10 00 08 	mov  %o0, %l0
+    898c:	82 04 3f ff 	add  %l0, -1, %g1
+    8990:	80 a0 7f fd 	cmp  %g1, -3
+    8994:	18 40 00 27 	bgu,pn   %icc, 8a30 <ofw_cpu+0xf0>
+    8998:	b0 10 00 08 	mov  %o0, %i0
+    899c:	27 00 00 24 	sethi  %hi(0x9000), %l3
+    89a0:	25 00 00 24 	sethi  %hi(0x9000), %l2
+    89a4:	a6 14 e2 20 	or  %l3, 0x220, %l3
+    89a8:	a4 14 a2 28 	or  %l2, 0x228, %l2
+    89ac:	10 68 00 08 	b  %xcc, 89cc <ofw_cpu+0x8c>
+    89b0:	a2 07 bc 00 	add  %fp, -1024, %l1
+    89b4:	7f ff fb db 	call  7920 <ofw_get_peer_node>
+    89b8:	90 10 00 10 	mov  %l0, %o0
+    89bc:	82 02 3f ff 	add  %o0, -1, %g1
+    89c0:	80 a0 7f fd 	cmp  %g1, -3
+    89c4:	18 40 00 1b 	bgu,pn   %icc, 8a30 <ofw_cpu+0xf0>
+    89c8:	a0 10 00 08 	mov  %o0, %l0
+    89cc:	92 10 00 13 	mov  %l3, %o1
+    89d0:	94 10 00 11 	mov  %l1, %o2
+    89d4:	96 10 24 00 	mov  0x400, %o3
+    89d8:	7f ff fc 22 	call  7a60 <ofw_get_property>
+    89dc:	90 10 00 10 	mov  %l0, %o0
+    89e0:	80 a2 20 00 	cmp  %o0, 0
+    89e4:	92 10 00 12 	mov  %l2, %o1
+    89e8:	04 47 ff f3 	ble,pn   %icc, 89b4 <ofw_cpu+0x74>
+    89ec:	90 10 00 11 	mov  %l1, %o0
+    89f0:	7f ff f9 7c 	call  6fe0 <strcmp>
+    89f4:	01 00 00 00 	nop 
+    89f8:	80 a2 20 00 	cmp  %o0, 0
+    89fc:	12 4f ff ee 	bne  %icc, 89b4 <ofw_cpu+0x74>
+    8a00:	01 00 00 00 	nop 
+    8a04:	7f ff fb d7 	call  7960 <ofw_get_child_node>
+    8a08:	90 10 00 10 	mov  %l0, %o0
+    8a0c:	7f ff ff 6d 	call  87c0 <wake_cpus_in_node>
+    8a10:	92 10 00 14 	mov  %l4, %o1
+    8a14:	b0 06 00 08 	add  %i0, %o0, %i0
+    8a18:	7f ff fb c2 	call  7920 <ofw_get_peer_node>
+    8a1c:	90 10 00 10 	mov  %l0, %o0
+    8a20:	82 02 3f ff 	add  %o0, -1, %g1
+    8a24:	80 a0 7f fd 	cmp  %g1, -3
+    8a28:	08 4f ff e9 	bleu  %icc, 89cc <ofw_cpu+0x8c>
+    8a2c:	a0 10 00 08 	mov  %o0, %l0
+    8a30:	81 cf e0 08 	rett  %i7 + 8
+    8a34:	01 00 00 00 	nop 
+    8a38:	7f ff fc 6a 	call  7be0 <ofw_find_device>
+    8a3c:	90 12 20 18 	or  %o0, 0x18, %o0
+    8a40:	10 6f ff ce 	b  %xcc, 8978 <ofw_cpu+0x38>
+    8a44:	01 00 00 00 	nop 
+    8a48:	30 68 00 06 	b,a   %xcc, 8a60 <write>
+    8a4c:	01 00 00 00 	nop 
+    8a50:	01 00 00 00 	nop 
+    8a54:	01 00 00 00 	nop 
+    8a58:	01 00 00 00 	nop 
+    8a5c:	01 00 00 00 	nop 
+
+00008a60 <write>:
+    8a60:	9d e3 bf a0 	save  %sp, -96, %sp
+    8a64:	80 a6 60 00 	cmp  %i1, 0
+    8a68:	04 40 00 19 	ble,pn   %icc, 8acc <write+0x6c>
+    8a6c:	25 00 00 24 	sethi  %hi(0x9000), %l2
+    8a70:	a4 14 a2 30 	or  %l2, 0x230, %l2	! 9230 <ofw+0x648>
+    8a74:	10 68 00 08 	b  %xcc, 8a94 <write+0x34>
+    8a78:	a0 10 20 00 	clr  %l0
+    8a7c:	90 10 00 11 	mov  %l1, %o0
+    8a80:	7f ff fb 98 	call  78e0 <ofw_write>
+    8a84:	92 10 20 01 	mov  1, %o1
+    8a88:	80 a6 40 10 	cmp  %i1, %l0
+    8a8c:	04 40 00 10 	ble,pn   %icc, 8acc <write+0x6c>
+    8a90:	01 00 00 00 	nop 
+    8a94:	c2 4e 00 10 	ldsb  [ %i0 + %l0 ], %g1
+    8a98:	80 a0 60 0a 	cmp  %g1, 0xa
+    8a9c:	a2 06 00 10 	add  %i0, %l0, %l1
+    8aa0:	12 4f ff f7 	bne  %icc, 8a7c <write+0x1c>
+    8aa4:	a0 04 20 01 	inc  %l0
+    8aa8:	90 10 00 12 	mov  %l2, %o0
+    8aac:	7f ff fb 8d 	call  78e0 <ofw_write>
+    8ab0:	92 10 20 01 	mov  1, %o1
+    8ab4:	90 10 00 11 	mov  %l1, %o0
+    8ab8:	7f ff fb 8a 	call  78e0 <ofw_write>
+    8abc:	92 10 20 01 	mov  1, %o1
+    8ac0:	80 a6 40 10 	cmp  %i1, %l0
+    8ac4:	34 4f ff f5 	bg,a   %icc, 8a98 <write+0x38>
+    8ac8:	c2 4e 00 10 	ldsb  [ %i0 + %l0 ], %g1
+    8acc:	81 cf e0 08 	rett  %i7 + 8
+    8ad0:	01 00 00 00 	nop 
+    8ad4:	30 68 00 03 	b,a   %xcc, 8ae0 <halt>
+    8ad8:	01 00 00 00 	nop 
+    8adc:	01 00 00 00 	nop 
+
+00008ae0 <halt>:
+    8ae0:	10 80 00 00 	b  8ae0 <halt>
+    8ae4:	01 00 00 00 	nop 
+
+00008ae8 <memcpy>:
+    8ae8:	96 10 00 08 	mov  %o0, %o3
+    8aec:	82 02 60 07 	add  %o1, 7, %g1
+    8af0:	82 08 7f f8 	and  %g1, -8, %g1
+    8af4:	80 a2 40 01 	cmp  %o1, %g1
+    8af8:	02 60 00 0d 	be,pn   %xcc, 8b2c <memcpy+0x44>
+    8afc:	82 02 20 07 	add  %o0, 7, %g1
+    8b00:	86 10 20 00 	clr  %g3
+    8b04:	02 c2 80 08 	brz,pn   %o2, 8b24 <memcpy+0x3c>
+    8b08:	84 10 20 00 	clr  %g2
+    8b0c:	c2 08 c0 09 	ldub  [ %g3 + %o1 ], %g1
+    8b10:	84 00 a0 01 	inc  %g2
+    8b14:	80 a2 80 02 	cmp  %o2, %g2
+    8b18:	c2 28 c0 08 	stb  %g1, [ %g3 + %o0 ]
+    8b1c:	12 6f ff fc 	bne  %xcc, 8b0c <memcpy+0x24>
+    8b20:	86 10 00 02 	mov  %g2, %g3
+    8b24:	81 c3 e0 08 	retl 
+    8b28:	90 10 00 0b 	mov  %o3, %o0
+    8b2c:	82 08 7f f8 	and  %g1, -8, %g1
+    8b30:	80 a2 00 01 	cmp  %o0, %g1
+    8b34:	12 6f ff f4 	bne  %xcc, 8b04 <memcpy+0x1c>
+    8b38:	86 10 20 00 	clr  %g3
+    8b3c:	89 32 b0 03 	srlx  %o2, 3, %g4
+    8b40:	02 c1 00 09 	brz,pn   %g4, 8b64 <memcpy+0x7c>
+    8b44:	8a 10 20 00 	clr  %g5
+    8b48:	85 28 f0 03 	sllx  %g3, 3, %g2
+    8b4c:	86 01 60 01 	add  %g5, 1, %g3
+    8b50:	c2 5a 40 02 	ldx  [ %o1 + %g2 ], %g1
+    8b54:	8a 10 00 03 	mov  %g3, %g5
+    8b58:	80 a1 00 03 	cmp  %g4, %g3
+    8b5c:	12 6f ff fb 	bne  %xcc, 8b48 <memcpy+0x60>
+    8b60:	c2 72 00 02 	stx  %g1, [ %o0 + %g2 ]
+    8b64:	94 0a a0 07 	and  %o2, 7, %o2
+    8b68:	02 f2 bf ef 	brz,pn   %o2, 8b24 <memcpy+0x3c>
+    8b6c:	83 29 30 03 	sllx  %g4, 3, %g1
+    8b70:	84 10 20 00 	clr  %g2
+    8b74:	90 00 40 08 	add  %g1, %o0, %o0
+    8b78:	88 00 40 09 	add  %g1, %o1, %g4
+    8b7c:	86 10 20 00 	clr  %g3
+    8b80:	c2 08 80 04 	ldub  [ %g2 + %g4 ], %g1
+    8b84:	c2 28 80 08 	stb  %g1, [ %g2 + %o0 ]
+    8b88:	84 00 e0 01 	add  %g3, 1, %g2
+    8b8c:	80 a2 80 02 	cmp  %o2, %g2
+    8b90:	12 6f ff fc 	bne  %xcc, 8b80 <memcpy+0x98>
+    8b94:	86 10 00 02 	mov  %g2, %g3
+    8b98:	81 c3 e0 08 	retl 
+    8b9c:	90 10 00 0b 	mov  %o3, %o0
+
+00008ba0 <jump_to_kernel>:
+    8ba0:	81 43 e0 08 	membar  #StoreStore
+    8ba4:	81 df c0 00 	flush  %i7
+    8ba8:	a2 10 00 08 	mov  %o0, %l1
+    8bac:	90 10 00 09 	mov  %o1, %o0
+    8bb0:	92 10 00 0a 	mov  %o2, %o1
+    8bb4:	94 10 00 0b 	mov  %o3, %o2
+    8bb8:	81 c4 40 00 	jmp  %l1
+    8bbc:	01 00 00 00 	nop 
+
+00008bc0 <icache_flush>:
+    8bc0:	03 00 00 0f 	sethi  %hi(0x3c00), %g1
+    8bc4:	82 10 63 e0 	or  %g1, 0x3e0, %g1	! 3fe0 <start-0x20>
+    8bc8:	c0 f0 4c e0 	stxa  %g0, [ %g1 ] #ASI_IC_TAG
+    8bcc:	81 43 e0 40 	membar  #Sync
+    8bd0:	82 a0 60 20 	subcc  %g1, 0x20, %g1
+    8bd4:	12 6f ff fe 	bne  %xcc, 8bcc <icache_flush+0xc>
+    8bd8:	c0 f0 4c e0 	stxa  %g0, [ %g1 ] #ASI_IC_TAG
+    8bdc:	81 43 e0 40 	membar  #Sync
+    8be0:	81 c3 e0 08 	retl 
+    8be4:	01 00 00 00 	nop 
+
+00008be8 <ofw>:
+    8be8:	9d e3 bf 80 	save  %sp, -128, %sp
+    8bec:	21 00 00 25 	sethi  %hi(0x9400), %l0
+    8bf0:	a0 14 22 58 	or  %l0, 0x258, %l0	! 9658 <ofw_cif>
+    8bf4:	e0 5c 00 00 	ldx  [ %l0 ], %l0
+    8bf8:	a3 51 80 00 	rdpr  %pstate, %l1
+    8bfc:	a4 0c 7f f7 	and  %l1, -9, %l2
+    8c00:	8d 94 a0 00 	wrpr  %l2, 0, %pstate
+    8c04:	9f c4 00 00 	call  %l0
+    8c08:	90 10 00 18 	mov  %i0, %o0
+    8c0c:	8d 94 60 00 	wrpr  %l1, 0, %pstate
+    8c10:	81 c7 e0 08 	ret 
+    8c14:	91 ea 20 00 	restore  %o0, 0, %o0
+    8c18:	2f 00 00 00 	sethi  %hi(0), %l7
+    8c1c:	00 00 00 00 	illtrap  0
+    8c20:	63 6f 6d 70 	call  8dbe41e0 <ofw_mmu+0x8dbdab84>
+    8c24:	61 74 69 62 	call  85d231ac <ofw_mmu+0x85d19b50>
+    8c28:	6c 65 00 00 	call  b1948c28 <ofw_mmu+0xb193f5cc>
+    8c2c:	00 00 00 00 	illtrap  0
+    8c30:	55 6e 61 62 	call  55ba11b8 <ofw_mmu+0x55b97b5c>
+    8c34:	6c 65 20 74 	call  b1950e04 <ofw_mmu+0xb19477a8>
+    8c38:	6f 20 64 65 	call  bc821dcc <ofw_mmu+0xbc818770>
+    8c3c:	74 65 72 6d 	call  d19655f0 <ofw_mmu+0xd195bf94>
+    8c40:	69 6e 65 20 	call  a5ba20c0 <ofw_mmu+0xa5b98a64>
+    8c44:	61 72 63 68 	call  85ca19e4 <ofw_mmu+0x85c98388>
+    8c48:	69 74 65 63 	call  a5d221d4 <ofw_mmu+0xa5d18b78>
+    8c4c:	74 75 72 65 	call  d1d655e0 <ofw_mmu+0xd1d5bf84>
+    8c50:	2c 20 64 65 	unknown
+    8c54:	66 61 75 6c 	call  99866204 <ofw_mmu+0x9985cba8>
+    8c58:	74 3a 20 73 	call  d0e90e24 <ofw_mmu+0xd0e877c8>
+    8c5c:	75 6e 34 75 	call  d5b95e30 <ofw_mmu+0xd5b8c7d4>
+    8c60:	2e 0a 00 00 	unknown
+    8c64:	00 00 00 00 	illtrap  0
+    8c68:	73 75 6e 34 	call  cdd64538 <ofw_mmu+0xcdd5aedc>
+    8c6c:	76 00 00 00 	call  d8008c6c <ofw_mmu+0xd7fff610>
+    8c70:	45 72 72 6f 	call  15ca562c <ofw_mmu+0x15c9bfd0>
+    8c74:	72 3a 20 75 	call  c8e90e48 <ofw_mmu+0xc8e877ec>
+    8c78:	6e 61 62 6c 	call  b9861628 <ofw_mmu+0xb9857fcc>
+    8c7c:	65 20 74 6f 	call  94825e38 <ofw_mmu+0x9481c7dc>
+    8c80:	20 67 65 74 	bn,a,pn   %xcc, fffe2250 <ofw_mmu+0xfffd8bf4>
+    8c84:	20 73 74 61 	bn,a,pn   %xcc, e5e08 <ofw_mmu+0xdc7ac>
+    8c88:	72 74 20 6f 	call  c9d10e44 <ofw_mmu+0xc9d077e8>
+    8c8c:	66 20 70 68 	call  98824e2c <ofw_mmu+0x9881b7d0>
+    8c90:	79 73 69 63 	call  e5ce321c <ofw_mmu+0xe5cd9bc0>
+    8c94:	61 6c 20 6d 	call  85b10e48 <ofw_mmu+0x85b077ec>
+    8c98:	65 6d 6f 72 	call  95b64a60 <ofw_mmu+0x95b5b404>
+    8c9c:	79 2e 0a 00 	call  e4b8b49c <ofw_mmu+0xe4b81e40>
+    8ca0:	45 72 72 6f 	call  15ca565c <ofw_mmu+0x15c9c000>
+    8ca4:	72 3a 20 75 	call  c8e90e78 <ofw_mmu+0xc8e8781c>
+    8ca8:	6e 61 62 6c 	call  b9861658 <ofw_mmu+0xb9857ffc>
+    8cac:	65 20 74 6f 	call  94825e68 <ofw_mmu+0x9481c80c>
+    8cb0:	20 67 65 74 	bn,a,pn   %xcc, fffe2280 <ofw_mmu+0xfffd8c24>
+    8cb4:	20 6d 65 6d 	bn,a   %xcc, fff62268 <ofw_mmu+0xfff58c0c>
+    8cb8:	6f 72 79 20 	call  bdca7138 <ofw_mmu+0xbdc9dadc>
+    8cbc:	6d 61 70 2c 	call  b5864d6c <ofw_mmu+0xb585b710>
+    8cc0:	20 68 61 6c 	bn,a   %xcc, 21270 <ofw_mmu+0x17c14>
+    8cc4:	74 69 6e 67 	call  d1a64660 <ofw_mmu+0xd1a5b004>
+    8cc8:	2e 0a 00 00 	unknown
+    8ccc:	00 00 00 00 	illtrap  0
+    8cd0:	45 72 72 6f 	call  15ca568c <ofw_mmu+0x15c9c030>
+    8cd4:	72 3a 20 6e 	call  c8e90e8c <ofw_mmu+0xc8e87830>
+    8cd8:	6f 20 6d 65 	call  bc82426c <ofw_mmu+0xbc81ac10>
+    8cdc:	6d 6f 72 79 	call  b5be56c0 <ofw_mmu+0xb5bdc064>
+    8ce0:	20 64 65 74 	bn,a,pn   %xcc, fff222b0 <ofw_mmu+0xfff18c54>
+    8ce4:	65 63 74 65 	call  958e5e78 <ofw_mmu+0x958dc81c>
+    8ce8:	64 2c 20 68 	call  90b10e88 <ofw_mmu+0x90b0782c>
+    8cec:	61 6c 74 69 	call  85b25e90 <ofw_mmu+0x85b1c834>
+    8cf0:	6e 67 2e 0a 	call  b99d4518 <ofw_mmu+0xb99caebc>
+    8cf4:	00 00 00 00 	illtrap  0
+    8cf8:	46 61 69 6c 	call  198632a8 <ofw_mmu+0x19859c4c>
+    8cfc:	65 64 20 74 	call  95910ecc <ofw_mmu+0x95907870>
+    8d00:	6f 20 6d 61 	call  bc824284 <ofw_mmu+0xbc81ac28>
+    8d04:	70 20 72 61 	call  c0825688 <ofw_mmu+0xc081c02c>
+    8d08:	6d 64 69 73 	call  b59232d4 <ofw_mmu+0xb5919c78>
+    8d0c:	6b 2e 0a 00 	call  acb8b50c <ofw_mmu+0xacb81eb0>
+    8d10:	0a 53 79 73 	bcs,pn   %icc, e72dc <ofw_mmu+0xddc80>
+    8d14:	74 65 6d 20 	call  d1964194 <ofw_mmu+0xd195ab38>
+    8d18:	69 6e 66 6f 	call  a5ba26d4 <ofw_mmu+0xa5b99078>
+    8d1c:	0a 00 00 00 	unknown
+    8d20:	20 6d 65 6d 	bn,a   %xcc, fff622d4 <ofw_mmu+0xfff58c78>
+    8d24:	6f 72 79 3a 	call  bdca720c <ofw_mmu+0xbdc9dbb0>
+    8d28:	20 25 64 4d 	unknown
+    8d2c:	20 73 74 61 	bn,a,pn   %xcc, e5eb0 <ofw_mmu+0xdc854>
+    8d30:	72 74 69 6e 	call  c9d232e8 <ofw_mmu+0xc9d19c8c>
+    8d34:	67 20 61 74 	call  9c821304 <ofw_mmu+0x9c817ca8>
+    8d38:	20 25 50 0a 	unknown
+    8d3c:	00 00 00 00 	illtrap  0
+    8d40:	0a 4d 65 6d 	bcs  %icc, fff622f4 <ofw_mmu+0xfff58c98>
+    8d44:	6f 72 79 20 	call  bdca71c4 <ofw_mmu+0xbdc9db68>
+    8d48:	73 74 61 74 	call  cdd21318 <ofw_mmu+0xcdd17cbc>
+    8d4c:	69 73 74 69 	call  a5ce5ef0 <ofw_mmu+0xa5cdc894>
+    8d50:	63 73 0a 00 	call  8dccb550 <ofw_mmu+0x8dcc1ef4>
+    8d54:	00 00 00 00 	illtrap  0
+    8d58:	20 6b 65 72 	bn,a   %xcc, e2320 <ofw_mmu+0xd8cc4>
+    8d5c:	6e 65 6c 20 	call  b9963ddc <ofw_mmu+0xb995a780>
+    8d60:	65 6e 74 72 	call  95ba5f28 <ofw_mmu+0x95b9c8cc>
+    8d64:	79 20 70 6f 	call  e4824f20 <ofw_mmu+0xe481b8c4>
+    8d68:	69 6e 74 20 	call  a5ba5de8 <ofw_mmu+0xa5b9c78c>
+    8d6c:	61 74 20 25 	call  85d10e00 <ofw_mmu+0x85d077a4>
+    8d70:	50 0a 00 00 	call  40288d70 <ofw_mmu+0x4027f714>
+    8d74:	00 00 00 00 	illtrap  0
+    8d78:	20 25 50 3a 	unknown
+    8d7c:	20 62 6f 6f 	bn,a,pn   %xcc, a4b38 <ofw_mmu+0x9b4dc>
+    8d80:	74 20 69 6e 	call  d0823338 <ofw_mmu+0xd0819cdc>
+    8d84:	66 6f 20 73 	call  99bd0f50 <ofw_mmu+0x99bc78f4>
+    8d88:	74 72 75 63 	call  d1ca6314 <ofw_mmu+0xd1c9ccb8>
+    8d8c:	74 75 72 65 	call  d1d65720 <ofw_mmu+0xd1d5c0c4>
+    8d90:	0a 00 00 00 	unknown
+    8d94:	00 00 00 00 	illtrap  0
+    8d98:	20 25 50 3a 	unknown
+    8d9c:	20 25 73 20 	unknown
+    8da0:	69 6d 61 67 	call  a5b6133c <ofw_mmu+0xa5b57ce0>
+    8da4:	65 20 28 73 	call  94812f70 <ofw_mmu+0x94809914>
+    8da8:	69 7a 65 20 	call  a5ea2228 <ofw_mmu+0xa5e98bcc>
+    8dac:	25 64 20 62 	fblg,a,pn   %fcc2, fff10f34 <ofw_mmu+0xfff078d8>
+    8db0:	79 74 65 73 	call  e5d2237c <ofw_mmu+0xe5d18d20>
+    8db4:	29 0a 00 00 	sethi  %hi(0x28000000), %l4
+    8db8:	53 6b 69 70 	call  4dae3378 <ofw_mmu+0x4dad9d1c>
+    8dbc:	70 69 6e 67 	call  c1a64758 <ofw_mmu+0xc1a5b0fc>
+    8dc0:	20 73 75 70 	bn,a,pn   %xcc, e6380 <ofw_mmu+0xdcd24>
+    8dc4:	65 72 66 6c 	call  95ca2774 <ofw_mmu+0x95c99118>
+    8dc8:	75 6f 75 73 	call  d5be6394 <ofw_mmu+0xd5bdcd38>
+    8dcc:	20 63 6f 6d 	bn,a,pn   %xcc, e4b80 <ofw_mmu+0xdb524>
+    8dd0:	70 6f 6e 65 	call  c1be4764 <ofw_mmu+0xc1bdb108>
+    8dd4:	6e 74 73 2e 	call  b9d25a8c <ofw_mmu+0xb9d1c430>
+    8dd8:	0a 00 00 00 	unknown
+    8ddc:	00 00 00 00 	illtrap  0
+    8de0:	53 6b 69 70 	call  4dae33a0 <ofw_mmu+0x4dad9d44>
+    8de4:	70 69 6e 67 	call  c1a64780 <ofw_mmu+0xc1a5b124>
+    8de8:	20 72 61 6d 	bn,a,pn   %xcc, a139c <ofw_mmu+0x97d40>
+    8dec:	64 69 73 6b 	call  91a65b98 <ofw_mmu+0x91a5c53c>
+    8df0:	2e 0a 00 00 	unknown
+    8df4:	00 00 00 00 	illtrap  0
+    8df8:	0a 43 6f 70 	bcs,pn   %icc, e4bb8 <ofw_mmu+0xdb55c>
+    8dfc:	79 69 6e 67 	call  e5a64798 <ofw_mmu+0xe5a5b13c>
+    8e00:	20 72 61 6d 	bn,a,pn   %xcc, a13b4 <ofw_mmu+0x97d58>
+    8e04:	64 69 73 6b 	call  91a65bb0 <ofw_mmu+0x91a5c554>
+    8e08:	2e 2e 2e 00 	unknown
+    8e0c:	00 00 00 00 	illtrap  0
+    8e10:	64 6f 6e 65 	call  91be47a4 <ofw_mmu+0x91bdb148>
+    8e14:	2e 0a 00 00 	unknown
+    8e18:	0a 43 6f 70 	bcs,pn   %icc, e4bd8 <ofw_mmu+0xdb57c>
+    8e1c:	79 69 6e 67 	call  e5a647b8 <ofw_mmu+0xe5a5b15c>
+    8e20:	20 62 6f 6f 	bn,a,pn   %xcc, a4bdc <ofw_mmu+0x9b580>
+    8e24:	74 69 6e 66 	call  d1a647bc <ofw_mmu+0xd1a5b160>
+    8e28:	6f 20 74 61 	call  bc825fac <ofw_mmu+0xbc81c950>
+    8e2c:	73 6b 73 0a 	call  cdae5a54 <ofw_mmu+0xcdadc3f8>
+    8e30:	00 00 00 00 	illtrap  0
+    8e34:	00 00 00 00 	illtrap  0
+    8e38:	20 25 73 2e 	unknown
+    8e3c:	2e 2e 00 00 	unknown
+    8e40:	0a 43 6f 70 	bcs,pn   %icc, e4c00 <ofw_mmu+0xdb5a4>
+    8e44:	79 69 6e 67 	call  e5a647e0 <ofw_mmu+0xe5a5b184>
+    8e48:	20 6b 65 72 	bn,a   %xcc, e2410 <ofw_mmu+0xd8db4>
+    8e4c:	6e 65 6c 2e 	call  b9963f04 <ofw_mmu+0xb995a8a8>
+    8e50:	2e 2e 00 00 	unknown
+    8e54:	00 00 00 00 	illtrap  0
+    8e58:	0a 43 61 6e 	bcs,pn   %icc, e1410 <ofw_mmu+0xd7db4>
+    8e5c:	6f 6e 69 7a 	call  bdba3444 <ofw_mmu+0xbdb99de8>
+    8e60:	69 6e 67 20 	call  a5ba2ae0 <ofw_mmu+0xa5b99484>
+    8e64:	4f 70 65 6e 	call  3dc2241c <ofw_mmu+0x3dc18dc0>
+    8e68:	46 69 72 6d 	call  19a6581c <ofw_mmu+0x19a5c1c0>
+    8e6c:	77 61 72 65 	call  dd865800 <ofw_mmu+0xdd85c1a4>
+    8e70:	20 64 65 76 	bn,a,pn   %xcc, fff22448 <ofw_mmu+0xfff18dec>
+    8e74:	69 63 65 20 	call  a58e22f4 <ofw_mmu+0xa58d8c98>
+    8e78:	74 72 65 65 	call  d1ca240c <ofw_mmu+0xd1c98db0>
+    8e7c:	2e 2e 2e 00 	unknown
+    8e80:	55 6e 6b 6e 	call  55ba3c38 <ofw_mmu+0x55b9a5dc>
+    8e84:	6f 77 6e 20 	call  bdde4704 <ofw_mmu+0xbdddb0a8>
+    8e88:	61 72 63 68 	call  85ca1c28 <ofw_mmu+0x85c985cc>
+    8e8c:	69 74 65 63 	call  a5d22418 <ofw_mmu+0xa5d18dbc>
+    8e90:	74 75 72 65 	call  d1d65824 <ofw_mmu+0xd1d5c1c8>
+    8e94:	2e 0a 00 00 	unknown
+    8e98:	0a 42 6f 6f 	bcs,pn   %icc, a4c54 <ofw_mmu+0x9b5f8>
+    8e9c:	74 69 6e 67 	call  d1a64838 <ofw_mmu+0xd1a5b1dc>
+    8ea0:	20 74 68 65 	bn,a,pn   %xcc, fff23034 <ofw_mmu+0xfff199d8>
+    8ea4:	20 6b 65 72 	bn,a   %xcc, e246c <ofw_mmu+0xd8e10>
+    8ea8:	6e 65 6c 2e 	call  b9963f60 <ofw_mmu+0xb995a904>
+    8eac:	2e 2e 0a 00 	unknown
+    8eb0:	30 2e 33 2e 	unknown
+    8eb4:	30 00 00 00 	unknown
+    8eb8:	2c 20 72 65 	unknown
+    8ebc:	76 69 73 69 	call  d9a65c60 <ofw_mmu+0xd9a5c604>
+    8ec0:	6f 6e 20 34 	call  bdb90f90 <ofw_mmu+0xbdb87934>
+    8ec4:	36 36 33 00 	unknown
+    8ec8:	0a 42 75 69 	bcs,pn   %icc, a646c <ofw_mmu+0x9ce10>
+    8ecc:	6c 74 20 6f 	call  b1d11088 <ofw_mmu+0xb1d07a2c>
+    8ed0:	6e 20 32 30 	call  b8815790 <ofw_mmu+0xb880c134>
+    8ed4:	30 39 2d 31 	unknown
+    8ed8:	30 2d 30 38 	unknown
+    8edc:	20 31 31 3a 	unknown
+    8ee0:	34 35 3a 32 	unknown
+    8ee4:	31 00 00 00 	sethi  %hi(0), %i0
+    8ee8:	30 78 00 00 	b,a   %xcc, 8ee8 <ofw+0x300>
+    8eec:	00 00 00 00 	illtrap  0
+    8ef0:	45 72 72 6f 	call  15ca58ac <ofw_mmu+0x15c9c250>
+    8ef4:	72 3a 20 33 	call  c8e90fc0 <ofw_mmu+0xc8e87964>
+    8ef8:	32 2d 62 69 	unknown
+    8efc:	74 20 6f 66 	call  d0824c94 <ofw_mmu+0xd081b638>
+    8f00:	77 5f 63 6c 	call  dd7e1cb0 <ofw_mmu+0xdd7d8654>
+    8f04:	61 69 6d 5f 	call  85a64480 <ofw_mmu+0x85a5ae24>
+    8f08:	70 68 79 73 	call  c1a274d4 <ofw_mmu+0xc1a1de78>
+    8f0c:	20 6e 6f 74 	bn,a   %xcc, fffa4cdc <ofw_mmu+0xfff9b680>
+    8f10:	20 69 6d 70 	bn,a   %xcc, 644d0 <ofw_mmu+0x5ae74>
+    8f14:	6c 65 6d 65 	call  b19644a8 <ofw_mmu+0xb195ae4c>
+    8f18:	6e 74 65 64 	call  b9d224a8 <ofw_mmu+0xb9d18e4c>
+    8f1c:	2e 0a 00 00 	unknown
+    8f20:	71 75 69 65 	call  c5d634b4 <ofw_mmu+0xc5d59e58>
+    8f24:	73 63 65 00 	call  cd8e2324 <ofw_mmu+0xcd8d8cc8>
+    8f28:	63 61 6c 6c 	call  8d8640d8 <ofw_mmu+0x8d85aa7c>
+    8f2c:	2d 6d 65 74 	fbg,a   %fcc2, fff624fc <ofw_mmu+0xfff58ea0>
+    8f30:	68 6f 64 00 	call  a1be1f30 <ofw_mmu+0xa1bd88d4>
+    8f34:	00 00 00 00 	illtrap  0
+    8f38:	6d 61 70 00 	call  b5864f38 <ofw_mmu+0xb585b8dc>
+    8f3c:	00 00 00 00 	illtrap  0
+    8f40:	63 6c 61 69 	call  8db214e4 <ofw_mmu+0x8db17e88>
+    8f44:	6d 00 00 00 	call  b4008f44 <ofw_mmu+0xb3fff8e8>
+    8f48:	45 72 72 6f 	call  15ca5904 <ofw_mmu+0x15c9c2a8>
+    8f4c:	72 3a 20 4d 	call  c8e91080 <ofw_mmu+0xc8e87a24>
+    8f50:	4d 55 20 6d 	call  35551104 <ofw_mmu+0x35547aa8>
+    8f54:	65 74 68 6f 	call  95d23110 <ofw_mmu+0x95d19ab4>
+    8f58:	64 20 63 6c 	call  90821d08 <ofw_mmu+0x908186ac>
+    8f5c:	61 69 6d 28 	call  85a643fc <ofw_mmu+0x85a5ada0>
+    8f60:	29 20 66 61 	sethi  %hi(0x81998400), %l4
+    8f64:	69 6c 65 64 	call  a5b224f4 <ofw_mmu+0xa5b18e98>
+    8f68:	2c 20 68 61 	unknown
+    8f6c:	6c 74 69 6e 	call  b1d23524 <ofw_mmu+0xb1d19ec8>
+    8f70:	67 2e 0a 00 	call  9cb8b770 <ofw_mmu+0x9cb82114>
+    8f74:	00 00 00 00 	illtrap  0
+    8f78:	74 72 61 6e 	call  d1ca1530 <ofw_mmu+0xd1c97ed4>
+    8f7c:	73 6c 61 74 	call  cdb2154c <ofw_mmu+0xcdb17ef0>
+    8f80:	65 00 00 00 	call  94008f80 <ofw_mmu+0x93fff924>
+    8f84:	00 00 00 00 	illtrap  0
+    8f88:	45 72 72 6f 	call  15ca5944 <ofw_mmu+0x15c9c2e8>
+    8f8c:	72 3a 20 4d 	call  c8e910c0 <ofw_mmu+0xc8e87a64>
+    8f90:	4d 55 20 6d 	call  35551144 <ofw_mmu+0x35547ae8>
+    8f94:	65 74 68 6f 	call  95d23150 <ofw_mmu+0x95d19af4>
+    8f98:	64 20 74 72 	call  90826160 <ofw_mmu+0x9081cb04>
+    8f9c:	61 6e 73 6c 	call  85ba5d4c <ofw_mmu+0x85b9c6f0>
+    8fa0:	61 74 65 28 	call  85d22440 <ofw_mmu+0x85d18de4>
+    8fa4:	29 20 66 61 	sethi  %hi(0x81998400), %l4
+    8fa8:	69 6c 65 64 	call  a5b22538 <ofw_mmu+0xa5b18edc>
+    8fac:	2c 20 68 61 	unknown
+    8fb0:	6c 74 69 6e 	call  b1d23568 <ofw_mmu+0xb1d19f0c>
+    8fb4:	67 2e 0a 00 	call  9cb8b7b4 <ofw_mmu+0x9cb82158>
+    8fb8:	77 72 69 74 	call  ddca3588 <ofw_mmu+0xddc99f2c>
+    8fbc:	65 00 00 00 	call  94008fbc <ofw_mmu+0x93fff960>
+    8fc0:	70 65 65 72 	call  c1962588 <ofw_mmu+0xc1958f2c>
+    8fc4:	00 00 00 00 	illtrap  0
+    8fc8:	63 68 69 6c 	call  8da23578 <ofw_mmu+0x8da19f1c>
+    8fcc:	64 00 00 00 	call  90008fcc <ofw_mmu+0x8ffff970>
+    8fd0:	70 61 63 6b 	call  c1861d7c <ofw_mmu+0xc1858720>
+    8fd4:	61 67 65 2d 	call  859e2488 <ofw_mmu+0x859d8e2c>
+    8fd8:	74 6f 2d 70 	call  d1bd4598 <ofw_mmu+0xd1bcaf3c>
+    8fdc:	61 74 68 00 	call  85d22fdc <ofw_mmu+0x85d19980>
+    8fe0:	6e 65 78 74 	call  b99671b0 <ofw_mmu+0xb995db54>
+    8fe4:	70 72 6f 70 	call  c1ca4da4 <ofw_mmu+0xc1c9b748>
+    8fe8:	00 00 00 00 	illtrap  0
+    8fec:	00 00 00 00 	illtrap  0
+    8ff0:	67 65 74 70 	call  9d9661b0 <ofw_mmu+0x9d95cb54>
+    8ff4:	72 6f 70 6c 	call  c9be51a4 <ofw_mmu+0xc9bdbb48>
+    8ff8:	65 6e 00 00 	call  95b88ff8 <ofw_mmu+0x95b7f99c>
+    8ffc:	00 00 00 00 	illtrap  0
+    9000:	67 65 74 70 	call  9d9661c0 <ofw_mmu+0x9d95cb64>
+    9004:	72 6f 70 00 	call  c9be5004 <ofw_mmu+0xc9bdb9a8>
+    9008:	23 73 69 7a 	fbne,a,pn   %fcc3, e35f0 <ofw_mmu+0xd9f94>
+    900c:	65 2d 63 65 	call  94b61da0 <ofw_mmu+0x94b58744>
+    9010:	6c 6c 73 00 	call  b1b25c10 <ofw_mmu+0xb1b1c5b4>
+    9014:	00 00 00 00 	illtrap  0
+    9018:	23 61 64 64 	fbne,a,pn   %fcc2, 621a8 <ofw_mmu+0x58b4c>
+    901c:	72 65 73 73 	call  c9965de8 <ofw_mmu+0xc995c78c>
+    9020:	2d 63 65 6c 	fbg,a,pn   %fcc2, e25d0 <ofw_mmu+0xd8f74>
+    9024:	6c 73 00 00 	call  b1cc9024 <ofw_mmu+0xb1cbf9c8>
+    9028:	66 69 6e 64 	call  99a649b8 <ofw_mmu+0x99a5b35c>
+    902c:	64 65 76 69 	call  919669d0 <ofw_mmu+0x9195d374>
+    9030:	63 65 00 00 	call  8d949030 <ofw_mmu+0x8d93f9d4>
+    9034:	00 00 00 00 	illtrap  0
+    9038:	2f 63 68 6f 	fbu,a,pn   %fcc2, e31f4 <ofw_mmu+0xd9b98>
+    903c:	73 65 6e 00 	call  cd96483c <ofw_mmu+0xcd95b1e0>
+    9040:	73 74 64 6f 	call  cdd221fc <ofw_mmu+0xcdd18ba0>
+    9044:	75 74 00 00 	call  d5d09044 <ofw_mmu+0xd5cff9e8>
+    9048:	0d 0a 45 72 	sethi  %hi(0x2915c800), %g6
+    904c:	72 6f 72 3a 	call  c9be5934 <ofw_mmu+0xc9bdc2d8>
+    9050:	20 55 6e 61 	bn,a,pn   %icc, fff649d4 <ofw_mmu+0xfff5b378>
+    9054:	62 6c 65 20 	call  89b224d4 <ofw_mmu+0x89b18e78>
+    9058:	74 6f 20 66 	call  d1bd11f0 <ofw_mmu+0xd1bc7b94>
+    905c:	69 6e 64 20 	call  a5ba20dc <ofw_mmu+0xa5b98a80>
+    9060:	2f 20 64 65 	sethi  %hi(0x81919400), %l7
+    9064:	76 69 63 65 	call  d9a61df8 <ofw_mmu+0xd9a5879c>
+    9068:	2c 20 68 61 	unknown
+    906c:	6c 74 65 64 	call  b1d225fc <ofw_mmu+0xb1d18fa0>
+    9070:	2e 0d 0a 00 	unknown
+    9074:	00 00 00 00 	illtrap  0
+    9078:	6d 6d 75 00 	call  b5b66478 <ofw_mmu+0xb5b5ce1c>
+    907c:	00 00 00 00 	illtrap  0
+    9080:	0d 0a 45 72 	sethi  %hi(0x2915c800), %g6
+    9084:	72 6f 72 3a 	call  c9be596c <ofw_mmu+0xc9bdc310>
+    9088:	20 55 6e 61 	bn,a,pn   %icc, fff64a0c <ofw_mmu+0xfff5b3b0>
+    908c:	62 6c 65 20 	call  89b2250c <ofw_mmu+0x89b18eb0>
+    9090:	74 6f 20 67 	call  d1bd122c <ofw_mmu+0xd1bc7bd0>
+    9094:	65 74 20 6d 	call  95d11248 <ofw_mmu+0x95d07bec>
+    9098:	6d 75 20 70 	call  b5d51258 <ofw_mmu+0xb5d47bfc>
+    909c:	72 6f 70 65 	call  c9be5230 <ofw_mmu+0xc9bdbbd4>
+    90a0:	72 74 79 2c 	call  c9d27550 <ofw_mmu+0xc9d1def4>
+    90a4:	20 68 61 6c 	bn,a   %xcc, 21654 <ofw_mmu+0x17ff8>
+    90a8:	74 65 64 2e 	call  d1962160 <ofw_mmu+0xd1958b04>
+    90ac:	0d 0a 00 00 	sethi  %hi(0x28000000), %g6
+    90b0:	6d 65 6d 6f 	call  b596466c <ofw_mmu+0xb595b010>
+    90b4:	72 79 00 00 	call  c9e490b4 <ofw_mmu+0xc9e3fa58>
+    90b8:	0d 0a 45 72 	sethi  %hi(0x2915c800), %g6
+    90bc:	72 6f 72 3a 	call  c9be59a4 <ofw_mmu+0xc9bdc348>
+    90c0:	20 55 6e 61 	bn,a,pn   %icc, fff64a44 <ofw_mmu+0xfff5b3e8>
+    90c4:	62 6c 65 20 	call  89b22544 <ofw_mmu+0x89b18ee8>
+    90c8:	74 6f 20 67 	call  d1bd1264 <ofw_mmu+0xd1bc7c08>
+    90cc:	65 74 20 6d 	call  95d11280 <ofw_mmu+0x95d07c24>
+    90d0:	65 6d 6f 72 	call  95b64e98 <ofw_mmu+0x95b5b83c>
+    90d4:	79 20 70 72 	call  e482529c <ofw_mmu+0xe481bc40>
+    90d8:	6f 70 65 72 	call  bdc226a0 <ofw_mmu+0xbdc19044>
+    90dc:	74 79 2c 20 	call  d1e5415c <ofw_mmu+0xd1e4ab00>
+    90e0:	68 61 6c 74 	call  a18642b0 <ofw_mmu+0xa185ac54>
+    90e4:	65 64 2e 0d 	call  95914918 <ofw_mmu+0x9590b2bc>
+    90e8:	0a 00 00 00 	unknown
+    90ec:	00 00 00 00 	illtrap  0
+    90f0:	2f 6d 65 6d 	fbu,a   %fcc2, fff626a4 <ofw_mmu+0xfff59048>
+    90f4:	6f 72 79 00 	call  bdca74f4 <ofw_mmu+0xbdc9de98>
+    90f8:	0d 0a 45 72 	sethi  %hi(0x2915c800), %g6
+    90fc:	72 6f 72 3a 	call  c9be59e4 <ofw_mmu+0xc9bdc388>
+    9100:	20 55 6e 61 	bn,a,pn   %icc, fff64a84 <ofw_mmu+0xfff5b428>
+    9104:	62 6c 65 20 	call  89b22584 <ofw_mmu+0x89b18f28>
+    9108:	74 6f 20 66 	call  d1bd12a0 <ofw_mmu+0xd1bc7c44>
+    910c:	69 6e 64 20 	call  a5ba218c <ofw_mmu+0xa5b98b30>
+    9110:	2f 6d 65 6d 	fbu,a   %fcc2, fff626c4 <ofw_mmu+0xfff59068>
+    9114:	6f 72 79 20 	call  bdca7594 <ofw_mmu+0xbdc9df38>
+    9118:	64 65 76 69 	call  91966abc <ofw_mmu+0x9195d460>
+    911c:	63 65 2c 20 	call  8d95419c <ofw_mmu+0x8d94ab40>
+    9120:	68 61 6c 74 	call  a18642f0 <ofw_mmu+0xa185ac94>
+    9124:	65 64 2e 0d 	call  95914958 <ofw_mmu+0x9590b2fc>
+    9128:	0a 00 00 00 	unknown
+    912c:	00 00 00 00 	illtrap  0
+    9130:	2f 61 6c 69 	fbu,a,pn   %fcc2, 642d4 <ofw_mmu+0x5ac78>
+    9134:	61 73 65 73 	call  85ce2700 <ofw_mmu+0x85cd90a4>
+    9138:	00 00 00 00 	illtrap  0
+    913c:	00 00 00 00 	illtrap  0
+    9140:	0d 0a 45 72 	sethi  %hi(0x2915c800), %g6
+    9144:	72 6f 72 3a 	call  c9be5a2c <ofw_mmu+0xc9bdc3d0>
+    9148:	20 55 6e 61 	bn,a,pn   %icc, fff64acc <ofw_mmu+0xfff5b470>
+    914c:	62 6c 65 20 	call  89b225cc <ofw_mmu+0x89b18f70>
+    9150:	74 6f 20 66 	call  d1bd12e8 <ofw_mmu+0xd1bc7c8c>
+    9154:	69 6e 64 20 	call  a5ba21d4 <ofw_mmu+0xa5b98b78>
+    9158:	2f 61 6c 69 	fbu,a,pn   %fcc2, 642fc <ofw_mmu+0x5aca0>
+    915c:	61 73 65 73 	call  85ce2728 <ofw_mmu+0x85cd90cc>
+    9160:	20 64 65 76 	bn,a,pn   %xcc, fff22738 <ofw_mmu+0xfff190dc>
+    9164:	69 63 65 2c 	call  a58e2614 <ofw_mmu+0xa58d8fb8>
+    9168:	20 68 61 6c 	bn,a   %xcc, 21718 <ofw_mmu+0x180bc>
+    916c:	74 65 64 2e 	call  d1962224 <ofw_mmu+0xd1958bc8>
+    9170:	0d 0a 00 00 	sethi  %hi(0x28000000), %g6
+    9174:	00 00 00 00 	illtrap  0
+    9178:	73 63 72 65 	call  cd8e5b0c <ofw_mmu+0xcd8dc4b0>
+    917c:	65 6e 00 00 	call  95b8917c <ofw_mmu+0x95b7fb20>
+    9180:	64 65 70 74 	call  91965350 <ofw_mmu+0x9195bcf4>
+    9184:	68 00 00 00 	call  a0009184 <ofw_mmu+0x9ffffb28>
+    9188:	6f 70 65 6e 	call  bdc22740 <ofw_mmu+0xbdc190e4>
+    918c:	00 00 00 00 	illtrap  0
+    9190:	63 6f 6c 6f 	call  8dbe434c <ofw_mmu+0x8dbdacf0>
+    9194:	72 21 00 00 	call  c8849194 <ofw_mmu+0xc883fb38>
+    9198:	61 64 64 72 	call  85922360 <ofw_mmu+0x85918d04>
+    919c:	65 73 73 00 	call  95ce5d9c <ofw_mmu+0x95cdc740>
+    91a0:	77 69 64 74 	call  dda62370 <ofw_mmu+0xdda58d14>
+    91a4:	68 00 00 00 	call  a00091a4 <ofw_mmu+0x9ffffb48>
+    91a8:	68 65 69 67 	call  a1963744 <ofw_mmu+0xa195a0e8>
+    91ac:	68 74 00 00 	call  a1d091ac <ofw_mmu+0xa1cffb50>
+    91b0:	6c 69 6e 65 	call  b1a64b44 <ofw_mmu+0xb1a5b4e8>
+    91b4:	62 79 74 65 	call  89e66348 <ofw_mmu+0x89e5ccec>
+    91b8:	73 00 00 00 	call  cc0091b8 <ofw_mmu+0xcbfffb5c>
+    91bc:	00 00 00 00 	illtrap  0
+    91c0:	72 65 67 00 	call  c9962dc0 <ofw_mmu+0xc9959764>
+    91c4:	00 00 00 00 	illtrap  0
+    91c8:	2f 73 73 6d 	fbu,a,pn   %fcc3, e5f7c <ofw_mmu+0xdc920>
+    91cc:	40 30 2c 30 	call  c1428c <ofw_mmu+0xc0ac30>
+    91d0:	00 00 00 00 	illtrap  0
+    91d4:	00 00 00 00 	illtrap  0
+    91d8:	64 65 76 69 	call  91966b7c <ofw_mmu+0x9195d520>
+    91dc:	63 65 5f 74 	call  8d960fac <ofw_mmu+0x8d957950>
+    91e0:	79 70 65 00 	call  e5c225e0 <ofw_mmu+0xe5c18f84>
+    91e4:	00 00 00 00 	illtrap  0
+    91e8:	63 70 75 00 	call  8dc265e8 <ofw_mmu+0x8dc1cf8c>
+    91ec:	00 00 00 00 	illtrap  0
+    91f0:	75 70 61 2d 	call  d5c216a4 <ofw_mmu+0xd5c18048>
+    91f4:	70 6f 72 74 	call  c1be5bc4 <ofw_mmu+0xc1bdc568>
+    91f8:	69 64 00 00 	call  a59091f8 <ofw_mmu+0xa58ffb9c>
+    91fc:	00 00 00 00 	illtrap  0
+    9200:	70 6f 72 74 	call  c1be5bd0 <ofw_mmu+0xc1bdc574>
+    9204:	69 64 00 00 	call  a5909204 <ofw_mmu+0xa58ffba8>
+    9208:	63 70 75 69 	call  8dc267ac <ofw_mmu+0x8dc1d150>
+    920c:	64 00 00 00 	call  9000920c <ofw_mmu+0x8ffffbb0>
+    9210:	53 55 4e 57 	call  4d55cb6c <ofw_mmu+0x4d553510>
+    9214:	2c 73 74 61 	bneg,a,pn   %xcc, e6398 <ofw_mmu+0xdcd3c>
+    9218:	72 74 2d 63 	call  c9d147a4 <ofw_mmu+0xc9d0b148>
+    921c:	70 75 00 00 	call  c1d4921c <ofw_mmu+0xc1d3fbc0>
+    9220:	6e 61 6d 65 	call  b98647b4 <ofw_mmu+0xb985b158>
+    9224:	00 00 00 00 	illtrap  0
+    9228:	63 6d 70 00 	call  8db65228 <ofw_mmu+0x8db5bbcc>
+    922c:	00 00 00 00 	illtrap  0
+    9230:	0d 00 00 00 	sethi  %hi(0), %g6
+    9234:	00 00 00 00 	illtrap  0
+
+00009238 <release>:
+    9238:	00 00 8e b0 	illtrap  0x8eb0
+
+0000923c <revision>:
+    923c:	00 00 8e b8 	illtrap  0x8eb8
+
+00009240 <timestamp>:
+    9240:	00 00 8e c8 	illtrap  0x8ec8
+    9244:	00 00 00 00 	illtrap  0
+
+00009248 <digits>:
+    9248:	30 31 32 33 	unknown
+    924c:	34 35 36 37 	unknown
+    9250:	38 39 61 62 	unknown
+    9254:	63 64 65 66 	call  8d9227ec <ofw_mmu+0x8d919190>
+    9258:	00 00 00 00 	illtrap  0
+    925c:	00 00 00 00 	illtrap  0
+
+00009260 <subarchitecture>:
+	...
+
+00009261 <architecture>:
+    9261:	00 00 00 00 	illtrap  0
+
+00009264 <ballocs>:
+    9264:	00 00 00 00 	illtrap  0
+
+00009268 <name.1001>:
+	...
+
+00009288 <path.1000>:
+	...
+
+00009390 <components>:
+	...
+
+00009420 <bootinfo>:
+	...
+
+0000963c <mid_mask>:
+    963c:	00 00 00 00 	illtrap  0
+
+00009640 <ofw_aliases>:
+    9640:	00 00 00 00 	illtrap  0
+
+00009644 <ofw_chosen>:
+    9644:	00 00 00 00 	illtrap  0
+
+00009648 <ofw_memory_prop>:
+    9648:	00 00 00 00 	illtrap  0
+
+0000964c <ofw_stdout>:
+    964c:	00 00 00 00 	illtrap  0
+
+00009650 <ofw_memory>:
+    9650:	00 00 00 00 	illtrap  0
+
+00009654 <ofw_root>:
+    9654:	00 00 00 00 	illtrap  0
+
+00009658 <ofw_cif>:
+    9658:	00 00 00 00 	illtrap  0
+
+0000965c <ofw_mmu>:
+    965c:	00 00 00 00 	illtrap  0

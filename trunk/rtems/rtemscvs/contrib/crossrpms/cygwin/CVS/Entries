@@ -1,0 +1,16 @@
+/.cvsignore/1.3/Wed Jul  5 07:38:53 2006//
+/Makefile.am/1.36/Wed Jul  5 07:17:52 2006//
+/binutils.am/1.6/Sat Aug 29 04:25:55 2009//
+/cygwin.am/1.1/Sun Mar 23 10:46:55 2008//
+/expat.am/1.1/Sun Mar 23 10:46:55 2008//
+/gcc-prep.add/1.4/Wed Mar 19 17:07:56 2008//
+/gcc.am/1.5/Sat Aug 29 04:25:55 2009//
+/gmp.am/1.1/Sat Mar 22 05:33:23 2008//
+/mpfr.am/1.2/Sat Aug 29 04:25:55 2009//
+/ncurses.am/1.1/Sat Mar 22 04:56:51 2008//
+/readline.am/1.1/Sat Mar 22 05:51:46 2008//
+/termcap.am/1.1/Sat Mar 22 10:28:05 2008//
+/terminfo.am/1.1/Wed Jun  4 10:23:46 2008//
+/w32api.am/1.1/Sun Mar 23 10:46:55 2008//
+/zlib.am/1.1/Sat Mar 22 04:56:51 2008//
+D/i686////

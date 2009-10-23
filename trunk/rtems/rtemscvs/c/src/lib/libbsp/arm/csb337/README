@@ -1,0 +1,13 @@
+#
+#  $Id: README,v 1.2 2009/05/28 20:08:20 joel Exp $
+#
+
+This is the BSP for Cogent Computer System's CSB337 and
+CSB637, single board computers using the Atmel AT91RM9200 CPU.
+The differences in the board are very slight but important:
+
+ CSB337             CSB637
+========           ========
+16Mb RAM           64Mb RAM
+
+? PHY is different

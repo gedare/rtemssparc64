@@ -1,0 +1,22 @@
+/.cvsignore/1.4/Mon Jul 14 05:53:42 2008//
+/ChangeLog/1.211/Fri Oct 16 14:51:21 2009//
+/Makefile.am/1.23/Tue Dec 11 07:49:00 2007//
+/acinclude.m4/1.20/Fri Sep 25 20:44:59 2009//
+/configure.ac/1.19/Sat Dec  2 05:58:13 2006//
+D/ep1a////
+D/gen5200////
+D/gen83xx////
+D/haleakala////
+D/mbx8xx////
+D/motorola_powerpc////
+D/mpc55xxevb////
+D/mpc8260ads////
+D/mvme3100////
+D/mvme5500////
+D/psim////
+D/qemuppc////
+D/score603e////
+D/shared////
+D/ss555////
+D/tqm8xx////
+D/virtex////

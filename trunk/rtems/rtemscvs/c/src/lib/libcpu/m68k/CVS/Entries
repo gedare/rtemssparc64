@@ -1,0 +1,14 @@
+/.cvsignore/1.4/Mon Jul 14 06:02:09 2008//
+/ChangeLog/1.104/Thu Oct 15 13:55:46 2009//
+/Makefile.am/1.32/Thu Oct 15 13:55:46 2009//
+/configure.ac/1.37/Wed Feb 11 16:20:00 2009//
+/preinstall.am/1.14/Thu Oct 15 13:55:46 2009//
+D/m68040////
+D/mcf5206////
+D/mcf5223x////
+D/mcf5235////
+D/mcf5272////
+D/mcf5282////
+D/mcf532x////
+D/mcf548x////
+D/shared////
