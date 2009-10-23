@@ -44,7 +44,7 @@ silo_ramdisk_size:
 	wrpr %g0, NWINDOWS - 1, %cleanwin	! prevent needless clean_window traps for kernel
 
 	set initial_stack_top, %sp
-	add %sp, -STACK_BIAS, %sp
+!	add %sp, -STACK_BIAS, %sp
 
 !	set ofw_cif, %l0
  
@@ -54,8 +54,13 @@ silo_ramdisk_size:
 	b bootstrap
 	nop
 
-.align STACK_ALIGNMENT
-initial_stack:
-	.space INITIAL_STACK_SIZE
-initial_stack_top:
-	.space STACK_WINDOW_SAVE_AREA_SIZE
+!.align STACK_ALIGNMENT
+!initial_stack:
+!	.space INITIAL_STACK_SIZE
+!initial_stack_top:
+!	.space STACK_WINDOW_SAVE_AREA_SIZE
+
+.global _fini
+_fini:
+	nop
+	nop

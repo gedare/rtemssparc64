@@ -97,8 +97,7 @@ am__objects_1 = bspclean.$(OBJEXT) bsplibc.$(OBJEXT) \
 	bspgetworkarea.$(OBJEXT) bsppost.$(OBJEXT) bspstart.$(OBJEXT) \
 	bootcard.$(OBJEXT) sbrk.$(OBJEXT) gnatinstallhandler.$(OBJEXT)
 am__objects_2 = clock_driver_simidle.$(OBJEXT)
-am__objects_3 = console-polled.$(OBJEXT) console-io.$(OBJEXT) \
-	trap0.$(OBJEXT)
+am__objects_3 = console-polled.$(OBJEXT) console.$(OBJEXT)
 am__objects_4 = timerstub.$(OBJEXT)
 am_libbsp_a_OBJECTS = $(am__objects_1) $(am__objects_2) \
 	$(am__objects_3) $(am__objects_4)
@@ -302,9 +301,7 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/gnatinstallhandler.c
 
 clock_SOURCES = ../../shared/clock_driver_simidle.c
-console_SOURCES = ../../shared/console-polled.c console/console-io.c \
-   console/trap0.S
-
+console_SOURCES = ../../shared/console-polled.c console/console.c 
 timer_SOURCES = ../../shared/timerstub.c
 noinst_LIBRARIES = libbsp.a
 libbsp_a_SOURCES = $(startup_SOURCES) $(clock_SOURCES) $(console_SOURCES) \
@@ -323,7 +320,7 @@ PROJECT_TOOLS = $(PROJECT_RELEASE)/build-tools
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .S .c .o .obj
+.SUFFIXES: .c .o .obj
 am--refresh:
 	@:
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/../../../../automake/compile.am $(top_srcdir)/../../bsp.am $(srcdir)/preinstall.am $(top_srcdir)/../../../../automake/local.am $(am__configure_deps)
@@ -401,40 +398,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bsppretaskinghook.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/bspstart.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clock_driver_simidle.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/console-io.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/console-polled.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/console.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gnatinstallhandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sbrk.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/timerstub.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/trap0.Po@am__quote@
-
-.S.o:
-@am__fastdepCCAS_TRUE@	$(CPPASCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-@am__fastdepCCAS_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	DEPDIR=$(DEPDIR) $(CCASDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCCAS_FALSE@	$(CPPASCOMPILE) -c -o $@ $<
-
-.S.obj:
-@am__fastdepCCAS_TRUE@	$(CPPASCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-@am__fastdepCCAS_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	DEPDIR=$(DEPDIR) $(CCASDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCCAS_FALSE@	$(CPPASCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-trap0.o: console/trap0.S
-@am__fastdepCCAS_TRUE@	$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CCASFLAGS) $(CCASFLAGS) -MT trap0.o -MD -MP -MF $(DEPDIR)/trap0.Tpo -c -o trap0.o `test -f 'console/trap0.S' || echo '$(srcdir)/'`console/trap0.S
-@am__fastdepCCAS_TRUE@	$(am__mv) $(DEPDIR)/trap0.Tpo $(DEPDIR)/trap0.Po
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	source='console/trap0.S' object='trap0.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	DEPDIR=$(DEPDIR) $(CCASDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCCAS_FALSE@	$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CCASFLAGS) $(CCASFLAGS) -c -o trap0.o `test -f 'console/trap0.S' || echo '$(srcdir)/'`console/trap0.S
-
-trap0.obj: console/trap0.S
-@am__fastdepCCAS_TRUE@	$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CCASFLAGS) $(CCASFLAGS) -MT trap0.obj -MD -MP -MF $(DEPDIR)/trap0.Tpo -c -o trap0.obj `if test -f 'console/trap0.S'; then $(CYGPATH_W) 'console/trap0.S'; else $(CYGPATH_W) '$(srcdir)/console/trap0.S'; fi`
-@am__fastdepCCAS_TRUE@	$(am__mv) $(DEPDIR)/trap0.Tpo $(DEPDIR)/trap0.Po
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	source='console/trap0.S' object='trap0.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCCAS_FALSE@	DEPDIR=$(DEPDIR) $(CCASDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCCAS_FALSE@	$(CCAS) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CCASFLAGS) $(CCASFLAGS) -c -o trap0.obj `if test -f 'console/trap0.S'; then $(CYGPATH_W) 'console/trap0.S'; else $(CYGPATH_W) '$(srcdir)/console/trap0.S'; fi`
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -618,19 +586,19 @@ console-polled.obj: ../../shared/console-polled.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o console-polled.obj `if test -f '../../shared/console-polled.c'; then $(CYGPATH_W) '../../shared/console-polled.c'; else $(CYGPATH_W) '$(srcdir)/../../shared/console-polled.c'; fi`
 
-console-io.o: console/console-io.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT console-io.o -MD -MP -MF $(DEPDIR)/console-io.Tpo -c -o console-io.o `test -f 'console/console-io.c' || echo '$(srcdir)/'`console/console-io.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/console-io.Tpo $(DEPDIR)/console-io.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='console/console-io.c' object='console-io.o' libtool=no @AMDEPBACKSLASH@
+console.o: console/console.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT console.o -MD -MP -MF $(DEPDIR)/console.Tpo -c -o console.o `test -f 'console/console.c' || echo '$(srcdir)/'`console/console.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/console.Tpo $(DEPDIR)/console.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='console/console.c' object='console.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o console-io.o `test -f 'console/console-io.c' || echo '$(srcdir)/'`console/console-io.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o console.o `test -f 'console/console.c' || echo '$(srcdir)/'`console/console.c
 
-console-io.obj: console/console-io.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT console-io.obj -MD -MP -MF $(DEPDIR)/console-io.Tpo -c -o console-io.obj `if test -f 'console/console-io.c'; then $(CYGPATH_W) 'console/console-io.c'; else $(CYGPATH_W) '$(srcdir)/console/console-io.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/console-io.Tpo $(DEPDIR)/console-io.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='console/console-io.c' object='console-io.obj' libtool=no @AMDEPBACKSLASH@
+console.obj: console/console.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT console.obj -MD -MP -MF $(DEPDIR)/console.Tpo -c -o console.obj `if test -f 'console/console.c'; then $(CYGPATH_W) 'console/console.c'; else $(CYGPATH_W) '$(srcdir)/console/console.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/console.Tpo $(DEPDIR)/console.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='console/console.c' object='console.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o console-io.obj `if test -f 'console/console-io.c'; then $(CYGPATH_W) 'console/console-io.c'; else $(CYGPATH_W) '$(srcdir)/console/console-io.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o console.obj `if test -f 'console/console.c'; then $(CYGPATH_W) 'console/console.c'; else $(CYGPATH_W) '$(srcdir)/console/console.c'; fi`
 
 timerstub.o: ../../shared/timerstub.c
 @am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT timerstub.o -MD -MP -MF $(DEPDIR)/timerstub.Tpo -c -o timerstub.o `test -f '../../shared/timerstub.c' || echo '$(srcdir)/'`../../shared/timerstub.c
