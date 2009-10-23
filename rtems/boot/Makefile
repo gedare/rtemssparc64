@@ -1,22 +1,19 @@
 ##
-TMP=/home/eugen/work/simics/rtems/boot/isofiles
-BASE=/home/eugen/work/simics/rtems/boot
+TMP=../../rtems/boot/isofiles
+BASE=../../rtems/boot
 
-INCLUDE1=/home/eugen/work/simics/helenOS/HelenOS/boot/arch/sparc64/loader
-INCLUDE2=/home/eugen/work/simics/helenOS/HelenOS/boot/generic
-INCLUDE3=/home/eugen/work/simics/helenOS/HelenOS/boot/genarch
-HELENONSBOOT=/home/eugen/work/simics/helenOS/HelenOS/boot/arch/sparc64/loader
+INCLUDE1=../../HeleonOS/HelenOS/boot/arch/sparc64/loader
+INCLUDE2=../../HeleonOS/HelenOS/boot/generic
+INCLUDE3=../../HeleonOS/HelenOS/boot/genarch
+HELENONSBOOT=../../HeleonOS/HelenOS/boot/arch/sparc64/loader
 
-TOOLCHAINRTEMS=/home/eugen/work/rtems/rtems4.10/bin/sparc-rtems4.10
-TOOLCHAINHELENOS=/home/eugen/work/simics/rtems/compilers/sparc64-newlib-rtems4.10-4.4.1.gcc/sparc64/bin/sparc-rtems4.10
-#TOOLCHAINHELENOS=/home/eugen/work/simics/sparc64crosscompiler/sparc64/bin/sparc64-linux-gnu
-#TOOLCHAINHELENOS=/home/eugen/work/simics/sparc64-newlib-elf-4.4gcc/sparc64/bin/sparc64-elf
-#TOOLCHAINHELENOS=/home/eugen/work/simics/sparc64-newlib-elf-4.3.2gcc/sparc64/bin/sparc64-elf
+TOOLCHAINRTEMS=../../../rtems/rtems4.10/bin/sparc-rtems4.10
+TOOLCHAINHELENOS=../../rtems/compilers/sparc64-newlib-rtems4.10-4.4.1.gcc.full/sparc64/bin/sparc64-rtems4.10
 CC32=$(TOOLCHAINRTEMS)-gcc
 CC64=$(TOOLCHAINHELENOS)-gcc
 
 LINKSCRIPT32=_link32.ld
-LINKSCRIPT64=/home/eugen/work/simics/helenOS/HelenOS/boot/arch/sparc64/loader/_link.ld
+LINKSCRIPT64=../../HeleonOS/HelenOS/boot/arch/sparc64/loader/_link.ld
 
 
 ELFFORMAT32=-m32
