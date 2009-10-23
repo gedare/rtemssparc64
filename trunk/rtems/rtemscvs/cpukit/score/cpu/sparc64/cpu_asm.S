@@ -139,13 +139,13 @@ SYM(_CPU_Context_restore_fp):
 SYM(_CPU_Context_switch):
         ! skip g0
         st      %g1, [%o0 + G1_OFFSET]       ! save the global registers
-        std     %g2, [%o0 + G2_OFFSET]
+!        std     %g2, [%o0 + G2_OFFSET]
         std     %g4, [%o0 + G4_OFFSET]
         std     %g6, [%o0 + G6_OFFSET]
 
         ! load the address of the ISR stack nesting prevention flag
-        sethi    %hi(SYM(_CPU_ISR_Dispatch_disable)), %g2
-        ld       [%g2 + %lo(SYM(_CPU_ISR_Dispatch_disable))], %g2
+!        sethi    %hi(SYM(_CPU_ISR_Dispatch_disable)), %g2
+!        ld       [%g2 + %lo(SYM(_CPU_ISR_Dispatch_disable))], %g2
         ! save it a bit later so we do not waste a couple of cycles
 
         std     %l0, [%o0 + L0_OFFSET]       ! save the local registers
@@ -154,7 +154,7 @@ SYM(_CPU_Context_switch):
         std     %l6, [%o0 + L6_OFFSET]
 
         ! Now actually save ISR stack nesting prevention flag
-        st       %g2, [%o0 + ISR_DISPATCH_DISABLE_STACK_OFFSET]
+!        st       %g2, [%o0 + ISR_DISPATCH_DISABLE_STACK_OFFSET]
 
         std     %i0, [%o0 + I0_OFFSET]       ! save the input registers
         std     %i2, [%o0 + I2_OFFSET]
@@ -215,15 +215,15 @@ SYM(_CPU_Context_restore_heir):
 
         ld      [%o1 + PSR_OFFSET], %g1       ! g1 = saved psr
 
-        and     %o2, SPARC_PSR_CWP_MASK, %g3  ! g3 = CWP
+!        and     %o2, SPARC_PSR_CWP_MASK, %g3  ! g3 = CWP
                                               ! g1 = psr w/o cwp
         andn    %g1, SPARC_PSR_ET_MASK | SPARC_PSR_CWP_MASK, %g1
-        or      %g1, %g3, %g1                 ! g1 = heirs psr
+!        or      %g1, %g3, %g1                 ! g1 = heirs psr
         mov     %g1, %psr                     ! restore status register and
                                               ! **** DISABLE TRAPS ****
-        mov     %wim, %g2                     ! g2 = wim
+!        mov     %wim, %g2                     ! g2 = wim
         mov     1, %g4
-        sll     %g4, %g3, %g4                 ! g4 = WIM mask for CW invalid
+!        sll     %g4, %g3, %g4                 ! g4 = WIM mask for CW invalid
 
 save_frame_loop:
         sll     %g4, 1, %g5                   ! rotate the "wim" left 1
@@ -234,7 +234,7 @@ save_frame_loop:
          *  If a restore would not underflow, then continue.
          */
 
-        andcc   %g4, %g2, %g0                 ! Any windows to flush?
+!        andcc   %g4, %g2, %g0                 ! Any windows to flush?
         bnz     done_flushing                 ! No, then continue
         nop
 
@@ -259,10 +259,10 @@ save_frame_loop:
 
 done_flushing:
 
-        add     %g3, 1, %g3                   ! calculate desired WIM
-        and     %g3, SPARC_NUMBER_OF_REGISTER_WINDOWS - 1, %g3
+!        add     %g3, 1, %g3                   ! calculate desired WIM
+!        and     %g3, SPARC_NUMBER_OF_REGISTER_WINDOWS - 1, %g3
         mov     1, %g4
-        sll     %g4, %g3, %g4                 ! g4 = new WIM 
+!        sll     %g4, %g3, %g4                 ! g4 = new WIM 
         mov     %g4, %wim
 
         or      %g1, SPARC_PSR_ET_MASK, %g1
@@ -274,7 +274,7 @@ done_flushing:
 
         ! skip g0
         ld      [%o1 + G1_OFFSET], %g1        ! restore the global registers
-        ldd     [%o1 + G2_OFFSET], %g2
+!        ldd     [%o1 + G2_OFFSET], %g2
         ldd     [%o1 + G4_OFFSET], %g4
         ldd     [%o1 + G6_OFFSET], %g6
 
@@ -446,7 +446,7 @@ save_isf:
         std     %l0, [%sp + ISF_PSR_OFFSET]    ! save psr, PC
         st      %l2, [%sp + ISF_NPC_OFFSET]    ! save nPC
         st      %g1, [%sp + ISF_G1_OFFSET]     ! save g1
-        std     %g2, [%sp + ISF_G2_OFFSET]     ! save g2, g3
+!        std     %g2, [%sp + ISF_G2_OFFSET]     ! save g2, g3
         std     %l4, [%sp + ISF_G4_OFFSET]     ! save g4, g5 -- see above
         std     %g6, [%sp + ISF_G6_OFFSET]     ! save g6, g7
 
@@ -797,7 +797,7 @@ simple_return:
         mov    %fp, %g1
 
                                               ! g1 is restored later
-        ldd     [%fp + ISF_G2_OFFSET], %g2    ! restore g2, g3
+!        ldd     [%fp + ISF_G2_OFFSET], %g2    ! restore g2, g3
         ldd     [%fp + ISF_G4_OFFSET], %g4    ! restore g4, g5
         ldd     [%fp + ISF_G6_OFFSET], %g6    ! restore g6, g7
 
