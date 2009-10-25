@@ -198,7 +198,12 @@ void _CPU_ISR_install_raw_handler(
 
   /* need to flush icache after this !!! */
 
+  /* GAB: this function was not being found properly, don't know if 
+   * we will need it anyway */
+  /* TODO: FIXME */
+#if 0
   rtems_cache_invalidate_entire_instruction();
+#endif
 
 }
 

@@ -57,7 +57,7 @@ silo_ramdisk_size:
 	wrpr %g0, 0, %otherwin			! make sure the window state is consistent
 	wrpr %g0, NWINDOWS - 1, %cleanwin	! prevent needless clean_window traps for kernel
 
-	set initial_stack_top, %sp
+!	set initial_stack_top, %sp
 !	add %sp, -STACK_BIAS, %sp
 
 !	set ofw_cif, %l0

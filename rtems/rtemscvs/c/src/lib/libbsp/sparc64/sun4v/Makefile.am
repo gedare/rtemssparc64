@@ -36,6 +36,7 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/gnatinstallhandler.c
 clock_SOURCES = ../../shared/clock_driver_simidle.c
 console_SOURCES = ../../shared/console-polled.c console/console.c 
+
 timer_SOURCES = ../../shared/timerstub.c
 
 noinst_LIBRARIES = libbsp.a
