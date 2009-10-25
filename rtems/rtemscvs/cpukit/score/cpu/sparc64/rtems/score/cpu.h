@@ -866,6 +866,8 @@ void _CPU_Context_Initialize(
  *  halts/stops the CPU.
  */
 
+/* GAB: relies on sparc_disable_interrupts */
+#if 0
 #define _CPU_Fatal_halt( _error ) \
   do { \
     uint32_t   level; \
@@ -874,6 +876,11 @@ void _CPU_Context_Initialize(
     asm volatile ( "mov  %0, %%g1 " : "=r" (level) : "0" (level) ); \
     while (1); /* loop forever */ \
   } while (0)
+#else
+#define _CPU_Fatal_halt( _error ) \
+  { \
+  }
+#endif
 
 /* end of Fatal Error manager macros */
 
