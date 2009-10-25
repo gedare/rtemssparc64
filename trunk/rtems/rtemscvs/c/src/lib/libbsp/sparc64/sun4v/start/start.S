@@ -1,8 +1,16 @@
 
 # This code needs header before distribution~
 
-#include <stack.h>
-#include <register.h>
+# GAB: check these numbers
+#define STACK_ALIGNMENT			16
+#define STACK_BIAS			2047
+#define STACK_WINDOW_SAVE_AREA_SIZE	(16*8)
+
+
+#define PSTATE_IE_BIT   2
+#define PSTATE_PRIV_BIT	4
+#define PSTATE_AM_BIT   8
+
 
 #define INITIAL_STACK_SIZE 	8192
 
