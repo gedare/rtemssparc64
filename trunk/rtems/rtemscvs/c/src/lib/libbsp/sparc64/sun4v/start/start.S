@@ -1,3 +1,9 @@
+
+# This code needs header before distribution~
+
+#include <stack.h>
+#include <register.h>
+
 #define INITIAL_STACK_SIZE 	8192
 
 #define NWINDOWS		8
@@ -50,7 +56,9 @@ silo_ramdisk_size:
  
 !	call ofw_init		! initialize OpenFirmware
 !	stx %o4, [%l0]
-	
+
+/* GAB: need to finish booting */
+bootstrap:
 	b bootstrap
 	nop
 

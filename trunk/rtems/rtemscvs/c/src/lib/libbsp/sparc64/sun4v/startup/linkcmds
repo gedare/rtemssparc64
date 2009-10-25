@@ -1,3 +1,12 @@
+
+/* GAB: */
+/* TODO: FIXME: These should be checked, they were copied wholesale from avr */
+RamBase = DEFINED(RamBase) ? RamBase : 0x08000000;
+RamSize = DEFINED(RamSize) ? RamSize : 64K;
+HeapSize = DEFINED(HeapSize) ? HeapSize : 0x0;
+StackSize = DEFINED(StackSize) ? StackSize : 0x1000;
+
+
 OUTPUT_FORMAT("elf64-sparc")
 ENTRY(start)
 
