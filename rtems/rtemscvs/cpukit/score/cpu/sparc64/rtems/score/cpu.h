@@ -712,17 +712,34 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  *  level is returned in _level.
  */
 
-#define _CPU_ISR_Disable( _level ) \
+/* GAB: sparc_disable_interrupts is defined in libcpu/sparc64/syscall/syscall.S
+ * and in the sparc v7/8 target appears to be linked through the trap tables
+ *
+ * TODO: figure out how to handle sparc64 interrupts
+ */
+#if 0
+ #define _CPU_ISR_Disable( _level ) \
   (_level) = sparc_disable_interrupts()
- 
+#else
+ #define _CPU_ISR_Disable( _level ) \
+	_level = 0
+#endif
+
 /*
  *  Enable interrupts to the previous level (returned by _CPU_ISR_Disable).
  *  This indicates the end of a critical section.  The parameter
  *  _level is not modified.
  */
 
+/* GAB: see note for sparc_disable_interrupts */
+#if 0
 #define _CPU_ISR_Enable( _level ) \
   sparc_enable_interrupts( _level )
+#else
+#define _CPU_ISR_Enable( _level ) \
+ { \
+ }
+#endif
 
 /*
  *  This temporarily restores the interrupt to _level before immediately
