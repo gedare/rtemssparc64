@@ -4,7 +4,10 @@
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-sparc64],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
-AC_CONFIG_SRCDIR([shared])
+
+# GAB: ./shared is used by sparc v7/8 bsps
+# AC_CONFIG_SRCDIR([shared])
+
 RTEMS_TOP(../../../../..)
 
 RTEMS_CANONICAL_TARGET_CPU
