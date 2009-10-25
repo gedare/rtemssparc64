@@ -81,11 +81,17 @@ void _CPU_Initialize(void)
  
 uint32_t   _CPU_ISR_Get_level( void )
 {
+  /* GAB: sparc_get_interrupt_level not linking properly */
+  /* TODO: FIXME */
+  #if 0
   uint32_t   level;
  
   sparc_get_interrupt_level( level );
  
   return level;
+  #else
+  return 0;
+  #endif
 }
 
 /*PAGE

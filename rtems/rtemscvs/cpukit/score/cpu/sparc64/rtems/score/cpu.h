@@ -722,7 +722,7 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
   (_level) = sparc_disable_interrupts()
 #else
  #define _CPU_ISR_Disable( _level ) \
-	_level = 0
+  _level = 0
 #endif
 
 /*
@@ -748,18 +748,32 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  *  modified.
  */
 
+/* GAB: see note for sparc_disable_interrupts */
+#if 0
 #define _CPU_ISR_Flash( _level ) \
-  sparc_flash_interrupts( _level )
- 
+   sparc_flash_interrupts( _level )
+#else
+#define _CPU_ISR_Flash( _level ) \
+  { \
+  }
+#endif
+
 /*
  *  Map interrupt level in task mode onto the hardware that the CPU
  *  actually provides.  Currently, interrupt levels which do not
  *  map onto the CPU in a straight fashion are undefined.  
  */
 
+/* GAB: see note for sparc_disable_interrupts */
+#if 0
 #define _CPU_ISR_Set_level( _newlevel ) \
    sparc_enable_interrupts( _newlevel << 8)
- 
+#else
+#define _CPU_ISR_Set_level( _newlevel ) \
+  { \
+  }
+#endif 
+
 uint32_t   _CPU_ISR_Get_level( void );
  
 /* end of ISR handler macros */
