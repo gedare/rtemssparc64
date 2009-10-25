@@ -35,7 +35,9 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/bspstart.c ../../shared/bootcard.c ../../shared/sbrk.c \
     ../../shared/gnatinstallhandler.c
 clock_SOURCES = ../../shared/clock_driver_simidle.c
-console_SOURCES = ../../shared/console-polled.c console/console.c 
+
+#GAB: TODO: FIXME: using dummy_printk
+console_SOURCES = ../../shared/console-polled.c console/console.c ../../shared/dummy_printk_support.c
 
 timer_SOURCES = ../../shared/timerstub.c
 
