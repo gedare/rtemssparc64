@@ -80,3 +80,8 @@ bootstrap:
 _fini:
 	nop
 	nop
+	
+.global _init
+_init:
+	nop
+	nop
