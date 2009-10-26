@@ -78,10 +78,10 @@ silo_ramdisk_size:
 	set initial_stack_top, %sp
 	add %sp, -STACK_BIAS, %sp
 
-!	set ofw_cif, %l0
+	set ofw_cif, %l0
  
-!	call ofw_init		! initialize OpenFirmware
-!	stx %o4, [%l0]
+	call ofw_init		! initialize OpenFirmware
+	stx %o4, [%l0]
 	
 	b bootstrap
 	nop
