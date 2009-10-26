@@ -8,9 +8,12 @@ INCLUDE3=../../HeleonOS/HelenOS/boot/genarch
 HELENONSBOOT=../../HeleonOS/HelenOS/boot/arch/sparc64/loader
 
 TOOLCHAINRTEMS=../../../rtems/rtems4.10/bin/sparc-rtems4.10
-TOOLCHAINHELENOS=../../rtems/compilers/sparc64-newlib-rtems4.10-4.4.1.gcc.full/sparc64/bin/sparc64-rtems4.10
+TOOLCHAINHELENOS=/home/eugen/work/rtemssparc64/rtems/compilers/sparc64-newlib-rtems4.10-4.4.1.gcc.full/sparc64/bin/sparc64-rtems4.10
+TOOLCHAINLINUX=/home/eugen/work/simics/sparc64crosscompiler/sparc64/bin/sparc64-linux-gnu
+
 CC32=$(TOOLCHAINRTEMS)-gcc
 CC64=$(TOOLCHAINHELENOS)-gcc
+CC64linux=$(TOOLCHAINLINUX)-gcc
 
 LINKSCRIPT32=_link32.ld
 LINKSCRIPT64=../../HeleonOS/HelenOS/boot/arch/sparc64/loader/_link.ld
@@ -61,15 +64,39 @@ rtems64:
 	$(CC64) -DCONFIG_DEBUG -DRELEASE=\"0.3.0\" -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -nostdinc -nostdlib -fno-builtin -Werror-implicit-function-declaration -Wmissing-prototypes -Werror -O3 -mcpu=niagara $(ELFFORMAT64) -mno-fpu -pipe "-DREVISION=\"4663\"" "-DTIMESTAMP=\"2009-10-08 11:45:21\"" -c $(HELENONSBOOT)/../../../genarch/ofw_tree.c -o ofw_tree.o
 
 	$(TOOLCHAINHELENOS)-ld -Map image.map -no-check-sections -N -T $(LINKSCRIPT64) main.o _components.o printf.o string.o balloc.o ofw.o ofw_tree.o ofwarch.o asm.o boot.o -o image.1.boot
-	$(TOOLCHAINHELENOS)-objdump -D image.1.boot &> image.1.boot.disasm
+	$(TOOLCHAINHELENOS)-objdump -D image.1.boot &> debug/image.1.elf64.disasm
 	$(TOOLCHAINHELENOS)-readelf -a image.1.boot &> image.1.elf
 	-rm image.1.boot.gz
-	gzip image.1.boot
+	cp image.1.boot debug/image.1.elf64.boot
+	gzip image.1.boot 
 	cp image.1.boot.gz isofiles/rtems64/image.1.boot.gz -f
 	mkisofs -f -G $(TMP)/boot/isofs.b -B ... -r -o $(BASE)/image.iso $(TMP)
 	ls -l image.iso
+
+rtems64linux:
+
+	$(CC64linux) -DCONFIG_DEBUG -DRELEASE=\"0.3.0\" -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -nostdinc -nostdlib -fno-builtin -Werror-implicit-function-declaration -Wmissing-prototypes -Werror -O3 -mcpu=niagara $(ELFFORMAT64) -mno-fpu -pipe "-DREVISION=\"4663\"" "-DTIMESTAMP=\"2009-10-08 11:45:21\"" -c $(HELENONSBOOT)/../../../generic/printf.c -o printf.o
+	$(CC64linux) -DCONFIG_DEBUG -DRELEASE=\"0.3.0\" -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -nostdinc -nostdlib -fno-builtin -Werror-implicit-function-declaration -Wmissing-prototypes -Werror -O3 -mcpu=niagara $(ELFFORMAT64) -mno-fpu -pipe "-DREVISION=\"4663\"" "-DTIMESTAMP=\"2009-10-08 11:45:21\"" -c $(HELENONSBOOT)/../../../generic/string.c -o string.o
+	$(CC64linux) -DCONFIG_DEBUG -DRELEASE=\"0.3.0\" -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -nostdinc -nostdlib -fno-builtin -Werror-implicit-function-declaration -Wmissing-prototypes -Werror -O3 -mcpu=niagara $(ELFFORMAT64) -mno-fpu -pipe "-DREVISION=\"4663\"" "-DTIMESTAMP=\"2009-10-08 11:45:21\"" -c $(HELENONSBOOT)/../../../genarch/balloc.c -o balloc.o
+	$(CC64linux) -DCONFIG_DEBUG -DRELEASE=\"0.3.0\" -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -nostdinc -nostdlib -fno-builtin -Werror-implicit-function-declaration -Wmissing-prototypes -Werror -O3 -mcpu=niagara $(ELFFORMAT64) -mno-fpu -pipe "-DREVISION=\"4663\"" "-DTIMESTAMP=\"2009-10-08 11:45:21\"" -c $(HELENONSBOOT)/main.c -o main.o
+	$(CC64linux) -DCONFIG_DEBUG -DRELEASE=\"0.3.0\" -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -nostdinc -nostdlib -fno-builtin -Werror-implicit-function-declaration -Wmissing-prototypes -Werror -O3 -mcpu=niagara $(ELFFORMAT64) -mno-fpu -pipe "-DREVISION=\"4663\"" "-DTIMESTAMP=\"2009-10-08 11:45:21\"" -c $(HELENONSBOOT)/ofwarch.c -o ofwarch.o
+	$(CC64linux) -DCONFIG_DEBUG -DRELEASE=\"0.3.0\" -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -nostdinc -nostdlib -fno-builtin -Werror-implicit-function-declaration -Wmissing-prototypes -Werror -O3 -mcpu=niagara $(ELFFORMAT64) -mno-fpu -pipe "-DREVISION=\"4663\"" "-DTIMESTAMP=\"2009-10-08 11:45:21\"" -D__ASM__ -c $(HELENONSBOOT)/asm.S -o asm.o
+	$(CC64linux) -DCONFIG_DEBUG -DRELEASE=\"0.3.0\" -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -nostdinc -nostdlib -fno-builtin -Werror-implicit-function-declaration -Wmissing-prototypes -Werror -O3 -mcpu=niagara $(ELFFORMAT64) -mno-fpu -pipe "-DREVISION=\"4663\"" "-DTIMESTAMP=\"2009-10-08 11:45:21\"" -D__ASM__ -c $(HELENONSBOOT)/boot.S -o boot.o
+	$(CC64linux) -DCONFIG_DEBUG -DRELEASE=\"0.3.0\" -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -nostdinc -nostdlib -fno-builtin -Werror-implicit-function-declaration -Wmissing-prototypes -Werror -O3 -mcpu=niagara $(ELFFORMAT64) -mno-fpu -pipe "-DREVISION=\"4663\"" "-DTIMESTAMP=\"2009-10-08 11:45:21\"" -c $(HELENONSBOOT)/_components.c -o _components.o
+	$(CC64linux) -DCONFIG_DEBUG -DRELEASE=\"0.3.0\" -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -nostdinc -nostdlib -fno-builtin -Werror-implicit-function-declaration -Wmissing-prototypes -Werror -O3 -mcpu=niagara $(ELFFORMAT64) -mno-fpu -pipe "-DREVISION=\"4663\"" "-DTIMESTAMP=\"2009-10-08 11:45:21\"" -c $(HELENONSBOOT)/../../../genarch/ofw.c -o ofw.o
+	$(CC64linux) -DCONFIG_DEBUG -DRELEASE=\"0.3.0\" -I$(INCLUDE1) -I$(INCLUDE2) -I$(INCLUDE3) -nostdinc -nostdlib -fno-builtin -Werror-implicit-function-declaration -Wmissing-prototypes -Werror -O3 -mcpu=niagara $(ELFFORMAT64) -mno-fpu -pipe "-DREVISION=\"4663\"" "-DTIMESTAMP=\"2009-10-08 11:45:21\"" -c $(HELENONSBOOT)/../../../genarch/ofw_tree.c -o ofw_tree.o
+
+	$(TOOLCHAINLINUX)-ld -Map image.map -no-check-sections -N -T $(LINKSCRIPT64) main.o _components.o printf.o string.o balloc.o ofw.o ofw_tree.o ofwarch.o asm.o boot.o -o image.1.boot
+	$(TOOLCHAINLINUX)-objdump -D image.1.boot &> debug/image.1.elf64linux.disasm
+	$(TOOLCHAINLINUX)-readelf -a image.1.boot &> image.1.elf
+	-rm image.1.boot.gz
+	cp image.1.boot debug/image.1.elf64linux.boot
+	gzip image.1.boot
+	cp image.1.boot.gz isofiles/rtems64linux/image.1.boot.gz -f
+	mkisofs -f -G $(TMP)/boot/isofs.b -B ... -r -o $(BASE)/image.iso $(TMP)
+	ls -l image.iso
 	
-all: rtems32 rtems64
+all: rtems64 rtems64linux
 
 clean:
 	-rm *.o

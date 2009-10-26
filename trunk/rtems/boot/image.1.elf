@@ -10,11 +10,11 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x4000
   Start of program headers:          64 (bytes into file)
-  Start of section headers:          24344 (bytes into file)
+  Start of section headers:          23160 (bytes into file)
   Flags:                             0x2, rmo
   Size of this header:               64 (bytes)
   Size of program headers:           56 (bytes)
-  Number of program headers:         1
+  Number of program headers:         2
   Size of section headers:           64 (bytes)
   Number of section headers:         5
   Section header string table index: 2
@@ -24,13 +24,13 @@ Section Headers:
        Size              EntSize          Flags  Link  Info  Align
   [ 0]                   NULL             0000000000000000  00000000
        0000000000000000  0000000000000000           0     0     0
-  [ 1] .boot             PROGBITS         0000000000004000  00000080
-       0000000000005e74  0000000000000000 WAX       0     0     32
-  [ 2] .shstrtab         STRTAB           0000000000000000  00005ef4
+  [ 1] .boot             PROGBITS         0000000000004000  000000c0
+       0000000000005994  0000000000000000 WAX       0     0     32
+  [ 2] .shstrtab         STRTAB           0000000000000000  00005a54
        0000000000000021  0000000000000000           0     0     1
-  [ 3] .symtab           SYMTAB           0000000000000000  00006058
+  [ 3] .symtab           SYMTAB           0000000000000000  00005bb8
        00000000000007c8  0000000000000018           4    20     8
-  [ 4] .strtab           STRTAB           0000000000000000  00006820
+  [ 4] .strtab           STRTAB           0000000000000000  00006380
        0000000000000388  0000000000000000           0     0     1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings)
@@ -42,12 +42,15 @@ There are no section groups in this file.
 Program Headers:
   Type           Offset             VirtAddr           PhysAddr
                  FileSiz            MemSiz              Flags  Align
-  LOAD           0x0000000000000080 0x0000000000004000 0x0000000000004000
-                 0x0000000000005e74 0x0000000000005e74  RWE    20
+  LOAD           0x00000000000000c0 0x0000000000004000 0x0000000000004000
+                 0x0000000000005994 0x0000000000005994  RWE    20
+  GNU_STACK      0x0000000000000000 0x0000000000000000 0x0000000000000000
+                 0x0000000000000000 0x0000000000000000  RWE    8
 
  Section to Segment mapping:
   Segment Sections...
    00     .boot 
+   01     
 
 There is no dynamic section in this file.
 
@@ -59,83 +62,83 @@ Symbol table '.symtab' contains 83 entries:
    Num:    Value          Size Type    Bind   Vis      Ndx Name
      0: 0000000000000000     0 NOTYPE  LOCAL  DEFAULT  UND 
      1: 0000000000004000     0 SECTION LOCAL  DEFAULT    1 
-     2: 0000000000006050     0 NOTYPE  LOCAL  DEFAULT    1 initial_stack_top
-     3: 0000000000004050     0 NOTYPE  LOCAL  DEFAULT    1 initial_stack
+     2: 0000000000006060     0 NOTYPE  LOCAL  DEFAULT    1 initial_stack_top
+     3: 0000000000004060     0 NOTYPE  LOCAL  DEFAULT    1 initial_stack
      4: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS main.c
-     5: 00000000000097c1     1 OBJECT  LOCAL  DEFAULT    1 architecture
+     5: 00000000000092e1     1 OBJECT  LOCAL  DEFAULT    1 architecture
      6: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS _components.c
      7: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS printf.c
-     8: 00000000000097a8    17 OBJECT  LOCAL  DEFAULT    1 digits
+     8: 00000000000092c8    17 OBJECT  LOCAL  DEFAULT    1 digits
      9: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS string.c
     10: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS balloc.c
-    11: 00000000000097c8     8 OBJECT  LOCAL  DEFAULT    1 ballocs
+    11: 00000000000092e8     8 OBJECT  LOCAL  DEFAULT    1 ballocs
     12: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS ofw.c
     13: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS ofw_tree.c
-    14: 00000000000088c0   756 FUNC    LOCAL  DEFAULT    1 ofw_tree_node_process
-    15: 00000000000097f0   257 OBJECT  LOCAL  DEFAULT    1 path.982
-    16: 00000000000097d0    32 OBJECT  LOCAL  DEFAULT    1 name.983
+    14: 0000000000008420   776 FUNC    LOCAL  DEFAULT    1 ofw_tree_node_process
+    15: 0000000000009310   257 OBJECT  LOCAL  DEFAULT    1 path.963
+    16: 00000000000092f0    32 OBJECT  LOCAL  DEFAULT    1 name.964
     17: 0000000000000000     0 FILE    LOCAL  DEFAULT  ABS ofwarch.c
-    18: 0000000000008ce0   384 FUNC    LOCAL  DEFAULT    1 wake_cpus_in_node
-    19: 0000000000009100     0 NOTYPE  LOCAL  DEFAULT    1 icache_flush
-    20: 0000000000008c60    16 FUNC    GLOBAL DEFAULT    1 ofw_translate_failed
-    21: 0000000000007d00    48 FUNC    GLOBAL DEFAULT    1 ofw_get_child_node
-    22: 0000000000006c80  1424 FUNC    GLOBAL DEFAULT    1 printf
-    23: 0000000000007a00    40 FUNC    GLOBAL DEFAULT    1 ofw_quiesce
-    24: 00000000000098f8   288 OBJECT  GLOBAL DEFAULT    1 components
-    25: 0000000000008280   388 FUNC    GLOBAL DEFAULT    1 setup_palette
-    26: 0000000000007720   292 FUNC    GLOBAL DEFAULT    1 memmove
-    27: 0000000000007fc0   696 FUNC    GLOBAL DEFAULT    1 ofw_init
-    28: 0000000000009128     0 NOTYPE  GLOBAL DEFAULT    1 ofw
-    29: 00000000000097a0     8 OBJECT  GLOBAL DEFAULT    1 timestamp
-    30: 0000000000009028     0 NOTYPE  GLOBAL DEFAULT    1 memcpy
-    31: 0000000000006c40    64 FUNC    GLOBAL DEFAULT    1 puts
-    32: 00000000000060e0  2196 FUNC    GLOBAL DEFAULT    1 bootstrap
-    33: 0000000000007ee0   156 FUNC    GLOBAL DEFAULT    1 ofw_get_address_cells
-    34: 0000000000007cc0    48 FUNC    GLOBAL DEFAULT    1 ofw_get_peer_node
-    35: 0000000000007e00    60 FUNC    GLOBAL DEFAULT    1 ofw_get_property
-    36: 0000000000007d80    56 FUNC    GLOBAL DEFAULT    1 ofw_next_property
-    37: 0000000000008e60   296 FUNC    GLOBAL DEFAULT    1 ofw_cpu
-    38: 0000000000008fa0   128 FUNC    GLOBAL DEFAULT    1 write
+    18: 0000000000008840   352 FUNC    LOCAL  DEFAULT    1 wake_cpus_in_node
+    19: 0000000000008c20     0 NOTYPE  LOCAL  DEFAULT    1 icache_flush
+    20: 00000000000087c0    16 FUNC    GLOBAL DEFAULT    1 ofw_translate_failed
+    21: 00000000000079a0    44 FUNC    GLOBAL DEFAULT    1 ofw_get_child_node
+    22: 0000000000006a60  1384 FUNC    GLOBAL DEFAULT    1 printf
+    23: 0000000000007720    36 FUNC    GLOBAL DEFAULT    1 ofw_quiesce
+    24: 0000000000009418   288 OBJECT  GLOBAL DEFAULT    1 components
+    25: 0000000000007ea0   356 FUNC    GLOBAL DEFAULT    1 setup_palette
+    26: 0000000000007480   284 FUNC    GLOBAL DEFAULT    1 memmove
+    27: 0000000000007c60   568 FUNC    GLOBAL DEFAULT    1 ofw_init
+    28: 0000000000008c48     0 NOTYPE  GLOBAL DEFAULT    1 ofw
+    29: 00000000000092c0     8 OBJECT  GLOBAL DEFAULT    1 timestamp
+    30: 0000000000008b48     0 NOTYPE  GLOBAL DEFAULT    1 memcpy
+    31: 0000000000006a20    64 FUNC    GLOBAL DEFAULT    1 puts
+    32: 00000000000060e0  1976 FUNC    GLOBAL DEFAULT    1 bootstrap
+    33: 0000000000007b80   148 FUNC    GLOBAL DEFAULT    1 ofw_get_address_cells
+    34: 0000000000007960    44 FUNC    GLOBAL DEFAULT    1 ofw_get_peer_node
+    35: 0000000000007aa0    56 FUNC    GLOBAL DEFAULT    1 ofw_get_property
+    36: 0000000000007a20    52 FUNC    GLOBAL DEFAULT    1 ofw_next_property
+    37: 00000000000089a0   276 FUNC    GLOBAL DEFAULT    1 ofw_cpu
+    38: 0000000000008ac0   116 FUNC    GLOBAL DEFAULT    1 write
     39: 000000000000401c     0 NOTYPE  GLOBAL DEFAULT    1 silo_ramdisk_size
-    40: 0000000000007d40    56 FUNC    GLOBAL DEFAULT    1 ofw_package_to_path
-    41: 0000000000009790     8 OBJECT  GLOBAL DEFAULT    1 release
-    42: 0000000000008c80    72 FUNC    GLOBAL DEFAULT    1 ofw_get_physmem_start
-    43: 0000000000009e50     4 OBJECT  GLOBAL DEFAULT    1 ofw_aliases
-    44: 0000000000009e54     4 OBJECT  GLOBAL DEFAULT    1 ofw_chosen
-    45: 0000000000007c60    72 FUNC    GLOBAL DEFAULT    1 ofw_write
-    46: 0000000000007e40   148 FUNC    GLOBAL DEFAULT    1 ofw_get_size_cells
-    47: 0000000000009e58     4 OBJECT  GLOBAL DEFAULT    1 ofw_memory_prop
-    48: 0000000000009a18  1072 OBJECT  GLOBAL DEFAULT    1 bootinfo
-    49: 0000000000007300   240 FUNC    GLOBAL DEFAULT    1 strncmp
-    50: 0000000000007400   104 FUNC    GLOBAL DEFAULT    1 strncpy
-    51: 0000000000007860    24 FUNC    GLOBAL DEFAULT    1 balloc_init
+    40: 00000000000079e0    52 FUNC    GLOBAL DEFAULT    1 ofw_package_to_path
+    41: 00000000000092b0     8 OBJECT  GLOBAL DEFAULT    1 release
+    42: 00000000000087e0    68 FUNC    GLOBAL DEFAULT    1 ofw_get_physmem_start
+    43: 0000000000009970     4 OBJECT  GLOBAL DEFAULT    1 ofw_aliases
+    44: 0000000000009974     4 OBJECT  GLOBAL DEFAULT    1 ofw_chosen
+    45: 0000000000007920    64 FUNC    GLOBAL DEFAULT    1 ofw_write
+    46: 0000000000007ae0   140 FUNC    GLOBAL DEFAULT    1 ofw_get_size_cells
+    47: 0000000000009978     4 OBJECT  GLOBAL DEFAULT    1 ofw_memory_prop
+    48: 0000000000009538  1072 OBJECT  GLOBAL DEFAULT    1 bootinfo
+    49: 00000000000070a0   240 FUNC    GLOBAL DEFAULT    1 strncmp
+    50: 00000000000071a0    88 FUNC    GLOBAL DEFAULT    1 strncpy
+    51: 00000000000075a0    20 FUNC    GLOBAL DEFAULT    1 balloc_init
     52: 0000000000004018     0 NOTYPE  GLOBAL DEFAULT    1 silo_ramdisk_image
-    53: 00000000000097c0     1 OBJECT  GLOBAL DEFAULT    1 subarchitecture
-    54: 0000000000009e5c     4 OBJECT  GLOBAL DEFAULT    1 ofw_stdout
-    55: 00000000000078e0   264 FUNC    GLOBAL DEFAULT    1 ofw_call
-    56: 0000000000009798     8 OBJECT  GLOBAL DEFAULT    1 revision
-    57: 0000000000007f80    48 FUNC    GLOBAL DEFAULT    1 ofw_find_device
-    58: 0000000000009e60     4 OBJECT  GLOBAL DEFAULT    1 ofw_memory
-    59: 0000000000007260   156 FUNC    GLOBAL DEFAULT    1 strcmp
-    60: 0000000000009e64     4 OBJECT  GLOBAL DEFAULT    1 ofw_root
-    61: 0000000000007dc0    52 FUNC    GLOBAL DEFAULT    1 ofw_get_proplen
-    62: 00000000000090e0     0 NOTYPE  GLOBAL DEFAULT    1 jump_to_kernel
-    63: 0000000000007aa0   132 FUNC    GLOBAL DEFAULT    1 ofw_claim_phys
-    64: 0000000000006980     8 FUNC    GLOBAL DEFAULT    1 init_components
-    65: 0000000000009020     0 NOTYPE  GLOBAL DEFAULT    1 halt
-    66: 0000000000007880    80 FUNC    GLOBAL DEFAULT    1 balloc
-    67: 0000000000009e48     2 OBJECT  GLOBAL DEFAULT    1 mid_mask
+    53: 00000000000092e0     1 OBJECT  GLOBAL DEFAULT    1 subarchitecture
+    54: 000000000000997c     4 OBJECT  GLOBAL DEFAULT    1 ofw_stdout
+    55: 0000000000007620   256 FUNC    GLOBAL DEFAULT    1 ofw_call
+    56: 00000000000092b8     8 OBJECT  GLOBAL DEFAULT    1 revision
+    57: 0000000000007c20    44 FUNC    GLOBAL DEFAULT    1 ofw_find_device
+    58: 0000000000009980     4 OBJECT  GLOBAL DEFAULT    1 ofw_memory
+    59: 0000000000007020   116 FUNC    GLOBAL DEFAULT    1 strcmp
+    60: 0000000000009984     4 OBJECT  GLOBAL DEFAULT    1 ofw_root
+    61: 0000000000007a60    48 FUNC    GLOBAL DEFAULT    1 ofw_get_proplen
+    62: 0000000000008c00     0 NOTYPE  GLOBAL DEFAULT    1 jump_to_kernel
+    63: 00000000000077c0   116 FUNC    GLOBAL DEFAULT    1 ofw_claim_phys
+    64: 00000000000068a0     8 FUNC    GLOBAL DEFAULT    1 init_components
+    65: 0000000000008b40     0 NOTYPE  GLOBAL DEFAULT    1 halt
+    66: 00000000000075c0    76 FUNC    GLOBAL DEFAULT    1 balloc
+    67: 0000000000009968     2 OBJECT  GLOBAL DEFAULT    1 mid_mask
     68: 0000000000004000     0 NOTYPE  GLOBAL DEFAULT    1 start
-    69: 0000000000007480   644 FUNC    GLOBAL DEFAULT    1 atoi
-    70: 0000000000007b40   112 FUNC    GLOBAL DEFAULT    1 ofw_claim_virt
-    71: 0000000000007a40    96 FUNC    GLOBAL DEFAULT    1 ofw_map
-    72: 0000000000007220    56 FUNC    GLOBAL DEFAULT    1 strlen
-    73: 0000000000007bc0   140 FUNC    GLOBAL DEFAULT    1 ofw_translate
-    74: 0000000000009e68     8 OBJECT  GLOBAL DEFAULT    1 ofw_cif
-    75: 0000000000008bc0   132 FUNC    GLOBAL DEFAULT    1 ofw_tree_build
-    76: 0000000000009e70     4 OBJECT  GLOBAL DEFAULT    1 ofw_mmu
-    77: 00000000000085e0   724 FUNC    GLOBAL DEFAULT    1 ofw_memmap
-    78: 0000000000008420   436 FUNC    GLOBAL DEFAULT    1 ofw_screen
+    69: 0000000000007200   628 FUNC    GLOBAL DEFAULT    1 atoi
+    70: 0000000000007840    96 FUNC    GLOBAL DEFAULT    1 ofw_claim_virt
+    71: 0000000000007760    84 FUNC    GLOBAL DEFAULT    1 ofw_map
+    72: 0000000000006fe0    56 FUNC    GLOBAL DEFAULT    1 strlen
+    73: 00000000000078a0   124 FUNC    GLOBAL DEFAULT    1 ofw_translate
+    74: 0000000000009988     8 OBJECT  GLOBAL DEFAULT    1 ofw_cif
+    75: 0000000000008740   124 FUNC    GLOBAL DEFAULT    1 ofw_tree_build
+    76: 0000000000009990     4 OBJECT  GLOBAL DEFAULT    1 ofw_mmu
+    77: 00000000000081c0   592 FUNC    GLOBAL DEFAULT    1 ofw_memmap
+    78: 0000000000008020   400 FUNC    GLOBAL DEFAULT    1 ofw_screen
     79: 0000000000000002     0 REGISTER GLOBAL DEFAULT  UND 
     80: 0000000000000003     0 REGISTER GLOBAL DEFAULT  UND 
     81: 0000000000000006     0 REGISTER GLOBAL DEFAULT  UND 
