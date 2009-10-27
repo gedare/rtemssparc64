@@ -226,7 +226,7 @@ void bootstrap(void)
 	unsigned int top = 0;
 	int i, j;
 
-	printf("\nSystem starting\n");
+	printf("RTEMS System starting");
 
 	detect_architecture();
 	init_components(components);
