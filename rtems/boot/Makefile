@@ -18,6 +18,7 @@ CC64linux=$(TOOLCHAINLINUX)-gcc
 LINKSCRIPT32=_link32.ld
 LINKSCRIPT64=../../HeleonOS/HelenOS/boot/arch/sparc64/loader/_link.ld
 
+RTEMSEXE = ../b-sun4vcvs/sparc64-rtems4.10/c/sun4v/testsuites/samples/hello/hello.exe
 
 ELFFORMAT32=-m32
 ELFFORMAT64=-m64 
@@ -65,7 +66,7 @@ rtems64:
 
 	$(TOOLCHAINHELENOS)-ld -Map image.map -no-check-sections -N -T $(LINKSCRIPT64) main.o _components.o printf.o string.o balloc.o ofw.o ofw_tree.o ofwarch.o asm.o boot.o -o image.1.boot
 	$(TOOLCHAINHELENOS)-objdump -D image.1.boot &> debug/image.1.elf64.disasm
-	$(TOOLCHAINHELENOS)-readelf -a image.1.boot &> image.1.elf
+	$(TOOLCHAINHELENOS)-readelf -a image.1.boot &> debug/image.1.elf64.elf
 	-rm image.1.boot.gz
 	cp image.1.boot debug/image.1.elf64.boot
 	gzip image.1.boot 
@@ -88,7 +89,7 @@ rtems64linux:
 
 	$(TOOLCHAINLINUX)-ld -Map image.map -no-check-sections -N -T $(LINKSCRIPT64) main.o _components.o printf.o string.o balloc.o ofw.o ofw_tree.o ofwarch.o asm.o boot.o -o image.1.boot
 	$(TOOLCHAINLINUX)-objdump -D image.1.boot &> debug/image.1.elf64linux.disasm
-	$(TOOLCHAINLINUX)-readelf -a image.1.boot &> image.1.elf
+	$(TOOLCHAINLINUX)-readelf -a image.1.boot &> debug/image.1.elf64linux.elf
 	-rm image.1.boot.gz
 	cp image.1.boot debug/image.1.elf64linux.boot
 	gzip image.1.boot
@@ -96,7 +97,19 @@ rtems64linux:
 	mkisofs -f -G $(TMP)/boot/isofs.b -B ... -r -o $(BASE)/image.iso $(TMP)
 	ls -l image.iso
 	
-all: rtems64 rtems64linux
+rtemshelloworld:
+	cp $(RTEMSEXE) image.1.boot
+	$(TOOLCHAINHELENOS)-objdump -D image.1.boot &> debug/rtemshelloworld.disasm
+	$(TOOLCHAINHELENOS)-readelf -a image.1.boot &> debug/rtemshelloworld.elf
+	-rm image.1.boot.gz
+	cp image.1.boot debug/rtemshelloworld.exe
+	gzip image.1.boot 
+	cp image.1.boot.gz isofiles/rtemshelloworld/image.1.boot.gz -f
+	mkisofs -f -G $(TMP)/boot/isofs.b -B ... -r -o $(BASE)/image.iso $(TMP)
+	ls -l image.iso
+	
+	
+all: rtemshelloworld
 
 clean:
 	-rm *.o
