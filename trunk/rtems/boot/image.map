@@ -17,29 +17,13 @@ ofw_mmu             0x4               ofw.o
 Discarded input sections
 
  .comment       0x0000000000000000        0x0 main.o
- .note.GNU-stack
-                0x0000000000000000        0x0 main.o
  .comment       0x0000000000000000        0x0 _components.o
- .note.GNU-stack
-                0x0000000000000000        0x0 _components.o
  .comment       0x0000000000000000        0x0 printf.o
- .note.GNU-stack
-                0x0000000000000000        0x0 printf.o
  .comment       0x0000000000000000        0x0 string.o
- .note.GNU-stack
-                0x0000000000000000        0x0 string.o
  .comment       0x0000000000000000        0x0 balloc.o
- .note.GNU-stack
-                0x0000000000000000        0x0 balloc.o
  .comment       0x0000000000000000        0x0 ofw.o
- .note.GNU-stack
-                0x0000000000000000        0x0 ofw.o
  .comment       0x0000000000000000        0x0 ofw_tree.o
- .note.GNU-stack
-                0x0000000000000000        0x0 ofw_tree.o
  .comment       0x0000000000000000        0x0 ofwarch.o
- .note.GNU-stack
-                0x0000000000000000        0x0 ofwarch.o
 
 Memory Configuration
 
@@ -49,131 +33,131 @@ Name             Origin             Length             Attributes
 Linker script and memory map
 
 
-.boot           0x0000000000004000     0x5994
+.boot           0x0000000000004000     0x5e74
  *(BOOTSTRAP)
  BOOTSTRAP      0x0000000000004000     0x20e0 boot.o
                 0x000000000000401c                silo_ramdisk_size
                 0x0000000000004018                silo_ramdisk_image
                 0x0000000000004000                start
  *(.text)
- .text          0x00000000000060e0      0x7c0 main.o
+ .text          0x00000000000060e0      0x8a0 main.o
                 0x00000000000060e0                bootstrap
- .text          0x00000000000068a0       0x20 _components.o
-                0x00000000000068a0                init_components
- .text          0x00000000000068c0      0x720 printf.o
-                0x0000000000006a60                printf
-                0x0000000000006a20                puts
- .text          0x0000000000006fe0      0x5c0 string.o
-                0x0000000000007480                memmove
-                0x00000000000070a0                strncmp
-                0x00000000000071a0                strncpy
-                0x0000000000007020                strcmp
-                0x0000000000007200                atoi
-                0x0000000000006fe0                strlen
- .text          0x00000000000075a0       0x80 balloc.o
-                0x00000000000075a0                balloc_init
-                0x00000000000075c0                balloc
- .text          0x0000000000007620      0xe00 ofw.o
-                0x00000000000079a0                ofw_get_child_node
-                0x0000000000007720                ofw_quiesce
-                0x0000000000007ea0                setup_palette
-                0x0000000000007c60                ofw_init
-                0x0000000000007b80                ofw_get_address_cells
-                0x0000000000007960                ofw_get_peer_node
-                0x0000000000007aa0                ofw_get_property
-                0x0000000000007a20                ofw_next_property
-                0x00000000000079e0                ofw_package_to_path
-                0x0000000000007920                ofw_write
-                0x0000000000007ae0                ofw_get_size_cells
-                0x0000000000007620                ofw_call
-                0x0000000000007c20                ofw_find_device
-                0x0000000000007a60                ofw_get_proplen
-                0x00000000000077c0                ofw_claim_phys
-                0x0000000000007840                ofw_claim_virt
-                0x0000000000007760                ofw_map
-                0x00000000000078a0                ofw_translate
-                0x00000000000081c0                ofw_memmap
-                0x0000000000008020                ofw_screen
- .text          0x0000000000008420      0x3a0 ofw_tree.o
-                0x0000000000008740                ofw_tree_build
- .text          0x00000000000087c0      0x380 ofwarch.o
-                0x00000000000087c0                ofw_translate_failed
-                0x00000000000089a0                ofw_cpu
-                0x0000000000008ac0                write
-                0x00000000000087e0                ofw_get_physmem_start
- .text          0x0000000000008b40      0x138 asm.o
-                0x0000000000008c48                ofw
-                0x0000000000008b48                memcpy
-                0x0000000000008c00                jump_to_kernel
-                0x0000000000008b40                halt
- .text          0x0000000000008c78        0x0 boot.o
+ .text          0x0000000000006980       0x20 _components.o
+                0x0000000000006980                init_components
+ .text          0x00000000000069a0      0x880 printf.o
+                0x0000000000006c80                printf
+                0x0000000000006c40                puts
+ .text          0x0000000000007220      0x640 string.o
+                0x0000000000007720                memmove
+                0x0000000000007300                strncmp
+                0x0000000000007400                strncpy
+                0x0000000000007260                strcmp
+                0x0000000000007480                atoi
+                0x0000000000007220                strlen
+ .text          0x0000000000007860       0x80 balloc.o
+                0x0000000000007860                balloc_init
+                0x0000000000007880                balloc
+ .text          0x00000000000078e0      0xfe0 ofw.o
+                0x0000000000007d00                ofw_get_child_node
+                0x0000000000007a00                ofw_quiesce
+                0x0000000000008280                setup_palette
+                0x0000000000007fc0                ofw_init
+                0x0000000000007ee0                ofw_get_address_cells
+                0x0000000000007cc0                ofw_get_peer_node
+                0x0000000000007e00                ofw_get_property
+                0x0000000000007d80                ofw_next_property
+                0x0000000000007d40                ofw_package_to_path
+                0x0000000000007c60                ofw_write
+                0x0000000000007e40                ofw_get_size_cells
+                0x00000000000078e0                ofw_call
+                0x0000000000007f80                ofw_find_device
+                0x0000000000007dc0                ofw_get_proplen
+                0x0000000000007aa0                ofw_claim_phys
+                0x0000000000007b40                ofw_claim_virt
+                0x0000000000007a40                ofw_map
+                0x0000000000007bc0                ofw_translate
+                0x00000000000085e0                ofw_memmap
+                0x0000000000008420                ofw_screen
+ .text          0x00000000000088c0      0x3a0 ofw_tree.o
+                0x0000000000008bc0                ofw_tree_build
+ .text          0x0000000000008c60      0x3c0 ofwarch.o
+                0x0000000000008c60                ofw_translate_failed
+                0x0000000000008e60                ofw_cpu
+                0x0000000000008fa0                write
+                0x0000000000008c80                ofw_get_physmem_start
+ .text          0x0000000000009020      0x138 asm.o
+                0x0000000000009128                ofw
+                0x0000000000009028                memcpy
+                0x00000000000090e0                jump_to_kernel
+                0x0000000000009020                halt
+ .text          0x0000000000009158        0x0 boot.o
  *(.rodata)
- .rodata        0x0000000000008c78        0x0 printf.o
+ .rodata        0x0000000000009158        0x0 printf.o
  *(.rodata.*)
  .rodata.str1.8
-                0x0000000000008c78      0x2e6 main.o
+                0x0000000000009158      0x2e6 main.o
                                         0x2e8 (size before relaxing)
- *fill*         0x0000000000008f5e        0x2 00
+ *fill*         0x000000000000943e        0x2 00
  .rodata.str1.8
-                0x0000000000008f60        0x3 printf.o
+                0x0000000000009440        0x3 printf.o
                                           0x8 (size before relaxing)
- *fill*         0x0000000000008f63        0x5 00
+ *fill*         0x0000000000009443        0x5 00
  .rodata.str1.8
-                0x0000000000008f68      0x2d4 ofw.o
+                0x0000000000009448      0x2d4 ofw.o
                                         0x2e0 (size before relaxing)
- *fill*         0x000000000000923c        0x4 00
+ *fill*         0x000000000000971c        0x4 00
  .rodata.str1.8
-                0x0000000000009240        0x9 ofw_tree.o
+                0x0000000000009720        0x9 ofw_tree.o
                                          0x10 (size before relaxing)
- *fill*         0x0000000000009249        0x7 00
+ *fill*         0x0000000000009729        0x7 00
  .rodata.str1.8
-                0x0000000000009250       0x60 ofwarch.o
+                0x0000000000009730       0x60 ofwarch.o
                                          0x80 (size before relaxing)
  *(.data)
- .data          0x00000000000092b0       0x18 main.o
-                0x00000000000092c0                timestamp
-                0x00000000000092b0                release
-                0x00000000000092b8                revision
- .data          0x00000000000092c8        0x0 _components.o
- .data          0x00000000000092c8       0x18 printf.o
- .data          0x00000000000092e0        0x0 string.o
- .data          0x00000000000092e0        0x0 balloc.o
- .data          0x00000000000092e0        0x0 ofw.o
- .data          0x00000000000092e0        0x0 ofw_tree.o
- .data          0x00000000000092e0        0x0 ofwarch.o
- .data          0x00000000000092e0        0x0 asm.o
- .data          0x00000000000092e0        0x0 boot.o
+ .data          0x0000000000009790       0x18 main.o
+                0x00000000000097a0                timestamp
+                0x0000000000009790                release
+                0x0000000000009798                revision
+ .data          0x00000000000097a8        0x0 _components.o
+ .data          0x00000000000097a8       0x18 printf.o
+ .data          0x00000000000097c0        0x0 string.o
+ .data          0x00000000000097c0        0x0 balloc.o
+ .data          0x00000000000097c0        0x0 ofw.o
+ .data          0x00000000000097c0        0x0 ofw_tree.o
+ .data          0x00000000000097c0        0x0 ofwarch.o
+ .data          0x00000000000097c0        0x0 asm.o
+ .data          0x00000000000097c0        0x0 boot.o
  *(.sdata)
  *(.sdata2)
  *(.sbss)
  *(.bss)
- .bss           0x00000000000092e0        0x2 main.o
-                0x00000000000092e0                subarchitecture
- .bss           0x00000000000092e2        0x0 _components.o
- .bss           0x00000000000092e2        0x0 printf.o
- .bss           0x00000000000092e2        0x0 string.o
- *fill*         0x00000000000092e2        0x6 00
- .bss           0x00000000000092e8        0x8 balloc.o
- .bss           0x00000000000092f0        0x0 ofw.o
- .bss           0x00000000000092f0      0x128 ofw_tree.o
- .bss           0x0000000000009418        0x0 ofwarch.o
- .bss           0x0000000000009418        0x0 asm.o
- .bss           0x0000000000009418        0x0 boot.o
+ .bss           0x00000000000097c0        0x2 main.o
+                0x00000000000097c0                subarchitecture
+ .bss           0x00000000000097c2        0x0 _components.o
+ .bss           0x00000000000097c2        0x0 printf.o
+ .bss           0x00000000000097c2        0x0 string.o
+ *fill*         0x00000000000097c2        0x6 00
+ .bss           0x00000000000097c8        0x8 balloc.o
+ .bss           0x00000000000097d0        0x0 ofw.o
+ .bss           0x00000000000097d0      0x128 ofw_tree.o
+ .bss           0x00000000000098f8        0x0 ofwarch.o
+ .bss           0x00000000000098f8        0x0 asm.o
+ .bss           0x00000000000098f8        0x0 boot.o
  *(COMMON)
- COMMON         0x0000000000009418      0x552 main.o
-                0x0000000000009418                components
-                0x0000000000009538                bootinfo
-                0x0000000000009968                mid_mask
- *fill*         0x000000000000996a        0x6 00
- COMMON         0x0000000000009970       0x24 ofw.o
-                0x0000000000009970                ofw_aliases
-                0x0000000000009974                ofw_chosen
-                0x0000000000009978                ofw_memory_prop
-                0x000000000000997c                ofw_stdout
-                0x0000000000009980                ofw_memory
-                0x0000000000009984                ofw_root
-                0x0000000000009988                ofw_cif
-                0x0000000000009990                ofw_mmu
+ COMMON         0x00000000000098f8      0x552 main.o
+                0x00000000000098f8                components
+                0x0000000000009a18                bootinfo
+                0x0000000000009e48                mid_mask
+ *fill*         0x0000000000009e4a        0x6 00
+ COMMON         0x0000000000009e50       0x24 ofw.o
+                0x0000000000009e50                ofw_aliases
+                0x0000000000009e54                ofw_chosen
+                0x0000000000009e58                ofw_memory_prop
+                0x0000000000009e5c                ofw_stdout
+                0x0000000000009e60                ofw_memory
+                0x0000000000009e64                ofw_root
+                0x0000000000009e68                ofw_cif
+                0x0000000000009e70                ofw_mmu
  *(.kernel_image)
  *(.ns_image)
  *(.init_image)
@@ -184,7 +168,7 @@ Linker script and memory map
  *(.fat_image)
  *(.initrd_image)
 
-.rela.dyn       0x0000000000009998        0x0 load address 0x0000000000009994
+.rela.dyn       0x0000000000009e78        0x0 load address 0x0000000000009e74
  .rela.text     0x0000000000000000        0x0 main.o
  .relaBOOTSTRAP
                 0x0000000000000000        0x0 main.o
