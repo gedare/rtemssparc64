@@ -85,16 +85,11 @@ SECTIONS
   .rel.plt       : { *(.rel.plt)		}
   .rela.plt      : { *(.rela.plt)		}
   /* Internal text space or external memory */
+  .boot 0x4000: AT (0x4000) {
+	*(BOOTSTRAP);
+   }
   .text 0x4000 :
   {
-
-   . = 0x4000;
-    __BOOTSTRAP_start = . ;
-    text_start = .;
-    _text_start = .;
-    *(BOOTSTRAP);
-    __BOOTSTRAP_end = . ;
-
     *(.text*)
 
     /*
