@@ -44,7 +44,7 @@ $system.set-prom-env auto-boot? true
 # it is able to boot from a disk image in ISO9660 format.
 $image = ($system.get-component-object disk_image)
 @image = sim.objects[simenv.image]
-@image.files = [['/home/eugen/work/rtemssparc64/rtems/boot/image.iso', 'ro', 0, 2600960  ]]
+@image.files = [['/home/eugen/work/rtemssparc64/rtems/boot/image.iso', 'ro', 0, 3256320  ]]
  
 new-symtable file = /home/eugen/work/rtemssparc64/rtems/boot/debug/rtemshelloworld.exe
 
@@ -54,10 +54,17 @@ script-branch {
         $con.input "RTEMSHELLOWORLD\n"
         }
 
-#break 0x4000
+break 0x4000
 
 #break (sym ofw_init)
-break (sym bootstrap)
+
+#break (sym bootstrap)
+#break (sym boot_card)
+
+#break (sym rtems_initialize_data_structures)
+#break (sym _CPU_Initialize)
+
+break (sym _CPU_Context_save_fp)
 
 #break 0x7c84
 #break 0x7ccc
