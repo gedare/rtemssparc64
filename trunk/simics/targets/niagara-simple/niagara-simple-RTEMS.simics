@@ -44,7 +44,7 @@ $system.set-prom-env auto-boot? true
 # it is able to boot from a disk image in ISO9660 format.
 $image = ($system.get-component-object disk_image)
 @image = sim.objects[simenv.image]
-@image.files = [['/home/eugen/work/rtemssparc64/rtems/boot/image.iso', 'ro', 0, 2273280  ]]
+@image.files = [['/home/eugen/work/rtemssparc64/rtems/boot/image.iso', 'ro', 0, 2600960  ]]
  
 new-symtable file = /home/eugen/work/rtemssparc64/rtems/boot/debug/image.1.elf64.boot
 
@@ -58,7 +58,8 @@ script-branch {
 #break 0x4000
 
 #break (sym ofw_init)
-#break (sym bootstrap)
+break (sym bootstrap)
+break (sym boot_card)
 #break 0x7fec
 #break 0x8048
 #break 0x8074
