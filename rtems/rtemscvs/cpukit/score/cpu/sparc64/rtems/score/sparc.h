@@ -91,6 +91,7 @@ extern "C" {
  *  Miscellaneous constants
  */
 
+	/* GAB: TODO: FIXME: These need to be updated */
 /*
  *  PSR masks and starting bit positions
  *
@@ -140,38 +141,38 @@ extern "C" {
   } while ( 0 )
 
 /*
- *  Get and set the PSR
+ *  Get and set the pstate
  */
 
-#define sparc_get_psr( _psr ) \
+#define sparc64_get_pstate( _pstate ) \
   do { \
-     (_psr) = 0; \
-     asm volatile( "rd %%psr, %0" :  "=r" (_psr) : "0" (_psr) ); \
+     (_pstate) = 0; \
+     asm volatile( "rdpr %%pstate, %0" :  "=r" (_pstate) : "0" (_pstate) ); \
   } while ( 0 )
 
-#define sparc_set_psr( _psr ) \
+#define sparc_set_pstate( _pstate ) \
   do { \
-    asm volatile ( "mov  %0, %%psr " : "=r" ((_psr)) : "0" ((_psr)) ); \
-    nop(); \
-    nop(); \
-    nop(); \
+    asm volatile ( "wrpr  %0, %%pstate " : "=r" ((_pstate)) : "0" ((_pstate)) ); \
   } while ( 0 )
 
 /*
- *  Get and set the TBR
+ *  Get and set the TBA
  */
 
-#define sparc_get_tbr( _tbr ) \
+#define sparc64_get_tba( _tba ) \
   do { \
-     (_tbr) = 0; /* to avoid unitialized warnings */ \
-     asm volatile( "rd %%tbr, %0" :  "=r" (_tbr) : "0" (_tbr) ); \
+     (_tba) = 0; /* to avoid unitialized warnings */ \
+     asm volatile( "rdpr %%tba, %0" :  "=r" (_tba) : "0" (_tba) ); \
   } while ( 0 )
 
-#define sparc_set_tbr( _tbr ) \
+#define sparc64_set_tba( _tba ) \
   do { \
-     asm volatile( "wr %0, 0, %%tbr" :  "=r" (_tbr) : "0" (_tbr) ); \
+     asm volatile( "wrpr %%g0, 0, %%tba" :  "=r" (_tba) : "0" (_tba) ); \
   } while ( 0 )
 
+
+
+	/************* DEPRECATED ****************/
 /*
  *  Get and set the WIM
  */
