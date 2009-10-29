@@ -62,13 +62,18 @@ silo_ramdisk_size:
 	wrpr %g0, 0, %otherwin			! make sure the window state is consistent
 	wrpr %g0, NWINDOWS - 1, %cleanwin	! prevent needless clean_window traps for kernel
 
+	mov %g0, %g4
+
 	set initial_stack_top, %sp
 	add %sp, -STACK_BIAS, %sp
 
-!	set ofw_cif, %l0
+	set ofw_cif, %l0
  
-!	call ofw_init		! initialize OpenFirmware
-!	stx %o4, [%l0]
+	call ofw_init		! initialize OpenFirmware
+	stx %o4, [%l0]
+	
+	call SYM(bootstrap)
+	nop
 
 /* Before entering C code, we need to set up trap table */
 !	sethi %hi(trap_table), %g1
