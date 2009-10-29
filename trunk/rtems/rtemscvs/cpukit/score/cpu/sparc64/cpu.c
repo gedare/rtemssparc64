@@ -25,6 +25,7 @@
  *  must be filled in when the handler is installed.
  */
 
+/* GAB: FIXME: TODO: */
 const CPU_Trap_table_entry _CPU_Trap_slot_template = {
   0xa1480000,      /* mov   %psr, %l0           */
   0x29000000,      /* sethi %hi(_handler), %l4  */
@@ -141,7 +142,7 @@ void _CPU_ISR_install_raw_handler(
   uint32_t               real_vector;
   CPU_Trap_table_entry  *tbr;
   CPU_Trap_table_entry  *slot;
-  uint32_t               u32_tbr;
+  uint64_t               u64_tba;
   uint32_t               u32_handler;
 
   /*
@@ -156,12 +157,15 @@ void _CPU_ISR_install_raw_handler(
    *  to the slot we are interested in.
    */
 
-  sparc_get_tbr( u32_tbr );
+  sparc64_get_tba( u64_tba );
 
-  u32_tbr &= 0xfffff000;
+/*  u32_tbr &= 0xfffff000; */
+  u64_tba &= 0xffffffffffff8000;  /* GAB: keep only trap base address */
 
-  tbr = (CPU_Trap_table_entry *) u32_tbr;
+  tbr = (CPU_Trap_table_entry *) u64_tba;
 
+  /* GAB: use array indexing to fill in lower bits -- require 
+   * CPU_Trap_table_entry to be full-sized. */
   slot = &tbr[ real_vector ];
 
   /*
@@ -318,7 +322,7 @@ void _CPU_Context_Initialize(
      *  and this SPARC model has an FPU.
      */
 
-    sparc_get_psr( tmp_psr );
+    sparc64_get_pstate( tmp_psr );
     tmp_psr &= ~SPARC_PSR_PIL_MASK;
     tmp_psr |= (new_level << 8) & SPARC_PSR_PIL_MASK;
     tmp_psr &= ~SPARC_PSR_EF_MASK;      /* disabled by default */

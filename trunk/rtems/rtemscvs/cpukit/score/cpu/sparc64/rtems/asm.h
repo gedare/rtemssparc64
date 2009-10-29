@@ -96,24 +96,4 @@
 #define PUBLIC(sym) .globl SYM (sym)
 #define EXTERN(sym) .globl SYM (sym)
 
-/*
- *  Entry for traps which jump to a programmer-specified trap handler.
- */
- 
-#define TRAP(_vector, _handler)  \
-  mov   %psr, %l0 ; \
-  sethi %hi(_handler), %l4 ; \
-  jmp   %l4+%lo(_handler); \
-  mov   _vector, %l3
-
-/*
- *  Used for the reset trap to avoid a supervisor instruction
- */
- 
-#define RTRAP(_vector, _handler)  \
-  mov   %g0, %l0 ; \
-  sethi %hi(_handler), %l4 ; \
-  jmp   %l4+%lo(_handler); \
-  mov   _vector, %l3
-
 #endif

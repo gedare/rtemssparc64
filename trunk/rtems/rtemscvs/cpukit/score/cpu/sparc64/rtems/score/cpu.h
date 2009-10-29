@@ -555,12 +555,16 @@ SCORE_EXTERN volatile uint32_t _CPU_ISR_Dispatch_disable;
  *        long jump.  The other instructions load one register with the
  *        trap type (a.k.a. vector) and another with the psr.
  */
- 
+/* GAB: TODO: FIXME: */ 
 typedef struct {
   uint32_t     mov_psr_l0;                     /* mov   %psr, %l0           */
   uint32_t     sethi_of_handler_to_l4;         /* sethi %hi(_handler), %l4  */
   uint32_t     jmp_to_low_of_handler_plus_l4;  /* jmp   %l4 + %lo(_handler) */
   uint32_t     mov_vector_l3;                  /* mov   _vector, %l3        */
+  uint32_t     nop;
+  uint32_t     nop;
+  uint32_t     nop;
+  uint32_t     nop;
 } CPU_Trap_table_entry;
  
 /*
