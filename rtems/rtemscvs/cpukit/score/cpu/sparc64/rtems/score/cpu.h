@@ -555,16 +555,23 @@ SCORE_EXTERN volatile uint32_t _CPU_ISR_Dispatch_disable;
  *        long jump.  The other instructions load one register with the
  *        trap type (a.k.a. vector) and another with the psr.
  */
-/* GAB: TODO: FIXME: */ 
+/* GAB: For SPARC V9, we must use 6 of these instructions to perform a long 
+ * jump, because the _handler value is now 64-bits.
+ * The instruction sequence is now more like:
+ * 	rdpr %pstate, %l0
+ * 	setx _handler, %l3, %l4
+ * 	jmp %l4+0
+ * 	mov _vector, %l3
+ */
 typedef struct {
-  uint32_t     mov_psr_l0;                     /* mov   %psr, %l0           */
-  uint32_t     sethi_of_handler_to_l4;         /* sethi %hi(_handler), %l4  */
-  uint32_t     jmp_to_low_of_handler_plus_l4;  /* jmp   %l4 + %lo(_handler) */
-  uint32_t     mov_vector_l3;                  /* mov   _vector, %l3        */
-  uint32_t     nop1;
-  uint32_t     nop2;
-  uint32_t     nop3;
-  uint32_t     nop4;
+  uint32_t     rdpr_pstate_l0;              	/* rdpr  %pstate, %l0        */
+  uint32_t     sethi_of_hh_handler_to_l3;     	/* sethi %hh(_handler), %l3  */
+  uint32_t     or_l3_hm_handler_to_l3;		/* or %l3, %hm(_handler), %l3 */
+  uint32_t     sllx_l3_by_32_to_l3;		/* sllx   %l3, 32, %l3 */
+  uint32_t     sethi_of_handler_to_l4;		/* sethi %hi(_handler), %l4  */
+  uint32_t     or_l4_l3_to_l4;			/* or     %l4, %l3, %l4 */
+  uint32_t     jmp_to_low_of_handler_plus_l4;	/* jmp   %l4 + %lo(_handler) */
+  uint32_t     mov_vector_l3;			/* mov   _vector, %l3        */
 } CPU_Trap_table_entry;
  
 /*

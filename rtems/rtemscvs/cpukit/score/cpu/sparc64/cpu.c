@@ -25,13 +25,21 @@
  *  must be filled in when the handler is installed.
  */
 
-/* GAB: FIXME: TODO: */
+/* GAB: 64-bit registers complicated this */
 const CPU_Trap_table_entry _CPU_Trap_slot_template = {
-  0xa1480000,      /* mov   %psr, %l0           */
-  0x29000000,      /* sethi %hi(_handler), %l4  */
-  0x81c52000,      /* jmp   %l4 + %lo(_handler) */
-  0xa6102000       /* mov   _vector, %l3        */
+  0xa1518000,	/* rdpr   %pstate, %l0           */
+  0x27000000,	/* sethi %hh(_handler), %l3  */
+  0xa614e000,	/* or     %l3, %hm(_handler), %l3 */
+  0xa72cf020,	/* sllx   %l3, 32, %l3 */
+  0x29000000,	/* sethi  %hi(_handler), %l4 */
+  0xa8150013,	/* or     %l4, %l3, %l4 */
+  0x81c52000,   /* jmp   %l4 + %lo(_handler) */
+  0xa6102000    /* mov   _vector, %l3        */
 };
+
+
+
+
 
 /*PAGE
  *
@@ -140,10 +148,10 @@ void _CPU_ISR_install_raw_handler(
 )
 {
   uint32_t               real_vector;
-  CPU_Trap_table_entry  *tbr;
+  CPU_Trap_table_entry  *tba;
   CPU_Trap_table_entry  *slot;
   uint64_t               u64_tba;
-  uint32_t               u32_handler;
+  uint64_t               u64_handler;
 
   /*
    *  Get the "real" trap number for this vector ignoring the synchronous
@@ -162,11 +170,11 @@ void _CPU_ISR_install_raw_handler(
 /*  u32_tbr &= 0xfffff000; */
   u64_tba &= 0xffffffffffff8000;  /* GAB: keep only trap base address */
 
-  tbr = (CPU_Trap_table_entry *) u64_tba;
+  tba = (CPU_Trap_table_entry *) u64_tba;
 
   /* GAB: use array indexing to fill in lower bits -- require 
    * CPU_Trap_table_entry to be full-sized. */
-  slot = &tbr[ real_vector ];
+  slot = &tba[ real_vector ];
 
   /*
    *  Get the address of the old_handler from the trap table.
@@ -175,15 +183,28 @@ void _CPU_ISR_install_raw_handler(
    *        the RTEMS model.
    */
 
-#define HIGH_BITS_MASK   0xFFFFFC00
-#define HIGH_BITS_SHIFT  10
-#define LOW_BITS_MASK    0x000003FF
+  /* shift amount to shift of hi bits (31:10) */
+#define HI_BITS_SHIFT  10
 
-  if ( slot->mov_psr_l0 == _CPU_Trap_slot_template.mov_psr_l0 ) {
-    u32_handler = 
-      (slot->sethi_of_handler_to_l4 << HIGH_BITS_SHIFT) |
-      (slot->jmp_to_low_of_handler_plus_l4 & LOW_BITS_MASK);
-    *old_handler = (proc_ptr) u32_handler;
+  /* shift amount of hm bits (41:32) */
+#define HM_BITS_SHIFT  32
+
+  /* shift amount of hh bits (63:42) */
+#define HH_BITS_SHIFT  42
+
+  /* mask for immediate field of or instruction */
+#define OR_IMM_MASK    0x00001FFF
+
+  /* mask for immediate field of jmp instruction */
+#define JMP_IMM_MASK    0x000003FF
+
+  if ( slot->rdpr_pstate_l0 == _CPU_Trap_slot_template.rdpr_pstate_l0 ) {
+    u64_handler = 
+      ((slot->sethi_of_hh_handler_to_l3 << HH_BITS_SHIFT) | 
+      ((slot->or_l3_hm_handler_to_l3 & OR_IMM_MASK) << HM_BITS_SHIFT)) |
+      ((slot->sethi_of_handler_to_l4 << HI_BITS_SHIFT) |
+      (slot->jmp_to_low_of_handler_plus_l4 & JMP_IMM_MASK));
+    *old_handler = (proc_ptr) u64_handler;
   } else
     *old_handler = 0;
 
@@ -193,21 +214,34 @@ void _CPU_ISR_install_raw_handler(
 
   *slot = _CPU_Trap_slot_template;
 
-  u32_handler = (uint32_t) new_handler;
+  u64_handler = (uint64_t) new_handler;
+
+  /* mask for extracting %hh */
+#define HH_BITS_MASK   0xFFFFFC0000000000
+
+  /* mask for extracting %hm */
+#define HM_BITS_MASK   0x000003FF00000000
+
+  /* mask for extracting %hi */
+#define HI_BITS_MASK   0x00000000FFFFFC00
+
+  /* mask for extracting %lo */
+#define LO_BITS_MASK   0x00000000000003FF
+
 
   slot->mov_vector_l3 |= vector;
+  slot->sethi_of_hh_handler_to_l3 |=
+    (u64_handler & HH_BITS_MASK) >> HH_BITS_SHIFT;
+  slot->or_l3_hm_handler_to_l3 |=
+    (u64_handler & HM_BITS_MASK) >> HM_BITS_SHIFT;
   slot->sethi_of_handler_to_l4 |= 
-    (u32_handler & HIGH_BITS_MASK) >> HIGH_BITS_SHIFT;
-  slot->jmp_to_low_of_handler_plus_l4 |= (u32_handler & LOW_BITS_MASK);
+    (u64_handler & HI_BITS_MASK) >> HI_BITS_SHIFT;
+  slot->jmp_to_low_of_handler_plus_l4 |= (u64_handler & LO_BITS_MASK);
 
   /* need to flush icache after this !!! */
 
-  /* GAB: this function was not being found properly, don't know if 
-   * we will need it anyway */
-  /* TODO: FIXME */
-#if 0
+  /* TODO: FIXME: need to flush icache in case old trap handler is in cache */
   rtems_cache_invalidate_entire_instruction();
-#endif
 
 }
 
