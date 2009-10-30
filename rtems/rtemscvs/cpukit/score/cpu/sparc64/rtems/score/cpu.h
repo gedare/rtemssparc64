@@ -561,10 +561,10 @@ typedef struct {
   uint32_t     sethi_of_handler_to_l4;         /* sethi %hi(_handler), %l4  */
   uint32_t     jmp_to_low_of_handler_plus_l4;  /* jmp   %l4 + %lo(_handler) */
   uint32_t     mov_vector_l3;                  /* mov   _vector, %l3        */
-  uint32_t     nop;
-  uint32_t     nop;
-  uint32_t     nop;
-  uint32_t     nop;
+  uint32_t     nop1;
+  uint32_t     nop2;
+  uint32_t     nop3;
+  uint32_t     nop4;
 } CPU_Trap_table_entry;
  
 /*
