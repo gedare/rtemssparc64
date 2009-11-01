@@ -55,6 +55,7 @@
 #define I6_OFFSET_FROM_SP       112
 #define I7_OFFSET_FROM_SP       120
 
+#ifdef __ASM__
 /*
  * Used for register overflow to spill a register window
  */
@@ -129,5 +130,6 @@
 	retry
 .endm
 
+#endif /* __ASM__ */
 
 #endif
