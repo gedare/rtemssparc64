@@ -255,34 +255,34 @@ typedef struct {
   uint32_t    pad0;
 }  CPU_Minimum_stack_frame;
 
-#endif /* ASM */
+#endif /* !ASM */
 
 #define CPU_STACK_FRAME_L0_OFFSET             0x00
-#define CPU_STACK_FRAME_L1_OFFSET             0x04
-#define CPU_STACK_FRAME_L2_OFFSET             0x08
-#define CPU_STACK_FRAME_L3_OFFSET             0x0c
-#define CPU_STACK_FRAME_L4_OFFSET             0x10
-#define CPU_STACK_FRAME_L5_OFFSET             0x14
-#define CPU_STACK_FRAME_L6_OFFSET             0x18
-#define CPU_STACK_FRAME_L7_OFFSET             0x1c
-#define CPU_STACK_FRAME_I0_OFFSET             0x20
-#define CPU_STACK_FRAME_I1_OFFSET             0x24
-#define CPU_STACK_FRAME_I2_OFFSET             0x28
-#define CPU_STACK_FRAME_I3_OFFSET             0x2c
-#define CPU_STACK_FRAME_I4_OFFSET             0x30
-#define CPU_STACK_FRAME_I5_OFFSET             0x34
-#define CPU_STACK_FRAME_I6_FP_OFFSET          0x38
-#define CPU_STACK_FRAME_I7_OFFSET             0x3c
-#define CPU_STRUCTURE_RETURN_ADDRESS_OFFSET   0x40
-#define CPU_STACK_FRAME_SAVED_ARG0_OFFSET     0x44
-#define CPU_STACK_FRAME_SAVED_ARG1_OFFSET     0x48
-#define CPU_STACK_FRAME_SAVED_ARG2_OFFSET     0x4c
-#define CPU_STACK_FRAME_SAVED_ARG3_OFFSET     0x50
-#define CPU_STACK_FRAME_SAVED_ARG4_OFFSET     0x54
-#define CPU_STACK_FRAME_SAVED_ARG5_OFFSET     0x58
-#define CPU_STACK_FRAME_PAD0_OFFSET           0x5c
+#define CPU_STACK_FRAME_L1_OFFSET             0x08
+#define CPU_STACK_FRAME_L2_OFFSET             0x10
+#define CPU_STACK_FRAME_L3_OFFSET             0x18
+#define CPU_STACK_FRAME_L4_OFFSET             0x20
+#define CPU_STACK_FRAME_L5_OFFSET             0x28
+#define CPU_STACK_FRAME_L6_OFFSET             0x30
+#define CPU_STACK_FRAME_L7_OFFSET             0x38
+#define CPU_STACK_FRAME_I0_OFFSET             0x40
+#define CPU_STACK_FRAME_I1_OFFSET             0x48
+#define CPU_STACK_FRAME_I2_OFFSET             0x50
+#define CPU_STACK_FRAME_I3_OFFSET             0x58
+#define CPU_STACK_FRAME_I4_OFFSET             0x60
+#define CPU_STACK_FRAME_I5_OFFSET             0x68
+#define CPU_STACK_FRAME_I6_FP_OFFSET          0x70
+#define CPU_STACK_FRAME_I7_OFFSET             0x78
+#define CPU_STRUCTURE_RETURN_ADDRESS_OFFSET   0x80
+#define CPU_STACK_FRAME_SAVED_ARG0_OFFSET     0x88
+#define CPU_STACK_FRAME_SAVED_ARG1_OFFSET     0x90
+#define CPU_STACK_FRAME_SAVED_ARG2_OFFSET     0x98
+#define CPU_STACK_FRAME_SAVED_ARG3_OFFSET     0xA0
+#define CPU_STACK_FRAME_SAVED_ARG4_OFFSET     0xA8
+#define CPU_STACK_FRAME_SAVED_ARG5_OFFSET     0xB0
+#define CPU_STACK_FRAME_PAD0_OFFSET           0xB8
 
-#define CPU_MINIMUM_STACK_FRAME_SIZE          0x60
+#define CPU_MINIMUM_STACK_FRAME_SIZE          0xC0
 
 /*
  * Contexts
