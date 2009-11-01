@@ -6,3 +6,6 @@ rm * -rf
 ../rtemscvs/configure --target=sparc64-rtems4.10 --disable-networking --enable-rtemsbsp=sun4v
 
 make
+
+sparc64-rtems4.10-objdump -d sparc64-rtems4.10/c/sun4v/testsuites/samples/hello/hello.exe > hello.disasm
+
