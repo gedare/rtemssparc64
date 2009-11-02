@@ -6,7 +6,7 @@
 #include "stack.h"
 
 #define PSTATE_IE   	0x10
-#define PSTATE_PRIV	0x100
+#define PSTATE_PRIV	4
 #define PSTATE_AM   	0x1000
 
 
@@ -63,6 +63,7 @@ silo_ramdisk_size:
 	call ofw_init		! initialize OpenFirmware
 	stx %o4, [%l0]
 	
+
 	call SYM(bootstrap)
 	nop
 
