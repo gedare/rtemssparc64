@@ -47,8 +47,10 @@ dist_project_lib_DATA += startup/linkcmds
 startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/bsppredriverhook.c ../../shared/bsppretaskinghook.c \
     ../../shared/bspgetworkarea.c ../../shared/bsppost.c \
-    ../../shared/bspstart.c ../../shared/bootcard.c ../../shared/sbrk.c \
-    ../../shared/gnatinstallhandler.c ofw/ofw.c ofw/printf.c ofw/string.c ofw/balloc.c ofw/main.c ofw/ofwarch.c ofw/_components.c ofw/ofw_tree.c ofw/asm.S
+    ../../shared/bootcard.c ../../shared/sbrk.c \
+    startup/bspstart.c \
+    ../../shared/gnatinstallhandler.c  \
+    ofw/ofw.c ofw/printf.c ofw/string.c ofw/balloc.c ofw/main.c ofw/ofwarch.c ofw/_components.c ofw/ofw_tree.c ofw/asm.S
 clock_SOURCES = ../../shared/clock_driver_simidle.c
 
 #GAB: TODO: FIXME: using dummy_printk
