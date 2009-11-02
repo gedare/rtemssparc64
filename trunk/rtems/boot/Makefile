@@ -8,7 +8,7 @@ INCLUDE3=../../HeleonOS/HelenOS/boot/genarch
 HELENONSBOOT=../../HeleonOS/HelenOS/boot/arch/sparc64/loader
 
 TOOLCHAINRTEMS=../../../rtems/rtems4.10/bin/sparc-rtems4.10
-TOOLCHAINHELENOS=/home/eugen/work/rtemssparc64/rtems/compilers/sparc64-newlib-rtems4.10-4.4.1.gcc.full/sparc64/bin/sparc64-rtems4.10
+TOOLCHAINHELENOS=../compilers/sparc64-newlib-rtems4.10-4.4.1.gcc.full/sparc64/bin/sparc64-rtems4.10
 TOOLCHAINLINUX=/home/eugen/work/simics/sparc64crosscompiler/sparc64/bin/sparc64-linux-gnu
 
 CC32=$(TOOLCHAINRTEMS)-gcc
