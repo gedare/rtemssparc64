@@ -64,8 +64,8 @@ silo_ramdisk_size:
 	stx %o4, [%l0]
 	
 
-	call SYM(bootstrap)
-	nop
+!	call SYM(bootstrap)
+!	nop
 
 /* Do we need to do anything with the MMU? */
 
