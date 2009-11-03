@@ -55,22 +55,22 @@ PUBLIC(start)
 
     mov %g0, %g4
 
-    set initial_stack_top, %sp
-    add %sp, -STACK_BIAS, %sp
+!	set SYM(RAM_END), %sp
+!	add %sp, -STACK_BIAS, %sp
 
 
+	set ofw_cif, %l0
+ 
+	call ofw_init		! initialize OpenFirmware
+	stx %o4, [%l0]
+	
     /* set trap table */
 !    sethi %hi(trap_table), %g1
 !    wrpr %g1, %lo(trap_table), %tba
 
-    set ofw_cif, %l0
-
-    call ofw_init		! initialize OpenFirmware
-    stx %o4, [%l0]
-
 
 !	call SYM(bootstrap)
-  !	nop
+!	nop
 
   /* Do we need to do anything with the MMU? */
 
