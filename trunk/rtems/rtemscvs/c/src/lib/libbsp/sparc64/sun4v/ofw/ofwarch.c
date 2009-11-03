@@ -34,7 +34,6 @@
 
 #include <ofwarch.h>
 #include <ofw.h>
-#include <printf.h>
 #include <string.h>
 #include <register.h>
 #include "main.h"
@@ -43,17 +42,6 @@
 /* these tho variables will be set by the detect_subarchitecture function */
 extern uint8_t subarchitecture;
 extern uint16_t mid_mask;
-
-void write(const char *str, const int len)
-{
-	int i;
-
-	for (i = 0; i < len; i++) {
-		if (str[i] == '\n')
-			ofw_write("\r", 1);
-		ofw_write(&str[i], 1);
-	}
-}
 
 int ofw_translate_failed(ofw_arg_t flag)
 {
