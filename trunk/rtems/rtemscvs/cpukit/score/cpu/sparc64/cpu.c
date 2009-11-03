@@ -16,7 +16,7 @@
 #include <rtems/rtems/cache.h>
 
 /*
- *  This initializes the set of opcodes placed in each trap 
+ *  This initializes the set of opcodes placed in each trap
  *  table entry.  The routine which installs a handler is responsible
  *  for filling in the fields for the _handler address and the _vector
  *  trap type.
@@ -50,7 +50,7 @@ const CPU_Trap_table_entry _CPU_Trap_slot_template = {
  *  INPUT PARAMETERS: NONE
  *
  *  Output Parameters: NONE
- * 
+ *
  *  NOTE: There is no need to save the pointer to the thread dispatch routine.
  *        The SPARC's assembly code can reference it directly with no problems.
  */
@@ -66,8 +66,10 @@ void _CPU_Initialize(void)
    *  the task's FP context during Context_Initialize_fp.
    */
 
+/* EL TODO : I just put it back, lets see if it works.*/
   pointer = &_CPU_Null_fp_context;
   _CPU_Context_save_fp( &pointer );
+
 #endif
 
   /*
@@ -87,16 +89,16 @@ void _CPU_Initialize(void)
  *  Output Parameters:
  *    returns the current interrupt level (PIL field of the PSR)
  */
- 
+
 uint32_t   _CPU_ISR_Get_level( void )
 {
   /* GAB: sparc_get_interrupt_level not linking properly */
   /* TODO: FIXME */
   #if 0
   uint32_t   level;
- 
+
   sparc_get_interrupt_level( level );
- 
+
   return level;
   #else
   return 0;
@@ -111,15 +113,15 @@ uint32_t   _CPU_ISR_Get_level( void )
  *  supported trap handler (a.k.a. interrupt service routine).
  *
  *  Input Parameters:
- *    vector      - trap table entry number plus synchronous 
+ *    vector      - trap table entry number plus synchronous
  *                    vs. asynchronous information
  *    new_handler - address of the handler to be installed
  *    old_handler - pointer to an address of the handler previously installed
  *
  *  Output Parameters: NONE
  *    *new_handler - address of the handler previously installed
- * 
- *  NOTE: 
+ *
+ *  NOTE:
  *
  *  On the SPARC, there are really only 256 vectors.  However, the executive
  *  has no easy, fast, reliable way to determine which traps are synchronous
@@ -140,7 +142,7 @@ uint32_t   _CPU_ISR_Get_level( void )
  *  an asynchronous trap.  This will avoid the executive changing the return
  *  address.
  */
- 
+
 void _CPU_ISR_install_raw_handler(
   uint32_t    vector,
   proc_ptr    new_handler,
@@ -172,7 +174,7 @@ void _CPU_ISR_install_raw_handler(
 
   tba = (CPU_Trap_table_entry *) u64_tba;
 
-  /* GAB: use array indexing to fill in lower bits -- require 
+  /* GAB: use array indexing to fill in lower bits -- require
    * CPU_Trap_table_entry to be full-sized. */
   slot = &tba[ real_vector ];
 
@@ -199,8 +201,8 @@ void _CPU_ISR_install_raw_handler(
 #define JMP_IMM_MASK    0x000003FF
 
   if ( slot->rdpr_pstate_l0 == _CPU_Trap_slot_template.rdpr_pstate_l0 ) {
-    u64_handler = 
-      ((slot->sethi_of_hh_handler_to_l3 << HH_BITS_SHIFT) | 
+    u64_handler =
+      ((slot->sethi_of_hh_handler_to_l3 << HH_BITS_SHIFT) |
       ((slot->or_l3_hm_handler_to_l3 & OR_IMM_MASK) << HM_BITS_SHIFT)) |
       ((slot->sethi_of_handler_to_l4 << HI_BITS_SHIFT) |
       (slot->jmp_to_low_of_handler_plus_l4 & JMP_IMM_MASK));
@@ -234,7 +236,7 @@ void _CPU_ISR_install_raw_handler(
     (u64_handler & HH_BITS_MASK) >> HH_BITS_SHIFT;
   slot->or_l3_hm_handler_to_l3 |=
     (u64_handler & HM_BITS_MASK) >> HM_BITS_SHIFT;
-  slot->sethi_of_handler_to_l4 |= 
+  slot->sethi_of_handler_to_l4 |=
     (u64_handler & HI_BITS_MASK) >> HI_BITS_SHIFT;
   slot->jmp_to_low_of_handler_plus_l4 |= (u64_handler & LO_BITS_MASK);
 
@@ -257,7 +259,7 @@ void _CPU_ISR_install_raw_handler(
  *    new_handler  - replacement ISR for this vector number
  *    old_handler  - pointer to former ISR for this vector number
  *
- *  Output parameters: 
+ *  Output parameters:
  *    *old_handler - former ISR for this vector number
  *
  */
@@ -328,21 +330,21 @@ void _CPU_Context_Initialize(
     uint32_t     stack_high;  /* highest "stack aligned" address */
     uint32_t     the_size;
     uint32_t     tmp_psr;
- 
+
     /*
      *  On CPUs with stacks which grow down (i.e. SPARC), we build the stack
-     *  based on the stack_high address.  
+     *  based on the stack_high address.
      */
- 
+
     stack_high = ((uint32_t)(stack_base) + size);
     stack_high &= ~(CPU_STACK_ALIGNMENT - 1);
- 
+
     the_size = size & ~(CPU_STACK_ALIGNMENT - 1);
- 
+
     /*
      *  See the README in this directory for a diagram of the stack.
      */
- 
+
     the_context->o7    = ((uint32_t) entry_point) - 8;
     the_context->o6_sp = stack_high - CPU_MINIMUM_STACK_FRAME_SIZE;
     the_context->i6_fp = 0;
@@ -360,7 +362,7 @@ void _CPU_Context_Initialize(
     tmp_psr &= ~SPARC_PSR_PIL_MASK;
     tmp_psr |= (new_level << 8) & SPARC_PSR_PIL_MASK;
     tmp_psr &= ~SPARC_PSR_EF_MASK;      /* disabled by default */
-    
+
 #if (SPARC_HAS_FPU == 1)
     /*
      *  If this bit is not set, then a task gets a fault when it accesses
