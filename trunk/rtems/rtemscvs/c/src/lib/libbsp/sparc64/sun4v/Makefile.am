@@ -44,8 +44,9 @@ dist_project_lib_DATA += startup/linkcmds
 
 startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/bsppredriverhook.c ../../shared/bsppretaskinghook.c \
-    ../../shared/bspgetworkarea.c ../../shared/bsppost.c \
+    ../../shared/bsppost.c \
     ../../shared/bootcard.c ../../shared/sbrk.c \
+    startup/bspgetworkarea.c \
     startup/bspstart.c \
     ../../shared/gnatinstallhandler.c  \
     ofw/ofw.c ofw/string.c ofw/balloc.c ofw/bootstrap.c ofw/ofwarch.c ofw/ofw_tree.c ofw/asm.S
