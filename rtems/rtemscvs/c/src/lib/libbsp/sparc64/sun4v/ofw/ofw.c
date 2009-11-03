@@ -28,7 +28,6 @@
 
 #include <ofw.h>
 #include <ofwarch.h>
-#include <printf.h>
 #include <asm.h>
 #include <types.h>
 

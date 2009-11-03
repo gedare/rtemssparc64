@@ -28,9 +28,7 @@
  */
 
 #include "main.h"
-#include <printf.h>
 #include "asm.h"
-#include "_components.h"
 #include <balloc.h>
 #include <ofw.h>
 #include <ofw_tree.h>
@@ -39,8 +37,6 @@
 
 
 bootinfo_t bootinfo;
-
-component_t components[COMPONENTS];
 
 char *release = "0.0.0.1";
 
@@ -68,7 +64,7 @@ uint16_t mid_mask;
 /** Print version information. */
 static void version_print(void)
 {
-	printf("HelenOS SPARC64 Bootloader\nRelease %s%s%s\n"
+	printk("HelenOS SPARC64 Bootloader\nRelease %s%s%s\n"
 	    "Copyright (c) 2006 HelenOS project\n",
 	    release, revision, timestamp);
 }
@@ -106,7 +102,7 @@ static void detect_architecture(void)
 
 	if (ofw_get_property(root, "compatible", compatible,
 			COMPATIBLE_PROP_MAXLEN) <= 0) {
-		printf("Unable to determine architecture, default: sun4u.\n");
+		printk("Unable to determine architecture, default: sun4u.\n");
 		architecture = COMPATIBLE_SUN4U;
 		return;
 	}
@@ -145,7 +141,7 @@ static void detect_subarchitecture(void)
 		subarchitecture = SUBARCH_US;
 		mid_mask = (1 << 5) - 1;
 	} else {
-		printf("\nThis CPU is not supported by HelenOS.");
+		printk("\nThis CPU is not supported by HelenOS.");
 	}
 */
 }
@@ -172,17 +168,17 @@ static void bootstrap_sun4u(void *base, unsigned int top)
 	(void) ofw_map(balloc_base, balloc_base, BALLOC_MAX_SIZE, -1);
 	balloc_init(&bootinfo.ballocs, (uintptr_t)balloc_base);
 
-	printf("\nCanonizing OpenFirmware device tree...");
+	printk("\nCanonizing OpenFirmware device tree...");
 	bootinfo.ofw_root = ofw_tree_build();
-	printf("done.\n");
+	printk("done.\n");
 
 	detect_subarchitecture();
 
 #ifdef CONFIG_SMP
-	printf("\nChecking for secondary processors...");
+	printk("\nChecking for secondary processors...");
 	if (!ofw_cpu())
-		printf("Error: unable to get CPU properties\n");
-	printf("done.\n");
+		printk("Error: unable to get CPU properties\n");
+	printk("done.\n");
 #endif
 
 	setup_palette();
@@ -226,23 +222,22 @@ void bootstrap(void)
 	unsigned int top = 0;
 	int i, j;
 
-	printf("RTEMS System starting");
+	printk("RTEMS System starting");
 
 	detect_architecture();
-	init_components(components);
 
 	if (!ofw_get_physmem_start(&bootinfo.physmem_start)) {
-		printf("Error: unable to get start of physical memory.\n");
+		printk("Error: unable to get start of physical memory.\n");
 		halt();
 	}
 
 	if (!ofw_memmap(&bootinfo.memmap)) {
-		printf("Error: unable to get memory map, halting.\n");
+		printk("Error: unable to get memory map, halting.\n");
 		halt();
 	}
 
 	if (bootinfo.memmap.total == 0) {
-		printf("Error: no memory detected, halting.\n");
+		printk("Error: no memory detected, halting.\n");
 		halt();
 	}
 
@@ -258,20 +253,20 @@ void bootstrap(void)
 		if (ofw_map((void *)((uintptr_t)silo_ramdisk_image),
 		    (void *)((uintptr_t)silo_ramdisk_image),
 		    silo_ramdisk_size, -1) != 0) {
-			printf("Failed to map ramdisk.\n");
+			printk("Failed to map ramdisk.\n");
 			halt();
 		}
 	}
 
-	printf("\nSystem info\n");
-	printf(" memory: %dM starting at %P\n",
+	printk("\n\rSystem info\n\r");
+	printk(" memory: %dM starting at %P\n\r",
 	    bootinfo.memmap.total >> 20, bootinfo.physmem_start);
 
-	printf("\nMemory statistics\n");
-	printf(" kernel entry point at %P\n", KERNEL_VIRTUAL_ADDRESS);
-	printf(" %P: boot info structure\n", &bootinfo);
+	printk("\n\rMemory statistics\n\r");
+	printk(" kernel entry point at %P\n\r", KERNEL_VIRTUAL_ADDRESS);
+	printk(" %P: boot info structure\n\r", &bootinfo);
 
 
-	printf("\nBooting the kernel...\n");
+	printk("\nBooting the kernel...\n\r");
 }
 
