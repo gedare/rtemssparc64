@@ -34,8 +34,6 @@
  *  at *fp_context_ptr.  If the point to load the FP context
  *  from is changed then the pointer is modified by this routine.
  *
- *  NOTE: See the README in this directory for information on the 
- *        management of the "EF" bit in the PSR.
  */
 
         .align 4
@@ -46,31 +44,50 @@ SYM(_CPU_Context_save_fp):
         /*
          *  The following enables the floating point unit.
          */
-   
-        mov     %psr, %l0
-        sethi   %hi(SPARC_PSR_EF_MASK), %l1
-        or      %l1, %lo(SPARC_PSR_EF_MASK), %l1
-        or      %l0, %l1, %l0
-        mov     %l0, %psr                  ! **** ENABLE FLOAT ACCESS ****
-	nop; nop; nop;			   ! Need three nops before EF is 
-        ld      [%i0], %l0		   ! active due to pipeline delay!!!
-        std     %f0, [%l0 + FO_F1_OFFSET]
-        std     %f2, [%l0 + F2_F3_OFFSET]
-        std     %f4, [%l0 + F4_F5_OFFSET]
-        std     %f6, [%l0 + F6_F7_OFFSET]
-        std     %f8, [%l0 + F8_F9_OFFSET]
-        std     %f10, [%l0 + F1O_F11_OFFSET]
-        std     %f12, [%l0 + F12_F13_OFFSET]
-        std     %f14, [%l0 + F14_F15_OFFSET]
-        std     %f16, [%l0 + F16_F17_OFFSET]
-        std     %f18, [%l0 + F18_F19_OFFSET]
-        std     %f20, [%l0 + F2O_F21_OFFSET]
-        std     %f22, [%l0 + F22_F23_OFFSET]
-        std     %f24, [%l0 + F24_F25_OFFSET]
-        std     %f26, [%l0 + F26_F27_OFFSET]
-        std     %f28, [%l0 + F28_F29_OFFSET]
-        std     %f30, [%l0 + F3O_F31_OFFSET]
-        st      %fsr, [%l0 + FSR_OFFSET]
+  
+        sparc64_enable_FPU(%l0)
+
+        /*
+         *  Although sun4v supports alternate register names for double-
+         *  and quad-word floating point, SPARC v9 only uses f[#]
+         *
+         *  Because quad-word fp is not supported by the hardware in 
+         *  many situations, we stick with double-word fp operations
+         */
+        ldx    [%i0], %l0		 
+        std     %f0, [%l0]
+        std     %f2, [%l0 + F2_OFFSET]
+        std     %f4, [%l0 + F4_OFFSET]
+        std     %f6, [%l0 + F6_OFFSET]
+        std     %f8, [%l0 + F8_OFFSET]
+        std     %f10, [%l0 + F1O_OFFSET]
+        std     %f12, [%l0 + F12_OFFSET]
+        std     %f14, [%l0 + F14_OFFSET]
+        std     %f16, [%l0 + F16_OFFSET]
+        std     %f18, [%l0 + F18_OFFSET]
+        std     %f20, [%l0 + F2O_OFFSET]
+        std     %f22, [%l0 + F22_OFFSET]
+        std     %f24, [%l0 + F24_OFFSET]
+        std     %f26, [%l0 + F26_OFFSET]
+        std     %f28, [%l0 + F28_OFFSET]
+        std     %f30, [%l0 + F3O_OFFSET]
+        std     %f32, [%l0 + F32_OFFSET]
+        std     %f34, [%l0 + F34_OFFSET]
+        std     %f36, [%l0 + F36_OFFSET]
+        std     %f38, [%l0 + F38_OFFSET]
+        std     %f40, [%l0 + F4O_OFFSET]
+        std     %f42, [%l0 + F42_OFFSET]
+        std     %f44, [%l0 + F44_OFFSET]
+        std     %f46, [%l0 + F46_OFFSET]
+        std     %f48, [%l0 + F48_OFFSET]
+        std     %f50, [%l0 + F5O_OFFSET]
+        std     %f52, [%l0 + F52_OFFSET]
+        std     %f54, [%l0 + F54_OFFSET]
+        std     %f56, [%l0 + F56_OFFSET]
+        std     %f58, [%l0 + F58_OFFSET]
+        std     %f60, [%l0 + F6O_OFFSET]       
+        std     %f62, [%l0 + F62_OFFSET]
+        stx     %fsr, [%l0 + FSR_OFFSET]
         ret
         restore
 
@@ -83,8 +100,6 @@ SYM(_CPU_Context_save_fp):
  *  at *fp_context_ptr.  If the point to load the FP context
  *  from is changed then the pointer is modified by this routine.
  *
- *  NOTE: See the README in this directory for information on the 
- *        management of the "EF" bit in the PSR.
  */
 
         .align 4
@@ -96,30 +111,42 @@ SYM(_CPU_Context_restore_fp):
          *  The following enables the floating point unit.
          */
    
-        mov     %psr, %l0
-        sethi   %hi(SPARC_PSR_EF_MASK), %l1
-        or      %l1, %lo(SPARC_PSR_EF_MASK), %l1
-        or      %l0, %l1, %l0
-        mov     %l0, %psr                  ! **** ENABLE FLOAT ACCESS ****
-	nop; nop; nop;			   ! Need three nops before EF is 
-        ld      [%i0], %l0		   ! active due to pipeline delay!!!
-        ldd     [%l0 + FO_F1_OFFSET], %f0
-        ldd     [%l0 + F2_F3_OFFSET], %f2
-        ldd     [%l0 + F4_F5_OFFSET], %f4
-        ldd     [%l0 + F6_F7_OFFSET], %f6
-        ldd     [%l0 + F8_F9_OFFSET], %f8
-        ldd     [%l0 + F1O_F11_OFFSET], %f10
-        ldd     [%l0 + F12_F13_OFFSET], %f12
-        ldd     [%l0 + F14_F15_OFFSET], %f14
-        ldd     [%l0 + F16_F17_OFFSET], %f16
-        ldd     [%l0 + F18_F19_OFFSET], %f18
-        ldd     [%l0 + F2O_F21_OFFSET], %f20
-        ldd     [%l0 + F22_F23_OFFSET], %f22
-        ldd     [%l0 + F24_F25_OFFSET], %f24
-        ldd     [%l0 + F26_F27_OFFSET], %f26
-        ldd     [%l0 + F28_F29_OFFSET], %f28
-        ldd     [%l0 + F3O_F31_OFFSET], %f30
-        ld      [%l0 + FSR_OFFSET], %fsr
+        sparc64_enable_FPU(%l0)
+
+        ldx     [%i0], %l0
+        ldd     [%l0 + FO_OFFSET], %f0
+        ldd     [%l0 + F2_OFFSET], %f2
+        ldd     [%l0 + F4_OFFSET], %f4
+        ldd     [%l0 + F6_OFFSET], %f6
+        ldd     [%l0 + F8_OFFSET], %f8
+        ldd     [%l0 + F1O_OFFSET], %f10
+        ldd     [%l0 + F12_OFFSET], %f12
+        ldd     [%l0 + F14_OFFSET], %f14
+        ldd     [%l0 + F16_OFFSET], %f16
+        ldd     [%l0 + F18_OFFSET], %f18
+        ldd     [%l0 + F2O_OFFSET], %f20
+        ldd     [%l0 + F22_OFFSET], %f22
+        ldd     [%l0 + F24_OFFSET], %f24
+        ldd     [%l0 + F26_OFFSET], %f26
+        ldd     [%l0 + F28_OFFSET], %f28
+        ldd     [%l0 + F3O_OFFSET], %f30
+        ldd     [%l0 + F32_OFFSET], %f32
+        ldd     [%l0 + F34_OFFSET], %f34
+        ldd     [%l0 + F36_OFFSET], %f36
+        ldd     [%l0 + F38_OFFSET], %f38
+        ldd     [%l0 + F4O_OFFSET], %f40
+        ldd     [%l0 + F42_OFFSET], %f42
+        ldd     [%l0 + F44_OFFSET], %f44
+        ldd     [%l0 + F46_OFFSET], %f46
+        ldd     [%l0 + F48_OFFSET], %f48
+        ldd     [%l0 + F5O_OFFSET], %f50
+        ldd     [%l0 + F52_OFFSET], %f52
+        ldd     [%l0 + F54_OFFSET], %f54
+        ldd     [%l0 + F56_OFFSET], %f56
+        ldd     [%l0 + F58_OFFSET], %f58
+        ldd     [%l0 + F6O_OFFSET], %f60
+        ldd     [%l0 + F62_OFFSET], %f62
+        ldx     [%l0 + FSR_OFFSET], %fsr
         ret
         restore
 

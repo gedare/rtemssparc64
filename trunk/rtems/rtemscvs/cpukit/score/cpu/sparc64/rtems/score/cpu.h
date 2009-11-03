@@ -192,7 +192,10 @@ extern "C" {
  *  much of the critical data area as possible in a cache line.
  *
  *  The SPARC does not appear to have particularly strict alignment 
- *  requirements.  This value was chosen to take advantages of caches.
+ *  requirements.  This value (16) was chosen to take advantages of caches.
+ *
+ *  SPARC 64 requirements on floating point alignment is at least 8, 
+ *  and is 16 if quad-word fp instructions are available (e.g. LDQF).
  */
 
 #define CPU_STRUCTURE_ALIGNMENT          __attribute__ ((aligned (16)))
@@ -225,34 +228,34 @@ extern "C" {
 #ifndef ASM
 
 typedef struct {
-  uint32_t    l0;
-  uint32_t    l1;
-  uint32_t    l2;
-  uint32_t    l3;
-  uint32_t    l4;
-  uint32_t    l5;
-  uint32_t    l6;
-  uint32_t    l7;
-  uint32_t    i0;
-  uint32_t    i1;
-  uint32_t    i2;
-  uint32_t    i3;
-  uint32_t    i4;
-  uint32_t    i5;
-  uint32_t    i6_fp;
-  uint32_t    i7;
+  uint64_t    l0;
+  uint64_t    l1;
+  uint64_t    l2;
+  uint64_t    l3;
+  uint64_t    l4;
+  uint64_t    l5;
+  uint64_t    l6;
+  uint64_t    l7;
+  uint64_t    i0;
+  uint64_t    i1;
+  uint64_t    i2;
+  uint64_t    i3;
+  uint64_t    i4;
+  uint64_t    i5;
+  uint64_t    i6_fp;
+  uint64_t    i7;
   void       *structure_return_address;
   /*
    *  The following are for the callee to save the register arguments in
    *  should this be necessary.
    */
-  uint32_t    saved_arg0;
-  uint32_t    saved_arg1;
-  uint32_t    saved_arg2;
-  uint32_t    saved_arg3;
-  uint32_t    saved_arg4;
-  uint32_t    saved_arg5;
-  uint32_t    pad0;
+  uint64_t    saved_arg0;
+  uint64_t    saved_arg1;
+  uint64_t    saved_arg2;
+  uint64_t    saved_arg3;
+  uint64_t    saved_arg4;
+  uint64_t    saved_arg5;
+  uint64_t    pad0;
 }  CPU_Minimum_stack_frame;
 
 #endif /* !ASM */
@@ -406,50 +409,82 @@ typedef struct {
 #ifndef ASM
 
 typedef struct {
-    double      f0_f1;
-    double      f2_f3;
-    double      f4_f5;
-    double      f6_f7;
-    double      f8_f9;
-    double      f10_f11;
-    double      f12_f13;
-    double      f14_f15;
-    double      f16_f17;
-    double      f18_f19;
-    double      f20_f21;
-    double      f22_f23;
-    double      f24_f25;
-    double      f26_f27;
-    double      f28_f29;
-    double      f30_f31;
-    uint32_t    fsr;
+    double      f0;	/* f0-f1 */
+    double      f2;	/* f2-f3 */
+    double      f4;	/* f4-f5 */
+    double      f6;	/* f6-f7 */
+    double      f8;	/* f8-f9 */
+    double      f10;	/* f10-f11 */
+    double      f12;	/* f12-f13 */
+    double      f14;	/* f14-f15 */
+    double      f16;	/* f16-f17 */
+    double      f18;	/* f18-f19 */
+    double      f20;	/* f20-f21 */
+    double      f22;	/* f22-f23 */
+    double      f24;	/* f24-f25 */
+    double      f26;	/* f26-f27 */
+    double      f28;	/* f28-f29 */
+    double      f30;	/* f30-f31 */
+    double      f32;
+    double      f34;
+    double      f36;
+    double      f38;
+    double      f40;
+    double      f42;
+    double      f44;
+    double      f46;
+    double      f48;
+    double      f50;
+    double      f52;
+    double      f54;
+    double      f56;
+    double      f58;
+    double      f60;
+    double      f62;
+    uint64_t    fsr;
 } Context_Control_fp;
 
-#endif /* ASM */
+#endif /* !ASM */
 
 /*
  *  Offsets of fields with Context_Control_fp for assembly routines.
  */
 
-#define FO_F1_OFFSET     0x00
-#define F2_F3_OFFSET     0x08
-#define F4_F5_OFFSET     0x10
-#define F6_F7_OFFSET     0x18
-#define F8_F9_OFFSET     0x20
-#define F1O_F11_OFFSET   0x28
-#define F12_F13_OFFSET   0x30
-#define F14_F15_OFFSET   0x38
-#define F16_F17_OFFSET   0x40
-#define F18_F19_OFFSET   0x48
-#define F2O_F21_OFFSET   0x50
-#define F22_F23_OFFSET   0x58
-#define F24_F25_OFFSET   0x60
-#define F26_F27_OFFSET   0x68
-#define F28_F29_OFFSET   0x70
-#define F3O_F31_OFFSET   0x78
-#define FSR_OFFSET       0x80
+#define FO_OFFSET    0x00
+#define F2_OFFSET    0x08
+#define F4_OFFSET    0x10
+#define F6_OFFSET    0x18
+#define F8_OFFSET    0x20
+#define F1O_OFFSET   0x28
+#define F12_OFFSET   0x30
+#define F14_OFFSET   0x38
+#define F16_OFFSET   0x40
+#define F18_OFFSET   0x48
+#define F2O_OFFSET   0x50
+#define F22_OFFSET   0x58
+#define F24_OFFSET   0x60
+#define F26_OFFSET   0x68
+#define F28_OFFSET   0x70
+#define F3O_OFFSET   0x78
+#define F32_OFFSET   0x80
+#define F34_OFFSET   0x88
+#define F36_OFFSET   0x90
+#define F38_OFFSET   0x98
+#define F4O_OFFSET   0xA0
+#define F42_OFFSET   0xA8
+#define F44_OFFSET   0xB0
+#define F46_OFFSET   0xB8
+#define F48_OFFSET   0xC0
+#define F5O_OFFSET   0xC8
+#define F52_OFFSET   0xD0
+#define F54_OFFSET   0xD8
+#define F56_OFFSET   0xE0
+#define F58_OFFSET   0xE8
+#define F6O_OFFSET   0xF0
+#define F62_OFFSET   0xF8
+#define FSR_OFFSET   0x100
 
-#define CONTEXT_CONTROL_FP_SIZE 0x84
+#define CONTEXT_CONTROL_FP_SIZE 0x108
 
 #ifndef ASM
 

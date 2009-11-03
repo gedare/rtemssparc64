@@ -62,8 +62,8 @@ void _CPU_Initialize(void)
 
   /*
    *  This seems to be the most appropriate way to obtain an initial
-   *  FP context on the SPARC.  The NULL fp context is copied it to
-   *  the task's FP context during Context_Initialize.
+   *  FP context on the SPARC.  The NULL fp context is copied in to
+   *  the task's FP context during Context_Initialize_fp.
    */
 
   pointer = &_CPU_Null_fp_context;

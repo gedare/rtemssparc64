@@ -4,11 +4,14 @@
 #include <rtems/asm.h>
 #include <rtems/sparc64/traps.h>
 #include <rtems/score/sparc.h>
+#include <rtems/bspIo.h>
 
 void sparc64_install_isr_entries( void )
 {
 	uint64_t tba;
 	sparc64_get_tba(tba);
+
+	printf("sizeof(float)=%d\n",sizeof(float));
 
   /* GAB: Apparently, we can use the default trap handlers */
 /*	
