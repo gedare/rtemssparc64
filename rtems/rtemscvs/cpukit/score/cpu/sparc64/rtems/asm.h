@@ -114,7 +114,7 @@
 /*
  *  Used for the reset trap to avoid a supervisor instruction
  */
-
+/* GAB: TODO: FIXME */
 #define RTRAP(_vector, _handler)  \
   mov   %g0, %l0 ; \
   sethi %hi(_handler), %l4 ; \

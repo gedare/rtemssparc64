@@ -99,8 +99,8 @@ rtems64linux:
 	
 rtemshelloworld:
 	cp $(RTEMSEXE) image.1.boot
-	$(TOOLCHAINHELENOS)-objdump -D image.1.boot &> debug/rtemshelloworld.disasm
-	$(TOOLCHAINHELENOS)-readelf -a image.1.boot &> debug/rtemshelloworld.elf
+	$(TOOLCHAINHELENOS)-objdump -D image.1.boot > debug/rtemshelloworld.disasm
+	$(TOOLCHAINHELENOS)-readelf -a image.1.boot > debug/rtemshelloworld.elf
 	-rm image.1.boot.gz
 	cp image.1.boot debug/rtemshelloworld.exe
 	gzip image.1.boot 

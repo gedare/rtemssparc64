@@ -59,6 +59,9 @@ extern "C" {
  *  is made that has more than 8 register windows.  If this cannot
  *  be determined based on multilib settings (v7/v8/v9), then the
  *  cpu_asm.S code that depends on this will have to move to libcpu.
+ *
+ *  SPARC v9 supports from 3 to 32 register windows.
+ *  N_REG_WINDOWS = 8 on UltraSPARC T1 (impl. dep. #2-V8).
  */
 
 #define SPARC_NUMBER_OF_REGISTER_WINDOWS 8
@@ -92,6 +95,18 @@ extern "C" {
  */
 
 	/* GAB: TODO: FIXME: These need to be updated */
+
+/* 
+ * The PSR is deprecated and deleted.
+ *
+ * The following registers represent fields of the PSR:
+ * 	PIL - Processor Interrupt Level register
+ * 	CWP - Current Window Pointer register
+ * 	VER - Version register
+ * 	CCR - Condition Codes Register
+ * 	PSTATE - Processor State register
+ */
+
 /*
  *  PSR masks and starting bit positions
  *
@@ -128,6 +143,48 @@ extern "C" {
 #define SPARC_PSR_ICC_BIT_POSITION  20   /* bits 20 - 23 */
 #define SPARC_PSR_VER_BIT_POSITION  24   /* bits 24 - 27 */
 #define SPARC_PSR_IMPL_BIT_POSITION 28   /* bits 28 - 31 */
+
+
+
+#define SPARC_PSTATE_IE_MASK   0x00000002   /* bit  1 */
+#define SPARC_PSTATE_PRIV_MASK 0x00000004   /* bit  2 */
+#define SPARC_PSTATE_AM_MASK   0x00000008   /* bit  3 */
+#define SPARC_PSTATE_PEF_MASK  0x00000010   /* bit  4 */
+#define SPARC_PSTATE_MM_MASK   0x00000040   /* bit  6 */
+#define SPARC_PSTATE_TLE_MASK  0x00000100   /* bit  8 */
+#define SPARC_PSTATE_CLE_MASK  0x00000200   /* bit  9 */
+
+#define SPARC_PSTATE_IE_BIT_POSITION   1   /* bit  1 */
+#define SPARC_PSTATE_PRIV_BIT_POSITION 2   /* bit  2 */
+#define SPARC_PSTATE_AM_BIT_POSITION   3   /* bit  3 */
+#define SPARC_PSTATE_PEF_BIT_POSITION  4   /* bit  4 */
+#define SPARC_PSTATE_MM_BIT_POSITION   6   /* bit  6 */
+#define SPARC_PSTATE_TLE_BIT_POSITION  8   /* bit  8 */
+#define SPARC_PSTATE_CLE_BIT_POSITION  9   /* bit  9 */
+
+#define SPARC_FPRS_FEF_MASK     0x0100 /* bit 2 */
+#define SPARC_FPRS_FEF_BIT_POSITION 2      /* bit 2 */
+
+
+#ifdef ASM
+
+/* 
+ * To enable the FPU we need to set both PSTATE.pef and FPRS.fef
+ */
+
+#define sparc64_enable_FPU(rtmp1) \
+	rdpr %pstate, rtmp1; \
+	or rtmp1, SPARC_PSTATE_PEF_MASK, rtmp1; \
+	wrpr %g0, rtmp1, %pstate; \
+	rd %fprs, rtmp1; \
+	or rtmp1, SPARC_FPRS_FEF_MASK, rtmp1; \
+	wr %g0, rtmp1, %fprs
+
+
+
+
+
+#endif
 
 #ifndef ASM
 
@@ -172,7 +229,7 @@ extern "C" {
 
 
 
-	/************* DEPRECATED ****************/
+/************* DELETED ****************/
 /*
  *  Get and set the WIM
  */
@@ -190,6 +247,10 @@ extern "C" {
     nop(); \
   } while ( 0 )
 
+/************* /DELETED ****************/
+
+/************* DEPRECATED ****************/
+
 /*
  *  Get and set the Y
  */
@@ -203,6 +264,8 @@ extern "C" {
   do { \
     asm volatile( "wr %0, %%y" :  "=r" (_y) : "0" (_y) ); \
   } while ( 0 )
+
+/************* /DEPRECATED ****************/
 
 /*
  *  Manipulate the interrupt level in the psr 
@@ -228,7 +291,7 @@ void sparc_enable_interrupts(uint32_t);
       (_psr_level & SPARC_PSR_PIL_MASK) >> SPARC_PSR_PIL_BIT_POSITION; \
   } while ( 0 )
 
-#endif
+#endif /* !ASM */
 
 #ifdef __cplusplus
 }
