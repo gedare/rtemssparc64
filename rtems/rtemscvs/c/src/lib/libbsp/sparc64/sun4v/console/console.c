@@ -217,3 +217,14 @@ rtems_device_driver console_control(
 {
   return RTEMS_SUCCESSFUL;
 }
+
+
+/* putchar/getchar for printk */
+
+static void bsp_out_char (char c)
+{
+  ofw_write(&c, 1);
+}
+
+BSP_output_char_function_type BSP_output_char = bsp_out_char;
+

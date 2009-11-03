@@ -13,13 +13,11 @@ dist_project_lib_DATA = bsp_specs
 
 include_HEADERS = include/bsp.h 
 include_HEADERS += include/tm27.h
-include_HEADERS += include/_components.h
 include_HEADERS += include/asm.h 
 include_HEADERS += include/balloc.h
 include_HEADERS += include/types.h
 include_HEADERS += include/ofw.h
 include_HEADERS += include/ofwarch.h
-include_HEADERS += include/printf.h
 include_HEADERS += include/gentypes.h   
 include_HEADERS += include/main.h 
 include_HEADERS += include/ofw_tree.h
@@ -50,11 +48,13 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/bootcard.c ../../shared/sbrk.c \
     startup/bspstart.c \
     ../../shared/gnatinstallhandler.c  \
-    ofw/ofw.c ofw/printf.c ofw/string.c ofw/balloc.c ofw/main.c ofw/ofwarch.c ofw/_components.c ofw/ofw_tree.c ofw/asm.S
+    ofw/ofw.c ofw/string.c ofw/balloc.c ofw/bootstrap.c ofw/ofwarch.c ofw/ofw_tree.c ofw/asm.S
+##   ofw/printf.c \
+    
 clock_SOURCES = ../../shared/clock_driver_simidle.c
 
 #GAB: TODO: FIXME: using dummy_printk
-console_SOURCES = ../../shared/console-polled.c console/console.c ../../shared/dummy_printk_support.c
+console_SOURCES = ../../shared/console-polled.c console/console.c
 
 timer_SOURCES = ../../shared/timerstub.c
 

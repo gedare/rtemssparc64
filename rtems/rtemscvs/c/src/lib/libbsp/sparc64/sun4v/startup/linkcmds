@@ -11,9 +11,11 @@
  * Declare some sizes.
  */
 RamBase = DEFINED(RamBase) ? RamBase : 0x0;
-RamSize = DEFINED(RamSize) ? RamSize : 2M;
+RamSize = DEFINED(RamSize) ? RamSize : 32M;
 HeapSize = DEFINED(HeapSize) ? HeapSize : 0x0;
 StackSize = DEFINED(StackSize) ? StackSize : 2K;
+
+RAM_END = RamBase + RamSize;
 
 /* Default linker script, for normal executables */
 OUTPUT_FORMAT("elf64-sparc")
