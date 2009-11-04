@@ -591,22 +591,26 @@ SCORE_EXTERN volatile uint32_t _CPU_ISR_Dispatch_disable;
  *        trap type (a.k.a. vector) and another with the psr.
  */
 /* GAB: For SPARC V9, we must use 6 of these instructions to perform a long 
- * jump, because the _handler value is now 64-bits.
+ * jump, because the _handler value is now 64-bits. We also need to store 
+ * temporary values in the global register set at this trap level. Because 
+ * the handler runs at TL > 0 with GL > 0, it should be OK to use g2 and g3
+ * to pass parameters to ISR_Handler.
+ *
  * The instruction sequence is now more like:
- * 	rdpr %tstate, %l0
- * 	setx _handler, %l3, %l4
- * 	jmp %l4+0
- * 	mov _vector, %l3
+ * 	rdpr %tstate, %g4
+ * 	setx _handler, %g2, %g3
+ * 	jmp %g3+0
+ * 	mov _vector, %g2
  */
 typedef struct {
-  uint32_t     rdpr_tstate_l0;              	/* rdpr  %tstate, %l0        */
-  uint32_t     sethi_of_hh_handler_to_l3;     	/* sethi %hh(_handler), %l3  */
-  uint32_t     or_l3_hm_handler_to_l3;		/* or %l3, %hm(_handler), %l3 */
-  uint32_t     sllx_l3_by_32_to_l3;		/* sllx   %l3, 32, %l3 */
-  uint32_t     sethi_of_handler_to_l4;		/* sethi %hi(_handler), %l4  */
-  uint32_t     or_l4_l3_to_l4;			/* or     %l4, %l3, %l4 */
-  uint32_t     jmp_to_low_of_handler_plus_l4;	/* jmp   %l4 + %lo(_handler) */
-  uint32_t     mov_vector_l3;			/* mov   _vector, %l3        */
+  uint32_t     rdpr_tstate_g4;              	/* rdpr  %tstate, %g4        */
+  uint32_t     sethi_of_hh_handler_to_g2;     	/* sethi %hh(_handler), %g2  */
+  uint32_t     or_g2_hm_handler_to_g2;		/* or %l3, %hm(_handler), %g2 */
+  uint32_t     sllx_g2_by_32_to_g2;		/* sllx   %g2, 32, %g2 */
+  uint32_t     sethi_of_handler_to_g3;		/* sethi %hi(_handler), %g3  */
+  uint32_t     or_g3_g2_to_g3;			/* or     %g3, %g2, %g3 */
+  uint32_t     jmp_to_low_of_handler_plus_g3;	/* jmp   %g3 + %lo(_handler) */
+  uint32_t     mov_vector_g2;			/* mov   _vector, %g2        */
 } CPU_Trap_table_entry;
  
 /*
@@ -761,18 +765,8 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  *  level is returned in _level.
  */
 
-/* GAB: sparc_disable_interrupts is defined in libcpu/sparc64/syscall/syscall.S
- * and in the sparc v7/8 target appears to be linked through the trap tables
- *
- * TODO: figure out how to handle sparc64 interrupts
- */
-#if 0
  #define _CPU_ISR_Disable( _level ) \
   (_level) = sparc_disable_interrupts()
-#else
- #define _CPU_ISR_Disable( _level ) \
-  _level = 0
-#endif
 
 /*
  *  Enable interrupts to the previous level (returned by _CPU_ISR_Disable).
@@ -780,15 +774,8 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  *  _level is not modified.
  */
 
-/* GAB: see note for sparc_disable_interrupts */
-#if 0
 #define _CPU_ISR_Enable( _level ) \
   sparc_enable_interrupts( _level )
-#else
-#define _CPU_ISR_Enable( _level ) \
- { \
- }
-#endif
 
 /*
  *  This temporarily restores the interrupt to _level before immediately
@@ -797,15 +784,8 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  *  modified.
  */
 
-/* GAB: see note for sparc_disable_interrupts */
-#if 0
 #define _CPU_ISR_Flash( _level ) \
    sparc_flash_interrupts( _level )
-#else
-#define _CPU_ISR_Flash( _level ) \
-  { \
-  }
-#endif
 
 /*
  *  Map interrupt level in task mode onto the hardware that the CPU
@@ -813,15 +793,8 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  *  map onto the CPU in a straight fashion are undefined.  
  */
 
-/* GAB: see note for sparc_disable_interrupts */
-#if 0
 #define _CPU_ISR_Set_level( _newlevel ) \
    sparc_enable_interrupts( _newlevel << 8)
-#else
-#define _CPU_ISR_Set_level( _newlevel ) \
-  { \
-  }
-#endif 
 
 uint32_t   _CPU_ISR_Get_level( void );
  
@@ -915,8 +888,6 @@ void _CPU_Context_Initialize(
  *  halts/stops the CPU.
  */
 
-/* GAB: relies on sparc_disable_interrupts */
-#if 0
 #define _CPU_Fatal_halt( _error ) \
   do { \
     uint32_t   level; \
@@ -925,11 +896,6 @@ void _CPU_Context_Initialize(
     asm volatile ( "mov  %0, %%g1 " : "=r" (level) : "0" (level) ); \
     while (1); /* loop forever */ \
   } while (0)
-#else
-#define _CPU_Fatal_halt( _error ) \
-  { \
-  }
-#endif
 
 /* end of Fatal Error manager macros */
 

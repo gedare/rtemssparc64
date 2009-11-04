@@ -14,31 +14,22 @@ extern int syscall(int tstate); /*
 void sparc64_install_isr_entries( void )
 {
 	uint64_t tba;
+
+	uint32_t isr_cookie = 0;
+
 	sparc64_get_tba(tba);
 
 	proc_ptr ignored;
 
-	printk("Soft trap 0=%u\n",*(uint32_t*)(tba+TT_SOFT_TRAP));
-
+	printk("Trap base address = %lx\n\r", tba);
+/*
 	_CPU_ISR_install_raw_handler(0x100,syscall,&ignored);
-
-	printk("Soft trap 0=%u\n",*(uint32_t*)(tba+TT_SOFT_TRAP));
-
-
-  /* GAB: Apparently, we can use the default trap handlers */
-/*	
-  memcpy( (void*)(tba+TT_SPILL_0_NORMAL), 
-			win_spill_code, 
-			WIN_SPILL_CODE_SIZE );
-
-  memcpy( (void*)(tba+TT_FILL_0_NORMAL),
-      win_fill_code,
-      WIN_FILL_CODE_SIZE );
-
-  memcpy( (void*)(tba+TT_CLEAN_WINDOW),
-      win_clean_code,
-      WIN_CLEAN_CODE_SIZE );
 */
 
+	printk("ISR cookie = %x\n\r", isr_cookie);
+	isr_cookie = sparc_disable_interrupts();
+	printk("ISR cookie = %x\n\r", isr_cookie);
+
+	printk("\n\r");
 	return;
 }

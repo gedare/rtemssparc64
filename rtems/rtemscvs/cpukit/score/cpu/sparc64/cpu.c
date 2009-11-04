@@ -25,16 +25,20 @@
  *  must be filled in when the handler is installed.
  */
 
-/* GAB: 64-bit registers complicated this */
+/* GAB: 64-bit registers complicated this. Also, in sparc v9, 
+ *	each trap level gets its own set of global registers, but
+ *	does not get its own dedicated register window. so we avoid
+ *	using the local registers in the trap handler.
+ * */
 const CPU_Trap_table_entry _CPU_Trap_slot_template = {
-  0xa1508000,	/* rdpr   %tstate, %l0           */
-  0x27000000,	/* sethi %hh(_handler), %l3  */
-  0xa614e000,	/* or     %l3, %hm(_handler), %l3 */
-  0xa72cf020,	/* sllx   %l3, 32, %l3 */
-  0x29000000,	/* sethi  %hi(_handler), %l4 */
-  0xa8150013,	/* or     %l4, %l3, %l4 */
-  0x81c52000,   /* jmp   %l4 + %lo(_handler) */
-  0xa6102000    /* mov   _vector, %l3        */
+  0x89508000,	/* rdpr   %tstate, %g4       */
+  0x05000000,	/* sethi %hh(_handler), %g2  */
+  0x8410a000,	/* or     %g2, %hm(_handler), %g2 */
+  0x8528b020,	/* sllx   %g2, 32, %g2 */
+  0x07000000,	/* sethi  %hi(_handler), %g3 */
+  0x8610c002,	/* or     %g3, %g2, %g3 */
+  0x81c0e000,   /* jmp   %g3 + %lo(_handler) */
+  0x84102000    /* mov   _vector, %g2        */
 };
 
 
@@ -142,7 +146,7 @@ uint32_t   _CPU_ISR_Get_level( void )
  *  an asynchronous trap.  This will avoid the executive changing the return
  *  address.
  */
-/* TODO: Verify this is working properly */
+/*  Verified this is working properly from sparc64_install_isr_entries */
 void _CPU_ISR_install_raw_handler(
   uint32_t    vector,
   proc_ptr    new_handler,
@@ -194,18 +198,15 @@ void _CPU_ISR_install_raw_handler(
   /* shift amount of hh bits (63:42) */
 #define HH_BITS_SHIFT  42
 
-  /* mask for immediate field of or instruction */
-#define OR_IMM_MASK    0x00001FFF
+  /* We're only interested in bits 0-9 of the immediate field*/
+#define IMM_MASK    0x000003FF
 
-  /* mask for immediate field of jmp instruction */
-#define JMP_IMM_MASK    0x000003FF
-
-  if ( slot->rdpr_tstate_l0 == _CPU_Trap_slot_template.rdpr_tstate_l0 ) {
+  if ( slot->rdpr_tstate_g4 == _CPU_Trap_slot_template.rdpr_tstate_g4 ) {
     u64_handler =
-      (((uint64_t)((slot->sethi_of_hh_handler_to_l3 << HI_BITS_SHIFT) |
-      (slot->or_l3_hm_handler_to_l3 & OR_IMM_MASK))) << HM_BITS_SHIFT) |
-      ((slot->sethi_of_handler_to_l4 << HI_BITS_SHIFT) |
-      (slot->jmp_to_low_of_handler_plus_l4 & JMP_IMM_MASK));
+      (((uint64_t)((slot->sethi_of_hh_handler_to_g2 << HI_BITS_SHIFT) |
+      (slot->or_g2_hm_handler_to_g2 & IMM_MASK))) << HM_BITS_SHIFT) |
+      ((slot->sethi_of_handler_to_g3 << HI_BITS_SHIFT) |
+      (slot->jmp_to_low_of_handler_plus_g3 & IMM_MASK));
     *old_handler = (proc_ptr) u64_handler;
   } else
     *old_handler = 0;
@@ -231,14 +232,14 @@ void _CPU_ISR_install_raw_handler(
 #define LO_BITS_MASK   0x00000000000003FF
 
 
-  slot->mov_vector_l3 |= vector;
-  slot->sethi_of_hh_handler_to_l3 |=
+  slot->mov_vector_g2 |= vector;
+  slot->sethi_of_hh_handler_to_g2 |=
     (u64_handler & HH_BITS_MASK) >> HH_BITS_SHIFT;
-  slot->or_l3_hm_handler_to_l3 |=
+  slot->or_g2_hm_handler_to_g2 |=
     (u64_handler & HM_BITS_MASK) >> HM_BITS_SHIFT;
-  slot->sethi_of_handler_to_l4 |=
+  slot->sethi_of_handler_to_g3 |=
     (u64_handler & HI_BITS_MASK) >> HI_BITS_SHIFT;
-  slot->jmp_to_low_of_handler_plus_l4 |= (u64_handler & LO_BITS_MASK);
+  slot->jmp_to_low_of_handler_plus_g3 |= (u64_handler & LO_BITS_MASK);
 
   /* need to flush icache after this !!! */
 
