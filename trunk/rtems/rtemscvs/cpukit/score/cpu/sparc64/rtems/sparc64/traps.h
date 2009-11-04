@@ -8,9 +8,13 @@
 #ifndef _RTEMS_TRAPS_H
 #define _RTEMS_TRAPS_H
 
+
+
 #define TT_CLEAN_WINDOW                 0x24
 #define TT_SPILL_0_NORMAL               0x80    /* base spill entry */
 #define TT_FILL_0_NORMAL                0xc0    /* base fill entry */
+#define TT_SOFT_TRAP			0x100	/* Trap Instruction */
+
 
 #define REGWIN_HANDLER_SIZE             128
 

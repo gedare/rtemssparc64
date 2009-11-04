@@ -27,7 +27,7 @@
 
 /* GAB: 64-bit registers complicated this */
 const CPU_Trap_table_entry _CPU_Trap_slot_template = {
-  0xa1518000,	/* rdpr   %pstate, %l0           */
+  0xa1508000,	/* rdpr   %tstate, %l0           */
   0x27000000,	/* sethi %hh(_handler), %l3  */
   0xa614e000,	/* or     %l3, %hm(_handler), %l3 */
   0xa72cf020,	/* sllx   %l3, 32, %l3 */
@@ -142,14 +142,14 @@ uint32_t   _CPU_ISR_Get_level( void )
  *  an asynchronous trap.  This will avoid the executive changing the return
  *  address.
  */
-
+/* TODO: Verify this is working properly */
 void _CPU_ISR_install_raw_handler(
   uint32_t    vector,
   proc_ptr    new_handler,
   proc_ptr   *old_handler
 )
 {
-  uint32_t               real_vector;
+  /*uint32_t               real_vector;*/
   CPU_Trap_table_entry  *tba;
   CPU_Trap_table_entry  *slot;
   uint64_t               u64_tba;
@@ -159,9 +159,9 @@ void _CPU_ISR_install_raw_handler(
    *  Get the "real" trap number for this vector ignoring the synchronous
    *  versus asynchronous indicator included with our vector numbers.
    */
-
+/*
   real_vector = SPARC_REAL_TRAP_NUMBER( vector );
-
+*/
   /*
    *  Get the current base address of the trap table and calculate a pointer
    *  to the slot we are interested in.
@@ -176,7 +176,7 @@ void _CPU_ISR_install_raw_handler(
 
   /* GAB: use array indexing to fill in lower bits -- require
    * CPU_Trap_table_entry to be full-sized. */
-  slot = &tba[ real_vector ];
+  slot = &tba[ vector ];
 
   /*
    *  Get the address of the old_handler from the trap table.
@@ -200,10 +200,10 @@ void _CPU_ISR_install_raw_handler(
   /* mask for immediate field of jmp instruction */
 #define JMP_IMM_MASK    0x000003FF
 
-  if ( slot->rdpr_pstate_l0 == _CPU_Trap_slot_template.rdpr_pstate_l0 ) {
+  if ( slot->rdpr_tstate_l0 == _CPU_Trap_slot_template.rdpr_tstate_l0 ) {
     u64_handler =
-      ((slot->sethi_of_hh_handler_to_l3 << HH_BITS_SHIFT) |
-      ((slot->or_l3_hm_handler_to_l3 & OR_IMM_MASK) << HM_BITS_SHIFT)) |
+      (((uint64_t)((slot->sethi_of_hh_handler_to_l3 << HI_BITS_SHIFT) |
+      (slot->or_l3_hm_handler_to_l3 & OR_IMM_MASK))) << HM_BITS_SHIFT) |
       ((slot->sethi_of_handler_to_l4 << HI_BITS_SHIFT) |
       (slot->jmp_to_low_of_handler_plus_l4 & JMP_IMM_MASK));
     *old_handler = (proc_ptr) u64_handler;
@@ -242,7 +242,7 @@ void _CPU_ISR_install_raw_handler(
 
   /* need to flush icache after this !!! */
 
-  /* TODO: FIXME: need to flush icache in case old trap handler is in cache */
+  /* need to flush icache in case old trap handler is in cache */
   rtems_cache_invalidate_entire_instruction();
 
 }
@@ -270,21 +270,21 @@ void _CPU_ISR_install_vector(
   proc_ptr   *old_handler
 )
 {
-   uint32_t   real_vector;
+/*   uint32_t   real_vector;*/
    proc_ptr   ignored;
 
   /*
    *  Get the "real" trap number for this vector ignoring the synchronous
    *  versus asynchronous indicator included with our vector numbers.
    */
-
+/*
    real_vector = SPARC_REAL_TRAP_NUMBER( vector );
-
+*/
    /*
     *  Return the previous ISR handler.
     */
 
-   *old_handler = _ISR_Vector_table[ real_vector ];
+   *old_handler = _ISR_Vector_table[ vector ];
 
    /*
     *  Install the wrapper so this ISR can be invoked properly.
@@ -297,7 +297,7 @@ void _CPU_ISR_install_vector(
     *  be used by the _ISR_Handler so the user gets control.
     */
 
-    _ISR_Vector_table[ real_vector ] = new_handler;
+    _ISR_Vector_table[ vector ] = new_handler;
 }
 
 /*PAGE

@@ -593,13 +593,13 @@ SCORE_EXTERN volatile uint32_t _CPU_ISR_Dispatch_disable;
 /* GAB: For SPARC V9, we must use 6 of these instructions to perform a long 
  * jump, because the _handler value is now 64-bits.
  * The instruction sequence is now more like:
- * 	rdpr %pstate, %l0
+ * 	rdpr %tstate, %l0
  * 	setx _handler, %l3, %l4
  * 	jmp %l4+0
  * 	mov _vector, %l3
  */
 typedef struct {
-  uint32_t     rdpr_pstate_l0;              	/* rdpr  %pstate, %l0        */
+  uint32_t     rdpr_tstate_l0;              	/* rdpr  %tstate, %l0        */
   uint32_t     sethi_of_hh_handler_to_l3;     	/* sethi %hh(_handler), %l3  */
   uint32_t     or_l3_hm_handler_to_l3;		/* or %l3, %hm(_handler), %l3 */
   uint32_t     sllx_l3_by_32_to_l3;		/* sllx   %l3, 32, %l3 */
@@ -660,7 +660,7 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  *  an asynchronous trap.  This will avoid the executive changing the return
  *  address.
  */
-
+/* GAB: TODO: FIXME: */
 #define CPU_INTERRUPT_NUMBER_OF_VECTORS     256
 #define CPU_INTERRUPT_MAXIMUM_VECTOR_NUMBER 511
 
@@ -693,6 +693,9 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  *  alignment does not take into account the requirements for the stack.
  *
  *  On the SPARC, this is required for double word loads and stores.
+ *
+ *  Note: quad-word loads/stores need alignment of 16, but currently supported
+ *  architectures do not provide HW implemented quad-word operations.
  */
 
 #define CPU_ALIGNMENT      8

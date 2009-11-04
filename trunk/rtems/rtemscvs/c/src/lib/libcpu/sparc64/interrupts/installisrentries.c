@@ -6,12 +6,24 @@
 #include <rtems/score/sparc.h>
 #include <rtems/bspIo.h>
 
+extern int syscall(int tstate); /* 
+				 * does the decl actually matter?
+				 * other than to compile?
+				 */
+
 void sparc64_install_isr_entries( void )
 {
 	uint64_t tba;
 	sparc64_get_tba(tba);
 
-	printf("sizeof(float)=%d\n",sizeof(float));
+	proc_ptr ignored;
+
+	printk("Soft trap 0=%u\n",*(uint32_t*)(tba+TT_SOFT_TRAP));
+
+	_CPU_ISR_install_raw_handler(0x100,syscall,&ignored);
+
+	printk("Soft trap 0=%u\n",*(uint32_t*)(tba+TT_SOFT_TRAP));
+
 
   /* GAB: Apparently, we can use the default trap handlers */
 /*	
@@ -28,4 +40,5 @@ void sparc64_install_isr_entries( void )
       WIN_CLEAN_CODE_SIZE );
 */
 
+	return;
 }
