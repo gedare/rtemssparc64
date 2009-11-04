@@ -19,63 +19,76 @@
 #include <rtems/asm.h>
 #include "syscall.h"
 
+
         .seg    "text"
         /*
          *  system call
          *
          *  On entry:
-         *
-         *    l0 = tstate (from trap table)
-         *    XXX  l1 = pc  
-         *    XXX  l2 = npc  
-         *    g1 = system call id
+         *    if arch = sun4v:
+         *      g4 = tstate (from trap table)
+	 *      g2 = trap vector # (256)
+	 *      g3 = address of SYM(syscall)
+         *      g4[GL-1] = system call id
+	 *
+	 *	We need to back to GL-1, so we won't use g2-g4. So the 
+	 *      syscall code needs to re-read tstate
+	 *    on sun4u:
+	 *	has an alternative set based on the type of trap
+	 *    
+	 *    First thing is to return to the previous set of globals, so 
+	 *    that the system call id can be read.
          */
 
         PUBLIC(syscall)
 
 SYM(syscall):
 
-	subcc   %g1, 2, %g0		! syscall 2, disable interrupts
+	rdpr	%gl, %g1
+	dec	%g1
+	wrpr	%g0, %g1, %gl		! go back to GL = GL - 1
+	subcc   %g4, 2, %g0		! syscall 2, disable interrupts
 	bne 	3f
-	rdpr    %pil, %l4
-	and	%l0, SPARC_TSTATE_IE_MASK, %i0
-	or	%i0, %l4, %i0		! return TSTATE_IE | PIL
+	rdpr	%tstate, %g5		! re-read tstate
+	rdpr    %pil, %g1
+	and	%g5, SPARC_TSTATE_IE_MASK, %o0
+	or	%o0, %g1, %o0		! return TSTATE_IE | PIL
 	wrpr   	%g0, 0xf, %pil		! set PIL to 15
-	andn    %l0, SPARC_TSTATE_IE_MASK, %l4
-	wrpr    %g0, %l4, %tstate	! disable interrupts in trap state
+	andn    %g5, SPARC_TSTATE_IE_MASK, %g1
+	wrpr    %g0, %g1, %tstate	! disable interrupts in trap state
 	ba,a	9f
 3:
-	subcc   %g1, 3, %g0		! syscall 3, enable interrupts
+	subcc   %g4, 3, %g0		! syscall 3, enable interrupts
 	bne 	1f
-	and     %i0, 0xf, %l3
-	wrpr	%g0, %l3, %pil		! restore PIL
-	and	%i0, SPARC_TSTATE_IE_MASK, %l4
-	or	%l0, %l4, %l4		
-	wrpr    %g0, %l4, %tstate	! restore IE to stored value
+	and     %o0, 0xf, %g1
+	wrpr	%g0, %g1, %pil		! restore PIL
+	and	%o0, SPARC_TSTATE_IE_MASK, %g1
+	or	%g5, %g1, %g1
+	wrpr    %g0, %g1, %tstate	! restore IE to stored value
 	ba,a	9f
 
 1:					
-	ta	0			! halt 
+	ba,a	1b			! spin. taking a trap here -> htrap
 9:				! leave
-	mov	0, %g1			! clear %g1 
+	mov	0, %g4			! clear %g1 
 	DONE
 
         PUBLIC(sparc_disable_interrupts)
 
 SYM(sparc_disable_interrupts):
 
-	mov	SYS_irqdis, %g1
+	mov	SYS_irqdis, %g4
 	ta	0
-	retl
+	retl	
 	nop
 
         PUBLIC(sparc_enable_interrupts)
 
 SYM(sparc_enable_interrupts):
 
-	mov	SYS_irqen, %g1
+	mov	SYS_irqen, %g4
 	ta	0
-	retl
+	retl	
 	nop
 
 /* end of file */

@@ -58,6 +58,10 @@ PUBLIC(start)
 !	set SYM(RAM_END), %sp
 !	add %sp, -STACK_BIAS, %sp
 
+	set SYM(syscall), %o1
+	set param_space, %o2
+	call SYM(_CPU_ISR_install_raw_handler)
+	mov 0x100, %o0
 
 	set ofw_cif, %l0
  
@@ -81,6 +85,9 @@ PUBLIC(start)
 call SYM(boot_card)
   nop
 
+  .align CPU_ALIGNMENT
+  param_space:
+  	.space 8
 
   .align CPU_STACK_ALIGNMENT
   initial_stack:
