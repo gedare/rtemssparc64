@@ -25,9 +25,9 @@
          *
          *  On entry:
          *
-         *    l0 = psr (from trap table)
-         *    l1 = pc
-         *    l2 = npc
+         *    l0 = tstate (from trap table)
+         *    XXX  l1 = pc  
+         *    XXX  l2 = npc  
          *    g1 = system call id
          */
 
@@ -37,25 +37,28 @@ SYM(syscall):
 
 	subcc   %g1, 2, %g0		! syscall 2, disable interrupts
 	bne 	3f
-	or    	%l0, 0x0f00, %l4	! set PIL=15
-	mov   	%l4, %psr
-	or	%l0, SPARC_PSR_ET_MASK, %i0	! return old psr with ET=1
+	rdpr    %pil, %l4
+	and	%l0, SPARC_TSTATE_IE_MASK, %i0
+	or	%i0, %l4, %i0		! return TSTATE_IE | PIL
+	wrpr   	%g0, 0xf, %pil		! set PIL to 15
+	andn    %l0, SPARC_TSTATE_IE_MASK, %l4
+	wrpr    %g0, %l4, %tstate	! disable interrupts in trap state
 	ba,a	9f
 3:
 	subcc   %g1, 3, %g0		! syscall 3, enable interrupts
 	bne 	1f
-	and	%i0, SPARC_PSR_PIL_MASK, %l4
-	andn	%l0, SPARC_PSR_PIL_MASK, %l5
-	or	%l5, %l4, %l4
-	mov   	%l4, %psr
+	and     %i0, 0xf, %l3
+	wrpr	%g0, %l3, %pil		! restore PIL
+	and	%i0, SPARC_TSTATE_IE_MASK, %l4
+	or	%l0, %l4, %l4		
+	wrpr    %g0, %l4, %tstate	! restore IE to stored value
 	ba,a	9f
 
 1:					
 	ta	0			! halt 
-9:					! leave
+9:				! leave
 	mov	0, %g1			! clear %g1 
-        jmpl    %l2, %g0
-        rett    %l2 + 4
+	DONE
 
         PUBLIC(sparc_disable_interrupts)
 

@@ -26,10 +26,10 @@ cache_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 #cache_rel_CPPFLAGS += -DHAS_INSTRUCTION_CACHE
 #endif
 
-#noinst_PROGRAMS += syscall.rel
-#syscall_rel_SOURCES = syscall/syscall.S syscall/syscall.h
-#syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
-#syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+noinst_PROGRAMS += syscall.rel
+syscall_rel_SOURCES = syscall/syscall.S syscall/syscall.h
+syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
+syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
 noinst_PROGRAMS += reg_win.rel
 reg_win_rel_SOURCES = reg_win/window.S

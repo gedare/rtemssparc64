@@ -165,6 +165,7 @@ extern "C" {
 #define SPARC_FPRS_FEF_MASK     0x0100 /* bit 2 */
 #define SPARC_FPRS_FEF_BIT_POSITION 2      /* bit 2 */
 
+#define SPARC_TSTATE_IE_MASK  0x00000200  /* bit 9 */
 
 #ifdef ASM
 
