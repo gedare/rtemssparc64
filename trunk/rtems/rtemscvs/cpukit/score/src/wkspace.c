@@ -23,7 +23,7 @@
 
 #include <string.h>  /* for memset */
 
-/* #define DEBUG_WORKSPACE */
+ #define DEBUG_WORKSPACE
 #if defined(DEBUG_WORKSPACE)
   #include <rtems/bspIo.h>
 #endif
@@ -39,6 +39,17 @@ void _Workspace_Handler_initialization(void)
 
   if ( Configuration.do_zero_of_workspace )
    memset( starting_address, 0, size );
+
+  printk(
+	  "\n\r_Workspace_Handler_initialization\n\r"
+	  "starting_address = 0x%p\n\r"
+	  "size = 0x%p\n\r"
+	  "alignment = 0x%d\n\r"
+	  ,
+	  starting_address,
+	  size,
+	  CPU_HEAP_ALIGNMENT
+  );
 
   memory_available = _Heap_Initialize(
     &_Workspace_Area,
