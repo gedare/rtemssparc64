@@ -94,7 +94,7 @@ void _Objects_Extend_information(
    * Allocate the name table, and the objects and if it fails either return or
    * generate a fatal error depending on auto-extending being active.
    */
-  
+
   block_size = information->allocation_size * information->size;
   if ( information->auto_extend ) {
     new_object_block = _Workspace_Allocate( block_size );
@@ -103,7 +103,7 @@ void _Objects_Extend_information(
   } else {
     new_object_block = _Workspace_Allocate_or_fatal_error( block_size );
   }
-  
+
   /*
    *  If the index_base is the maximum we need to grow the tables.
    */
@@ -142,26 +142,43 @@ void _Objects_Extend_information(
     /*
      *  Allocate the tables and break it up.
      */
+//	printk("\n\rGica test1 block_count = %d\n\r",block_count);
+//	printk("\n\rGica test1 maximum = %d\n\r",maximum);
+//	printk("\n\rGica test1 minimum_index = %d\n\r",minimum_index);
+
 
     block_size = block_count *
-           (sizeof(void *) + sizeof(uint32_t) + sizeof(Objects_Name *)) +
+           (sizeof(void *) + sizeof(uint32_t) + sizeof(uint32_t)/* <-this is a GICA quickfix */ + sizeof(Objects_Name *)) +
           ((maximum + minimum_index) * sizeof(Objects_Control *));
+
+//    printk("\n\rGica test1 block_size =  %d\n\r",block_size);
+
     object_blocks = (void**) _Workspace_Allocate( block_size );
 
     if ( !object_blocks ) {
       _Workspace_Free( new_object_block );
       return;
     }
-    
+
     /*
      *  Break the block into the various sections.
      */
+//	printk("\n\rGica test2 %x\n\r",object_blocks);
 
     inactive_per_block = (uint32_t *) _Addresses_Add_offset(
         object_blocks, block_count * sizeof(void*) );
-    local_table = (Objects_Control **) _Addresses_Add_offset(
-        inactive_per_block, block_count * sizeof(uint32_t) );
 
+//    printk("\n\rGica test2.1 %x\n\r",inactive_per_block);
+//    printk("\n\rGica test2.2 %x\n\r",sizeof(void *));
+//    printk("\n\rGica test2.3 uint32_t %x\n\r",sizeof(uint32_t));
+//    printk("\n\rGica test2.4 uint32_t * %x\n\r",sizeof(uint32_t *));
+//	printk("\n\rGica test2.5 uint32_t ** %x\n\r",sizeof(uint32_t **));
+
+    local_table = (Objects_Control **) _Addresses_Add_offset(
+        inactive_per_block, block_count * 2 /* <-this is a GICA quickfix */ * sizeof(uint32_t) );
+
+
+//	printk("\n\rGica test3 %x\n\r",object_blocks);
     /*
      *  Take the block count down. Saves all the (block_count - 1)
      *  in the copies.
@@ -192,9 +209,14 @@ void _Objects_Extend_information(
        *  Deal with the special case of the 0 to minimum_index
        */
       for ( index = 0; index < minimum_index; index++ ) {
+//		  printk("\n\rGica test4 %d %d\n\r",index, sizeof(Objects_Control **));
+//		  printk("\n\rGica test4 %x\n\r",local_table);
+//		  printk("\n\rGica test4 %x\n\r",local_table[ index ]);
         local_table[ index ] = NULL;
       }
     }
+
+//	printk("\n\rGica test5 %d\n\r",block_count);
 
     /*
      *  Initialise the new entries in the table.
