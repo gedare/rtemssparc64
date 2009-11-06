@@ -213,7 +213,7 @@ extern "C" {
  *  interrupt field of the task mode.  How those bits map to the
  *  CPU interrupt levels is defined by the routine _CPU_ISR_Set_level().
  *
- *  The SPARC has 16 interrupt levels in the PIL field of the PSR.
+ *  The SPARC v9 has 16 interrupt levels in the PIL field of the PSR.
  */
 
 #define CPU_MODES_INTERRUPT_MASK   0x0000000F
@@ -308,48 +308,44 @@ typedef struct {
 #ifndef ASM
 
 typedef struct {
-    /*
-     *  Using a double g0_g1 will put everything in this structure on a 
-     *  double word boundary which allows us to use double word loads
-     *  and stores safely in the context switch.
-     */
-    double     g0_g1;
-    uint32_t   g2;
-    uint32_t   g3;
-    uint32_t   g4;
-    uint32_t   g5;
-    uint32_t   g6;
-    uint32_t   g7;
+    uint64_t   g1;
+    uint64_t   g2;
+    uint64_t   g3;
+    uint64_t   g4;
+    uint64_t   g5;
+    uint64_t   g6;
+    uint64_t   g7;
 
-    uint32_t   l0;
-    uint32_t   l1;
-    uint32_t   l2;
-    uint32_t   l3;
-    uint32_t   l4;
-    uint32_t   l5;
-    uint32_t   l6;
-    uint32_t   l7;
+    uint64_t   l0;
+    uint64_t   l1;
+    uint64_t   l2;
+    uint64_t   l3;
+    uint64_t   l4;
+    uint64_t   l5;
+    uint64_t   l6;
+    uint64_t   l7;
 
-    uint32_t   i0;
-    uint32_t   i1;
-    uint32_t   i2;
-    uint32_t   i3;
-    uint32_t   i4;
-    uint32_t   i5;
-    uint32_t   i6_fp;
-    uint32_t   i7;
+    uint64_t   i0;
+    uint64_t   i1;
+    uint64_t   i2;
+    uint64_t   i3;
+    uint64_t   i4;
+    uint64_t   i5;
+    uint64_t   i6_fp;
+    uint64_t   i7;
 
-    uint32_t   o0;
-    uint32_t   o1;
-    uint32_t   o2;
-    uint32_t   o3;
-    uint32_t   o4;
-    uint32_t   o5;
-    uint32_t   o6_sp;
-    uint32_t   o7;
+    uint64_t   o0;
+    uint64_t   o1;
+    uint64_t   o2;
+    uint64_t   o3;
+    uint64_t   o4;
+    uint64_t   o5;
+    uint64_t   o6_sp;
+    uint64_t   o7;
 
-    uint32_t   psr;
+    uint64_t   pstate;
     uint32_t   isr_dispatch_disable;
+    uint32_t   pad0;
 } Context_Control;
 
 #define _CPU_Context_Get_SP( _context ) \
@@ -361,46 +357,45 @@ typedef struct {
  *  Offsets of fields with Context_Control for assembly routines.
  */
 
-#define G0_OFFSET    0x00
-#define G1_OFFSET    0x04
+#define G1_OFFSET    0x00
 #define G2_OFFSET    0x08
-#define G3_OFFSET    0x0C
-#define G4_OFFSET    0x10
-#define G5_OFFSET    0x14
-#define G6_OFFSET    0x18
-#define G7_OFFSET    0x1C
+#define G3_OFFSET    0x10
+#define G4_OFFSET    0x18
+#define G5_OFFSET    0x20
+#define G6_OFFSET    0x28
+#define G7_OFFSET    0x30
 
-#define L0_OFFSET    0x20
-#define L1_OFFSET    0x24
-#define L2_OFFSET    0x28
-#define L3_OFFSET    0x2C
-#define L4_OFFSET    0x30
-#define L5_OFFSET    0x34
-#define L6_OFFSET    0x38
-#define L7_OFFSET    0x3C
+#define L0_OFFSET    0x38
+#define L1_OFFSET    0x40
+#define L2_OFFSET    0x48
+#define L3_OFFSET    0x50
+#define L4_OFFSET    0x58
+#define L5_OFFSET    0x60
+#define L6_OFFSET    0x68
+#define L7_OFFSET    0x70
 
-#define I0_OFFSET    0x40
-#define I1_OFFSET    0x44
-#define I2_OFFSET    0x48
-#define I3_OFFSET    0x4C
-#define I4_OFFSET    0x50
-#define I5_OFFSET    0x54
-#define I6_FP_OFFSET 0x58
-#define I7_OFFSET    0x5C
+#define I0_OFFSET    0x78
+#define I1_OFFSET    0x80
+#define I2_OFFSET    0x88
+#define I3_OFFSET    0x90
+#define I4_OFFSET    0x98
+#define I5_OFFSET    0xA0
+#define I6_FP_OFFSET    0xA8
+#define I7_OFFSET 0xB0
 
-#define O0_OFFSET    0x60
-#define O1_OFFSET    0x64
-#define O2_OFFSET    0x68
-#define O3_OFFSET    0x6C
-#define O4_OFFSET    0x70
-#define O5_OFFSET    0x74
-#define O6_SP_OFFSET 0x78
-#define O7_OFFSET    0x7C
+#define O0_OFFSET    0xB8
+#define O1_OFFSET    0xC0
+#define O2_OFFSET    0xC8
+#define O3_OFFSET    0xD0
+#define O4_OFFSET    0xD8
+#define O5_OFFSET    0xE0
+#define O6_SP_OFFSET    0xE8
+#define O7_OFFSET 0xF0
 
-#define PSR_OFFSET   0x80
-#define ISR_DISPATCH_DISABLE_STACK_OFFSET 0x84
+#define PSTATE_OFFSET    0xF8
+#define ISR_DISPATCH_DISABLE_STACK_OFFSET 0x100
 
-#define CONTEXT_CONTROL_SIZE 0x88
+#define CONTEXT_CONTROL_SIZE 0x108
 
 /*
  *  The floating point context area.

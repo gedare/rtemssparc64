@@ -44,6 +44,7 @@
 
 SYM(syscall):
 
+	mov	%g0, %g4	! clear %g4 at this GL
 	rdpr	%gl, %g1
 	dec	%g1
 	wrpr	%g0, %g1, %gl		! go back to GL = GL - 1
@@ -70,7 +71,7 @@ SYM(syscall):
 1:					
 	ba,a	1b			! spin. taking a trap here -> htrap
 9:				! leave
-	mov	0, %g4			! clear %g1 
+	mov	0, %g4			! clear %g4
 	DONE
 
         PUBLIC(sparc_disable_interrupts)
