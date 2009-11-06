@@ -374,7 +374,7 @@ void _CPU_Context_Initialize(
     if ( is_fp )
       tmp_psr |= SPARC_PSR_EF_MASK;
 #endif
-    the_context->psr = tmp_psr;
+    the_context->pstate = tmp_psr;
 
   /*
    *  Since THIS thread is being created, there is no way that THIS

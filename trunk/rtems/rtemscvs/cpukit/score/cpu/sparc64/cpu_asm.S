@@ -23,6 +23,13 @@
 
 #include <rtems/asm.h>
 
+
+
+.register %g2, #scratch
+.register %g3, #scratch
+.register %g6, #scratch
+.register %g7, #scratch
+
 #if (SPARC_HAS_FPU == 1)
 
 /*
@@ -165,36 +172,51 @@ SYM(_CPU_Context_restore_fp):
         PUBLIC(_CPU_Context_switch)
 SYM(_CPU_Context_switch):
         ! skip g0
-        st      %g1, [%o0 + G1_OFFSET]       ! save the global registers
-!        std     %g2, [%o0 + G2_OFFSET]
-        std     %g4, [%o0 + G4_OFFSET]
-        std     %g6, [%o0 + G6_OFFSET]
+        stx     %g1, [%o0 + G1_OFFSET]       ! save the global registers
+        stx     %g2, [%o0 + G2_OFFSET]
+        stx     %g3, [%o0 + G3_OFFSET]       
+        stx     %g4, [%o0 + G4_OFFSET]
+        stx     %g5, [%o0 + G5_OFFSET]       
+        stx     %g6, [%o0 + G6_OFFSET]
+        stx     %g7, [%o0 + G7_OFFSET]
 
         ! load the address of the ISR stack nesting prevention flag
-!        sethi    %hi(SYM(_CPU_ISR_Dispatch_disable)), %g2
-!        ld       [%g2 + %lo(SYM(_CPU_ISR_Dispatch_disable))], %g2
+        sethi   %hi(SYM(_CPU_ISR_Dispatch_disable)), %g2
+        lduw     [%g2 + %lo(SYM(_CPU_ISR_Dispatch_disable))], %g2
         ! save it a bit later so we do not waste a couple of cycles
 
-        std     %l0, [%o0 + L0_OFFSET]       ! save the local registers
-        std     %l2, [%o0 + L2_OFFSET]
-        std     %l4, [%o0 + L4_OFFSET]
-        std     %l6, [%o0 + L6_OFFSET]
+        stx     %l0, [%o0 + L0_OFFSET]       ! save the local registers
+        stx     %l1, [%o0 + L1_OFFSET]
+        stx     %l2, [%o0 + L2_OFFSET]
+        stx     %l3, [%o0 + L3_OFFSET]
+        stx     %l4, [%o0 + L4_OFFSET]
+        stx     %l5, [%o0 + L5_OFFSET]
+        stx     %l6, [%o0 + L6_OFFSET]
+        stx     %l7, [%o0 + L7_OFFSET]
 
         ! Now actually save ISR stack nesting prevention flag
-!        st       %g2, [%o0 + ISR_DISPATCH_DISABLE_STACK_OFFSET]
+        stw     %g2, [%o0 + ISR_DISPATCH_DISABLE_STACK_OFFSET]
 
-        std     %i0, [%o0 + I0_OFFSET]       ! save the input registers
-        std     %i2, [%o0 + I2_OFFSET]
-        std     %i4, [%o0 + I4_OFFSET]
-        std     %i6, [%o0 + I6_FP_OFFSET]
+        stx     %i0, [%o0 + I0_OFFSET]       ! save the input registers
+        stx     %i1, [%o0 + I1_OFFSET]
+        stx     %i2, [%o0 + I2_OFFSET]
+        stx     %i3, [%o0 + I3_OFFSET]
+        stx     %i4, [%o0 + I4_OFFSET]
+        stx     %i5, [%o0 + I5_OFFSET]
+        stx     %i6, [%o0 + I6_FP_OFFSET]
+        stx     %i7, [%o0 + I7_OFFSET]
 
-        std     %o0, [%o0 + O0_OFFSET]       ! save the output registers
-        std     %o2, [%o0 + O2_OFFSET]
-        std     %o4, [%o0 + O4_OFFSET]
-        std     %o6, [%o0 + O6_SP_OFFSET]
+        stx     %o0, [%o0 + O0_OFFSET]       ! save the output registers
+        stx     %o1, [%o0 + O1_OFFSET]
+        stx     %o2, [%o0 + O2_OFFSET]
+        stx     %o3, [%o0 + O3_OFFSET]
+        stx     %o4, [%o0 + O4_OFFSET]
+        stx     %o5, [%o0 + O5_OFFSET]
+        stx     %o6, [%o0 + O6_SP_OFFSET]
+        stx     %o7, [%o0 + O7_OFFSET]       ! o7 is the PC
 
-        rd      %psr, %o2
-        st      %o2, [%o0 + PSR_OFFSET]      ! save status register
+        rdpr    %pstate, %o2
+        stx     %o2, [%o0 + PSTATE_OFFSET]      ! save status register
 
         /*
          *  This is entered from _CPU_Context_restore with:
@@ -204,133 +226,55 @@ SYM(_CPU_Context_switch):
 
         PUBLIC(_CPU_Context_restore_heir)
 SYM(_CPU_Context_restore_heir):
-        /*
-         *  Flush all windows with valid contents except the current one.
-         *  In examining the set register windows, one may logically divide
-         *  the windows into sets (some of which may be empty) based on their
-         *  current status:  
-         *
-         *    + current (i.e. in use), 
-         *    + used (i.e. a restore would not trap)
-         *    + invalid (i.e. 1 in corresponding bit in WIM)
-         *    + unused
-         *
-         *  Either the used or unused set of windows may be empty.
-         *
-         *  NOTE: We assume only one bit is set in the WIM at a time.
-         *
-         *  Given a CWP of 5 and a WIM of 0x1, the registers are divided
-         *  into sets as follows:
-         *
-         *    + 0   - invalid
-         *    + 1-4 - unused
-         *    + 5   - current
-         *    + 6-7 - used
-         *
-         *  In this case, we only would save the used windows -- 6 and 7.
-         *
-         *   Traps are disabled for the same logical period as in a 
-         *     flush all windows trap handler.
-         *   
-         *    Register Usage while saving the windows:
-         *      g1 = current PSR
-         *      g2 = current wim
-         *      g3 = CWP
-         *      g4 = wim scratch
-         *      g5 = scratch
-         */
 
-        ld      [%o1 + PSR_OFFSET], %g1       ! g1 = saved psr
-
-!        and     %o2, SPARC_PSR_CWP_MASK, %g3  ! g3 = CWP
-                                              ! g1 = psr w/o cwp
-        andn    %g1, SPARC_PSR_ET_MASK | SPARC_PSR_CWP_MASK, %g1
-!        or      %g1, %g3, %g1                 ! g1 = heirs psr
-        mov     %g1, %psr                     ! restore status register and
-                                              ! **** DISABLE TRAPS ****
-!        mov     %wim, %g2                     ! g2 = wim
-        mov     1, %g4
-!        sll     %g4, %g3, %g4                 ! g4 = WIM mask for CW invalid
-
-save_frame_loop:
-        sll     %g4, 1, %g5                   ! rotate the "wim" left 1
-        srl     %g4, SPARC_NUMBER_OF_REGISTER_WINDOWS - 1, %g4
-        or      %g4, %g5, %g4                 ! g4 = wim if we do one restore
-
-        /*
-         *  If a restore would not underflow, then continue.
-         */
-
-!        andcc   %g4, %g2, %g0                 ! Any windows to flush?
-        bnz     done_flushing                 ! No, then continue
-        nop
-
-        restore                               ! back one window 
-
-        /*
-         *  Now save the window just as if we overflowed to it.
-         */
- 
-        std     %l0, [%sp + CPU_STACK_FRAME_L0_OFFSET]
-        std     %l2, [%sp + CPU_STACK_FRAME_L2_OFFSET]
-        std     %l4, [%sp + CPU_STACK_FRAME_L4_OFFSET]
-        std     %l6, [%sp + CPU_STACK_FRAME_L6_OFFSET]
- 
-        std     %i0, [%sp + CPU_STACK_FRAME_I0_OFFSET]
-        std     %i2, [%sp + CPU_STACK_FRAME_I2_OFFSET]
-        std     %i4, [%sp + CPU_STACK_FRAME_I4_OFFSET]
-        std     %i6, [%sp + CPU_STACK_FRAME_I6_FP_OFFSET]
-
-        ba      save_frame_loop
-        nop
-
-done_flushing:
-
-!        add     %g3, 1, %g3                   ! calculate desired WIM
-!        and     %g3, SPARC_NUMBER_OF_REGISTER_WINDOWS - 1, %g3
-        mov     1, %g4
-!        sll     %g4, %g3, %g4                 ! g4 = new WIM 
-        mov     %g4, %wim
-
-        or      %g1, SPARC_PSR_ET_MASK, %g1
-        mov     %g1, %psr                     ! **** ENABLE TRAPS ****
-                                              !   and restore CWP
-        nop
-        nop
-        nop
+	flushw
 
         ! skip g0
-        ld      [%o1 + G1_OFFSET], %g1        ! restore the global registers
-!        ldd     [%o1 + G2_OFFSET], %g2
-        ldd     [%o1 + G4_OFFSET], %g4
-        ldd     [%o1 + G6_OFFSET], %g6
+        ldx     [%o1 + G1_OFFSET], %g1        ! restore the global registers
+        ldx     [%o1 + G2_OFFSET], %g2
+        ldx     [%o1 + G3_OFFSET], %g3
+        ldx     [%o1 + G4_OFFSET], %g4
+        ldx     [%o1 + G5_OFFSET], %g5
+        ldx     [%o1 + G6_OFFSET], %g6
+        ldx     [%o1 + G7_OFFSET], %g7
 
         ! Load thread specific ISR dispatch prevention flag
-        ld      [%o1 + ISR_DISPATCH_DISABLE_STACK_OFFSET], %o2
+        lduw    [%o1 + ISR_DISPATCH_DISABLE_STACK_OFFSET], %o2
         sethi    %hi(SYM(_CPU_ISR_Dispatch_disable)), %o3
         ! Store it to memory later to use the cycles
 
-        ldd     [%o1 + L0_OFFSET], %l0        ! restore the local registers
-        ldd     [%o1 + L2_OFFSET], %l2
-        ldd     [%o1 + L4_OFFSET], %l4
-        ldd     [%o1 + L6_OFFSET], %l6
+        ldx     [%o1 + L0_OFFSET], %l0        ! restore the local registers
+        ldx     [%o1 + L1_OFFSET], %l1
+        ldx     [%o1 + L2_OFFSET], %l2
+        ldx     [%o1 + L3_OFFSET], %l3
+        ldx     [%o1 + L4_OFFSET], %l4
+        ldx     [%o1 + L5_OFFSET], %l5
+        ldx     [%o1 + L6_OFFSET], %l6
+        ldx     [%o1 + L7_OFFSET], %l7
 
         ! Now restore thread specific ISR dispatch prevention flag
-        st       %o2,[%o3 + %lo(SYM(_CPU_ISR_Dispatch_disable))]
+        stw      %o2,[%o3 + %lo(SYM(_CPU_ISR_Dispatch_disable))]
 
-        ldd     [%o1 + I0_OFFSET], %i0        ! restore the output registers
-        ldd     [%o1 + I2_OFFSET], %i2
-        ldd     [%o1 + I4_OFFSET], %i4
-        ldd     [%o1 + I6_FP_OFFSET], %i6
+        ldx     [%o1 + I0_OFFSET], %i0        ! restore the input registers
+        ldx     [%o1 + I1_OFFSET], %i1
+        ldx     [%o1 + I2_OFFSET], %i2
+        ldx     [%o1 + I3_OFFSET], %i3
+        ldx     [%o1 + I4_OFFSET], %i4
+        ldx     [%o1 + I5_OFFSET], %i5
+        ldx     [%o1 + I6_FP_OFFSET], %i6
+        ldx     [%o1 + I7_OFFSET], %i7
 
-        ldd     [%o1 + O2_OFFSET], %o2        ! restore the output registers
-        ldd     [%o1 + O4_OFFSET], %o4
-        ldd     [%o1 + O6_SP_OFFSET], %o6
+        ldx     [%o1 + O2_OFFSET], %o2        ! restore the output registers
+        ldx     [%o1 + O3_OFFSET], %o3
+        ldx     [%o1 + O4_OFFSET], %o4
+        ldx     [%o1 + O5_OFFSET], %o5
+        ldx     [%o1 + O6_SP_OFFSET], %o6
+        ldx     [%o1 + O7_OFFSET], %o7       ! PC
         ! do o0/o1 last to avoid destroying heir context pointer
-        ldd     [%o1 + O0_OFFSET], %o0        ! overwrite heir pointer
+        ldx     [%o1 + O0_OFFSET], %o0        ! overwrite heir pointer
 
-        jmp     %o7 + 8                       ! return
-        nop                                   ! delay slot
+ 	retl
+	nop
 
 /*
  *  void _CPU_Context_restore(
@@ -341,12 +285,12 @@ done_flushing:
  *
  *  NOTE: It is unnecessary to reload some registers.
  */
-
+/* GAB: if _CPU_Context_restore_heir does not flushw, then do it here */
         .align 4
         PUBLIC(_CPU_Context_restore)
 SYM(_CPU_Context_restore):
         save    %sp, -CPU_MINIMUM_STACK_FRAME_SIZE, %sp
-        rd      %psr, %o2
+        rdpr    %pstate, %o2
         ba      SYM(_CPU_Context_restore_heir)
         mov     %i0, %o1                      ! in the delay slot
 
@@ -355,13 +299,11 @@ SYM(_CPU_Context_restore):
  *
  *  This routine provides the RTEMS interrupt management.
  *
- *  We enter this handler from the 4 instructions in the trap table with
+ *  We enter this handler from the 8 instructions in the trap table with
  *  the following registers assumed to be set as shown:
  *
- *    l0 = PSR
- *    l1 = PC
- *    l2 = nPC
- *    l3 = trap type
+ *    g4 = tstate
+ *    g2 = trap type
  *
  *  NOTE: By an executive defined convention, trap type is between 0 and 255 if
  *        it is an asynchonous trap and 256 and 511 if it is synchronous.
