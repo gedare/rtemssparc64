@@ -12,8 +12,8 @@
  */
 RamBase = DEFINED(RamBase) ? RamBase : 0x0;
 RamSize = DEFINED(RamSize) ? RamSize : 2M;
-HeapSize = DEFINED(HeapSize) ? HeapSize : 2k;
-StackSize = DEFINED(StackSize) ? StackSize : 2K;
+HeapSize = DEFINED(HeapSize) ? HeapSize : 256k;
+StackSize = DEFINED(StackSize) ? StackSize : 256k;
 
 RAM_END = RamBase + RamSize;
 
@@ -23,7 +23,7 @@ ENTRY(start)
 
 MEMORY
         {
-	        ram : org = 0x0, l = 2M
+	        ram : ORIGIN = 0x0, LENGTH = 2M
 	}
 
 
@@ -157,6 +157,7 @@ SECTIONS
  
   .bss  SIZEOF(.data) + ADDR(.data) :
   {
+    FILL(0x00000000);
     . = ALIGN(16);
     __bss_start = ALIGN(0x8);
     bss_start = .;
@@ -169,10 +170,14 @@ SECTIONS
     __end = .;
   
     . = ALIGN (16); /* GAB: made arbitrary alignment */
-    . += StackSize;
-    PROVIDE (__stack = .);
     PROVIDE (WorkAreaBase = .);
-  }  > ram
+    . += HeapSize;
+    PROVIDE (HeapBase = .);
+    . += HeapSize;
+    . += StackSize;
+     PROVIDE (__stack = .);
+   /* PROVIDE (StackStart = .);*/
+  } > ram
   
   
 }
