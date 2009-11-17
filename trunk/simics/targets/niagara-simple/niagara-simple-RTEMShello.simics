@@ -54,22 +54,65 @@ script-branch {
         $con.input "RTEMSHELLOWORLD\n"
         }
 
-break 0x4000
+#trace-exception -all
+
+#break-exception number = 128
+#break-exception number = 192
+
+break-exception number = 52  #Mem_Address_Not_Aligned
+
+
+#break 0x4000
 
 #break (sym ofw_init)
 
 #break (sym bootstrap)
 #break (sym boot_card)
 
+#break (sym bsp_get_work_area)
+
 #break (sym rtems_initialize_data_structures)
 #break (sym _CPU_Initialize)
 
-break (sym _CPU_Context_save_fp)
+#break (sym _CPU_Context_save_fp)
+#break (sym _Debug_Manager_initialization)
+#break (sym _API_extensions_Initialization)
+#break (sym _Thread_Dispatch_initialization)
+#break (sym _Workspace_Handler_initialization)
+#break (sym _User_extensions_Handler_initialization)
 
+#break (sym syscall)
+#break (sym sparc_disable_interrupts)
+#break (sym sparc_enable_interrupts)
+#break (sym sparc64_install_isr_entries)
+
+#break (sym _API_Mutex_Initialization)
+
+#break (sym _Objects_Initialize_information)
+#break (sym _Objects_Extend_information)
+#break 0xb1ec
+#break 0xb1e4
+
+#break (sym _API_Mutex_Allocate)
+
+
+#break (sym RTEMS_Malloc_Initialize)
+#break -w -r (sym rtems_unified_work_area)
+#break 0x8dc0
 #break 0x7c84
 #break 0x7ccc
 #break 0x7cf0
 #break 0x7d34
 
+#break (sym Init)
+#break (sym console_initialize)
+
+#break (sym _IO_Manager_initialization)
+
+#break (sym rtems_initialize_start_multitasking)
+
+#break (sym _Thread_Start_multitasking)
+
+break (sym _CPU_Context_switch)
 c
 
