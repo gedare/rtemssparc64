@@ -410,21 +410,22 @@ SYM(_ISR_Handler):
          *    o3 = _ISR_Nest_level pointer
          *    o2 = _Thread_Dispatch_disable_level value
          *    o4 = _ISR_Nest_level value
+	 *    o5 = temp
          *
          *  NOTE: It is assumed that l4 - l7 will be preserved until the ISR
          *        nest and thread dispatch disable levels are unnested.
          */
 
-        sethi    %hi(SYM(_Thread_Dispatch_disable_level)), %o0
-        ld       [%o0 + %lo(SYM(_Thread_Dispatch_disable_level))], %o2
-        sethi    %hi(SYM(_ISR_Nest_level)), %o3
-        ld       [%o3 + %lo(SYM(_ISR_Nest_level))], %o4
+	setx	SYM(_Thread_Dispatch_disable_level), %o5, %o0
+	ldx	[%o0], %o2
+        setx	SYM(_ISR_Nest_level), %o5, %o3
+	ldx	[%o3], %o4
 
         add      %o2, 1, %o2
-        st       %o2, [%o0 + %lo(SYM(_Thread_Dispatch_disable_level))]
+        stx      %o2, [%o0]
 
         add      %o4, 1, %o4
-        st       %o4, [%o3 + %lo(SYM(_ISR_Nest_level))]
+        st       %o4, [%o3]
 
         /*
          *  If ISR nest level was zero (now 1), then switch stack.
@@ -434,8 +435,8 @@ SYM(_ISR_Handler):
         subcc    %o4, 1, %o4             ! outermost interrupt handler?
         bnz      dont_switch_stacks      ! No, then do not switch stacks
 
-        sethi    %hi(SYM(_CPU_Interrupt_stack_high)), %g4
-        ld       [%g4 + %lo(SYM(_CPU_Interrupt_stack_high))], %sp
+	setx	SYM(_CPU_Interrupt_stack_high), %o5, %g4
+	ldx	[%g4], %sp
 
         /*
          *  Make sure we have a place on the stack for the window overflow
@@ -485,7 +486,7 @@ dont_fix_pil:
          *  NOTE: TBR may no longer have vector number in it since
          *        we just enabled traps.  It is definitely in l3.
          */
-
+/* TODO: */
         sethi    %hi(SYM(_ISR_Vector_table)), %g4
         ld       [%g4+%lo(SYM(_ISR_Vector_table))], %g4
         and      %l3, 0xFF, %g5         ! remove synchronous trap indicator
