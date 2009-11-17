@@ -24,7 +24,10 @@
 #include <rtems/asm.h>
 
 
-
+/* 
+ *  The assembler needs to be told that we know what to do with 
+ *  the global registers.
+ */
 .register %g2, #scratch
 .register %g3, #scratch
 .register %g6, #scratch
@@ -302,8 +305,8 @@ SYM(_CPU_Context_restore):
  *  We enter this handler from the 8 instructions in the trap table with
  *  the following registers assumed to be set as shown:
  *
- *    g4 = tstate
- *    g2 = trap type
+ *    g4 = tstate (old l0)
+ *    g2 = trap type (vector) (old l3)
  *
  *  NOTE: By an executive defined convention, trap type is between 0 and 255 if
  *        it is an asynchonous trap and 256 and 511 if it is synchronous.
@@ -312,161 +315,128 @@ SYM(_CPU_Context_restore):
         .align 4
         PUBLIC(_ISR_Handler)
 SYM(_ISR_Handler):
-        /*
-         *  Fix the return address for synchronous traps.
-         */
+ /* GAB: TODO: FIXME: */
 
-        andcc   %l3, SPARC_SYNCHRONOUS_TRAP_BIT_MASK, %g0
-                                      ! Is this a synchronous trap?
-        be,a    win_ovflow            ! No, then skip the adjustment
-        nop                           ! DELAY
-        mov     %l1, %l6              ! save trapped pc for debug info
-        mov     %l2, %l1              ! do not return to the instruction
-        add     %l2, 4, %l2           ! indicated
+/* 
+ * The ISR is called at TL = 1. On sun4v, we can use the globals at this
+ * trap level (GL[1]).  Back-porting to sun4u would involve ensuring 
+ * compatability with the alternate global set. 
+ *
+ * On entry:
+ *   g4 = tstate (from trap table)
+ *   g2 = trap vector #
+ * 
+ * In either case, note that trap handlers share a register window with 
+ * the interrupted context, unless we explicitly enter a new window. This 
+ * differs from Sparc v8, in which a dedicated register window is saved 
+ * for trap handling.  This means we have to avoid overwriting any registers
+ * that we don't save.
+ *
+ */
 
-win_ovflow:
-        /*
-         *  Save the globals this block uses.
-         *
-         *  These registers are not restored from the locals.  Their contents
-         *  are saved directly from the locals into the ISF below.
-         */
 
-        mov     %g4, %l4                 ! save the globals this block uses
-        mov     %g5, %l5
-
-        /*
-         *  When at a "window overflow" trap, (wim == (1 << cwp)).
-         *  If we get here like that, then process a window overflow.
-         */
-
-        rd      %wim, %g4
-        srl     %g4, %l0, %g5            ! g5 = win >> cwp ; shift count and CWP
-                                         !   are LS 5 bits ; how convenient :)
-        cmp     %g5, 1                   ! Is this an invalid window?
-        bne     dont_do_the_window       ! No, then skip all this stuff
-        ! we are using the delay slot
-
-        /*
-         *  The following is same as a 1 position right rotate of WIM
-         */
-
-        srl     %g4, 1, %g5              ! g5 = WIM >> 1
-        sll     %g4, SPARC_NUMBER_OF_REGISTER_WINDOWS-1 , %g4
-                                         ! g4 = WIM << (Number Windows - 1)
-        or      %g4, %g5, %g4            ! g4 = (WIM >> 1) |
-                                         !      (WIM << (Number Windows - 1))
-
-        /*
-         *  At this point:
-         *
-         *    g4 = the new WIM
-         *    g5 is free
-         */
-
-        /*
-         *  Since we are tinkering with the register windows, we need to
-         *  make sure that all the required information is in global registers.
-         */
-
-        save                          ! Save into the window
-        wr      %g4, 0, %wim          ! WIM = new WIM
-        nop                           ! delay slots
-        nop
-        nop
-
-        /*
-         *  Now save the window just as if we overflowed to it.
-         */
-
-        std     %l0, [%sp + CPU_STACK_FRAME_L0_OFFSET]
-        std     %l2, [%sp + CPU_STACK_FRAME_L2_OFFSET]
-        std     %l4, [%sp + CPU_STACK_FRAME_L4_OFFSET]
-        std     %l6, [%sp + CPU_STACK_FRAME_L6_OFFSET]
-
-        std     %i0, [%sp + CPU_STACK_FRAME_I0_OFFSET]
-        std     %i2, [%sp + CPU_STACK_FRAME_I2_OFFSET]
-        std     %i4, [%sp + CPU_STACK_FRAME_I4_OFFSET]
-        std     %i6, [%sp + CPU_STACK_FRAME_I6_FP_OFFSET]
-
-        restore
-        nop
-
-dont_do_the_window:
-        /*
-         *  Global registers %g4 and %g5 are saved directly from %l4 and
-         *  %l5 directly into the ISF below.
-         */
-
-save_isf:
+/*
+ *  save some or all context on stack
+ */
 
         /*
          *  Save the state of the interrupted task -- especially the global
          *  registers -- in the Interrupt Stack Frame.  Note that the ISF
          *  includes a regular minimum stack frame which will be used if
          *  needed by register window overflow and underflow handlers.
+	 *
+	 *  This is slightly wasteful, since the stack already has the window
+	 *  overflow space reserved, but there is no obvious way to ensure 
+	 *  we can store the interrupted state and still handle window 
+	 *  spill/fill correctly, since there is no room for the ISF.
          *
-         *  REGISTERS SAME AS AT _ISR_Handler
          */
 
-        sub     %fp, CONTEXT_CONTROL_INTERRUPT_FRAME_SIZE, %sp
-                                               ! make space for ISF
+	/* first store the sp of the interrupted task temporarily in g1 */
+	mov 	%sp, %g1
 
-        std     %l0, [%sp + ISF_PSR_OFFSET]    ! save psr, PC
-        st      %l2, [%sp + ISF_NPC_OFFSET]    ! save nPC
-        st      %g1, [%sp + ISF_G1_OFFSET]     ! save g1
-!        std     %g2, [%sp + ISF_G2_OFFSET]     ! save g2, g3
-        std     %l4, [%sp + ISF_G4_OFFSET]     ! save g4, g5 -- see above
-        std     %g6, [%sp + ISF_G6_OFFSET]     ! save g6, g7
+        sub     %sp, CONTEXT_CONTROL_INTERRUPT_FRAME_SIZE, %sp
+                                           ! make space for Stack_Frame||ISF
 
-        std     %i0, [%sp + ISF_I0_OFFSET]     ! save i0, i1
-        std     %i2, [%sp + ISF_I2_OFFSET]     ! save i2, i3
-        std     %i4, [%sp + ISF_I4_OFFSET]     ! save i4, i5
-        std     %i6, [%sp + ISF_I6_FP_OFFSET]  ! save i6/fp, i7
+	/* save tstate, tpc, tnpc, pil */
+	stx     %g4, [%sp + STACK_BIAS + ISF_TSTATE_OFFSET]	
+	rdpr	%pil, %g3
+	rdpr	%tpc, %g4
+	rdpr	%tnpc, %g5
+	stx	%g3, [%sp + STACK_BIAS + ISF_PIL_OFFSET]
+	stx	%g4, [%sp + STACK_BIAS + ISF_TPC_OFFSET]
+	stx	%g5, [%sp + STACK_BIAS + ISF_TNPC_OFFSET]
 
-        rd      %y, %g1
-        st      %g1, [%sp + ISF_Y_OFFSET]      ! save y
-        st      %l6, [%sp + ISF_TPC_OFFSET]    ! save real trapped pc
+	rd	%y, %g4				! save y
+	stx 	%g4, [%sp + STACK_BIAS + ISF_Y_OFFSET]
+	
+        stx     %o0, [%sp + STACK_BIAS + ISF_O0_OFFSET]     ! save o0
+        stx     %o1, [%sp + STACK_BIAS + ISF_O1_OFFSET]     ! save o1
+        stx     %o2, [%sp + STACK_BIAS + ISF_O2_OFFSET]     ! save o2
+        stx     %o3, [%sp + STACK_BIAS + ISF_O3_OFFSET]     ! save o3
+        stx     %o4, [%sp + STACK_BIAS + ISF_O4_OFFSET]     ! save o4
+        stx     %o5, [%sp + STACK_BIAS + ISF_O5_OFFSET]     ! save o5
+        stx     %g1, [%sp + STACK_BIAS + ISF_O6_SP_OFFSET]  ! save o6/sp
+        stx     %o7, [%sp + STACK_BIAS + ISF_O7_OFFSET]     ! save o7
 
-        mov     %sp, %o1                       ! 2nd arg to ISR Handler
+	mov	%g1, %o5		! hold the old sp here for now
+	mov	%g2, %o1		! we'll need trap # later
+
+	/* need to access GL[0] */
+        rdpr    %gl, %g1 
+        dec     %g1 
+        wrpr    %g0, %g1, %gl           ! go back to GL = GL - 1
+
+
+        stx     %g1, [%sp + STACK_BIAS + ISF_G1_OFFSET]     ! save g1
+        stx     %g2, [%sp + STACK_BIAS + ISF_G2_OFFSET]     ! save g2
+        stx     %g3, [%sp + STACK_BIAS + ISF_G3_OFFSET]     ! save g3
+        stx     %g4, [%sp + STACK_BIAS + ISF_G4_OFFSET]     ! save g4
+        stx     %g5, [%sp + STACK_BIAS + ISF_G5_OFFSET]     ! save g5
+        stx     %g6, [%sp + STACK_BIAS + ISF_G6_OFFSET]     ! save g6
+        stx     %g7, [%sp + STACK_BIAS + ISF_G7_OFFSET]     ! save g7
+	
+
+	mov	%o1, %g2	! get the trap #
+	mov	%o5, %g3	! store the interrupted %sp
+        mov     %sp, %o1        ! 2nd arg to ISR Handler
 
         /*
          *  Increment ISR nest level and Thread dispatch disable level.
          *
          *  Register usage for this section:
          *
-         *    l4 = _Thread_Dispatch_disable_level pointer
-         *    l5 = _ISR_Nest_level pointer
-         *    l6 = _Thread_Dispatch_disable_level value
-         *    l7 = _ISR_Nest_level value
+         *    o0 = _Thread_Dispatch_disable_level pointer
+         *    o3 = _ISR_Nest_level pointer
+         *    o2 = _Thread_Dispatch_disable_level value
+         *    o4 = _ISR_Nest_level value
          *
          *  NOTE: It is assumed that l4 - l7 will be preserved until the ISR
          *        nest and thread dispatch disable levels are unnested.
          */
 
-        sethi    %hi(SYM(_Thread_Dispatch_disable_level)), %l4
-        ld       [%l4 + %lo(SYM(_Thread_Dispatch_disable_level))], %l6
-        sethi    %hi(SYM(_ISR_Nest_level)), %l5
-        ld       [%l5 + %lo(SYM(_ISR_Nest_level))], %l7
+        sethi    %hi(SYM(_Thread_Dispatch_disable_level)), %o0
+        ld       [%o0 + %lo(SYM(_Thread_Dispatch_disable_level))], %o2
+        sethi    %hi(SYM(_ISR_Nest_level)), %o3
+        ld       [%o3 + %lo(SYM(_ISR_Nest_level))], %o4
 
-        add      %l6, 1, %l6
-        st       %l6, [%l4 + %lo(SYM(_Thread_Dispatch_disable_level))]
+        add      %o2, 1, %o2
+        st       %o2, [%o0 + %lo(SYM(_Thread_Dispatch_disable_level))]
 
-        add      %l7, 1, %l7
-        st       %l7, [%l5 + %lo(SYM(_ISR_Nest_level))]
+        add      %o4, 1, %o4
+        st       %o4, [%o3 + %lo(SYM(_ISR_Nest_level))]
 
         /*
          *  If ISR nest level was zero (now 1), then switch stack.
          */
 
-        mov      %sp, %fp
-        subcc    %l7, 1, %l7             ! outermost interrupt handler?
+        !mov      %sp, %fp
+        subcc    %o4, 1, %o4             ! outermost interrupt handler?
         bnz      dont_switch_stacks      ! No, then do not switch stacks
 
         sethi    %hi(SYM(_CPU_Interrupt_stack_high)), %g4
         ld       [%g4 + %lo(SYM(_CPU_Interrupt_stack_high))], %sp
 
-dont_switch_stacks:
         /*
          *  Make sure we have a place on the stack for the window overflow
          *  trap handler to write into.  At this point it is safe to
@@ -475,95 +445,39 @@ dont_switch_stacks:
 
         sub      %sp, CPU_MINIMUM_STACK_FRAME_SIZE, %sp
 
+dont_switch_stacks:
         /*
-         *  Check if we have an external interrupt (trap 0x11 - 0x1f). If so,
-         *  set the PIL in the %psr to mask off interrupts with lower priority.
-         *  The original %psr in %l0 is not modified since it will be restored
+         *  Check if we have an external interrupt (trap 0x41 - 0x4f). If so,
+         *  set the PIL to mask off interrupts with lower priority.
+         *
+	 *  The original PIL is not modified since it will be restored
          *  when the interrupt handler returns.
          */
 
-        mov      %l0, %g5
-	and	 %l3, 0x0ff, %g4
+        rdpr	%pil, %g5
 
-/* This is a fix for ERC32 with FPU rev.B or rev.C */
+	and	 %g2, 0x0ff, %g4 ! checking bottom byte for 0x41 - 0x4f
 
-#if defined(FPU_REVB)
-
-
-        subcc    %g4, 0x08, %g0
-	be	 fpu_revb
-        subcc    %g4, 0x11, %g0
+        subcc    %g4, 0x41, %g0
         bl       dont_fix_pil
-        subcc    %g4, 0x1f, %g0
+        subcc    %g4, 0x4f, %g0
         bg       dont_fix_pil
-        sll      %g4, 8, %g4
-        and      %g4, SPARC_PSR_PIL_MASK, %g4
-        andn     %l0, SPARC_PSR_PIL_MASK, %g5
-        or       %g4, %g5, %g5
-	srl	 %l0, 12, %g4
-	andcc	 %g4, 1, %g0
-        be       dont_fix_pil
 	nop
-	ba,a	 enable_irq
-
-
-fpu_revb:
-	srl	 %l0, 12, %g4	! check if EF is set in %psr
-	andcc	 %g4, 1, %g0
-	be	 dont_fix_pil	! if FPU disabled than continue as normal
-	and	 %l3, 0xff, %g4
-        subcc    %g4, 0x08, %g0
-        bne      enable_irq	! if not a FPU exception then do two fmovs
-	set	 __sparc_fq, %g4
-	st	 %fsr, [%g4]	! if FQ is not empty and FQ[1] = fmovs
-	ld	 [%g4], %g4	! than this is bug 3.14
-	srl 	 %g4, 13, %g4
-	andcc 	 %g4, 1, %g0
-        be       dont_fix_pil
-	set	 __sparc_fq, %g4
-	std	 %fq, [%g4]
-	ld	 [%g4+4], %g4
-	set	 0x81a00020, %g5
-	subcc	 %g4, %g5, %g0
-	bne,a	 dont_fix_pil2
-        wr       %l0, SPARC_PSR_ET_MASK, %psr ! **** ENABLE TRAPS ****
-	ba,a	 simple_return
-	 
-enable_irq:
-        or       %g5, SPARC_PSR_PIL_MASK, %g4 
-        wr       %g4, SPARC_PSR_ET_MASK, %psr ! **** ENABLE TRAPS ****
-	nop; nop; nop
-	fmovs	 %f0, %f0
-	ba	 dont_fix_pil
-	fmovs	 %f0, %f0
-
-	.data
-	.global	__sparc_fq
-	.align 8
-__sparc_fq:
-	.word 0,0
-
-	.text
-/* end of ERC32 FPU rev.B/C fix */
-
-#else
-
-        subcc    %g4, 0x11, %g0
-        bl       dont_fix_pil
-        subcc    %g4, 0x1f, %g0
-        bg       dont_fix_pil
-        sll      %g4, 8, %g4
-        and      %g4, SPARC_PSR_PIL_MASK, %g4
-        andn     %l0, SPARC_PSR_PIL_MASK, %g5
-        ba       pil_fixed
-        or       %g4, %g5, %g5
-#endif
+	wrpr	%g0, %g4, %pil
 
 dont_fix_pil:
-        or       %g5, SPARC_PSR_PIL_MASK, %g5
-pil_fixed:
-        wr       %g5, SPARC_PSR_ET_MASK, %psr ! **** ENABLE TRAPS ****
-dont_fix_pil2:
+	/* We need to be careful about enabling traps here.
+	 * Right now, TL=1. Have to treat nested traps with care, since if
+	 * TL reaches 3, the CPU will enter RED state.
+	 *
+	 * We already stored off the tstate, tpc, and tnpc, so we can switch
+	 * to TL = 0 before invoking the user ISR. GAB: Need to make sure this
+	 * will work!
+	 */
+
+
+        or	%g5, SPARC_PSTATE_IE_MASK, %g5
+	wrpr	%g0, %g5, %pstate ! **** ENABLE TRAPS ****
 
         /*
          *  Vector to user's handler.
@@ -751,13 +665,13 @@ simple_return:
         ld      [%fp + ISF_Y_OFFSET], %l5      ! restore y
         wr      %l5, 0, %y
 
-        ldd     [%fp + ISF_PSR_OFFSET], %l0    ! restore psr, PC
-        ld      [%fp + ISF_NPC_OFFSET], %l2    ! restore nPC
+!       ldd     [%fp + ISF_PSR_OFFSET], %l0    ! restore psr, PC
+!       ld      [%fp + ISF_NPC_OFFSET], %l2    ! restore nPC
         rd      %psr, %l3
-        and     %l3, SPARC_PSR_CWP_MASK, %l3   ! want "current" CWP
-        andn    %l0, SPARC_PSR_CWP_MASK, %l0   ! want rest from task
+!        and     %l3, SPARC_PSR_CWP_MASK, %l3   ! want "current" CWP
+!        andn    %l0, SPARC_PSR_CWP_MASK, %l0   ! want rest from task
         or      %l3, %l0, %l0                  ! install it later...
-        andn    %l0, SPARC_PSR_ET_MASK, %l0 
+!        andn    %l0, SPARC_PSR_ET_MASK, %l0 
 
         /*
          *  Restore tasks global and out registers
@@ -766,14 +680,14 @@ simple_return:
         mov    %fp, %g1
 
                                               ! g1 is restored later
-!        ldd     [%fp + ISF_G2_OFFSET], %g2    ! restore g2, g3
+        ldd     [%fp + ISF_G2_OFFSET], %g2    ! restore g2, g3
         ldd     [%fp + ISF_G4_OFFSET], %g4    ! restore g4, g5
         ldd     [%fp + ISF_G6_OFFSET], %g6    ! restore g6, g7
 
-        ldd     [%fp + ISF_I0_OFFSET], %i0    ! restore i0, i1
-        ldd     [%fp + ISF_I2_OFFSET], %i2    ! restore i2, i3
-        ldd     [%fp + ISF_I4_OFFSET], %i4    ! restore i4, i5
-        ldd     [%fp + ISF_I6_FP_OFFSET], %i6 ! restore i6/fp, i7
+!        ldd     [%fp + ISF_I0_OFFSET], %i0    ! restore i0, i1
+!        ldd     [%fp + ISF_I2_OFFSET], %i2    ! restore i2, i3
+!        ldd     [%fp + ISF_I4_OFFSET], %i4    ! restore i4, i5
+!        ldd     [%fp + ISF_I6_FP_OFFSET], %i6 ! restore i6/fp, i7
 
         /*
          *  Registers:
@@ -801,7 +715,7 @@ simple_return:
         nop
         rd      %wim, %l4
         add     %l0, 1, %l6                ! l6 = cwp + 1
-        and     %l6, SPARC_PSR_CWP_MASK, %l6 ! do the modulo on it
+!        and     %l6, SPARC_PSR_CWP_MASK, %l6 ! do the modulo on it
         srl     %l4, %l6, %l5              ! l5 = win >> cwp + 1 ; shift count
                                            !  and CWP are conveniently LS 5 bits
         cmp     %l5, 1                     ! Is tasks window invalid?
@@ -844,7 +758,19 @@ good_task_window:
 	nop; nop; nop
                                            !  and restore condition codes.
         ld      [%g1 + ISF_G1_OFFSET], %g1 ! restore g1
-        jmp     %l1                        ! transfer control and
-        rett    %l2                        ! go back to tasks window
+        
+	/*
+         *  Determine whether to re-execute the trapping instruction 
+	 *  (asynchronous trap) or to skip the trapping instruction
+	 *  (synchronous trap).
+         */
+
+        andcc   %g2, SPARC_SYNCHRONOUS_TRAP_BIT_MASK, %g0
+                                      ! Is this a synchronous trap?
+        be,a    not_synch             ! No, then skip trapping instruction
+        nop
+	retry				! re-execute trapping instruction
+not_synch:
+	done				! skip trapping instruction
 
 /* end of file */

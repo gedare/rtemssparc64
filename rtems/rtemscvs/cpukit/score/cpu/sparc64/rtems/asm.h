@@ -96,6 +96,8 @@
 #define PUBLIC(sym) .globl SYM (sym)
 #define EXTERN(sym) .globl SYM (sym)
 
+#define STACK_BIAS 2047
+
 /*
  *  Entry for traps which jump to a programmer-specified trap handler.
  */

@@ -486,32 +486,36 @@ typedef struct {
 /*
  *  Context saved on stack for an interrupt.
  *
- *  NOTE:  The PSR, PC, and NPC are only saved in this structure for the
- *         benefit of the user's handler.
+ *  NOTE:  The tstate, tpc, and tnpc are saved in this structure
+ *  	   to allow resetting the TL while still being able to return
+ *  	   from a trap later.  The PIL is saved because
+ *         if this is an external interrupt, we will mask lower 
+ *         priority interrupts until finishing. Even though the y register
+ *         is deprecated, gcc still uses it.
  */
 
 typedef struct {
   CPU_Minimum_stack_frame  Stack_frame;
-  uint32_t                 psr;
-  uint32_t                 pc;
-  uint32_t                 npc;
-  uint32_t                 g1;
-  uint32_t                 g2;
-  uint32_t                 g3;
-  uint32_t                 g4;
-  uint32_t                 g5;
-  uint32_t                 g6;
-  uint32_t                 g7;
-  uint32_t                 i0;
-  uint32_t                 i1;
-  uint32_t                 i2;
-  uint32_t                 i3;
-  uint32_t                 i4;
-  uint32_t                 i5;
-  uint32_t                 i6_fp;
-  uint32_t                 i7;
-  uint32_t                 y;
-  uint32_t                 tpc;
+  uint64_t                 tstate;
+  uint64_t                 tpc;
+  uint64_t                 tnpc;
+  uint64_t                 pil;
+  uint64_t                 y;
+  uint64_t                 g1;
+  uint64_t                 g2;
+  uint64_t                 g3;
+  uint64_t                 g4;
+  uint64_t                 g5;
+  uint64_t                 g6;
+  uint64_t                 g7;
+  uint64_t                 o0;
+  uint64_t                 o1;
+  uint64_t                 o2;
+  uint64_t                 o3;
+  uint64_t                 o4;
+  uint64_t                 o5;
+  uint64_t                 o6_sp;
+  uint64_t                 o7;
 } CPU_Interrupt_frame;
 
 #endif /* ASM */
@@ -521,28 +525,28 @@ typedef struct {
  */
 
 #define ISF_STACK_FRAME_OFFSET 0x00
-#define ISF_PSR_OFFSET         CPU_MINIMUM_STACK_FRAME_SIZE + 0x00
-#define ISF_PC_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x04
-#define ISF_NPC_OFFSET         CPU_MINIMUM_STACK_FRAME_SIZE + 0x08
-#define ISF_G1_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x0c
-#define ISF_G2_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x10
-#define ISF_G3_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x14
-#define ISF_G4_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x18
-#define ISF_G5_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x1c
-#define ISF_G6_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x20
-#define ISF_G7_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x24
-#define ISF_I0_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x28
-#define ISF_I1_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x2c
-#define ISF_I2_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x30
-#define ISF_I3_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x34
-#define ISF_I4_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x38
-#define ISF_I5_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x3c
-#define ISF_I6_FP_OFFSET       CPU_MINIMUM_STACK_FRAME_SIZE + 0x40
-#define ISF_I7_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x44
-#define ISF_Y_OFFSET           CPU_MINIMUM_STACK_FRAME_SIZE + 0x48
-#define ISF_TPC_OFFSET         CPU_MINIMUM_STACK_FRAME_SIZE + 0x4c
+#define ISF_TSTATE_OFFSET      CPU_MINIMUM_STACK_FRAME_SIZE + 0x00
+#define ISF_TPC_OFFSET         CPU_MINIMUM_STACK_FRAME_SIZE + 0x08
+#define ISF_TNPC_OFFSET        CPU_MINIMUM_STACK_FRAME_SIZE + 0x10
+#define ISF_PIL_OFFSET         CPU_MINIMUM_STACK_FRAME_SIZE + 0x18
+#define ISF_Y_OFFSET           CPU_MINIMUM_STACK_FRAME_SIZE + 0x20
+#define ISF_G1_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x28
+#define ISF_G2_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x30
+#define ISF_G3_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x38
+#define ISF_G4_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x40
+#define ISF_G5_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x48
+#define ISF_G6_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x50
+#define ISF_G7_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x58
+#define ISF_O0_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x60
+#define ISF_O1_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x68
+#define ISF_O2_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x70
+#define ISF_O3_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x78
+#define ISF_O4_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x80
+#define ISF_O5_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x88
+#define ISF_O6_SP_OFFSET       CPU_MINIMUM_STACK_FRAME_SIZE + 0x90
+#define ISF_O7_OFFSET          CPU_MINIMUM_STACK_FRAME_SIZE + 0x98
 
-#define CONTEXT_CONTROL_INTERRUPT_FRAME_SIZE CPU_MINIMUM_STACK_FRAME_SIZE + 0x50 
+#define CONTEXT_CONTROL_INTERRUPT_FRAME_SIZE CPU_MINIMUM_STACK_FRAME_SIZE + 0xA0 
 #ifndef ASM
 /*
  *  This variable is contains the initialize context for the FP unit.
@@ -659,15 +663,17 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  *  an asynchronous trap.  This will avoid the executive changing the return
  *  address.
  */
-/* GAB: TODO: FIXME: */
-#define CPU_INTERRUPT_NUMBER_OF_VECTORS     256
-#define CPU_INTERRUPT_MAXIMUM_VECTOR_NUMBER 511
+/* On SPARC v9, there are 512 vectors. The same philosophy applies to 
+ * vector installation and use, we just provide a larger table.
+ */
+#define CPU_INTERRUPT_NUMBER_OF_VECTORS     512
+#define CPU_INTERRUPT_MAXIMUM_VECTOR_NUMBER 1023
 
-#define SPARC_SYNCHRONOUS_TRAP_BIT_MASK     0x100
+#define SPARC_SYNCHRONOUS_TRAP_BIT_MASK     0x200
 #define SPARC_ASYNCHRONOUS_TRAP( _trap )    (_trap)
-#define SPARC_SYNCHRONOUS_TRAP( _trap )     ((_trap) + 256 )
+#define SPARC_SYNCHRONOUS_TRAP( _trap )     ((_trap) + 512 )
 
-#define SPARC_REAL_TRAP_NUMBER( _trap )     ((_trap) % 256)
+#define SPARC_REAL_TRAP_NUMBER( _trap )     ((_trap) % 512)
 
 /*
  *  This is defined if the port has a special way to report the ISR nesting
