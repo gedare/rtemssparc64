@@ -77,18 +77,49 @@ static void bootcard_bsp_libc_helper(
   uintptr_t  heap_size
 )
 {
+
+  printk("\n\r bootcard_bsp_libc_helper \n\r"
+  		  "work_area_start = %x\n\r"
+  		  "heap_start = %x\n\r"
+  		  "rtems_unified_work_area = %d\n\r"
+  		  ,
+		  work_area_start,
+		  heap_start,
+		  rtems_unified_work_area
+		  );
+
+  rtems_unified_work_area = 0;
   if ( !rtems_unified_work_area &&
        heap_start == BSP_BOOTCARD_HEAP_USES_WORK_AREA) {
     uintptr_t work_space_size = rtems_configuration_get_work_space_size();
 
     heap_start = (char *) work_area_start + work_space_size;
 
+printk("\n\r*\n\r");
+
+
     if (heap_size == BSP_BOOTCARD_HEAP_SIZE_DEFAULT) {
       uintptr_t heap_size_default = work_area_size - work_space_size;
+printk("\n\r#\n\r");
+
 
       heap_size = heap_size_default;
     }
   }
+  printk("\n\r bootcard_bsp_libc_helper \n\r"
+  		  "work_area_start = %x\n\r"
+  		  "heap_start = %x\n\r"
+  		  "rtems_unified_work_area = %d\n\r"
+  		  "BSP_BOOTCARD_HEAP_USES_WORK_AREA = %d\n\r"
+  		  "BSP_BOOTCARD_HEAP_SIZE_DEFAULT = %d\n\r"
+  		  ,
+		  work_area_start,
+		  heap_start,
+		  rtems_unified_work_area,
+		  BSP_BOOTCARD_HEAP_USES_WORK_AREA,
+		  BSP_BOOTCARD_HEAP_SIZE_DEFAULT
+		  );
+
 
   bsp_libc_init(heap_start, heap_size, 0);
 }
@@ -225,6 +256,7 @@ int boot_card(
    *  Complete initialization of RTEMS and switch to the first task.
    *  Global C++ constructors will be executed in the context of that task.
    */
+  printk("\n\rAPPLICATION STARTING\n\r"); 
   rtems_initialize_start_multitasking();
 
   /***************************************************************
