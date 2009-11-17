@@ -23,7 +23,7 @@
 
 #include <string.h>  /* for memset */
 
- #define DEBUG_WORKSPACE
+/* #define DEBUG_WORKSPACE */
 #if defined(DEBUG_WORKSPACE)
   #include <rtems/bspIo.h>
 #endif
