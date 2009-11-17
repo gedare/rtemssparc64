@@ -58,31 +58,23 @@ PUBLIC(start)
 !	set SYM(RAM_END), %sp
 !	add %sp, -STACK_BIAS, %sp
 
-	set SYM(syscall), %o1
-	set param_space, %o2
+	setx SYM(syscall), %l0, %o1
+	setx param_space, %l0, %o2
 	call SYM(_CPU_ISR_install_raw_handler)
 	mov 0x100, %o0
 
-	set ofw_cif, %l0
+	setx ofw_cif, %l0, %l1
  
 	call ofw_init		! initialize OpenFirmware
-	stx %o4, [%l0]
-	
-    /* set trap table */
-!    sethi %hi(trap_table), %g1
-!    wrpr %g1, %lo(trap_table), %tba
-
-
-!	call SYM(bootstrap)
-!	nop
+	stx %o4, [%l1]
 
   /* Do we need to do anything with the MMU? */
 
   /* Don't need to copy initialized data to RAM--link puts all in RAM already */
 
   /* Clear the bss */
-	set 	SYM(bss_start), %g2		! g2 = start of bss
-	set 	SYM(_end), %g3		! g3 = end of bss
+	setx	SYM(bss_start), %l0, %g2	! g2 = start of bss
+	setx	SYM(_end), %l0, %g3		! g3 = end of bss
 zerobss:
 	stx	%g0, [%g2]
 	add	%g2, 8, %g2
