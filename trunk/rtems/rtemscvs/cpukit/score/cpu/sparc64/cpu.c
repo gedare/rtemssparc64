@@ -127,23 +127,23 @@ uint32_t   _CPU_ISR_Get_level( void )
  *
  *  NOTE:
  *
- *  On the SPARC, there are really only 256 vectors.  However, the executive
+ *  On the SPARC v8, there are really only 512 vectors.  However, the executive
  *  has no easy, fast, reliable way to determine which traps are synchronous
- *  and which are asynchronous.  By default, synchronous traps return to the
+ *  and which are asynchronous.  By default, traps return to the
  *  instruction which caused the interrupt.  So if you install a software
  *  trap handler as an executive interrupt handler (which is desirable since
  *  RTEMS takes care of window and register issues), then the executive needs
  *  to know that the return address is to the trap rather than the instruction
  *  following the trap.
  *
- *  So vectors 0 through 255 are treated as regular asynchronous traps which
- *  provide the "correct" return address.  Vectors 256 through 512 are assumed
- *  by the executive to be synchronous and to require that the return address
- *  be fudged.
+ *  So vectors 0 through 511 are treated as regular asynchronous traps which
+ *  provide the "correct" return address.  Vectors 512 through 1023 are assumed
+ *  by the executive to be synchronous and to require that the return be to the
+ *  trapping instruction.
  *
  *  If you use this mechanism to install a trap handler which must reexecute
  *  the instruction which caused the trap, then it should be installed as
- *  an asynchronous trap.  This will avoid the executive changing the return
+ *  a synchronous trap.  This will avoid the executive changing the return
  *  address.
  */
 /*  Verified this is working properly from sparc64_install_isr_entries */
@@ -153,7 +153,7 @@ void _CPU_ISR_install_raw_handler(
   proc_ptr   *old_handler
 )
 {
-  /*uint32_t               real_vector;*/
+  uint32_t               real_vector;
   CPU_Trap_table_entry  *tba;
   CPU_Trap_table_entry  *slot;
   uint64_t               u64_tba;
@@ -163,9 +163,9 @@ void _CPU_ISR_install_raw_handler(
    *  Get the "real" trap number for this vector ignoring the synchronous
    *  versus asynchronous indicator included with our vector numbers.
    */
-/*
+
   real_vector = SPARC_REAL_TRAP_NUMBER( vector );
-*/
+
   /*
    *  Get the current base address of the trap table and calculate a pointer
    *  to the slot we are interested in.
@@ -180,7 +180,7 @@ void _CPU_ISR_install_raw_handler(
 
   /* GAB: use array indexing to fill in lower bits -- require
    * CPU_Trap_table_entry to be full-sized. */
-  slot = &tba[ vector ];
+  slot = &tba[ real_vector ];
 
   /*
    *  Get the address of the old_handler from the trap table.
@@ -232,7 +232,7 @@ void _CPU_ISR_install_raw_handler(
 #define LO_BITS_MASK   0x00000000000003FF
 
 
-  slot->mov_vector_g2 |= vector;
+  slot->mov_vector_g2 |= real_vector;
   slot->sethi_of_hh_handler_to_g2 |=
     (u64_handler & HH_BITS_MASK) >> HH_BITS_SHIFT;
   slot->or_g2_hm_handler_to_g2 |=

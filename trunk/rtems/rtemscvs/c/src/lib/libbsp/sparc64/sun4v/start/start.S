@@ -80,10 +80,20 @@ PUBLIC(start)
 
   /* Don't need to copy initialized data to RAM--link puts all in RAM already */
 
-  /* Clear (wipe) bss? */
+  /* Clear the bss */
+	set 	SYM(bss_start), %g2		! g2 = start of bss
+	set 	SYM(_end), %g3		! g3 = end of bss
+zerobss:
+	stx	%g0, [%g2]
+	add	%g2, 8, %g2
+	cmp	%g2, %g3
+	bleu,a	zerobss
+	nop
 
-call SYM(boot_card)
-  nop
+	mov	%g0, %o0		! clear command line passed to main
+	call SYM(boot_card)
+	sub	%sp, 0x60, %sp		! make room on stack (necessary?)
+	nop
 
   .align CPU_ALIGNMENT
   param_space:
