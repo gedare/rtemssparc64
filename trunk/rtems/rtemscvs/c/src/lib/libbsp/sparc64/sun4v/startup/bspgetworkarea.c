@@ -26,6 +26,8 @@
  */
 extern char WorkAreaBase[];
 extern char HeapSize[];
+extern char HeapBase[];
+
 
 /*
  *  We may get the size information from U-Boot or the linker scripts.
@@ -60,7 +62,7 @@ void bsp_get_work_area(
 
   *work_area_start = WorkAreaBase;
   *work_area_size  = ram_end - (uintptr_t) WorkAreaBase;
-  *heap_start      = BSP_BOOTCARD_HEAP_USES_WORK_AREA;
+  *heap_start      = (uintptr_t) HeapBase;
   *heap_size       = (uintptr_t) HeapSize;
 
   /*
