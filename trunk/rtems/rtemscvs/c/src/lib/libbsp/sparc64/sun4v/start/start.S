@@ -55,8 +55,18 @@ PUBLIC(start)
 
     mov %g0, %g4
 
-!	set SYM(RAM_END), %sp
-!	add %sp, -STACK_BIAS, %sp
+  /* Clear the bss */
+	setx	SYM(bss_start), %l0, %g2	! g2 = start of bss
+	setx	SYM(_end), %l0, %g3		! g3 = end of bss
+zerobss:
+	stx	%g0, [%g2]
+	add	%g2, 8, %g2
+	cmp	%g2, %g3
+	bleu,a	zerobss
+	nop
+
+	!set SYM(StackStart), %sp
+	!add %sp, -STACK_BIAS, %sp
 
 	setx SYM(syscall), %l0, %o1
 	setx param_space, %l0, %o2
@@ -71,16 +81,6 @@ PUBLIC(start)
   /* Do we need to do anything with the MMU? */
 
   /* Don't need to copy initialized data to RAM--link puts all in RAM already */
-
-  /* Clear the bss */
-	setx	SYM(bss_start), %l0, %g2	! g2 = start of bss
-	setx	SYM(_end), %l0, %g3		! g3 = end of bss
-zerobss:
-	stx	%g0, [%g2]
-	add	%g2, 8, %g2
-	cmp	%g2, %g3
-	bleu,a	zerobss
-	nop
 
 	mov	%g0, %o0		! clear command line passed to main
 	call SYM(boot_card)
