@@ -224,7 +224,7 @@ SYM(_CPU_Context_switch):
         /*
          *  This is entered from _CPU_Context_restore with:
          *    o1 = context to restore
-         *    o2 = psr
+         *    o2 = pstate
          */
 
         PUBLIC(_CPU_Context_restore_heir)
@@ -370,6 +370,7 @@ SYM(_ISR_Handler):
 	rd	%y, %g4				! save y
 	stx 	%g4, [%sp + STACK_BIAS + ISF_Y_OFFSET]
 	
+	! save interrupted frame's output regs
         stx     %o0, [%sp + STACK_BIAS + ISF_O0_OFFSET]     ! save o0
         stx     %o1, [%sp + STACK_BIAS + ISF_O1_OFFSET]     ! save o1
         stx     %o2, [%sp + STACK_BIAS + ISF_O2_OFFSET]     ! save o2
@@ -382,12 +383,12 @@ SYM(_ISR_Handler):
 	mov	%g1, %o5		! hold the old sp here for now
 	mov	%g2, %o1		! we'll need trap # later
 
-	/* need to access GL[0] */
-        rdpr    %gl, %g1 
-        dec     %g1 
-        wrpr    %g0, %g1, %gl           ! go back to GL = GL - 1
+	/* switch to TL[0], GL[0] get pstate to a known state */
+	wrpr	%g0, 0, %tl
+	wrpr	%g0, 0, %gl
+	wrpr	%g0, SPARC_PSTATE_PRIV_MASK | SPARC_PSTATE_PEF_MASK, %pstate
 
-
+	! save globals
         stx     %g1, [%sp + STACK_BIAS + ISF_G1_OFFSET]     ! save g1
         stx     %g2, [%sp + STACK_BIAS + ISF_G2_OFFSET]     ! save g2
         stx     %g3, [%sp + STACK_BIAS + ISF_G3_OFFSET]     ! save g3
@@ -399,44 +400,44 @@ SYM(_ISR_Handler):
 
 	mov	%o1, %g2	! get the trap #
 	mov	%o5, %g3	! store the interrupted %sp
-        mov     %sp, %o1        ! 2nd arg to ISR Handler
+        mov     %sp, %o1        ! 2nd arg to ISR Handler = address of ISF
 
         /*
          *  Increment ISR nest level and Thread dispatch disable level.
          *
-         *  Register usage for this section:
+         *  Register usage for this section: (note, these are used later)
          *
-         *    o0 = _Thread_Dispatch_disable_level pointer
-         *    o3 = _ISR_Nest_level pointer
-         *    o2 = _Thread_Dispatch_disable_level value
-         *    o4 = _ISR_Nest_level value
+         *    g4 = _Thread_Dispatch_disable_level pointer
+         *    g5 = _Thread_Dispatch_disable_level value
+         *    g6 = _ISR_Nest_level pointer
+         *    g7 = _ISR_Nest_level value
 	 *    o5 = temp
          *
-         *  NOTE: It is assumed that l4 - l7 will be preserved until the ISR
+         *  NOTE: It is assumed that g4 - g7 will be preserved until the ISR
          *        nest and thread dispatch disable levels are unnested.
          */
 
-	setx	SYM(_Thread_Dispatch_disable_level), %o5, %o0
-	ldx	[%o0], %o2
-        setx	SYM(_ISR_Nest_level), %o5, %o3
-	ldx	[%o3], %o4
+	setx	SYM(_Thread_Dispatch_disable_level), %o5, %g4
+	ldx	[%g4], %g5
+        setx	SYM(_ISR_Nest_level), %o5, %g6
+	ldx	[%g6], %g7
 
-        add      %o2, 1, %o2
-        stx      %o2, [%o0]
+        add      %g5, 1, %g5
+        stx      %g5, [%g4]
 
-        add      %o4, 1, %o4
-        st       %o4, [%o3]
+        add      %g7, 1, %g7
+        stx      %g7, [%g6]
 
         /*
          *  If ISR nest level was zero (now 1), then switch stack.
          */
 
-        !mov      %sp, %fp
-        subcc    %o4, 1, %o4             ! outermost interrupt handler?
+        mov      %sp, %fp
+        subcc    %g7, 1, %g7             ! outermost interrupt handler?
         bnz      dont_switch_stacks      ! No, then do not switch stacks
 
-	setx	SYM(_CPU_Interrupt_stack_high), %o5, %g4
-	ldx	[%g4], %sp
+	setx	SYM(_CPU_Interrupt_stack_high), %o5, %g1
+	ldx	[%g1], %sp
 
         /*
          *  Make sure we have a place on the stack for the window overflow
@@ -455,60 +456,63 @@ dont_switch_stacks:
          *  when the interrupt handler returns.
          */
 
-        rdpr	%pil, %g5
+	and	 %g2, 0x0ff, %g1 ! is bottom byte of vector number [0x41,0x4f]?
 
-	and	 %g2, 0x0ff, %g4 ! checking bottom byte for 0x41 - 0x4f
-
-        subcc    %g4, 0x41, %g0
+        subcc    %g1, 0x41, %g0
         bl       dont_fix_pil
-        subcc    %g4, 0x4f, %g0
+        subcc    %g1, 0x4f, %g0
         bg       dont_fix_pil
 	nop
-	wrpr	%g0, %g4, %pil
+	wrpr	%g0, %g1, %pil
 
 dont_fix_pil:
 	/* We need to be careful about enabling traps here.
-	 * Right now, TL=1. Have to treat nested traps with care, since if
-	 * TL reaches 3, the CPU will enter RED state.
 	 *
-	 * We already stored off the tstate, tpc, and tnpc, so we can switch
-	 * to TL = 0 before invoking the user ISR. GAB: Need to make sure this
-	 * will work!
+	 * We already stored off the tstate, tpc, and tnpc, and switched to
+	 * TL = 0, so it should be safe.
 	 */
 
-
-        or	%g5, SPARC_PSTATE_IE_MASK, %g5
-	wrpr	%g0, %g5, %pstate ! **** ENABLE TRAPS ****
+	! **** ENABLE TRAPS ****
+	wrpr	%g0, SPARC_PSTATE_PRIV_MASK | SPARC_PSTATE_PEF_MASK | \
+			SPARC_PSTATE_IE_MASK, %pstate 
 
         /*
          *  Vector to user's handler.
          *
          *  NOTE: TBR may no longer have vector number in it since
-         *        we just enabled traps.  It is definitely in l3.
+         *        we just enabled traps.  It is definitely in g2.
          */
-/* TODO: */
-        sethi    %hi(SYM(_ISR_Vector_table)), %g4
-        ld       [%g4+%lo(SYM(_ISR_Vector_table))], %g4
-        and      %l3, 0xFF, %g5         ! remove synchronous trap indicator
-        sll      %g5, 2, %g5            ! g5 = offset into table
-        ld       [%g4 + %g5], %g4       ! g4 = _ISR_Vector_table[ vector ]
+	setx	SYM(_ISR_Vector_table), %o5, %g1
+	ldx	[%g1], %g1
+	and      %g2, 0x1FF, %o5        ! remove synchronous trap indicator
+        sll      %o5, 2, %o5            ! o5 = offset into table
+        ldx      [%g1 + %o5], %g1       ! g1 = _ISR_Vector_table[ vector ]
 
 
                                         ! o1 = 2nd arg = address of the ISF
                                         !   WAS LOADED WHEN ISF WAS SAVED!!!
-        mov      %l3, %o0               ! o0 = 1st arg = vector number
-        call     %g4, 0
+        mov      %g2, %o0               ! o0 = 1st arg = vector number
+        call     %g1, 0
         nop                             ! delay slot
 
         /*
          *  Redisable traps so we can finish up the interrupt processing.
          *  This is a VERY conservative place to do this.
-         *
-         *  NOTE: %l0 has the PSR which was in place when we took the trap.
          */
+	! **** DISABLE TRAPS ****
+	wrpr	%g0, SPARC_PSTATE_PRIV_MASK, %pstate
 
-        mov      %l0, %psr             ! **** DISABLE TRAPS ****
-        nop; nop; nop
+	/* 
+	 * We may safely use any of the %o and %g registers, because 
+	 * we saved them earlier (and any other interrupt that uses 
+	 * them will also save them).  Right now, the state of those
+	 * registers are as follows:
+	 *	%o registers: unknown (user's handler may have destroyed)
+	 *	%g1: scratch
+	 *	%g2: trap vector #
+	 *	%g3: interrupted task's sp
+	 *	%g4-g7: ISR nest level and Thread dispatch disable level
+	 */
 
         /*
          *  Decrement ISR nest level and Thread dispatch disable level.
@@ -519,6 +523,18 @@ dont_fix_pil:
          *    l5 = _ISR_Nest_level pointer
          *    l6 = _Thread_Dispatch_disable_level value
          *    l7 = _ISR_Nest_level value
+         */
+
+        /*
+         *  Increment ISR nest level and Thread dispatch disable level.
+         *
+         *  Register usage for this section: (note: as used above)
+         *
+         *    g4 = _Thread_Dispatch_disable_level pointer
+         *    g5 = _Thread_Dispatch_disable_level value
+         *    g6 = _ISR_Nest_level pointer
+         *    g7 = _ISR_Nest_level value
+	 *    o5 = temp
          */
 
         sub      %l6, 1, %l6
@@ -663,7 +679,15 @@ allow_nest_again:
          */
 
 simple_return:
-        ld      [%fp + ISF_Y_OFFSET], %l5      ! restore y
+
+	! return to TL[1], GL[1], and restore TSTATE, TPC, and TNPC
+	wrpr	%g0, 1, %tl
+	wrpr	%g0, 1, %gl
+	ldx	[%sp + STACK_BIAS + ISF_TSTATE_OFFSET], %g1
+
+	
+
+	ld      [%fp + ISF_Y_OFFSET], %l5      ! restore y
         wr      %l5, 0, %y
 
 !       ldd     [%fp + ISF_PSR_OFFSET], %l0    ! restore psr, PC
