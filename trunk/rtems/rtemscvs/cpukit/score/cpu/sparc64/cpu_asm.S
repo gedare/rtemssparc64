@@ -184,9 +184,10 @@ SYM(_CPU_Context_switch):
         stx     %g7, [%o0 + G7_OFFSET]
 
         ! load the address of the ISR stack nesting prevention flag
-        sethi   %hi(SYM(_CPU_ISR_Dispatch_disable)), %g2
-        lduw     [%g2 + %lo(SYM(_CPU_ISR_Dispatch_disable))], %g2
-        ! save it a bit later so we do not waste a couple of cycles
+	setx	SYM(_CPU_ISR_Dispatch_disable), %g1, %g2
+	ldx	[%g2], %g2
+	
+	! save it a bit later so we do not waste a couple of cycles
 
         stx     %l0, [%o0 + L0_OFFSET]       ! save the local registers
         stx     %l1, [%o0 + L1_OFFSET]
@@ -198,7 +199,7 @@ SYM(_CPU_Context_switch):
         stx     %l7, [%o0 + L7_OFFSET]
 
         ! Now actually save ISR stack nesting prevention flag
-        stw     %g2, [%o0 + ISR_DISPATCH_DISABLE_STACK_OFFSET]
+        stx     %g2, [%o0 + ISR_DISPATCH_DISABLE_STACK_OFFSET]
 
         stx     %i0, [%o0 + I0_OFFSET]       ! save the input registers
         stx     %i1, [%o0 + I1_OFFSET]
@@ -242,8 +243,8 @@ SYM(_CPU_Context_restore_heir):
         ldx     [%o1 + G7_OFFSET], %g7
 
         ! Load thread specific ISR dispatch prevention flag
-        lduw    [%o1 + ISR_DISPATCH_DISABLE_STACK_OFFSET], %o2
-        sethi    %hi(SYM(_CPU_ISR_Dispatch_disable)), %o3
+        ldx    [%o1 + ISR_DISPATCH_DISABLE_STACK_OFFSET], %o2
+	setx	SYM(_CPU_ISR_Dispatch_disable), %o5, %o3
         ! Store it to memory later to use the cycles
 
         ldx     [%o1 + L0_OFFSET], %l0        ! restore the local registers
@@ -256,7 +257,7 @@ SYM(_CPU_Context_restore_heir):
         ldx     [%o1 + L7_OFFSET], %l7
 
         ! Now restore thread specific ISR dispatch prevention flag
-        stw      %o2,[%o3 + %lo(SYM(_CPU_ISR_Dispatch_disable))]
+        stx	%o2, [%o3]
 
         ldx     [%o1 + I0_OFFSET], %i0        ! restore the input registers
         ldx     [%o1 + I1_OFFSET], %i1

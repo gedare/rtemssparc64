@@ -344,8 +344,7 @@ typedef struct {
     uint64_t   o7;
 
     uint64_t   pstate;
-    uint32_t   isr_dispatch_disable;
-    uint32_t   pad0;
+    uint64_t   isr_dispatch_disable;
 } Context_Control;
 
 #define _CPU_Context_Get_SP( _context ) \
