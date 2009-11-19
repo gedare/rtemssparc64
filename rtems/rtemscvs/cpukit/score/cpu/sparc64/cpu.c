@@ -321,23 +321,23 @@ void _CPU_ISR_install_vector(
 
 void _CPU_Context_Initialize(
   Context_Control  *the_context,
-  uint32_t         *stack_base,
+  void         *stack_base,
   uint32_t          size,
   uint32_t          new_level,
   void             *entry_point,
   bool              is_fp
 )
 {
-    uint32_t     stack_high;  /* highest "stack aligned" address */
+    uint64_t     stack_high;  /* highest "stack aligned" address */
     uint32_t     the_size;
-    uint32_t     tmp_psr;
+    uint64_t     tmp_pstate;
 
     /*
      *  On CPUs with stacks which grow down (i.e. SPARC), we build the stack
      *  based on the stack_high address.
      */
 
-    stack_high = ((uint32_t)(stack_base) + size);
+    stack_high = ((uint64_t)(stack_base) + size);
     stack_high &= ~(CPU_STACK_ALIGNMENT - 1);
 
     the_size = size & ~(CPU_STACK_ALIGNMENT - 1);
@@ -346,23 +346,30 @@ void _CPU_Context_Initialize(
      *  See the README in this directory for a diagram of the stack.
      */
 
-    the_context->o7    = ((uint32_t) entry_point) - 8;
+    the_context->o7    = ((uint64_t) entry_point) - 8;
     the_context->o6_sp = stack_high - CPU_MINIMUM_STACK_FRAME_SIZE;
     the_context->i6_fp = 0;
 
     /*
-     *  Build the PSR for the task.  Most everything can be 0 and the
-     *  CWP is corrected during the context switch.
+     *  Build the pstate for the task.  Most everything can be 0 and the
+     *  CWP is corrected during the context switch. TODO: Verify.
      *
-     *  The EF bit determines if the floating point unit is available.
+     *  The PEF bit determines if the floating point unit is available.
      *  The FPU is ONLY enabled if the context is associated with an FP task
      *  and this SPARC model has an FPU.
      */
 
-    sparc64_get_pstate( tmp_psr );
+    sparc64_get_pstate( tmp_pstate );
+    tmp_pstate &= ~SPARC_PSTATE_PEF_MASK;      /* disabled by default */
+
+    /*
+     * interrupt level is currently ignored
+     */
+/* XXX 
     tmp_psr &= ~SPARC_PSR_PIL_MASK;
     tmp_psr |= (new_level << 8) & SPARC_PSR_PIL_MASK;
-    tmp_psr &= ~SPARC_PSR_EF_MASK;      /* disabled by default */
+  */
+
 
 #if (SPARC_HAS_FPU == 1)
     /*
@@ -372,9 +379,9 @@ void _CPU_Context_Initialize(
      */
 
     if ( is_fp )
-      tmp_psr |= SPARC_PSR_EF_MASK;
+      tmp_pstate |= SPARC_PSTATE_PEF_MASK;
 #endif
-    the_context->pstate = tmp_psr;
+    the_context->pstate = tmp_pstate;
 
   /*
    *  Since THIS thread is being created, there is no way that THIS
