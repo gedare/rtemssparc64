@@ -12,6 +12,7 @@
  */
 
 #include <rtems/system.h>
+#include <rtems/asm.h>
 #include <rtems/score/isr.h>
 #include <rtems/rtems/cache.h>
 
@@ -25,7 +26,7 @@
  *  must be filled in when the handler is installed.
  */
 
-/* GAB: 64-bit registers complicated this. Also, in sparc v9, 
+/* GAB: 64-bit registers complicated this. Also, in sparc v9,
  *	each trap level gets its own set of global registers, but
  *	does not get its own dedicated register window. so we avoid
  *	using the local registers in the trap handler.
@@ -347,7 +348,7 @@ void _CPU_Context_Initialize(
      */
 
     the_context->o7    = ((uint64_t) entry_point) - 8;
-    the_context->o6_sp = stack_high - CPU_MINIMUM_STACK_FRAME_SIZE;
+    the_context->o6_sp = stack_high - CPU_MINIMUM_STACK_FRAME_SIZE - STACK_BIAS;
     the_context->i6_fp = 0;
 
     /*
@@ -365,7 +366,7 @@ void _CPU_Context_Initialize(
     /*
      * interrupt level is currently ignored
      */
-/* XXX 
+/* XXX
     tmp_psr &= ~SPARC_PSR_PIL_MASK;
     tmp_psr |= (new_level << 8) & SPARC_PSR_PIL_MASK;
   */
