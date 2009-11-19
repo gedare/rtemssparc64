@@ -344,7 +344,8 @@ typedef struct {
     uint64_t   o7;
 
     uint64_t   pstate;
-    uint64_t   isr_dispatch_disable;
+    uint32_t   isr_dispatch_disable;
+    uint32_t	pad0;
 } Context_Control;
 
 #define _CPU_Context_Get_SP( _context ) \
@@ -818,7 +819,7 @@ uint32_t   _CPU_ISR_Get_level( void );
 
 void _CPU_Context_Initialize(
   Context_Control  *the_context,
-  uint32_t         *stack_base,
+  void         *stack_base,
   uint32_t          size,
   uint32_t          new_level,
   void             *entry_point,

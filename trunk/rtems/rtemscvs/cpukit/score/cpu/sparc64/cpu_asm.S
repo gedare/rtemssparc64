@@ -185,7 +185,7 @@ SYM(_CPU_Context_switch):
 
         ! load the address of the ISR stack nesting prevention flag
 	setx	SYM(_CPU_ISR_Dispatch_disable), %g1, %g2
-	ldx	[%g2], %g2
+	lduw	[%g2], %g2
 	
 	! save it a bit later so we do not waste a couple of cycles
 
@@ -199,7 +199,7 @@ SYM(_CPU_Context_switch):
         stx     %l7, [%o0 + L7_OFFSET]
 
         ! Now actually save ISR stack nesting prevention flag
-        stx     %g2, [%o0 + ISR_DISPATCH_DISABLE_STACK_OFFSET]
+        stuw     %g2, [%o0 + ISR_DISPATCH_DISABLE_STACK_OFFSET]
 
         stx     %i0, [%o0 + I0_OFFSET]       ! save the input registers
         stx     %i1, [%o0 + I1_OFFSET]
@@ -244,7 +244,7 @@ SYM(_CPU_Context_restore_heir):
 
         ! Load thread specific ISR dispatch prevention flag
         ldx    [%o1 + ISR_DISPATCH_DISABLE_STACK_OFFSET], %o2
-	setx	SYM(_CPU_ISR_Dispatch_disable), %o5, %o3
+	setuw	SYM(_CPU_ISR_Dispatch_disable), %o3
         ! Store it to memory later to use the cycles
 
         ldx     [%o1 + L0_OFFSET], %l0        ! restore the local registers
@@ -316,7 +316,6 @@ SYM(_CPU_Context_restore):
         .align 4
         PUBLIC(_ISR_Handler)
 SYM(_ISR_Handler):
- /* GAB: TODO: FIXME: */
 
 /* 
  * The ISR is called at TL = 1. On sun4v, we can use the globals at this
@@ -408,33 +407,32 @@ SYM(_ISR_Handler):
          *
          *  Register usage for this section: (note, these are used later)
          *
-         *    g4 = _Thread_Dispatch_disable_level pointer
-         *    g5 = _Thread_Dispatch_disable_level value
+         *    g7 = _Thread_Dispatch_disable_level pointer
+         *    g5 = _Thread_Dispatch_disable_level value (uint32_t)
          *    g6 = _ISR_Nest_level pointer
-         *    g7 = _ISR_Nest_level value
+         *    g4 = _ISR_Nest_level value (uint32_t)
 	 *    o5 = temp
          *
-         *  NOTE: It is assumed that g4 - g7 will be preserved until the ISR
+         *  NOTE: It is assumed that g6 - g7 will be preserved until the ISR
          *        nest and thread dispatch disable levels are unnested.
          */
 
-	setx	SYM(_Thread_Dispatch_disable_level), %o5, %g4
-	ldx	[%g4], %g5
+	setx	SYM(_Thread_Dispatch_disable_level), %o5, %g7
+	lduw	[%g7], %g5
         setx	SYM(_ISR_Nest_level), %o5, %g6
-	ldx	[%g6], %g7
+	lduw	[%g6], %g4
 
         add      %g5, 1, %g5
-        stx      %g5, [%g4]
+        stx      %g5, [%g7]
 
-        add      %g7, 1, %g7
-        stx      %g7, [%g6]
+        add      %g4, 1, %g4
+        stx      %g4, [%g6]
 
         /*
          *  If ISR nest level was zero (now 1), then switch stack.
          */
 
-        mov      %sp, %fp
-        subcc    %g7, 1, %g7             ! outermost interrupt handler?
+        subcc    %g4, 1, %g4             ! outermost interrupt handler?
         bnz      dont_switch_stacks      ! No, then do not switch stacks
 
 	setx	SYM(_CPU_Interrupt_stack_high), %o5, %g1
@@ -473,6 +471,9 @@ dont_fix_pil:
 	 * TL = 0, so it should be safe.
 	 */
 
+	/* zero out g4 so that printf works */
+	mov	%g0, %g4
+
 	! **** ENABLE TRAPS ****
 	wrpr	%g0, SPARC_PSTATE_PRIV_MASK | SPARC_PSTATE_PEF_MASK | \
 			SPARC_PSTATE_IE_MASK, %pstate 
@@ -509,56 +510,56 @@ dont_fix_pil:
 	 * them will also save them).  Right now, the state of those
 	 * registers are as follows:
 	 *	%o registers: unknown (user's handler may have destroyed)
-	 *	%g1: scratch
-	 *	%g2: trap vector #
-	 *	%g3: interrupted task's sp
-	 *	%g4-g7: ISR nest level and Thread dispatch disable level
+	 *	%g1,g4,g5: scratch
+	 *	%g2: unknown: was trap vector
+	 *	%g3: uknown: was interrupted task's sp
+	 *	%g6: _ISR_Nest_level
+	 *	%g7: _Thread_Dispatch_disable_level
 	 */
-
-        /*
-         *  Decrement ISR nest level and Thread dispatch disable level.
-         *
-         *  Register usage for this section:
-         *
-         *    l4 = _Thread_Dispatch_disable_level pointer
-         *    l5 = _ISR_Nest_level pointer
-         *    l6 = _Thread_Dispatch_disable_level value
-         *    l7 = _ISR_Nest_level value
-         */
 
         /*
          *  Increment ISR nest level and Thread dispatch disable level.
          *
          *  Register usage for this section: (note: as used above)
          *
-         *    g4 = _Thread_Dispatch_disable_level pointer
+         *    g7 = _Thread_Dispatch_disable_level pointer
          *    g5 = _Thread_Dispatch_disable_level value
          *    g6 = _ISR_Nest_level pointer
-         *    g7 = _ISR_Nest_level value
+         *    g4 = _ISR_Nest_level value
 	 *    o5 = temp
          */
 
-        sub      %l6, 1, %l6
-        st       %l6, [%l4 + %lo(SYM(_Thread_Dispatch_disable_level))]
+	/* We have to re-load the values from memory, because there are
+	 * not enough registers that we know will be preserved across the
+	 * user's handler. If this is a problem, we can create a register
+	 * window for _ISR_Handler.
+	 */
 
-        st       %l7, [%l5 + %lo(SYM(_ISR_Nest_level))]
+	lduw	[%g7],%g5
+	lduw	[%g6],%g4
+        sub      %g5, 1, %g5
+	stuw	%g5, [%g7]
+	sub	%g4, 1, %g4
+	stuw	%g4, [%g6]
 
         /*
          *  If dispatching is disabled (includes nested interrupt case),
          *  then do a "simple" exit.
          */
 
-        orcc     %l6, %g0, %g0   ! Is dispatching disabled?
+        orcc     %g5, %g0, %g0   ! Is dispatching disabled?
         bnz      simple_return   ! Yes, then do a "simple" exit
         ! NOTE: Use the delay slot
-        sethi    %hi(SYM(_CPU_ISR_Dispatch_disable)), %l6
+	mov	%g0, %g4	! clear g4 for printf
 
         ! Are we dispatching from a previous ISR in the interrupted thread?
-        ld       [%l6 + %lo(SYM(_CPU_ISR_Dispatch_disable))], %l7
-        orcc     %l7, %g0, %g0   ! Is this thread already doing an ISR?
+	setx	SYM(_CPU_ISR_Dispatch_disable), %o5, %g5
+        ld       [%g5], %o5
+        orcc     %o5, %g0, %g0   ! Is this thread already doing an ISR?
         bnz      simple_return   ! Yes, then do a "simple" exit
-        ! NOTE: Use the delay slot
-        sethi    %hi(SYM(_Context_Switch_necessary)), %l4
+        nop
+
+	setx    SYM(_Context_Switch_necessary), %o5, %g7
         
 
         /*
@@ -566,32 +567,31 @@ dont_fix_pil:
          *  return to the interrupt dispatcher.
          */
 
-        ldub     [%l4 + %lo(SYM(_Context_Switch_necessary))], %l5
+        ldub     [%g7], %o5
 
-        orcc     %l5, %g0, %g0   ! Is thread switch necessary?
+        orcc     %o5, %g0, %g0   ! Is thread switch necessary?
         bnz      SYM(_ISR_Dispatch) ! yes, then invoke the dispatcher
-        ! NOTE: Use the delay slot
-        sethi    %hi(SYM(_ISR_Signals_to_thread_executing)), %l6
+	nop
 
         /*
          *  Finally, check to see if signals were sent to the currently
          *  executing task.  If so, we need to invoke the interrupt dispatcher.
          */
+	setx SYM(_ISR_Signals_to_thread_executing), %o5, %g5
+	ldub	[%g5], %o5
 
-        ldub     [%l6 + %lo(SYM(_ISR_Signals_to_thread_executing))], %l7
-
-        orcc     %l7, %g0, %g0   ! Were signals sent to the currently
+        orcc     %o5, %g0, %g0   ! Were signals sent to the currently
                                  !   executing thread?
         bz       simple_return   ! yes, then invoke the dispatcher
                                  ! use the delay slot to clear the signals
                                  !   to the currently executing task flag
-        st       %g0, [%l6 + %lo(SYM(_ISR_Signals_to_thread_executing))]
+        stb       %g0, [%g5]
                                  
 
         /*
          *  Invoke interrupt dispatcher.
          */
-
+/* TODO */
         PUBLIC(_ISR_Dispatch)
 SYM(_ISR_Dispatch):
         ! Set ISR dispatch nesting prevention flag

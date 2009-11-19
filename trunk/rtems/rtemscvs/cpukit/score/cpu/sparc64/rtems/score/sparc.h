@@ -208,10 +208,26 @@ extern "C" {
      asm volatile( "rdpr %%pstate, %0" :  "=r" (_pstate) : "0" (_pstate) ); \
   } while ( 0 )
 
-#define sparc_set_pstate( _pstate ) \
+#define sparc64_set_pstate( _pstate ) \
   do { \
-    asm volatile ( "wrpr  %0, %%pstate " : "=r" ((_pstate)) : "0" ((_pstate)) ); \
+    asm volatile ( "wrpr  %g0, %0, %%pstate " : "=r" ((_pstate)) : "0" ((_pstate)) ); \
   } while ( 0 )
+
+/*
+ * Get and set the PIL
+ */
+
+#define sparc64_get_pil( _pil ) \
+  do { \
+     (_pil) = 0; \
+     asm volatile( "rdpr %%pil, %0" :  "=r" (_pil) : "0" (_pil) ); \
+  } while ( 0 )
+
+#define sparc64_set_pil( _pil ) \
+  do { \
+    asm volatile ( "wrpr  %g0, %0, %%pil " : "=r" ((_pil)) : "0" ((_pil)) ); \
+  } while ( 0 )
+
 
 /*
  *  Get and set the TBA
@@ -269,7 +285,7 @@ extern "C" {
 /************* /DEPRECATED ****************/
 
 /*
- *  Manipulate the interrupt level in the psr 
+ *  Manipulate the interrupt level in the pstate 
  */
 
 uint32_t sparc_disable_interrupts(void);
