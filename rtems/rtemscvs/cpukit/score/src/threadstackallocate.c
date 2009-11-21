@@ -74,6 +74,16 @@ size_t _Thread_Stack_Allocate(
 
     the_stack_size = _Stack_Adjust_size( the_stack_size );
     stack_addr = _Workspace_Allocate( the_stack_size );
+
+#ifdef GICADEBUG	
+	printk("\n\r_Thread_Stack_Allocate "
+			"stack_addr = %x"
+			"the_stack_size = %x", 
+			"\n\r",
+			stack_addr,
+			the_stack_size
+		   );
+#endif	
   }
 
   if ( !stack_addr )

@@ -13,8 +13,6 @@
  *  $Id: bspgetworkarea.c,v 1.6 2009/05/08 13:24:27 joel Exp $
  */
 
-#define BSP_GET_WORK_AREA_DEBUG
-
 #include <bsp.h>
 #include <bsp/bootcard.h>
 #ifdef BSP_GET_WORK_AREA_DEBUG

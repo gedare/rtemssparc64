@@ -107,7 +107,9 @@ bool _Thread_Initialize(
       the_thread->Start.core_allocated_stack = false;
     }
   #endif
-
+#ifdef GICADEBUG
+  printk("\n\r _Thread_Initialize() stack_area = %x stack = %x actual_stack_size = %x the_thread->Registers.o6_sp = %x addrof(the_thread->Registers.o6_sp) = %x \n\r",stack_area,stack, actual_stack_size,the_thread->Registers.o6_sp, &(the_thread->Registers.o6_sp));
+#endif
   _Stack_Initialize(
      &the_thread->Start.Initial_stack,
      stack,

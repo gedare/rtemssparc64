@@ -259,14 +259,8 @@ void bootstrap(void)
 	}
 
 	printk("\n\rSystem info\n\r");
-	printk(" memory: %dM starting at %P\n\r",
+	printk(" memory: %dM starting at %x\n\r",
 	    bootinfo.memmap.total >> 20, bootinfo.physmem_start);
 
-	printk("\n\rMemory statistics\n\r");
-	printk(" kernel entry point at %P\n\r", KERNEL_VIRTUAL_ADDRESS);
-	printk(" %P: boot info structure\n\r", &bootinfo);
-
-
-	printk("\nBooting the kernel...\n\r");
 }
 

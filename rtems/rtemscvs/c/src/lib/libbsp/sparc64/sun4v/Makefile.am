@@ -55,7 +55,7 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
 clock_SOURCES = ../../shared/clock_driver_simidle.c
 
 #GAB: TODO: FIXME: using dummy_printk
-console_SOURCES = ../../shared/console-polled.c console/console.c
+console_SOURCES = ../../shared/console.c  console/conscfg.c
 
 timer_SOURCES = ../../shared/timerstub.c
 
