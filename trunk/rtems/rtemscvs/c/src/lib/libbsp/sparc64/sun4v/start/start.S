@@ -65,8 +65,9 @@ zerobss:
 	bleu,a	zerobss
 	nop
 
-	!set SYM(StackStart), %sp
-	!add %sp, -STACK_BIAS, %sp
+setstack:
+	set SYM(StackStart), %sp
+	add %sp, -STACK_BIAS, %sp
 
 	setx SYM(syscall), %l0, %o1
 	setx param_space, %l0, %o2

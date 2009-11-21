@@ -39,7 +39,7 @@ void _Workspace_Handler_initialization(void)
 
   if ( Configuration.do_zero_of_workspace )
    memset( starting_address, 0, size );
-
+#ifdef GICADEBUG
   printk(
 	  "\n\r_Workspace_Handler_initialization\n\r"
 	  "starting_address = 0x%p\n\r"
@@ -50,7 +50,7 @@ void _Workspace_Handler_initialization(void)
 	  size,
 	  CPU_HEAP_ALIGNMENT
   );
-
+#endif
   memory_available = _Heap_Initialize(
     &_Workspace_Area,
     starting_address,

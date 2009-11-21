@@ -21,15 +21,17 @@ void sparc64_install_isr_entries( void )
 
 	proc_ptr ignored;
 
-	printk("Trap base address = %lx\n\r", tba);
 /*
 	_CPU_ISR_install_raw_handler(0x100,syscall,&ignored);
 */
-
+#ifdef GICADEBUG
+	printk("Trap base address = %lx\n\r", tba);
 	printk("ISR cookie = %x\n\r", isr_cookie);
+#endif
 	isr_cookie = sparc_disable_interrupts();
+#ifdef GICADEBUG
 	printk("ISR cookie = %x\n\r", isr_cookie);
+#endif
 
-	printk("\n\r");
 	return;
 }

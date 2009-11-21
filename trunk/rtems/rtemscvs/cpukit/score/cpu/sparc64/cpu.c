@@ -350,7 +350,24 @@ void _CPU_Context_Initialize(
     the_context->o7    = ((uint64_t) entry_point) - 8;
     the_context->o6_sp = stack_high - CPU_MINIMUM_STACK_FRAME_SIZE - STACK_BIAS;
     the_context->i6_fp = 0;
-
+#ifdef GICADEBUG
+	printk("\n\r"
+			"_CPU_Context_Initialize() "
+			"stack_base = %x "
+			"size = %x "
+			"CPU_STACK_ALIGNMENT = %d "
+			"stack_high = %x "
+			"the_context->o6_sp = %x"
+			"CPU_MINIMUM_STACK_FRAME_SIZE = %d"
+		"\n\r",
+		stack_base,
+		size,
+		CPU_STACK_ALIGNMENT,
+		stack_high,
+		the_context->o6_sp,
+		CPU_MINIMUM_STACK_FRAME_SIZE
+		);
+#endif
     /*
      *  Build the pstate for the task.  Most everything can be 0 and the
      *  CWP is corrected during the context switch. TODO: Verify.
