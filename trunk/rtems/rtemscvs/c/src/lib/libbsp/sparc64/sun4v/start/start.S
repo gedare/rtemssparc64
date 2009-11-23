@@ -86,7 +86,8 @@ setstack:
 	mov	%g0, %o0		! clear command line passed to main
 	call SYM(boot_card)
 	sub	%sp, 0x60, %sp		! make room on stack (necessary?)
-	nop
+halted:	nop
+	    b SYM(halted)
 
   .align CPU_ALIGNMENT
   param_space:
