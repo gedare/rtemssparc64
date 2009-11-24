@@ -35,6 +35,8 @@ uintptr_t ofw_cif;
 
 phandle ofw_chosen;
 ihandle ofw_stdout;
+ihandle ofw_stdin;
+
 phandle ofw_root;
 ihandle ofw_mmu;
 ihandle ofw_memory_prop;
@@ -50,6 +52,10 @@ void ofw_init(void)
 	if (ofw_get_property(ofw_chosen, "stdout", &ofw_stdout,
 	    sizeof(ofw_stdout)) <= 0)
 		ofw_stdout = 0;
+
+	if (ofw_get_property(ofw_chosen, "stdin", &ofw_stdin,
+		sizeof(ofw_stdin)) <= 0)
+		ofw_stdin = 0;
 
 	ofw_root = ofw_find_device("/");
 	if (ofw_root == -1) {
@@ -195,6 +201,15 @@ void ofw_write(const char *str, const int len)
 
 	ofw_call("write", 3, 1, NULL, ofw_stdout, str, len);
 }
+
+void ofw_read(void *str, const int len)
+{
+	if (ofw_stdin == 0)
+		return;
+
+	ofw_call("read", 3, 1, NULL, ofw_stdin, str, len);
+}
+
 
 
 void *ofw_translate(const void *virt)
