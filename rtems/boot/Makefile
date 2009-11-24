@@ -18,7 +18,13 @@ CC64linux=$(TOOLCHAINLINUX)-gcc
 LINKSCRIPT32=_link32.ld
 LINKSCRIPT64=../../HeleonOS/HelenOS/boot/arch/sparc64/loader/_link.ld
 
-RTEMSEXE = ../b-sun4vcvs/sparc64-rtems4.10/c/sun4v/testsuites/samples/hello/hello.exe
+
+RTEMSTESTSBASE = ../b-sun4vcvs/sparc64-rtems4.10/c/sun4v/testsuites
+RTEMSTESTSAMPLESBASE = $(RTEMSTESTSBASE)/samples
+
+TEST=hello
+
+
 
 ELFFORMAT32=-m32
 ELFFORMAT64=-m64 
@@ -96,20 +102,21 @@ rtems64linux:
 	cp image.1.boot.gz isofiles/rtems64linux/image.1.boot.gz -f
 	mkisofs -f -G $(TMP)/boot/isofs.b -B ... -r -o $(BASE)/image.iso $(TMP)
 	ls -l image.iso
-	
-rtemshelloworld:
-	cp $(RTEMSEXE) image.1.boot
-	$(TOOLCHAINHELENOS)-objdump -D image.1.boot > debug/rtemshelloworld.disasm
-	$(TOOLCHAINHELENOS)-readelf -a image.1.boot > debug/rtemshelloworld.elf
+
+rtemstests:
+	cp $(RTEMSTESTSAMPLESBASE)/$(TEST)/$(TEST).exe image.1.boot
+	$(TOOLCHAINHELENOS)-objdump -D image.1.boot > debug/rtems/samples/$(TEST).disasm
+	$(TOOLCHAINHELENOS)-readelf -a image.1.boot > debug/rtems/samples/$(TEST).elf
 	-rm image.1.boot.gz
-	cp image.1.boot debug/rtemshelloworld.exe
+	cp image.1.boot debug/rtems/samples/$(TEST).exe
 	gzip image.1.boot 
-	cp image.1.boot.gz isofiles/rtemshelloworld/image.1.boot.gz -f
+	cp image.1.boot.gz isofiles/rtems/samples/$(TEST).gz -f
+	
+	
 	mkisofs -f -G $(TMP)/boot/isofs.b -B ... -r -o $(BASE)/image.iso $(TMP)
 	ls -l image.iso
-	
-	
-all: rtemshelloworld
+
+all: rtemstests
 
 clean:
 	-rm *.o
