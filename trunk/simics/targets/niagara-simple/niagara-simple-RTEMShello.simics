@@ -5,7 +5,6 @@
 if not defined num_cpus {$num_cpus  = 2}
 if not defined freq_mhz {$freq_mhz  = 5}
 if not defined rtc_time {$rtc_time  = "2006-04-04 12:00:00 UTC"}
-
 ###
 
 add-directory "%simics%/targets/niagara-simple/images/"
@@ -44,14 +43,14 @@ $system.set-prom-env auto-boot? true
 # it is able to boot from a disk image in ISO9660 format.
 $image = ($system.get-component-object disk_image)
 @image = sim.objects[simenv.image]
-@image.files = [['/home/eugen/work/rtemssparc64/rtems/boot/image.iso', 'ro', 0, 3256320  ]]
+@image.files = [['/home/eugen/work/rtemssparc64/rtems/boot/image.iso', 'ro', 0, 9809920  ]]
  
-new-symtable file = /home/eugen/work/rtemssparc64/rtems/boot/debug/rtemshelloworld.exe
+new-symtable file = /home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/samples/paranoia.exe
 
 script-branch {
         local $con = ($console.get-component-object con)
         $con.wait-for-string "boot: "
-        $con.input "RTEMSHELLOWORLD\n"
+        $con.input "paranoia\n"
         }
 
 #trace-exception -all
@@ -63,6 +62,8 @@ break-exception number = 52  #Mem_Address_Not_Aligned
 
 
 #break 0x4000
+
+#break (sym setstack)
 
 #break (sym ofw_init)
 
@@ -113,6 +114,39 @@ break-exception number = 52  #Mem_Address_Not_Aligned
 
 #break (sym _Thread_Start_multitasking)
 
-break (sym _CPU_Context_switch)
+#break (sym _CPU_Context_switch)
+
+#break (sym sparc_enable_interrupts)
+
+#break (sym syscall)
+
+#break (sym printk)
+
+
+#break (sym _Thread_Initialize)
+
+#break (sym _init)
+
+#break -w 0x22D78 length = 8  #try to find out when %SP is written to the thread->Registers.o6_sp
+
+
+#break (sym console_initialize)
+#break (sym console_write)
+
+#break (sym sun4v_console_device_first_open)
+#break (sym sun4v_console_deviceInitialize)
+#break (sym sun4v_console_poll_write)
+#break (sym exit)
+#break (sym _exit)
+
+#break (sym Init)
+#break (sym rtems_shutdown_executive)
+#break (sym sun4v_console_poll_read)
+
+#break (sym sqrt)
+#break (sym gicabreak)
+#break 0x8d9c
+#break -w -r (sym Milestone)
+break 0x8d80
 c
 
