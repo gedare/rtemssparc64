@@ -366,6 +366,7 @@ SYM(_ISR_Handler):
 	stx	%g3, [%sp + STACK_BIAS + ISF_PIL_OFFSET]
 	stx	%g4, [%sp + STACK_BIAS + ISF_TPC_OFFSET]
 	stx	%g5, [%sp + STACK_BIAS + ISF_TNPC_OFFSET]
+	stx	%g2, [%sp + STACK_BIAS + ISF_TVEC_NUM]
 
 	rd	%y, %g4				! save y
 	stx 	%g4, [%sp + STACK_BIAS + ISF_Y_OFFSET]
@@ -591,28 +592,31 @@ dont_fix_pil:
         /*
          *  Invoke interrupt dispatcher.
          */
-/* TODO */
         PUBLIC(_ISR_Dispatch)
 SYM(_ISR_Dispatch):
         ! Set ISR dispatch nesting prevention flag
-        mov      1,%l6
-        sethi    %hi(SYM(_CPU_ISR_Dispatch_disable)), %l5
-        st       %l6,[%l5 + %lo(SYM(_CPU_ISR_Dispatch_disable))]
+        mov      1, %o1
+        setx    SYM(_CPU_ISR_Dispatch_disable), %o5, %o2
+        st       %o1, [%o2]
 
         /*
+	 *  This is the outermost interrupt handler. Need to get off the
+	 *  CPU Interrupt Stack and back to the tasks stack.
+	 *
          *  The following subtract should get us back on the interrupted
          *  tasks stack and add enough room to invoke the dispatcher.
          *  When we enable traps, we are mostly back in the context
          *  of the task and subsequent interrupts can operate normally.
+	 *
+	 *  Now %sp points to the bottom of the ISF.
+	 *  
          */
 
-        sub      %fp, CPU_MINIMUM_STACK_FRAME_SIZE, %sp
+        sub      %fp, 	CONTEXT_CONTROL_INTERRUPT_FRAME_SIZE, %sp
 
-        or      %l0, SPARC_PSR_ET_MASK, %l7    ! l7 = PSR with ET=1 
-        mov     %l7, %psr                      !  **** ENABLE TRAPS ****
-        nop
-        nop
-        nop
+  	!  **** ENABLE TRAPS ****
+	wrpr	%g0, SPARC_PSTATE_PRIV_MASK | SPARC_PSTATE_PEF_MASK | \
+			SPARC_PSTATE_IE_MASK, %pstate
 isr_dispatch:
         call    SYM(_Thread_Dispatch), 0
         nop
@@ -625,23 +629,23 @@ isr_dispatch:
 	 *  with the register windowing.  In particular, the CWP in the PSR
 	 *  is fragile during this period. (See PR578.)
 	 */
-	mov	2,%g1				! syscall (disable interrupts)
+	mov	2,%g4				! syscall (disable interrupts)
 	ta	0				! syscall (disable interrupts)
-
+	mov	0,%g4
         /*
          *  While we had ISR dispatching disabled in this thread,
          *  did we miss anything.  If so, then we need to do another
          *  _Thread_Dispatch before leaving this ISR Dispatch context.
          */
 
-        sethi    %hi(SYM(_Context_Switch_necessary)), %l4
-        ldub     [%l4 + %lo(SYM(_Context_Switch_necessary))], %l5
+        setx	SYM(_Context_Switch_necessary), %o5, %o1
+        ldub     [%o1], %o2
 
         ! NOTE: Use some of delay slot to start loading this
-        sethi    %hi(SYM(_ISR_Signals_to_thread_executing)), %l6
-        ldub     [%l6 + %lo(SYM(_ISR_Signals_to_thread_executing))], %l7
+        setx    SYM(_ISR_Signals_to_thread_executing), %o5, %o1
+        ldub     [%o1], %o3
 
-        orcc     %l5, %g0, %g0   ! Is thread switch necessary?
+        orcc     %o2, %g0, %g0   ! Is thread switch necessary?
         bnz      dispatchAgain   ! yes, then invoke the dispatcher AGAIN
         ! NOTE: Use the delay slot to catch the orcc below
 
@@ -652,23 +656,23 @@ isr_dispatch:
 
         ! NOTE: Delay slots above were used to perform the load AND
         !       this orcc falls into the delay slot for bnz above
-        orcc     %l7, %g0, %g0   ! Were signals sent to the currently
+        orcc     %o3, %g0, %g0   ! Were signals sent to the currently
                                  !   executing thread?
         bz       allow_nest_again ! No, then clear out and return
-        ! NOTE: use the delay slot from the bz to load 3 into %g1
+	nop
 
         ! Yes, then invoke the dispatcher
 dispatchAgain:
-	mov	3,%g1				! syscall (enable interrupts)
+	mov	3, %g4				! syscall (enable interrupts)
 	ta	0				! syscall (enable interrupts)
         ba      isr_dispatch
-        nop
+        mov	0, %g4
 
 allow_nest_again:
 
         ! Zero out ISR stack nesting prevention flag
-        sethi    %hi(SYM(_CPU_ISR_Dispatch_disable)), %l5
-        st       %g0,[%l5 + %lo(SYM(_CPU_ISR_Dispatch_disable))]
+        setx	SYM(_CPU_ISR_Dispatch_disable), %o5, %o1
+        st       %g0,[%o1]
 
         /*
          *  The CWP in place at this point may be different from
@@ -680,111 +684,112 @@ allow_nest_again:
          */
 
 simple_return:
+	flushw
 
-	! return to TL[1], GL[1], and restore TSTATE, TPC, and TNPC
-	wrpr	%g0, 1, %tl
-	wrpr	%g0, 1, %gl
+	! **** DISABLE TRAPS ****
+	wrpr	%g0, SPARC_PSTATE_PRIV_MASK, %pstate
+
+	ldx     [%sp + STACK_BIAS + ISF_Y_OFFSET], %o1      ! restore y
+        wr      %o1, 0, %y
+
+
+
 	ldx	[%sp + STACK_BIAS + ISF_TSTATE_OFFSET], %g1
-
 	
+	! see if cwp is proper (tstate.cwp == cwp)
+	and	%g1, 0x1F, %g6
+	rdpr	%cwp, %g7
+	cmp	%g6, %g7
+	bz	good_window
+	nop
 
-	ld      [%fp + ISF_Y_OFFSET], %l5      ! restore y
-        wr      %l5, 0, %y
+	/*
+	 * Fix the CWP. Need the cwp to be the proper cwp that
+	 * gets restored when returning from the trap via retry/done. Do 
+	 * this before reloading the task's output regs. Basically fake a
+	 * window spill/fill.
+	 *
+	 * TODO: Is this necessary/correct? Why not just re-write 
+	 * tstate.cwp to be equal to the current cwp?
+	 */
+	mov	%sp, %g3
+	stx	%l0, [%sp + STACK_BIAS + CPU_STACK_FRAME_L0_OFFSET]
+	stx	%l1, [%sp + STACK_BIAS + CPU_STACK_FRAME_L1_OFFSET]
+	stx	%l2, [%sp + STACK_BIAS + CPU_STACK_FRAME_L2_OFFSET]
+	stx	%l3, [%sp + STACK_BIAS + CPU_STACK_FRAME_L3_OFFSET]
+	stx	%l4, [%sp + STACK_BIAS + CPU_STACK_FRAME_L4_OFFSET]
+	stx	%l5, [%sp + STACK_BIAS + CPU_STACK_FRAME_L5_OFFSET]
+	stx	%l6, [%sp + STACK_BIAS + CPU_STACK_FRAME_L6_OFFSET]
+	stx	%l7, [%sp + STACK_BIAS + CPU_STACK_FRAME_L7_OFFSET]
+	stx	%i0, [%sp + STACK_BIAS + CPU_STACK_FRAME_I0_OFFSET]
+	stx	%i1, [%sp + STACK_BIAS + CPU_STACK_FRAME_I1_OFFSET]
+	stx	%i2, [%sp + STACK_BIAS + CPU_STACK_FRAME_I2_OFFSET]
+	stx	%i3, [%sp + STACK_BIAS + CPU_STACK_FRAME_I3_OFFSET]
+	stx	%i4, [%sp + STACK_BIAS + CPU_STACK_FRAME_I4_OFFSET]
+	stx	%i5, [%sp + STACK_BIAS + CPU_STACK_FRAME_I5_OFFSET]
+	stx	%i6, [%sp + STACK_BIAS + CPU_STACK_FRAME_I6_FP_OFFSET]
+	stx	%i7, [%sp + STACK_BIAS + CPU_STACK_FRAME_I7_OFFSET]
+	wrpr	%g0, %g6, %cwp
+	mov	%g3, %sp
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_L0_OFFSET], %l0
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_L1_OFFSET], %l1
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_L2_OFFSET], %l2
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_L3_OFFSET], %l3
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_L4_OFFSET], %l4
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_L5_OFFSET], %l5
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_L6_OFFSET], %l6
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_L7_OFFSET], %l7
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_I0_OFFSET], %i0
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_I1_OFFSET], %i1
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_I2_OFFSET], %i2
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_I3_OFFSET], %i3
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_I4_OFFSET], %i4
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_I5_OFFSET], %i5
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_I6_FP_OFFSET], %i6
+	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_I7_OFFSET], %i7
 
-!       ldd     [%fp + ISF_PSR_OFFSET], %l0    ! restore psr, PC
-!       ld      [%fp + ISF_NPC_OFFSET], %l2    ! restore nPC
-        rd      %psr, %l3
-!        and     %l3, SPARC_PSR_CWP_MASK, %l3   ! want "current" CWP
-!        andn    %l0, SPARC_PSR_CWP_MASK, %l0   ! want rest from task
-        or      %l3, %l0, %l0                  ! install it later...
-!        andn    %l0, SPARC_PSR_ET_MASK, %l0 
+
+good_window:
+
 
         /*
          *  Restore tasks global and out registers
          */
 
-        mov    %fp, %g1
+        ldx     [%sp + STACK_BIAS + ISF_G1_OFFSET], %g1    ! restore g1
+        ldx     [%sp + STACK_BIAS + ISF_G2_OFFSET], %g2    ! restore g2
+        ldx     [%sp + STACK_BIAS + ISF_G3_OFFSET], %g3    ! restore g3
+        ldx     [%sp + STACK_BIAS + ISF_G4_OFFSET], %g4    ! restore g4
+        ldx     [%sp + STACK_BIAS + ISF_G5_OFFSET], %g5    ! restore g5
+        ldx     [%sp + STACK_BIAS + ISF_G6_OFFSET], %g6    ! restore g6
+        ldx     [%sp + STACK_BIAS + ISF_G7_OFFSET], %g7    ! restore g7
 
-                                              ! g1 is restored later
-        ldd     [%fp + ISF_G2_OFFSET], %g2    ! restore g2, g3
-        ldd     [%fp + ISF_G4_OFFSET], %g4    ! restore g4, g5
-        ldd     [%fp + ISF_G6_OFFSET], %g6    ! restore g6, g7
 
-!        ldd     [%fp + ISF_I0_OFFSET], %i0    ! restore i0, i1
-!        ldd     [%fp + ISF_I2_OFFSET], %i2    ! restore i2, i3
-!        ldd     [%fp + ISF_I4_OFFSET], %i4    ! restore i4, i5
-!        ldd     [%fp + ISF_I6_FP_OFFSET], %i6 ! restore i6/fp, i7
 
-        /*
-         *  Registers:
-         *
-         *   ALL global registers EXCEPT G1 and the input registers have
-         *   already been restored and thuse off limits.
-         *
-         *   The following is the contents of the local registers:
-         *
-         *     l0 = original psr
-         *     l1 = return address (i.e. PC)
-         *     l2 = nPC
-         *     l3 = CWP
-         */
+	! return to TL[1], GL[1], and restore TSTATE, TPC, and TNPC
+	wrpr	%g0, 1, %tl
+	wrpr	%g0, 1, %gl
+	! now we can use global registers (at gl 1)
+	ldx	[%sp + STACK_BIAS + ISF_PIL_OFFSET], %g3
+	ldx	[%sp + STACK_BIAS + ISF_TPC_OFFSET], %g4
+	ldx	[%sp + STACK_BIAS + ISF_TNPC_OFFSET], %g5
+	ldx	[%sp + STACK_BIAS + ISF_TSTATE_OFFSET], %g1
+	ldx	[%sp + STACK_BIAS + ISF_TVEC_NUM], %g2
+	wrpr	%g0, %g3, %pil
+	wrpr	%g0, %g4, %tpc
+	wrpr	%g0, %g5, %tnpc
 
-        /*
-         *  if (CWP + 1) is an invalid window then we need to reload it.
-         *
-         *  WARNING: Traps should now be disabled
-         */
+        ldx     [%sp + STACK_BIAS + ISF_O0_OFFSET], %o0    ! restore o0
+        ldx     [%sp + STACK_BIAS + ISF_O1_OFFSET], %o1    ! restore o1
+        ldx     [%sp + STACK_BIAS + ISF_O2_OFFSET], %o2    ! restore o2
+        ldx     [%sp + STACK_BIAS + ISF_O3_OFFSET], %o3    ! restore o3
+        ldx     [%sp + STACK_BIAS + ISF_O4_OFFSET], %o4    ! restore o4
+        ldx     [%sp + STACK_BIAS + ISF_O5_OFFSET], %o5    ! restore o5
+        ! sp is restored later
+	ldx     [%sp + STACK_BIAS + ISF_O7_OFFSET], %o7    ! restore o7
 
-        mov     %l0, %psr                  !  **** DISABLE TRAPS ****
-        nop
-        nop
-        nop
-        rd      %wim, %l4
-        add     %l0, 1, %l6                ! l6 = cwp + 1
-!        and     %l6, SPARC_PSR_CWP_MASK, %l6 ! do the modulo on it
-        srl     %l4, %l6, %l5              ! l5 = win >> cwp + 1 ; shift count
-                                           !  and CWP are conveniently LS 5 bits
-        cmp     %l5, 1                     ! Is tasks window invalid?
-        bne     good_task_window
-
-        /*
-         *  The following code is the same as a 1 position left rotate of WIM.
-         */
-
-        sll     %l4, 1, %l5                ! l5 = WIM << 1
-        srl     %l4, SPARC_NUMBER_OF_REGISTER_WINDOWS-1 , %l4
-                                           ! l4 = WIM >> (Number Windows - 1)
-        or      %l4, %l5, %l4              ! l4 = (WIM << 1) |
-                                           !      (WIM >> (Number Windows - 1))
-
-        /*
-         *  Now restore the window just as if we underflowed to it.
-         */
-
-        wr      %l4, 0, %wim               ! WIM = new WIM
-        nop                                ! must delay after writing WIM
-        nop
-        nop
-        restore                            ! now into the tasks window
-
-        ldd     [%g1 + CPU_STACK_FRAME_L0_OFFSET], %l0
-        ldd     [%g1 + CPU_STACK_FRAME_L2_OFFSET], %l2
-        ldd     [%g1 + CPU_STACK_FRAME_L4_OFFSET], %l4
-        ldd     [%g1 + CPU_STACK_FRAME_L6_OFFSET], %l6
-        ldd     [%g1 + CPU_STACK_FRAME_I0_OFFSET], %i0
-        ldd     [%g1 + CPU_STACK_FRAME_I2_OFFSET], %i2
-        ldd     [%g1 + CPU_STACK_FRAME_I4_OFFSET], %i4
-        ldd     [%g1 + CPU_STACK_FRAME_I6_FP_OFFSET], %i6
-                                           ! reload of sp clobbers ISF
-        save                               ! Back to ISR dispatch window
-
-good_task_window:
-
-        mov     %l0, %psr                  !  **** DISABLE TRAPS ****
-	nop; nop; nop
-                                           !  and restore condition codes.
-        ld      [%g1 + ISF_G1_OFFSET], %g1 ! restore g1
-        
+        ldx     [%sp + STACK_BIAS + ISF_O6_SP_OFFSET], %o6 ! restore o6/sp
+	
 	/*
          *  Determine whether to re-execute the trapping instruction 
 	 *  (asynchronous trap) or to skip the trapping instruction
@@ -793,8 +798,8 @@ good_task_window:
 
         andcc   %g2, SPARC_SYNCHRONOUS_TRAP_BIT_MASK, %g0
                                       ! Is this a synchronous trap?
-        be,a    not_synch             ! No, then skip trapping instruction
-        nop
+        be	not_synch             ! No, then skip trapping instruction
+	mov	0, %g4
 	retry				! re-execute trapping instruction
 not_synch:
 	done				! skip trapping instruction
