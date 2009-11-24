@@ -100,6 +100,8 @@ extern phandle ofw_aliases;
 extern void ofw_init(void);
 
 extern void ofw_write(const char *str, const int len);
+extern void ofw_read(void *str, const int len);
+
 
 extern int ofw_get_property(const phandle device, const char *name, void *buf, const int buflen);
 extern int ofw_get_proplen(const phandle device, const char *name);

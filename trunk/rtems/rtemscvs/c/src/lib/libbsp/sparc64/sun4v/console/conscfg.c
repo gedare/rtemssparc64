@@ -2,14 +2,18 @@
 
 #include <libchip/serial.h>
 
+extern void ofw_write(const char *,const int );
+extern void ofw_read(void *,int );
+
 int sun4v_console_device_first_open(int major, int minor, void *arg)
 {
-	
+	return 0;
 }
 
 static int sun4v_console_poll_write(int minor, const char *buf, int n)
 {
 	ofw_write(buf, n);
+	return 0;
 }
 
 void sun4v_console_deviceInitialize (int minor)
@@ -18,17 +22,18 @@ void sun4v_console_deviceInitialize (int minor)
 }
 
 int sun4v_console_poll_read(int minor){
-	printk("\n\sun4v_console_poll_read() NOT YET IMPLEMENTED\n\r");
-    return -1;
+	int a;
+	ofw_read(&a,1);
+	if(a!=0){
+		return a>>24;
+	}
+	return -1;
 }
 
 
-bool sun4v_console_deviceProbe (int minor)
-{
+bool sun4v_console_deviceProbe (int minor){
 	return true;
 }
-
-
 
 /*
  *  Polled mode functions
@@ -54,7 +59,7 @@ console_flow sun4v_console_console_flow={
 console_tbl     Console_Port_Tbl[] = {
 {
   "/dev/console",                          /* sDeviceName */
-   0,                         			   /* deviceType */
+   SERIAL_CUSTOM,                    	   /* deviceType */
    &pooled_functions,                      /* pDeviceFns */
    NULL,              						/* deviceProbe, assume it is there */
    &sun4v_console_console_flow,             /* pDeviceFlow */
@@ -69,7 +74,7 @@ console_tbl     Console_Port_Tbl[] = {
    NULL, /* unused */                      /* getData */
    NULL, /* unused */                      /* setData */
    0,                             		   /* ulClock */
-   NULL      							   /* ulIntVector -- base for port */
+   0      							   	   /* ulIntVector -- base for port */
 },
 };
 
