@@ -10,12 +10,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: blow.c,v 1.13 2009/09/09 14:59:09 joel Exp $
+ *  $Id: blow.c,v 1.14 2009/10/26 05:44:07 ralf Exp $
  */
 
 #include <rtems.h>
 
-void b() {}
+void b(void) {}
 
 void blow_stack( void )
 {

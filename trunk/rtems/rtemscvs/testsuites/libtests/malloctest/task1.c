@@ -10,13 +10,16 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.12 2009/08/12 20:50:26 joel Exp $
+ *  $Id: task1.c,v 1.13 2009/10/26 05:53:29 ralf Exp $
  */
 
 #include "system.h"
 #include <rtems/malloc.h> 
 #include <string.h>
 #include <stdlib.h>
+
+/* HACK: Blatant visibility violation */
+extern void malloc_walk(size_t source, size_t printf_enabled);
 
 #define NUM_PASSES 100
 

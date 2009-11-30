@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: signal12.c,v 1.9 2009/05/10 20:15:56 joel Exp $
+ *  $Id: signal12.c,v 1.10 2009/10/25 06:25:04 ralf Exp $
  */
 
 #include <signal.h>
@@ -18,7 +18,7 @@ void test( void );
 
 void test( void )
 {
-  void (*signal_function_pointer)();
+  void (*signal_function_pointer)(int);
   int  signal_number;
 
   signal_number = SIGALRM;

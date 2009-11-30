@@ -8,7 +8,7 @@
  *
  *  This code was updated and merged with RTEMS CVS by Joel Sherrill, 2009.
  *
- *  $Id: tfsDriver.c,v 1.1 2009/06/12 17:20:42 joel Exp $
+ *  $Id: tfsDriver.c,v 1.2 2009/11/03 07:12:25 ralf Exp $
  */
 
 #include <stdio.h>
@@ -234,6 +234,7 @@ static void fixPath(char *path)
 
 static int rtems_tfs_eval_path(
   const char                        *pathname,
+  int                                pathnamelen,
   int                                flags,
   rtems_filesystem_location_info_t  *pathloc
 )

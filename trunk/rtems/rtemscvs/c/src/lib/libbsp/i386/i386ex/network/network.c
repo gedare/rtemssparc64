@@ -1,6 +1,6 @@
 /* uti595.c: An 82596 ethernet driver for rtems-bsd.
  *
- *  $Id: network.c,v 1.14 2008/05/15 16:33:49 joel Exp $
+ *  $Id: network.c,v 1.15 2009/11/06 07:50:28 ralf Exp $
  */
 
 void dump_scb(void);
@@ -1302,7 +1302,7 @@ uti596_resetDaemon (void *arg)
 				      RTEMS_NO_TIMEOUT, &events);
 
 	  rtems_clock_get(RTEMS_CLOCK_GET_TOD, &tm_struct);
-	  printf("reset daemon: Resetting NIC @ %d:%d:%d \n",
+	  printf("reset daemon: Resetting NIC @ %" PRIu32 ":%" PRIu32 ":%" PRIu32 " \n",
 		 tm_struct.hour, tm_struct.minute, tm_struct.second);
 
 	  sc->stats.nic_reset_count++;

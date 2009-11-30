@@ -17,18 +17,13 @@
 | this file contains the startup assembly code                    |
 | it is based on the gen83xx BSP                                  |
 \*===============================================================*/
-/* $Id: start.S,v 1.2 2009/04/28 06:33:16 ccj Exp $ */   
+/* $Id: start.S,v 1.3 2009/10/21 13:24:35 thomas Exp $ */   
 
 #include <libcpu/powerpc-utility.h> 
 #include <rtems/powerpc/cache.h>
 #include <bsp.h>
 #include <mpc8xx.h>
 
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning You need to pass a NULL.
-#warning Please check and remove these warnings.
-	
 .extern boot_card
 
 .section ".entry"  
@@ -147,7 +142,7 @@ start_code_in_ram:
 	
 /* clear arguments and do further init. in C (common for RAM/ROM startup) */
 
-        /* Clear argc, argv and envp */
+        /* Clear cmdline */
         xor r3, r3, r3
 
         bl      SYM (boot_card)  /* Call the first C routine */

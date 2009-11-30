@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.2 2009/07/01 19:31:53 joel Exp $
+ *  $Id: init.c,v 1.3 2009/10/26 11:29:24 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -59,7 +59,7 @@ rtems_task Init(
   status = rtems_timer_create( Timer_name[ 1 ], &Timer_id[ 1 ] );
   directive_failed( status, "rtems_timer_create" );
 
-  printf( "INIT - timer 1 has id (0x%x)\n", Timer_id[ 1 ] );
+  printf( "INIT - timer 1 has id (0x%" PRIxrtems_id ")\n", Timer_id[ 1 ] );
 
   status = rtems_task_delete( RTEMS_SELF );
   directive_failed( status, "rtems_task_delete of RTEMS_SELF" );

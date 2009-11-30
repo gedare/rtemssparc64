@@ -1,3 +1,31 @@
+2009-11-03	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* start/start.S: checked and removed boot_card warning
+	* irq/irq.c: adapted exception handler parameters
+	* startup/bspstart.c: removed non-prototype warnings
+
+2009-10-23	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* vectors/vectors.h, vectors/vectors_init.c, vectors/vectors.S,
+	irq/irq_init.c, irq/irq_asm.S: Removed files.
+
+2009-10-22	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/irq-config.h: New file.
+	* Makefile.am, preinstall.am: Update for exception support changes.
+	Use generic interrupt support.
+	* make/custom/mpc8260ads.cfg, startup/linkcmds: Enable EABI.
+	* irq/irq.c, startup/bspstart.c: Converted to generic interrupt
+	support.  Update for exception support changes.
+
+2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* make/custom/mpc8260ads.cfg: Remove RTEMS_BSP_FAMILY.
+
+2009-10-20	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Don't add -ansi -fasm to CFLAGS.
+
 2009-10-15	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* make/custom/mpc8260ads.cfg: New (relocated from /make/custom).

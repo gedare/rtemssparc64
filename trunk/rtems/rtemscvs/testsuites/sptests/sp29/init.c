@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.15 2009/08/26 02:16:03 joel Exp $
+ *  $Id: init.c,v 1.16 2009/10/27 12:12:48 ralf Exp $
  */
 
 #include <bsp.h>
@@ -28,6 +28,8 @@ rtems_task Init (rtems_task_argument argument);
 #include <rtems/error.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "tmacros.h"
 
 rtems_interval ticksPerSecond;
 rtems_task subtask(rtems_task_argument arg);
@@ -83,7 +85,7 @@ rtems_task Init (rtems_task_argument ignored)
 
         ticksPerSecond = rtems_clock_get_ticks_per_second();
 	if (ticksPerSecond <= 0) {
-		printf ("Invalid ticks per second: %lu\n", (unsigned long) ticksPerSecond);
+		printf ("Invalid ticks per second: %" PRIdrtems_interval "\n", ticksPerSecond);
 		exit (1);
 	}
 	sc = rtems_semaphore_create (rtems_build_name ('S', 'M', 'r', 'c'),
@@ -174,16 +176,16 @@ rtems_task Init (rtems_task_argument ignored)
 	startTask (semnorec);
 	rtems_clock_get (RTEMS_CLOCK_GET_TICKS_SINCE_BOOT, &then);
 	for (i = 0 ; i < 5 ; i++) {
-		int diff;
+		rtems_interval diff;
 
 		sc = rtems_semaphore_obtain (semnorec, RTEMS_WAIT, RTEMS_NO_TIMEOUT);
 		rtems_clock_get (RTEMS_CLOCK_GET_TICKS_SINCE_BOOT, &now);
-		diff = (int) (now - then);
+		diff = (now - then);
 		then = now;
 		if (sc != RTEMS_SUCCESSFUL)
 			printf ("%d: Failed to obtain non-recursive-lock semaphore: %s\n", __LINE__, rtems_status_text (sc));
 		else if (diff < (int) (2 * ticksPerSecond))
-			printf ("%d: Obtained obtain non-recursive-lock semaphore too quickly -- %d ticks not %d ticks\n", __LINE__, diff, (2 * ticksPerSecond) );
+			printf ("%d: Obtained obtain non-recursive-lock semaphore too quickly -- %" PRIdrtems_interval " ticks not %" PRIdrtems_interval " ticks\n", __LINE__, diff, (2 * ticksPerSecond) );
 	}
 
 	puts( "*** END OF TEST 29 ***" );

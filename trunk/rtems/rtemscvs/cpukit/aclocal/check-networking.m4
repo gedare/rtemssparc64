@@ -1,4 +1,4 @@
-dnl $Id: check-networking.m4,v 1.7 2009/10/14 12:25:59 ralf Exp $
+dnl $Id: check-networking.m4,v 1.8 2009/11/19 14:46:11 ralf Exp $
 dnl
 AC_DEFUN([RTEMS_CHECK_NETWORKING],
 [dnl
@@ -9,9 +9,6 @@ AC_CACHE_CHECK([whether CPU supports networking],
   rtems_cv_HAS_NETWORKING,
   [dnl
     case "$RTEMS_CPU" in
-    avr*|m32c*)       # do not have address space to hold BSD TCP/IP stack
-      rtems_cv_HAS_NETWORKING="no"
-      ;;
     *)
       AS_IF([test "${RTEMS_HAS_NETWORKING}" = "yes"],[
 # suppress libnetworking if one these types is not available

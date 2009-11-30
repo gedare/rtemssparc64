@@ -10,15 +10,17 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: cpu.h,v 1.37 2009/02/11 21:44:59 joel Exp $
+ * $Id: cpu.h,v 1.39 2009/10/30 19:28:45 thomas Exp $
  */
  
 #ifndef _RTEMS_SCORE_CPU_H
 #define _RTEMS_SCORE_CPU_H
 
 #include <rtems/score/powerpc.h>              /* pick up machine definitions */
+
 #ifndef ASM
-#include <rtems/score/types.h>
+  #include <string.h> /* for memset() */
+  #include <rtems/score/types.h>
 #endif
 
 /* conditional compilation parameters */
@@ -224,6 +226,7 @@
  */
 
 #ifndef ASM
+
 typedef struct {
     uint32_t   gpr1;	/* Stack pointer for all */
     uint32_t   gpr2;	/* Reserved SVR4, section ptr EABI + */
@@ -263,15 +266,13 @@ typedef struct {
      */
 #if (PPC_HAS_DOUBLE == 1)
     double	f[32];
-    double	fpscr;
+    uint64_t	fpscr;
 #else
     float	f[32];
-    float	fpscr;
+    uint32_t	fpscr;
 #endif
 } Context_Control_fp;
-#endif /* ASM */
 
-#ifndef ASM
 typedef struct CPU_Interrupt_frame {
     uint32_t   stacklink;	/* Ensure this is a real frame (also reg1 save) */
     uint32_t   calleeLr;	/* link register used by callees: SVR4/EABI */
@@ -302,6 +303,7 @@ typedef struct CPU_Interrupt_frame {
     uint32_t   msr;
     uint32_t   pad[3];
 } CPU_Interrupt_frame;
+
 #endif /* ASM */
 
 #include <rtems/new-exceptions/cpu.h>
@@ -400,112 +402,6 @@ static inline uint32_t CPU_swap_u32(
 
 #endif /* ASM */
 
-#ifndef ASM
-/*
- *  Simple spin delay in microsecond units for device drivers.
- *  This is very dependent on the clock speed of the target.
- */
-
-#if 0
-/* Wonderful bookE doesn't have mftb/mftbu; they only
- * define the TBRU/TBRL SPRs so we use these. Luckily,
- * we run in supervisory mode so that should work on
- * all CPUs. In user mode we'd have a problem...
- * 2007/11/30, T.S.
- *
- * OTOH, PSIM currently lacks support for reading
- * SPRs 268/269. You need GDB patch sim/2376 to avoid
- * a crash...
- */
-#define CPU_Get_timebase_low( _value ) \
-    asm volatile( "mftb  %0" : "=r" (_value) )
-#else
-#define CPU_Get_timebase_low( _value ) \
-    asm volatile( "mfspr %0,268" : "=r" (_value) )
-#endif
-
-/* Must be provided for rtems_bsp_delay to work */
-extern     uint32_t bsp_clicks_per_usec;
-
-#define rtems_bsp_delay( _microseconds ) \
-  do { \
-    uint32_t   start, ticks, now; \
-    CPU_Get_timebase_low( start ) ; \
-    ticks = (_microseconds) * bsp_clicks_per_usec; \
-    do \
-      CPU_Get_timebase_low( now ) ; \
-    while (now - start < ticks); \
-  } while (0)
-
-#define rtems_bsp_delay_in_bus_cycles( _cycles ) \
-  do { \
-    uint32_t   start, now; \
-    CPU_Get_timebase_low( start ); \
-    do \
-      CPU_Get_timebase_low( now ); \
-    while (now - start < (_cycles)); \
-  } while (0)
-
-#endif /* ASM */
-
-#ifndef ASM
-/*
- *  Routines to access the decrementer register
- */
-
-#define PPC_Set_decrementer( _clicks ) \
-  do { \
-    asm volatile( "mtdec %0" : : "r" ((_clicks)) ); \
-  } while (0)
-
-#define PPC_Get_decrementer( _clicks ) \
-    asm volatile( "mfdec  %0" : "=r" (_clicks) )
-
-#endif /* ASM */
-
-#ifndef ASM
-/*
- *  Routines to access the time base register
- */
-
-static inline uint64_t PPC_Get_timebase_register( void )
-{
-  uint32_t tbr_low;
-  uint32_t tbr_high;
-  uint32_t tbr_high_old;
-  uint64_t tbr;
-
-  do {
-#if 0
-/* See comment above (CPU_Get_timebase_low) */
-    asm volatile( "mftbu %0" : "=r" (tbr_high_old));
-    asm volatile( "mftb  %0" : "=r" (tbr_low));
-    asm volatile( "mftbu %0" : "=r" (tbr_high));
-#else
-    asm volatile( "mfspr %0, 269" : "=r" (tbr_high_old));
-    asm volatile( "mfspr %0, 268" : "=r" (tbr_low));
-    asm volatile( "mfspr %0, 269" : "=r" (tbr_high));
-#endif
-  } while ( tbr_high_old != tbr_high );
-
-  tbr = tbr_high;
-  tbr <<= 32;
-  tbr |= tbr_low;
-  return tbr;
-}
-
-static inline  void PPC_Set_timebase_register (uint64_t tbr)
-{
-  uint32_t tbr_low;
-  uint32_t tbr_high;
-
-  tbr_low = (tbr & 0xffffffff) ;
-  tbr_high = (tbr >> 32) & 0xffffffff;
-  asm volatile( "mtspr 284, %0" : : "r" (tbr_low));
-  asm volatile( "mtspr 285, %0" : : "r" (tbr_high));
-  
-}
-#endif /* ASM */
 
 #ifndef ASM
 /* Context handler macros */
@@ -578,9 +474,7 @@ void _CPU_Context_Initialize(
  */
 
 #define _CPU_Context_Initialize_fp( _destination ) \
-  { \
-    (*(_destination))->fpscr = PPC_INIT_FPSCR; \
-  }
+  memset( *(_destination), 0, sizeof( **(_destination) ) )
 
 /* end of Context handler macros */
 #endif /* ASM */

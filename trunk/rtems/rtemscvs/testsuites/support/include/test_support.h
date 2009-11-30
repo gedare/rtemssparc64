@@ -1,7 +1,7 @@
 /*
  *  Support routines for test code.
  *
- *  $Id: test_support.h,v 1.1 2008/02/04 19:40:33 jennifer Exp $
+ *  $Id: test_support.h,v 1.2 2009/10/26 05:33:50 ralf Exp $
  */
 
 #ifndef __TEST_SUPPORT_h
@@ -11,9 +11,9 @@
 extern "C" {
 #endif
 
-void Allocate_majority_of_workspace( int smallest );
-const char *Get_Too_Long_Name();
-const char *Get_Longest_Name();
+extern void Allocate_majority_of_workspace( int smallest );
+extern const char *Get_Too_Long_Name(void);
+extern const char *Get_Longest_Name(void);
 
 #ifdef __cplusplus
 };

@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.11 2009/09/10 01:21:38 joel Exp $
+## $Id: Makefile.am,v 1.14 2009/11/06 14:26:38 ralf Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -22,9 +22,8 @@ noinst_PROGRAMS =
 include_HEADERS += include/coverhd.h
 include_bsp_HEADERS = include/tqm.h include/8xx_immap.h \
     include/irq.h include/irq-config.h \
-    ../../shared/include/irq-generic.h\
-    ../../../libcpu/@RTEMS_CPU@/@exceptions@/bspsupport/vectors.h \
-    ../../../libcpu/@RTEMS_CPU@/@exceptions@/bspsupport/ppc_exc_bspsupp.h
+    ../../shared/include/irq-generic.h \
+    spi/spi.h
 
 EXTRA_DIST = times-tqm866
 
@@ -35,8 +34,9 @@ project_lib_DATA = start.$(OBJEXT)
 libbspstart_a_SOURCES += ../../powerpc/shared/start/rtems_crti.S
 project_lib_DATA += rtems_crti.$(OBJEXT)
 
-dist_project_lib_DATA += startup/linkcmds.base \
-    startup/linkcmds.tqm8xx
+project_lib_DATA += startup/linkcmds
+dist_project_lib_DATA += startup/linkcmds.base
+EXTRA_DIST += startup/linkcmds.tqm8xx
 
 noinst_LIBRARIES += libbsp.a
 libbsp_a_SOURCES =
@@ -53,6 +53,8 @@ libbsp_a_SOURCES += clock/p_clock.c
 
 # console
 libbsp_a_SOURCES += console/console.c
+# spi
+libbsp_a_SOURCES += spi/spi.c
 # timer
 libbsp_a_SOURCES += timer/timer.c
 # startup
@@ -75,7 +77,6 @@ libbsp_a_LIBADD = \
     ../../../libcpu/@RTEMS_CPU@/shared/cpuIdent.rel \
     ../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
     ../../../libcpu/@RTEMS_CPU@/@exceptions@/rtems-cpu.rel \
-    ../../../libcpu/@RTEMS_CPU@/@exceptions@/raw_exception.rel \
     ../../../libcpu/@RTEMS_CPU@/@exceptions@/exc_bspsupport.rel \
     ../../../libcpu/@RTEMS_CPU@/mpc8xx/console-generic.rel \
     ../../../libcpu/@RTEMS_CPU@/mpc8xx/cpm.rel \

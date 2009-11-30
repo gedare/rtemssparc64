@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.4 2009/09/21 13:14:37 joel Exp $
+ *  $Id: init.c,v 1.8 2009/11/12 00:21:51 joel Exp $
  */
 
 #include <pmacros.h>
@@ -30,13 +30,11 @@ rtems_task Init(
   struct timespec tv;
   struct timespec tr;
   int             sc;
-  int             priority;
-  pthread_t       thread_id;
   time_t          seconds;
   time_t          seconds1;
   unsigned int    remaining;
   struct tm       tm;
-  useconds_t      useconds;
+  struct timespec delay_request;
 
   puts( "\n\n*** POSIX CLOCK TEST ***" );
 
@@ -112,7 +110,7 @@ rtems_task Init(
   /* print new times to make sure it has changed and we can get the realtime */
   sc = clock_gettime( CLOCK_PROCESS_CPUTIME, &tv );
   rtems_test_assert( !sc );
-  printf("Time since boot: (%d, %d)\n", tv.tv_sec,tv.tv_nsec );
+  printf("Time since boot: (%" PRItime_t ", %ld)\n", tv.tv_sec,tv.tv_nsec );
 
   sc = clock_gettime( CLOCK_REALTIME, &tv );
   rtems_test_assert( !sc );
@@ -208,9 +206,11 @@ rtems_task Init(
   printf( "Init: sec (%ld), nsec (%ld) remaining\n", tr.tv_sec, tr.tv_nsec );
   rtems_test_assert( !tr.tv_sec && !tr.tv_nsec );
 
-  puts( "Init: usleep - 1.35 seconds" );
-  useconds = usleep ( 1350000 );
-  rtems_test_assert( useconds < 1350000 );
+  puts( "Init: nanosleep - 1.35 seconds" );
+  delay_request.tv_sec = 1;
+  delay_request.tv_nsec = 35000000;
+  sc = nanosleep( &delay_request, NULL );
+  assert( !sc );
   
   /* print the current real time again */
   sc = clock_gettime( CLOCK_REALTIME, &tv );

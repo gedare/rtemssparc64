@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.c,v 1.18 2009/07/03 20:25:35 joel Exp $
+ *  $Id: task.c,v 1.19 2009/11/03 05:23:05 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -160,11 +160,11 @@ void _ITRON_Task_Manager_initialization(void)
     Configuration_ITRON_API.maximum_tasks,
                                 /* maximum objects of this class */
     sizeof( Thread_Control ),   /* size of this object's control block */
-    FALSE,                      /* TRUE if names for this object are strings */
+    false,                      /* true if names for this object are strings */
     ITRON_MAXIMUM_NAME_LENGTH   /* maximum length of each object's name */
 #if defined(RTEMS_MULTIPROCESSING)
     ,
-    FALSE,                      /* TRUE if this is a global object class */
+    false,                      /* true if this is a global object class */
     NULL                        /* Proxy extraction support callout */
 #endif
   );

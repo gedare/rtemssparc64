@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.10 2003/09/04 18:53:48 joel Exp $
+ *  $Id: task1.c,v 1.11 2009/10/26 11:29:24 ralf Exp $
  */
 
 #include "system.h"
@@ -32,7 +32,7 @@ rtems_task Task_1(
 
   status = rtems_port_ident( Port_name[ 1 ], &dpid );
   directive_failed( status, "rtems_port_ident" );
-  printf( "TA1 - rtems_port_ident - 0x%08x\n", dpid );
+  printf( "TA1 - rtems_port_ident - 0x%08" PRIxrtems_id "\n", dpid );
 
   to_be_converted = &External_port_area[ 0xe ];
   status = rtems_port_external_to_internal(

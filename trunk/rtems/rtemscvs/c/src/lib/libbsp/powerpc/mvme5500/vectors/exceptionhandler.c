@@ -1,4 +1,4 @@
-/* $Id: exceptionhandler.c,v 1.6 2008/09/22 21:50:25 joel Exp $ */
+/* $Id: exceptionhandler.c,v 1.7 2009/10/23 07:32:45 thomas Exp $ */
 
 /* 
  * Authorship
@@ -50,7 +50,6 @@
 
 #include <bsp.h>
 #include <bsp/vectors.h>
-#include <libcpu/raw_exception.h>
 #include <libcpu/spr.h>
 #include <bsp/pci.h>
 #include <rtems/bspIo.h>
@@ -59,9 +58,6 @@
 
 #define SRR1_TEA_EXC	(1<<(31-13))
 #define SRR1_MCP_EXC	(1<<(31-12))
-
-extern void
-BSP_printStackTrace(BSP_Exception_frame* excPtr);
 
 static volatile BSP_ExceptionExtension	BSP_exceptionExtension = 0;
 

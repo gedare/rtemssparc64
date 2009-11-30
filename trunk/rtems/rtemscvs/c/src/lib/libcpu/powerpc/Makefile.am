@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.am,v 1.55 2009/07/21 08:37:07 thomas Exp $
+# $Id: Makefile.am,v 1.57 2009/11/03 18:45:04 thomas Exp $
 #
 
 ACLOCAL_AMFLAGS = -I ../../../aclocal
@@ -15,6 +15,10 @@ include_libcpudir = $(includedir)/libcpu
 
 include_libcpu_HEADERS = shared/include/powerpc-utility.h
 
+include_bspdir = $(includedir)/bsp
+
+include_bsp_HEADERS =
+
 EXTRA_DIST =
 
 noinst_PROGRAMS = new-exceptions/rtems-cpu.rel
@@ -25,19 +29,20 @@ new_exceptions_rtems_cpu_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
 
 if !mpc5xx
-include_libcpu_HEADERS += new-exceptions/raw_exception.h
-noinst_PROGRAMS += new-exceptions/raw_exception.rel
-new_exceptions_raw_exception_rel_SOURCES = new-exceptions/raw_exception.c \
-    new-exceptions/asm_utils.S \
-	new-exceptions/e500_raw_exc_init.c
-new_exceptions_raw_exception_rel_CPPFLAGS = $(AM_CPPFLAGS)
-new_exceptions_raw_exception_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+include_bsp_HEADERS += new-exceptions/bspsupport/vectors.h
 
 noinst_PROGRAMS += new-exceptions/exc_bspsupport.rel
 new_exceptions_exc_bspsupport_rel_SOURCES = \
+    new-exceptions/bspsupport/ppc-code-copy.c \
     new-exceptions/bspsupport/ppc_exc.S \
+    new-exceptions/bspsupport/ppc_exc_naked.S \
     new-exceptions/bspsupport/ppc_exc_hdl.c \
-    new-exceptions/bspsupport/vectors_init.c
+    new-exceptions/bspsupport/ppc_exc_initialize.c \
+    new-exceptions/bspsupport/ppc_exc_global_handler.c \
+    new-exceptions/bspsupport/ppc_exc_categories.c \
+    new-exceptions/bspsupport/ppc_exc_address.c \
+    new-exceptions/bspsupport/ppc_exc_prologue.c
+
 new_exceptions_exc_bspsupport_rel_CPPFLAGS = $(AM_CPPFLAGS)
 new_exceptions_exc_bspsupport_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
@@ -50,7 +55,6 @@ endif
 
 EXTRA_DIST += new-exceptions/bspsupport/vectors.h
 EXTRA_DIST += new-exceptions/bspsupport/irq_supp.h
-EXTRA_DIST += new-exceptions/bspsupport/ppc_exc_bspsupp.h
 EXTRA_DIST += new-exceptions/bspsupport/README
 EXTRA_DIST += new-exceptions/bspsupport/nest_irq_test.c
 EXTRA_DIST += new-exceptions/bspsupport/ppc_exc_test.c
@@ -320,12 +324,6 @@ mpc8260_console_generic_rel_SOURCES = mpc8260/console-generic/console-generic.c 
 mpc8260_console_generic_rel_CPPFLAGS = $(AM_CPPFLAGS)
 mpc8260_console_generic_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
-# mpc8260/clock
-noinst_PROGRAMS += mpc8260/clock.rel
-mpc8260_clock_rel_SOURCES = mpc8260/clock/clock.c
-mpc8260_clock_rel_CPPFLAGS = $(AM_CPPFLAGS)
-mpc8260_clock_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
-
 # mpc8260/cpm
 include_mpc8260_HEADERS += mpc8260/include/cpm.h
 
@@ -357,11 +355,6 @@ endif
 if mpc83xx
 
 # Includes
-include_bspdir = $(includedir)/bsp
-
-include_bsp_HEADERS = new-exceptions/bspsupport/vectors.h \
-	new-exceptions/bspsupport/ppc_exc_bspsupp.h
-
 include_mpc83xxdir = $(includedir)/mpc83xx
 
 include_mpc83xx_HEADERS = mpc83xx/include/mpc83xx.h
@@ -407,12 +400,6 @@ endif
 if mpc55xx
 
 # Includes
-include_bspdir = $(includedir)/bsp
-
-include_bsp_HEADERS = new-exceptions/bspsupport/vectors.h \
-	new-exceptions/bspsupport/ppc_exc_bspsupp.h \
-	mpc55xx/include/irq.h
-
 include_mpc55xxdir = $(includedir)/mpc55xx
 
 include_mpc55xx_HEADERS = mpc55xx/include/regs.h \
@@ -423,6 +410,8 @@ include_mpc55xx_HEADERS = mpc55xx/include/regs.h \
 	mpc55xx/include/mpc55xx.h \
 	mpc55xx/include/esci.h \
 	mpc55xx/include/watchdog.h
+
+include_bsp_HEADERS += mpc55xx/include/irq.h
 
 # IRQ
 noinst_PROGRAMS += mpc55xx/irq.rel

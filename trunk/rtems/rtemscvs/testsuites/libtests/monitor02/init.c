@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2009/05/18 23:50:10 ccj Exp $
+ *  $Id: init.c,v 1.5 2009/10/29 07:22:07 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -20,6 +20,12 @@
 #include <rtems/shell.h>
 #include <rtems/shellconfig.h>
 #define MAX_ARGS 128
+
+/*
+ * HACK: API visibility violation
+ * rtems_shell_main_monitor should better be declared in rtems/shell.h 
+ */
+extern int rtems_shell_main_monitor(int argc, char **argv);
 
 char        *Commands[] = {
   "task",
@@ -31,8 +37,6 @@ rtems_task Init(
 )
 {
 #if !BSP_SMALL_MEMORY
-  uint32_t           index;
-  rtems_status_code  status;
   int                i;
   int                argc;
   char               *argv[MAX_ARGS];

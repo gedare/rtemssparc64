@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: changepri.c,v 1.8 2009/06/17 22:59:16 ccj Exp $
+ *  $Id: changepri.c,v 1.12 2009/10/27 06:57:21 ralf Exp $
  */
 
 #include <bsp.h>
@@ -51,7 +51,7 @@ const char *CallerName(void)
   #else
     TempName.u = _Thread_Executing->Object.name.name_u32;
   #endif
-    sprintf( buffer, "%c%c%c%c -- %d",
+    sprintf( buffer, "%c%c%c%c -- %" PRIdPriority_Control,
       TempName.c[0], TempName.c[1], TempName.c[2], TempName.c[3],
       _Thread_Executing->current_priority
   );
@@ -76,7 +76,7 @@ rtems_task BlockingTasks(rtems_task_argument arg)
   status = rtems_task_set_priority(RTEMS_SELF, RTEMS_CURRENT_PRIORITY, &opri);
   directive_failed( status, "rtems_task_set_priority" );
 
-  printf("semaphore_obtain -- BlockingTask %d @ pri=%d) blocks\n", arg, opri);
+  printf("semaphore_obtain -- BlockingTask %" PRIdrtems_task_argument " @ pri=%" PRIdrtems_task_priority ") blocks\n", arg, opri);
   status = rtems_semaphore_obtain(Semaphore, RTEMS_WAIT, RTEMS_NO_TIMEOUT);
   directive_failed( status, "rtems_semaphore_obtain" );
 
@@ -84,7 +84,7 @@ rtems_task BlockingTasks(rtems_task_argument arg)
   status = rtems_task_set_priority(RTEMS_SELF, RTEMS_CURRENT_PRIORITY, &npri);
   directive_failed( status, "rtems_task_set_priority" );
 
-  printf("semaphore_obtain -- BlockingTask %d @ pri=%d) returns\n", arg, npri);
+  printf("semaphore_obtain -- BlockingTask %" PRIdrtems_task_argument " @ pri=%" PRIdrtems_task_priority ") returns\n", arg, npri);
 
   (void) rtems_task_delete( RTEMS_SELF );
 }
@@ -123,7 +123,7 @@ rtems_task Init(rtems_task_argument ignored)
       &Blockers[i]);                                     /* Assigned ID */
     directive_failed( status, "rtems_task_create (BLKn)" );
   
-    printf( "Blockers[%d] Id = 0x%08x\n", i, Blockers[i] );
+    printf( "Blockers[%d] Id = 0x%08" PRIxrtems_id "\n", i, Blockers[i] );
     status = rtems_task_start(
       Blockers[i],
       BlockingTasks,

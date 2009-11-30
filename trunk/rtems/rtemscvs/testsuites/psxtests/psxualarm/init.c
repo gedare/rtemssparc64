@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2007/12/20 18:19:15 jennifer Exp $
+ *  $Id: init.c,v 1.3 2009/10/27 14:10:54 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -27,7 +27,7 @@ void Signal_handler(
 {
   Signal_count++;
   printf(
-    "Signal: %d caught by 0x%x (%d)\n",
+    "Signal: %d caught by 0x%" PRIxpthread_t " (%d)\n",
     signo,
     pthread_self(),
     Signal_count
@@ -53,13 +53,6 @@ void *POSIX_Init(
   useconds_t        result;
   struct sigaction  act;
   sigset_t          mask;
-  sigset_t          pending_set;
-  sigset_t          oset;
-  struct timespec   timeout;
-  siginfo_t         info;
-  sighandler_t      oldHandler;
-  sighandler_t      newHandler;
-  rtems_interval start, end;
 
   puts( "\n\n*** POSIX TEST UALARM ***" );
 
@@ -70,7 +63,7 @@ void *POSIX_Init(
   /* get id of this thread */
 
   Init_id = pthread_self();
-  printf( "Init's ID is 0x%08x\n", Init_id );
+  printf( "Init's ID is 0x%08" PRIxpthread_t "\n", Init_id );
 
   Signal_occurred = 0;
   Signal_count = 0;

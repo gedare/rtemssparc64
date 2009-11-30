@@ -1,5 +1,5 @@
 ##
-##  $Id: Makefile.am,v 1.80 2009/10/08 07:07:36 ccj Exp $
+##  $Id: Makefile.am,v 1.81 2009/11/18 00:09:21 ccj Exp $
 ##
 
 include $(top_srcdir)/automake/compile.am
@@ -95,7 +95,8 @@ libshell_a_SOURCES = shell/cat_file.c shell/cmds.c shell/internal.h \
     shell/dd-misc.c shell/dd-position.c \
     shell/main_hexdump.c shell/hexdump-conv.c shell/hexdump-display.c \
     shell/hexdump-odsyntax.c shell/hexdump-parse.c shell/hexsyntax.c \
-    shell/main_time.c shell/main_mknod.c
+    shell/main_time.c shell/main_mknod.c \
+    shell/main_setenv.c shell/main_getenv.c shell/main_unsetenv.c
 
 if LIBNETWORKING
 libshell_a_SOURCES += shell/main_mount_ftp.c shell/main_mount_tftp.c \

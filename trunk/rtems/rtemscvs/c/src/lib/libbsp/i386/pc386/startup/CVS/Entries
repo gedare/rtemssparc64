@@ -1,7 +1,7 @@
-/bspcmdline.c/1.1/Tue Apr 28 06:20:35 2009//
-/bspgetworkarea.c/1.7/Fri May  8 13:23:37 2009//
-/bspreset.c/1.1/Mon Sep 22 21:53:54 2008//
-/bspstart.c/1.48/Tue Apr 28 06:20:35 2009//
-/ldsegs.S/1.17/Thu Nov  3 02:58:09 2005//
-/linkcmds/1.20/Thu Sep 18 20:41:09 2008//
+/bspcmdline.c/1.1/Fri Oct 23 12:50:54 2009//
+/bspgetworkarea.c/1.7/Fri Oct 23 12:50:54 2009//
+/bspreset.c/1.1/Fri Oct 23 12:50:54 2009//
+/bspstart.c/1.48/Fri Oct 23 12:50:54 2009//
+/ldsegs.S/1.17/Fri Oct 23 12:50:54 2009//
+/linkcmds/1.20/Fri Oct 23 12:50:54 2009//
 D

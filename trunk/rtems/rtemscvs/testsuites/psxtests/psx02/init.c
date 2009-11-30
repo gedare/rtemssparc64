@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.13 2009/05/11 01:41:15 joel Exp $
+ *  $Id: init.c,v 1.14 2009/10/27 14:10:54 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -51,7 +51,7 @@ void *POSIX_Init(
   /* get id of this thread */
 
   Init_id = pthread_self();
-  printf( "Init's ID is 0x%08x\n", Init_id );
+  printf( "Init's ID is 0x%08" PRIxpthread_t "\n", Init_id );
 
   /* install a signal handler */
 

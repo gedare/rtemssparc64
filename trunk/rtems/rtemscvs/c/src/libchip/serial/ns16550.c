@@ -21,7 +21,7 @@
  */
  
 /*
- * $Id: ns16550.c,v 1.42 2009/10/13 11:34:49 thomas Exp $
+ * $Id: ns16550.c,v 1.43 2009/10/21 13:24:35 thomas Exp $
  */
 
 #include <stdlib.h>
@@ -577,14 +577,7 @@ NS16550_STATIC void ns16550_enable_interrupts(
   (*setReg)(pNS16550, NS16550_INTERRUPT_ENABLE, mask);
 }
 
-#ifdef BSP_FEATURE_IRQ_EXTENSION
-  NS16550_STATIC void ns16550_isr(rtems_vector_number vector, void *arg)
-  {
-    int minor = (int) arg;
-
-    ns16550_process( minor);
-  }
-#elif defined BSP_FEATURE_IRQ_LEGACY
+#if defined(BSP_FEATURE_IRQ_EXTENSION) || defined(BSP_FEATURE_IRQ_LEGACY)
   NS16550_STATIC rtems_isr ns16550_isr(void *arg)
   {
     int minor = (int) arg;

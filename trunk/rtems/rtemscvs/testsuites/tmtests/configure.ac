@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.20 2006/12/02 06:05:59 ralf Exp $
+## $Id: configure.ac,v 1.21 2009/10/20 04:14:56 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-tests-tmtests],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -18,7 +18,7 @@ RTEMS_CHECK_RTEMS_TEST_NO_PAUSE
 
 RTEMS_PROJECT_ROOT
 
-RTEMS_PROG_CC_FOR_TARGET([-ansi -fasm])
+RTEMS_PROG_CC_FOR_TARGET
 
 RTEMS_CANONICALIZE_TOOLS
 

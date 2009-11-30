@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.3 2009/09/15 14:44:00 ralf Exp $
+## $Id: configure.ac,v 1.4 2009/10/20 07:16:49 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-h8300-h8sim],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -13,7 +13,7 @@ RTEMS_BSP_CONFIGURE
 
 RTEMS_CONFIG_BUILD_SUBDIRS(tools)
 
-RTEMS_PROG_CC_FOR_TARGET([-ansi -fasm])
+RTEMS_PROG_CC_FOR_TARGET
 RTEMS_CANONICALIZE_TOOLS
 RTEMS_PROG_CCAS
 

@@ -11,13 +11,15 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.c,v 1.12 2008/09/05 12:11:47 ralf Exp $
+ *  $Id: timer.c,v 1.13 2009/10/30 19:28:46 thomas Exp $
  */
 
 #include <rtems/system.h>
 #include <assert.h>
 #include <rtems.h>
 #include <bsp.h>
+#include <libcpu/powerpc-utility.h>
+
 
 uint64_t   Timer_driver_Start_time;
 

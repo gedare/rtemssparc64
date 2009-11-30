@@ -1,5 +1,3 @@
-/.cvsignore/1.2/Sun Nov 20 17:10:34 2005//
-/Makefile.am/1.4/Tue Nov 11 10:55:16 2003//
 D/tm01////
 D/tm02////
 D/tm03////
@@ -29,3 +27,5 @@ D/tm28////
 D/tm29////
 D/tmck////
 D/tmoverhd////
+/.cvsignore/1.2/Fri Oct 23 12:48:55 2009//
+/Makefile.am/1.4/Fri Oct 23 12:48:55 2009//

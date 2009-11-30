@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.10 2009/08/12 20:50:43 joel Exp $
+ *  $Id: task1.c,v 1.11 2009/10/26 11:29:24 ralf Exp $
  */
 
 #include "system.h"
@@ -31,7 +31,7 @@ rtems_task Task_1(
     RTEMS_SEARCH_ALL_NODES,
     &smid
   );
-  printf( "TA1 - rtems_semaphore_ident - smid => %08x\n", smid );
+  printf( "TA1 - rtems_semaphore_ident - smid => %08" PRIxrtems_id "\n", smid );
   directive_failed( status, "rtems_semaphore_ident of SM1" );
 
   puts( "TA1 - rtems_semaphore_obtain - wait forever on SM2" );

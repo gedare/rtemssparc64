@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: termios_testdriver.c,v 1.3 2009/10/01 23:52:36 joel Exp $
+ *  $Id: termios_testdriver.c,v 1.5 2009/10/26 07:58:21 ralf Exp $
  */
 
 #include "tmacros.h"
@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <termios.h>
+#include <rtems/termiostypes.h>
 #include "termios_testdriver.h"
 
 int termios_test_driver_inbyte_nonblocking( int port )
@@ -54,10 +55,8 @@ int termios_test_driver_set_attributes(
   const struct termios *t
 )
 {
-  uint32_t               ulBaudDivisor;
   int                    baud_requested;
   int                    number;
-  rtems_interrupt_level  Irql;
   const char            *parity = "NONE";
   const char            *char_size = "5";
   const char            *stop = "NONE";

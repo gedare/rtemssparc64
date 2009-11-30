@@ -31,9 +31,9 @@
 %endif
 
 
-%define gcc_pkgvers 4.4.1
-%define gcc_version 4.4.1
-%define gcc_rpmvers %{expand:%(echo "4.4.1" | tr - _ )}
+%define gcc_pkgvers 4.4.2
+%define gcc_version 4.4.2
+%define gcc_rpmvers %{expand:%(echo "4.4.2" | tr - _ )}
 
 
 Name:         	i586-pc-freebsd7.2-gcc
@@ -41,7 +41,7 @@ Summary:      	i586-pc-freebsd7.2 gcc
 
 Group:	      	Development/Tools
 Version:        %{gcc_rpmvers}
-Release:      	0.20090907.1%{?dist}
+Release:      	0.20091021.1%{?dist}
 License:      	GPL
 URL:		http://gcc.gnu.org
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)

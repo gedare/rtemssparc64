@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.37 2009/09/10 01:17:06 joel Exp $
+## $Id: Makefile.am,v 1.39 2009/11/04 04:20:45 ralf Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -31,11 +31,12 @@ project_lib_DATA = start.$(OBJEXT)
 libbspstart_a_SOURCES += ../../powerpc/shared/start/rtems_crti.S
 project_lib_DATA += rtems_crti.$(OBJEXT)
 
-dist_project_lib_DATA += startup/linkcmds \
-    startup/linkcmds.base \
-    startup/linkcmds.brs5l \
-    startup/linkcmds.icecube \
-    startup/linkcmds.pm520
+dist_project_lib_DATA += startup/linkcmds.base
+project_lib_DATA += startup/linkcmds
+EXTRA_DIST = startup/linkcmds.brs5l
+EXTRA_DIST += startup/linkcmds.icecube
+EXTRA_DIST += startup/linkcmds.pm520_cr825
+EXTRA_DIST += startup/linkcmds.pm520_ze30
 
 noinst_LIBRARIES += libbsp.a
 libbsp_a_SOURCES =
@@ -68,9 +69,7 @@ libbsp_a_SOURCES += i2c/i2c.c i2c/i2cdrv.c i2c/mpc5200mbus.c i2c/mpc5200mbus.h
 # ide
 libbsp_a_SOURCES += ide/idecfg.c ide/pcmcia_ide.c ide/pcmcia_ide.h
 
-include_bsp_HEADERS = ../../../libcpu/@RTEMS_CPU@/new-exceptions/bspsupport/vectors.h \
-	../../../libcpu/@RTEMS_CPU@/new-exceptions/bspsupport/ppc_exc_bspsupp.h \
-	../../shared/include/irq-generic.h \
+include_bsp_HEADERS = ../../shared/include/irq-generic.h \
 	include/irq-config.h \
 	include/irq.h \
 	include/i2cdrv.h \
@@ -134,7 +133,6 @@ libbsp_a_LIBADD =  ../../../libcpu/@RTEMS_CPU@/shared/cpuIdent.rel \
 	../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
 	../../../libcpu/@RTEMS_CPU@/shared/stack.rel \
 	../../../libcpu/@RTEMS_CPU@/@exceptions@/rtems-cpu.rel \
-	../../../libcpu/@RTEMS_CPU@/@exceptions@/raw_exception.rel \
 	../../../libcpu/@RTEMS_CPU@/@exceptions@/exc_bspsupport.rel \
 	../../../libcpu/@RTEMS_CPU@/mpc6xx/mmu.rel \
 	../../../libcpu/@RTEMS_CPU@/mpc6xx/timer.rel

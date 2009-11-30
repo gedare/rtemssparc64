@@ -1,5 +1,5 @@
 ##
-##  $Id: Makefile.am,v 1.4 2009/04/03 12:42:12 ralf Exp $
+##  $Id: Makefile.am,v 1.6 2009/10/26 09:14:07 ralf Exp $
 ##
 
 MANAGERS = all
@@ -13,6 +13,8 @@ dist_rtems_tests_DATA += nsecs.doc
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../automake/compile.am
 include $(top_srcdir)/../automake/leaf.am
+
+AM_CPPFLAGS += -I$(top_srcdir)/../support/include
 
 LINK_OBJS = $(nsecs_OBJECTS) $(nsecs_LDADD)
 LINK_LIBS = $(nsecs_LDLIBS)

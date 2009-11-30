@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/10/11 22:32:03 joel Exp $
+ *  $Id: init.c,v 1.3 2009/10/27 14:10:54 ralf Exp $
  */
 
 #include <pmacros.h>
@@ -29,7 +29,7 @@ void Signal_handler(
 {
   Signal_count++;
   printf(
-    "Signal: %d caught by 0x%x (%d)\n",
+    "Signal: %d caught by 0x%" PRIxpthread_t " (%d)\n",
     signo,
     pthread_self(),
     Signal_count
@@ -45,7 +45,7 @@ void Signal_info_handler(
 {
   Signal_count++;
   printf(
-    "Signal_info: %d caught by 0x%x (%d) si_signo= %d si_code= %d value= %d\n",
+    "Signal_info: %d caught by 0x%" PRIxpthread_t " (%d) si_signo= %d si_code= %d value= %d\n",
     signo,
     pthread_self(),
     Signal_count,
@@ -64,10 +64,6 @@ void *POSIX_Init(
   int               sc;
   struct sigaction  act;
   sigset_t          mask;
-  sigset_t          pending_set;
-  sigset_t          oset;
-  struct timespec   timeout;
-  siginfo_t         info;
 
   puts( "\n\n*** POSIX ALARM TEST 01 ***" );
 

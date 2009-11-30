@@ -1,4 +1,4 @@
-/* $Id: mmu.c,v 1.1 2008/02/09 00:46:08 strauman Exp $ */
+/* $Id: mmu.c,v 1.2 2009/11/03 18:45:04 thomas Exp $ */
 
 /*
  * Routines to manipulate e500 TLBs; TLB0 (fixed 4k page size)
@@ -180,7 +180,7 @@
 
 /* Factory to generate inline macros for accessing the MAS registers */
 #define __RDWRMAS(mas,rmas)	\
-	static inline uint32_t _read_MAS##mas()	                                 \
+	static inline uint32_t _read_MAS##mas(void)	                                 \
 	{ uint32_t x; asm volatile("mfspr %0, %1": "=r"(x):"i"(rmas)); return x; } \
 	static inline void _write_MAS##mas(uint32_t x)                             \
 	{             asm volatile("mtspr %1, %0":: "r"(x),"i"(rmas)); }

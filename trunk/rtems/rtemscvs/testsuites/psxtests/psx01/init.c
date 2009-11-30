@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.36 2009/09/13 20:36:36 joel Exp $
+ *  $Id: init.c,v 1.38 2009/10/27 14:10:54 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -18,12 +18,10 @@ void *POSIX_Init(
   void *argument
 )
 {
-  struct timespec tv;
   struct timespec tr;
   int             status;
   int             priority;
   pthread_t       thread_id;
-  struct tm       tm;
   struct utsname  uts;
 
   puts( "\n\n*** POSIX TEST 1 ***" );
@@ -47,7 +45,7 @@ void *POSIX_Init(
   /* get id of this thread */
 
   Init_id = pthread_self();
-  printf( "Init: ID is 0x%08x\n", Init_id );
+  printf( "Init: ID is 0x%08" PRIxpthread_t "\n", Init_id );
 
   /* exercise get minimum priority */
 

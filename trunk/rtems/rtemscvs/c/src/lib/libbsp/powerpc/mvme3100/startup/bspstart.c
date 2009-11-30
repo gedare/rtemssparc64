@@ -16,7 +16,7 @@
  *
  *  Modified for mvme3100 by T. Straumann
  *
- *  $Id: bspstart.c,v 1.11 2009/03/05 21:17:55 strauman Exp $
+ *  $Id: bspstart.c,v 1.14 2009/10/23 07:32:45 thomas Exp $
  */
 
 #include <string.h>
@@ -48,7 +48,9 @@
 #endif
 
 extern unsigned long __rtems_end[];
-extern void	     BSP_vme_config(void);
+extern void	         BSP_vme_config(void);
+extern void          BSP_pciConfigDump_early( void );
+extern unsigned      ppc_exc_lock_std, ppc_exc_gpr3_std;
 
 /*
  * Copy Additional boot param passed by boot loader
@@ -130,11 +132,12 @@ char *rtems_progname;
  *  Use the shared implementations of the following routines
  */
 
-void save_boot_params(void* r3, void *r4, void* r5, char *additional_boot_options)
+char * save_boot_params(void* r3, void *r4, void* r5, char *additional_boot_options)
 {
 
   strncpy(cmdline_buf, additional_boot_options, CMDLINE_BUF_SIZE);
   cmdline_buf[CMDLINE_BUF_SIZE - 1] ='\0';
+  return cmdline_buf;
 }
 
 #define CS_CONFIG_CS_EN (1<<31)
@@ -155,7 +158,7 @@ _ccsr_wr32(uint32_t off, uint32_t val)
 
 
 STATIC uint32_t
-BSP_get_mem_size()
+BSP_get_mem_size( void )
 {
 int i;
 uint32_t	cs_bnds, cs_config;
@@ -173,7 +176,7 @@ uint32_t	v;
 }
 
 STATIC void
-BSP_calc_freqs()
+BSP_calc_freqs( void )
 {
 uint32_t	porpllsr   = _ccsr_rd32( 0xe0000 );
 unsigned	plat_ratio = (porpllsr >> (31-30)) & 0x1f;
@@ -222,9 +225,10 @@ SPR_RW(HID1)
 
 void bsp_start( void )
 {
+rtems_status_code   sc;
 unsigned char       *stack;
-uint32_t            intrStackStart;
-uint32_t            intrStackSize;
+uintptr_t           intrStackStart;
+uintptr_t           intrStackSize;
 char                *chpt;
 ppc_cpu_id_t        myCpu;
 ppc_cpu_revision_t  myCpuRevision;
@@ -268,17 +272,20 @@ VpdBufRec          vpdData [] = {
 	/*
 	 * Initialize the interrupt related settings.
 	 */
-	intrStackStart = (uint32_t) __rtems_end;
+	intrStackStart = (uintptr_t) __rtems_end;
 	intrStackSize = rtems_configuration_get_interrupt_stack_size();
 
 	/*
 	 * Initialize default raw exception handlers.
 	 */
-	ppc_exc_initialize(
+	sc = ppc_exc_initialize(
 		PPC_INTERRUPT_DISABLE_MASK_DEFAULT,
 		intrStackStart,
 		intrStackSize
 	);
+	if (sc != RTEMS_SUCCESSFUL) {
+		BSP_panic("cannot initialize exceptions");
+	}
 
 	printk("CPU 0x%x - rev 0x%x\n", myCpu, myCpuRevision);
 
@@ -364,7 +371,6 @@ VpdBufRec          vpdData [] = {
 #ifdef SHOW_MORE_INIT_SETTINGS
 	printk("Number of PCI buses found is : %d\n", pci_bus_count());
 	{
-		void BSP_pciConfigDump_early();
 		BSP_pciConfigDump_early();
 	}
 #endif
@@ -412,7 +418,6 @@ VpdBufRec          vpdData [] = {
 	}
 
 	if (0) {
-		extern unsigned ppc_exc_lock_std, ppc_exc_gpr3_std;
 		unsigned x;
 		asm volatile("mfivpr %0":"=r"(x));
 		printk("IVPR: 0x%08x\n",x);

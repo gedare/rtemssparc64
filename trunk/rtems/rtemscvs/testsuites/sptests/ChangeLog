@@ -1,3 +1,162 @@
+2009-11-23	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	PR 1460/cpukit
+	* sp43/init.c: Change return type on methods accessing portions of
+	RTEMS Ids to int. This allows -1 to be return on error.
+
+2009-11-17	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* spsize/Makefile.am: Fix broken install rule.
+
+2009-11-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* spprintk/spprintk.scn: Add end of line at end of file.
+
+2009-11-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* sp32/Makefile.am, sp33/Makefile.am, sp37/Makefile.am,
+	sp38/Makefile.am, sp39/Makefile.am, sp43/Makefile.am,
+	sp44/Makefile.am, spfatal01/Makefile.am, spfatal02/Makefile.am,
+	spfatal03/Makefile.am, spfatal04/Makefile.am, spfatal05/Makefile.am,
+	spfatal06/Makefile.am, spfatal07/Makefile.am, spfatal08/Makefile.am,
+	spfatal09/Makefile.am, spobjgetnext/Makefile.am,
+	spprintk/Makefile.am, spsize/Makefile.am, spwatchdog/Makefile.am,
+	spwkspace/Makefile.am: Add documentation files for multiple tests.
+	* sp32/sp32.doc, sp33/sp33.doc, sp37/sp37.doc, sp38/sp38.doc,
+	sp39/sp39.doc, sp43/sp43.doc, sp44/sp44.doc, spfatal01/spfatal01.doc,
+	spfatal02/spfatal02.doc, spfatal03/spfatal03.doc,
+	spfatal04/spfatal04.doc, spfatal05/spfatal05.doc,
+	spfatal06/spfatal06.doc, spfatal07/spfatal07.doc,
+	spfatal08/spfatal08.doc, spfatal09/spfatal09.doc,
+	spobjgetnext/spobjgetnext.doc, spprintk/spprintk.doc,
+	spsize/spsize.doc, spwatchdog/spwatchdog.doc,
+	spwkspace/spwkspace.doc: New files.
+
+2009-10-30	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp14/asr.c: Remove PRIxrtems_signal_set (moved to tmacros.h).
+	Include "tmacros.h".
+	* sp63/init.c: Pass UINTPTR_MAX instead of 0xffffffff to 
+	_Heap_Allocate for 16bit compliance.
+	* sp44/init.c: Another printf format fix.
+
+2009-10-29	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp37/init.c: Add local prototypes for
+	rtems_interrupt_disable, rtems_interrupt_enable,
+	rtems_interrupt_flash, rtems_interrupt_is_in_progress.
+	* sp43/init.c: Add local prototypes for
+	rtems_object_api_minimum_class, rtems_object_api_maximum_class,
+	rtems_build_id, rtems_build_name, rtems_object_id_api_maximum,
+	rtems_object_id_api_minimum, rtems_object_id_get_api,
+	rtems_object_id_get_class, rtems_object_id_get_index,
+	rtems_object_id_get_node.
+	Spray PRId32's into printf's for 16bit target complianance.
+	* sp37/init.c: Add local prototype for
+	rtems_interrupt_level_attribute.
+
+2009-10-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp29/init.c: Include "tmacros.h".
+	Misc. changes related to rtems_intervals.
+	* sp14/asr.c: Add PRIxrtems_signal_set.
+	Use PRIxrtems_signal_set to print rtems_signal_set's.
+	* sp13/task3.c: Use PRIu32 to print "count".
+	* sp09/screen12.c: Segment sizes are uintptr_t's.
+	* sp09/screen11.c: Use size_t for "size".
+	* sp62/init.c: Segment sizes are uintptr_t's.
+	* sp25/task1.c: Use PRIuPTR to print segment_size's.
+	* sp21/task1.c: Add PRIurtems_device_major_number.
+	* sp11/task1.c, sp11/task2.c:
+	Use PRIxrtems_event_set to print rtems_event_set's.
+	* sp09/screen13.c: Revert previous change.
+	Remove broken extraneous line seemingly having crept into in 
+	2009-08-10 patch.
+	* sp27/init.c: Remove extraneous argument to print.
+	* spsize/size.c: Use PRIu32 to print sys_req.
+	* sp37/init.c: Add missing argument to printf.
+	* sp44/init.c, sp35/priinv.c, sp33/init.c, sp28/init.c,
+	sp12/pritask.c, sp34/changepri.c:
+	Use PRIdrtems_task_argument to print rtems_task_argument's.
+
+2009-10-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp25/task1.c: segment_size is uintptr_t.
+	* spfatal06/testcase.h: Add missing return.
+	* sp07/tcreate.c, sp07/tdelete.c, sp07/trestart.c, sp07/tstart.c:
+	Duplicate code from rtems_name_to_characters to convert rtems_name's
+	into char arrays.
+	* sp09/screen13.c: Comment out unused return status.
+	* sp63/init.c: Use PRIu32 to print uint32_t's.
+	* sp33/init.c: Use PRIu32 to print uint32_t's.
+	* sp28/init.c: Use PRIu32 to print uint32_t's.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp31/task1.c: Use PRIdWatchdog_Interval to print
+	Watchdog_Interval's.
+	* sp20/task1.c, sp32/init.c, spclockget/init.c: Use
+	PRIdrtems_interval to print rtems_interval's.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp13/task1.c: Misc. uint32_t fixes.
+	* sp20/task1.c: Misc. uint32_t fixes.
+	* sp47/init.c: Add PRIXModes_Control, PRIXrtems_mode.
+	Use PRIXrtems_mode to print rtems_mode's.
+	* sp08/system.h: Add PRIxModes_Control, PRIxrtems_mode.
+	Use PRIxrtems_mode to print rtems_mode's.
+	* sp19/first.c, sp19/fptask.c, sp19/fptest.h, sp19/inttest.h,
+	sp19/task1.c: Add missing PRI*32's.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp34/changepri.c, sp35/priinv.c:
+	Use PRIdPriority_Control to print Priority_Control's.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp34/changepri.c, sp59/init.c:
+	Use PRIdrtems_task_priority to print rtems_task_priority's.
+	* sp07/task1.c, sp07/task2.c, ssp12/pritask.c: 
+	Use PRIdrtems_task_priority to print rtems_task_priority's.
+	* sp12/system.h:
+	Change Priority_Test_driver to use rtems_task_priority argument.
+	* sp12/pridrv.c: 
+	Change Priority_Test_driver to use rtems_task_priority argument.
+	Use PRIdrtems_task_priority to print rtems_task_priority's.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp02/task1.c, sp12/task1.c, sp13/task1.c, sp14/task1.c, sp15/task1.c,
+	sp16/task1.c, sp20/task1.c, sp22/init.c, sp22/task1.c, sp23/task1.c,
+	sp25/task1.c, sp31/init.c, sp31/task1.c, sp34/changepri.c,
+	sp35/priinv.c, sp43/init.c, sp45/init.c, spwatchdog/init.c,
+	spwatchdog/task1.c: Use PRIxrtems_id to print rtems_ids.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp13/task1.c, sp48/init.c: Use %zu instead of %d to print size_t's.
+	* sp50/init.c, spclockget/init.c: Use PRItime_t to print time_t's.
+	* sp63/init.c: Fix _Heap_Resize_block args.
+	* sp09/screen09.c: Eliminate unused var warning.
+
+2009-10-24	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp27/init.c, spsize/init.c: Fix prototypes.
+	* spwatchdog/task1.c: Remove unused vars.
+
+2009-10-24	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp10/init.c, sp18/init.c, sp27/init.c, sp35/priinv.c
+	sp63/init.c, sp65/init.c, sp67/init.c, spintrcritical11/init.c
+	spobjgetnext/init.c, spprintk/init.c:
+	Eliminate unused vars.
+
+2009-10-20	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Don't add -ansi -fasm to CFLAGS.
+
 2009-10-14	Joel Sherrill <joel.sherrill@OARcorp.com>
 
 	* sp32/init.c: Lengthen the clock tick and move configuration to the

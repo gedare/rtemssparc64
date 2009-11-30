@@ -1,4 +1,4 @@
-/* $Id: rtems_mii_ioctl_kern.c,v 1.7 2009/04/15 03:44:41 strauman Exp $ */
+/* $Id: rtems_mii_ioctl_kern.c,v 1.8 2009/10/20 04:54:43 ccj Exp $ */
 
 /* Simple (default) implementation for SIOCGIFMEDIA/SIOCSIFMEDIA
  * to be used by ethernet drivers [from their ioctl].
@@ -118,7 +118,7 @@ rtems_mii_ioctl (struct rtems_mdio_info *info, void *uarg, int cmd,
 
     /* link status */
     if (BMSR_LINK & bmsr)
-      options |= IFM_LINK_OK;
+      options |= IFM_LINK_OK | IFM_ACTIVE | IFM_AVALID;
 
     /* do we have autonegotiation disabled ? */
     if (!(BMCR_AUTOEN & bmcr)) {

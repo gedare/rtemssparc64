@@ -1,5 +1,5 @@
 ##
-##  $Id: Makefile.am,v 1.113 2009/10/14 16:30:39 ralf Exp $
+##  $Id: Makefile.am,v 1.114 2009/11/11 20:36:44 joel Exp $
 ##
 
 include $(top_srcdir)/automake/multilib.am
@@ -90,7 +90,8 @@ MALLOC_C_FILES = src/malloc_initialize.c src/calloc.c src/malloc.c \
     src/malloc_report_statistics.c src/malloc_report_statistics_plugin.c \
     src/malloc_statistics_helpers.c src/malloc_boundary.c \
     src/posix_memalign.c src/rtems_memalign.c src/malloc_deferred.c \
-    src/malloc_sbrk_helpers.c src/malloc_dirtier.c src/malloc_p.h
+    src/malloc_sbrk_helpers.c src/malloc_dirtier.c src/malloc_p.h \
+    src/rtems_malloc.c
 
 PASSWORD_GROUP_C_FILES = src/getpwent.c
 

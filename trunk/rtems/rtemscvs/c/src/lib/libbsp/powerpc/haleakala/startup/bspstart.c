@@ -56,7 +56,7 @@
  *  Further modified for the PPC405EX Haleakala board by
  *  Michael Hamel ADInstruments Ltd May 2008
  *
- *  $Id: bspstart.c,v 1.6 2008/12/18 18:51:28 joel Exp $
+ *  $Id: bspstart.c,v 1.7 2009/10/23 07:32:44 thomas Exp $
  */
 #include <string.h>
 #include <fcntl.h>
@@ -64,10 +64,8 @@
 #include <bsp.h>
 #include <bsp/uart.h>
 #include <bsp/irq.h>
-#include <rtems/bspIo.h>
-#include <libcpu/cpuIdent.h>
-#include <rtems/powerpc/powerpc.h>
-#include <bsp/ppc_exc_bspsupp.h>
+#include <libcpu/powerpc-utility.h>
+#include <bsp/vectors.h>
 #include <ppc4xx/ppc405gp.h>
 #include <ppc4xx/ppc405ex.h>
 
@@ -171,6 +169,7 @@ BSP_output_char_function_type BSP_output_char = DirectUARTWrite;
  */
 void bsp_start( void )
 {
+  rtems_status_code sc = RTEMS_SUCCESSFUL;
   LINKER_SYMBOL(intrStack_start);
   LINKER_SYMBOL(intrStack_size);
   ppc_cpu_id_t myCpu;
@@ -205,10 +204,14 @@ void bsp_start( void )
   /*
    * Initialize default raw exception handlers. 
    */
-  ppc_exc_initialize(
+  sc = ppc_exc_initialize(
     PPC_INTERRUPT_DISABLE_MASK_DEFAULT,
-    (uint32_t) intrStack_start,
-    (uint32_t) intrStack_size);
+    (uintptr_t) intrStack_start,
+    (uintptr_t) intrStack_size
+  );
+  if (sc != RTEMS_SUCCESSFUL) {
+    BSP_panic("cannot initialize exceptions");
+  }
 
   /*
    * Install our own set of exception vectors

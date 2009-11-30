@@ -17,7 +17,7 @@
  *
  *
  *
- *  $Id: test.c,v 1.12 2004/04/16 09:23:26 ralf Exp $
+ *  $Id: test.c,v 1.13 2009/10/30 13:26:24 ralf Exp $
  */
 #include <stdio.h>
 #include <sys/types.h>
@@ -39,10 +39,6 @@ DIR *directory;
 DIR *directory2;
 DIR *directory3;
 DIR *directory_not;
-
-#ifndef __P
-#define __P(args)()
-#endif
 
 char *dnames[] = {
 	"a",

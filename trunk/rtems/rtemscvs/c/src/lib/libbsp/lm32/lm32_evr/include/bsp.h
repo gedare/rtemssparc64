@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.3 2009/02/26 20:45:44 joel Exp $
+ *  $Id: bsp.h,v 1.4 2009/11/24 06:38:38 ralf Exp $
  *
  *  Jukka Pietarinen <jukka.pietarinen@mrf.fi>, 2008,
  *  Micro-Research Finland Oy
@@ -19,10 +19,6 @@
 
 #ifndef _BSP_H
 #define _BSP_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #include <stdint.h>
 #include <bspopts.h>
@@ -33,6 +29,10 @@ extern "C" {
 
 #if defined(RTEMS_NETWORKING)
 #include <rtems/rtems_bsdnet.h>
+#endif
+
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 #define BSP_DIRTY_MEMORY 1

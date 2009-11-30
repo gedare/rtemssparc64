@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.26 2009/10/19 10:58:30 thomas Exp $
+## $Id: configure.ac,v 1.29 2009/11/09 16:27:42 thomas Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-tests-libtests],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -19,7 +19,7 @@ RTEMS_CHECK_RTEMS_TEST_NO_PAUSE
 
 RTEMS_PROJECT_ROOT
 
-RTEMS_PROG_CC_FOR_TARGET([-fasm])
+RTEMS_PROG_CC_FOR_TARGET
 
 RTEMS_PROG_CXX_FOR_TARGET
 
@@ -34,6 +34,12 @@ AM_CONDITIONAL(HAS_CXX,test "$rtems_cv_HAS_CPLUSPLUS" = "yes")
 # Explicitly list all Makefiles here
 AC_CONFIG_FILES([Makefile
 block01/Makefile
+block02/Makefile
+block03/Makefile
+block04/Makefile
+block05/Makefile
+block06/Makefile
+block07/Makefile
 bspcmdline01/Makefile
 cpuuse/Makefile
 heapwalk/Makefile

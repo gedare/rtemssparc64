@@ -1,4 +1,4 @@
-/* $Id: pte121.c,v 1.16 2008/08/18 21:17:06 joel Exp $ */
+/* $Id: pte121.c,v 1.17 2009/10/23 07:32:45 thomas Exp $ */
 
 /* Trivial page table setup for RTEMS
  * Purpose: allow write protection of text/ro-data
@@ -69,7 +69,6 @@
 #ifdef	DEBUG_EXC
 #include <bsp.h>
 #include <bsp/vectors.h>
-#include <libcpu/raw_exception.h>
 #endif
 #endif
 

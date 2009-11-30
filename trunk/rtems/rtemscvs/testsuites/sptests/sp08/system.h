@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.16 2004/04/16 09:19:06 ralf Exp $
+ *  $Id: system.h,v 1.17 2009/10/26 15:15:36 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -25,8 +25,11 @@ rtems_task Task_1(
   rtems_task_argument argument
 );
 
+#define PRIxModes_Control 	PRIx32
+#define PRIxrtems_mode		PRIxModes_Control
+
 #define put_mode( _comment, _output_mode ) \
-   printf( "%s %08x\n", _comment, _output_mode );
+   printf( "%s %08" PRIxrtems_mode "\n", _comment, _output_mode );
 
 /* configuration information */
 

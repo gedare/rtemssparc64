@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.2 2009/05/10 14:39:46 joel Exp $
+ *  $Id: init.c,v 1.3 2009/10/26 09:31:51 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -27,7 +27,7 @@ rtems_task Init(rtems_task_argument ignored)
 
   puts( "\n\n*** TEST 48 ***" );
 
-  printf( "Largest C program heap block available: %d\n", malloc_free_space() );
+  printf( "Largest C program heap block available: %zu\n", malloc_free_space() );
   for (i=0 ; i<MAX ; i++ ) {
     sc = rtems_semaphore_create(
       rtems_build_name('s', 'e', 'm', ' '),
@@ -54,7 +54,7 @@ rtems_task Init(rtems_task_argument ignored)
     puts( "Created all semaphores allowed in this test" );
 
   printf( "%d semaphores created\n", i );
-  printf( "Largest C program heap block available: %d\n", malloc_free_space() );
+  printf( "Largest C program heap block available: %zu\n", malloc_free_space() );
 
   for ( i-- ; i ; i-- ) {
     sc = rtems_semaphore_delete( Semaphores[i] );
@@ -66,7 +66,7 @@ rtems_task Init(rtems_task_argument ignored)
   }
 
   printf( "%d semaphores successfully deleted\n", created );
-  printf( "Largest C program heap block available: %d\n", malloc_free_space() );
+  printf( "Largest C program heap block available: %zu\n", malloc_free_space() );
 
   puts( "*** END OF TEST 48 ***" );
   rtems_test_exit( 0 );

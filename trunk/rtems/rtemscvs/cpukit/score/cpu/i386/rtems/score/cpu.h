@@ -13,13 +13,15 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.h,v 1.29 2009/09/25 12:07:54 joel Exp $
+ *  $Id: cpu.h,v 1.34 2009/11/10 06:55:28 strauman Exp $
  */
 
 #ifndef _RTEMS_SCORE_CPU_H
 #define _RTEMS_SCORE_CPU_H
 
+#ifndef ASM
 #include <string.h> /* for memcpy */
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -59,6 +61,15 @@ extern "C" {
  *  for the i386, others have it built in (i486DX, Pentium).
  */
 
+#ifdef __SSE__
+#define CPU_HARDWARE_FP                  TRUE
+#define CPU_SOFTWARE_FP                  FALSE
+
+#define CPU_ALL_TASKS_ARE_FP             TRUE
+#define CPU_IDLE_TASK_IS_FP              TRUE
+#define CPU_USE_DEFERRED_FP_SWITCH       FALSE
+#else /* __SSE__ */
+
 #if ( I386_HAS_FPU == 1 )
 #define CPU_HARDWARE_FP     TRUE    /* i387 for i386 */
 #else
@@ -69,6 +80,7 @@ extern "C" {
 #define CPU_ALL_TASKS_ARE_FP             FALSE
 #define CPU_IDLE_TASK_IS_FP              FALSE
 #define CPU_USE_DEFERRED_FP_SWITCH       TRUE
+#endif /* __SSE__ */
 
 #define CPU_STACK_GROWS_UP               FALSE
 #define CPU_STRUCTURE_ALIGNMENT
@@ -96,6 +108,8 @@ extern "C" {
 
 /* structures */
 
+#ifndef ASM
+
 /*
  *  Basic integer context for the i386 family.
  */
@@ -115,11 +129,37 @@ typedef struct {
 /*
  *  FP context save area for the i387 numeric coprocessors.
  */
+#ifdef __SSE__
+/* All FPU and SSE registers are volatile; hence, as long
+ * as we are within normally executing C code (including
+ * a task switch) there is no need for saving/restoring
+ * any of those registers.
+ * We must save/restore the full FPU/SSE context across
+ * interrupts and exceptions, however:
+ *   -  after ISR execution a _Thread_Dispatch() may happen
+ *      and it is therefore necessary to save the FPU/SSE
+ *      registers to be restored when control is returned
+ *      to the interrupted task.
+ *   -  gcc may implicitly use FPU/SSE instructions in
+ *      an ISR.
+ *
+ * Even though there is no explicit mentioning of the FPU
+ * control word in the SYSV ABI (i386) being non-volatile
+ * we maintain MXCSR and the FPU control-word for each task.
+ */
+typedef struct {
+	uint32_t  mxcsr;
+	uint16_t  fpucw;
+} Context_Control_fp;
+
+#else
 
 typedef struct {
   uint8_t     fp_save_area[108];    /* context size area for I80387 */
                                     /*  28 bytes for environment    */
 } Context_Control_fp;
+
+#endif
 
 
 /*
@@ -128,9 +168,20 @@ typedef struct {
  *
  * idtIndex is either the interrupt number or the trap/exception number.
  * faultCode is the code pushed by the processor on some exceptions.
+ *
+ * Since the first registers are directly pushed by the CPU they
+ * may not respect 16-byte stack alignment, which is, however,
+ * mandatory for the SSE register area.
+ * Therefore, these registers are stored at an aligned address
+ * and a pointer is stored in the CPU_Exception_frame.
+ * If the executive was compiled without SSE support then
+ * this pointer is NULL.
  */
 
+struct Context_Control_sse;
+
 typedef struct {
+  struct Context_Control_sse *fp_ctxt;
   uint32_t    edi;
   uint32_t    esi;
   uint32_t    ebp;
@@ -146,17 +197,42 @@ typedef struct {
   uint32_t    eflags;
 } CPU_Exception_frame;
 
+#ifdef __SSE__
+typedef struct Context_Control_sse {
+  uint16_t  fcw;
+  uint16_t  fsw;
+  uint8_t   ftw;
+  uint8_t   res_1;
+  uint16_t  fop;
+  uint32_t  fpu_ip;
+  uint16_t  cs;
+  uint16_t  res_2;
+  uint32_t  fpu_dp;
+  uint16_t  ds;
+  uint16_t  res_3;
+  uint32_t  mxcsr;
+  uint32_t  mxcsr_mask;
+  struct {
+  	uint8_t fpreg[10];
+  	uint8_t res_4[ 6];
+  } fp_mmregs[8];
+  uint8_t   xmmregs[8][16];
+  uint8_t   res_5[224];
+} Context_Control_sse
+__attribute__((aligned(16)))
+;
+#endif
+
 typedef void (*cpuExcHandlerType) (CPU_Exception_frame*);
 extern cpuExcHandlerType _currentExcHandler;
 extern void rtems_exception_init_mngt(void);
 
 /*
- *  The following structure defines the set of information saved
- *  on the current stack by RTEMS upon receipt of each interrupt
- *  that will lead to re-enter the kernel to signal the thread.
+ * This port does not pass any frame info to the
+ * interrupt handler.
  */
 
-typedef CPU_Exception_frame CPU_Interrupt_frame;
+typedef void CPU_Interrupt_frame;
 
 typedef enum {
   I386_EXCEPTION_DIVIDE_BY_ZERO      = 0,
@@ -196,6 +272,8 @@ typedef enum {
 SCORE_EXTERN Context_Control_fp  _CPU_Null_fp_context;
 SCORE_EXTERN void               *_CPU_Interrupt_stack_low;
 SCORE_EXTERN void               *_CPU_Interrupt_stack_high;
+
+#endif /* ASM */
 
 /* constants */
 
@@ -243,13 +321,18 @@ SCORE_EXTERN void               *_CPU_Interrupt_stack_high;
 
 /*
  *  On i386 thread stacks require no further alignment after allocation
- *  from the Workspace.
+ *  from the Workspace. However, since gcc maintains 16-byte alignment
+ *  we try to respect that. If you find an option to let gcc squeeze
+ *  the stack more tightly then setting CPU_STACK_ALIGNMENT to 16 still
+ *  doesn't waste much space since this only determines the *initial*
+ *  alignment.
  */
 
-#define CPU_STACK_ALIGNMENT             0
+#define CPU_STACK_ALIGNMENT             16
 
 /* macros */
 
+#ifndef ASM
 /*
  *  ISR handler macros
  *
@@ -277,6 +360,18 @@ SCORE_EXTERN void               *_CPU_Interrupt_stack_high;
 
 uint32_t   _CPU_ISR_Get_level( void );
 
+/*  Make sure interrupt stack has space for ISR 
+ *  'vector' arg at the top and that it is aligned
+ *  properly.
+ */
+
+#define _CPU_Interrupt_stack_setup( _lo, _hi )  \
+	do {                                        \
+		_hi = (void*)(((uintptr_t)(_hi) - 4) & ~ (CPU_STACK_ALIGNMENT - 1)); \
+	} while (0)
+
+#endif /* ASM */
+
 /* end of ISR handler macros */
 
 /*
@@ -292,6 +387,37 @@ uint32_t   _CPU_ISR_Get_level( void );
 #define CPU_EFLAGS_INTERRUPTS_ON  0x00003202
 #define CPU_EFLAGS_INTERRUPTS_OFF 0x00003002
 
+#ifndef ASM
+
+/*
+ * Stack alignment note:
+ * 
+ * We want the stack to look to the '_entry_point' routine
+ * like an ordinary stack frame as if '_entry_point' was
+ * called from C-code.
+ * Note that '_entry_point' is jumped-to by the 'ret'
+ * instruction returning from _CPU_Context_switch() or
+ * _CPU_Context_restore() thus popping the _entry_point
+ * from the stack.
+ * However, _entry_point expects a frame to look like this:
+ *
+ *      args        [_Thread_Handler expects no args, however]
+ *      ------      (alignment boundary)
+ * SP-> return_addr return here when _entry_point returns which (never happens)
+ *
+ *   
+ * Hence we must initialize the stack as follows
+ *
+ *         [arg1          ]:  n/a
+ *         [arg0 (aligned)]:  n/a
+ *         [ret. addr     ]:  NULL
+ * SP->    [jump-target   ]:  _entry_point
+ *
+ * When Context_switch returns it pops the _entry_point from
+ * the stack which then finds a standard layout.
+ */
+
+
 #define _CPU_Context_Initialize( _the_context, _stack_base, _size, \
                                    _isr, _entry_point, _is_fp ) \
   do { \
@@ -300,10 +426,11 @@ uint32_t   _CPU_ISR_Get_level( void );
     if ( (_isr) ) (_the_context)->eflags = CPU_EFLAGS_INTERRUPTS_OFF; \
     else          (_the_context)->eflags = CPU_EFLAGS_INTERRUPTS_ON; \
     \
-    _stack = ((uint32_t)(_stack_base)) + (_size) - 4; \
-    \
+    _stack  = ((uint32_t)(_stack_base)) + (_size); \
+	_stack &= ~ (CPU_STACK_ALIGNMENT - 1); \
+    _stack -= 2*sizeof(proc_ptr*); /* see above for why we need to do this */ \
     *((proc_ptr *)(_stack)) = (_entry_point); \
-    (_the_context)->ebp     = (void *) _stack; \
+    (_the_context)->ebp     = (void *) 0; \
     (_the_context)->esp     = (void *) _stack; \
   } while (0)
 
@@ -335,6 +462,8 @@ uint32_t   _CPU_ISR_Get_level( void );
                     : "=r" ((_error)) : "0" ((_error)) \
     ); \
   }
+
+#endif /* ASM */
 
 /* end of Fatal Error manager macros */
 
@@ -380,6 +509,7 @@ uint32_t   _CPU_ISR_Get_level( void );
 
 /* functions */
 
+#ifndef ASM
 /*
  *  _CPU_Initialize
  *
@@ -453,19 +583,63 @@ void _CPU_Context_restore(
  *  This routine saves the floating point context passed to it.
  */
 
+#ifdef __SSE__
+#define _CPU_Context_save_fp(fp_context_pp) \
+  do {                                      \
+    __asm__ __volatile__(                   \
+      "fstcw %0"                            \
+      :"=m"((*(fp_context_pp))->fpucw)      \
+    );                                      \
+	__asm__ __volatile__(                   \
+      "stmxcsr %0"                          \
+      :"=m"((*(fp_context_pp))->mxcsr)      \
+    );                                      \
+  } while (0)
+#else
 void _CPU_Context_save_fp(
   Context_Control_fp **fp_context_ptr
 );
+#endif
 
 /*
  *  _CPU_Context_restore_fp
  *
  *  This routine restores the floating point context passed to it.
  */
-
+#ifdef __SSE__
+#define _CPU_Context_restore_fp(fp_context_pp) \
+  do {                                         \
+    __asm__ __volatile__(                      \
+      "fldcw %0"                               \
+      ::"m"((*(fp_context_pp))->fpucw)         \
+      :"fpcr"                                  \
+    );                                         \
+    __builtin_ia32_ldmxcsr(_Thread_Executing->fp_context->mxcsr);  \
+  } while (0)
+#else
 void _CPU_Context_restore_fp(
   Context_Control_fp **fp_context_ptr
 );
+#endif
+
+#ifdef __SSE__
+#define _CPU_Context_Initialization_at_thread_begin() \
+  do {                                                \
+    __asm__ __volatile__(                             \
+      "finit"                                         \
+      :                                               \
+      :                                               \
+      :"st","st(1)","st(2)","st(3)",                  \
+       "st(4)","st(5)","st(6)","st(7)",               \
+       "fpsr","fpcr"                                  \
+    );                                                \
+	if ( _Thread_Executing->fp_context ) {            \
+	  _CPU_Context_restore_fp(&_Thread_Executing->fp_context); \
+   }                                                  \
+  } while (0)
+#endif
+
+#endif /* ASM */
 
 #ifdef __cplusplus
 }

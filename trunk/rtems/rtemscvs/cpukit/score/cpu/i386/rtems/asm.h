@@ -22,7 +22,7 @@
  *  COPYRIGHT (c) 1994-1997.
  *  On-Line Applications Research Corporation (OAR).
  *
- *  $Id: asm.h,v 1.21 2005/10/27 07:28:26 ralf Exp $
+ *  $Id: asm.h,v 1.22 2009/10/28 02:45:24 strauman Exp $
  */
 
 #ifndef _RTEMS_ASM_H
@@ -83,6 +83,7 @@
 #define esp REG (esp)
 #define ebp REG (ebp)
 #define cr0 REG (cr0)
+#define cr4 REG (cr4)
 
 #define ax REG (ax)
 #define bx REG (bx)

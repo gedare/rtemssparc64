@@ -18,7 +18,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.14 2009/05/17 17:22:21 joel Exp $
+ *  $Id: init.c,v 1.15 2009/10/26 11:36:08 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -39,7 +39,7 @@ rtems_task Init(
   status = rtems_rate_monotonic_create( period, &rmid );
   directive_failed( status, "rtems_rate_monotonic_create" );
   printf(
-    "INIT - rtems_rate_monotonic_create id = 0x%08x (stays inactive)\n",
+    "INIT - rtems_rate_monotonic_create id = 0x%08" PRIxrtems_id " (stays inactive)\n",
     rmid
   );
 

@@ -8,7 +8,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: openpic_xxx_irq.c,v 1.2 2008/10/02 17:27:07 joel Exp $
+ *  $Id: openpic_xxx_irq.c,v 1.3 2009/10/23 07:32:44 thomas Exp $
  */
 
 #include <stdlib.h>
@@ -18,7 +18,6 @@
 #include <bsp/irq_supp.h>
 #include <bsp/VMEConfig.h>
 #include <bsp/openpic.h>
-#include <libcpu/raw_exception.h>
 #include <libcpu/io.h>
 #include <bsp/vectors.h>
 #include <stdlib.h>

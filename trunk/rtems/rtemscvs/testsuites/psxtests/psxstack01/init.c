@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/08/07 00:42:47 joel Exp $
+ *  $Id: init.c,v 1.3 2009/11/12 00:21:51 joel Exp $
  */
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__
@@ -46,10 +46,10 @@ void *POSIX_Init(
   void *argument
 )
 {
-  int                 i;
   int                 sc;
   pthread_t           id;
   pthread_attr_t      attr;
+  struct timespec     delay_request;
 
   puts( "\n\n*** POSIX STACK ATTRIBUTE TEST 01 ***" );
 
@@ -73,7 +73,10 @@ void *POSIX_Init(
   assert( !sc );
 
   puts( "Init - let other thread run" );
-  usleep( 500000 );
+  delay_request.tv_sec = 0;
+  delay_request.tv_nsec = 5 * 100000000;
+  sc = nanosleep( &delay_request, NULL );
+  assert( !sc );
 
   puts( "*** END OF POSIX STACK ATTRIBUTE TEST 01 ***" );
   rtems_test_exit(0);

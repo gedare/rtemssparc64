@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2009/08/18 15:32:49 joel Exp $
+ *  $Id: init.c,v 1.4 2009/10/24 06:14:30 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -60,7 +60,6 @@ rtems_task Init(
   rtems_task_argument argument
 )
 {
-  rtems_status_code     status;
   rtems_id              main_task;
   int                   count;
   Objects_Control      *o;

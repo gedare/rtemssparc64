@@ -1,3 +1,109 @@
+2009-11-21	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* block02/.cvsignore, block03/.cvsignore, block04/.cvsignore,
+	block05/.cvsignore, block06/.cvsignore, block07/.cvsignore: New files.
+	* block02/Makefile.in, block03/Makefile.in, block04/Makefile.in,
+	block05/Makefile.in, block06/Makefile.in, block07/Makefile.in: Removed.
+
+2009-11-16	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* rtems++/Task3.cc: Use %zu instead of %i to print size_t's.
+	Remove bogus cast.
+	* rtems++/Task1.cc: Use %zu instead of %i to print size_t's.
+
+2009-11-14	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* rtems++/Task1.cc: Eliminate more warnings.
+
+2009-11-14	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* rtems++/Task1.cc, rtems++/Task2.cc: Spray PRI* macros to eliminate
+	several dozens of warnings.
+
+2009-11-13	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* block06/init.c: Add missing prototype.
+
+2009-11-10	Sebastian Huber <Sebastian.Huber@embedded-brains.de>
+
+	* block07/init.c: New test case.
+
+2009-11-09	Sebastian Huber <Sebastian.Huber@embedded-brains.de>
+
+	* block05/init.c, block05/block05.scn, block05/Makefile.am,
+	block06/init.c, block06/block06.scn, block06/Makefile.am,
+	block07/init.c, block07/block07.scn, block07/Makefile.am: New files.
+	* Makefile.am, configure.ac: Added block05, block06 and block07.
+
+2009-11-01	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* termios/init.c: Remove sh2 hacks.
+
+2009-10-30	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* block01/init.c: Include <stdio.h>.
+	* termios/init.c: Eliminate TRUE/FALSE, use bool instead of int.
+	* block02/init.c: Remove unused var.
+
+2009-10-29	Sebastian Huber <Sebastian.Huber@embedded-brains.de>
+
+	* block02/init.c, block02/block02.scn, block02/Makefile.am,
+	block03/init.c, block03/block03.scn, block03/Makefile.am,
+	block04/init.c, block04/block04.scn, block04/Makefile.am: New files.
+	* Makefile.am, configure.ac: Added block02, block03 and block04.
+
+2009-10-29	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* monitor02/init.c: Add local prototype for
+	rtems_shell_main_monitor.
+
+2009-10-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* termios01/init.c: Fix parity_table_Entry type.
+	Correct parity_table initialization.
+	Add PRIdrtems_termios_baud_t.
+	Use PRIdrtems_termios_baud_t to print rtems_termios_baud_t's.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* rtmonuse/task1.c: Use PRIu32 to print uint32_t's.
+	* malloctest/init.c: Use %zu instead of %d to print size_t's.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* rtmonuse/init.c, rtmonuse/task1.c:
+	Use PRIxrtems_id to print rtems_ids.
+	* malloctest/init.c: Use %zu instead of %d to print size_t's.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* malloctest/init.c: Fix _Heap_Resize_block args.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* malloctest/init.c, termios01/init.c,
+	termios01/termios_testdriver.c: Eliminate unused vars.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* heapwalk/init.c: Comment out unused vars.
+	* termios01/termios_testdriver.c: Include <rtems/termiostypes.h.
+	* malloctest/init.c: Add local prototype for malloc_walk,
+	malloc_info.
+	* malloctest/task1.c: Add local prototype for malloc_walk.
+	* monitor02/init.c: Remove unused vars.
+	* stackchk01/init.c: Remove unused vars.
+	* heapwalk/init.c, malloctest/init.c, stackchk/blow.c,
+	termios/init.c: Add missing prototypes.
+
+2009-10-20	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Don't add -fasm to CFLAGS.
+
+2009-10-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* block01/.cvsignore: New file.
+
 2009-10-19	Sebastian Huber <Sebastian.Huber@embedded-brains.de>
 
 	* block01/init.c, block01/block01.scn, block01/Makefile.am: New files.

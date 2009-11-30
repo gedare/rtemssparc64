@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task3.c,v 1.6 2003/09/04 18:53:38 joel Exp $
+ *  $Id: task3.c,v 1.7 2009/10/27 14:10:54 ralf Exp $
  */
 
 #include "system.h"
@@ -26,7 +26,7 @@ void *Task_3(
   int  status;
 
   Task_id = pthread_self();
-  printf( "Task_3: ID is 0x%08x\n", Task_id );
+  printf( "Task_3: ID is 0x%08" PRIxpthread_t "\n", Task_id );
 
   status = pthread_mutex_lock( &Mutex_id );
   assert( !status );

@@ -11,19 +11,19 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ata.h,v 1.8 2008/09/08 06:57:21 ralf Exp $
+ * $Id: ata.h,v 1.9 2009/10/22 11:48:29 ralf Exp $
  */
 #ifndef __ATA_H__
 #define __ATA_H__
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #include <rtems.h>
 #include <sys/ioctl.h>
 
 #include <rtems/blkdev.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 rtems_device_driver rtems_ata_initialize(
         rtems_device_major_number major,

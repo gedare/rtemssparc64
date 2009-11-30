@@ -8,27 +8,37 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.14 2009/09/28 23:07:56 joel Exp $
+ *  $Id: init.c,v 1.17 2009/11/23 14:58:30 joel Exp $
  */
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__
 #define CONFIGURE_INIT
 #include "system.h"
 
+/* These functions have both macro and function incarnations */
 #undef rtems_build_id
+extern rtems_id rtems_build_id(int api,int class,int node,int index);
 #undef rtems_build_name
+extern rtems_name rtems_build_name(char C1,char C2,char C3,char C4);
 #undef rtems_object_id_api_maximum
+extern int rtems_object_id_api_maximum(void);
 #undef rtems_object_id_api_minimum
+extern int rtems_object_id_api_minimum(void);
 #undef rtems_object_id_get_api
+extern int rtems_object_id_get_api(rtems_id id);
 #undef rtems_object_id_get_class
+extern int rtems_object_id_get_class(rtems_id id);
 #undef rtems_object_id_get_index
+extern int rtems_object_id_get_index(rtems_id id);
 #undef rtems_object_id_get_node
+extern int rtems_object_id_get_node(rtems_id id);
 
 void print_class_info(
-  uint32_t                            api,
-  uint32_t                            class,
+  int                                 api,
+  int                                 class,
   rtems_object_api_class_information *info
 );
+
 void change_name(
   rtems_id    id,
   const char *newName,
@@ -39,15 +49,15 @@ rtems_id         main_task;
 rtems_name       main_name;
 
 void print_class_info(
-  uint32_t                            api,
-  uint32_t                            class,
+  int                                 api,
+  int                                 class,
   rtems_object_api_class_information *info
 )
 {
   printf(
     "%s API %s Information\n"
-    "    minimum id  : 0x%08x maximum id: 0x%08x\n"
-    "    maximum     :    %7d available : %d\n"
+    "    minimum id  : 0x%08" PRIxrtems_id " maximum id: 0x%08" PRIxrtems_id "\n"
+    "    maximum     :    %7" PRIu32 " available : %" PRIu32 "\n"
     "    auto_extend : %s\n",
     rtems_object_get_api_name(api),
     rtems_object_get_api_class_name(api, class),
@@ -109,7 +119,7 @@ rtems_task Init(
   char                               *ptr;
   const char                          newName[5] = "New1";
   char                                tmpNameString[5];
-  uint32_t                            part;
+  int                                 part;
   rtems_object_api_class_information  info;
 
   puts( "\n\n*** TEST 43 ***" );

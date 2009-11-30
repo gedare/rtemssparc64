@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2009/09/27 18:54:13 joel Exp $
+ *  $Id: init.c,v 1.4 2009/10/26 14:07:51 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -51,7 +51,7 @@ rtems_task Init(
 
   priority = RTEMS_MAXIMUM_PRIORITY / 4;
   priority = (priority * 3) + (priority / 2);
-  printf( "Init - blocking task priority will be %d\n", priority );
+  printf( "Init - blocking task priority will be %" PRIdrtems_task_priority "\n", priority );
 
   puts( "Init - rtems_task_create - delay task - OK" );
   status = rtems_task_create(

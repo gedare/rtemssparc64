@@ -13,11 +13,15 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: byteorder.h,v 1.8 2007/11/14 00:36:59 strauman Exp $
+ *  $Id: byteorder.h,v 1.9 2009/11/03 18:45:04 thomas Exp $
  */
 
 #ifndef _LIBCPU_BYTEORDER_H
 #define _LIBCPU_BYTEORDER_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifdef __GNUC__
 
@@ -48,5 +52,9 @@ extern __inline__ void st_le32(volatile uint32_t *addr, unsigned val)
 }
 
 #endif /* __GNUC__ */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _LIBCPU_BYTEORDER_H */

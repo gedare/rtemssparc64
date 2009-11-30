@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.8 2009/09/09 16:30:14 joel Exp $
+ *  $Id: init.c,v 1.10 2009/10/26 07:49:50 ralf Exp $
  */
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__
@@ -58,20 +58,20 @@ static void *test_allocate_block(void)
   return _Heap_Allocate_aligned_with_boundary( &TestHeap, 1, 0, 0 );
 }
 
-static void test_create_heap_with_gaps()
+static void test_create_heap_with_gaps(void)
 {
   void *p1 = test_allocate_block();
-  void *p2 = test_allocate_block();
+  /* void *p2 = */ test_allocate_block();
   void *p3 = test_allocate_block();
-  void *p4 = test_allocate_block();
+  /* void *p4 = */ test_allocate_block();
   void *p5 = test_allocate_block();
-  void *p6 = test_allocate_block();
+  /* void *p6 = */ test_allocate_block();
   _Heap_Free( &TestHeap, p1 );
   _Heap_Free( &TestHeap, p3 );
   _Heap_Free( &TestHeap, p5 );
 }
 
-static void *test_fill_heap()
+static void *test_fill_heap(void)
 {
   void *p1 = NULL;
   void *p2 = NULL;

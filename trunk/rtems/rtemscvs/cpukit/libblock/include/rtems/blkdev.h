@@ -10,7 +10,7 @@
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Victor V. Vengerov <vvv@oktet.ru>
  *
- * @(#) $Id: blkdev.h,v 1.14 2009/10/13 07:58:33 thomas Exp $
+ * @(#) $Id: blkdev.h,v 1.17 2009/11/20 06:33:38 thomas Exp $
  */
 
 #ifndef _RTEMS_BLKDEV_H
@@ -98,6 +98,13 @@ typedef struct rtems_blkdev_sg_buffer {
 /**
  * The block device request structure is used to read or write a number of
  * blocks from or to the device.
+ *
+ * TODO: The use of these req blocks is not a great design. The req is a
+ *       struct with a single 'bufs' declared in the req struct and the
+ *       others are added in the outer level struct. This relies on the
+ *       structs joining as a single array and that assumes the compiler
+ *       packs the structs. Why not just place on a list ? The BD has a
+ *       node that can be used.
  */
 typedef struct rtems_blkdev_request {
   /**
@@ -157,11 +164,12 @@ typedef struct rtems_blkdev_request {
  */
 
 #define RTEMS_BLKIO_REQUEST         _IOWR('B', 1, rtems_blkdev_request)
-#define RTEMS_BLKIO_GETMEDIABLKSIZE _IO('B', 2)
-#define RTEMS_BLKIO_GETBLKSIZE      _IO('B', 3)
-#define RTEMS_BLKIO_SETBLKSIZE      _IO('B', 4)
-#define RTEMS_BLKIO_GETSIZE         _IO('B', 5)
+#define RTEMS_BLKIO_GETMEDIABLKSIZE _IOR('B', 2, uint32_t)
+#define RTEMS_BLKIO_GETBLKSIZE      _IOR('B', 3, uint32_t)
+#define RTEMS_BLKIO_SETBLKSIZE      _IOW('B', 4, uint32_t)
+#define RTEMS_BLKIO_GETSIZE         _IOR('B', 5, rtems_blkdev_bnum)
 #define RTEMS_BLKIO_SYNCDEV         _IO('B', 6)
+#define RTEMS_BLKIO_DELETED         _IO('B', 7)
 
 /** @} */
 

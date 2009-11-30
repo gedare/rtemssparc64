@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.17 2009/10/04 22:02:18 joel Exp $
+ *  $Id: init.c,v 1.19 2009/10/27 06:56:21 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -50,7 +50,7 @@ subtask (rtems_task_argument arg)
     taskvar = (void *)((uintptr_t)taskvar + 1);
     rtems_task_wake_after (0);
     if ((uintptr_t)taskvar != localvar) {
-      printf ("Task:%d taskvar:%d localvar:%d\n",
+      printf ("Task:%" PRIdrtems_task_argument " taskvar:%" PRIuPTR " localvar:%" PRIuPTR "\n",
         arg, (uintptr_t)taskvar, localvar);
       rtems_task_suspend (RTEMS_SELF);
     }
@@ -60,7 +60,7 @@ subtask (rtems_task_argument arg)
   directive_failed( sc, "task variable delete" );
 
   if ((uintptr_t)taskvar == localvar) {
-    printf("Task:%d deleted taskvar:%d localvar:%d\n",
+    printf("Task:%" PRIdrtems_task_argument " deleted taskvar:%" PRIuPTR " localvar:%" PRIuPTR "\n",
       arg, (uintptr_t)taskvar, localvar);
     nRunning--;
     rtems_task_suspend (RTEMS_SELF);
@@ -73,7 +73,7 @@ subtask (rtems_task_argument arg)
     if (nRunning <= 1)
       break;
     if ((uintptr_t)taskvar == localvar) {
-      printf("Task:%d taskvar:%d localvar:%d\n",
+      printf("Task:%" PRIdrtems_task_argument " taskvar:%" PRIuPTR " localvar:%" PRIuPTR "\n",
         arg, (uintptr_t)taskvar, localvar);
       nRunning--;
       rtems_task_suspend(RTEMS_SELF);
@@ -237,7 +237,7 @@ void test_multiple_taskvars(void)
   directive_failed( sc, "delete multiple #3" );
 
   if ( test_dtor_ran != 2 ) {
-    printf( "Test dtor ran %d times not 2 times as expected\n", test_dtor_ran );
+    printf( "Test dtor ran %" PRIu32 " times not 2 times as expected\n", test_dtor_ran );
     rtems_test_exit(0);
   }
 }
@@ -319,7 +319,7 @@ void test_delete_from_other_task(void)
   rtems_task_wake_after( 100 );
   
   if ( test_dtor_ran != 1 ) {
-    printf( "Test dtor ran %d times not 1 times as expected\n", test_dtor_ran );
+    printf( "Test dtor ran %" PRIu32 " times not 1 times as expected\n", test_dtor_ran );
     rtems_test_exit(0);
   }
 }
@@ -366,7 +366,7 @@ void test_delete_as_side_effect(void)
   rtems_task_wake_after( 100 );
   
   if ( test_dtor_ran != 2 ) {
-    printf( "Test dtor ran %d times not 2 times as expected\n", test_dtor_ran );
+    printf( "Test dtor ran %" PRIu32 " times not 2 times as expected\n", test_dtor_ran );
     rtems_test_exit(0);
   }
 }

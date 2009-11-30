@@ -1,3 +1,32 @@
+2009-11-03	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Add RTEMS_BSP_LINKCMDS.
+	* make/custom/lpc24xx.inc: Remove LDFLAGS.
+	* make/custom/lpc24xx_ea.cfg: Remove LPC24XX_LINKCMDS.
+	* make/custom/lpc24xx_ncs_ram.cfg: Remove LPC24XX_LINKCMDS.
+	* make/custom/lpc24xx_ncs_rom_ext.cfg: Remove LPC24XX_LINKCMDS.
+	* make/custom/lpc24xx_ncs_rom_int.cfg: Remove LPC24XX_LINKCMDS.
+	* startup/linkcmds: Remove.
+	* Makefile.am: Rework linkcmds handling.
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* clock/clock-config.c, misc/dma.c, network/network.c,
+	rtc/rtc-config.c, ssp/ssp.c: Remove unused vars.
+
+2009-10-21	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* i2c/i2c.c, misc/dma-copy.c, network/network.c, ssp/ssp.c: Update for
+	interrupt handler type change.
+
+2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* make/custom/lpc24xx.inc: Remove RTEMS_BSP_FAMILY.
+
+2009-10-20	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Don't add -ansi -fasm to CFLAGS.
+
 2009-10-17	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* make/custom/lpc24xx.inc: New (Renamed from lpc24xx.cfg).

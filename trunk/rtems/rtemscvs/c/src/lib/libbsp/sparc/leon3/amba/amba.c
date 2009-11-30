@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: amba.c,v 1.9 2008/08/18 11:27:37 ralf Exp $
+ *  $Id: amba.c,v 1.10 2009/10/30 12:33:11 ralf Exp $
  */
 
 #include <bsp.h>
@@ -57,12 +57,12 @@ void bsp_predriver_hook(void)
   if ( i > 0 ){
     /* Found APB IRQ_MP Interrupt Controller */
     LEON3_IrqCtrl_Regs = (volatile LEON3_IrqCtrl_Regs_Map *) dev.start;
-    #if defined(RTEMS_MULTIPROCESSING)
+#if defined(RTEMS_MULTIPROCESSING)
       if (rtems_configuration_get_user_multiprocessing_table() != NULL) {
-        tmp = getasr17();
+        unsigned int tmp = getasr17();
         LEON3_Cpu_Index = (tmp >> 28) & 3;
       }
-    #endif
+#endif
   }
   
   /* find GP Timer */

@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: init.c,v 1.8 2009/10/14 21:35:05 joel Exp $
+ * $Id: init.c,v 1.9 2009/10/26 17:04:39 ralf Exp $
  */
 
 #include <tmacros.h>  /* includes bsp.h, stdio, etc... */
@@ -73,7 +73,7 @@ rtems_task Init(
   /* tabulate and print results */
   for (loopy = 0; loopy < 5; loopy++) {
     printf(
-        "period %d: measured %d tick(s), wanted %d\n",
+        "period %d: measured %" PRIdrtems_interval " tick(s), wanted %" PRIdrtems_interval "\n",
         loopy, timestamps[loopy+1] - timestamps[loopy],
         wantintervals[loopy]
     );

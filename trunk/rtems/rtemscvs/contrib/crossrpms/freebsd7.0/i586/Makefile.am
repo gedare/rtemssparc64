@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.9 2009/08/27 13:17:52 ralf Exp $
+# $Id: Makefile.am,v 1.12 2009/10/21 03:16:11 ralf Exp $
 
 TARGET = i586-pc-freebsd7.0
 
@@ -10,14 +10,14 @@ EXTRA_DIST += libs.add
 EXTRA_DIST += target-libs.add
 include ../libs.am
 
-BINUTILS_VERS = 2.19
+BINUTILS_VERS = 2.20
 BINUTILS_PKGVERS = $(BINUTILS_VERS)
-BINUTILS_RPMREL = 0.20090827.1
+BINUTILS_RPMREL = 0.20091021.1
 include ../binutils.am
 BINUTILS_OPTS +=
 
-GCC_VERS = 4.3.4
+GCC_VERS = 4.4.2
 GCC_PKGVERS = $(GCC_VERS)
-GCC_RPMREL = 0.20090827.1
+GCC_RPMREL = 0.20091021.1
 include ../gcc.am
 GCC_OPTS += --languages=cxx,fortran,objc

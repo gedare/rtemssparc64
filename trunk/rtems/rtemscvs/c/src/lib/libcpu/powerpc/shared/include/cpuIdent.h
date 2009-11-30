@@ -10,13 +10,17 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpuIdent.h,v 1.21 2008/07/14 08:45:03 thomas Exp $
+ *  $Id: cpuIdent.h,v 1.23 2009/11/03 18:45:04 thomas Exp $
  */
 
 #ifndef _LIBCPU_CPUIDENT_H
 #define _LIBCPU_CPUIDENT_H
 
 #include <stdbool.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifndef ASM
 typedef enum
@@ -106,17 +110,32 @@ _PPC_FEAT_DECL(has_epic)
 _PPC_FEAT_DECL(has_shadowed_gprs)
 _PPC_FEAT_DECL(has_ivpr_and_ivor)
 
-static inline bool ppc_cpu_is_e300()
+#undef _PPC_FEAT_DECL
+
+static inline ppc_cpu_id_t ppc_cpu_current(void)
 {
-	if (current_ppc_cpu == PPC_UNKNOWN) {
-		get_ppc_cpu_type();
-	}
-	return current_ppc_cpu == PPC_e300c1
-		|| current_ppc_cpu == PPC_e300c2
-		|| current_ppc_cpu == PPC_e300c3;
+	return current_ppc_cpu;
 }
 
-#undef _PPC_FEAT_DECL
+static inline bool ppc_cpu_is_e300()
+{
+	if (ppc_cpu_current() == PPC_UNKNOWN) {
+		get_ppc_cpu_type();
+	}
+	return ppc_cpu_current() == PPC_e300c1
+		|| ppc_cpu_current() == PPC_e300c2
+		|| ppc_cpu_current() == PPC_e300c3;
+}
+
+static inline bool ppc_cpu_is(ppc_cpu_id_t cpu)
+{
+	return ppc_cpu_current() == cpu;
+}
+
 #endif /* ASM */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

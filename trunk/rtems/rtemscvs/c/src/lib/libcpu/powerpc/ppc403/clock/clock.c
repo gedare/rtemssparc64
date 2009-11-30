@@ -34,7 +34,7 @@
  *
  *  Modifications for PPC405GP by Dennis Ehlin
  *
- *  $Id: clock.c,v 1.28 2008/09/06 17:36:55 ralf Exp $
+ *  $Id: clock.c,v 1.29 2009/10/23 07:32:46 thomas Exp $
  */
 
 #include <rtems.h>
@@ -51,9 +51,7 @@
 #include <bsp.h>
 
 #ifdef BSP_PPC403_CLOCK_HOOK_EXCEPTION
-#include <libcpu/raw_exception.h>
 #include <bsp/vectors.h>
-#include <bsp/ppc_exc_bspsupp.h>
 #define PPC_HAS_CLASSIC_EXCEPTIONS FALSE
 #else
 #if !defined(ppc405)

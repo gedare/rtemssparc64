@@ -1,10 +1,10 @@
 ##
-## $Id: Makefile.am,v 1.21 2009/07/27 11:55:52 ralf Exp $
+## $Id: Makefile.am,v 1.22 2009/11/23 03:33:52 ralf Exp $
 ##
 
 include $(top_srcdir)/mkspec.am
 
-AUTOCONF_VERS = 2.64
+AUTOCONF_VERS = 2.65
 AUTOCONF_RPMREL = 1
 include ./autoconf.am
 

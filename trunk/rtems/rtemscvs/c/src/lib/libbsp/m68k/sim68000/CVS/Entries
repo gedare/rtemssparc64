@@ -1,14 +1,14 @@
-/.cvsignore/1.4/Mon Jul 14 05:53:42 2008//
-/ChangeLog/1.108/Thu Oct 15 09:15:27 2009//
-/Makefile.am/1.36/Thu Oct  2 21:39:02 2008//
-/README/1.2/Mon Nov 27 17:52:47 2000//
-/bsp_specs/1.7/Thu Dec  4 20:31:08 2008//
-/configure.ac/1.22/Tue Sep 15 14:44:48 2009//
-/preinstall.am/1.7/Thu Oct  2 21:39:02 2008//
-/sim68000.setup/1.2/Mon Nov 27 17:52:48 2000//
 D/clock////
 D/console////
 D/include////
 D/make////
 D/start////
 D/startup////
+/.cvsignore/1.4/Fri Oct 23 12:50:22 2009//
+/ChangeLog/1.110/Wed Nov 25 15:49:37 2009//
+/Makefile.am/1.36/Fri Oct 23 12:50:22 2009//
+/README/1.2/Fri Oct 23 12:50:22 2009//
+/bsp_specs/1.7/Fri Oct 23 12:50:22 2009//
+/configure.ac/1.23/Wed Nov 25 15:49:37 2009//
+/preinstall.am/1.7/Tue Nov 17 14:18:23 2009//
+/sim68000.setup/1.2/Fri Oct 23 12:50:22 2009//

@@ -1,7 +1,7 @@
 /*
  * Classic API Init task create failure
  *
- *  $Id: testcase.h,v 1.1 2008/01/31 23:42:50 joel Exp $
+ *  $Id: testcase.h,v 1.2 2009/10/25 06:25:04 ralf Exp $
  */
 
 #include <errno.h>
@@ -30,7 +30,7 @@ posix_initialization_threads_table POSIX_Initialization_threads[] = {
 #define FATAL_ERROR_EXPECTED_IS_INTERNAL TRUE
 #define FATAL_ERROR_EXPECTED_ERROR       EFAULT
 
-void force_error()
+void force_error(void)
 {
   /* we will not run this far */
 }

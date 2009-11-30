@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: config.h,v 1.49 2009/08/26 12:18:42 joel Exp $
+ *  $Id: config.h,v 1.50 2009/10/21 16:06:50 strauman Exp $
  */
 
 #ifndef _RTEMS_CONFIG_H
@@ -251,13 +251,13 @@ extern rtems_configuration_table    Configuration;
         (Configuration.number_of_device_drivers)
 
 #define rtems_configuration_get_device_driver_table() \
-        (Configuration.device_driver_table)
+        (Configuration.Device_driver_table)
 
 #define rtems_configuration_get_number_of_initial_extensions() \
         (Configuration.number_of_initial_extensions)
 
 #define rtems_configuration_get_user_extension_table() \
-        (Configuration.user_extension_table)
+        (Configuration.User_extension_table)
 
 #if defined(RTEMS_MULTIPROCESSING)
   #define rtems_configuration_get_user_multiprocessing_table() \

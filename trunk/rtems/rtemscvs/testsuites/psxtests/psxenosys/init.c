@@ -6,19 +6,33 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.6 2009/09/14 00:15:55 joel Exp $
+ *  $Id: init.c,v 1.9 2009/10/27 05:13:49 ralf Exp $
  */
+
+#include <sys/types.h>
+#include <sys/wait.h>
+#if HAVE_SYS_MMAN_H
+/* POSIX mandates mprotect in sys/mman.h, but newlib doesn't have this */
+#include <sys/mman.h>
+#endif
+#include <pthread.h>
 
 #define CONFIGURE_INIT
 #include "system.h"
 #include "tmacros.h"
 
 #include <aio.h>
-#include <sys/types.h>
 #include <time.h>
 #include <devctl.h>
 #include <unistd.h>
 #include <sched.h>
+
+#if !HAVE_DECL_MPROTECT
+extern int mprotect(const void *addr, size_t len, int prot);
+#endif
+#if !HAVE_DECL_PTHREAD_ATFORK
+extern int pthread_atfork(void (*prepare)(void), void (*parent)(void), void (*child)(void));
+#endif
 
 void check_enosys(int status);
 
@@ -87,15 +101,15 @@ void *POSIX_Init(
   check_enosys( sc );
 
   puts( "execl -- ENOSYS" );
-  sc = execl( NULL, NULL );
+  sc = execl( NULL, NULL, (char*)0 );
   check_enosys( sc );
 
   puts( "execle -- ENOSYS" );
-  sc = execle( NULL, NULL );
+  sc = execle( NULL, NULL, (char*)0, NULL );
   check_enosys( sc );
 
   puts( "execlp -- ENOSYS" );
-  sc = execlp( NULL, NULL );
+  sc = execlp( NULL, NULL, (char*)0 );
   check_enosys( sc );
 
   puts( "execv -- ENOSYS" );

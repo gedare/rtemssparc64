@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.4 2009/06/24 06:35:29 joel Exp $
+ *  $Id: init.c,v 1.5 2009/10/24 06:14:30 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -17,10 +17,6 @@ rtems_task Init(
   rtems_task_argument argument
 )
 {
-  void                   *p1;
-  bool                    retbool;
-  Heap_Information_block  info;
-
   printk( "\n\n*** TEST PRINTK ***\n" );
 
   putk( "This is a test of putk\n" );

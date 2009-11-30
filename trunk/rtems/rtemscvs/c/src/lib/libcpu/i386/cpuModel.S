@@ -21,7 +21,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpuModel.S,v 1.7 2004/04/01 10:06:06 ralf Exp $
+ *  $Id: cpuModel.S,v 1.8 2009/10/28 21:40:14 strauman Exp $
  */
 
 #include <rtems/asm.h>
@@ -95,6 +95,7 @@ isnew:
 	 */
 	movl $1, eax		
 	cpuid			
+	movl ecx,SYM(x86_capability_x) /* store ecx feature flags */
 
 	movb al, cl		/* save reg for future use */
 	
@@ -234,6 +235,7 @@ BEGIN_DATA
 	PUBLIC(x86_model)
 	PUBLIC(x86_mask)
 	PUBLIC(x86_capability)
+	PUBLIC(x86_capability_x)
 	PUBLIC(x86_vendor_id)
 	PUBLIC(hard_math)
 
@@ -246,6 +248,8 @@ SYM(x86_model):
 SYM(x86_mask):	
 	.byte 0
 SYM(x86_capability):	
+	.long 0		
+SYM(x86_capability_x):	
 	.long 0		
 SYM(x86_vendor_id):	
 	.zero 13

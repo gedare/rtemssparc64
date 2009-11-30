@@ -1,3 +1,95 @@
+2009-11-17	Till Straumann <strauman@slac.stanford.edu>
+
+	* new-exceptions/bspsupport/ppc_exc_categories.c:
+	PSIM *must*not* hook SYS vector which is used e.g.,
+	for firmware I/O.
+
+	Added entries for AltiVec on PSIM.
+	
+2009-11-15	Till Straumann <strauman@slac.stanford.edu>
+
+	* shared/include/cpuIdent.c: Set 604 features + altivec if
+	running on PSIM.
+	
+2009-11-03  Thomas Doerfler  <Thomas.Doerfler@imd-systems.de>
+
+	* shared/include/powerpc-utility.h, shared/include/byteorder.h,
+	shared/include/cpuIdent.h: 
+	add c++ declaration brackets
+	* Makefile.am, mpc8260/clock: removed mpc8260 specific clock
+	driver
+	* e500/mmu/e500_mmu.h, e500/mmu/mmu.c,: removed "non-prototype"
+	warning
+	* mpc8260/timer/timer.c: moved extern declarations outside
+	function body
+	* mpc8xx/mmu/mmu.c: enable data cache when MMU is off to avoid
+	cache confusion during exception entry
+
+2009-11-02  Thomas Doerfler  <Thomas.Doerfler@imd-systems.de>
+
+	* mpc8xx/mmu/mmu.c:
+	enable data chache, when MMU is disabled
+
+2009-10-30  Thomas Doerfler  <Thomas.Doerfler@imd-systems.de>
+
+	* mpc6xx/clock/c_clock.c:
+	moved timebase/decrementer access from cpukit to libcpu 
+
+2009-10-29  Thomas Doerfler  <Thomas.Doerfler@imd-systems.de>
+
+	* shared/include/powerpc-utility.h, mpc6xx/timer/timer.c:
+	moved timebase/decrementer access from cpukit to libcpu 
+
+2009-10-23	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* new-exceptions/e500_raw_exc_init.c, new-exceptions/raw_exception.c,
+	new-exceptions/raw_exception.h,
+	new-exceptions/bspsupport/vectors_init.c,
+	mpc8xx/exceptions/asm_utils.S, mpc8xx/exceptions/raw_exception.c,
+	mpc8xx/exceptions/raw_exception.h, mpc8260/asm_utils.S,
+	mpc8260/raw_exception.c, mpc8260/raw_exception.h: Removed files.
+	* Makefile.am: Update for removed files.
+
+2009-10-22	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* new-exceptions/bspsupport/ppc-code-copy.c,
+	new-exceptions/bspsupport/ppc_exc_address.c,
+	new-exceptions/bspsupport/ppc_exc_categories.c,
+	new-exceptions/bspsupport/ppc_exc_global_handler.c,
+	new-exceptions/bspsupport/ppc_exc_initialize.c,
+	new-exceptions/bspsupport/ppc_exc_naked.S,
+	new-exceptions/bspsupport/ppc_exc_prologue.c: New files.
+	* new-exceptions/bspsupport/irq.c,
+	new-exceptions/bspsupport/irq_supp.h,
+	new-exceptions/bspsupport/ppc_exc_asm_macros.h: Changed exception
+	header file includes.  Fixes for type changes.
+	* new-exceptions/bspsupport/vectors.h: Reformatted.  Documentation.
+	Removed parts that belong to the raw exception API.  Added
+	declarations from files "new-exceptions/raw_exception.h" and
+	"bspsupport/ppc_exc_bspsupp.h".
+	* new-exceptions/bspsupport/ppc_exc_hdl.c: Reformatted.  Removed parts
+	that belong to the raw exception API.
+	* new-exceptions/bspsupport/ppc_exc_bspsupp.h: Added prologue template.
+	* new-exceptions/bspsupport/ppc_exc.S: Fixed
+	ppc_exc_tgpr_clr_prolog_size.
+	* shared/include/powerpc-utility.h: Reformatted.  Include more files
+	for ASM.
+	* shared/include/cpuIdent.h: Added ppc_cpu_current() and ppc_cpu_is().
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* new-exceptions/bspsupport/vectors_init.c: Remove duplicate
+	defines DEAR_BOOKE, DEAR_405.
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* mpc6xx/mmu/bat.c: Add missing prototypes.
+
+2009-10-21	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* mpc55xx/edma/edma.c, mpc55xx/esci/esci.c: Update for interrupt
+	handler type change.
+
 2009-10-16	Jennifer Averett <jennifer.averett@OARcorp.com>
 
 	* mpc6xx/mmu/bat.c: Resolved bug: It is not an overlap if the batindex

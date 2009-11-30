@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: fmempool.c,v 1.11 2008/12/17 22:12:23 joel Exp $
+ *  $Id: fmempool.c,v 1.12 2009/11/03 05:23:05 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -38,11 +38,11 @@ void _ITRON_Fixed_memory_pool_Manager_initialization(void)
                                  /* maximum objects of this class */
     sizeof( ITRON_Fixed_memory_pool_Control ),
                                  /* size of this object's control block */
-    FALSE,                       /* TRUE if names for this object are strings */
+    false,                       /* true if names for this object are strings */
     ITRON_MAXIMUM_NAME_LENGTH    /* maximum length of each object's name */
 #if defined(RTEMS_MULTIPROCESSING)
     ,
-    FALSE,                       /* TRUE if this is a global object class */
+    false,                       /* true if this is a global object class */
     NULL                         /* Proxy extraction support callout */
 #endif
   );

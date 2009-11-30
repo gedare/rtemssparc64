@@ -14,7 +14,7 @@
  *  Modified to support the MCP750.
  *  Modifications Copyright (C) 1999 Eric Valette. valette@crf.canon.fr
  *
- *  $Id: bspstart.c,v 1.50 2008/09/19 20:41:36 joel Exp $
+ *  $Id: bspstart.c,v 1.52 2009/10/23 07:32:45 thomas Exp $
  */
 
 #warning The interrupt disable mask is now stored in SPRG0, please verify that this is compatible to this BSP (see also bootcard.c).
@@ -104,7 +104,7 @@ void _BSP_Fatal_error(unsigned int v)
  *  Use the shared implementations of the following routines
  */
 
-void save_boot_params(
+char * save_boot_params(
   RESIDUAL *r3,
   void     *r4,
   void     *r5,
@@ -115,6 +115,7 @@ void save_boot_params(
   residualCopy = *r3;
   strncpy(loaderParam, additional_boot_options, MAX_LOADER_ADD_PARM);
   loaderParam[MAX_LOADER_ADD_PARM - 1] ='\0';
+  return loaderParam;
 }
 
 #if defined(mvme2100)
@@ -139,11 +140,12 @@ unsigned int get_eumbbar(void) {
 
 void bsp_start( void )
 {
+  rtems_status_code sc = RTEMS_SUCCESSFUL;
 #if !defined(mvme2100)
   unsigned l2cr;
 #endif
-  uint32_t intrStackStart;
-  uint32_t intrStackSize;
+  uintptr_t intrStackStart;
+  uintptr_t intrStackSize;
   ppc_cpu_id_t myCpu;
   ppc_cpu_revision_t myCpuRevision;
   prep_t boardManufacturer;
@@ -209,17 +211,20 @@ void bsp_start( void )
   /*
    * Initialize the interrupt related settings.
    */
-  intrStackStart = (uint32_t) __rtems_end;
+  intrStackStart = (uintptr_t) __rtems_end;
   intrStackSize = rtems_configuration_get_interrupt_stack_size();
 
   /*
    * Initialize default raw exception handlers.
    */
-  ppc_exc_initialize(
+  sc = ppc_exc_initialize(
     PPC_INTERRUPT_DISABLE_MASK_DEFAULT,
     intrStackStart,
     intrStackSize
   );
+  if (sc != RTEMS_SUCCESSFUL) {
+    BSP_panic("cannot initialize exceptions");
+  }
 
   select_console(CONSOLE_LOG);
 

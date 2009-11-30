@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_init.c,v 1.10 2008/10/02 17:27:07 joel Exp $
+ *  $Id: irq_init.c,v 1.11 2009/10/23 07:32:44 thomas Exp $
  */
 
 #include <libcpu/io.h>
@@ -27,7 +27,7 @@
 #include <bsp/openpic.h>
 #include <bsp/irq.h>
 #include <bsp.h>
-#include <libcpu/raw_exception.h>
+#include <bsp/vectors.h>
 #include <bsp/motorola.h>
 #include <rtems/bspIo.h>
 

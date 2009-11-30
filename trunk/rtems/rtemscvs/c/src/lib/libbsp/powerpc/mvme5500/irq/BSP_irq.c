@@ -32,7 +32,6 @@
 #include <bsp/irq.h>
 #include <rtems/score/thread.h>
 #include <rtems/score/apiext.h>
-#include <libcpu/raw_exception.h>
 #include <rtems/rtems/intr.h>
 #include <libcpu/io.h>
 #include <libcpu/byteorder.h>
@@ -442,7 +441,7 @@ int C_dispatch_irq_handler (BSP_Exception_frame *frame, unsigned int excNum)
 {
   unsigned long irqCause[3]={0, 0,0};
   unsigned oldMask[3]={0,0,0};
-  int loop=0, wloop=0, i=0, j;
+  int loop=0, i=0, j;
   int irq=0, group=0;
 
   if (excNum == ASM_DEC_VECTOR) {
@@ -479,7 +478,7 @@ int C_dispatch_irq_handler (BSP_Exception_frame *frame, unsigned int excNum)
 }
 
 /* Only print part of the entries for now */
-void BSP_printPicIsrTbl()
+void BSP_printPicIsrTbl(void)
 {
   int i;
 

@@ -16,7 +16,7 @@
  *  Modified to support the MPC750.
  *  Modifications Copyright (c) 1999 Eric Valette valette@crf.canon.fr
  *
- *  $Id: c_clock.c,v 1.22 2008/09/05 22:06:53 joel Exp $
+ *  $Id: c_clock.c,v 1.23 2009/10/31 07:04:20 thomas Exp $
  */
 
 #include <rtems/system.h>
@@ -28,6 +28,7 @@
 #include <libcpu/cpuIdent.h>
 #include <libcpu/spr.h>
 #include <rtems/bspIo.h>                /* for printk() */
+#include <libcpu/powerpc-utility.h>
 
 #include <bspopts.h>   /* for CLOCK_DRIVER_USE_FAST_IDLE */
 

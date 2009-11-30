@@ -17,12 +17,15 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test2.c,v 1.9 2009/08/21 17:35:49 joel Exp $
+ *  $Id: test2.c,v 1.11 2009/10/26 11:34:27 ralf Exp $
  */
 
-#include "system.h"
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "system.h"
+#include "tmacros.h"
 
 void test2()
 {
@@ -63,7 +66,7 @@ void test2()
     if (status_code_bad(result))
       break;
 
-    printf("number = %3i, id = %08x, starting, ", task_count, task_id[task_count]);
+    printf("number = %3" PRIi32 ", id = %08" PRIxrtems_id ", starting, ", task_count, task_id[task_count]);
     fflush(stdout);
 
     result = rtems_task_start(task_id[task_count],
@@ -88,7 +91,7 @@ void test2()
 
   if (task_count != ((TASK_ALLOCATION_SIZE * 5) - TASK_INDEX_OFFSET)) {
     printf( " FAIL2 : not enough tasks created -\n"
-            "         task created = %i, required number = %i\n",
+            "         task created = %" PRIi32 ", required number = %i\n",
             task_count, (TASK_ALLOCATION_SIZE * 5) - TASK_INDEX_OFFSET);
     destory_all_tasks("TEST2");
     exit( 1 );
@@ -105,7 +108,7 @@ void test2()
       if (!task_id[remove_task])
       {
         printf( " FAIL2 : remove task has a 0 id -\n"
-                "         task number = %i\n",
+                "         task number = %" PRIi32 "\n",
                 remove_task);
         destory_all_tasks("TEST2");
         exit( 1 );
@@ -117,7 +120,7 @@ void test2()
 
       removed_ids[task++] = task_id[remove_task];
 
-      printf(" TEST2 : block %i remove, signal task %08x, ", block, task_id[remove_task]);
+      printf(" TEST2 : block %" PRIi32 " remove, signal task %08" PRIxrtems_id ", ", block, task_id[remove_task]);
       rtems_event_send(task_id[remove_task], 1);
       task_id[remove_task] = 0;
     }
@@ -157,13 +160,13 @@ void test2()
     if (status_code_bad(result))
     {
       printf( " FAIL2 : re-creating a task -\n"
-              "         task number = %i\n",
+              "         task number = %" PRIi32 "\n",
               id_slot);
       destory_all_tasks("TEST2");
       exit( 1 );
     }
 
-    printf("number = %3i, id = %08x, starting, ", task_count, task_id[id_slot]);
+    printf("number = %3" PRIi32 ", id = %08" PRIxrtems_id ", starting, ", task_count, task_id[id_slot]);
 
     result = rtems_task_start(task_id[id_slot],
                               test_task,
@@ -172,7 +175,7 @@ void test2()
     if (status_code_bad(result))
     {
       printf( " FAIL : re-starting a task -\n"
-              "        task number = %i\n",
+              "        task number = %" PRIi32 "\n",
               id_slot);
       destory_all_tasks("TEST2");
       exit( 1 );
@@ -208,13 +211,13 @@ void test2()
         if ((task_id[id_slot] == task_id[allocated_id]) && (id_slot != allocated_id))
         {
           printf( " FAIL2 : the new id is the same as an id already allocated -\n"
-                  "         task id = %08x\n",
+                  "         task id = %08" PRIxrtems_id "\n",
                   task_id[id_slot]);
           exit( 1 );
         }
 
       printf( " FAIL2 : could not find the task id in the removed table -\n"
-              "         task id = %08x\n",
+              "         task id = %08" PRIxrtems_id "\n",
               task_id[id_slot]);
       exit( 1 );
     }

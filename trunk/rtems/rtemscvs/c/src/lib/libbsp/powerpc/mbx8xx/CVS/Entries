@@ -1,11 +1,3 @@
-/.cvsignore/1.4/Mon Jul 14 05:53:42 2008//
-/Makefile.am/1.42/Thu Oct  2 21:38:14 2008//
-/README/1.3/Fri Aug 25 17:24:49 2000//
-/bsp_specs/1.7/Thu Dec  4 20:29:38 2008//
-/configure.ac/1.29/Tue Sep 15 14:45:12 2009//
-/preinstall.am/1.7/Thu Oct  2 21:38:15 2008//
-/times-mbx821/1.1/Mon Jun 12 19:57:01 2000//
-/times-mbx860/1.1/Mon Jun 12 19:57:01 2000//
 D/clock////
 D/console////
 D/ide////
@@ -15,4 +7,12 @@ D/make////
 D/network////
 D/startup////
 D/vectors////
-/ChangeLog/1.161/Mon Oct 19 13:06:13 2009//
+/.cvsignore/1.4/Fri Oct 23 12:49:21 2009//
+/ChangeLog/1.166/Wed Nov 25 15:49:40 2009//
+/Makefile.am/1.43/Wed Nov 25 15:49:40 2009//
+/README/1.3/Fri Oct 23 12:49:21 2009//
+/bsp_specs/1.7/Fri Oct 23 12:49:21 2009//
+/configure.ac/1.30/Wed Nov 25 15:49:40 2009//
+/preinstall.am/1.8/Wed Nov 25 15:49:40 2009//
+/times-mbx821/1.1/Fri Oct 23 12:49:21 2009//
+/times-mbx860/1.1/Fri Oct 23 12:49:21 2009//

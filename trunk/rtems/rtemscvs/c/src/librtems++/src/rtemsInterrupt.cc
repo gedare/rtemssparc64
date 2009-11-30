@@ -1,6 +1,6 @@
 /*
   ------------------------------------------------------------------------
-  $Id: rtemsInterrupt.cc,v 1.6 2009/08/06 04:00:27 ccj Exp $
+  $Id: rtemsInterrupt.cc,v 1.7 2009/11/23 15:29:33 ralf Exp $
   ------------------------------------------------------------------------
 
   COPYRIGHT (c) 1997
@@ -36,7 +36,7 @@ static bool initialised = false;
    rtemsInterrupt
 */
 
-#include <stdlib.h> /* for malloc */
+#include <cstdlib>
 
 rtemsInterrupt::rtemsInterrupt()
   : vector(0),

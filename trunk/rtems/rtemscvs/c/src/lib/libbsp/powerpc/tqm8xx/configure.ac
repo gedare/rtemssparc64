@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.4 2009/09/15 14:45:30 ralf Exp $
+## $Id: configure.ac,v 1.6 2009/11/06 14:26:38 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-powerpc-tqm8xx],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -11,7 +11,7 @@ RTEMS_CANONICAL_TARGET_CPU
 AM_INIT_AUTOMAKE([no-define nostdinc foreign 1.10])
 RTEMS_BSP_CONFIGURE
 
-RTEMS_PROG_CC_FOR_TARGET([-ansi -fasm])
+RTEMS_PROG_CC_FOR_TARGET
 RTEMS_CANONICALIZE_TOOLS
 RTEMS_PROG_CCAS
 
@@ -107,6 +107,7 @@ RTEMS_BSPOPTS_HELP([BSP_USE_NETWORK_SCC],
 AC_CONFIG_FILES([Makefile])
 
 RTEMS_BSP_CLEANUP_OPTIONS(0, 0)
+RTEMS_BSP_LINKCMDS
 
 RTEMS_PPC_EXCEPTIONS
 

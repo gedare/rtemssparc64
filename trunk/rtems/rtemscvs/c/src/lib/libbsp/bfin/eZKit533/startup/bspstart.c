@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.15 2008/09/16 19:00:57 joel Exp $
+ *  $Id: bspstart.c,v 1.16 2009/10/20 12:31:52 ralf Exp $
  */
 
 
@@ -179,12 +179,12 @@ uint8_t getLED (void)
   return *((uint8_t*)FlashA_PortB_Data);
 }
 
-void initCPLB()
+void initCPLB(void)
 {
   int i = 0;
   unsigned int *addr;
   unsigned int *data;
-        
+
   addr = (unsigned int *)0xffe00100;
   data = (unsigned int *)0xffe00200;
 

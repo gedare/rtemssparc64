@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/07/30 00:15:59 joel Exp $
+ *  $Id: init.c,v 1.2 2009/10/24 06:14:29 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -20,7 +20,6 @@ rtems_task Init(
   bool                    sb;
   Heap_Information_block  start;
   Heap_Information_block  info;
-  void                   *pointer;
   size_t                  stack_size;
 
   puts( "\n\n*** TEST 18 ***" );

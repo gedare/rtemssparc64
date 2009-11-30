@@ -9,7 +9,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: openpic_i8259_irq.c,v 1.8 2009/09/11 16:57:07 strauman Exp $
+ *  $Id: openpic_i8259_irq.c,v 1.9 2009/10/23 07:32:45 thomas Exp $
  */
 
 #include <stdlib.h>
@@ -21,7 +21,6 @@
 #include <bsp/VMEConfig.h>
 #endif
 #include <bsp/openpic.h>
-#include <libcpu/raw_exception.h>
 #include <libcpu/io.h>
 #include <bsp/vectors.h>
 #include <stdlib.h>

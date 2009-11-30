@@ -1,5 +1,5 @@
 ##
-## $Id: configure.ac,v 1.7 2009/09/15 14:43:56 ralf Exp $
+## $Id: configure.ac,v 1.8 2009/10/20 09:33:52 ralf Exp $
 ##
 
 AC_PREREQ(2.60)
@@ -11,7 +11,7 @@ RTEMS_CANONICAL_TARGET_CPU
 AM_INIT_AUTOMAKE([no-define nostdinc foreign 1.10])
 RTEMS_BSP_CONFIGURE
 
-RTEMS_PROG_CC_FOR_TARGET([-fasm])
+RTEMS_PROG_CC_FOR_TARGET
 RTEMS_CANONICALIZE_TOOLS
 RTEMS_CHECK_TOOL(OBJCOPY,objcopy,:)
 RTEMS_PROG_CCAS

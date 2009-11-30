@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: init.c,v 1.8 2009/09/28 18:10:52 joel Exp $
+ * $Id: init.c,v 1.10 2009/10/27 06:56:21 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -39,10 +39,10 @@ rtems_task Waiter(
 {
   rtems_status_code status;
 
-  printf( "Waiter %d waiting on barrier\n", number );
+  printf( "Waiter %" PRIdrtems_task_argument " waiting on barrier\n", number );
   status = rtems_barrier_wait( Barrier, RTEMS_NO_TIMEOUT );
 
-  printf( "Waiter %d back from barrier\n", number );
+  printf( "Waiter %" PRIdrtems_task_argument " back from barrier\n", number );
 
   if ( SuccessfulCase == TRUE ) {
     directive_failed(status, "rtems_barrier_wait");
@@ -170,7 +170,7 @@ rtems_task Init(
   status = rtems_barrier_release( Barrier, &released );
   directive_failed(status, "rtems_barrier_release");
   if ( released != 0 ) {
-    printf( "ERROR -- rtems_barrier_release -- released != 0, = %d", released);
+    printf( "ERROR -- rtems_barrier_release -- released != 0, = %" PRIu32, released);
     exit(0);
   }
 
@@ -202,7 +202,7 @@ rtems_task Init(
   status = rtems_barrier_release( Barrier, &released );
   directive_failed(status, "rtems_barrier_release");
   if ( released != (CONFIGURE_MAXIMUM_TASKS-1) ) {
-    printf( "ERROR -- rtems_barrier_release -- released != %d, = %d",
+    printf( "ERROR -- rtems_barrier_release -- released != %d, = %" PRIu32,
          (CONFIGURE_MAXIMUM_TASKS-1), released);
     exit(0);
   }

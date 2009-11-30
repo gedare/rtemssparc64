@@ -24,7 +24,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.16 2009/08/12 20:50:29 joel Exp $
+ *  $Id: init.c,v 1.18 2009/10/30 17:04:36 joel Exp $
  */
 
 #define CONFIGURE_INIT
@@ -37,7 +37,7 @@ rtems_task Init(
   rtems_status_code status;
 
   printf(
-   "\n\n*** TEST 10 -- NODE %d ***\n",
+   "\n\n*** TEST 10 -- NODE %" PRIu32 " ***\n",
    Multiprocessing_configuration.node
   );
 
@@ -121,7 +121,7 @@ rtems_task Init(
     directive_failed( status, "rtems_task_start" );
 
     puts( "Sleeping for 1 seconds ..." );
-    status = rtems_task_wake_after( TICKS_PER_SECOND );
+    status = rtems_task_wake_after( rtems_clock_get_ticks_per_second() );
     directive_failed( status, "rtems_task_wake_after" );
 
     puts( "Deleting Test_task2" );

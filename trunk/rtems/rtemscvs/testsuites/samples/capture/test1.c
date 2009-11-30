@@ -14,7 +14,7 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test1.c,v 1.6 2009/09/14 14:56:35 ralf Exp $
+ *  $Id: test1.c,v 1.7 2009/10/24 05:50:51 ralf Exp $
  */
 
 #include "system.h"
@@ -260,7 +260,7 @@ static rtems_monitor_command_entry_t capture_cmds[] =
   }
 };
 
-void setup_tasks_to_watch ()
+void setup_tasks_to_watch (void)
 {
   size_t cmd;
   for (cmd = 0;

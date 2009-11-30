@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.3 2009/04/03 12:48:13 ralf Exp $
+## $Id: Makefile.am,v 1.4 2009/11/09 14:25:27 joel Exp $
 ##
 
 MANAGERS = io barrier semaphore clock
@@ -9,6 +9,7 @@ sp33_SOURCES = init.c
 
 scndir = $(rtems_testsdir)
 dist_scn_DATA = sp33.scn
+dist_scn_DATA += sp33.doc
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../automake/compile.am

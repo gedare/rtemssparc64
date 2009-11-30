@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpuusagereport.c,v 1.9 2008/12/18 15:25:27 joel Exp $
+ *  $Id: cpuusagereport.c,v 1.10 2009/11/11 16:28:06 joel Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -148,8 +148,16 @@ void rtems_cpu_usage_report_with_plugin(
             ival, fval
           );
         #else
-          ival = (total_units) ?
-                   the_thread->cpu_time_used * 10000 / total_units : 0;
+         if (total_units) {
+            uint64_t ival_64;
+
+            ival_64 = the_thread->cpu_time_used;
+            ival_64 *= 10000;
+            ival = ival_64 / total_units;
+          } else {
+            ival = 0;
+          }
+
           fval = ival % 1000;
           ival /= 1000;
           (*print)( context,

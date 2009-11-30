@@ -17,7 +17,7 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.2 2007/08/21 10:49:31 ccj Exp $
+ *  $Id: init.c,v 1.3 2009/10/24 05:50:06 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -29,8 +29,6 @@
 #include <rtems.h>
 #include <rtems/capture-cli.h>
 #include <rtems/monitor.h>
-
-void setup_tasks_to_watch ();
 
 volatile int can_proceed = 1;
 

@@ -7,14 +7,14 @@
  *
  *  Middleware support for PPC405 by M.Hamel ADInstruments Ltd 2008
  *
- *  $Id: irq.c,v 1.3 2008/08/20 03:41:07 ralf Exp $
+ *  $Id: irq.c,v 1.4 2009/10/23 07:32:44 thomas Exp $
  */
 
 #include <rtems.h>
 #include <bsp.h>
 #include <bsp/irq.h>
 #include <bsp/irq_supp.h>
-#include <libcpu/raw_exception.h>
+#include <bsp/vectors.h>
 #include <libcpu/powerpc-utility.h>
 
 
@@ -166,7 +166,7 @@ BSP_setup_the_pic(rtems_irq_global_settings* config)
  */
  
 int 
-C_dispatch_irq_handler( struct _BSP_Exception_frame* frame, unsigned int excNum )
+C_dispatch_irq_handler( BSP_Exception_frame* frame, unsigned int excNum )
 {
 	if (excNum == ASM_EXT_VECTOR) {
 		uint32_t active[kUICWords];

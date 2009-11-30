@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: snd_mbx.c,v 1.10 2007/10/26 20:19:00 joel Exp $
+ *  $Id: snd_mbx.c,v 1.11 2009/11/03 05:23:05 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -60,7 +60,7 @@ ER snd_msg(
         the_mailbox->Object.id,
         NULL,          /* multiprocessing not supported */
         message_priority,
-        FALSE,     /* do not allow sender to block */
+        false,     /* do not allow sender to block */
         0          /* no timeout */
      );
      break;

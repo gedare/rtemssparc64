@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.c,v 1.2 2008/02/07 00:04:10 joel Exp $
+ *  $Id: task.c,v 1.3 2009/10/27 14:10:54 ralf Exp $
  */
 
 #include "system.h"
@@ -29,7 +29,7 @@ void *Task_1(
   int         status;
   uint32_t   *key_data;
 
-  printf( "Thread 0x%08x\n", id );
+  printf( "Thread 0x%08" PRIxpthread_t "\n", id );
   printf( "Task_1: Setting the key to %d\n", 1 );
   status = pthread_setspecific( Key_id[0], (void *)&Data_array[ 1 ] );
   if ( status )

@@ -7,7 +7,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: flashdisk.h,v 1.4 2009/06/12 02:59:18 ccj Exp $
+ * $Id: flashdisk.h,v 1.5 2009/10/22 11:56:01 ralf Exp $
  */
 
 #if !defined (_RTEMS_FLASHDISK_H_)
@@ -95,7 +95,7 @@ typedef struct rtems_fdisk_segment_desc
 /**
  * Return the number of kilo-bytes.
  */
-#define RTEMS_FDISK_KBYTES(_k) ((_k) * 1024)
+#define RTEMS_FDISK_KBYTES(_k) (UINT32_C(1024) * (_k))
 
 /**
  * Forward declaration of the device descriptor.

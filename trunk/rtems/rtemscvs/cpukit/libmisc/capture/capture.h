@@ -4,7 +4,7 @@
  
 /*
   ------------------------------------------------------------------------
-  $Id: capture.h,v 1.9 2008/09/01 11:28:56 ralf Exp $
+  $Id: capture.h,v 1.10 2009/11/08 08:15:59 ralf Exp $
   ------------------------------------------------------------------------
 
   Copyright Objective Design Systems Pty Ltd, 2002
@@ -88,7 +88,7 @@ typedef struct rtems_capture_control_s
  * The from_valid mask.
  */
 #define RTEMS_CAPTURE_CONTROL_FROM_MASK(_s) \
- (1 << (RTEMS_CAPTURE_TRIGGER_TASKS - ((_s) + 1)))
+ (UINT32_C(1) << (RTEMS_CAPTURE_TRIGGER_TASKS - ((_s) + 1)))
 
 /**
  * Control flags.

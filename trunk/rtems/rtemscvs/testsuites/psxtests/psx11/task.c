@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.c,v 1.8 2009/05/11 01:41:15 joel Exp $
+ *  $Id: task.c,v 1.9 2009/10/29 05:00:52 ralf Exp $
  */
 
 #include "system.h"
@@ -26,15 +26,9 @@ void diff_timespec(
   struct timespec *start,
   struct timespec *stop,
   struct timespec *result
-);
-
-void diff_timespec(
-  struct timespec *start,
-  struct timespec *stop,
-  struct timespec *result
 )
 {
-   int nsecs_per_sec = 1000000000;
+   const long nsecs_per_sec = 1000000000;
 
    result->tv_sec = stop->tv_sec - start->tv_sec;
    if ( stop->tv_nsec < start->tv_nsec ) {

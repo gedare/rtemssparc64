@@ -1,9 +1,9 @@
-/.cvsignore/1.1/Thu Apr 13 14:36:57 2000//
-/Makefile.am/1.23/Fri Apr  3 12:48:12 2009//
-/getall.c/1.9/Thu Sep  4 18:53:48 2003//
-/init.c/1.14/Fri Feb  1 00:45:11 2008//
-/sp20.doc/1.8/Thu Sep  4 18:53:48 2003//
-/sp20.scn/1.8/Thu Nov 14 17:36:12 2002//
-/system.h/1.22/Mon Oct  5 15:01:59 2009//
-/task1.c/1.13/Wed Jun 20 21:43:28 2007//
+/.cvsignore/1.1/Fri Oct 23 12:48:17 2009//
+/Makefile.am/1.23/Fri Oct 23 12:48:17 2009//
+/getall.c/1.9/Fri Oct 23 12:48:17 2009//
+/init.c/1.14/Fri Oct 23 12:48:17 2009//
+/sp20.doc/1.8/Fri Oct 23 12:48:17 2009//
+/sp20.scn/1.8/Fri Oct 23 12:48:17 2009//
+/system.h/1.22/Fri Oct 23 12:48:17 2009//
+/task1.c/1.16/Wed Nov 25 15:50:14 2009//
 D

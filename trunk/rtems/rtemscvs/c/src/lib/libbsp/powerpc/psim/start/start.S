@@ -14,7 +14,7 @@
  * the new terms are clearly indicated on the first page of each file where
  * they apply.
  *
- *  $Id: start.S,v 1.10 2009/10/17 20:41:37 joel Exp $
+ *  $Id: start.S,v 1.11 2009/11/11 14:29:08 strauman Exp $
  */
 
 #include <rtems/asm.h>
@@ -100,9 +100,12 @@ _start:
 .Lnostack:
 	/* set up initial stack frame */
 	addi	sp,sp,-4		/* make sure we don't overwrite debug mem */
+	/* align */
+	li  r3, CPU_STACK_ALIGNMENT-1
+	andc	sp, sp, r3
 	lis	r0,0
 	stw	r0,0(sp)		/* clear back chain */
-	stwu	sp,-56(sp)		/* push another stack frame */
+	stwu	sp,-CPU_STACK_ALIGNMENT(sp)		/* push another stack frame */
 	bl  FUNC_NAME(__eabi)
 
 	/* Let her rip */

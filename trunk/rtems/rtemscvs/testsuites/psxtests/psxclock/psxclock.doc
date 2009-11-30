@@ -17,7 +17,6 @@ directives:
   clock_settime
   clock_gettime
   nanosleep
-  usleep
   sleep
 
 concepts:

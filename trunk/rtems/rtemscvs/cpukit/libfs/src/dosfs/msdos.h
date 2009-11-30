@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  @(#) $Id: msdos.h,v 1.20 2009/06/12 01:53:33 ccj Exp $
+ *  @(#) $Id: msdos.h,v 1.21 2009/11/02 11:07:55 ralf Exp $
  */
 #ifndef __DOSFS_MSDOS_H__
 #define __DOSFS_MSDOS_H__
@@ -403,8 +403,8 @@ msdos_name_type_t msdos_long_to_short(const char *lfn, int lfn_len,
 int msdos_filename_unix2dos(const char *un, int unlen, char *dn);
 
 void msdos_date_unix2dos(
-  unsigned int tsp, unsigned short *ddp,
-  unsigned short *dtp);
+  unsigned int tsp, uint16_t *ddp,
+  uint16_t *dtp);
 
 unsigned int msdos_date_dos2unix(unsigned int dd, unsigned int dt);
 

@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: thread.inl,v 1.38 2009/10/11 14:18:03 joel Exp $
+ *  $Id: thread.inl,v 1.39 2009/11/23 20:07:04 joel Exp $
  */
 
 #ifndef _RTEMS_SCORE_THREAD_H
@@ -39,12 +39,6 @@
 
 RTEMS_INLINE_ROUTINE void _Thread_Stop_multitasking( void )
 {
-  Context_Control context_area;
-  Context_Control *context_p = &context_area;
-
-  if ( _System_state_Is_up(_System_state_Get ()) )
-    context_p = &_Thread_Executing->Registers;
-
   /*
    *  This may look a bit of an odd but _Context_Restart_self is just
    *  a very careful restore of a specific context which ensures that

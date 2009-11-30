@@ -1,3 +1,48 @@
+2009-11-06	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Add RTEMS_BSP_LINKCMDS.
+	* Makefile.am: Rework linkcmds handling.
+	* make/custom/tqm8xx.inc: Remove RTEMS_LINKCMDS, LDFLAGS.
+
+2009-11-03	Thomas Doerfler  <Thomas.Doerfler@embedded-brains.de>
+
+	* startup/bspstart.c, console/console.c: various fixes
+
+2009-10-28	Thomas Doerfler  <Thomas.Doerfler@embedded-brains.de>
+
+	* startup/bspstart.c: correct clock tick init
+
+2009-10-23	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* console/console.c: Include <rtems/error.h>.
+	* spi/spi.c: Remove m8xx_spi_softc_ptr (Unused).
+
+2009-10-22	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* Makefile.am, preinstall.am: Update for exception support changes.
+	* irq/irq.c: Changed exception header file includes.
+	* startup/bspstart.c: Changed exception header file includes.  Update
+	for ppc_exc_initialize() changes.
+
+2009-10-21  Thomas Doerfler  <Thomas.Doerfler@imd-systems.de>
+
+	* ChangeLog, Makefile.am, console/console.c, include/bsp.h,
+	irq/irq.c, preinstall.am, startup/bspstart.c, startup/start.S:
+	various maintenance changes
+	* spi/spi.c, spi/spi.h: added missing driver
+
+2009-10-21	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* clock/p_clock.c: Update for interrupt handler type change.
+
+2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* make/custom/tqm8xx.inc: Remove RTEMS_BSP_FAMILY.
+
+2009-10-20	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Don't add -ansi -fasm to CFLAGS.
+
 2009-10-17	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* make/custom/tqm8xx.inc: New (Renamed from tqm8xx.cfg).

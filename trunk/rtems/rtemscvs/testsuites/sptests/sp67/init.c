@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/10/10 15:03:30 joel Exp $
+ *  $Id: init.c,v 1.2 2009/10/24 06:14:30 ralf Exp $
  */
 
 
@@ -40,7 +40,6 @@ rtems_task Init(
   rtems_status_code status;
   rtems_id          timer1;
   rtems_id          timer2;
-  rtems_name        timer_name;
 
   puts( "\n\n*** TEST 67 ***" );
 

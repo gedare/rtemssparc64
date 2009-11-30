@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.15 2008/09/15 00:23:55 joel Exp $
+ *  $Id: bspstart.c,v 1.16 2009/11/23 20:09:22 joel Exp $
  */
 
 
@@ -44,18 +44,6 @@ static inline int set_snooping(void)
       : "r"(0xC)
   );
   return (tmp >> 27) & 1;
-}
-
-/*
- *  bsp_pretasking_hook
- *
- *  BSP pretasking hook.  Called just before drivers are initialized.
- *  Used to setup libc and install any BSP extensions     .
- */
-
-void bsp_pretasking_hook(void)
-{
-  bsp_spurious_initialize();
 }
 
 /*

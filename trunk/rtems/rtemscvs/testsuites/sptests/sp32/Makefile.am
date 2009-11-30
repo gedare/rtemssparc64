@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.16 2009/04/03 12:48:13 ralf Exp $
+## $Id: Makefile.am,v 1.17 2009/11/09 14:25:27 joel Exp $
 ##
 
 MANAGERS = io rate_monotonic semaphore clock
@@ -8,6 +8,7 @@ rtems_tests_PROGRAMS = sp32
 sp32_SOURCES = init.c
 
 dist_rtems_tests_DATA = sp32.scn
+dist_rtems_tests_DATA += sp32.doc
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../automake/compile.am

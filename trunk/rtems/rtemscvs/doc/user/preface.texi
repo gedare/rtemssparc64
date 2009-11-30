@@ -3,11 +3,11 @@
 @c  On-Line Applications Research Corporation (OAR).
 @c  All rights reserved.
 @c
-@c  $Id: preface.texi,v 1.17 2009/10/14 15:29:55 joel Exp $
+@c  $Id: preface.texi,v 1.18 2009/11/09 14:36:14 joel Exp $
 @c
 
 @ifinfo
-@node Preface, Overview, Top, Top
+@node Preface, Overview, List of Figures, Top
 @end ifinfo
 @unnumbered Preface
 

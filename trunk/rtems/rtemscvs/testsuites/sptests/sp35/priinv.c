@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: priinv.c,v 1.11 2009/06/17 22:59:16 ccj Exp $
+ *  $Id: priinv.c,v 1.15 2009/10/27 06:56:21 ralf Exp $
  */
 
 /********************************************************************
@@ -93,7 +93,7 @@ const char *CallerName(void)
   #else
     TempName.u = (uint32_t) _Thread_Executing->Object.name.name_u32;
   #endif
-  sprintf( buffer, "%c%c%c%c -- %d",
+  sprintf( buffer, "%c%c%c%c -- %" PRIdPriority_Control,
       TempName.c[0], TempName.c[1], TempName.c[2], TempName.c[3],
       _Thread_Executing->current_priority
   );
@@ -123,7 +123,7 @@ volatile bool StartHw = false;
 
 rtems_task Medium_Exec(rtems_task_argument TaskArg)
 {
-  printf("Medium_Exec (%d) begins...\n", TaskArg);
+  printf("Medium_Exec (%" PRIdrtems_task_argument ") begins...\n", TaskArg);
 
   rtems_task_wake_after(50);
 
@@ -133,7 +133,7 @@ rtems_task Medium_Exec(rtems_task_argument TaskArg)
 
   /* JRS - task does not get here */
 
-  printf("Medium_Exec (%d) ends...\n", TaskArg);
+  printf("Medium_Exec (%" PRIdrtems_task_argument ") ends...\n", TaskArg);
   while(1) {
     rtems_task_wake_after(10000);
   }
@@ -141,7 +141,7 @@ rtems_task Medium_Exec(rtems_task_argument TaskArg)
 
 rtems_task High_Exec(rtems_task_argument TaskArg)
 {
-  printf("High_Exec (%d) begins...\n", TaskArg);
+  printf("High_Exec (%" PRIdrtems_task_argument ") begins...\n", TaskArg);
 
   /* Delay more than the Low-prio task so that Remote HW access resource is
    * taken before call to AccesRemoteHw.
@@ -154,7 +154,7 @@ rtems_task High_Exec(rtems_task_argument TaskArg)
 
   /* JRS - task does not get here */
 
-  printf("High_Exec (%d) ends...\n", TaskArg);
+  printf("High_Exec (%" PRIdrtems_task_argument ") ends...\n", TaskArg);
   while(1) {
     rtems_task_wake_after(10000);
   }
@@ -163,7 +163,7 @@ rtems_task High_Exec(rtems_task_argument TaskArg)
 
 rtems_task Low_Exec(rtems_task_argument TaskArg)
 {
-  printf("Low_Exec (%d) begins...\n", TaskArg);
+  printf("Low_Exec (%" PRIdrtems_task_argument ") begins...\n", TaskArg);
 
   /* Delay less than High-prio task so that we take the remote HW access
    * resource before it does it. However, delay longer than the mid-prio
@@ -178,7 +178,7 @@ rtems_task Low_Exec(rtems_task_argument TaskArg)
 
   /* JRS - task does not get here */
 
-  printf("Low_Exec (%d) ends...\n", TaskArg);
+  printf("Low_Exec (%" PRIdrtems_task_argument ") ends...\n", TaskArg);
   while(1) {
     rtems_task_wake_after(10000);
   }
@@ -187,7 +187,9 @@ rtems_task Low_Exec(rtems_task_argument TaskArg)
 
 rtems_task LocalHwSim_Exec(rtems_task_argument TaskArg)
 {
+#if 0
   int ISRCount = 0;
+#endif
   printf("LocalHwSim_Exec begins...\n");
   
   while(1) {
@@ -375,7 +377,7 @@ rtems_task Init(rtems_task_argument ignored)
     &LocalHwSync_S);                                 /* *id */
   directive_failed( status, "rtems_semaphore_create (SYNC)" );
   
-  printf( "Sync Mutex Id = 0x%08x\n", LocalHwSync_S );
+  printf( "Sync Mutex Id = 0x%08" PRIxrtems_id "\n", LocalHwSync_S );
   
   /* Create resource semaphore for exclusive access to the local HW */
   status = rtems_semaphore_create(
@@ -389,7 +391,7 @@ rtems_task Init(rtems_task_argument ignored)
     &LocalHwAccess_R);                     /* *id              */
   directive_failed( status, "rtems_semaphore_create (RES1)" );
 
-  printf( "Local Mutex Id = 0x%08x\n", LocalHwAccess_R );
+  printf( "Local Mutex Id = 0x%08" PRIxrtems_id "\n", LocalHwAccess_R );
 
   /* Create resource semaphore for exclusive access to the remote HW */
   status = rtems_semaphore_create(
@@ -403,7 +405,7 @@ rtems_task Init(rtems_task_argument ignored)
     &RemoteHwAccess_R);                    /* *id              */
   directive_failed( status, "rtems_semaphore_create (RES2)" );
 
-  printf( "Remote Mutex Id = 0x%08x\n", RemoteHwAccess_R );
+  printf( "Remote Mutex Id = 0x%08" PRIxrtems_id "\n", RemoteHwAccess_R );
   
 #if defined(TEST_USE_ISR)
   /* Install ISR for HW/SW synchronization, use ta 0x85 which is synchronous */
@@ -427,7 +429,7 @@ rtems_task Init(rtems_task_argument ignored)
       &TaMedium[i]);                                     /* Assigned ID */
     directive_failed( status, "rtems_task_create (MEDn)" );
 
-    printf( "TaMedium[%d] Id = 0x%08x\n", i, TaMedium[i] );
+    printf( "TaMedium[%d] Id = 0x%08" PRIxrtems_id "\n", i, TaMedium[i] );
     status = rtems_task_start(
       TaMedium[i],
       Medium_Exec,
@@ -447,7 +449,7 @@ rtems_task Init(rtems_task_argument ignored)
     &TaHigh);                                          /* Assigned ID */
   directive_failed( status, "rtems_task_create (HIGH)" );
 
-  printf( "TaHigh Id = 0x%08x\n", TaHigh );
+  printf( "TaHigh Id = 0x%08" PRIxrtems_id "\n", TaHigh );
   status = rtems_task_start(TaHigh, High_Exec, 0);
   directive_failed( status, "rtems_task_start (HIGH)" );
 
@@ -462,7 +464,7 @@ rtems_task Init(rtems_task_argument ignored)
     &TaLow);                                           /* Assigned ID */
   directive_failed( status, "rtems_task_create (LOW)" );
 
-  printf( "TaLow Id = 0x%08x\n", TaLow );
+  printf( "TaLow Id = 0x%08" PRIxrtems_id "\n", TaLow );
   status = rtems_task_start(TaLow, Low_Exec, 0);
   directive_failed( status, "rtems_task_start (LOW)" );
 
@@ -477,7 +479,7 @@ rtems_task Init(rtems_task_argument ignored)
     &TaHwSim);                                         /* Assigned ID */
   directive_failed( status, "rtems_task_create (HWSM)" );
 
-  printf( "TaHwSim Id = 0x%08x\n", TaHwSim );
+  printf( "TaHwSim Id = 0x%08" PRIxrtems_id "\n", TaHwSim );
 
   status = rtems_task_start(TaHwSim, LocalHwSim_Exec, 0);
   directive_failed( status, "rtems_task_start (HWSM)" );

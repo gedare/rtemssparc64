@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.15 2009/05/04 21:51:08 joel Exp $
+ *  $Id: task1.c,v 1.18 2009/10/27 09:04:54 ralf Exp $
  */
 
 #include "system.h"
@@ -33,12 +33,12 @@ rtems_task Task_1(
   void                   *address_8;
   rtems_id                region_id;
   Heap_Information_block  region_info;
-  intptr_t                segment_size;
+  uintptr_t               segment_size;
   rtems_status_code       status;
 
   /* Obtain the region id */
   status = rtems_region_ident(Region_name[ 1 ], &region_id);
-  printf( "TA1 - rtems_region_ident - 0x%08x\n", region_id );
+  printf( "TA1 - rtems_region_ident - 0x%08" PRIxrtems_id "\n", region_id );
   directive_failed(status, "rtems_region_ident of RN01");
 
   /* Get a 64 byte segment from the region */
@@ -63,7 +63,7 @@ rtems_task Task_1(
   new_line;
   status = rtems_region_get_segment_size(region_id, address_1, &segment_size);
   directive_failed(status, "rtems_region_get_segment_size of segment 1");
-  printf( "TA1 - got segment size of %d\n", segment_size );
+  printf( "TA1 - got segment size of %" PRIuPTR "\n", segment_size );
 
   /* Get a 128 byte segment from the region */
   puts(
@@ -183,23 +183,23 @@ rtems_task Task_1(
   new_line;
   status = rtems_region_get_segment_size(region_id, address_8, &segment_size);
   directive_failed(status, "rtems_region_get_segment_size of segment 8");
-  printf( "TA1 - got segment size of %d\n", segment_size );
+  printf( "TA1 - got segment size of %" PRIu32 "\n", segment_size );
 
   /* Get information about the region */
-  printf( "TA1 - rtems_region_get_information - 0x%08x\n", region_id );
+  printf( "TA1 - rtems_region_get_information - 0x%08" PRIxrtems_id "\n", region_id );
   status = rtems_region_get_information(region_id, &region_info);
   directive_failed(status, "rtems_region_get_information of RN01");
   printf(
-    "TA1 - got information - free = %d, used = %d\n",
+    "TA1 - got information - free = %" PRIu32 ", used = %" PRIu32 "\n",
     region_info.Free.number,
     region_info.Used.number
   );
 
-  printf( "TA1 - rtems_region_get_free_information - 0x%08x\n", region_id );
+  printf( "TA1 - rtems_region_get_free_information - 0x%08" PRIxrtems_id "\n", region_id );
   status = rtems_region_get_free_information(region_id, &region_info);
   directive_failed(status, "rtems_region_get_free_information of RN01");
   printf(
-    "TA1 - got free information - free = %d, used = %d\n",
+    "TA1 - got free information - free = %" PRIu32 ", used = %" PRIu32 "\n",
     region_info.Free.number,
     region_info.Used.number
   );

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtc.c,v 1.2 2009/05/27 14:22:10 joel Exp $
+ *  $Id: rtc.c,v 1.3 2009/10/20 12:54:46 ralf Exp $
  */
  
 
@@ -97,7 +97,7 @@ void getRealTime(
 )
 {
   uint32_t days, rtc_reg;
-  rtems_time_of_day tod_temp;
+  rtems_time_of_day tod_temp = { 0, 0, 0 };
   int n, Leap_year;
   
   rtc_reg = *((uint32_t volatile *)RTC_STAT); 

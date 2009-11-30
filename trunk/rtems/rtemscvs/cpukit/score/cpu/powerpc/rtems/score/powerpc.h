@@ -38,7 +38,7 @@
  * Note:
  *      This file is included by both C and assembler code ( -DASM )
  *
- *  $Id: powerpc.h,v 1.29 2008/07/10 21:48:24 strauman Exp $
+ *  $Id: powerpc.h,v 1.30 2009/10/21 13:19:09 thomas Exp $
  */
 
 
@@ -140,12 +140,6 @@ extern "C" {
 #else
 #define PPC_HAS_DOUBLE 0
 #endif
-
-/*
- *  Initial value for the FPSCR register
- */
-
-#define PPC_INIT_FPSCR		0x000000f8
 
 /*
  *  Assemblers.

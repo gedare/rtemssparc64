@@ -15,7 +15,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq.h,v 1.9 2007/12/04 21:03:34 joel Exp $
+ *  $Id: irq.h,v 1.10 2009/10/23 06:48:42 ralf Exp $
  */
 
 #ifndef LIBBSP_POWERPC_MBX8XX_IRQ_IRQ_H
@@ -171,6 +171,8 @@ int BSP_irq_ack_at_siu              	(const rtems_irq_number irqLine);
 int BSP_irq_enabled_at_siu     	(const rtems_irq_number irqLine);
 
 extern void BSP_rtems_irq_mng_init(unsigned cpuId);
+
+extern int BSP_irq_enabled_at_cpm(const rtems_irq_number irqLine);
 
 #ifdef __cplusplus
 }

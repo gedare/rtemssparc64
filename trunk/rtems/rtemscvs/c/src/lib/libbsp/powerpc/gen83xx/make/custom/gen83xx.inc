@@ -1,7 +1,7 @@
 #
 #  Shared base config file for GEN83xx BSPs
 #
-#  $Id: gen83xx.inc,v 1.1 2009/10/17 15:31:27 ralf Exp $
+#  $Id: gen83xx.inc,v 1.2 2009/10/21 10:53:26 ralf Exp $
 #
 
 include $(RTEMS_ROOT)/make/custom/default.cfg
@@ -12,9 +12,6 @@ include $(RTEMS_ROOT)/make/custom/default.cfg
 #
 RTEMS_CPU=powerpc
 RTEMS_CPU_MODEL=mpc83xx
-
-# This is the actual bsp directory used during the build process.
-RTEMS_BSP_FAMILY=gen83xx
 
 #  This contains the compiler options necessary to select the CPU model
 #  and (hopefully) optimize for it. 

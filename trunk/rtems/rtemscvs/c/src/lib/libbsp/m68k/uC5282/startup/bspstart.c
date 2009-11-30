@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  * 
- *  $Id: bspstart.c,v 1.56 2009/09/09 05:34:44 strauman Exp $
+ *  $Id: bspstart.c,v 1.57 2009/11/03 11:55:09 ralf Exp $
  */
 
 #include <bsp.h>
@@ -184,7 +184,7 @@ void _CPU_cache_invalidate_1_data_line(const void *addr)
 #endif
 }
 
-extern void bsp_fake_syscall();
+extern void bsp_fake_syscall(void);
 
 /*
  * The Arcturus boot ROM prints exception information improperly

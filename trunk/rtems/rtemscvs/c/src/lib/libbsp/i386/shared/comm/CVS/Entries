@@ -1,10 +1,10 @@
-/GDB.HOWTO/1.2/Tue Mar 18 14:24:52 2003//
-/gdb_glue.c/1.6/Tue Jan  4 23:28:37 2005//
-/i386-stub.c/1.12/Sun Sep  7 14:30:51 2008//
-/i386_io.h/1.5/Mon Sep 11 21:46:47 2006//
-/tty_drv.c/1.13/Wed Sep 30 03:22:43 2009//
-/tty_drv.h/1.6/Fri Mar 17 10:11:36 2006//
-/uart.c/1.17/Wed May  6 16:36:19 2009//
-/uart.h/1.8/Wed Apr 21 16:01:34 2004//
-/i386-stub-glue.c/1.10/Mon Oct 19 13:06:12 2009//
+/GDB.HOWTO/1.2/Fri Oct 23 12:51:01 2009//
+/gdb_glue.c/1.6/Fri Oct 23 12:51:01 2009//
+/i386-stub-glue.c/1.10/Fri Oct 23 12:51:01 2009//
+/i386-stub.c/1.12/Fri Oct 23 12:51:01 2009//
+/i386_io.h/1.5/Fri Oct 23 12:51:01 2009//
+/tty_drv.c/1.13/Fri Oct 23 12:51:01 2009//
+/tty_drv.h/1.6/Fri Oct 23 12:51:01 2009//
+/uart.c/1.17/Fri Oct 23 12:51:01 2009//
+/uart.h/1.8/Fri Oct 23 12:51:01 2009//
 D

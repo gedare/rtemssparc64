@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.19 2009/07/03 18:39:10 joel Exp $
+ *  $Id: init.c,v 1.21 2009/10/30 10:31:32 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -29,7 +29,7 @@ void Signal_handler(
 {
   Signal_count++;
   printf(
-    "Signal: %d caught by 0x%x (%d)\n",
+    "Signal: %d caught by 0x%" PRIxpthread_t " (%d)\n",
     signo,
     pthread_self(),
     Signal_count
@@ -45,7 +45,7 @@ void Signal_info_handler(
 {
   Signal_count++;
   printf(
-    "Signal_info: %d caught by 0x%x (%d) si_signo= %d si_code= %d value= %d\n",
+    "Signal_info: %d caught by 0x%" PRIxpthread_t " (%d) si_signo= %d si_code= %d value= %d\n",
     signo,
     pthread_self(),
     Signal_count,
@@ -78,7 +78,7 @@ void *POSIX_Init(
   /* get id of this thread */
 
   Init_id = pthread_self();
-  printf( "Init's ID is 0x%08x\n", Init_id );
+  printf( "Init's ID is 0x%08" PRIxpthread_t "\n", Init_id );
 
   /* generate some easy error cases */
 
@@ -560,7 +560,7 @@ void *POSIX_Init(
   assert( !status );
   puts( "Init: pthread_kill - SUCCESSFUL (signal = SIG_IGN)" );
 
-  status = kill( 0x7fffffff, SIGUSR1 );
+  status = kill( INT_MAX, SIGUSR1 );
   if ( status != -1 )
     printf( "status = %d\n", status );
   assert( errno == ESRCH );

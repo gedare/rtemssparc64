@@ -6,7 +6,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ne2000.c,v 1.22 2009/10/15 06:30:08 ccj Exp $
+ *  $Id: ne2000.c,v 1.23 2009/11/23 18:26:55 joel Exp $
  *
  *  Both the ne2000 and the wd80x3 are based on the National Semiconductor
  *  8390 chip, so there is a fair amount of overlap between the two
@@ -1211,7 +1211,7 @@ rtems_ne_driver_attach (struct rtems_bsdnet_ifconfig *config, int attach)
       opt += sizeof ("--ne2k-port=") - 1;
       sc->port = strtoul (opt, 0, 0);
     }
-    if (config->port != 0) {
+    if (config->port == 0) {
       /* We use 0x300 as the default IO port number.  */
       sc->port = 0x300;
     }

@@ -22,7 +22,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: semcreate.c,v 1.21 2009/07/09 21:55:23 joel Exp $
+ *  $Id: semcreate.c,v 1.22 2009/10/30 17:02:22 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -95,7 +95,7 @@ rtems_status_code rtems_semaphore_create(
       return RTEMS_MP_NOT_CONFIGURED;
 
     if ( _Attributes_Is_inherit_priority( attribute_set ) ||
-         _Attributes_Is_priority_ceiling( attribute_set ) ) {
+         _Attributes_Is_priority_ceiling( attribute_set ) )
       return RTEMS_NOT_DEFINED;
 
   } else

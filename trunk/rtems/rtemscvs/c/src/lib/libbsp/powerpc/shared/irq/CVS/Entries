@@ -1,8 +1,5 @@
-/README.deprecated/1.1/Tue Dec 11 05:38:44 2007//
-/i8259.c/1.8/Sun Dec  2 21:49:07 2007//
-/irq.c/1.29/Thu Feb 19 20:19:03 2009//
-/irq.h/1.15/Sun Dec  2 21:49:07 2007//
-/irq_asm.S/1.23/Thu Mar 12 14:18:32 2009//
-/irq_init.c/1.25/Wed Aug 20 08:51:48 2008//
-/openpic_i8259_irq.c/1.8/Fri Sep 11 16:57:07 2009//
+/i8259.c/1.8/Fri Oct 23 12:49:26 2009//
+/irq.h/1.15/Fri Oct 23 12:49:26 2009//
+/irq_init.c/1.26/Wed Nov 25 15:49:40 2009//
+/openpic_i8259_irq.c/1.9/Wed Nov 25 15:49:40 2009//
 D

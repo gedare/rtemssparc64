@@ -18,7 +18,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.13 2008/02/01 00:45:11 joel Exp $
+ *  $Id: init.c,v 1.14 2009/10/24 06:22:50 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -26,7 +26,6 @@
 
 /* #define HAVE_MENU */
 
-rtems_task Test_task();
 void size_rtems( int mode );
 
 rtems_task Init(
