@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.17 2009/05/09 21:24:06 joel Exp $
+ *  $Id: task1.c,v 1.18 2009/10/26 07:40:22 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -15,7 +15,7 @@
 uint32_t   taskcount;
 rtems_task_priority taskpri;
 
-void test_init(void);
+extern void test_init(void);
 
 rtems_task First_task(
   rtems_task_argument argument
@@ -29,8 +29,6 @@ rtems_task Last_task(
   rtems_task_argument argument
 );
 
-
-void test_init();
 
 rtems_task Init(
   rtems_task_argument argument

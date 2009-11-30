@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: itroninittasks.c,v 1.2 2008/12/17 22:12:23 joel Exp $
+ *  $Id: itroninittasks.c,v 1.3 2009/11/03 05:23:05 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -51,12 +51,12 @@ void _ITRON_Task_Initialize_user_tasks_body( void )
     );
 
     if ( return_value != E_OK )
-      _Internal_error_Occurred( INTERNAL_ERROR_ITRON_API, TRUE, return_value );
+      _Internal_error_Occurred( INTERNAL_ERROR_ITRON_API, true, return_value );
 
     return_value = sta_tsk( user_tasks[ index ].id, 0 );
 
     if ( return_value != E_OK )
-      _Internal_error_Occurred( INTERNAL_ERROR_ITRON_API, TRUE, return_value );
+      _Internal_error_Occurred( INTERNAL_ERROR_ITRON_API, true, return_value );
 
   }
 }

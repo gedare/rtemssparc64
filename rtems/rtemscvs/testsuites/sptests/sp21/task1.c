@@ -14,10 +14,13 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.16 2007/12/19 20:51:51 joel Exp $
+ *  $Id: task1.c,v 1.17 2009/10/27 09:03:52 ralf Exp $
  */
 
 #include "system.h"
+
+/* rtems_device_major_number is a typedef to uint32_t */
+#define PRIurtems_device_major_number PRIu32
 
 #define STUB_DRIVER_MAJOR     0x2
 #define NO_DRIVER_MAJOR       0x3
@@ -163,7 +166,7 @@ rtems_task Task_1(
 
   status = rtems_io_register_driver( 0, &GoodDriver, &registered );
   if ( status == RTEMS_SUCCESSFUL )
-    printf( "registered major = %d\n", registered );
+    printf( "registered major = %" PRIurtems_device_major_number "\n", registered );
   fatal_directive_status(
     status,
     RTEMS_TOO_MANY,

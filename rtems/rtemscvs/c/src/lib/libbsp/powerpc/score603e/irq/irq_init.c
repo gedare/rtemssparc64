@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_init.c,v 1.8 2009/05/05 16:24:04 jennifer Exp $
+ *  $Id: irq_init.c,v 1.9 2009/10/23 07:32:45 thomas Exp $
  */
 
 #include <libcpu/io.h>
@@ -24,7 +24,7 @@
 #include <bsp/residual.h>
 #include <bsp/irq.h>
 #include <bsp.h>
-#include <libcpu/raw_exception.h>
+#include <bsp/vectors.h>
 #include <rtems/bspIo.h>
 
 #define SHOW_ISA_PCI_BRIDGE_SETTINGS 1

@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.23 2009/08/12 20:50:37 joel Exp $
+ *  $Id: init.c,v 1.26 2009/10/29 03:21:40 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -109,14 +109,14 @@ void writeFile(
   int sc;
   sc = setuid(0);
   if ( sc ) {
-    printf( "setuid failed: %s:\n", name, strerror(errno) );
+    printf( "setuid failed: %s: %s\n", name, strerror(errno) );
   }
 
   rtems_shell_write_file( name, contents );
 
   sc = chmod ( name, mode );
   if ( sc ) {
-    printf( "chmod %s: %s:\n", name, strerror(errno) );
+    printf( "chmod %s: %s\n", name, strerror(errno) );
   }
 }
 
@@ -293,7 +293,7 @@ void fileio_list_file(void)
 
     rtems_clock_get (RTEMS_CLOCK_GET_TICKS_SINCE_BOOT, &curr_tick);
 
-    printf("\n ******** End of file reached, flen = %d\n",flen);
+    printf("\n ******** End of file reached, flen = %zd\n",flen);
     close(fd);
 
     ticks_per_sec = rtems_clock_get_ticks_per_second();
@@ -678,14 +678,37 @@ void fileio_menu (void)
 int menu_tid;
 
 /*
+ * RTEMS File Menu Task
+ */
+rtems_task
+fileio_task (rtems_task_argument ignored)
+{
+  fileio_menu();
+}
+
+/*
  * RTEMS Startup Task
  */
 rtems_task
 Init (rtems_task_argument ignored)
 {
+  rtems_name Task_name;
+  rtems_id   Task_id;
+  rtems_status_code status;
+
   puts( "\n\n*** FILE I/O SAMPLE AND TEST ***" );
 
-  fileio_menu();
+  Task_name = rtems_build_name('F','M','N','U');
+
+  status = rtems_task_create(
+    Task_name, 1, RTEMS_MINIMUM_STACK_SIZE * 2, 
+    RTEMS_DEFAULT_MODES ,
+    RTEMS_FLOATING_POINT | RTEMS_DEFAULT_ATTRIBUTES, &Task_id
+  );
+
+  status = rtems_task_start( Task_id, fileio_task, 1 );
+
+  status = rtems_task_delete( RTEMS_SELF );
 }
 
 #if defined(USE_SHELL)

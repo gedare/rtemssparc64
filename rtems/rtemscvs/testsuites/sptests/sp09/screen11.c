@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: screen11.c,v 1.14 2009/09/28 19:39:06 joel Exp $
+ *  $Id: screen11.c,v 1.15 2009/10/27 11:29:03 ralf Exp $
  */
 
 #include "system.h"
@@ -24,7 +24,7 @@ void Screen11()
   void              *buffer_address_2;
   void              *buffer_address_3;
   rtems_status_code  status;
-  uint32_t           size;
+  size_t             size;
 
   status = rtems_partition_create(
     0,
@@ -106,7 +106,7 @@ void Screen11()
       &Junk_id
     );
     if ( status != RTEMS_INVALID_SIZE )
-      printf( "ERROR when size == %d\n", size );
+      printf( "ERROR when size == %zu\n", size );
 
     fatal_directive_status(
       status,

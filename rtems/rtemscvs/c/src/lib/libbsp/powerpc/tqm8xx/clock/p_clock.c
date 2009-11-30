@@ -11,7 +11,7 @@
  *  Modified to support the MPC750.
  *  Modifications Copyright (c) 1999 Eric Valette valette@crf.canon.fr
  *
- *  $Id: p_clock.c,v 1.1 2008/09/08 15:44:26 thomas Exp $
+ *  $Id: p_clock.c,v 1.2 2009/10/21 13:24:35 thomas Exp $
  */
 
 #include <bsp.h>
@@ -22,8 +22,7 @@ extern void clockOff (void*);
 extern int clockIsOn(void*);
 extern void Clock_isr(void*);
 
-void BSP_clock_hdl(rtems_vector_number vecnum, 
-		   void * arg)
+void BSP_clock_hdl(void * arg)
 {
   Clock_isr(arg);
 }

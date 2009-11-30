@@ -9,12 +9,15 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.6 2009/05/10 14:39:46 joel Exp $
+ *  $Id: init.c,v 1.9 2009/10/29 09:34:28 ralf Exp $
  */
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__
 #define CONFIGURE_INIT
 #include "system.h"
+
+/* HACK: API visibilty violation */
+extern rtems_attribute rtems_interrupt_level_attribute(uint32_t level);
 
 /* prototypes */
 void test_interrupt_inline(void);
@@ -80,9 +83,13 @@ void check_isr_in_progress_inline(void)
 }
 
 #undef rtems_interrupt_disable
+extern rtems_interrupt_level rtems_interrupt_disable(void);
 #undef rtems_interrupt_enable
+extern void rtems_interrupt_enable(rtems_interrupt_level previous_level);
 #undef rtems_interrupt_flash
+extern void rtems_interrupt_flash(rtems_interrupt_level previous_level);
 #undef rtems_interrupt_is_in_progress
+extern bool rtems_interrupt_is_in_progress(void);
 
 rtems_timer_service_routine test_isr_in_progress(
   rtems_id  timer,
@@ -110,7 +117,7 @@ void check_isr_worked(
       printf( "isr_in_progress(%s) from ISR -- OK\n", s );
       break;
     case 2:
-      printf( "isr_in_progress(%s) from ISR -- returned bad value\n");
+      printf( "isr_in_progress(%s) from ISR -- returned bad value\n", s);
       rtems_test_exit(0);
       break;
   }

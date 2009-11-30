@@ -1,5 +1,5 @@
 /*
- *  $Id: init.c,v 1.8 2009/06/04 06:50:04 ralf Exp $
+ *  $Id: init.c,v 1.10 2009/11/02 04:24:14 ralf Exp $
  */
 
 #include <bsp.h>
@@ -44,10 +44,11 @@ rtems_task Init(rtems_task_argument argument);
 /*
  * Network configuration
  */
-extern void rtems_bsdnet_loopattach();
+extern int rtems_bsdnet_loopattach(struct rtems_bsdnet_ifconfig *conf, int attaching);
+
 static struct rtems_bsdnet_ifconfig loopback_config = {
     "lo0",                          /* name */
-    (int (*)(struct rtems_bsdnet_ifconfig *, int))rtems_bsdnet_loopattach, /* attach function */
+    rtems_bsdnet_loopattach,        /* attach function */
     NULL,                           /* link to next interface */
     "127.0.0.1",                    /* IP address */
     "255.0.0.0",                    /* IP net mask */

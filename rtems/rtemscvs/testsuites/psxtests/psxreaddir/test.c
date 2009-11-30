@@ -17,7 +17,7 @@
  *
  *
  *
- *  $Id: test.c,v 1.13 2005/04/26 23:37:05 joel Exp $
+ *  $Id: test.c,v 1.16 2009/11/01 07:54:34 ralf Exp $
  */
 
 #include <stdio.h>
@@ -35,10 +35,6 @@ DIR *directory;
 DIR *directory2;
 DIR *directory3;
 DIR *directory_not;
-
-#ifndef __P
-#define __P(args)()
-#endif
 
 /*
 int scandir ( const char *dirname,
@@ -182,7 +178,7 @@ int compare_descending( const struct dirent **a, const struct dirent **b )
    return i;
 }
 
-void test_across_mount()
+void test_across_mount(void)
 {
   rtems_filesystem_mount_table_entry_t *mt_entry;
   int                                  status;
@@ -362,8 +358,7 @@ int main(
 
   printf( "\nPerforming stat of directory /\n");
   status = stat( "/", &s );
-  printf("status for stat : %d, size of directory: %d\n\n",
-         status,(int)s.st_size);
+  printf("status for stat : %d, size of directory: %" PRIdoff_t "\n\n", status, s.st_size);
 
   puts( "\nOpen and print directory /" );
   directory = opendir("/");

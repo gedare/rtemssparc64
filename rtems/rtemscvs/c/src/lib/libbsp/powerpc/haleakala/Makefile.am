@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.13 2008/10/02 21:38:13 joel Exp $
+## $Id: Makefile.am,v 1.14 2009/10/23 07:32:44 thomas Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -46,17 +46,15 @@ libbsp_a_SOURCES += ../../powerpc/shared/console/uart.c \
     ../../powerpc/shared/console/console.c
 
 include_bsp_HEADERS += irq/irq.h \
-    ../../../libcpu/@RTEMS_CPU@/@exceptions@/bspsupport/vectors.h \
-    ../../../libcpu/@RTEMS_CPU@/@exceptions@/bspsupport/irq_supp.h \
-    ../../../libcpu/@RTEMS_CPU@/@exceptions@/bspsupport/ppc_exc_bspsupp.h
+    ../../../libcpu/@RTEMS_CPU@/@exceptions@/bspsupport/irq_supp.h
 
 # irq
 libbsp_a_SOURCES += irq/irq_init.c irq/irq.c
 
 libbsp_a_LIBADD = ../../../libcpu/@RTEMS_CPU@/@exceptions@/rtems-cpu.rel \
-    ../../../libcpu/@RTEMS_CPU@/@exceptions@/raw_exception.rel \
     ../../../libcpu/@RTEMS_CPU@/@exceptions@/exc_bspsupport.rel \
     ../../../libcpu/@RTEMS_CPU@/@exceptions@/irq_bspsupport.rel \
+    ../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
     ../../../libcpu/@RTEMS_CPU@/shared/cpuIdent.rel \
     ../../../libcpu/@RTEMS_CPU@/ppc403/clock.rel \
     ../../../libcpu/@RTEMS_CPU@/ppc403/timer.rel 

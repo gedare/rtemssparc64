@@ -18,7 +18,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ramdisk-init.c,v 1.1 2009/10/16 08:44:51 thomas Exp $
+ * $Id: ramdisk-init.c,v 1.2 2009/10/29 12:47:04 thomas Exp $
  */
 
 #include <stdlib.h>
@@ -72,4 +72,51 @@ void ramdisk_free(ramdisk *rd)
     }
     free(rd);
   }
+}
+
+rtems_status_code ramdisk_register(
+  uint32_t block_size,
+  rtems_blkdev_bnum block_count,
+  bool trace,
+  const char *disk,
+  dev_t *dev_ptr
+)
+{
+  rtems_status_code sc = RTEMS_SUCCESSFUL;
+  rtems_device_major_number major = 0;
+  ramdisk *rd = NULL;
+  dev_t dev = 0;
+
+  sc = rtems_io_register_driver(0, &ramdisk_ops, &major);
+  if (sc != RTEMS_SUCCESSFUL) {
+    return RTEMS_UNSATISFIED;
+  }
+
+  rd = ramdisk_allocate(NULL, block_size, block_count, trace);
+  if (rd == NULL) {
+    rtems_io_unregister_driver(major);
+
+    return RTEMS_UNSATISFIED;
+  }
+
+  dev = rtems_filesystem_make_dev_t(major, 0);
+
+  sc = rtems_disk_create_phys(
+    dev,
+    block_size,
+    block_count,
+    ramdisk_ioctl,
+    rd,
+    disk
+  );
+  if (sc != RTEMS_SUCCESSFUL) {
+    ramdisk_free(rd);
+    rtems_io_unregister_driver(major);
+
+    return RTEMS_UNSATISFIED;
+  }
+
+  *dev_ptr = dev;
+
+  return RTEMS_SUCCESSFUL;
 }

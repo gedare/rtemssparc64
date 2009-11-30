@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: testcase.h,v 1.5 2009/09/04 21:28:56 joel Exp $
+ *  $Id: testcase.h,v 1.6 2009/10/27 05:15:19 ralf Exp $
  */
 
 /*
@@ -42,6 +42,7 @@ void *New_stack_allocate_hook(size_t unused);
 
 void *New_stack_allocate_hook(size_t unused)
 {
+  return NULL;
 }
 
 void force_error()

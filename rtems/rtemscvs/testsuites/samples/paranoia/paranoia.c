@@ -344,6 +344,12 @@ int x;
 int paranoia(int, char**);
 #endif
 
+int gicabreak(int n)
+{
+	printf("\nGICA BREAK %d",n);
+	return n;
+}
+
 int
 main (argc, argv)
 int argc;
@@ -1011,13 +1017,16 @@ or  1/3  and  3/9  and  9/27 may disagree");
         BadCond (Defect, "X * Y == Y * X trial fails.\n");
     else
         printf ("     No failures found in %d integer pairs.\n", NoTrials);
-    /*=============================================*/
+	Milestone = gicabreak(Milestone);
+	/*=============================================*/
     Milestone = 70;
     /*=============================================*/
-    printf ("\nRunning test of square root(x).\n");
-    TstCond (Failure, (Zero == SQRT (Zero))
+	Milestone = gicabreak(Milestone);
+	printf ("\nRunning test of square root(x).\n");
+	TstCond (Failure, (Zero == SQRT (Zero))
         && (-Zero == SQRT (-Zero))
         && (One == SQRT (One)), "Square root of 0.0, -0.0 or 1.0 wrong");
+       
     MinSqEr = Zero;
     MaxSqEr = Zero;
     J = Zero;

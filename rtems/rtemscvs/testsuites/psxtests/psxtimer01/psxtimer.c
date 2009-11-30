@@ -19,7 +19,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: psxtimer.c,v 1.10 2009/10/14 21:34:43 joel Exp $
+ *  $Id: psxtimer.c,v 1.12 2009/10/27 03:57:28 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -121,7 +121,7 @@ void * task_a (void *arg)
      rtems_test_exit(0);
    }
    printf(
-    "task A: timer_settime - value=%d:%d interval=%d:%d\n",
+    "task A: timer_settime - value=%" PRItime_t ":%ld interval=%" PRItime_t ":%ld\n",
     timergetdata.it_value.tv_sec, timergetdata.it_value.tv_nsec,
     timergetdata.it_interval.tv_sec, timergetdata.it_interval.tv_nsec
   );
@@ -307,7 +307,7 @@ void * task_c (void *arg)
          rtems_test_exit(0);
        }
        printf(
-         "task C: timer_gettime - %d:%d remaining from %d:%d\n",
+         "task C: timer_gettime - %" PRItime_t ":%ld remaining from %" PRItime_t ":%ld\n",
          timergetdata.it_value.tv_sec, timergetdata.it_value.tv_nsec,
          timergetdata.it_interval.tv_sec, timergetdata.it_interval.tv_nsec
        );

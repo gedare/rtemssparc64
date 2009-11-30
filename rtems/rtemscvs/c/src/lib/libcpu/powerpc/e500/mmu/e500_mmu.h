@@ -1,6 +1,6 @@
 #ifndef RTEMS_E500_MMU_DRIVER_H
 #define RTEMS_E500_MMU_DRIVER_H
-/* $Id: e500_mmu.h,v 1.1 2008/02/09 00:46:07 strauman Exp $ */
+/* $Id: e500_mmu.h,v 1.2 2009/11/03 18:45:04 thomas Exp $ */
 
 /*
  * Routines to manipulate e500 TLBs; TLB0 (fixed 4k page size)
@@ -129,7 +129,7 @@ rtems_e500_prtlb(rtems_e500_tlb_idx key, int quiet, FILE *f);
  *          (other than disabling them).
  */
 int
-rtems_e500_initlb();
+rtems_e500_initlb(void);
 
 /*
  * Write TLB1 entry (can also be used to disable an entry).

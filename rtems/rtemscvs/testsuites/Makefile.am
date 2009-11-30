@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.12 2005/11/11 15:04:28 ralf Exp $
+## $Id: Makefile.am,v 1.13 2009/10/24 05:40:26 ralf Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I aclocal
@@ -7,7 +7,10 @@ ACLOCAL_AMFLAGS = -I aclocal
 DISTCLEANFILES =
 CLEANFILES =
 
-noinst_HEADERS = support/include/tmacros.h support/include/buffer_test_io.h
+noinst_HEADERS =
+noinst_HEADERS += support/include/buffer_test_io.h
+noinst_HEADERS += support/include/test_support.h
+noinst_HEADERS += support/include/tmacros.h
 
 SUBDIRS = @subdirs@
 

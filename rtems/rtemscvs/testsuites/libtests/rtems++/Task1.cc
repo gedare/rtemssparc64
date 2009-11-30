@@ -19,12 +19,29 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: Task1.cc,v 1.10 2007/02/06 19:14:32 joel Exp $
+ *  $Id: Task1.cc,v 1.13 2009/11/16 04:51:36 ralf Exp $
  */
 
 #include <stdlib.h>
 #include <string.h>
 #include "System.h"
+
+/* c.f. cpukit/score/include/rtems/score/priority.h */
+#define PRIiPriority_Control PRIi32
+/* rtems_task_priority is a typedef to Priority_Control */
+#define PRIirtems_task_priority PRIiPriority_Control
+
+/* c.f. cpukit/rtems/include/rtems/rtems/modes.h */
+#define PRIXModes_Control PRIX32
+#define PRIiModes_Control PRIi32
+/* rtems_mode is a typedef to Modes_Control */
+#define PRIXrtems_mode PRIXModes_Control
+#define PRIirtems_mode PRIiModes_Control
+
+/* c.f. cpukit/score/include/rtems/score/isr.h */
+#define PRIiISR_Level PRIi32
+/* rtems_interrupt_level is a typedef to ISR_Level */
+#define PRIirtems_interrupt_level PRIiISR_Level
 
 void Task1::body(rtems_task_argument argument)
 {
@@ -190,7 +207,7 @@ void Task1::screen2(void)
   
   printf("%s - get priority - ", name_string());
   get_priority(current_priority);
-  printf("%s, priority is %i\n", last_status_string(), current_priority);
+  printf("%s, priority is %" PRIirtems_task_priority "\n", last_status_string(), current_priority);
 
   printf("%s - set priority to 512 - ", name_string());
   set_priority(512);
@@ -202,13 +219,13 @@ void Task1::screen2(void)
 
   printf("%s - set priority to original - ", name_string());
   set_priority(current_priority, priority);
-  printf("%s, priority was %i\n", last_status_string(), priority);
+  printf("%s, priority was %" PRIirtems_task_priority "\n", last_status_string(), priority);
 
   // priorities with connected object
     
   printf("%s - connected object get priority - ", task_1.name_string());
   task_1.get_priority(current_priority);
-  printf("%s, priority is %i\n", task_1.last_status_string(), current_priority);
+  printf("%s, priority is %" PRIirtems_task_priority "\n", task_1.last_status_string(), current_priority);
 
   printf("%s - connected object set priority to 512 - ", task_1.name_string());
   task_1.set_priority(512);
@@ -220,13 +237,13 @@ void Task1::screen2(void)
 
   printf("%s - connected object set priority to original - ", task_1.name_string());
   task_1.set_priority(current_priority, priority);
-  printf("%s, priority was %i\n", task_1.last_status_string(), priority);  
+  printf("%s, priority was %" PRIirtems_task_priority "\n", task_1.last_status_string(), priority);  
 
   // priorities with self object
     
   printf("%s - self object get priority - ", task_2.name_string());
   task_2.get_priority(current_priority);
-  printf("%s, priority is %i\n", task_2.last_status_string(), current_priority);
+  printf("%s, priority is %" PRIirtems_task_priority "\n", task_2.last_status_string(), current_priority);
 
   printf("%s - self object set priority to 512 - ", task_2.name_string());
   task_2.set_priority(512);
@@ -238,7 +255,7 @@ void Task1::screen2(void)
 
   printf("%s - self object set priority to original - ", task_2.name_string());
   task_2.set_priority(current_priority, priority);
-  printf("%s, priority was %i\n", task_2.last_status_string(), priority);
+  printf("%s, priority was %" PRIirtems_task_priority "\n", task_2.last_status_string(), priority);
 
   uint32_t   current_note;
   uint32_t   note;
@@ -247,11 +264,11 @@ void Task1::screen2(void)
 
   printf("%s - get note - ", name_string());
   get_note(0, current_note);
-  printf("%s, note is %i\n", last_status_string(), current_note);
+  printf("%s, note is %" PRIi32 "\n", last_status_string(), current_note);
 
   printf("%s - get with bad notepad number - ", name_string());
   get_note(100, current_note);
-  printf("%s, note is %i\n", last_status_string(), current_note);
+  printf("%s, note is %" PRIi32 "\n", last_status_string(), current_note);
 
   printf("%s - set note to 0xDEADBEEF - ", name_string());
   set_note(0, 0xDEADBEEF);
@@ -259,7 +276,7 @@ void Task1::screen2(void)
 
   printf("%s - get note - ", name_string());
   get_note(0, note);
-  printf("%s, note is 0x%08X\n", last_status_string(), note);
+  printf("%s, note is 0x%08" PRIX32 "\n", last_status_string(), note);
 
   printf("%s - set note to original value - ", name_string());
   set_note(0, current_note);
@@ -269,11 +286,11 @@ void Task1::screen2(void)
 
   printf("%s - connected object get note - ", task_1.name_string());
   task_1.get_note(0, current_note);
-  printf("%s, notepad is %i\n", task_1.last_status_string(), current_note);
+  printf("%s, notepad is %" PRIi32 "\n", task_1.last_status_string(), current_note);
 
   printf("%s - connected object get with bad notepad number - ", task_1.name_string());
   task_1.get_note(100, current_note);
-  printf("%s, note is %i\n", task_1.last_status_string(), current_note);
+  printf("%s, note is %" PRIi32 "\n", task_1.last_status_string(), current_note);
 
   printf("%s - connected object set note to 0xDEADBEEF - ", task_1.name_string());
   task_1.set_note(0, 0xDEADBEEF);
@@ -281,7 +298,7 @@ void Task1::screen2(void)
 
   printf("%s - connected object get note - ", task_1.name_string());
   task_1.get_note(0, note);
-  printf("%s, note is 0x%08X\n", task_1.last_status_string(), note);
+  printf("%s, note is 0x%08" PRIX32 "\n", task_1.last_status_string(), note);
 
   printf("%s - connected object set note to original value - ", task_1.name_string());
   task_1.set_note(0, current_note);
@@ -291,11 +308,11 @@ void Task1::screen2(void)
 
   printf("%s - self object get note - ", task_2.name_string());
   task_2.get_note(0, current_note);
-  printf("%s, note is %i\n", task_2.last_status_string(), current_note);
+  printf("%s, note is %" PRIi32 "\n", task_2.last_status_string(), current_note);
 
   printf("%s - self object get with bad notepad number - ", task_2.name_string());
   task_2.get_note(100, current_note);
-  printf("%s, note is %i\n", task_2.last_status_string(), current_note);
+  printf("%s, note is %" PRIi32 "\n", task_2.last_status_string(), current_note);
 
   printf("%s - self object set note to 0xDEADBEEF - ", task_2.name_string());
   task_2.set_note(0, 0xDEADBEEF);
@@ -303,7 +320,7 @@ void Task1::screen2(void)
 
   printf("%s - self object get note - ", task_2.name_string());
   task_2.get_note(0, note);
-  printf("%s, notepad is 0x%08X\n", task_2.last_status_string(), note);
+  printf("%s, notepad is 0x%08" PRIX32 "\n", task_2.last_status_string(), note);
 
   printf("%s - self object set note to original value - ", task_2.name_string());
   task_2.set_note(0, current_note);
@@ -328,7 +345,7 @@ void Task1::screen3(void)
 
   printf("%s - get mode - ", self.name_string());
   task_mode.get_mode(current_mode);
-  printf("%s,\n\t mode is 0x%08X, ", task_mode.last_status_string(), current_mode);
+  printf("%s,\n\t mode is 0x%08" PRIXrtems_mode ", ", task_mode.last_status_string(), current_mode);
   print_mode(current_mode, RTEMS_ALL_MODES);
   printf("\n");
 
@@ -336,21 +353,21 @@ void Task1::screen3(void)
   
   printf("%s - get preemption state - ", self.name_string());
   task_mode.get_preemption_state(mode);
-  printf("%s,\n\t mode is 0x%08X, ", task_mode.last_status_string(), mode);
+  printf("%s,\n\t mode is 0x%08" PRIXrtems_mode ", ", task_mode.last_status_string(), mode);
   print_mode(mode, RTEMS_PREEMPT_MASK);
   printf("\n");
   
   printf("%s - set preemption state to RTEMS_PREEMPT - ", self.name_string());
   task_mode.set_preemption_state(RTEMS_PREEMPT);
   task_mode.get_mode(mode);
-  printf("%s,\n\t mode is 0x%08X, ", task_mode.last_status_string(), mode);
+  printf("%s,\n\t mode is 0x%08" PRIXrtems_mode ", ", task_mode.last_status_string(), mode);
   print_mode(mode, RTEMS_ALL_MODES);
   printf("\n");
   
   printf("%s - set preemption state to RTEMS_NO_PREEMPT - ", self.name_string());
   task_mode.set_preemption_state(RTEMS_NO_PREEMPT);
   task_mode.get_mode(mode);
-  printf("%s,\n\t mode is 0x%08X, ", task_mode.last_status_string(), mode);
+  printf("%s,\n\t mode is 0x%08" PRIXrtems_mode ", ", task_mode.last_status_string(), mode);
   print_mode(mode, RTEMS_ALL_MODES);
   printf("\n");
 
@@ -358,21 +375,21 @@ void Task1::screen3(void)
   
   printf("%s - get timeslice state - ", self.name_string());
   task_mode.get_timeslice_state(mode);
-  printf("%s,\n\t mode is 0x%08X, ", task_mode.last_status_string(), mode);
+  printf("%s,\n\t mode is 0x%08" PRIXrtems_mode ", ", task_mode.last_status_string(), mode);
   print_mode(mode, RTEMS_TIMESLICE_MASK);
   printf("\n");
   
   printf("%s - set timeslice state to RTEMS_TIMESLICE - ", self.name_string());
   task_mode.set_timeslice_state(RTEMS_TIMESLICE);
   task_mode.get_mode(mode);
-  printf("%s,\n\t mode is 0x%08X, ", task_mode.last_status_string(), mode);
+  printf("%s,\n\t mode is 0x%08" PRIXrtems_mode ", ", task_mode.last_status_string(), mode);
   print_mode(mode, RTEMS_ALL_MODES);
   printf("\n");
   
   printf("%s - set timeslice state to RTEMS_NO_TIMESLICE - ", self.name_string());
   task_mode.set_timeslice_state(RTEMS_NO_TIMESLICE);
   task_mode.get_mode(mode);
-  printf("%s,\n\t mode is 0x%08X, ", task_mode.last_status_string(), mode);
+  printf("%s,\n\t mode is 0x%08" PRIXrtems_mode ", ", task_mode.last_status_string(), mode);
   print_mode(mode, RTEMS_ALL_MODES);
   printf("\n");
 
@@ -380,21 +397,21 @@ void Task1::screen3(void)
   
   printf("%s - get asr state - ", self.name_string());
   task_mode.get_asr_state(mode);
-  printf("%s,\n\t mode is 0x%08X, ", task_mode.last_status_string(), mode);
+  printf("%s,\n\t mode is 0x%08" PRIXrtems_mode ", ", task_mode.last_status_string(), mode);
   print_mode(mode, RTEMS_ASR_MASK);
   printf("\n");
   
   printf("%s - set asr state to RTEMS_ASR - ", self.name_string());
   task_mode.set_asr_state(RTEMS_ASR);
   task_mode.get_mode(mode);
-  printf("%s,\n\t mode is 0x%08X, ", task_mode.last_status_string(), mode);
+  printf("%s,\n\t mode is 0x%08" PRIXrtems_mode ", ", task_mode.last_status_string(), mode);
   print_mode(mode, RTEMS_ALL_MODES);
   printf("\n");
   
   printf("%s - set asr state to RTEMS_NO_ASR - ", self.name_string());
   task_mode.set_asr_state(RTEMS_NO_ASR);
   task_mode.get_mode(mode);
-  printf("%s,\n\t mode is 0x%08X, ", task_mode.last_status_string(), mode);
+  printf("%s,\n\t mode is 0x%08" PRIXrtems_mode ", ", task_mode.last_status_string(), mode);
   print_mode(mode, RTEMS_ALL_MODES);
   printf("\n");
 
@@ -405,7 +422,7 @@ void Task1::screen3(void)
 
   printf("%s - get current interrupt level - ", self.name_string());
   task_mode.get_interrupt_level(current_level);
-  printf("%s, level is %i\n", task_mode.last_status_string(), current_level);
+  printf("%s, level is %" PRIirtems_interrupt_level "\n", task_mode.last_status_string(), current_level);
 
   printf("%s - set interrupt level to 102 - ", self.name_string());
   task_mode.set_interrupt_level(102);
@@ -413,14 +430,14 @@ void Task1::screen3(void)
   
   printf("%s - set interrupt level to original level - ", self.name_string());
   task_mode.set_interrupt_level(current_level, level);
-  printf("%s, level was %i\n", task_mode.last_status_string(), level);
+  printf("%s, level was %" PRIirtems_interrupt_level "\n", task_mode.last_status_string(), level);
 
   printf("%s - set mode to original mode - ", self.name_string());
   task_mode.set_mode(current_mode,
                      RTEMS_PREEMPT_MASK | RTEMS_TIMESLICE_MASK |
                      RTEMS_ASR_MASK | RTEMS_INTERRUPT_MASK);
   task_mode.get_mode(mode);
-  printf("%s,\n\t mode is 0x%08X, ", task_mode.last_status_string(), mode);
+  printf("%s,\n\t mode is 0x%08" PRIXrtems_mode ", ", task_mode.last_status_string(), mode);
   print_mode(mode, RTEMS_ALL_MODES);
   printf("\n");
   
@@ -544,12 +561,12 @@ void Task1::screen6(void)
     }
     else
     {
-      printf("%s - message u2 received incorrectly, message='%s', size=%i\n",
+      printf("%s - message u2 received incorrectly, message='%s', size=%zu\n",
              name_string(), in, size);
     }
   }
   else
-    printf("%s - message u2 size incorrect, size=%i\n", name_string(), size);
+    printf("%s - message u2 size incorrect, size=%zu\n", name_string(), size);
 
   printf("%s - receive u1 on mq_2 ...\n", name_string()); fflush(stdout);
   mq_2.receive(in, size, 5000000);
@@ -564,12 +581,12 @@ void Task1::screen6(void)
     }
     else
     {
-      printf("%s - message u1 received incorrectly, message='%s', size=%i\n",
+      printf("%s - message u1 received incorrectly, message='%s', size=%zu\n",
              name_string(), in, size);
     }
   }
   else
-    printf("%s - message u1 size incorrect, size=%i\n", name_string(), size);
+    printf("%s - message u1 size incorrect, size=%zu\n", name_string(), size);
 
   wake_after(3000000);
   
@@ -577,7 +594,7 @@ void Task1::screen6(void)
   
   printf("%s - broadcast send b1 ...\n", name_string());
   mq_2.broadcast(b1, strlen(b1) + 1, count);
-  printf("%s - mq_2 broadcast send - %s, count=%i\n",
+  printf("%s - mq_2 broadcast send - %s, count=%" PRIi32 "\n",
          name_string(), mq_2.last_status_string(), count);
 
   wake_after(1000000);
@@ -601,7 +618,7 @@ void Task1::screen6(void)
     }
   }
   else
-    printf("%s - message b1 size incorrect, size=%i\n", name_string(), size);
+    printf("%s - message b1 size incorrect, size=%zu\n", name_string(), size);
 
   printf("%s - receive message b1 on mq_2 from %s...\n",
          name_string(), task_3_1.name_string()); fflush(stdout);
@@ -617,12 +634,12 @@ void Task1::screen6(void)
     }
     else
     {
-      printf("%s - message b1 received incorrectly, message='%s', size=%i\n",
+      printf("%s - message b1 received incorrectly, message='%s', size=%zu\n",
              name_string(), in, size);
     }
   }
   else
-    printf("%s - message b1 size incorrect, size=%i\n", name_string(), size);
+    printf("%s - message b1 size incorrect, size=%zu\n", name_string(), size);
 
   // wait for task 3_1, and 3_2 to complete their timeout tests, will
   // start these after getting the broadcast message
@@ -644,7 +661,7 @@ void Task1::screen6(void)
 
   printf("%s - flush mq_2 - ", name_string());
   mq_2.flush(count);
-  printf("%s, flushed=%i\n", mq_2.last_status_string(), count);
+  printf("%s, flushed=%" PRIi32 "\n", mq_2.last_status_string(), count);
   
   printf(" * END MessageQueue Class test *\n");  
 }
@@ -662,7 +679,7 @@ void Task1::print_mode(rtems_mode mode, rtems_mode mask)
     printf("RTEMS_%sASR ",
            task_mode.asr_set(mode) ? "" : "NO_");
   if (mask & RTEMS_INTERRUPT_MASK)
-    printf("INTMASK=%i",
+    printf("INTMASK=%" PRIirtems_mode,
            mode & RTEMS_INTERRUPT_MASK);
 }
 

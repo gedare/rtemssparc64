@@ -1,4 +1,4 @@
-/*$Id: vme_universe.c,v 1.11 2009/10/16 10:56:49 ralf Exp $*/
+/*$Id: vme_universe.c,v 1.12 2009/11/03 18:45:04 thomas Exp $*/
 
 /* Implementation of the VME.h and VMEDMA.h APIs for the BSP using the
  * vmeUniverse/vmeTsi148 drivers
@@ -392,7 +392,7 @@ int BSP_VMEInit(void)
 	vmeTsi148Reset();
 #ifdef VME_CLEAR_BRIDGE_ERRORS
 	{
-	extern unsigned short (*_BSP_clear_vmebridge_errors)();
+	extern unsigned short (*_BSP_clear_vmebridge_errors)(void);
 
 	  _BSP_clear_vmebridge_errors = VME_CLEAR_BRIDGE_ERRORS;
 

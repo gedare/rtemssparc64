@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.4 2009/08/19 21:42:36 joel Exp $
+ *  $Id: task1.c,v 1.6 2009/10/26 11:29:24 ralf Exp $
  */
 
 #include "system.h"
@@ -24,7 +24,6 @@ rtems_task Task_1(
 )
 {
   rtems_id          tmid;
-  rtems_time_of_day time;
   rtems_status_code status;
 
 /* Get id */
@@ -32,7 +31,7 @@ rtems_task Task_1(
   puts( "TA1 - rtems_timer_ident - identing timer 1" );
   status = rtems_timer_ident( Timer_name[ 1 ], &tmid );
   directive_failed( status, "rtems_timer_ident" );
-  printf( "TA1 - timer 1 has id (0x%x)\n", tmid );
+  printf( "TA1 - timer 1 has id (0x%" PRIxrtems_id ")\n", tmid );
 
 /* after which is allowed to fire */
 

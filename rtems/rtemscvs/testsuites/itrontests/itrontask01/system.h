@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.10 2004/04/15 13:22:06 ralf Exp $
+ *  $Id: system.h,v 1.11 2009/10/30 11:05:24 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -19,7 +19,7 @@
 /* functions */
 
 void ITRON_Init( void );
-void Task_2_through_4();
+void Task_2_through_4(void);
 
 /* configuration information */
 

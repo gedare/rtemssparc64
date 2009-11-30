@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test.c,v 1.8 2009/07/04 20:26:18 joel Exp $
+ *  $Id: test.c,v 1.10 2009/10/25 06:51:01 ralf Exp $
  */
 
 #include <assert.h>
@@ -18,6 +18,11 @@
 
 /* #define __USE_XOPEN2K XXX already defined on GNU/Linux */
 #include <pthread.h>
+
+#if !HAVE_DECL_PTHREAD_RWLOCK_UNLOCK
+/* FIXME: Newlib should provide the decl. */
+extern int pthread_rwlock_unlock(pthread_rwlock_t *rwlock);
+#endif
 
 #define NUMBER_THREADS 2
 pthread_t ThreadIds[NUMBER_THREADS];
@@ -77,7 +82,6 @@ int main(
   pthread_rwlockattr_t attr;
   int                  status;
   int                  p;
-  pthread_t            thread_id;
   int                  i;
   struct timespec      abstime;
 

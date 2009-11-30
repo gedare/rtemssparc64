@@ -12,7 +12,7 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: malloc.h,v 1.6 2009/06/03 03:38:38 ralf Exp $
+ * $Id: malloc.h,v 1.7 2009/11/11 20:36:44 joel Exp $
  */
 
 #ifndef _RTEMS_MALLOC_H
@@ -148,6 +148,28 @@ int rtems_memalign(
   size_t   alignment,
   size_t   size
 );
+
+/**
+ * @brief Allocates a memory area of size @a size bytes from the heap.
+ *
+ * If the alignment parameter @a alignment is not equal to zero, the allocated
+ * memory area will begin at an address aligned by this value.
+ *
+ * If the boundary parameter @a boundary is not equal to zero, the allocated
+ * memory area will fulfill a boundary constraint.  The boundary value
+ * specifies the set of addresses which are aligned by the boundary value.  The
+ * interior of the allocated memory area will not contain an element of this
+ * set.  The begin or end address of the area may be a member of the set.
+ *
+ * A size value of zero will return a unique address which may be freed with
+ * free().
+ *
+ * The memory allocated by this function can be released with a call to free().
+ *
+ * @return A pointer to the begin of the allocated memory area, or @c NULL if
+ * no memory is available or the parameters are inconsistent.
+ */
+void *rtems_malloc(size_t size, uintptr_t alignment, uintptr_t boundary);
 
 #ifdef __cplusplus
 }

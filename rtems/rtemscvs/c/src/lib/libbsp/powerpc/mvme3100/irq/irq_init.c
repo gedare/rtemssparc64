@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_init.c,v 1.3 2009/03/05 21:07:01 strauman Exp $
+ *  $Id: irq_init.c,v 1.4 2009/10/23 07:32:45 thomas Exp $
  */
 
 #include <libcpu/io.h>
@@ -25,7 +25,7 @@
 #include <bsp/openpic.h>
 #include <bsp/irq.h>
 #include <bsp.h>
-#include <libcpu/raw_exception.h>
+#include <bsp/vectors.h>
 #include <rtems/bspIo.h>
 
 static void nop_func(void *unused)

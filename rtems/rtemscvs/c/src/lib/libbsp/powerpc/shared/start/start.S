@@ -7,15 +7,10 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: start.S,v 1.22 2009/04/28 06:31:52 ccj Exp $
+ *  $Id: start.S,v 1.24 2009/11/11 14:25:09 strauman Exp $
  *
  */
 
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning You need to pass a NULL.
-#warning Please check and remove these warnings.
-	
 #include <rtems/asm.h>
 #include <rtems/score/cpu.h>
 #include <rtems/powerpc/powerpc.h>
@@ -111,13 +106,19 @@ enter_C_code:
 	 * stack = &__rtems_end + 4096
 	 */
 	addis	r9,r0, __stack-PPC_MINIMUM_STACK_FRAME_SIZE@ha
-        addi	r9,r9, __stack-PPC_MINIMUM_STACK_FRAME_SIZE@l
-	mr	r1, r9
+	addi	r9,r9, __stack-PPC_MINIMUM_STACK_FRAME_SIZE@l
+	/*
+	 * align initial stack
+	 * (we hope that the bootloader stack was 16-byte aligned
+	 * or we haven't used altivec yet...)
+	 */
+	li   r0, (CPU_STACK_ALIGNMENT-1)
+	andc r1, r9, r0
 	/*
 	 * We are now in a environment that is totally independent from 
-         * bootloader setup.
+	 * bootloader setup.
 	 */
-	li	r3, 0			/* command line */
+    /* pass result of 'save_boot_params' to 'boot_card' in R3 */
 	bl	boot_card
 	bl	_return_to_ppcbug
 

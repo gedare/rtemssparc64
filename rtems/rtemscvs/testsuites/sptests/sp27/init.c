@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.7 2009/07/08 20:26:44 joel Exp $
+ *  $Id: init.c,v 1.10 2009/10/27 07:30:34 ralf Exp $
  */
 
 #include <bsp.h>
@@ -74,10 +74,9 @@ void starttask(
   directive_failed( sc, "task start" );
 }
 
-void doTest()
+void doTest(void)
 {
   rtems_status_code sc;
-  rtems_attribute   attr;
   int               pass, i;
 
   sc = rtems_semaphore_create(
@@ -104,7 +103,7 @@ void doTest()
     directive_failed( sc, "semaphore flush" );
   }
 
-  printf("Flushed all waiting tasks\n", NTASK );
+  printf("Flushed all waiting tasks\n" );
 }
 
 rtems_task Init(

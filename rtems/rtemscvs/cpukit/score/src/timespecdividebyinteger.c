@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timespecdividebyinteger.c,v 1.1 2007/05/17 22:46:45 joel Exp $
+ *  $Id: timespecdividebyinteger.c,v 1.2 2009/11/10 23:29:57 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -34,7 +34,8 @@ void _Timespec_Divide_by_integer(
    *  For math simplicity just convert the timespec to nanoseconds
    *  in a 64-bit integer.
    */
-  t  = time->tv_sec * TOD_NANOSECONDS_PER_SECOND;
+  t  = time->tv_sec;
+  t *= TOD_NANOSECONDS_PER_SECOND;
   t += time->tv_nsec;
 
   /*

@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.8 2008/02/01 00:45:01 joel Exp $
+ *  $Id: init.c,v 1.9 2009/10/30 11:02:00 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -297,7 +297,7 @@ void ITRON_Init( void )
   puts( "Init - ref_sem - semaphore 1 - E_OK" );
   status = ref_sem( 1, &pk_rsem );
   assert( status == E_OK );
-  printf( "Init - semaphore 1 count = %d\n", pk_rsem.semcnt );
+  printf( "Init - semaphore 1 count = %" PRId32 "\n", pk_rsem.semcnt );
   printf( "Init - semaphore 1 waiting tasks = %d\n", pk_rsem.wtsk );
 
   puts( "Init - preq_sem - semaphore 1 (count --> 2) - E_OK" );
@@ -307,7 +307,7 @@ void ITRON_Init( void )
   puts( "Init - ref_sem - semaphore 1 - E_OK" );
   status = ref_sem( 1, &pk_rsem );
   assert( status == E_OK );
-  printf( "Init - semaphore 1 count = %d\n", pk_rsem.semcnt );
+  printf( "Init - semaphore 1 count = %" PRId32 "\n", pk_rsem.semcnt );
   printf( "Init - semaphore 1 waiting tasks = %d\n", pk_rsem.wtsk );
 
 

@@ -21,7 +21,7 @@
  *  Also, the settings of L1, L2, and L3 caches is not necessary here.
  *  (C) by Brookhaven National Lab., S. Kate Feng <feng1@bnl.gov>, 2003-2009
  *  
- *  $Id: bspstart.c,v 1.29 2009/10/16 14:58:19 ralf Exp $
+ *  $Id: bspstart.c,v 1.32 2009/10/23 07:32:45 thomas Exp $
  */
 
 #include <string.h>
@@ -55,6 +55,9 @@
 /* there is no public Workspace_Free() variant :-( */
 #include <rtems/score/wkspace.h>
 
+extern uint32_t probeMemoryEnd(void); /* from shared/startup/probeMemoryEnd.c */
+
+
 BSP_output_char_function_type BSP_output_char = BSP_output_char_via_serial;
 
 extern void _return_to_ppcbug(void);
@@ -64,6 +67,8 @@ extern Triv121PgTbl BSP_pgtbl_setup(unsigned long);
 extern void BSP_pgtbl_activate(Triv121PgTbl);
 extern int I2Cread_eeprom(unsigned char I2cBusAddr, uint32_t devA2A1A0, uint32_t AddrBytes, unsigned char *pBuff, uint32_t numBytes);
 extern void BSP_vme_config(void);
+
+extern unsigned char ReadConfVPD_buff(int offset);
 
 extern unsigned long __bss_start[], __SBSS_START__[], __SBSS_END__[];
 extern unsigned long __SBSS2_START__[], __SBSS2_END__[];
@@ -128,7 +133,7 @@ void _BSP_Fatal_error(unsigned int v)
   __asm__ __volatile ("sc"); 
 }
  
-void zero_bss()
+void zero_bss(void)
 {
   memset(
     __SBSS_START__,
@@ -182,7 +187,7 @@ void zero_bss()
 /* this routine is called early at shared/start/start.S 
  * and must be safe with a not properly aligned stack
  */
-void
+char *
 save_boot_params(
   void *r3,
   void *r4,
@@ -200,6 +205,7 @@ save_boot_params(
 
   memmove(cmdline_buf, cmdline_start, i);
   cmdline_buf[i]=0;
+  return cmdline_buf;
 }
 
 /*
@@ -210,11 +216,10 @@ save_boot_params(
 
 void bsp_start( void )
 {
+  rtems_status_code sc = RTEMS_SUCCESSFUL;
 #ifdef CONF_VPD
   int i;
 #endif
-  unsigned char *stack;
-  unsigned long   *r1sp;
 #ifdef SHOW_LCR1_REGISTER
   unsigned l1cr;
 #endif
@@ -224,8 +229,8 @@ void bsp_start( void )
 #ifdef SHOW_LCR3_REGISTER
   unsigned l3cr;
 #endif
-  uint32_t intrStackStart;
-  uint32_t intrStackSize;
+  uintptr_t intrStackStart;
+  uintptr_t intrStackSize;
   ppc_cpu_id_t myCpu;
   ppc_cpu_revision_t myCpuRevision;
   Triv121PgTbl  pt=0;
@@ -263,17 +268,20 @@ void bsp_start( void )
   /*
    * Initialize the interrupt related settings.
    */
-  intrStackStart = (uint32_t) __rtems_end;
+  intrStackStart = (uintptr_t) __rtems_end;
   intrStackSize = rtems_configuration_get_interrupt_stack_size();
 
   /*
    * Initialize default raw exception handlers.
    */
-  ppc_exc_initialize(
+  sc = ppc_exc_initialize(
     PPC_INTERRUPT_DISABLE_MASK_DEFAULT,
     intrStackStart,
     intrStackSize
   );
+  if (sc != RTEMS_SUCCESSFUL) {
+    BSP_panic("cannot initialize exceptions");
+  }
 
   /*
    * Init MMU block address translation to enable hardware

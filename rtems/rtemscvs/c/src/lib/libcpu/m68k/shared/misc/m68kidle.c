@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: m68kidle.c,v 1.4 2009/02/12 15:57:00 joel Exp $
+ *  $Id: m68kidle.c,v 1.5 2009/10/20 14:07:20 strauman Exp $
  */
 
 #include <rtems/system.h>
@@ -38,6 +38,6 @@ void *_CPU_Thread_Idle_body( uintptr_t ignored )
   }
 #else
   for( ; ; )
-    asm volatile( "stop #0x3000" );  /* supervisor mode, all interrupts on */
+    asm volatile( "stop #0x3000":::"cc" );  /* supervisor mode, all interrupts on */
 #endif
 }

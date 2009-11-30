@@ -11,13 +11,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.17 2009/10/17 21:35:34 joel Exp $
+ *  $Id: bspstart.c,v 1.18 2009/11/16 10:08:30 ralf Exp $
  */
 
 #include <bsp.h>
+#include <libcpu/isr_entries.h>
 #include <bsp/bootcard.h>
-
-extern void mips_install_isr_entries(void);
 
 /*
  *  bsp_start

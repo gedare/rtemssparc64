@@ -1,4 +1,4 @@
-/* $Id: if_dc.c,v 1.13 2009/05/06 16:37:32 joel Exp $
+/* $Id: if_dc.c,v 1.14 2009/11/06 04:36:13 ralf Exp $
  *
  * Ported from FreeBSD --> RTEMS, december 03.
  * 	Daron Chabot <daron@nucleus.usask.ca>
@@ -3333,8 +3333,8 @@ static void dc_start(ifp)
 	struct ifnet		*ifp;
 {
 	struct dc_softc		*sc;
-	struct mbuf			*m_head = NULL;
-	unsigned int		idx;
+	struct mbuf		*m_head = NULL;
+	u_int32_t		idx;
 
 	sc = ifp->if_softc;
 #if 0

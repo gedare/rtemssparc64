@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.2 2009/07/29 18:30:45 joel Exp $
+ *  $Id: init.c,v 1.4 2009/11/12 00:21:51 joel Exp $
  */
 
 
@@ -33,8 +33,6 @@ void Install_Signal_Handler(
 {
   int               sc;
   sigset_t          mask;
-  sigset_t          pending_set;
-  sigset_t          oset;
 
   sc = sigemptyset( &mask );
   assert( !sc );
@@ -127,6 +125,7 @@ void *POSIX_Init(
   struct sched_param  param;
   Test_t             *test;
   struct sigaction    act;
+  struct timespec     delay_request;
 
   puts( "\n\n*** POSIX TEST SIGNAL 02 ***" );
 
@@ -163,7 +162,10 @@ void *POSIX_Init(
     assert( !sc );
 
     puts( "Init - sleep - let thread settle - OK" );
-    usleep(500000);
+    delay_request.tv_sec = 0;
+    delay_request.tv_nsec = 50000000;
+    sc = nanosleep( &delay_request, NULL );
+    assert( !sc );
   }
 
   puts( "Init - sending SIGUSR1" );

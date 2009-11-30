@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.95 2009/10/17 15:15:54 ralf Exp $
+## $Id: configure.ac,v 1.100 2009/10/23 14:53:46 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -77,7 +77,7 @@ test -n "${RTEMS_CPU_MODEL}" && \
   ac_configure_args="$ac_configure_args 'RTEMS_CPU_MODEL=${RTEMS_CPU_MODEL}'"
 
 AC_CACHE_CHECK([for RTEMS_BSP_FAMILY],[ac_cv_env_RTEMS_BSP_FAMILY],
-[. ./make/${RTEMS_BSP}.cache])
+[RTEMS_BSP_ALIAS([${RTEMS_BSP}],[ac_cv_env_RTEMS_BSP_FAMILY])])
 RTEMS_BSP_FAMILY=$ac_cv_env_RTEMS_BSP_FAMILY
 AC_SUBST(RTEMS_BSP_FAMILY)
 test -n "${RTEMS_BSP_FAMILY}" && \
@@ -91,19 +91,26 @@ AC_CACHE_CHECK([for CFLAGS_OPTIMIZE_V],[ac_cv_env_CFLAGS_OPTIMIZE_V],
 [. ./make/${RTEMS_BSP}.cache])
 CFLAGS_OPTIMIZE_V=$ac_cv_env_CFLAGS_OPTIMIZE_V
 
-CFLAGS="${CFLAGS-${CPU_CFLAGS} ${CFLAGS_OPTIMIZE_V}}"
-AS_IF([test x"${CFLAGS}" != x" "],[
-  ac_configure_args="$ac_configure_args 'CFLAGS=${CFLAGS}'"])
+# Was CFLAGS set?
+rtems_cv_CFLAGS_set="${CFLAGS+set}"
 
-RTEMS_PROG_CC_FOR_TARGET([-std=c99 -fasm])
+CFLAGS="${CFLAGS-${CPU_CFLAGS} ${CFLAGS_OPTIMIZE_V}}"
+
+RTEMS_PROG_CC_FOR_TARGET
 AM_PROG_CC_C_O
 RTEMS_PROG_CCAS
 RTEMS_CANONICALIZE_TOOLS
 
+# Append warning flags if CFLAGS wasn't set.
+AS_IF([test "$GCC" = yes && test "$rtems_cv_CFLAGS_set" != set],
+[CFLAGS="$CFLAGS -Wall -Wimplicit-function-declaration -Wstrict-prototypes -Wnested-externs"])
+
+AS_IF([test -n "${CFLAGS}"],[
+ac_configure_args="$ac_configure_args 'CFLAGS=${CFLAGS}'"])
+
 RTEMS_CHECK_GCC_WEAK
 
 AC_SUBST(CUSTOM_CFG_FILES)
-AC_SUBST(cfg_dir)
 
 RTEMS_CHECK_MULTIPROCESSING
 
@@ -202,12 +209,6 @@ AS_IF([test "$host_cpu" = sparc],[
 AM_CONDITIONAL([HAS_NETWORKING],[test "$HAS_NETWORKING" = "yes"])
 
 AM_CONDITIONAL(HAS_POSIX,test "$HAS_POSIX_API" = "yes")
-
-# The posix bsp doesn't support libchip
-# FIXME: We should use a feature based check, here
-AM_CONDITIONAL([LIBCHIP],[test "$RTEMS_BSP_FAMILY" != "posix"])
-
-AM_CONDITIONAL([MULTILIB],[test x"${enable_multilib}" = x"yes"])
 
 AM_CONDITIONAL(RTEMS_ADA,[test x"$enable_ada" = x"yes" \
   && test x"$rtems_cv_HAS_POSIX_API" = x"yes"])

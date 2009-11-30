@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cre_tsk.c,v 1.15 2008/12/14 18:31:41 joel Exp $
+ *  $Id: cre_tsk.c,v 1.16 2009/11/03 05:23:05 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -92,12 +92,12 @@ ER cre_tsk(
     NULL,
     pk_ctsk->stksz,
 #if ( CPU_HARDWARE_FP == TRUE ) || ( CPU_SOFTWARE_FP == TRUE )
-    TRUE,          /* XXX - All tasks FP (if the HW supports it) for now */
+    true,          /* XXX - All tasks FP (if the HW supports it) for now */
 #else
-    FALSE,
+    false,
 #endif
     core_priority,
-    TRUE,        /* preemptible */
+    true,        /* preemptible */
     THREAD_CPU_BUDGET_ALGORITHM_EXHAUST_TIMESLICE,
     NULL,        /* no budget algorithm callout */
     0,

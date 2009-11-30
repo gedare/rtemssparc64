@@ -7,7 +7,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.17 2008/09/17 18:38:57 joel Exp $
+ *  $Id: init.c,v 1.18 2009/10/24 05:51:21 ralf Exp $
  */
 
 #include <bsp.h>
@@ -16,8 +16,6 @@ rtems_task Init(
   rtems_task_argument ignored
 )
 {
-  rtems_mode mode;
-
   /* initialize application */
 
   /* Real application would call idle loop functionality */

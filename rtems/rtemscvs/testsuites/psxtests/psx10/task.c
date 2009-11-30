@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.c,v 1.7 2003/09/04 18:53:38 joel Exp $
+ *  $Id: task.c,v 1.8 2009/10/27 14:10:54 ralf Exp $
  */
 
 #include "system.h"
@@ -28,7 +28,7 @@ void *Task_1(
 /* wait for a condition variable signal from Init */
 
   Task_id = pthread_self();
-  printf( "Task_1: ID is 0x%08x\n", Task_id );
+  printf( "Task_1: ID is 0x%08" PRIxpthread_t "\n", Task_id );
 
   status = pthread_mutex_init( &Mutex_id, NULL );
   assert( !status );

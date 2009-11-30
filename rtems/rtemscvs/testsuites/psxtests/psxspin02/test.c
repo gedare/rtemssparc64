@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test.c,v 1.1 2009/07/20 01:12:25 joel Exp $
+ *  $Id: test.c,v 1.2 2009/10/25 06:25:04 ralf Exp $
  */
 
 #include <assert.h>
@@ -50,12 +50,7 @@ int main(
 )
 #endif
 {
-  pthread_spinlock_t    spinlock;
-  pthread_spinlock_t    spinlockExtra;
   int                   status;
-  int                   p;
-  pthread_t             thread_id;
-  int                   i;
   rtems_status_code     rstatus;
   rtems_id              taskid;
 

@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/08/10 17:04:50 joel Exp $
+ *  $Id: init.c,v 1.3 2009/10/26 17:04:39 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -33,19 +33,19 @@ rtems_task Init(
  
   sc = rtems_clock_get( RTEMS_CLOCK_GET_SECONDS_SINCE_EPOCH, &interval );
   directive_failed( sc, "rtems_clock_get -- Seconds Since Epoch" );
-  printf( "Init - rtems_clock_get - Seconds Since Epoch = %d\n", interval );
+  printf( "Init - rtems_clock_get - Seconds Since Epoch = %" PRIdrtems_interval "\n", interval );
   
   sc = rtems_clock_get( RTEMS_CLOCK_GET_TICKS_SINCE_BOOT, &interval );
   directive_failed( sc, "rtems_clock_get -- Ticks Since Boot" );
-  printf( "Init - rtems_clock_get - Ticks Since Boot = %d\n", interval );
+  printf( "Init - rtems_clock_get - Ticks Since Boot = %" PRIdrtems_interval "\n", interval );
   
   sc = rtems_clock_get( RTEMS_CLOCK_GET_TICKS_PER_SECOND, &interval );
   directive_failed( sc, "rtems_clock_get -- Ticks Per Second" );
-  printf( "Init - rtems_clock_get - Ticks Per Second = %d\n", interval );
+  printf( "Init - rtems_clock_get - Ticks Per Second = %" PRIdrtems_interval "\n", interval );
  
   sc = rtems_clock_get( RTEMS_CLOCK_GET_TIME_VALUE, &timev );
   directive_failed( sc, "rtems_clock_get -- Time Value" );
-  printf( "Init - rtems_clock_get - Time Value = %d\n", timev.tv_sec );
+  printf( "Init - rtems_clock_get - Time Value = %" PRItime_t "\n", timev.tv_sec );
  
   puts( "*** END OF TEST LEGACY RTEMS_CLOCK_GET ***" );
   rtems_test_exit(0);

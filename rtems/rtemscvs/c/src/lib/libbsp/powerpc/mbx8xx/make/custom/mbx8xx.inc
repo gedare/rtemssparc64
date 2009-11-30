@@ -12,9 +12,6 @@ include $(RTEMS_ROOT)/make/custom/default.cfg
 RTEMS_CPU=powerpc
 RTEMS_CPU_MODEL=mpc$(8XX_CPU_TYPE)
 
-# This is the actual bsp directory used during the build process.
-RTEMS_BSP_FAMILY=mbx8xx
-
 #  This section makes the target dependent options file.
 #
 #  Note that RTEMS_BSP matches the RTEMS_MBX_MODEL. Its value must be
@@ -43,7 +40,8 @@ RTEMS_BSP_FAMILY=mbx8xx
 #  This contains the compiler options necessary to select the CPU model
 #  and (hopefully) optimize for it.
 #
-CPU_CFLAGS = -mcpu=$(8XX_CPU_TYPE) -Dmpc$(8XX_CPU_TYPE) -D$(RTEMS_MBX_MODEL)
+CPU_CFLAGS = -mcpu=$(8XX_CPU_TYPE) -Dmpc$(8XX_CPU_TYPE) -D$(RTEMS_MBX_MODEL) \
+	-meabi -msdata -fno-common
 
 # optimize flag: typically -O2
 CFLAGS_OPTIMIZE_V = -O2 -g -fno-keep-inline-functions

@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/07/21 19:32:30 joel Exp $
+ *  $Id: init.c,v 1.2 2009/10/24 06:14:29 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -15,7 +15,6 @@ rtems_task Init(
   rtems_task_argument ignored
 )
 {
-  rtems_status_code     sc;
   bool                  is_set;
 
   puts( "\n\n*** TEST 10 ***" );

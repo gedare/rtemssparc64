@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.24 2008/09/16 19:04:14 joel Exp $
+ *  $Id: bspstart.c,v 1.26 2009/11/16 14:11:16 ralf Exp $
  *
  * Modification History:
  *        12/10/01  A.Ferrer, NASA/GSFC, Code 582
@@ -22,9 +22,9 @@
 
 #include <bsp.h>
 #include <libcpu/mongoose-v.h>
+#include <libcpu/isr_entries.h>
 
 extern void _sys_exit(int);
-extern void mips_install_isr_entries(void);
 extern void mips_gdb_stub_install(void);
 
 /*
@@ -87,9 +87,6 @@ void bsp_start( void )
 
 void clear_cache( void )
 {
-   extern void promCopyIcacheFlush(void);       /* from start.S */
-   extern void promCopyDcacheFlush(void);
-
    promCopyIcacheFlush();
    promCopyDcacheFlush();
 }

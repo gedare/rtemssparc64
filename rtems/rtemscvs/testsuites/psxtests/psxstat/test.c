@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test.c,v 1.21 2009/08/12 20:50:35 joel Exp $
+ *  $Id: test.c,v 1.24 2009/11/01 07:55:20 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -196,21 +196,18 @@ void stat_a_file(
 
 
     printf("\n...st_dev     (0x%x:0x%x)\n", major1, minor1 );
-    printf(  "...st_ino     %x\n", (int) statbuf.st_ino );
+    printf(  "...st_ino     %" PRIxino_t "\n", statbuf.st_ino );
     printf(  "...st_mode    %o\n", (unsigned int) statbuf.st_mode );
     printf(  "...st_nlink   %x\n", statbuf.st_nlink );
     printf(  "...st_uid     %d\n", statbuf.st_uid );
     printf(  "...st_gid     %d\n", statbuf.st_gid );
     printf(  "...st_rdev    (0x%x:0x%x)\n", major2, minor2 );
-    printf(  "...st_size    %d\n",(unsigned int) statbuf.st_size );
+    printf(  "...st_size    %" PRIdoff_t "\n", statbuf.st_size );
     printf(  "...st_atime   %s", ctime( &statbuf.st_atime ) );
     printf(  "...st_mtime   %s", ctime( &statbuf.st_mtime ) );
     printf(  "...st_ctime   %s", ctime( &statbuf.st_ctime ) );
-#if defined(__svr4__) && !defined(__PPC__) && !defined(__sun__)
-    printf(  "...st_blksize %x\n", statbuf.st_blksize );
-    printf(  "...st_blocks  %x\n", statbuf.st_blocks );
-#endif
-
+    printf(  "...st_blksize %" PRIxblksize_t "\n", statbuf.st_blksize );
+    printf(  "...st_blocks  %" PRIxblkcnt_t "\n", statbuf.st_blocks );
   }
 }
 
@@ -325,7 +322,7 @@ void make_multiple_links(
 }
 
 
-void make_too_many_links()
+void make_too_many_links(void)
 {
   int    i;
   int    status;
@@ -379,7 +376,7 @@ void make_a_symlink(
   assert( !status );
 }
 
-void make_multiple_symlinks()
+void make_multiple_symlinks(void)
 {
  int  status;
 
@@ -467,7 +464,7 @@ void make_multiple_directories(
  */
 
 
-void Cause_faults()
+void Cause_faults(void)
 {
   int                                   fd;
   int                                   status;
@@ -711,7 +708,7 @@ void Cause_faults()
 
 }
 
-void Show_Time()
+void Show_Time(void)
 {
   rtems_time_of_day time;
   rtems_status_code status;

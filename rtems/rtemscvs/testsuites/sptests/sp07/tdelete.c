@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: tdelete.c,v 1.13 2009/09/26 15:47:16 joel Exp $
+ *  $Id: tdelete.c,v 1.14 2009/10/27 04:12:06 ralf Exp $
  */
 
 #include "system.h"
@@ -31,20 +31,26 @@ void Task_delete_extension(
   if ( task_number( running_task->Object.id ) > 0 ) {
     name = Task_name[ task_number( running_task->Object.id ) ];
     sprintf( line, "TASK_DELETE - %c%c%c%c TASK_DELETE ",
-      (name >> 24) & 0xff,
-      (name >> 16) & 0xff,
-      (name >> 8) & 0xff,
-      name & 0xff
+      (char)((name >> 24) & 0xff),
+      (char)((name >> 16) & 0xff),
+      (char)((name >> 8) & 0xff),
+      (char)(name & 0xff)
     );
     buffered_io_add_string( line );
   }
   if ( task_number( deleted_task->Object.id ) > 0 ) {
     name = Task_name[ task_number( deleted_task->Object.id ) ];
+/*
+ * FIXME: There should be a public function to 
+ * convert numeric rtems_names into char arrays
+ * c.f. rtems_name_to_characters() in rtems/rtems/support.inl
+ * but it's private.
+ */
     sprintf( line, "deleting - %c%c%c%c\n",
-      (name >> 24) & 0xff,
-      (name >> 16) & 0xff,
-      (name >> 8) & 0xff,
-      name & 0xff
+      (char)((name >> 24) & 0xff),
+      (char)((name >> 16) & 0xff),
+      (char)((name >> 8) & 0xff),
+      (char)(name & 0xff)
     );
     buffered_io_add_string( line );
   }

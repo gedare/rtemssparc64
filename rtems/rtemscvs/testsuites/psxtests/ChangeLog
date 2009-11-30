@@ -1,3 +1,176 @@
+2009-11-23	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	PR 1460/cpukit
+	* psx14/init.c: Change return type on methods accessing portions of
+	RTEMS Ids to int. This allows -1 to be return on error.
+
+2009-11-11	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	PR 1466/tests
+	* Makefile.am, configure.ac, psxclock/init.c, psxclock/psxclock.doc,
+	psxclock/psxclock.scn, psxkey03/init.c, psxsignal02/init.c,
+	psxsignal03/init.c, psxstack01/init.c: Remove usleep() from tests.
+	Add test specifically to test it since it is deprecated as of
+	POSIX.1-2008.
+	* psxusleep/.cvsignore, psxusleep/Makefile.am, psxusleep/init.c,
+	psxusleep/psxusleep.doc, psxusleep/psxusleep.scn: New files.
+
+2009-11-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* psxcancel01/init.c: Initialize start time.
+
+2009-11-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* psxmsgq01/init.c, psxsem01/init.c: Add service to check status
+	returned by POSIX methods which return a pointer which is -1 on
+	error. This eliminated some casts.
+
+2009-11-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* psxenosys/Makefile.am: Add documentation file.
+	* psxenosys/psxenosys.doc: New file.
+
+2009-01-02	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* psxsignal03/init.c: 
+	Print sigval.sival_ptr instead of "union sigval".
+
+2009-01-01	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* psxstat/test.c: Apply PRI* macros to print struct stat fields.
+	* psxreaddir/test.c: Apply PRI* macros to print struct stat fields.
+	* psxfile01/test.c: Remove obsure #ifdef's.
+	Apply PRI* macros to print struct stat fields.
+
+2009-10-31	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* include/pmacros.h: Change TM_OCTOBER to 9, TM_NOVEMBER to 10,
+	TM_DECEMBER to 11 (tm_mon months start with JAN = 0).
+
+2009-10-31	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* include/pmacros.h: November is the 11th month.
+
+2009-10-30	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* psxstat/test.c: Remove #ifdef's.
+	* psxmount/test.c, psxreaddir/test.c: Remove __P (unused anachronism).
+	* psxfatal02/testcase.h: Fall back to INT_MAX as posix stack size in
+	if 12MB are too big for a target (16bit compliance).
+	* psx04/init.c: Use INT_MAX instead of 0xffffffff in call to kill()
+	for 16bit compliance.
+	* psx14/init.c: Add local prototypes for 
+	rtems_object_api_minimum_class, rtems_object_api_maximum_class.
+	Reflect the prototypes having been missing to printf's.
+
+2009-10-29	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* psxsysconf/init.c: 
+	Comment out sysconf(LONG_MAX) check (not useful).
+	Change sysconf(0x12345678) check into sysconf(INT_MAX) for better
+	16bit compliance.
+	* psx11/task.c: Use long for nsecs.
+	* psx10/init.c: Pass 0x7FFF instead of 0xFFFFFF as invalid pshared
+	attribute to pthread_condattr_setpshared for 16bit target compliance.
+
+2009-10-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* psxbarrier01/test.c: Include <tmacros.h>
+
+2009-10-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* psx01/init.c, psx01/task.c, psx02/init.c, psx03/init.c,
+	psx04/init.c, psx05/init.c, psx06/init.c, psx07/init.c,
+	psx08/init.c, psx09/init.c, psx10/task.c, psx10/task2.c,
+	psx10/task3.c, psx11/init.c, psx12/init.c, psxalarm01/init.c,
+	psxbarrier01/test.c, psxkey01/init.c, psxkey01/task.c,
+	psxmsgq02/init.c, psxsignal01/init.c, psxualarm/init.c:
+	Use PRIxpthread_t to print pthread_t's.
+
+2009-10-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* psxmsgq02/init.c:
+	Remove cast in call to fatal_posix_service_status_errno.
+	* psxenosys/init.c: 
+	Add missing args in calls to execl, execlp, execle.
+	* psxhdrs/pthread36.c: Use HAVE_DECL_PTHREAD_ATTR_GETCPUTIME.
+	* psxhdrs/pthread35.c: Use HAVE_DECL_PTHREAD_ATTR_SETCPUTIME.
+	* psx07/init.c: Use HAVE_DECL_PTHREAD_ATTR_GETCPUTIME,
+	HAVE_DECL_PTHREAD_ATTR_SETCPUTIME.
+	* configure.ac:
+	Add AC_CHECK_DECLS pthread_attr_getcputime, pthread_attr_setcputime.
+
+2009-10-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* psxtimer01/psxtimer.c: Use %ld to print *.tv_nsec.
+	* psxsysconf/init.c: Use %ld to print *.tv_nsec.
+	* psxclock/init.c: Use %ld to print *.tv_nsec.
+	* psx06/init.c, psx06/system.h: Misc. warning fixes.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* psxsignal03/init.c: Add missing argument to printf.
+	* psxfile01/test.c: Use %zu instead of %d to print size_t's.
+	* psxclock/init.c, psxtimer01/psxtimer.c:
+	Use PRItime_t to print time_t's.
+	* configure.ac: Add AC_CHECK_HEADERS sys/mman.h.
+	Add AC_CHECK_DECLS pthread_atfork, adjtime, mprotect.
+
+2009-10-25	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* psxtime/test.c: Include <sys/time.h>.
+	Conditionally add local prototype for adjtime()
+        if sys/time.h doesn't supply it.
+	* psx07/init.c: Include <sched.h>, <pthread.h>.
+	* psx05/init.c: Include <sched.h>.
+	* psx11/init.c, psx09/init.c: Include <sched.h>.
+	* psx12/init.c: Include <sched.h>.
+	* psxenosys/init.c: Include <pthread.h>.
+	Conditionally add local prototype for pthread_atfork()
+	if pthread.h doesn't supply it.
+	* psxkey01/init.c: Include "test_support.h".
+
+2009-10-25	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Check for pthread_atfork in pthread.h.
+	* psxrwlock01/test.c: Conditionally add local prototype for
+	pthread_atfork() if pthread.h doesn't supply it.
+	Include <pthread.h>.
+
+2009-10-25	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Check for sys/mman.h.
+	Check for mprotect in sys/mman.h.
+	* psxenosys/init.c: Conditionally add local prototype for
+	mprotect() if sys/mman.h doesn't supply it.
+
+2009-10-25	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Check for pthread_rwlock_unlock in pthread.h.
+	* psxrwlock01/test.c: Conditionally add local prototype for
+	pthread_rwlock_unlock() if pthread.h doesn't supply it.
+
+2009-10-25	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* psx01/init.c, psxalarm01/init.c, psxbarrier01/test.c,
+	psxclock/init.c, psxfatal01/testcase.h, psxfatal02/testcase.h,
+	psxhdrs/signal12.c, psxkey01/init.c, psxkey03/init.c,
+	psxmsgq01/init.c, psxmsgq02/init.c, psxmsgq03/init.c,
+	psxreaddir/test.c, psxrwlock01/test.c, psxsignal01/init.c,
+	psxsignal02/init.c, psxsignal03/init.c, psxspin01/test.c, 
+	psxspin02/test.c, psxstack01/init.c, psxstat/test.c,
+	psxualarm/init.c: Remove unused vars.
+	Add missing prototypes.
+
+2009-10-22	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* Makefile.am: Build file IO related tests even with POSIX threading is
+	disabled.
+
+2009-10-20	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Don't add -ansi -fasm to CFLAGS.
+
 2009-10-14	Joel Sherrill <joel.sherrill@OARcorp.com>
 
 	* psxtimer01/psxtimer.c: It is not necessarily an error for the time

@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: screen09.c,v 1.18 2009/09/28 23:07:56 joel Exp $
+ *  $Id: screen09.c,v 1.19 2009/10/26 08:07:50 ralf Exp $
  */
 
 #include "system.h"
@@ -22,9 +22,8 @@ void Screen9()
 {
   void              *converted;
   rtems_status_code status;
-  rtems_isr_entry   old_service_routine;
 
-  #if ((CPU_SIMPLE_VECTORED_INTERRUPTS == FALSE) || \
+#if ((CPU_SIMPLE_VECTORED_INTERRUPTS == FALSE) || \
        defined(_C3x) || defined(_C4x))
     puts(
       "TA1 - rtems_interrupt_catch - "
@@ -33,7 +32,8 @@ void Screen9()
     puts(
       "TA1 - rtems_interrupt_catch - "
       "old isr RTEMS_INVALID_ADDRESS - SKIPPED" );
-  #else
+#else
+  rtems_isr_entry   old_service_routine;
     status = rtems_interrupt_catch(
       Service_routine,
       ISR_INTERRUPT_MAXIMUM_VECTOR_NUMBER + 10,
@@ -61,7 +61,7 @@ void Screen9()
       "rtems_interrupt_catch with invalid old isr pointer"
     );
     puts( "TA1 - rtems_interrupt_catch - old isr RTEMS_INVALID_ADDRESS" );
-  #endif
+#endif
 
   /* send invalid id */
   status = rtems_signal_send( 100, RTEMS_SIGNAL_1 );

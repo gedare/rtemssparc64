@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.24 2009/04/03 12:48:13 ralf Exp $
+## $Id: Makefile.am,v 1.26 2009/11/17 03:47:52 ralf Exp $
 ##
 
 MANAGERS = all
@@ -8,6 +8,7 @@ rtems_tests_PROGRAMS = spsize
 spsize_SOURCES = init.c getint.c size.c system.h
 
 dist_rtems_tests_DATA = spsize.scn
+dist_rtems_tests_DATA += spsize.doc
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../automake/compile.am

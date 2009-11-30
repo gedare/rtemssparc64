@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.13 2009/08/12 20:50:29 joel Exp $
+ *  $Id: task1.c,v 1.14 2009/10/30 17:04:36 joel Exp $
  */
 
 #include "system.h"
@@ -61,7 +61,7 @@ rtems_task Test_task1(
     (long (*)[4])receive_buffer,
     &size,
     RTEMS_DEFAULT_OPTIONS,
-    2 * TICKS_PER_SECOND
+    2 * rtems_clock_get_ticks_per_second()
   );
   fatal_directive_status(status, RTEMS_TIMEOUT, "rtems_message_queue_receive");
   puts( "rtems_message_queue_receive correctly returned RTEMS_TIMEOUT" );

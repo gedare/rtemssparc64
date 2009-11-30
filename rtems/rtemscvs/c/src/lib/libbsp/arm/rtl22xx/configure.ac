@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.7 2009/09/15 14:43:58 ralf Exp $
+## $Id: configure.ac,v 1.8 2009/10/20 09:33:52 ralf Exp $
 
 AC_PREREQ(2.59)
 AC_INIT([rtems-c-src-lib-libbsp-arm-rtl22xx],[_RTEMS_VERSION],[rtems-bugs@rtems.com])
@@ -11,7 +11,7 @@ RTEMS_CANONICAL_TARGET_CPU
 AM_INIT_AUTOMAKE([no-define nostdinc foreign 1.9])
 RTEMS_BSP_CONFIGURE
 
-RTEMS_PROG_CC_FOR_TARGET([-fasm])
+RTEMS_PROG_CC_FOR_TARGET
 RTEMS_CANONICALIZE_TOOLS
 RTEMS_PROG_CCAS
 

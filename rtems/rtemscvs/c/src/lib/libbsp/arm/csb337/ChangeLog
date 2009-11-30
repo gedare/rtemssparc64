@@ -1,3 +1,25 @@
+2009-11-21	Fernando Nicodemos <fgnicodemos@terra.com.br>
+
+	* Makefile.am, configure.ac, console/uarts.c: Add initial support for
+	Kit637 version of CSB637.
+	* README.kit637_v6, make/custom/kit637_v6.cfg: New files.
+
+2009-11-03	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Add RTEMS_BSP_LINKCMDS.
+	* make/custom/csb637.cfg: Remove LDFLAGS. Remove RTEMS_LINKCMDS.
+	* startup/linkcmds: Remove (Rename into linkcmds.csb337).
+	* startup/linkcmds.csb337: New (Renamed from linkcmds).
+	* Makefile.am: Rework linkcmds handling.
+
+2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* make/custom/csb337.cfg: Remove RTEMS_BSP_FAMILY.
+
+2009-10-20	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Don't add -ansi -fasm to CFLAGS.
+
 2009-10-15	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* make/custom/csb337.cfg: New (relocated from /make/custom).

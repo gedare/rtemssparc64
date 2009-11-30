@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: tsmac.c,v 1.1 2008/12/04 22:55:13 joel Exp $
+ *  $Id: tsmac.c,v 1.2 2009/11/24 06:42:40 ralf Exp $
  *
  *  Jukka Pietarinen <jukka.pietarinen@mrf.fi>, 2008,
  *  Micro-Research Finland Oy
@@ -567,8 +567,6 @@ void tsmac_init(void *arg)
 
 void tsmac_stop(struct ifnet *ifp)
 {
-  struct tsmac_softc *tsmac = ifp->if_softc;
-
   /*
    * Mask tsmac interrupts
    */
@@ -595,9 +593,6 @@ void tsmac_start(struct ifnet *ifp)
 
 void tsmac_stats(struct tsmac_softc *tsmac)
 {
-  uint32_t data;
-  int stat;
-
   /*
    * Update counters from TSMAC MIB counters
    */
@@ -791,6 +786,8 @@ int rtems_tsmac_driver_attach(struct rtems_bsdnet_ifconfig *config, int attachin
 
   if_attach(ifp);
   ether_ifattach(ifp);
+
+  return 1;
 }
 
 rtems_isr tsmac_interrupt_handler(rtems_vector_number vector)

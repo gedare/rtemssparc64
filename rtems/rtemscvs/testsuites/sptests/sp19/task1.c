@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.10 2009/08/12 20:50:43 joel Exp $
+ *  $Id: task1.c,v 1.11 2009/10/26 14:58:36 ralf Exp $
  */
 
 #include "system.h"
@@ -39,7 +39,7 @@ rtems_task Task_1(
   INTEGER_LOAD( INTEGER_factors[ task_index ] );
 
   put_name( Task_name[ task_index ], FALSE );
-  printf( " - integer base = (0x%x)\n", INTEGER_factors[ task_index ] );
+  printf( " - integer base = (0x%" PRIx32 ")\n", INTEGER_factors[ task_index ] );
 
   while( FOREVER ) {
     status = rtems_clock_get_tod( &time );

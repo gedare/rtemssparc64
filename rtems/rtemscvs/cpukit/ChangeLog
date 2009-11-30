@@ -1,3 +1,323 @@
+2009-11-23	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libmisc/shell/shell.c: Always duplicate the environment passed to us
+	because we will delete it when the shell exits. If we do not
+	duplicate it, we could end up freeing memory which was not allocated
+	from the heap or double freeing it.
+
+2009-11-23	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libmisc/shell/login_prompt.c: Properly process EOF and do not depend
+	on ungetc() to propagate the status back.
+
+2009-11-23	Joel Sherrill <joel.sherrill@OARcorp.com>
+
+	* score/inline/rtems/score/thread.inl: Eliminate unused variable and
+	code.
+
+2009-11-23	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	PR 1460/cpukit
+	* rtems/include/rtems/rtems/object.h,
+	rtems/src/rtemsobjectapimaximumclass.c,
+	rtems/src/rtemsobjectgetapiclassname.c,
+	rtems/src/rtemsobjectgetapiname.c,
+	rtems/src/rtemsobjectgetclassinfo.c,
+	rtems/src/rtemsobjectidapimaximum.c,
+	rtems/src/rtemsobjectidapiminimum.c, rtems/src/rtemsobjectidgetapi.c,
+	rtems/src/rtemsobjectidgetclass.c, rtems/src/rtemsobjectidgetindex.c,
+	rtems/src/rtemsobjectidgetnode.c: Change return type on methods
+	accessing portions of RTEMS Ids to int. This allows -1 to be return
+	on error.
+
+2009-11-23	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* mghttpd/mongoose.c: crypto_sw table is not used when SSL is disabled.
+	RTEMS does not have flockfile/funlockfile.
+
+2009-11-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* Makefile.am: Add mghttpd.
+
+2009-11-18	Thomas Doefler <Thomas.Doerfler@embedded-brains.de>
+
+	* libblock/include/rtems/blkdev.h, libblock/include/bdbuf.h,
+	libblock/src/bdbuf.c: various changes
+
+2009-11-19	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* aclocal/check-networking.m4: Do NOT disable networking for the
+	avr and the m32c.
+
+2009-11-19	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/shell/hexdump-odsyntax.c: Remove special casing
+	the h8300, avr, sh2e.
+
+2009-11-19	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libcsupport/src/malloc_boundary.c: Avoid implicit type cast
+	(https://www.rtems.org/bugzilla/show_bug.cgi?id=1472#c1).
+
+2009-11-18	Chris Johns <chrisj@rtems.org>
+
+	* libmisc/shell/main_getenv.c, libmisc/shell/main_setenv.c,
+	libmisc/shell/main_unsetenv.c: New. The shell can now play with
+	environment variables.
+	* libmisc/Makefile.am, libmisc/shell/shellconfig.h: Add setenv,
+	getenv, and unsetenv to the shell.
+
+2009-11-17	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Add mghttpd/Makefile.
+	* mghttpd/mongoose.c: Various 16bit fixes.
+	Add HAVE_CONFIG_H.
+	Add HAVE_SYS_MMAN_H HAVE_DLFCN_H.
+	Convert to unix encoding.
+
+2009-11-17	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* mghttpd/Makefile.am: New.
+	* mghttpd/mongoose.c, mghttpd/mongoose.h, mghttpd/mongoose.1:
+	Import from svn http://mongoose.googlecode.com/svn/trunk (r477).
+
+2009-11-13	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/capture/capture-cli.c: Cast pointer to intptr_t to
+	print it (Casting to int32_t is wrong).
+
+2009-11-13	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* telnetd/telnetd.c (telnetd_dflt_spawn): Adjust prototype. 
+
+2009-11-12	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/include/rtems/blkdev.h, libblock/src/blkdev.c: Changed set
+	and get IO controls to use the buffer argument for data exchange.
+
+2009-11-11	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libcsupport/Makefile.am, libcsupport/include/rtems/malloc.h,
+	libcsupport/src/rtems_malloc.c: New function rtems_malloc().
+
+2009-11-11	Jennifer Averett <jennifer.averett@OARcorp.com>
+
+	PR 1471/cpukit
+	* libmisc/cpuuse/cpuusagereport.c: Rework statement to ensure 64-bit
+	multiplication is used to avoid overflow with intermediate value.
+
+2009-11-10	Jennifer Averett <jennifer.averett@OARcorp.com>
+
+	PR 1468/cpukit
+	* score/src/timespecdividebyinteger.c: Rework statement to ensure
+	64-bit multiplication is used.
+
+2009-11-10	Jennifer Averett <jennifer.averett@OARcorp.com>
+
+	PR 1462/cpukit
+	* rtems/include/rtems/rtems/ratemon.h, rtems/src/ratemonperiod.c: Fine
+	tune previous patch after analysis in application.
+
+2009-11-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libfs/src/dosfs/msdos_format.c: Rework to avoid overflow on 16-bit
+	targets.
+
+2009-11-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libcsupport/src/open_dev_console.c: Use constant numbers to avoid
+	overflow when shifting on 16-bit targets.
+
+2009-11-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* sapi/src/fatal.c: Formatting.
+
+2009-11-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* score/inline/rtems/score/coremutex.inl,
+	score/inline/rtems/score/coresem.inl: Eliminate use of local
+	variable. This local variable causes unused variable warnings
+	on some ports.
+
+2009-11-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* score/include/rtems/score/thread.h: Revert accidentally committed
+	change. It is possible that _Thread_Dispatch_disable_level can be an
+	8-bit variable but this impacts assembly and must be carefully
+	considered.
+
+2009-11-08	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/capture/capture.h (RTEMS_CAPTURE_CONTROL_FROM_MASK): 
+	Use UINT32_C(1) to avoid overflow in implict typecast on 16bit
+	targets.
+
+2009-11-03	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* itron/src/chg_pri.c, itron/src/cre_tsk.c,
+	itron/src/eventflags.c, itron/src/fmempool.c,
+	itron/src/frsm_tsk.c, itron/src/itroninittasks.c,
+	itron/src/itronsem.c, itron/src/mbox.c, itron/src/msgbuffer.c,
+	itron/src/port.c, itron/src/rsm_tsk.c, itron/src/snd_mbx.c,
+	itron/src/task.c, itron/src/vmempool.c: Eliminate TRUE/FALSE in
+	favor of true/false.
+
+2009-11-02	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libblock/src/bdbuf.c: Cast bdbuf->state to int32_t
+	before shifting << 16 (Can not shift an enum by << 16 on 16bit).
+
+2009-11-02	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libfs/src/dosfs/msdos.h, libfs/src/dosfs/msdos_conv.c,
+	libfs/src/dosfs/msdos_misc.c: Use uint16_t instead of 
+	"unsigned short" to circumvent warnings on 16bit targets.
+
+2009-11-02	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/src/bdbuf.c: Fixed buffer recycling.  See test
+	"libtests/block03".
+
+2009-11-02	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/src/bdbuf.c: Wake-up access waiters after sync.  See test
+	"libtests/block04".
+
+2009-10-30	Glenn Humphrey <glenn.humphrey@oarcorp.com>
+
+	PR pr1462/cpukit
+	* rtems/include/rtems/rtems/ratemon.h, rtems/src/ratemongetstatus.c,
+	rtems/src/ratemonperiod.c, rtems/src/ratemontimeout.c,
+	score/include/rtems/score/thread.h: Fix bugs in rate monotonic
+	statistics.
+
+2009-10-30	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* rtems/src/semcreate.c: Fix mismatched brace in multiprocessing code.
+
+2009-10-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/src/bdbuf.c: Fixed group usage counting.  See test
+	"libtests/block02".
+
+2009-10-30	Ralf Corsépius <ralf.corsepiu@rtems.org>
+
+	* aclocal/gcc-sanity.m4: New.
+	* configure.ac: Add RTEMS_CHECK_GCC_SANITY.
+
+2009-10-29	Till Straumann <strauman@slac.stanford.edu>
+
+	* score/src/isr.c: Check if CPU defined _CPU_Interrupt_stack_setup()
+	macro hook for setting up the interrupt stack (alignment, reserving
+	space etc.) after the framework allocates it.
+
+2009-10-28	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/include/rtems/bdbuf.h: Reorderd AVL node fields to save
+	space.
+	* libblock/src/bdbuf.c: Fixed printf() formats. New structure for
+	waiters synchronization. Added BDBUF_INVALID_DEV define. New error
+	handling in rtems_bdbuf_init().
+	* libblock/src/bdpart.c, libblock/src/blkdev.c: Release disk in case
+	of an error.
+
+2009-10-28     Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/include/rtems/ramdisk.h, libblock/src/ramdisk-driver.c:
+	Aded ramdisk_register().
+
+2009-10-23	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* aclocal/prog-cc.m4: Remove RTEMS_CFLAGS.
+	Rework CFLAGS setup.
+	* automake/compile.am: Remove RTEMS_CFLAGS.
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* score/cpu/Makefile.am: Update DIST_SUBDIRS.
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libblock/include/rtems/flashdisk.h: Use UINT32_C consts to 
+	avoid implicit int-cast overflows in RTEMS_FDISK_KBYTES.
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libcsupport/include/rtems/error.h: Use ordinal constants for
+	RTEMS_ERROR_ERRNO, RTEMS_ERROR_PANIC, RTEMS_ERROR_ABORT to avoid
+	implicit constant conversion overflows on 16bit-int targets.
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/uuid/uuid_time.c: Add cast to uint32_t to allow 16bit
+	shift on 16bit-int targets.
+	* libmisc/uuid/gen_uuid.c: Add HAVE_CONFIG_H guard.
+	Include <limits.h>. Shift pid_t's by (sizeof(pid_t)*CHAR_BIT)>>1 
+	instead of hard-coded 16 to permit building on non 16bit-int
+	targets.
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/shell/extern-ls.h: Remove DAYSPERNYEAR, SECSPERDAY.
+	* libmisc/shell/print-ls.c: Add DAYSPERNYEAR, SECSPERDAY.
+	Add casts to time_t on constants in DAYSPERNYEAR, SECSPERDAY for
+	16bit-int targets.
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/shell/dd-args.c: Use uint_least32_t instead of u_int,
+	force 32bit constants to make code functional on 16bit-int targets.
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Remove -fasm.
+
+2009-10-21	Till Straumann <strauman@slac.stanford.edu>
+
+	* sapi/include/rtems/config.h: Fixed typos (wrong case) in macro
+	expansion for rtems_configuration_get_device_driver_table()
+	and rtems_configuration_get_user_extension_table()
+
+2009-10-21     Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/rtems/irq-extension.h: Removed vector argument from
+	rtems_interrupt_handler type.
+
+2009-10-20	Till Straumann <strauman@slac.stanford.edu>
+
+	* score/cpu/i386/cpu.c, score/cpu/i386/cpu.h: let the default
+	exception handler print a stack trace.
+
+2009-10-20	Till Straumann <strauman@slac.stanford.edu>
+
+	PR1424/networking
+	* libnetworking/net/rtsock.c: (merged from BSD) copy information
+	out to user buffer.
+
+2009-10-20     Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/include/rtems/ramdisk.h: Documentation.
+	* libblock/src/ramdisk-driver.c: Compile trace support conditionally.
+
+2009-10-20	Chris Johns <chrisj@rtems.org>
+
+	* libnetworking/rtems/rtems_mii_ioctl_kern.c: Added IFM_ACTIVE and
+	IFM_AVALID to the status for a link up. These are the supported
+	but in the BSD stack. Before IFM_LINK_OK was set and this is a
+	spare bit.
+
+2009-10-19     Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/include/rtems/diskdevs.h: Documentation.  Added field to
+	rtems_disk_device.
+	* libblock/include/rtems/blkdev.h: New request code
+	RTEMS_BLKIO_DELETED.
+	* libblock/src/diskdevs.c: Major rewrite.  Changed the way disks are
+	deleted.  Disks will be now deleted if they are not in use or upon
+	last release.  The IO control handler will be invoked if a physical
+	disk is deleted with the RTEMS_BLKIO_DELETED request code.  Logical
+	disks increase now the usage count of the associated physical disk.
+
 2009-10-16     Sebastian Huber <sebastian.huber@embedded-brains.de>
 
 	* libblock/src/ramdisk.c: Removed file. 

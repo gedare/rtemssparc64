@@ -1,10 +1,13 @@
 /*
  *  Submitted as part of PR1357
  *
- *  $Id: init.c,v 1.2 2009/05/10 14:39:46 joel Exp $
+ *  $Id: init.c,v 1.3 2009/10/26 15:15:56 ralf Exp $
  */
 
 #include <tmacros.h>
+
+#define PRIXModes_Control 	PRIX32
+#define PRIXrtems_mode		PRIXModes_Control
 
 rtems_task test_asr(rtems_task_argument unused);
 rtems_task Init(rtems_task_argument ignored);
@@ -18,7 +21,7 @@ rtems_task test_asr(rtems_task_argument unused)
   if ( (mode & RTEMS_NO_ASR) == 0 ) {
     puts( "ERROR - disable ASR not honored" );
     printf(
-      "mode = 0x%08X asr = %s\n", mode,
+      "mode = 0x%08" PRIXrtems_mode " asr = %s\n", mode,
       (mode & RTEMS_NO_ASR) ? "OFF" : "ON"
     );
   } else

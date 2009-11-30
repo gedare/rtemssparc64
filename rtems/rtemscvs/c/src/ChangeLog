@@ -1,3 +1,69 @@
+2009-11-23	Joel Sherrill <joel.sherrill@OARcorp.com>
+
+	* libchip/network/smc91111.c: Formatting.
+
+2009-11-12	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libchip/ide/ata.c (rtems_ata_initialize): Avoid implicit cast to uint16_t.
+	* libchip/ide/ata.c (ata_non_data_request): Change arg from int to 
+	uint32_t (16bit ints are too small).
+
+2009-11-06	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libchip/network/elnk.c: Use PRI*32 to print u_int32_t's.
+	* libchip/network/if_dc.c: Fix type mismatch.
+
+2009-11-03	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* aclocal/bsp-linkcmds.m4: New.
+
+2009-10-23	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Rework CFLAGS setup.
+	* aclocal/prog-cc.m4: Remove RTEMS_CFLAGS.
+	* automake/compile.am: Remove RTEMS_CFLAGS.
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libchip/ide/ata.h: Move extern "C".
+
+2009-10-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libchip/i2c/spi-flash-m25p40.c, libchip/i2c/spi-fram-fm25l256.c:
+	Use hex-constants to avoid implicit int-casts.
+	* libchip/i2c/spi-memdrv.c:
+	Use hex-constants to avoid implicit int-casts.
+	Use rtems_off64_t offsets to avoid loosing precision.
+
+2009-10-21	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libchip/serial/ns16550.c: Update for interrupt handler type change.
+
+2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* aclocal/bsp-alias.m4: New.
+	* configure.ac: Apply RTEMS_BSP_ALIAS for RTEMS_BSP_FAMILY.
+
+2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* aclocal/env-rtemsbsp.m4: Remove AM_CONDITIONAL MULTILIB.
+
+2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Remove AM_CONDITIONAL MULTILIB.
+	* Makefile.am: Remove BARE_CPU_MODEL.
+
+2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Remove cfg_dir.
+
+2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Remove -std=c99 -fasm.
+	Remove AM_CONDITIONAL LIBCHIP.
+	* libchip/Makefile.am, wrapup/Makefile.am:
+	Remove AM_CONDITIONAL LIBCHIP.
+
 2009-10-17	Ralf Corsepius <ralf.corsepius@rtems.org>
 
 	* configure.ac: Pick up make/custom/*.

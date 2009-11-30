@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.2 2009/05/14 14:29:40 joel Exp $
+## $Id: Makefile.am,v 1.3 2009/11/09 14:25:28 joel Exp $
 ##
 
 MANAGERS = all
@@ -8,6 +8,7 @@ rtems_tests_PROGRAMS = spwkspace
 spwkspace_SOURCES = init.c
 
 dist_rtems_tests_DATA = spwkspace.scn
+dist_rtems_tests_DATA += spwkspace.doc
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../automake/compile.am

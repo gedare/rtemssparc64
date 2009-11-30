@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.13 2007/06/20 21:43:28 joel Exp $
+ *  $Id: task1.c,v 1.16 2009/10/26 17:04:39 ralf Exp $
  */
 
 #include "system.h"
@@ -36,28 +36,28 @@ rtems_task Task_1_through_6(
 {
   rtems_id          rmid;
   rtems_id          test_rmid;
-  uint32_t    index;
-  uint32_t    pass;
-  uint32_t    failed;
+  int               index;
+  int               pass;
+  uint32_t          failed;
   rtems_status_code status;
 
   status = rtems_rate_monotonic_create( argument, &rmid );
   directive_failed( status, "rtems_rate_monotonic_create" );
   put_name( Task_name[ argument ], FALSE );
-  printf( "- rtems_rate_monotonic_create id = 0x%08x\n", rmid );
+  printf( "- rtems_rate_monotonic_create id = 0x%08" PRIxrtems_id "\n", rmid );
 
   status = rtems_rate_monotonic_ident( argument, &test_rmid );
   directive_failed( status, "rtems_rate_monotonic_ident" );
   put_name( Task_name[ argument ], FALSE );
-  printf( "- rtems_rate_monotonic_ident id = 0x%08x\n", test_rmid );
+  printf( "- rtems_rate_monotonic_ident id = 0x%08" PRIxrtems_id "\n", test_rmid );
 
   if ( rmid != test_rmid ) {
-     printf( "RMID's DO NOT MATCH (0x%x and 0x%x)\n", rmid, test_rmid );
+     printf( "RMID's DO NOT MATCH (0x%" PRIxrtems_id " and 0x%" PRIxrtems_id ")\n", rmid, test_rmid );
      rtems_test_exit( 0 );
   }
 
   put_name( Task_name[ argument ], FALSE );
-  printf( "- (0x%08x) period %d\n", rmid, Periods[ argument ] );
+  printf( "- (0x%08" PRIxrtems_id ") period %" PRIu32 "\n", rmid, Periods[ argument ] );
 
   status = rtems_task_wake_after( 2 );
   directive_failed( status, "rtems_task_wake_after" );
@@ -94,7 +94,7 @@ rtems_task Task_1_through_6(
           if ( Temporary_count.count[ index ] != Iterations[ index ] ) {
             puts_nocr( "FAIL -- " );
             put_name ( Task_name[ index ], FALSE );
-            printf   ( " Actual=%d, Expected=%d\n",
+            printf   ( " Actual=%" PRIu32 ", Expected=%" PRIu32 "\n",
                        Temporary_count.count[ index ],
                        Iterations[ index ]
                      );
@@ -143,7 +143,7 @@ rtems_task Task_1_through_6(
         {
           rtems_interval meas = time[index] - time[index-1];
           period = index*TA6_PERIOD_FACTOR;
-          printf("TA6 - Actual: %d  Expected: %d", meas, period);
+          printf("TA6 - Actual: %" PRIdrtems_interval " Expected: %" PRIdrtems_interval, meas, period);
           if (period == meas) printf(" - OK\n");
           else printf(" - FAILED\n");
         }

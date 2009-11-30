@@ -123,7 +123,7 @@ volatile int ClockInitialized = 0;
 /*
  *  ISR Handlers
  */
-void mpc5200_gpt_clock_isr(rtems_vector_number vector, void *handle)
+void mpc5200_gpt_clock_isr(void *handle)
 {
   uint32_t status;
   struct mpc5200_gpt *gpt = (struct mpc5200_gpt *)handle;
@@ -219,7 +219,7 @@ uint32_t mpc5200_check_gpt_status(uint32_t gpt_no)
   return ((gpt->emsel) & (GPT_EMSEL_CE | GPT_EMSEL_INTEN));
 }
 
-void clockOn()
+void clockOn(void)
 {
   uint32_t gpt_no;
 
@@ -234,7 +234,7 @@ void clockOn()
   ClockInitialized = 1;
 }
 
-void clockOff()
+void clockOff(void)
 {
   uint32_t gpt_no;
 
@@ -262,7 +262,7 @@ int BSP_disconnect_clock_handler (unsigned gpt_no)
     return 0;
   }
 
-  clockOff( BSP_PERIODIC_TIMER);
+  clockOff();
 
   sc = rtems_interrupt_handler_remove(
     BSP_PERIODIC_TIMER,

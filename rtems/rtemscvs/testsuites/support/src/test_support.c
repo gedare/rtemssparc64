@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test_support.c,v 1.3 2009/08/06 19:25:17 joel Exp $
+ *  $Id: test_support.c,v 1.4 2009/10/26 05:30:29 ralf Exp $
  */
 
 #include <fcntl.h>
@@ -22,7 +22,7 @@
 static char  Too_Long_Name[PATH_MAX + 2];
 static char  Longest_Name[PATH_MAX + 1];
 
-const char *Get_Too_Long_Name() 
+const char *Get_Too_Long_Name(void) 
 {
   int i;
 
@@ -32,7 +32,7 @@ const char *Get_Too_Long_Name()
   return Too_Long_Name;
 }
 
-const char *Get_Longest_Name()
+const char *Get_Longest_Name(void)
 {
   int i;
 

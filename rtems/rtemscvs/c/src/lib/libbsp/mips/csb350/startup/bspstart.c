@@ -11,13 +11,14 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.10 2008/09/16 19:04:12 joel Exp $
+ *  $Id: bspstart.c,v 1.11 2009/11/16 10:07:24 ralf Exp $
  */
 
 #include <string.h>
 
 #include <bsp.h>
 #include <libcpu/au1x00.h>
+#include <libcpu/isr_entries.h>
 
 au1x00_uart_t *uart0 = (au1x00_uart_t *)AU1X00_UART0_ADDR;
 au1x00_uart_t *uart3 = (au1x00_uart_t *)AU1X00_UART3_ADDR;
@@ -29,7 +30,6 @@ au1x00_uart_t *uart3 = (au1x00_uart_t *)AU1X00_UART3_ADDR;
  */
 void bsp_start( void )
 {
-  extern void mips_install_isr_entries(void);
   unsigned int compare = 0; 
 
   mips_set_sr( 0x7f00 );  /* all interrupts unmasked but globally off */

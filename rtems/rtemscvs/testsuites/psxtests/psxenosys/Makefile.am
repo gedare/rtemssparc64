@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.2 2009/04/03 12:44:41 ralf Exp $
+## $Id: Makefile.am,v 1.3 2009/11/09 14:47:06 joel Exp $
 ##
 
 MANAGERS = all
@@ -8,6 +8,7 @@ rtems_tests_PROGRAMS = psxenosys
 psxenosys_SOURCES = init.c system.h ../include/pmacros.h
 
 dist_rtems_tests_DATA = psxenosys.scn
+dist_rtems_tests_DATA += psxenosys.doc
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../automake/compile.am

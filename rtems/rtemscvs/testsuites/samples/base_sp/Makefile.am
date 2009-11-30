@@ -1,5 +1,5 @@
 ##
-##  $Id: Makefile.am,v 1.24 2009/04/03 12:42:11 ralf Exp $
+##  $Id: Makefile.am,v 1.25 2009/10/26 11:32:35 ralf Exp $
 ##
 
 MANAGERS = io semaphore
@@ -13,6 +13,8 @@ dist_rtems_tests_DATA += base_sp.doc
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../automake/compile.am
 include $(top_srcdir)/../automake/leaf.am
+
+AM_CPPFLAGS += -I$(top_srcdir)/../support/include
 
 base_sp_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
 

@@ -12,7 +12,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ata.c,v 1.30 2009/10/13 08:00:11 thomas Exp $
+ * $Id: ata.c,v 1.32 2009/11/12 16:34:24 ralf Exp $
  *
  */
 #include <errno.h>
@@ -320,7 +320,7 @@ ata_io_data_request(dev_t device, rtems_blkdev_request *req)
  *     error occured
  */
 static rtems_status_code
-ata_non_data_request(dev_t device, int cmd, void *argp)
+ata_non_data_request(dev_t device, uint32_t cmd, void *argp)
 {
     rtems_status_code          rc;
     ata_req_t                 *areq;       /* ATA request */
@@ -1405,9 +1405,10 @@ rtems_ata_initialize(rtems_device_major_number major,
                 CF_LE_W(buffer[ATA_IDENT_WORD_NUM_OF_CURR_LOG_HEADS]);
             ATA_DEV_INFO(ctrl_minor, dev).sectors =
                 CF_LE_W(buffer[ATA_IDENT_WORD_NUM_OF_CURR_LOG_SECS]);
-            ATA_DEV_INFO(ctrl_minor, dev).lba_sectors =
-                (CF_LE_W(buffer[ATA_IDENT_WORD_NUM_OF_USR_SECS1]) << 16) +
-                 CF_LE_W(buffer[ATA_IDENT_WORD_NUM_OF_USR_SECS0]);
+            ATA_DEV_INFO(ctrl_minor, dev).lba_sectors = 
+                CF_LE_W(buffer[ATA_IDENT_WORD_NUM_OF_USR_SECS1]);
+            ATA_DEV_INFO(ctrl_minor, dev).lba_sectors <<= 16;
+            ATA_DEV_INFO(ctrl_minor, dev).lba_sectors += CF_LE_W(buffer[ATA_IDENT_WORD_NUM_OF_USR_SECS0]);
             ATA_DEV_INFO(ctrl_minor, dev).lba_avaible =
                 (CF_LE_W(buffer[ATA_IDENT_WORD_CAPABILITIES]) >> 9) & 0x1;
 

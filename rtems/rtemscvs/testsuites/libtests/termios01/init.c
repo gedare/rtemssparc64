@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2009/10/01 12:14:00 ralf Exp $
+ *  $Id: init.c,v 1.5 2009/10/27 11:43:29 ralf Exp $
  */
 
 #include "tmacros.h"
@@ -15,6 +15,9 @@
 #include <rtems/termiostypes.h>
 #include <fcntl.h>
 #include <sys/errno.h>
+
+/* rtems_termios_baud_t is a typedefs to int32_t */
+#define PRIdrtems_termios_baud_t PRId32
 
 /*
  *  Termios Test Driver
@@ -82,7 +85,7 @@ termios_character_size_test_r char_size_table[] = {
  */
 typedef struct {
   int        constant;
-  const char parity[5];
+  const char *parity;
 } termios_parity_test_r;
 
 /*
@@ -92,7 +95,7 @@ termios_parity_test_r parity_table[] = {
   { 0,                "none" },
   { PARENB,           "even" },
   { PARENB | PARODD,  "odd" },
-  { -1,               -1 }
+  { -1,               NULL }
 };
 
 /*
@@ -134,7 +137,7 @@ void test_termios_baud2index(void)
 
   if ( i != -1 )
   for (i=0 ; baud_table[i].constant != -1 ; i++ ) {
-    printf( "termios_baud_to_index(B%d) - OK\n", baud_table[i].baud );
+    printf( "termios_baud_to_index(B%" PRIdrtems_termios_baud_t ") - OK\n", baud_table[i].baud );
     index = rtems_termios_baud_to_index( baud_table[i].constant );
     if ( index != i ) {
       printf( "ERROR - returned %d should be %d\n", index, i );
@@ -164,11 +167,11 @@ void test_termios_baud2number(void)
   assert ( i == -1 );
 
   for (i=0 ; baud_table[i].constant != -1 ; i++ ) {
-    printf( "termios_baud_to_number(B%d) - OK\n", baud_table[i].baud );
+    printf( "termios_baud_to_number(B%" PRIdrtems_termios_baud_t ") - OK\n", baud_table[i].baud );
     number = rtems_termios_baud_to_number( baud_table[i].constant );
     if ( number != baud_table[i].baud ) {
       printf(
-        "ERROR - returned %d should be %d\n",
+        "ERROR - returned %d should be %" PRIdrtems_termios_baud_t "\n",
         number,
         baud_table[i].baud
       );
@@ -198,7 +201,7 @@ void test_termios_number_to_baud(void)
   assert ( i == -1 );
 
   for (i=0 ; baud_table[i].constant != -1 ; i++ ) {
-    printf( "termios_number_to_baud(B%d) - OK\n", baud_table[i].baud );
+    printf( "termios_number_to_baud(B%" PRIdrtems_termios_baud_t ") - OK\n", baud_table[i].baud );
     termios_baud = rtems_termios_number_to_baud( baud_table[i].baud );
     if ( termios_baud != baud_table[i].constant ) {
       printf(
@@ -220,7 +223,6 @@ void test_termios_set_baud(
 {
   int             sc;
   int             i;
-  int             number;
   struct termios  attr;
 
   puts( "Test termios setting device baud rate..." );
@@ -234,14 +236,14 @@ void test_termios_set_baud(
     attr.c_cflag &= ~CBAUD;
     attr.c_cflag |= baud_table[i].constant;
 
-    printf( "tcsetattr(TCSANOW, B%d) - OK\n", baud_table[i].baud );
+    printf( "tcsetattr(TCSANOW, B%" PRIdrtems_termios_baud_t ") - OK\n", baud_table[i].baud );
     sc = tcsetattr( test, TCSANOW, &attr );
     if ( sc != 0 ) {
       printf( "ERROR - return %d\n", sc );
       rtems_test_exit(0);
     }
 
-    printf( "tcsetattr(TCSADRAIN, B%d) - OK\n", baud_table[i].baud );
+    printf( "tcsetattr(TCSADRAIN, B%" PRIdrtems_termios_baud_t ") - OK\n", baud_table[i].baud );
     sc = tcsetattr( test, TCSANOW, &attr );
     if ( sc != 0 ) {
       printf( "ERROR - return %d\n", sc );
@@ -259,7 +261,6 @@ void test_termios_set_charsize(
 {
   int             sc;
   int             i;
-  int             number;
   struct termios  attr;
 
   puts(
@@ -301,7 +302,6 @@ void test_termios_set_parity(
 {
   int             sc;
   int             i;
-  int             number;
   struct termios  attr;
 
   puts(
@@ -343,7 +343,6 @@ void test_termios_set_stop_bits(
 {
   int             sc;
   int             i;
-  rtems_termios_baud_t number;
   struct termios  attr;
 
   puts(

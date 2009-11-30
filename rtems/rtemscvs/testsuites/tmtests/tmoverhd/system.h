@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.17 2004/04/20 07:03:41 ralf Exp $
+ *  $Id: system.h,v 1.19 2009/11/02 11:11:37 ralf Exp $
  */
 
 
@@ -34,11 +34,11 @@ rtems_asr Asr_handler(
   rtems_signal_set signals
 );
 
-rtems_task task_func();
+extern rtems_task task_func(void);
 
-void null_func();
+extern void null_func(void);
 
-rtems_status_code Empty_directive();
+extern rtems_status_code Empty_directive(void);
 
 #include <timesys.h>
 

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console.c,v 1.1 2008/12/04 22:55:13 joel Exp $
+ *  $Id: console.c,v 1.2 2009/11/24 06:40:50 ralf Exp $
  *
  *  Jukka Pietarinen <jukka.pietarinen@mrf.fi>, 2008,
  *  Micro-Research Finland Oy
@@ -21,7 +21,7 @@
 #include <rtems/libio.h>
 
 void BSP_uart_polled_write(char ch);
-char BSP_uart_polled_read( void );
+int BSP_uart_polled_read( void );
 char BSP_uart_is_character_ready(char *ch);
 
 /*  console_initialize
@@ -87,13 +87,13 @@ bool is_character_ready(
  *    character read from SOURCE
  */
 
-char inbyte( void )
+int inbyte( void )
 {
   /*
    *  If polling, wait until a character is available.
    */
 
-  return (char) BSP_uart_polled_read();
+  return BSP_uart_polled_read();
 }
 
 /*  outbyte

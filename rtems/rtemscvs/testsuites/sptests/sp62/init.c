@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.4 2009/10/04 22:02:18 joel Exp $
+ *  $Id: init.c,v 1.5 2009/10/27 11:14:19 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -49,7 +49,7 @@ rtems_task Init(
   rtems_id           task_id;
   rtems_status_code  sc;
   void              *segment_address_1;
-  intptr_t           old_size;
+  uintptr_t          old_size;
   size_t             size;
 
   puts( "\n\n*** TEST 62 ***" );

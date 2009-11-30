@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: chg_pri.c,v 1.11 2008/12/14 18:31:40 joel Exp $
+ *  $Id: chg_pri.c,v 1.12 2009/11/03 05:23:05 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -61,7 +61,7 @@ ER chg_pri(
 
       if ( the_thread->resource_count == 0 ||
            the_thread->current_priority > new_priority )
-        _Thread_Change_priority( the_thread, new_priority, FALSE );
+        _Thread_Change_priority( the_thread, new_priority, false );
 
       break;
   }

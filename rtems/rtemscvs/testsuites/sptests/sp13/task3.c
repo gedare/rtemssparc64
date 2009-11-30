@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task3.c,v 1.11 2007/02/06 19:14:35 joel Exp $
+ *  $Id: task3.c,v 1.12 2009/10/27 11:54:22 ralf Exp $
  */
 
 #include "system.h"
@@ -53,7 +53,7 @@ rtems_task Task_3(
     16,
     &count
   );
-  printf( "TA3 - number of tasks awakened = %02d\n", count );
+  printf( "TA3 - number of tasks awakened = %02" PRIu32 "\n", count );
   puts(
     "TA3 - rtems_message_queue_receive - receive from queue 3 - "
       "RTEMS_WAIT FOREVER"

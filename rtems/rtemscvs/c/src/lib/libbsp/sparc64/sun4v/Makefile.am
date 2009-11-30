@@ -49,7 +49,7 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     startup/bspgetworkarea.c \
     startup/bspstart.c \
     ../../shared/gnatinstallhandler.c  \
-    ofw/ofw.c ofw/string.c ofw/balloc.c ofw/bootstrap.c ofw/ofwarch.c ofw/ofw_tree.c ofw/asm.S
+    ofw/ofw.c ofw/string.c ofw/balloc.c ofw/bootstrap.c ofw/ofwarch.c ofw/ofw_tree.c ofw/asm.S 
 ##   ofw/printf.c \
     
 clock_SOURCES = ../../shared/clock_driver_simidle.c

@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: fptask.c,v 1.12 2009/08/12 20:50:43 joel Exp $
+ *  $Id: fptask.c,v 1.13 2009/10/26 14:58:36 ralf Exp $
  */
 
 #include "system.h"
@@ -44,7 +44,7 @@ rtems_task FP_task(
   FP_LOAD( FP_factors[ task_index ] );
 
   put_name( Task_name[ task_index ], FALSE );
-  printf( " - integer base = (0x%x)\n", INTEGER_factors[ task_index ] );
+  printf( " - integer base = (0x%" PRIx32 ")\n", INTEGER_factors[ task_index ] );
   put_name( Task_name[ task_index ], FALSE );
 #if ( RTEMS_HAS_HARDWARE_FP == 1 )
   printf( " - float base = (%g)\n", FP_factors[ task_index ] );

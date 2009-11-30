@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.19 2008/12/14 18:35:58 joel Exp $
+ *  $Id: system.h,v 1.20 2009/10/26 13:58:56 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -24,7 +24,7 @@ rtems_task Init(
 );
 
 void Priority_test_driver(
-  uint32_t   priority_base
+  rtems_task_priority priority_base
 );
 
 rtems_task Priority_task(

@@ -15,10 +15,11 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: asr.c,v 1.9 2009/09/25 13:26:35 joel Exp $
+ *  $Id: asr.c,v 1.11 2009/10/30 13:23:47 ralf Exp $
  */
 
 #include "system.h"
+#include "tmacros.h"
 
 rtems_asr Process_asr(
   rtems_signal_set the_signal_set
@@ -26,7 +27,7 @@ rtems_asr Process_asr(
 {
   rtems_status_code status;
 
-  printf( "ASR - ENTRY - signal => %08x\n", the_signal_set );
+  printf( "ASR - ENTRY - signal => %08" PRIxrtems_signal_set "\n", the_signal_set );
   switch( the_signal_set ) {
     case RTEMS_SIGNAL_16:
     case RTEMS_SIGNAL_17:
@@ -43,6 +44,6 @@ rtems_asr Process_asr(
       Asr_fired = TRUE;
       break;
   }
-  printf( "ASR - EXIT  - signal => %08x\n", the_signal_set );
+  printf( "ASR - EXIT  - signal => %08" PRIxrtems_signal_set "\n", the_signal_set );
   FLUSH_OUTPUT();
 }

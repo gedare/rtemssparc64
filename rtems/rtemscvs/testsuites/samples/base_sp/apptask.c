@@ -15,10 +15,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: apptask.c,v 1.12 2003/09/04 18:53:41 joel Exp $
+ *  $Id: apptask.c,v 1.14 2009/10/27 06:59:20 ralf Exp $
  */
 
 #include "system.h"
+#include "tmacros.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -31,8 +33,8 @@ rtems_task Application_task(
 
   status = rtems_task_ident( RTEMS_SELF, RTEMS_SEARCH_ALL_NODES, &tid );
 
-  printf( "Application task was invoked with argument (%d) "
-          "and has id of 0x%x\n", argument, tid );
+  printf( "Application task was invoked with argument (%" PRIdrtems_task_argument ") "
+          "and has id of 0x%" PRIxrtems_id "\n", argument, tid );
 
   printf( "*** END OF SAMPLE SINGLE PROCESSOR APPLICATION ***\n" );
   exit( 0 );

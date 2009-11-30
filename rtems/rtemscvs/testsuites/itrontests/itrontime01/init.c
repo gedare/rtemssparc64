@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.9 2008/02/01 00:45:01 joel Exp $
+ *  $Id: init.c,v 1.11 2009/10/30 17:28:43 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -33,17 +33,17 @@
 
 int time_sec_epoch( void ) {
 
-int s_time,t_time,r_time;
+long s_time,t_time,r_time;
 long m_sec;
 
 t_time = time(NULL);
-s_time = (1985-1970)*365*24*60*60;
+s_time = (1985L-1970L)*365L*24L*60L*60L;
 r_time = t_time - s_time;
 m_sec = r_time*1000;
 
-printf( "Time from 1970: %d\n", t_time );
-printf( "Time between 1970 and 1985: %d\n", s_time );
-printf( "Time from 1985: %d\n", r_time );
+printf( "Time from 1970: %ld\n", t_time );
+printf( "Time between 1970 and 1985: %ld\n", s_time );
+printf( "Time from 1985: %ld\n", r_time );
 printf("milliseconds: %ld\n",m_sec);
 
 return 0;

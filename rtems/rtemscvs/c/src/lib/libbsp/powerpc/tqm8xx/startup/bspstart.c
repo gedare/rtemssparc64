@@ -17,17 +17,19 @@
  * The license and distribution terms for this file may be found in the file
  * LICENSE in this distribution or at http://www.rtems.com/license/LICENSE.
  *
- * $Id: bspstart.c,v 1.5 2009/08/26 13:29:22 joel Exp $
+ * $Id: bspstart.c,v 1.9 2009/11/03 18:45:04 thomas Exp $
  */
+
+#include <stdlib.h>
 
 #include <rtems.h>
 
 #include <libcpu/powerpc-utility.h>
 
 #include <bsp.h>
+#include <bsp/vectors.h>
 #include <bsp/bootcard.h>
-/* #include <bsp/irq-generic.h>
-   #include <bsp/ppc_exc_bspsupp.h> */
+#include <bsp/irq-generic.h>
 
 #ifdef BSP_HAS_TQMMON
 /*
@@ -36,11 +38,10 @@
 #endif /* BSP_HAS_TQMMON */
 
 /* Configuration parameters for console driver, ... */
-unsigned int BSP_bus_frequency;
+uint32_t BSP_bus_frequency;
 
 /* Configuration parameters for clock driver, ... */
 uint32_t bsp_clicks_per_usec; /* for PIT driver: OSCCLK */
-uint32_t bsp_clock_speed    ; /* needed for PIT driver  */
 /* for timer: */
 uint32_t   bsp_timer_average_overhead; /* Average overhead of timer in ticks */
 uint32_t   bsp_timer_least_valid;      /* Least valid number from timer      */
@@ -94,7 +95,7 @@ const char *bsp_tqm_get_cib_string( const char *cib_id)
   /*
    * search for pattern in info block (CIB)
    */
-  fnd_str = strstr(TQM_CONF_INFO_BLOCK_ADDR,srch_pattern);
+  fnd_str = strstr((const char *)TQM_CONF_INFO_BLOCK_ADDR,srch_pattern);
 
   if (fnd_str == NULL) {
     return NULL;
@@ -111,7 +112,7 @@ rtems_status_code  bsp_tqm_get_cib_uint32( const char *cib_id,
 					   uint32_t   *result)
 {
   const char *item_ptr;
-  const char *end_ptr;
+  char *end_ptr;
   item_ptr = bsp_tqm_get_cib_string(cib_id);
   if (item_ptr == NULL) {
     return RTEMS_INVALID_ID;
@@ -125,11 +126,12 @@ rtems_status_code  bsp_tqm_get_cib_uint32( const char *cib_id,
 
 void bsp_start( void)
 {
+  rtems_status_code sc = RTEMS_SUCCESSFUL;
   ppc_cpu_id_t myCpu;
   ppc_cpu_revision_t myCpuRevision;
 
-  uint32_t interrupt_stack_start = (uint32_t) bsp_interrupt_stack_start;
-  uint32_t interrupt_stack_size = (uint32_t) bsp_interrupt_stack_size;
+  uintptr_t interrupt_stack_start = (uintptr_t) bsp_interrupt_stack_start;
+  uintptr_t interrupt_stack_size = (uintptr_t) bsp_interrupt_stack_size;
 
   /*
    * Get CPU identification dynamically. Note that the get_ppc_cpu_type() function
@@ -171,22 +173,24 @@ void bsp_start( void)
     BSP_panic("Cannot determine BUS frequency\n");
   }
 
-  bsp_clicks_per_usec = 0; /* force to zero to control 
-			    * PIT clock driver from EXTCLK
-			    */
-  bsp_clock_speed     = BSP_bus_frequency;
+  bsp_clicks_per_usec = BSP_bus_frequency/1000000/16; 
   bsp_timer_least_valid = 3; 
   bsp_timer_average_overhead = 3;
 
   /* Initialize exception handler */
-  ppc_exc_initialize(PPC_INTERRUPT_DISABLE_MASK_DEFAULT,
-		     interrupt_stack_start,
-		     interrupt_stack_size
-		     );
+  sc = ppc_exc_initialize(
+    PPC_INTERRUPT_DISABLE_MASK_DEFAULT,
+    interrupt_stack_start,
+    interrupt_stack_size
+  );
+  if (sc != RTEMS_SUCCESSFUL) {
+    BSP_panic("cannot initialize exceptions");
+  }
 
   /* Initalize interrupt support */
-  if (bsp_interrupt_initialize() != RTEMS_SUCCESSFUL) {
-    BSP_panic("Cannot intitialize interrupt support\n");
+  sc = bsp_interrupt_initialize();
+  if (sc != RTEMS_SUCCESSFUL) {
+    BSP_panic("cannot intitialize interrupts");
   }
 
 #ifdef SHOW_MORE_INIT_SETTINGS

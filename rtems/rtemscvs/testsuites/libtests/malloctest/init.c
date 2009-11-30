@@ -20,7 +20,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.29 2009/09/09 14:59:09 joel Exp $
+ *  $Id: init.c,v 1.35 2009/10/26 13:35:06 ralf Exp $
  */
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__
@@ -32,6 +32,10 @@
 #include <inttypes.h>
 #include <errno.h>
 #include <rtems/score/protectedheap.h>
+
+/* HACK: Blatant visibility violations */
+extern int malloc_info(Heap_Information_block *the_info);
+extern void malloc_walk(size_t source, size_t printf_enabled);
 
 /*
  *  A simple test of realloc
@@ -48,7 +52,7 @@ static void test_realloc(void)
     p2 = realloc(p1, i);
     if (p2 != p1)
       printf( "realloc - failed grow in place: "
-              "%p != realloc(%p,%d)\n", p1, p2, i);
+              "%p != realloc(%p,%zu)\n", p1, p2, i);
     p1 = p2;
   }
   free(p1);
@@ -59,7 +63,7 @@ static void test_realloc(void)
     p2 = realloc(p1, i);
     if (p2 != p1)
       printf( "realloc - failed shrink in place: "
-              "%p != realloc(%p,%d)\n", p1, p2, i);
+              "%p != realloc(%p,%zu)\n", p1, p2, i);
     p1 = p2;
   }
   free(p1);
@@ -129,8 +133,8 @@ static void test_free( void *addr )
 
 static void test_heap_cases_1(void)
 {
-  void     *p1, *p2, *p3, *p4;
-  intptr_t  u1, u2;
+  void     *p1, *p2, *p3;
+  uintptr_t  u1, u2;
   Heap_Resize_status rsc;
 
   /*
@@ -212,8 +216,9 @@ static void test_check_alloc(
 
     uintptr_t const alloc_area_begin = _Heap_Align_down( alloc_begin, page_size );
     uintptr_t const alloc_area_offset = alloc_begin - alloc_area_begin;
+#if UNUSED
     uintptr_t const alloc_area_size = alloc_area_offset + alloc_size;
-
+#endif
     Heap_Block *block = _Heap_Block_of_alloc_area( alloc_area_begin, page_size );
     uintptr_t const block_begin = (uintptr_t ) block;
     uintptr_t const block_size = _Heap_Block_size( block );
@@ -377,8 +382,6 @@ static void test_heap_do_initialize(
 
 static void test_heap_initialize(void)
 {
-  uintptr_t rv = 0;
-
   puts( "run tests for _Heap_Initialize()" );
 
   test_heap_do_initialize( TEST_HEAP_SIZE, 0, true );
@@ -800,7 +803,7 @@ static void test_heap_block_allocate( void )
   test_heap_do_block_allocate( 3, p2 );
 }
 
-static void *test_alloc_one_page()
+static void *test_alloc_one_page(void)
 {
   void *alloc_begin_ptr = _Heap_Allocate_aligned_with_boundary(
     &TestHeap,
@@ -821,7 +824,7 @@ static void *test_alloc_one_page()
   return alloc_begin_ptr;
 }
 
-static void *test_alloc_two_pages()
+static void *test_alloc_two_pages(void)
 {
   void *alloc_begin_ptr = _Heap_Allocate_aligned_with_boundary(
     &TestHeap,
@@ -862,12 +865,10 @@ static void test_simple_resize_block(
   rtems_test_assert( status == expected_status );
 }
 
-static void test_heap_resize_block()
+static void test_heap_resize_block(void)
 {
   void *p1, *p2, *p3;
   uintptr_t new_alloc_size = 0;
-  uintptr_t old_size = 0;
-  uintptr_t new_size = 0;
   Heap_Block *block = NULL;
 
   puts( "run tests for _Heap_Resize_Block()" );
@@ -926,8 +927,6 @@ static void test_heap_resize_block()
 
 static void test_heap_extend(void)
 {
-  void     *p1, *p2, *p3, *p4;
-  uint32_t  u1, u2;
   bool      ret;
 
   /*
@@ -1011,7 +1010,7 @@ static void test_protected_heap_info(void)
  */
 static void test_posix_memalign(void)
 {
-  void *p1, *p2;
+  void *p1;
   int i;
   int sc;
   int maximumShift;
@@ -1033,7 +1032,7 @@ static void test_posix_memalign(void)
   else if ( sizeof(int) == 2 )
     maximumShift = 15;
   else {
-    printf( "Unsupported int size == %d\n", sizeof(int) );
+    printf( "Unsupported int size == %zu\n", sizeof(int) );
     rtems_test_exit(0);
   }
   for ( i=2 ; i<maximumShift ; i++ ) {

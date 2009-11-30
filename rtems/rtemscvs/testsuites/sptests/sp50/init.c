@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.2 2009/08/12 20:50:43 joel Exp $
+ *  $Id: init.c,v 1.3 2009/10/26 09:08:26 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -64,7 +64,7 @@ rtems_task Init(
       sc = rtems_clock_get_uptime( &uptime );
       directive_failed( sc, "rtems_clock_get_uptime" );
  
-      printf( "Timer fired at %d\n", uptime.tv_sec );
+      printf( "Timer fired at %" PRItime_t "\n", uptime.tv_sec );
     }
 
     if ( Fired >= 10 ) {

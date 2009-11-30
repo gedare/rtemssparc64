@@ -3,7 +3,7 @@
 @c  On-Line Applications Research Corporation (OAR).
 @c  All rights reserved.
 @c
-@c  $Id: schedule.t,v 1.13 2002/01/17 21:47:47 joel Exp $
+@c  $Id: schedule.t,v 1.14 2009/11/09 14:36:14 joel Exp $
 @c
 
 @c
@@ -207,6 +207,9 @@ directive, at which time it enters the ready state.  The task is
 now permitted to be scheduled for the processor and to compete
 for other system resources.
 
+@float Figure,fig:RTEMS-Task-States
+@caption{RTEMS Task States}
+
 @ifset use-ascii
 @example
 @group
@@ -243,35 +246,7 @@ for other system resources.
 @ifset use-tex
 @c @page
 @example
-@image{states,,3in}
-@c @group
-@c      +-------------------------------------------------------------+
-@c      |                         Non-existent                        |
-@c      |  +-------------------------------------------------------+  |
-@c      |  |                                                       |  |
-@c      |  |                                                       |  |
-@c      |  |      Creating        +---------+     Deleting         |  |
-@c      |  | -------------------> | Dormant | -------------------> |  |
-@c      |  |                      +---------+                      |  |
-@c      |  |                           |                           |  |
-@c      |  |                  Starting |                           |  |
-@c      |  |                           |                           |  |
-@c      |  |                           V          Deleting         |  |
-@c      |  |             +-------> +-------+ ------------------->  |  |
-@c      |  |  Yielding  /   +----- | Ready | ------+               |  |
-@c      |  |           /   /       +-------+ <--+   \              |  |
-@c      |  |          /   /                      \   \ Blocking    |  |
-@c      |  |         /   / Dispatching   Readying \   \            |  |
-@c      |  |        /   V                          \   V           |  |
-@c      |  |      +-----------+    Blocking     +---------+        |  |
-@c      |  |      | Executing | --------------> | Blocked |        |  |
-@c      |  |      +-----------+                 +---------+        |  |
-@c      |  |                                                       |  |
-@c      |  |                                                       |  |
-@c      |  +-------------------------------------------------------+  |
-@c      |                         Non-existent                        |
-@c      +-------------------------------------------------------------+
-@c @end group
+@center{@image{states,,3in,RTEMS Task States}}
 @end example
 @end ifset
 
@@ -280,6 +255,7 @@ for other system resources.
 <IMG SRC="states.png" WIDTH=550 HEIGHT=400 ALT="RTEMS Task States">
 @end html
 @end ifset
+@end float
 
 A task occupies the blocked state whenever it is
 unable to be scheduled to run.  A running task may block itself

@@ -1,14 +1,14 @@
 /*
  *  Rate Monotonic Manager -- Get Status
  *
- *  COPYRIGHT (c) 1989-2007.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ratemongetstatus.c,v 1.14 2009/07/20 01:42:46 joel Exp $
+ *  $Id: ratemongetstatus.c,v 1.15 2009/10/30 17:54:29 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -65,7 +65,7 @@ rtems_status_code rtems_rate_monotonic_get_status(
   switch ( location ) {
 
     case OBJECTS_LOCAL:
-      status->owner = ((the_period->owner) ? the_period->owner->Object.id : 0);
+      status->owner = the_period->owner->Object.id;
       status->state = the_period->state;
 
       if ( status->state == RATE_MONOTONIC_INACTIVE ) {

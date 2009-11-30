@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.2 2009/09/28 23:52:46 joel Exp $
+ *  $Id: init.c,v 1.3 2009/11/09 15:04:03 joel Exp $
  */
 
 #include <pmacros.h>
@@ -65,6 +65,7 @@ void doit(
   status = rtems_timer_fire_after( timer_id, 10, TSR, NULL );
   assert( !status );
 
+  start = rtems_clock_get_ticks_since_boot();
   do {
     end = rtems_clock_get_ticks_since_boot();
   } while ( !TSR_occurred && ((end - start) <= 800));

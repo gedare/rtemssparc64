@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.8 2004/04/01 15:16:08 ralf Exp $
+ *  $Id: system.h,v 1.9 2009/10/30 11:08:15 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -19,10 +19,10 @@
 /* functions */
 
 void ITRON_Init( void );
-void Preempt_task();
-void Task_1();
-void Task_2();
-void Task_3();
+void Preempt_task(void);
+void Task_1(void);
+void Task_2(void);
+void Task_3(void);
 
 /* configuration information */
 

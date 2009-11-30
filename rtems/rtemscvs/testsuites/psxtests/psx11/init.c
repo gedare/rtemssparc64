@@ -6,8 +6,10 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.10 2009/07/20 01:05:59 joel Exp $
+ *  $Id: init.c,v 1.12 2009/10/27 14:10:54 ralf Exp $
  */
+
+#include <sched.h>
 
 #define CONFIGURE_INIT
 #include "system.h"
@@ -34,7 +36,7 @@ void *POSIX_Init(
   /* get id of this thread */
 
   Init_id = pthread_self();
-  printf( "Init's ID is 0x%08x\n", Init_id );
+  printf( "Init's ID is 0x%08" PRIxpthread_t "\n", Init_id );
 
   /* exercise pthread_setschedparam */
 

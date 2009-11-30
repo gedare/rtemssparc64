@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rsm_tsk.c,v 1.13 2007/10/26 20:19:00 joel Exp $
+ *  $Id: rsm_tsk.c,v 1.14 2009/11/03 05:23:05 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -54,7 +54,7 @@ ER rsm_tsk(
       if ( ! _States_Is_suspended(the_thread->current_state) )
         _ITRON_return_errorno( E_OBJ );
 
-      _Thread_Resume( the_thread, FALSE );
+      _Thread_Resume( the_thread, false );
       break;
   }
 

@@ -24,7 +24,7 @@
  * Setting TASK_A/B_INITMODE to RTEMS_DEFAULT_MODES | RTEMS_TIMESLICE
  * will produce the expected output.
  *
- * $Id: init.c,v 1.3 2009/05/10 14:39:46 joel Exp $
+ * $Id: init.c,v 1.5 2009/10/30 06:09:25 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -77,7 +77,7 @@ rtems_task TaskAB_entry(rtems_task_argument me)
 
   while(1) {
     if (turn == me) {
-      printf("Task #%d's turn. Now setting turn to %d\n", me, 1 - me);
+      printf("Task #%" PRIdrtems_task_argument "'s turn. Now setting turn to %" PRIdrtems_task_argument "\n", me, 1 - me);
       turn = 1 - me;
   
       if ( ++iterations == 10 ) {

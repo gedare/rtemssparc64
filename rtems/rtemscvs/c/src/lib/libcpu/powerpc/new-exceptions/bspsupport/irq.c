@@ -8,7 +8,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq.c,v 1.8 2008/07/14 08:45:03 thomas Exp $
+ *  $Id: irq.c,v 1.9 2009/10/23 07:32:45 thomas Exp $
  */
 
 #include <stdlib.h>
@@ -16,10 +16,7 @@
 #include <rtems.h>
 #include "irq_supp.h"
 #include <rtems/score/apiext.h>  /* for post ISR signal processing */
-#include <libcpu/raw_exception.h>
-#include <libcpu/cpuIdent.h>
-#include "vectors.h"
-#include "ppc_exc_bspsupp.h"
+#include <bsp/vectors.h>
 #include <stdlib.h>
 #include <rtems/bspIo.h> /* for printk */
 #include <libcpu/spr.h>

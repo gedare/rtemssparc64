@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.18 2008/08/04 14:39:45 joel Exp $
+ *  $Id: init.c,v 1.19 2009/10/29 04:51:38 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -65,7 +65,7 @@ void *POSIX_Init(
   assert( status == EINVAL );
   puts( "Init: pthread_condattr_setpshared - EINVAL (attribute invalid)" );
 
-  status = pthread_condattr_setpshared( &attr, 0xFFFFFF );
+  status = pthread_condattr_setpshared( &attr, 0x7FFF );
   if ( status != EINVAL )
     printf( "status = %d\n", status );
   assert( status == EINVAL );

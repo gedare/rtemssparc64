@@ -17,7 +17,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: bat.c,v 1.16 2009/10/16 16:13:30 joel Exp $
+ * $Id: bat.c,v 1.17 2009/10/22 01:57:51 ralf Exp $
  */
 #include <rtems.h>
 #include <libcpu/bat.h>
@@ -160,7 +160,7 @@ bat_addrs_put (ubat * bat, int typ, int idx)
  * cache.
  */
 static void
-bat_addrs_init ()
+bat_addrs_init (void)
 {
   ubat bat;
 
@@ -204,7 +204,7 @@ bat_addrs_init ()
 }
 
 static void
-do_dssall ()
+do_dssall (void)
 {
   /* Before changing BATs, 'dssall' must be issued.
    * We check MSR for MSR_VE and issue a 'dssall' if
@@ -227,7 +227,7 @@ do_dssall ()
 
 /* Clear I/D bats 4..7 ONLY ON 7455 etc.  */
 static void
-clear_hi_bats ()
+clear_hi_bats (void)
 {
   do_dssall ();
   CLRBAT (DBAT4);

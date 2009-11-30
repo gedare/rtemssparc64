@@ -10,7 +10,7 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.15 2008/10/13 19:15:26 joel Exp $
+ *  $Id: system.h,v 1.16 2009/10/24 05:52:23 ralf Exp $
  */
 
 #include <rtems.h>
@@ -34,9 +34,9 @@ bool status_code_bad(
   rtems_status_code status_code
 );
 
-void test1();
-void test2();
-void test3();
+extern void test1(void);
+extern void test2(void);
+extern void test3(void);
 
 /* configuration information */
 

@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.17 2008/12/14 18:38:43 joel Exp $
+ *  $Id: task1.c,v 1.18 2009/10/26 07:40:22 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -27,7 +27,7 @@ rtems_task Low_task(
   rtems_task_argument argument
 );
 
-void test_init();
+extern void test_init(void);
 
 int operation_count = OPERATION_COUNT;
 
@@ -47,7 +47,7 @@ rtems_task Init(
   directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
 }
 
-void test_init()
+void test_init(void)
 {
   rtems_status_code   status;
   rtems_task_entry    task_entry;

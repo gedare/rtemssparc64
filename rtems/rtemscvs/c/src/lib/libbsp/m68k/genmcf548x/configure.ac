@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.8 2009/10/16 12:53:49 thomas Exp $
+## $Id: configure.ac,v 1.9 2009/11/03 12:43:51 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-m68k-genmcf548x],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -44,6 +44,7 @@ RTEMS_BSPOPTS_HELP([HAS_DBUG],
 [If defined, we will do all the low level init of the chip (like bus/memory...).])
 
 RTEMS_BSP_CLEANUP_OPTIONS(0, 1)
+RTEMS_BSP_LINKCMDS
 
 # Explicitly list all Makefiles here
 AC_CONFIG_FILES([Makefile])

@@ -1,6 +1,6 @@
 /*  start.S
  *
- *  $Id: start.S,v 1.8 2009/04/28 06:31:12 ccj Exp $
+ *  $Id: start.S,v 1.9 2009/11/03 18:45:04 thomas Exp $
  *
  *  Modified for the Motorola PQII ADS board by
  *  Andy Dachs <a.dachs@sstl.co.uk> 23-11-00.
@@ -33,11 +33,6 @@
 
 #include <rtems/asm.h>
 
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning You need to pass a NULL.
-#warning Please check and remove these warnings.
-	
 /*
  *  The initial stack is set to run BELOW the code base address.
  *  (between the vectors and text sections)

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test.c,v 1.3 2009/05/11 01:41:15 joel Exp $
+ *  $Id: test.c,v 1.6 2009/10/28 02:29:18 ralf Exp $
  */
 
 #include <assert.h>
@@ -18,6 +18,8 @@
 
 /* #define __USE_XOPEN2K XXX already defined on GNU/Linux */
 #include <pthread.h>
+
+#include "tmacros.h"
 
 #define NUMBER_THREADS 2
 pthread_t ThreadIds[NUMBER_THREADS];
@@ -29,9 +31,9 @@ void *BarrierThread(void *arg)
   pthread_t id = *(pthread_t *) arg;
   int       status;
 
-  printf( "pthread_barrier_wait( &Barrier ) for thread 0x%08x\n", id );
+  printf( "pthread_barrier_wait( &Barrier ) for thread 0x%08" PRIxpthread_t "\n", id );
   status = pthread_barrier_wait( &Barrier );
-  printf( "pthread_barrier_wait - 0x%08x released\n", id );
+  printf( "pthread_barrier_wait - 0x%08" PRIxpthread_t " released\n", id );
   assert( (status == 0) || (status == PTHREAD_BARRIER_SERIAL_THREAD) );
 
   return NULL;
@@ -52,13 +54,11 @@ int main(
 )
 #endif
 {
-  pthread_barrier_t     another_barrier;
   pthread_barrier_t     bad_barrier = 100;
   pthread_barrier_t     barrier;
   pthread_barrierattr_t attr;
   int                   status;
   int                   p;
-  pthread_t             thread_id;
   int                   i;
 
   puts( "\n\n*** POSIX BARRIER TEST 01 ***" );

@@ -7,7 +7,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ppc_exc_bspsupp.h,v 1.8 2008/08/18 21:17:06 joel Exp $
+ *  $Id: ppc_exc_bspsupp.h,v 1.9 2009/10/23 07:32:46 thomas Exp $
  */
 
 #ifndef PPC_EXC_SHARED_H
@@ -117,6 +117,7 @@ extern void ppc_exc_min_prolog_async_tmpl_bookE_crit(void);
 extern void ppc_exc_min_prolog_sync_tmpl_bookE_crit(void);
 extern void ppc_exc_min_prolog_sync_tmpl_e500_mchk(void);
 extern void ppc_exc_min_prolog_async_tmpl_e500_mchk(void);
+extern void ppc_exc_min_prolog_tmpl_naked(void);
 
 /* Special prologue for handling register shadowing on 603-style CPUs */
 extern void ppc_exc_tgpr_clr_prolog(void);

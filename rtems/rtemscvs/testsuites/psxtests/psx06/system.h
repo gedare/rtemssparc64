@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.10 2004/04/01 15:16:19 ralf Exp $
+ *  $Id: system.h,v 1.11 2009/10/27 03:53:39 ralf Exp $
  */
 
 /* functions */
@@ -54,6 +54,6 @@ TEST_EXTERN pthread_t        Task_id;
 TEST_EXTERN pthread_t        Task2_id;
 TEST_EXTERN pthread_key_t    Key_id;
 TEST_EXTERN uint32_t   Data_array[ CONFIGURE_MAXIMUM_POSIX_THREADS ];
-TEST_EXTERN uint32_t   Destructor_invoked;
+TEST_EXTERN unsigned int     Destructor_invoked;
 
 /* end of include file */

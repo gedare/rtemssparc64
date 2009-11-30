@@ -15,13 +15,13 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: dormant.c,v 1.5 2009/08/12 20:50:24 joel Exp $
+ *  $Id: dormant.c,v 1.6 2009/10/30 11:07:04 ralf Exp $
  */
 
 #include <assert.h>
 #include "system.h"
 
-void Dormant_task()
+void Dormant_task(void)
 {
   puts( "DORMANT - ext_tsk - going to DORMANT state" );
   ext_tsk( );
@@ -31,7 +31,7 @@ void Dormant_task()
 }
 
 
-void Non_Dormant_task()
+void Non_Dormant_task(void)
 {
   ER       status;
 

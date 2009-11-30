@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.33 2009/10/16 16:22:46 joel Exp $
+ *  $Id: bspstart.c,v 1.34 2009/10/23 07:32:45 thomas Exp $
  */
 
 #include <string.h>
@@ -157,10 +157,11 @@ void initialize_PMC(void) {
 
 void bsp_start( void )
 {
+  rtems_status_code sc = RTEMS_SUCCESSFUL;
   unsigned char        *work_space_start;
   unsigned int         msr_value = 0x0000;
-  uint32_t             intrStackStart;
-  uint32_t             intrStackSize;
+  uintptr_t            intrStackStart;
+  uintptr_t            intrStackSize;
   volatile uint32_t    *ptr;
   ppc_cpu_id_t         myCpu;
   ppc_cpu_revision_t   myCpuRevision;
@@ -190,7 +191,7 @@ void bsp_start( void )
   /*
    * Initialize the interrupt related settings.
    */
-  intrStackStart = (uint32_t) __rtems_end;
+  intrStackStart = (uintptr_t) __rtems_end;
   intrStackSize = rtems_configuration_get_interrupt_stack_size();
   printk("Interrupt Stack Start: 0x%x Size: 0x%x  Heap Start: 0x%x\n",
     intrStackStart, intrStackSize, BSP_heap_start
@@ -203,11 +204,14 @@ void bsp_start( void )
   /*
    * Initialize default raw exception handlers.
    */
-  ppc_exc_initialize(
+  sc = ppc_exc_initialize(
     PPC_INTERRUPT_DISABLE_MASK_DEFAULT,
     intrStackStart,
     intrStackSize
   );
+  if (sc != RTEMS_SUCCESSFUL) {
+    BSP_panic("cannot initialize exceptions");
+  }
 
   msr_value = 0x2030;
   _CPU_MSR_SET( msr_value );

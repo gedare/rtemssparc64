@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: shell.c,v 1.44 2009/05/03 23:57:19 joel Exp $
+ *  $Id: shell.c,v 1.45 2009/11/23 21:56:50 joel Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -62,16 +62,20 @@ rtems_shell_env_t *rtems_current_shell_env = &rtems_global_shell_env;
  *  Initialize the shell user/process environment information
  */
 rtems_shell_env_t *rtems_shell_init_env(
-  rtems_shell_env_t *shell_env
+  rtems_shell_env_t *shell_env_p
 )
 {
-  if ( !shell_env ) {
-    shell_env = malloc(sizeof(rtems_shell_env_t));
-    if ( !shell_env )
-      return NULL;
+  rtems_shell_env_t *shell_env;
+
+  shell_env = malloc(sizeof(rtems_shell_env_t));
+  if ( !shell_env )
+    return NULL;
+  if ( !shell_env_p ) {
     *shell_env = rtems_global_shell_env;
-    shell_env->taskname = NULL;
+  } else {
+    *shell_env = *shell_env_p;
   }
+  shell_env->taskname = NULL;
 
   return shell_env;
 }

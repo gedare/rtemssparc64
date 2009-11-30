@@ -10,7 +10,7 @@
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Victor V. Vengerov <vvv@oktet.ru>
  *
- * @(#) $Id: ramdisk.h,v 1.10 2009/10/16 08:44:51 thomas Exp $
+ * @(#) $Id: ramdisk.h,v 1.12 2009/10/29 12:47:04 thomas Exp $
  */
 
 #ifndef _RTEMS_RAMDISK_H
@@ -74,8 +74,6 @@ extern rtems_ramdisk_config rtems_ramdisk_configuration [];
  * The configuration table size is provided by the application.
  */
 extern size_t rtems_ramdisk_configuration_size;
-
-int ramdisk_ioctl(rtems_disk_device *dd, uint32_t req, void *argp);
 
 /**
  * @brief RAM disk driver initialization entry point.
@@ -142,6 +140,8 @@ typedef struct ramdisk {
 
 extern const rtems_driver_address_table ramdisk_ops;
 
+int ramdisk_ioctl(rtems_disk_device *dd, uint32_t req, void *argp);
+
 /**
  * @brief Allocates and initializes a RAM disk descriptor.
  *
@@ -153,7 +153,13 @@ extern const rtems_driver_address_table ramdisk_ops;
  * @return Pointer to allocated and initialized ramdisk structure, or @c NULL
  * if no memory is available.
  *
+ * @note
+ * Runtime configuration example:
  * @code
+ * #include <rtems.h>
+ * #include <rtems/libio.h>
+ * #include <rtems/ramdisk.h>
+ *
  * rtems_status_code create_ramdisk(
  *   const char *disk_name_path,
  *   uint32_t block_size,
@@ -206,6 +212,25 @@ ramdisk *ramdisk_allocate(
 );
 
 void ramdisk_free(ramdisk *rd);
+
+/**
+ * @brief Allocates, initializes and registers a RAM disk.
+ *
+ * The block size will be @a block_size.  The block count will be @a
+ * block_count.  The disk storage will be allocated.  Sets the trace enable to
+ * @a trace.  Registers a device node with disk name path @a disk.  The
+ * registered device number will be returned in @a dev.
+ *
+ * @retval RTEMS_SUCCESSFUL Successful operation.
+ * @retval RTEMS_UNSATISFIED Something is wrong.
+ */
+rtems_status_code ramdisk_register(
+  uint32_t block_size,
+  rtems_blkdev_bnum block_count,
+  bool trace,
+  const char *disk,
+  dev_t *dev
+);
 
 /** @} */
 

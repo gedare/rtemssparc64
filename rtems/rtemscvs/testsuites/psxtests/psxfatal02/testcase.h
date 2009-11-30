@@ -1,7 +1,7 @@
 /*
  * Classic API Init task create failure
  *
- *  $Id: testcase.h,v 1.1 2008/01/31 23:42:50 joel Exp $
+ *  $Id: testcase.h,v 1.3 2009/10/30 10:33:43 ralf Exp $
  */
 
 #include <errno.h>
@@ -14,7 +14,11 @@
 #define CONFIGURE_POSIX_INIT_THREAD_STACK_SIZE 0
 posix_initialization_threads_table POSIX_Initialization_threads[] = {
   { POSIX_Init,
+#if INT_MAX < (12 * 1024 * 1024)
+    INT_MAX
+#else
     12 * 1024 * 1024 /* too much stack */
+#endif
   }
 };
 
@@ -30,7 +34,7 @@ posix_initialization_threads_table POSIX_Initialization_threads[] = {
 #define FATAL_ERROR_EXPECTED_IS_INTERNAL TRUE
 #define FATAL_ERROR_EXPECTED_ERROR       EAGAIN
 
-void force_error()
+void force_error(void)
 {
   /* we will not run this far */
 }

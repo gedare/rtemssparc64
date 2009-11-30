@@ -14,10 +14,11 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.10 2004/03/30 11:18:28 ralf Exp $
+ *  $Id: task1.c,v 1.11 2009/10/30 13:15:57 ralf Exp $
  */
 
 #include "system.h"
+#include "tmacros.h"
 
 extern rtems_multiprocessing_table Multiprocessing_configuration;
 
@@ -59,7 +60,7 @@ rtems_task Test_task(
 
   if ( previous_priority != remote_node ) {
     printf(
-      "Remote priority (0x%x) does not match remote node (0x%x)!!!\n",
+      "Remote priority (0x%" PRIxrtems_task_priority ") does not match remote node (0x%" PRIx32 ")!!!\n",
       previous_priority,
       remote_node
     );

@@ -35,7 +35,7 @@
 | *  http://www.rtems.com/license/LICENSE.
 | **************************************************************************
 |
-|  $Id: bsp.h,v 1.42 2009/08/21 17:59:31 joel Exp $
+|  $Id: bsp.h,v 1.43 2009/10/28 01:24:10 strauman Exp $
 +--------------------------------------------------------------------------*/
 
 #ifndef _BSP_H
@@ -60,6 +60,14 @@ extern "C" {
  * Network driver configuration
  */
 struct rtems_bsdnet_ifconfig;
+
+/* app. may provide a routine (called _very_ early) to tell us
+ * which ports to use for printk / console. BSP provides a default
+ * implementation (weak alias) which does nothing (use BSP default
+ * ports).
+ */
+extern void
+BSP_runtime_console_select(int *pPrintkPort, int *pConsolePort);
 
 extern int rtems_ne_driver_attach(struct rtems_bsdnet_ifconfig *, int);
 #define BSP_NE2000_NETWORK_DRIVER_NAME      "ne1"

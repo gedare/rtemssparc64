@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.10 2008/05/21 22:15:20 joel Exp $
+ *  $Id: system.h,v 1.11 2009/10/30 11:08:15 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -19,8 +19,8 @@
 /* functions */
 
 void ITRON_Init( void );
-void Dormant_task();
-void Non_Dormant_task();
+void Dormant_task(void);
+void Non_Dormant_task(void);
 
 /* configuration information */
 

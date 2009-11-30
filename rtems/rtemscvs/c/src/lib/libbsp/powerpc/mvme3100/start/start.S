@@ -9,7 +9,7 @@
  * 
  *  Modified for mvme3100 by T. Straumann, 2007.
  *
- *  $Id: start.S,v 1.4 2009/04/28 06:31:12 ccj Exp $
+ *  $Id: start.S,v 1.5 2009/10/20 17:55:18 strauman Exp $
  *
  */
 
@@ -19,11 +19,6 @@
 
 #include <bspopts.h>
 
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning You need to pass a NULL.
-#warning Please check and remove these warnings.
-	
 #define SYNC \
 	sync; \
 	isync
@@ -87,6 +82,6 @@ __rtems_entry_point:
 	 * We are now in a environment that is totally independent from 
 	 * bootloader setup.
 	 */
-	li	r3, 0			/* command line */
+    /* pass result of 'save_boot_params' to 'boot_card' in R3 */
 	bl	boot_card
 	/* point of no return: reset board here ? */

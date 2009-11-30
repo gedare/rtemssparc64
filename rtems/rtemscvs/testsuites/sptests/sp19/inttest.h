@@ -22,7 +22,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: inttest.h,v 1.11 2004/04/16 09:19:06 ralf Exp $
+ *  $Id: inttest.h,v 1.12 2009/10/26 14:58:36 ralf Exp $
  */
 
 
@@ -104,7 +104,7 @@
 
 #define INTEGER_CHECK_ONE( _v, _base, _factor ) \
       if ( (_v) != ((_base) + (_factor)) )  { \
-          printf("%d: " #_v " wrong -- (0x%x not 0x%x)\n", \
+          printf("%" PRIu32 ": " #_v " wrong -- (0x%" PRIx32 " not 0x%lx)\n", \
              task_index, (_v), (_base + _factor));  \
       }
 

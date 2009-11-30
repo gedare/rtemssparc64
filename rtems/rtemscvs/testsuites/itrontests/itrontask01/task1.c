@@ -15,12 +15,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.9 2009/08/12 20:50:24 joel Exp $
+ *  $Id: task1.c,v 1.10 2009/10/30 11:06:18 ralf Exp $
  */
 
 #include "system.h"
 
-void Task_2_through_4()
+void Task_2_through_4(void)
 {
   ID                tid;
   int               tid_index;

@@ -1,3 +1,21 @@
+2009-11-23	Joel Sherrill <joel.sherrill@OARcorp.com>
+
+	* clock/clockdrv.c: Split hardware initialization code into
+	Clock_driver_support_initialize_hardware().
+
+2009-11-16	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* startup/bspstart.c: Remove nested externs.
+	#include <libcpu/isr_entries.h.
+
+2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* make/custom/jmr3904.cfg: Remove RTEMS_BSP_FAMILY.
+
+2009-10-20	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Don't add -ansi -fasm to CFLAGS.
+
 2009-10-17	Joel Sherrill <joel.sherrill@oarcorp.com>
 
 	* startup/bspstart.c: Fix warnings.

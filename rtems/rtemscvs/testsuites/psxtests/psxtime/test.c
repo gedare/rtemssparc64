@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test.c,v 1.12 2009/08/19 15:13:34 joel Exp $
+ *  $Id: test.c,v 1.13 2009/10/25 17:51:20 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -22,6 +22,11 @@
 #include <string.h>
 #include <rtems.h>
 #include <rtems/libio.h>
+#include <sys/time.h>
+
+#if !HAVE_DECL_ADJTIME
+extern int adjtime(const struct timeval *delta, struct timeval *olddelta);
+#endif
 
 void test_adjtime(void);
 void check_a_tod(

@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.24 2009/08/12 20:50:43 joel Exp $
+ *  $Id: task1.c,v 1.27 2009/10/26 16:53:35 ralf Exp $
  */
 
 #include "system.h"
@@ -66,7 +66,7 @@ rtems_task Task_1(
     RTEMS_SEARCH_ALL_NODES,
     &qid
   );
-  printf( "TA1 - rtems_message_queue_ident - qid => %08x\n", qid );
+  printf( "TA1 - rtems_message_queue_ident - qid => %08" PRIxrtems_id "\n", qid );
   directive_failed( status, "rtems_message_queue_ident" );
 
   Fill_buffer( "BUFFER 1 TO Q 1", buffer );
@@ -205,12 +205,12 @@ rtems_test_pause();
   puts( "TA1 - rtems_message_queue_get_number_pending - check Q 3" );
   status = rtems_message_queue_get_number_pending( Queue_id[ 3 ], &count );
   directive_failed( status, "rtems_message_queue_get_number_pending" );
-  printf( "TA1 - %d messages are pending on Q 3\n", count );
+  printf( "TA1 - %" PRIu32 " messages are pending on Q 3\n", count );
 
   puts( "TA1 - rtems_message_queue_flush - empty Q 3" );
   status = rtems_message_queue_flush( Queue_id[ 3 ], &count );
   directive_failed( status, "rtems_message_queue_flush" );
-  printf( "TA1 - %d messages were flushed from Q 3\n", count );
+  printf( "TA1 - %" PRIu32 " messages were flushed from Q 3\n", count );
 
   Fill_buffer( "BUFFER 1 TO Q 3", buffer );
   puts( "TA1 - rtems_message_queue_send - BUFFER 1 TO Q 3" );
@@ -231,12 +231,12 @@ rtems_test_pause();
     16,
     &count
   );
-  printf( "TA1 - number of tasks awakened = %d\n", count );
+  printf( "TA1 - number of tasks awakened = %" PRIu32 "\n", count );
 
   puts( "TA1 - rtems_message_queue_get_number_pending - check Q 3" );
   status = rtems_message_queue_get_number_pending( Queue_id[ 3 ], &count );
   directive_failed( status, "rtems_message_queue_get_number_pending" );
-  printf( "TA1 - %d messages are pending on Q 3\n", count );
+  printf( "TA1 - %" PRIu32 " messages are pending on Q 3\n", count );
 
   Fill_buffer( "BUFFER 3 TO Q 3", buffer );
   puts( "TA1 - rtems_message_queue_send - BUFFER 3 TO Q 3" );
@@ -245,7 +245,7 @@ rtems_test_pause();
 
   puts( "TA1 - rtems_message_queue_flush - Q 3" );
   status = rtems_message_queue_flush( Queue_id[ 3 ], &count );
-  printf( "TA1 - %d messages were flushed from Q 3\n", count );
+  printf( "TA1 - %" PRIu32 " messages were flushed from Q 3\n", count );
 
   puts( "TA1 - rtems_message_queue_send until all message buffers consumed" );
   while ( FOREVER ) {
@@ -257,7 +257,7 @@ rtems_test_pause();
   puts( "TA1 - all message buffers consumed" );
   puts( "TA1 - rtems_message_queue_flush - Q 3" );
   status = rtems_message_queue_flush( Queue_id[ 3 ], &count );
-  printf( "TA1 - %d messages were flushed from Q 3\n", count );
+  printf( "TA1 - %" PRIu32 " messages were flushed from Q 3\n", count );
 
 rtems_test_pause();
 
@@ -291,7 +291,7 @@ rtems_test_pause();
           );
       if (status != RTEMS_SUCCESSFUL)
       {
-          printf("TA1 - msq que size: %d\n", queue_size);
+          printf("TA1 - msq que size: %zu\n", queue_size);
           directive_failed( status, "rtems_message_queue_create of Q1" );
       }
 

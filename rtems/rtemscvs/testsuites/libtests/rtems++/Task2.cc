@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: Task2.cc,v 1.7 2004/03/30 11:12:46 ralf Exp $
+ *  $Id: Task2.cc,v 1.8 2009/11/14 21:09:34 ralf Exp $
  */
 
 #include "System.h"
@@ -53,20 +53,20 @@ void Task2::screen4()
   // send using task id
   printf("%s - event wait forever for signal 0 from TA1 ....\n", name_string());
   event.receive(RTEMS_SIGNAL_0, out);
-  printf("%s - %s, signals out are 0x%08X\n", name_string(), event.last_status_string(), out);
+  printf("%s - %s, signals out are 0x%08" PRIX32 "\n", name_string(), event.last_status_string(), out);
 
   // send using task object reference
   printf("%s - event wait forever for signal 0 from TA1 ....\n", name_string());
   event.receive(RTEMS_SIGNAL_0, out);
-  printf("%s - %s, signals out are 0x%08X\n", name_string(), event.last_status_string(), out);
+  printf("%s - %s, signals out are 0x%08" PRIX32 "\n", name_string(), event.last_status_string(), out);
   
   printf("%s - event wait forever for signal 31 from TA1 ....\n", name_string());
   event.receive(RTEMS_SIGNAL_31, out);
-  printf("%s - %s, signals out are 0x%08X\n", name_string(), event.last_status_string(), out);
+  printf("%s - %s, signals out are 0x%08" PRIX32 "\n", name_string(), event.last_status_string(), out);
   
   printf("%s - event wait forever for signal 0 and 31 from TA1 ....\n", name_string());
   event.receive(RTEMS_SIGNAL_0 | RTEMS_SIGNAL_31, out, 0, rtemsEvent::wait, rtemsEvent::all);
-  printf("%s - %s, signals out are 0x%08X\n", name_string(), event.last_status_string(), out);
+  printf("%s - %s, signals out are 0x%08" PRIX32 "\n", name_string(), event.last_status_string(), out);
 
   printf("%s - send event signal 1 - ", name_string());
   event.send(RTEMS_SIGNAL_1);
@@ -74,7 +74,7 @@ void Task2::screen4()
   
   printf("%s - event wait forever for signal 1 from TA2 - ", name_string());
   event.receive(RTEMS_SIGNAL_1, out, 0, rtemsEvent::wait, rtemsEvent::all);
-  printf("%s, signals out are 0x%08X\n", event.last_status_string(), out);  
+  printf("%s, signals out are 0x%08" PRIX32 "\n", event.last_status_string(), out);  
 }
 
 

@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: screen12.c,v 1.20 2009/09/28 19:39:06 joel Exp $
+ *  $Id: screen12.c,v 1.21 2009/10/27 11:32:04 ralf Exp $
  */
 
 #include "system.h"
@@ -26,7 +26,7 @@ void Screen12()
   uint32_t                good_back_flag;
   uint32_t                good_front_flag;
   uint32_t                offset;
-  intptr_t                segment_size;
+  uintptr_t               segment_size;
   rtems_status_code       status;
   Heap_Information_block  the_info;
 

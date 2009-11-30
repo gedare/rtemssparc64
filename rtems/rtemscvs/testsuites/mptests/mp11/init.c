@@ -21,7 +21,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.17 2008/02/01 00:45:06 joel Exp $
+ *  $Id: init.c,v 1.18 2009/10/30 13:18:33 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -37,7 +37,7 @@ rtems_task Init(
   rtems_status_code status;
 
   printf(
-    "\n\n*** TEST 11 -- NODE %d ***\n",
+    "\n\n*** TEST 11 -- NODE %" PRIu32 " ***\n",
     Multiprocessing_configuration.node
   );
 

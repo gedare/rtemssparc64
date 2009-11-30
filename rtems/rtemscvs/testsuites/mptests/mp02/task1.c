@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.12 2009/08/12 20:50:29 joel Exp $
+ *  $Id: task1.c,v 1.13 2009/10/30 13:18:32 ralf Exp $
  */
 
 #include "system.h"
@@ -86,7 +86,7 @@ rtems_task Test_task(
   puts( "rtems_task_restart of remote task returned the correct error" );
 
   tmpNode = rtems_object_id_get_node(tid);
-  printf( "Setting notepad %d of the remote task to %d\n", tmpNode, tmpNode );
+  printf( "Setting notepad %" PRId32 " of the remote task to %" PRId32 "\n", tmpNode, tmpNode );
   status = rtems_task_set_note( remote_tid, tmpNode, tmpNode );
   directive_failed( status, "rtems_task_set_note" );
 
@@ -98,7 +98,7 @@ rtems_task Test_task(
     puts( "Remote notepad set and read correctly" );
   else
     printf(
-      "FAILURE!! Remote notepad was not set and read correctly (%d, %d)\n",
+      "FAILURE!! Remote notepad was not set and read correctly (%" PRId32 ", %" PRId32 ")\n",
       note,
       tmpNode
     );

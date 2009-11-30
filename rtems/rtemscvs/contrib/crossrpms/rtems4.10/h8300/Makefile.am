@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.97 2009/10/17 06:14:54 ralf Exp $
+# $Id: Makefile.am,v 1.100 2009/11/04 15:55:11 ralf Exp $
 
 TARGET = h8300-rtems4.10
 
@@ -12,7 +12,7 @@ BINUTILS_OPTS +=
 
 GCC_VERS = 4.4.2
 GCC_PKGVERS = $(GCC_VERS)
-GCC_RPMREL = 2
+GCC_RPMREL = 6
 NEWLIB_VERS = 1.17.0
 NEWLIB_PKGVERS = $(NEWLIB_VERS)
 NEWLIB_RPMREL = `expr 58 + $(GCC_RPMREL)`

@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.4 2009/09/14 00:15:55 joel Exp $
+ *  $Id: init.c,v 1.8 2009/11/12 00:21:51 joel Exp $
  */
 
 #if defined(USE_USER_SIGNALS_PROCESS)
@@ -85,8 +85,6 @@ void *Test_Thread(void *arg)
   int         sc;
   sigset_t    mask;
   sigset_t    wait_mask;
-  sigset_t    pending_set;
-  sigset_t    oset;
   siginfo_t   info;
 
   if ( blocked )
@@ -122,13 +120,17 @@ void *Test_Thread(void *arg)
   /* wait for a signal */
   memset( &info, 0, sizeof(info) );
 
-  printf( "%s - Wait for %s unblocked\n", signal_name(SIGNAL_ONE) );
+  printf( "%s - Wait for %s unblocked\n", name, signal_name(SIGNAL_ONE) );
   sigwaitinfo( &wait_mask, &info );
   assert( !sc );
 
   printf( "%s - siginfo.si_signo=%d\n", name, info.si_signo );
   printf( "%s - siginfo.si_code=%d\n", name, info.si_code );
-  printf( "%s - siginfo.si_value=0x%08x\n", name, info.si_value );
+  /* FIXME: Instead of casting to (uintptr_t) and using PRIxPTR, we
+   * likely should use %p. However, this would render this test's 
+   * behavior non-deterministic, because %p's behavior is 
+   * "implementation defined" */
+  printf( "%s - siginfo.si_value=0x%08" PRIxPTR "\n", name, (uintptr_t) info.si_value.sival_ptr );
 
   assert( info.si_signo == SIGNAL_TWO );
   assert( info.si_code == SI_USER );
@@ -141,12 +143,12 @@ void *POSIX_Init(
   void *argument
 )
 {
-  int                 i;
   int                 sc;
   pthread_t           id;
   struct sigaction    act;
   bool                trueArg = true;
   bool                falseArg = false;
+  struct timespec     delay_request;
 
   puts( "\n\n*** POSIX TEST SIGNAL " TEST_NAME " ***" );
   puts( "Init - Variation is: " TEST_STRING );
@@ -167,10 +169,14 @@ void *POSIX_Init(
   assert( !sc );
 
   puts( "Init - sleep - let threads settle - OK" );
-  usleep(500000);
+  delay_request.tv_sec = 0;
+  delay_request.tv_nsec = 5 * 100000000;
+  sc = nanosleep( &delay_request, NULL );
+  assert( !sc );
 
   puts( "Init - sleep - SignalBlocked thread settle - OK" );
-  usleep(500000);
+  sc = nanosleep( &delay_request, NULL );
+  assert( !sc );
 
   printf( "Init - sending %s - deliver to one thread\n",
           signal_name(SIGNAL_TWO));

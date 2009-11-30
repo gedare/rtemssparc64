@@ -11,7 +11,7 @@
  persons making use of this file must make the final evaluation 
  as to its suitability and correctness for a particular application. 
 
- $Id: cfinit.c,v 1.2 2008/07/04 16:08:26 joel Exp $
+ $Id: cfinit.c,v 1.3 2009/11/03 12:28:08 ralf Exp $
    
 */
 
@@ -38,7 +38,6 @@ static void disable_interrupts(void);
 static void disable_watchdog_timer(void);
 static void disable_cache(void);
 extern void init_clock_config(void) __attribute__ ((section(".ram_code")));
-static void init_vbr(void);
 static void init_cache(void);
 static void init_crossbar(void);
 extern void init_chip_selects(void) __attribute__ ((section(".ram_code")));

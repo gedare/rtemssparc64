@@ -1,6 +1,6 @@
 /*
   ------------------------------------------------------------------------
-  $Id: rtemsTask.cc,v 1.6 2008/12/16 20:55:45 joel Exp $
+  $Id: rtemsTask.cc,v 1.7 2009/11/23 15:29:54 ralf Exp $
   ------------------------------------------------------------------------
 
   COPYRIGHT (c) 1997
@@ -18,7 +18,7 @@
   ------------------------------------------------------------------------
 */
 
-#include <string.h>
+#include <cstring>
 #include <rtems++/rtemsTask.h>
 // include to allow it to be compiled
 #include <rtems++/rtemsTaskMode.h>

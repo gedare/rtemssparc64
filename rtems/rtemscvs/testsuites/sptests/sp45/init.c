@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2009/08/12 20:50:43 joel Exp $
+ *  $Id: init.c,v 1.4 2009/10/26 11:29:24 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -69,12 +69,12 @@ rtems_task Init(
   puts( "INIT - rtems_timer_create - creating timer 1" );
   status = rtems_timer_create( Timer_name[ 1 ], &Timer_id[ 1 ] );
   directive_failed( status, "rtems_timer_create" );
-  printf( "INIT - timer 1 has id (0x%x)\n", Timer_id[ 1 ] );
+  printf( "INIT - timer 1 has id (0x%" PRIxrtems_id ")\n", Timer_id[ 1 ] );
 
   puts( "INIT - rtems_timer_create - creating timer 2" );
   status = rtems_timer_create( Timer_name[ 2 ], &Timer_id[ 2 ] );
   directive_failed( status, "rtems_timer_create" );
-  printf( "INIT - timer 2 has id (0x%x)\n", Timer_id[ 2 ] );
+  printf( "INIT - timer 2 has id (0x%" PRIxrtems_id ")\n", Timer_id[ 2 ] );
 
   /*
    *  Schedule malloc TSR for 1 second from now

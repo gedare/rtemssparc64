@@ -1,6 +1,7 @@
-/.cvsignore/1.1/Mon Jan  7 15:07:47 2008//
-/Makefile.am/1.2/Fri Apr  3 12:48:13 2009//
-/init.c/1.5/Mon Aug 10 16:04:41 2009//
-/sp38.scn/1.1/Mon Jan  7 15:07:47 2008//
-/system.h/1.1/Mon Jan  7 15:07:47 2008//
+/.cvsignore/1.1/Fri Oct 23 12:48:25 2009//
+/Makefile.am/1.3/Wed Nov 25 15:50:14 2009//
+/init.c/1.5/Fri Oct 23 12:48:25 2009//
+/sp38.doc/1.1/Mon Nov  9 14:25:28 2009/-kb/
+/sp38.scn/1.1/Fri Oct 23 12:48:25 2009//
+/system.h/1.1/Fri Oct 23 12:48:25 2009//
 D

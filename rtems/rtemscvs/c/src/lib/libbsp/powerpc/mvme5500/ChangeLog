@@ -1,3 +1,31 @@
+2009-10-23	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* Makefile.am, preinstall.am: Update for exception support changes.
+	* irq/BSP_irq.c, irq/irq_init.c, vectors/exceptionhandler.c: Changed
+	exception header file includes.
+	* startup/bspstart.c: Update for ppc_exc_initialize() changes.
+
+2009-10-23	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* irq/BSP_irq.c, network/if_100MHz/GT64260eth.c,
+	network/if_1GHz/if_wm.c, network/if_1GHz/pci_map.c,
+	startup/bspstart.c: Add missing prototypes.
+	Adjust bogus types. Remove unused vars.
+
+2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* make/custom/mvme5500.cfg: Remove RTEMS_BSP_FAMILY.
+
+2009-10-20	Till Straumann <strauman@slac.stanford.edu>
+
+	* start/start.S, startup/bspstart.c:
+	let 'save_boot_params()' return a pointer to the commandline
+	saved by the BSP and pass this pointer on to 'boot_card()'.
+
+2009-10-20	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Don't add -ansi -fasm to CFLAGS.
+
 2009-10-16	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* startup/bspstart.c: Remove nested externs.

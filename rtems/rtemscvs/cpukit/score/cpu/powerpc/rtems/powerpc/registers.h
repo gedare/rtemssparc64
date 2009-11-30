@@ -12,7 +12,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: registers.h,v 1.27 2009/02/27 11:06:21 thomas Exp $
+ *  $Id: registers.h,v 1.28 2009/10/21 13:19:09 thomas Exp $
  */
 
 #ifndef _RTEMS_POWERPC_REGISTERS_H
@@ -169,6 +169,8 @@ n:
 #define RPA	982
 #define SDR1	25	/* MMU hash base register */
 #define DAR	19	/* Data Address Register */
+#define DEAR_BOOKE 61
+#define DEAR_405 981
 #define SPR0	272	/* Supervisor Private Registers */
 #define SPRG0   272
 #define SPR1	273

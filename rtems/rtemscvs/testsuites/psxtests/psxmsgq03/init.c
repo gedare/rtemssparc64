@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/06/10 17:09:54 joel Exp $
+ *  $Id: init.c,v 1.2 2009/10/25 06:25:04 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -42,7 +42,6 @@ void *POSIX_Init(
 {
   struct mq_attr     attr;
   int                status;
-  int                msgBody;
   rtems_id           timer;
   rtems_status_code  rc;
 

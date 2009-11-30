@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtemsobjectidgetindex.c,v 1.1 2008/01/29 21:52:20 joel Exp $
+ *  $Id: rtemsobjectidgetindex.c,v 1.2 2009/11/23 14:53:04 joel Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -20,7 +20,7 @@
 #include <rtems/rtems/types.h>
 
 #undef rtems_object_id_get_index
-uint32_t rtems_object_id_get_index(
+int rtems_object_id_get_index(
   rtems_id id
 )
 {

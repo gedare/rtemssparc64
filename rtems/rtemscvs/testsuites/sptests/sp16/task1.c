@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.13 2009/08/18 14:15:50 joel Exp $
+ *  $Id: task1.c,v 1.14 2009/10/26 11:29:24 ralf Exp $
  */
 
 #include "system.h"
@@ -31,7 +31,7 @@ rtems_task Task_1(
   rtems_status_code  status;
 
   status = rtems_region_ident( Region_name[ 1 ], &rnid );
-  printf( "TA1 - rtems_region_ident - rnid => %08x\n", rnid );
+  printf( "TA1 - rtems_region_ident - rnid => %08" PRIxrtems_id "\n", rnid );
   directive_failed( status, "rtems_region_ident of RN1" );
 
   puts(

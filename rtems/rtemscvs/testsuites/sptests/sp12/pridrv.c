@@ -18,13 +18,13 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: pridrv.c,v 1.12 2009/08/12 20:50:43 joel Exp $
+ *  $Id: pridrv.c,v 1.13 2009/10/26 13:58:42 ralf Exp $
  */
 
 #include "system.h"
 
 void Priority_test_driver(
-  uint32_t   priority_base
+  rtems_task_priority priority_base
 )
 {
   rtems_task_priority previous_priority;
@@ -83,7 +83,7 @@ void Priority_test_driver(
             priority_base + 4,
             &previous_priority
           );
-          printf( "PDRV - change priority of PRI5 from %d to %d\n",
+          printf( "PDRV - change priority of PRI5 from %" PRIdrtems_task_priority " to %" PRIdrtems_task_priority "\n",
              previous_priority,
              priority_base + 4
           );
@@ -95,7 +95,7 @@ void Priority_test_driver(
           &previous_priority
         );
         directive_failed( status, "PDRV rtems_task_set_priority CURRENT" );
-        printf( "PDRV - priority of PRI5 is %d\n", previous_priority );
+        printf( "PDRV - priority of PRI5 is %" PRIdrtems_task_priority "\n", previous_priority );
       }
     }
   }

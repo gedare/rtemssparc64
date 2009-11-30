@@ -1,4 +1,4 @@
-/* $Id: misc.c,v 1.3 2009/03/05 21:07:01 strauman Exp $ */
+/* $Id: misc.c,v 1.4 2009/10/20 18:07:22 strauman Exp $ */
 
 /* Miscellaneous small BSP routines; reboot, board CSR, ... */
 
@@ -115,7 +115,7 @@ BSP_clrLEDs(uint8_t mask)
 }
 
 uint8_t
-BSP_eeprom_write_protect()
+BSP_eeprom_write_protect(void)
 {
 uint8_t           m = BSP_MVME3100_SYS_CR_EEPROM_WP;
 volatile uint8_t *r = BSP_MVME3100_SYS_CR;
@@ -124,7 +124,7 @@ volatile uint8_t *r = BSP_MVME3100_SYS_CR;
 }
 
 uint8_t
-BSP_eeprom_write_enable()
+BSP_eeprom_write_enable(void)
 {
 uint8_t           m = BSP_MVME3100_SYS_CR_EEPROM_WP;
 volatile uint8_t *r = BSP_MVME3100_SYS_CR;

@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.39 2009/10/17 20:41:37 joel Exp $
+ *  $Id: bspstart.c,v 1.41 2009/11/15 22:37:19 strauman Exp $
  */
 
 #include <string.h>
@@ -79,14 +79,17 @@ void _BSP_Fatal_error(unsigned int v)
  */
 void bsp_start( void )
 {
-  uint32_t intrStackStart;
-  uint32_t intrStackSize;
+  rtems_status_code sc = RTEMS_SUCCESSFUL;
+  uintptr_t intrStackStart;
+  uintptr_t intrStackSize;
 
   /*
-   * Note we can not get CPU identification dynamically, so
-   * force current_ppc_cpu.
+   * Note we can not get CPU identification dynamically.
+   * PVR has to be set to PPC_PSIM (0xfffe) from the device
+   * file.
    */
-  current_ppc_cpu = PPC_PSIM;
+
+  get_ppc_cpu_type();
 
   /*
    *  initialize the device driver parameters
@@ -103,17 +106,20 @@ void bsp_start( void )
   /*
    * Initialize the interrupt related settings.
    */
-  intrStackStart = (uint32_t) __rtems_end;
+  intrStackStart = (uintptr_t) __rtems_end;
   intrStackSize = rtems_configuration_get_interrupt_stack_size();
 
   /*
    * Initialize default raw exception handlers.
    */
-  ppc_exc_initialize(
+  sc = ppc_exc_initialize(
     PPC_INTERRUPT_DISABLE_MASK_DEFAULT,
     intrStackStart,
     intrStackSize
   );
+  if (sc != RTEMS_SUCCESSFUL) {
+    BSP_panic("cannot initialize exceptions");
+  }
 
   /*
    * Initalize RTEMS IRQ system
@@ -132,4 +138,5 @@ void bsp_start( void )
 
   _write_MSR(_read_MSR() | MSR_DR | MSR_IR);
   asm volatile("sync; isync");
+
 }

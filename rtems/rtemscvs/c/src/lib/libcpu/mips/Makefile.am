@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.24 2006/06/08 17:58:44 gregmenke Exp $
+## $Id: Makefile.am,v 1.25 2009/11/16 10:04:35 ralf Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../aclocal
@@ -42,9 +42,10 @@ endif
 noinst_PROGRAMS += shared/interrupts.rel
 shared_interrupts_rel_SOURCES = shared/interrupts/installisrentries.c \
     shared/interrupts/vectorexceptions.c shared/interrupts/interruptmask.c \
-    shared/interrupts/isr_entries.S
+    shared/interrupts/isr_entries.S shared/interrupts/isr_entries.h
 shared_interrupts_rel_CPPFLAGS = $(AM_CPPFLAGS) $(interrupts_CPPFLAGS)
 shared_interrupts_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+include_libcpu_HEADERS += shared/interrupts/isr_entries.h
 
 EXTRA_DIST += mongoosev/README
 EXTRA_DIST += mongoosev/duart/README.mguart

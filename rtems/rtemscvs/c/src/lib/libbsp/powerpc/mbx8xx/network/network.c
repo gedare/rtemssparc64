@@ -21,7 +21,7 @@
  *  and Charles-Antoine Gauthier <charles.gauthier@iit.nrc.ca>
  *  Copyright (c) 1999, National Research Council of Canada
  *
- *  $Id: network.c,v 1.17 2006/12/13 14:43:44 ralf Exp $
+ *  $Id: network.c,v 1.18 2009/10/23 06:48:42 ralf Exp $
  */
 #include <bsp.h>
 #include <stdio.h>
@@ -139,7 +139,6 @@ static void  m8xx_scc1_ethernet_off(const rtems_irq_connect_data* ptr)
 
 static void  m8xx_scc1_ethernet_isOn(const rtems_irq_connect_data* ptr)
 {
-  int BSP_irq_enabled_at_cpm(const rtems_irq_number );
   BSP_irq_enabled_at_cpm (ptr->name);
 }
 

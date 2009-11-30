@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.18 2008/09/18 17:40:18 joel Exp $
+ *  $Id: bsp.h,v 1.19 2009/11/16 14:11:16 ralf Exp $
  */
 
 #ifndef _BSP_H
@@ -53,6 +53,11 @@ extern void assertSoftwareInterrupt(uint32_t);
 /* functions */
 
 rtems_isr_entry set_vector( rtems_isr_entry, rtems_vector_number, int );
+
+
+/* from start.S */
+extern void promCopyIcacheFlush(void);
+extern void promCopyDcacheFlush(void);
 
 #ifdef __cplusplus
 }

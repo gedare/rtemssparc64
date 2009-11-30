@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.c,v 1.16 2009/05/11 01:41:15 joel Exp $
+ *  $Id: task.c,v 1.17 2009/10/27 14:10:54 ralf Exp $
  */
 
 #include "system.h"
@@ -48,7 +48,7 @@ void *Task_1_through_3(
   /* get id of this thread */
 
   Task_id = pthread_self();
-  printf( "Task_1: ID is 0x%08x\n", Task_id );
+  printf( "Task_1: ID is 0x%08" PRIxpthread_t "\n", Task_id );
 
   /* exercise pthread_equal */
 

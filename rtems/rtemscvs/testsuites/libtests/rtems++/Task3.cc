@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: Task3.cc,v 1.8 2007/02/06 19:14:32 joel Exp $
+ *  $Id: Task3.cc,v 1.9 2009/11/16 04:55:17 ralf Exp $
  */
 
 #include "System.h"
@@ -52,8 +52,8 @@ void Task3::screen6()
     printf("%s - loopback from mq_2 to mq_2 ...\n", name_string()); fflush(stdout);
 
     mq_2.receive(in, size);
-      printf("%s - mq_2 receive - %s, size=%i, message string size=%i\n",
-             name_string(), mq_2.last_status_string(), size, (int) strlen(in));
+      printf("%s - mq_2 receive - %s, size=%zu, message string size=%zu\n",
+             name_string(), mq_2.last_status_string(), size, strlen(in));
       if (mq_2.successful())
       {
         if (size > (100 - 5))

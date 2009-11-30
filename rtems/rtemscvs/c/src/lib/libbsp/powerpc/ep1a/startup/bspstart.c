@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.21 2009/10/16 14:53:28 ralf Exp $
+ *  $Id: bspstart.c,v 1.23 2009/10/23 07:32:44 thomas Exp $
  */
 
 #warning The interrupt disable mask is now stored in SPRG0, please verify that this is compatible to this BSP (see also bootcard.c).
@@ -168,13 +168,15 @@ void zero_bss(void)
   memset(__bss_start, 0, ((unsigned) __rtems_end) - ((unsigned)__bss_start));
 }
 
-void save_boot_params(RESIDUAL* r3, void *r4, void* r5, char *additional_boot_options)
+char * save_boot_params(RESIDUAL* r3, void *r4, void* r5, char *additional_boot_options)
 {
 #if 0  
   residualCopy = *r3;
   strncpy(loaderParam, additional_boot_options, MAX_LOADER_ADD_PARM);
   loaderParam[MAX_LOADER_ADD_PARM - 1] ='\0';
+  return loaderParam;
 #endif
+  return 0;
 }
 
 unsigned int EUMBBAR;
@@ -275,8 +277,9 @@ void Read_ep1a_config_registers( ppc_cpu_id_t myCpu ) {
 
 void bsp_start( void )
 {
-  uint32_t intrStackStart;
-  uint32_t intrStackSize;
+  rtems_status_code sc = RTEMS_SUCCESSFUL;
+  uintptr_t intrStackStart;
+  uintptr_t intrStackSize;
   ppc_cpu_id_t myCpu;
   ppc_cpu_revision_t myCpuRevision;
   Triv121PgTbl	pt=0;   /*  R = e; */
@@ -313,17 +316,20 @@ ShowBATS();
   /*
    * Initialize the interrupt related settings.
    */
-  intrStackStart = (uint32_t) __rtems_end;
+  intrStackStart = (uintptr_t) __rtems_end;
   intrStackSize = rtems_configuration_get_interrupt_stack_size();
 
   /*
    * Initialize default raw exception hanlders.
    */
-  ppc_exc_initialize(
+  sc = ppc_exc_initialize(
     PPC_INTERRUPT_DISABLE_MASK_DEFAULT,
     intrStackStart,
     intrStackSize
   );
+  if (sc != RTEMS_SUCCESSFUL) {
+    BSP_panic("cannot initialize exceptions");
+  }
 
   /*
    * Init MMU block address translation to enable hardware

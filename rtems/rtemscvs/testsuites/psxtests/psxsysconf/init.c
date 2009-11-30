@@ -28,11 +28,11 @@ void *POSIX_Init(
   puts( "sysconf -- bad configuration parameter - negative" );
   sc = sysconf( -1 );
   fatal_posix_service_status_errno( sc, EINVAL, "bad conf name" );
-  
+
   puts( "sysconf -- bad configuration parameter - too large" );
   sc = sysconf( LONG_MAX );
   fatal_posix_service_status_errno( sc, EINVAL, "bad conf name" );
-  
+
   sc = sysconf( _SC_CLK_TCK );
   printf( "sysconf - _SC_CLK_TCK=%d\n", sc );
   if ( sc == -1 )
@@ -53,7 +53,7 @@ void *POSIX_Init(
   if ( sc == -1 )
    rtems_test_exit(0);
 
-  sc = getpagesize();
+  sc = 1; /* getpagesize();*/
   printf( "getpagesize = %d\n", sc );
   if ( sc == -1 )
    rtems_test_exit(0);

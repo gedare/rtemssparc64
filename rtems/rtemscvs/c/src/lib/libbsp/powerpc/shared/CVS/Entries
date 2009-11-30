@@ -1,6 +1,3 @@
-/showbats.c/1.2/Wed Aug 20 05:43:40 2008//
-/uboot_dump_bdinfo.c/1.1/Wed Jun 20 21:42:24 2007//
-/uboot_getenv.c/1.1/Tue Jul  1 19:13:22 2008//
 D/bootloader////
 D/clock////
 D/console////
@@ -17,3 +14,6 @@ D/startup////
 D/tod////
 D/vectors////
 D/vme////
+/showbats.c/1.2/Fri Oct 23 12:49:28 2009//
+/uboot_dump_bdinfo.c/1.1/Fri Oct 23 12:49:28 2009//
+/uboot_getenv.c/1.1/Fri Oct 23 12:49:28 2009//

@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.10 2009/08/12 20:50:43 joel Exp $
+ *  $Id: task1.c,v 1.12 2009/10/26 17:13:09 ralf Exp $
  */
 
 #include "system.h"
@@ -50,12 +50,12 @@ rtems_task Task_1(
   puts( "TA1 - rtems_timer_ident - identing timer 1" );
   status = rtems_timer_ident( Timer_name[ 1 ], &tmid );
   directive_failed( status, "rtems_timer_ident" );
-  printf( "TA1 - timer 1 has id (0x%x)\n", tmid );
+  printf( "TA1 - timer 1 has id (0x%" PRIxrtems_id ")\n", tmid );
 
   puts( "TA1 - rtems_timer_ident - identing timer 2" );
   status = rtems_timer_ident( Timer_name[ 2 ], &tmid2 );
   directive_failed( status, "rtems_timer_ident" );
-  printf( "TA1 - timer 2 has id (0x%x)\n", tmid2 );
+  printf( "TA1 - timer 2 has id (0x%" PRIxrtems_id ")\n", tmid2 );
 
 /* make sure insertion does not unintentionally fire a timer per PR147 */
 
@@ -102,9 +102,9 @@ rtems_task Task_1(
   directive_failed( status, "rtems_timer_server_fire_after" );
 
   status = rtems_timer_get_information( tmid, &info );
-  printf( "Timer 1 scheduled for %d ticks since boot\n",
+  printf( "Timer 1 scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
     info.start_time + info.initial );
-  printf( "Timer Server scheduled for %d ticks since boot\n",
+  printf( "Timer Server scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
     _Timer_Server->Timer.initial + _Timer_Server->Timer.start_time );
 
   puts( "TA1 - rtems_task_wake_after - 1 second" );
@@ -118,9 +118,9 @@ rtems_task Task_1(
 
   status = rtems_timer_get_information( tmid, &info );
   directive_failed( status, "rtems_timer_get_information" );
-  printf( "Timer 1 scheduled for %d ticks since boot\n",
+  printf( "Timer 1 scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
     info.start_time + info.initial );
-  printf( "Timer Server scheduled for %d ticks since boot\n",
+  printf( "Timer Server scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
     _Timer_Server->Timer.initial + _Timer_Server->Timer.start_time );
   assert(  (info.start_time + info.initial) ==
     (_Timer_Server->Timer.initial + _Timer_Server->Timer.start_time) );
@@ -136,9 +136,9 @@ rtems_task Task_1(
 
   status = rtems_timer_get_information( tmid, &info );
   directive_failed( status, "rtems_timer_get_information" );
-  printf( "Timer 1 scheduled for %d ticks since boot\n",
+  printf( "Timer 1 scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
     info.start_time + info.initial );
-  printf( "Timer Server scheduled for %d ticks since boot\n",
+  printf( "Timer Server scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
     _Timer_Server->Timer.initial + _Timer_Server->Timer.start_time );
   assert(  (info.start_time + info.initial) ==
     (_Timer_Server->Timer.initial + _Timer_Server->Timer.start_time) );

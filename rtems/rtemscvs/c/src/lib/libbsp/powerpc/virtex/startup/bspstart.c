@@ -53,7 +53,7 @@
  *
  *  Modifications for PPC405GP by Dennis Ehlin
  *
- *  $Id: bspstart.c,v 1.14 2008/09/15 22:05:16 joel Exp $
+ *  $Id: bspstart.c,v 1.15 2009/10/23 07:32:45 thomas Exp $
  */
 
 #include <string.h>
@@ -104,6 +104,7 @@ void bsp_XAssertHandler(const char* file, int line) {
  */
 void bsp_start( void )
 {
+  rtems_status_code sc = RTEMS_SUCCESSFUL;
   extern unsigned char IntrStack_start[];
   extern unsigned char IntrStack_end[];
   ppc_cpu_id_t myCpu;
@@ -135,11 +136,14 @@ void bsp_start( void )
   /*
    * Initialize default raw exception handlers. 
    */
-  ppc_exc_initialize(
-	PPC_INTERRUPT_DISABLE_MASK_DEFAULT,
-	(uint32_t)IntrStack_start,
-	IntrStack_end - IntrStack_start
+  sc = ppc_exc_initialize(
+    PPC_INTERRUPT_DISABLE_MASK_DEFAULT,
+    (uint32_t)IntrStack_start,
+    IntrStack_end - IntrStack_start
   );
+  if (sc != RTEMS_SUCCESSFUL) {
+    BSP_panic("cannot initialize exceptions");
+  }
 
   /*
    * Install our own set of exception vectors

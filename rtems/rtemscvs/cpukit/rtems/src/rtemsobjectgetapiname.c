@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtemsobjectgetapiname.c,v 1.2 2008/08/20 19:31:24 joel Exp $
+ *  $Id: rtemsobjectgetapiname.c,v 1.3 2009/11/23 14:53:04 joel Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -30,7 +30,7 @@ rtems_assoc_t rtems_objects_api_assoc[] = {
 };
 
 const char *rtems_object_get_api_name(
-  uint32_t api
+  int api
 )
 {
   const rtems_assoc_t *api_assoc;

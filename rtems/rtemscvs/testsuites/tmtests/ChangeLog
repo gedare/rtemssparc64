@@ -1,3 +1,29 @@
+2009-11-02	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* tmoverhd/testtask.c: Apply RTEMS_GCC_NOWARN_USED.
+	* tmoverhd/dumrtems.h: Rework undef/define cascade.
+	Add RTEMS_GCC_NOWARN_USED.
+	* tmoverhd/system.h: Add prototype for Empty_directive();
+
+2009-11-01	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* tm26/task1.c: Use true/false instead of TRUE/FALSE for "bool"s.
+	* tm15/task1.c: Make time_set a "bool".
+	Eliminate TRUE/FALSE.
+
+2009-10-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* tmck/task1.c: Use PRIu32 to print uint32_t's.
+
+2009-10-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* tm05/task1.c, tm18/task1.c, tmoverhd/empty.c,
+	tmoverhd/system.h: Add missing prototypes.
+
+2009-10-20	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Don't add -ansi -fasm to CFLAGS.
+
 2009-10-14	Joel Sherrill <joel.sherrill@OARcorp.com>
 
 	* tmck/task1.c: Ignore numbers that are too large but keep going -- do
