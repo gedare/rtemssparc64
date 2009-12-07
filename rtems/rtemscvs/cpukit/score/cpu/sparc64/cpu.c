@@ -71,7 +71,6 @@ void _CPU_Initialize(void)
    *  the task's FP context during Context_Initialize_fp.
    */
 
-/* EL TODO : I just put it back, lets see if it works.*/
   pointer = &_CPU_Null_fp_context;
   _CPU_Context_save_fp( &pointer );
 
@@ -267,21 +266,19 @@ void _CPU_ISR_install_raw_handler(
  */
 
 void _CPU_ISR_install_vector(
-  uint32_t    vector,
+  uint64_t    vector,
   proc_ptr    new_handler,
   proc_ptr   *old_handler
 )
 {
-/*   uint32_t   real_vector;*/
+   uint64_t   real_vector;
    proc_ptr   ignored;
 
   /*
    *  Get the "real" trap number for this vector ignoring the synchronous
    *  versus asynchronous indicator included with our vector numbers.
    */
-/*
    real_vector = SPARC_REAL_TRAP_NUMBER( vector );
-*/
    /*
     *  Return the previous ISR handler.
     */
@@ -299,7 +296,7 @@ void _CPU_ISR_install_vector(
     *  be used by the _ISR_Handler so the user gets control.
     */
 
-    _ISR_Vector_table[ vector ] = new_handler;
+    _ISR_Vector_table[ real_vector ] = new_handler;
 }
 
 /*PAGE
