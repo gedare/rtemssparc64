@@ -2,18 +2,18 @@
   trace.c
 
   Copyright 1998-2007 Virtutech AB
-  
+
   The contents herein are Source Code which are a subset of Licensed
   Software pursuant to the terms of the Virtutech Simics Software
   License Agreement (the "Agreement"), and are being distributed under
   the Agreement.  You should have received a copy of the Agreement with
   this Licensed Software; if not, please contact Virtutech for a copy
   of the Agreement prior to using this Licensed Software.
-  
+
   By using this Source Code, you agree to be bound by all of the terms
   of the Agreement, and use of this Source Code is subject to the terms
   the Agreement.
-  
+
   This Source Code and any derivatives thereof are provided on an "as
   is" basis.  Virtutech makes no warranties with respect to the Source
   Code or any derivatives thereof and disclaims all implied warranties,
@@ -93,6 +93,8 @@
 #endif
 
 #include "trace.h"
+#include "traceFCalls.h"
+
 
 /* Cached information about a processor. */
 typedef struct {
@@ -135,8 +137,8 @@ typedef struct base_trace {
         uint64 data_count;
         uint64 exc_count;
 
-        /* 0 for text, 1 for raw */ 
-        int trace_format;   
+        /* 0 for text, 1 for raw */
+        int trace_format;
 
         conf_object_t *consumer;
         trace_consume_interface_t consume_iface;
@@ -429,7 +431,7 @@ text_tracer(base_trace_t *bt, trace_entry_t *ent)
 
 	/* Catch errors that produce unreasonable long lines */
 	ASSERT(strlen(s) < 500);
-	
+
         if (bt->file != NULL) {
                 fputs(s, bt->file);
         } else if (GZ_FILE(bt) != NULL) {
@@ -1526,9 +1528,9 @@ init_local(void)
                 "format is available as well. It is also possible to control what will "
                 "be traced by setting a few of the provided attributes.";
 	base_funcs.kind = Sim_Class_Kind_Session;
-        
+
         base_class = SIM_register_class("base-trace-mem-hier", &base_funcs);
-        
+
         SIM_register_typed_attribute(
                 base_class, "file",
                 get_file, NULL, set_file, NULL,
@@ -1562,7 +1564,7 @@ init_local(void)
                                      "<tt>1</tt>|<tt>0</tt> Set to 1 to enable "
                                      "tracing, 0 to disable.");
 
-        SIM_register_typed_attribute(base_class, "trace_instructions", 
+        SIM_register_typed_attribute(base_class, "trace_instructions",
                                      get_trace_instructions, NULL,
                                      set_trace_instructions, NULL,
                                      Sim_Attr_Session,
@@ -1570,7 +1572,7 @@ init_local(void)
                                      "<tt>1</tt>|<tt>0</tt> Set to 1 to enable "
                                      "instruction tracing, 0 to disable.");
 
-        SIM_register_typed_attribute(base_class, "trace_data", 
+        SIM_register_typed_attribute(base_class, "trace_data",
                                      get_trace_data, NULL,
                                      set_trace_data, NULL,
                                      Sim_Attr_Session,
@@ -1596,7 +1598,7 @@ init_local(void)
                                      "out multiple steps in looping or repeating "
                                      "instructions.");
 
-        SIM_register_typed_attribute(base_class, "print_virtual_address", 
+        SIM_register_typed_attribute(base_class, "print_virtual_address",
                                      get_print_virtual_address, NULL,
                                      set_print_virtual_address, NULL,
                                      Sim_Attr_Session,
@@ -1604,7 +1606,7 @@ init_local(void)
                                      "<tt>1</tt>|<tt>0</tt> Set to 1 to enable "
                                      "printing of the virtual address, 0 to disable.");
 
-        SIM_register_typed_attribute(base_class, "print_physical_address", 
+        SIM_register_typed_attribute(base_class, "print_physical_address",
                                      get_print_physical_address, NULL,
                                      set_print_physical_address, NULL,
                                      Sim_Attr_Session,
@@ -1620,7 +1622,7 @@ init_local(void)
                                      "<tt>1</tt>|<tt>0</tt> Set to 1 to enable "
                                      "printing of the linear address, 0 to disable.");
 
-        SIM_register_typed_attribute(base_class, "print_access_type", 
+        SIM_register_typed_attribute(base_class, "print_access_type",
                                      get_print_access_type, NULL,
                                      set_print_access_type, NULL,
                                      Sim_Attr_Session,
@@ -1628,7 +1630,7 @@ init_local(void)
                                      "<tt>1</tt>|<tt>0</tt> Set to 1 to enable "
                                      "printing of the memory access type, 0 to disable.");
 
-        SIM_register_typed_attribute(base_class, "print_memory_type", 
+        SIM_register_typed_attribute(base_class, "print_memory_type",
                                      get_print_memory_type, NULL,
                                      set_print_memory_type, 0,
                                      Sim_Attr_Session,
@@ -1636,7 +1638,7 @@ init_local(void)
                                      "<tt>1</tt>|<tt>0</tt> Set to 1 to enable "
                                      "printing of the linear address, 0 to disable.");
 
-        SIM_register_typed_attribute(base_class, "print_data", 
+        SIM_register_typed_attribute(base_class, "print_data",
                                      get_print_data, NULL,
                                      set_print_data, NULL,
                                      Sim_Attr_Session,
@@ -1687,21 +1689,21 @@ init_local(void)
         /* Register new trace class */
         memset(&trace_funcs, 0, sizeof(class_data_t));
         trace_funcs.new_instance = trace_new_instance;
-        trace_funcs.description = 
+        trace_funcs.description =
                 "This class is defined in the trace module. It is "
                 "used by the tracer to listen to memory traffic on "
                 "each CPU.";
-        
+
         trace_class = SIM_register_class("trace-mem-hier", &trace_funcs);
 
         timing_iface = MM_ZALLOC(1, timing_model_interface_t);
         timing_iface->operate = trace_mem_hier_operate;
         SIM_register_interface(trace_class, "timing-model", timing_iface);
-        
+
         snoop_iface = MM_ZALLOC(1, timing_model_interface_t);
         snoop_iface->operate = trace_snoop_operate;
         SIM_register_interface(trace_class, SNOOP_MEMORY_INTERFACE, snoop_iface);
-        
+
         SIM_register_typed_attribute(trace_class, "base_trace_obj",
                                      get_base_trace, NULL,
                                      NULL, NULL,
@@ -1722,4 +1724,9 @@ init_local(void)
                                      Sim_Attr_Session,
                                      "o|n", NULL,
                                      "Snoop device (read-only)");
+
+
+		printf("Trace: init_local\n");
+		//container_initialize();
+		test();
 }

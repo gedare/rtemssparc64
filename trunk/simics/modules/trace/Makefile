@@ -6,7 +6,7 @@
 
 MODULE_CLASSES = trace-mem-hier base-trace-mem-hier
 
-SRC_FILES = trace.c
+SRC_FILES = trace.c traceFCalls.c
 
 MODULE_LDFLAGS = $(LIBZ)
 
