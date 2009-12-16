@@ -33,5 +33,6 @@ void sparc64_install_isr_entries( void )
 	printk("ISR cookie = %x\n\r", isr_cookie);
 #endif
 
+	printk("START_TOKEN\n\r");
 	return;
 }

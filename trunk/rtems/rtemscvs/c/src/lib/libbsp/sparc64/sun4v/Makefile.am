@@ -51,10 +51,10 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/gnatinstallhandler.c  \
     ofw/ofw.c ofw/string.c ofw/balloc.c ofw/bootstrap.c ofw/ofwarch.c ofw/ofw_tree.c ofw/asm.S 
 ##   ofw/printf.c \
-    
-clock_SOURCES = ../../shared/clock_driver_simidle.c
 
-#GAB: TODO: FIXME: using dummy_printk
+# TODO: use real clock shell?
+clock_SOURCES = ../../shared/clock_driver_simidle.c #clock/ckinit.c
+
 console_SOURCES = ../../shared/console.c  console/conscfg.c
 
 timer_SOURCES = ../../shared/timerstub.c
