@@ -44,7 +44,7 @@ $system.set-prom-env auto-boot? true
 # it is able to boot from a disk image in ISO9660 format.
 $image = ($system.get-component-object disk_image)
 @image = sim.objects[simenv.image]
-@image.files = [['/home/eugen/work/rtemssparc64/rtems/boot/image.iso', 'ro', 0, REPLACEDBYSED534ISOSIZE  ]]
+@image.files = [['REPLACEDBYSED534ISOPATH', 'ro', 0, REPLACEDBYSED534ISOSIZE  ]]
  
 script-branch {
         local $con = ($console.get-component-object con)
