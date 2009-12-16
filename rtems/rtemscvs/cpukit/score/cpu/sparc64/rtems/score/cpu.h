@@ -960,7 +960,7 @@ void _CPU_ISR_install_raw_handler(
  */
 
 void _CPU_ISR_install_vector(
-  uint32_t    vector,
+  uint64_t    vector,
   proc_ptr    new_handler,
   proc_ptr   *old_handler
 );

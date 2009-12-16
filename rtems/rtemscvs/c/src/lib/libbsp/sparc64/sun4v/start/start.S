@@ -15,6 +15,12 @@
 .register %g6, #scratch
 .register %g7, #scratch
 
+.section 	".rodata"
+	.align 8
+_end_token_string:
+	.asciz "END_TOKEN\n\r"
+
+
 .section BOOTSTRAP, "ax"
 
 PUBLIC(start)
@@ -86,6 +92,10 @@ setstack:
 	mov	%g0, %o0		! clear command line passed to main
 	call SYM(boot_card)
 	sub	%sp, 0x60, %sp		! make room on stack (necessary?)
+/* execution returns here when RTEMS terminates */
+	sethi %hi(_end_token_string), %g1
+	add %g1, %lo(_end_token_string), %o0
+	call SYM(printk)
 halted:	nop
 	    b SYM(halted)
 

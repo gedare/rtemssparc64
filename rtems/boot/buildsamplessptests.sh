@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 TMP=../../rtems/boot/isofiles
 BASE=../../rtems/boot
@@ -19,7 +19,7 @@ BASE=../../rtems/boot
 ./buildtest.sh samples unlimited
 
 
-for ((  i = 1 ;  i <= 9;  i++  ))
+for ((  i = 1  ;  i <= 9;  i++  ))
 do 
    ./buildtest.sh sptests sp0$i
 done
