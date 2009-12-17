@@ -22,6 +22,23 @@
 
 */
 
+#include <simics/api.h>
+#include <simics/alloc.h>
+#include <simics/utils.h>
+#include <simics/arch/sparc.h>
+#include <simics/arch/x86.h>
+
+#undef HAVE_LIBZ
+#if defined(HAVE_LIBZ)
+ #include <zlib.h>
+ #define GZ_FILE(bt) ((bt)->gz_file)
+ #define GZ(x)       (x)
+#else
+ #define GZ_FILE(bt) NULL
+ #define GZ(x)
+#endif
+
+
 typedef enum { 
         TR_Reserved = 0, TR_Data = 1, TR_Instruction = 2, TR_Exception = 3, 
         TR_Execute = 4, TR_Reserved_2, TR_Reserved_3, TR_Reserved_4,
@@ -71,3 +88,114 @@ typedef struct {
 } trace_consume_interface_t;
 
 #define TRACE_CONSUME_INTERFACE "trace_consume"
+
+/* Cached information about a processor. */
+typedef struct {
+        unsigned va_digits;
+        unsigned pa_digits;
+        conf_object_t *cpu;
+        char name[10];
+        tuple_int_string_t (*disassemble_buf)(
+                conf_object_t *cpu, generic_address_t address,
+                byte_string_t opcode);
+} cpu_cache_t;
+
+typedef struct {
+        generic_address_t start;
+        generic_address_t end;
+} interval_t;
+typedef VECT(interval_t) interval_list_t;
+
+enum { PHYSICAL, VIRTUAL, NUM_ADDRESS_TYPES };
+
+typedef struct base_trace {
+        conf_object_t obj;
+
+        /*
+         * Scratch area used for communicating trace event data. This is
+         * maintained on a per processor basis.
+         */
+        trace_entry_t current_entry;
+        trace_entry_t last_entry;
+
+        /* Trace to file if file_name is non-NULL. */
+        char *file_name;
+        FILE *file;
+#if defined(HAVE_LIBZ)
+        gzFile gz_file;
+#endif
+
+        /* Count the events of each type. */
+        uint64 exec_count;
+        uint64 data_count;
+        uint64 exc_count;
+
+        /* 0 for text, 1 for raw */
+        int trace_format;
+
+        conf_object_t *consumer;
+        trace_consume_interface_t consume_iface;
+
+        /* Cached processor info. */
+        cpu_cache_t *cpu;
+
+        /* "Processor info" for non-cpu devices. */
+        cpu_cache_t device_cpu;
+
+        /* True if we are currently hooked into the memory hierarchy, false
+           otherwise. */
+        int memhier_hook;
+
+        int trace_enabled;
+
+        int trace_exceptions;
+        int trace_instructions;
+        int trace_data;
+        int filter_duplicates;
+
+        int print_physical_address;
+        int print_virtual_address;
+        int print_linear_address;
+        int print_access_type;
+        int print_memory_type;
+        int print_data;
+
+        /* Lists of intervals to trace data accesses for. _stc_ are the same
+           lists, butrounded outwards to DSTC block size. */
+        interval_list_t data_interval[NUM_ADDRESS_TYPES];
+        interval_list_t data_stc_interval[NUM_ADDRESS_TYPES];
+
+        cycles_t last_timestamp;
+
+        /*
+         * Function pointer to the trace consumer (if there is one). In future
+         * we may want to support multiple trace consumers, especially if we do
+         * proper statistical sampling of various characteristics, in which
+         * case to reduce unwanted covariance we want separate sampling, with
+         * this facility capable of handling overlaps.
+         */
+        void (*trace_consume)(struct base_trace *bt, trace_entry_t *);
+
+#if defined(TRACE_STATS)
+        uint64 instruction_records;
+        uint64 data_records;
+        uint64 other_records;
+#endif   /* TRACE_STATS */
+
+		char fullTraceFileName[200];
+		char fTraceSymbolFileName[200];
+
+} base_trace_t;
+
+
+typedef struct trace_mem_hier_object {
+        conf_object_t obj;
+        base_trace_t *bt;
+
+        /* For forwarding requests. */
+        conf_object_t *timing_model;
+        timing_model_interface_t timing_iface;
+        conf_object_t *snoop_device;
+        timing_model_interface_t snoop_iface;
+} trace_mem_hier_object_t;
+

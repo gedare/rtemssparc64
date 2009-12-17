@@ -15,7 +15,7 @@ typedef enum mem_cmd {
 typedef struct container_def container;
 typedef struct stack_Object_def stackObject;
 typedef struct cell *list;//Linked List
-typedef long md_addr_t;
+typedef unsigned long long md_addr_t;
 
 typedef struct addressCell *addressList; //address access list
 
@@ -41,7 +41,7 @@ struct container_def
 	addressList addressAccessList;  //keeps the global access list for mem Regions that this function accesses
 	addressList addressAccessListInstance;  //keeps the access list for mem Regions that this function accesses, only for the last instance called
 
-	list *staticAddressList; //the static values will add-up here as the tracing is performed
+	addressList staticAddressList; //the static values will add-up here as the tracing is performed
 
 
 };
@@ -119,7 +119,8 @@ extern int stack_empty(mystack s);
 //end Stack
 
 
-void container_initialize(void);
+void container_initialize( base_trace_t *bt);
+
 void container_add(md_addr_t addr, char * name);
 
 struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem);
@@ -132,6 +133,21 @@ void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes);
 void myprint(char * toPrint);
 
 char * funcNameFromAddress(int addr);
+
+void printDecodedAddressList(char * printbuff,addressList l);
+void updateHeapCalls(container* c,addressList l);
+void updateGlobalAddressList(container* c);
+int penaltyAddressList( addressList l);
+
+
+
+
+
+void loadContainersFromSymtable(char* symFileName);
+void setFullTraceFile(base_trace_t *bt);
+
+//the container list is sorted by address
+container * search(md_addr_t addr);
 
 
 #endif /* COMPONENTS_H */
