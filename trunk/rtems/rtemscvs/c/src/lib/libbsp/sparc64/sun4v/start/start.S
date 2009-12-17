@@ -15,10 +15,10 @@
 .register %g6, #scratch
 .register %g7, #scratch
 
-.section 	".rodata"
+.section 	.data
 	.align 8
 _end_token_string:
-	.asciz "END_TOKEN\n\r"
+	.asciz "END_TOKEN\n"
 
 
 .section BOOTSTRAP, "ax"
@@ -96,6 +96,8 @@ setstack:
 	sethi %hi(_end_token_string), %g1
 	add %g1, %lo(_end_token_string), %o0
 	call SYM(printk)
+	nop
+
 halted:	nop
 	    b SYM(halted)
 
