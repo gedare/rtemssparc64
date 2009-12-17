@@ -51,4 +51,25 @@ script-branch {
         $con.wait-for-string "boot: "
         $con.input "REPLACEDBYSED534TESTNAME\n"
         }
+
+script-branch {
+	local $con = ($console.get-component-object con)
+	$con.wait-for-string "START_TOKEN"
+	$con.capture-start REPLACEDBYSED534TESTNAME.txt
+}
+
+script-branch {
+	local $con = ($console.get-component-object con)
+	$con.wait-for-string "END_TOKEN"
+	$con.capture-stop
+	quit 0
+}
+
+script-branch {
+	local $con = ($console.get-component-object con)
+	$con.wait-for-string "Exception handlers interrupted"
+	$con.capture-stop
+	quit 0
+}
+
 c
