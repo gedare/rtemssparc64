@@ -13,8 +13,17 @@ extern "C" {
 #include <rtems/clockdrv.h>
 
 /* support for simulated clock tick */
+/*
 Thread clock_driver_sim_idle_body(uintptr_t);
 #define BSP_IDLE_TASK_BODY clock_driver_sim_idle_body
+*/
+
+/* this should be defined somewhere */
+rtems_isr_entry set_vector(                     /* returns old vector */
+    rtems_isr_entry     handler,                /* isr routine        */
+    rtems_vector_number vector,                 /* vector number      */
+    int                 type                    /* RTEMS or RAW intr  */
+);
 
 /*
  *  Simple spin delay in microsecond units for device drivers.

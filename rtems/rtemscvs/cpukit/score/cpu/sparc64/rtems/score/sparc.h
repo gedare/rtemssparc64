@@ -241,10 +241,28 @@ extern "C" {
 
 #define sparc64_set_tba( _tba ) \
   do { \
-     asm volatile( "wrpr %%g0, 0, %%tba" :  "=r" (_tba) : "0" (_tba) ); \
+     asm volatile( "wrpr %%g0, %0, %%tba" :  "=r" (_tba) : "0" (_tba) ); \
   } while ( 0 )
 
+/*
+ * read the Tick register
+ */
+#define sparc64_read_tick( _tick ) \
+  do { \
+    (_tick) = 0; \
+    asm volatile( "rd %%tick, %0" : "=r" (_tick) : "0" (_tick) ); \
+  } while ( 0 )
 
+/*
+ * write the tick_cmpr register
+ * 
+ * TODO: sun4v only?
+ */
+#define sparc64_write_tick_cmpr( _tick_cmpr ) \
+  do { \
+    asm volatile( "wr %%g0, %0, %%tick_cmpr" :  "=r" (_tick_cmpr) : \
+                                                "0" (_tick_cmpr) ); \
+  } while ( 0 )
 
 /************* DELETED ****************/
 /*
