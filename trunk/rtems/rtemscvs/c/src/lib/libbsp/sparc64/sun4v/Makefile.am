@@ -48,12 +48,13 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/bootcard.c ../../shared/sbrk.c \
     startup/bspgetworkarea.c \
     startup/bspstart.c \
+    startup/setvec.c \
     ../../shared/gnatinstallhandler.c  \
     ofw/ofw.c ofw/string.c ofw/balloc.c ofw/bootstrap.c ofw/ofwarch.c ofw/ofw_tree.c ofw/asm.S 
 ##   ofw/printf.c \
 
-# TODO: use real clock shell?
-clock_SOURCES = ../../shared/clock_driver_simidle.c #clock/ckinit.c
+#clock_SOURCES = ../../shared/clock_driver_simidle.c
+clock_SOURCES = clock/ckinit.c
 
 console_SOURCES = ../../shared/console.c  console/conscfg.c
 
