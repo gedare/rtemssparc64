@@ -3,7 +3,7 @@
  */
 
 /*
- *  This file sets up basic CPU dependency settings based on 
+ *  This file sets up basic CPU dependency settings based on
  *  compiler settings.  For example, it can determine if
  *  floating point is available.  This particular implementation
  *  is specified to the avr port.
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: avr.h,v 1.6 2008/08/21 04:14:20 ralf Exp $
+ *  $Id: avr.h,v 1.8 2009/12/02 10:23:33 ralf Exp $
  *
  */
 
@@ -36,10 +36,10 @@ extern "C" {
  *  that this port supports and which RTEMS CPU model they correspond
  *  to.
  */
- 
+
 /*
- *  Figure out all CPU Model Feature Flags based upon compiler 
- *  predefines. 
+ *  Figure out all CPU Model Feature Flags based upon compiler
+ *  predefines.
  */
 #if defined(__AVR__)
 
@@ -80,6 +80,10 @@ extern "C" {
 #define CPU_MODEL_NAME  "avr51"
 #define AVR_HAS_FPU     1
 
+#elif __AVR_ARCH__ == 6
+#define CPU_MODEL_NAME  "avr6"
+#define AVR_HAS_FPU     1
+
 #else
 #error "Unsupported __AVR_ARCH__"
 #endif
@@ -88,9 +92,9 @@ extern "C" {
 #endif
 
 #else
- 
+
 #error "Unsupported CPU Model"
- 
+
 #endif
 
 /*

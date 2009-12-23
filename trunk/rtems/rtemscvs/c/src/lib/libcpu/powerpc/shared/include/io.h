@@ -13,7 +13,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: io.h,v 1.5 2009/09/25 14:58:05 joel Exp $
+ *  $Id: io.h,v 1.6 2009/11/30 05:07:54 ralf Exp $
  */
 #ifndef _LIBCPU_IO_H
 #define _LIBCPU_IO_H
@@ -57,7 +57,7 @@ static inline void eieio(void)
 }
 
 
-/* Enforce in-order execution of data I/O. 
+/* Enforce in-order execution of data I/O.
  * No distinction between read/write on PPC; use eieio for all three.
  */
 #define iobarrier_rw() eieio()

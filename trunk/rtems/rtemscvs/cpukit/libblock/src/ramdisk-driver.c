@@ -10,7 +10,7 @@
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Victor V. Vengerov <vvv@oktet.ru>
  *
- * @(#) $Id: ramdisk-driver.c,v 1.2 2009/10/20 07:53:19 thomas Exp $
+ * @(#) $Id: ramdisk-driver.c,v 1.4 2009/12/18 15:59:30 thomas Exp $
  */
 
 /* FIXME: How to set this define? */
@@ -101,7 +101,7 @@ ramdisk_ioctl(rtems_disk_device *dd, uint32_t req, void *argp)
         case RTEMS_BLKIO_REQUEST:
         {
             rtems_blkdev_request *r = argp;
-            struct ramdisk *rd = rtems_disk_driver_data(dd);
+            struct ramdisk *rd = rtems_disk_get_driver_data(dd);
 
             switch (r->req)
             {
@@ -117,7 +117,7 @@ ramdisk_ioctl(rtems_disk_device *dd, uint32_t req, void *argp)
             }
             break;
         }
-  
+
         default:
             return rtems_blkdev_ioctl (dd, req, argp);
             break;

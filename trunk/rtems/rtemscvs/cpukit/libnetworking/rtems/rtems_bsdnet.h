@@ -1,9 +1,9 @@
 /**
  * @file rtems/rtems_bsdnet.h
  */
- 
+
 /*
- *  $Id: rtems_bsdnet.h,v 1.26 2009/02/04 13:31:15 ralf Exp $
+ *  $Id: rtems_bsdnet.h,v 1.27 2009/11/30 15:57:51 ralf Exp $
  */
 
 #ifndef _RTEMS_BSDNET_H
@@ -155,7 +155,7 @@ struct rtems_bsdnet_config {
         /*
 	 *  Default "multiplier" on buffer size.  This is
 	 *  claimed by the TCP/IP implementation to be for
-	 *  efficiency but you will have to measure the 
+	 *  efficiency but you will have to measure the
 	 *  benefit for buffering beyond double buffering
 	 *  in your own application.
 	 *
@@ -168,7 +168,7 @@ struct rtems_bsdnet_config {
 	 * Default UDP buffer sizes PER SOCKET!!
 	 *
 	 *   TX = 9216 -- max datagram size
-	 *   RX = 40 * (1024 + sizeof(struct sockaddr_in)) 
+	 *   RX = 40 * (1024 + sizeof(struct sockaddr_in))
 	 *
 	 * See netinet/udp_usrreq.c for details
 	 */
@@ -296,7 +296,7 @@ void rtems_bsdnet_malloc_starvation(void);
 
 /*
  * mbuf malloc interface to enable custom allocation of mbuf's
- * 
+ *
  * May be declared in user code.  If not, then the default is to
  * malloc.
  */

@@ -18,7 +18,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: signal.h,v 1.17 2009/08/05 18:17:12 joel Exp $
+ *  $Id: signal.h,v 1.18 2009/12/15 18:26:41 humph Exp $
  */
 
 #ifndef _RTEMS_RTEMS_SIGNAL_H
@@ -69,7 +69,7 @@ rtems_status_code rtems_signal_catch(
  *  sends the signal_set to the task specified by ID.
  */
 rtems_status_code rtems_signal_send(
-  Objects_Id             id,
+  rtems_id         id,
   rtems_signal_set signal_set
 );
 

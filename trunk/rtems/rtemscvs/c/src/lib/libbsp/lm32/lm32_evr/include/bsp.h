@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.4 2009/11/24 06:38:38 ralf Exp $
+ *  $Id: bsp.h,v 1.5 2009/11/29 14:48:22 ralf Exp $
  *
  *  Jukka Pietarinen <jukka.pietarinen@mrf.fi>, 2008,
  *  Micro-Research Finland Oy
@@ -40,7 +40,7 @@ extern "C" {
   /*
    * lm32 requires certain aligment of mbuf because unaligned uint32_t
    * accesses are not handled properly.
-   */ 
+   */
 
 #define CPU_U32_FIX
 
@@ -51,8 +51,8 @@ extern int rtems_tsmac_driver_attach(struct rtems_bsdnet_ifconfig *config,
 #define RTEMS_BSP_NETWORK_DRIVER_NAME "TSMAC0"
 #define RTEMS_BSP_NETWORK_DRIVER_ATTACH rtems_tsmac_driver_attach
 
-  /* 
-   * Due to a hardware design error (RJ45 connector with 10baseT magnetics) 
+  /*
+   * Due to a hardware design error (RJ45 connector with 10baseT magnetics)
    * we are forced to use 10baseT mode.
    */
 

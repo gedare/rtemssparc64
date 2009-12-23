@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: watchdogadjusttochain.c,v 1.3 2009/07/17 14:21:28 joel Exp $
+ *  $Id: watchdogadjusttochain.c,v 1.4 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -31,12 +31,12 @@ void _Watchdog_Adjust_to_chain(
 {
   Watchdog_Interval  units = units_arg;
   ISR_Level          level;
-  Watchdog_Control  *first; 
-  
+  Watchdog_Control  *first;
+
   if ( units <= 0 ) {
     return;
   }
- 
+
   _ISR_Disable( level );
 
   while ( 1 ) {
@@ -69,7 +69,7 @@ void _Watchdog_Adjust_to_chain(
       _Chain_Append_unprotected( to_fire, &first->Node );
 
       _ISR_Flash( level );
- 
+
       if ( _Chain_Is_empty( header ) )
         break;
       first = _Watchdog_First( header );

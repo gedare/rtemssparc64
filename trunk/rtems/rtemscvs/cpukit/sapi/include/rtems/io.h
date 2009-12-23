@@ -5,7 +5,7 @@
  *
  * @brief Classic Input/Output Manager API.
  */
- 
+
 /*
  *  COPYRIGHT (c) 1989-2008.
  *  On-Line Applications Research Corporation (OAR).
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: io.h,v 1.29 2009/10/09 13:46:38 joel Exp $
+ *  $Id: io.h,v 1.30 2009/11/29 13:51:52 ralf Exp $
  */
 
 #ifndef _RTEMS_IO_H

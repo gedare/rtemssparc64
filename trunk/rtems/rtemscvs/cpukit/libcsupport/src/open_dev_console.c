@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: open_dev_console.c,v 1.2 2009/11/09 15:19:57 joel Exp $
+ *  $Id: open_dev_console.c,v 1.3 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -36,7 +36,7 @@ void open_dev_console(void)
      * There may not be a console driver so this is OK.
      */
     return;
-  } 
+  }
 
   /*
    *  But if we find /dev/console once, we better find it twice more

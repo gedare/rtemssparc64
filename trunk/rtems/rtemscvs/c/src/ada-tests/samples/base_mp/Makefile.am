@@ -1,4 +1,4 @@
-## $Id: Makefile.am,v 1.8 2007/10/25 22:06:12 joel Exp $
+## $Id: Makefile.am,v 1.9 2009/12/14 18:28:02 joel Exp $
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../../../testsuites/automake/compile.am
@@ -6,7 +6,7 @@ include $(top_srcdir)/../../../testsuites/automake/compile.am
 SUBDIRS = node1 node2
 #include $(top_srcdir)/ada.am
 
-#mptest.exe: mptest.adb
+#mptest$(EXEEXT): mptest.adb
 #	$(GNATCOMPILE) -margs -a $< -o $@
 
 #if EXPADA

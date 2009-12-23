@@ -157,13 +157,13 @@
 #define IOCLR1         (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0x1C))
 
 /* GPIO Interrupt Registers */
-#define IO0_INT_EN_R    (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0x90)) 
+#define IO0_INT_EN_R    (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0x90))
 #define IO0_INT_EN_F    (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0x94))
 #define IO0_INT_STAT_R  (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0x84))
 #define IO0_INT_STAT_F  (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0x88))
 #define IO0_INT_CLR     (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0x8C))
 
-#define IO2_INT_EN_R    (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0xB0)) 
+#define IO2_INT_EN_R    (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0xB0))
 #define IO2_INT_EN_F    (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0xB4))
 #define IO2_INT_STAT_R  (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0xA4))
 #define IO2_INT_STAT_F  (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0xA8))
@@ -172,224 +172,224 @@
 #define IO_INT_STAT     (*(volatile uint32_t *) (GPIO_BASE_ADDR + 0x80))
 
 #define PARTCFG_BASE_ADDR		0x3FFF8000
-#define PARTCFG        (*(volatile uint32_t *) (PARTCFG_BASE_ADDR + 0x00)) 
+#define PARTCFG        (*(volatile uint32_t *) (PARTCFG_BASE_ADDR + 0x00))
 
 /* Fast I/O setup */
 #define FIO_BASE_ADDR		0x3FFFC000
-#define FIO0DIR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x00)) 
+#define FIO0DIR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x00))
 #define FIO0MASK       (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x10))
 #define FIO0PIN        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x14))
 #define FIO0SET        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x18))
 #define FIO0CLR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x1C))
 
-#define FIO1DIR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x20)) 
+#define FIO1DIR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x20))
 #define FIO1MASK       (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x30))
 #define FIO1PIN        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x34))
 #define FIO1SET        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x38))
 #define FIO1CLR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x3C))
 
-#define FIO2DIR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x40)) 
+#define FIO2DIR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x40))
 #define FIO2MASK       (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x50))
 #define FIO2PIN        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x54))
 #define FIO2SET        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x58))
 #define FIO2CLR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x5C))
 
-#define FIO3DIR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x60)) 
+#define FIO3DIR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x60))
 #define FIO3MASK       (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x70))
 #define FIO3PIN        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x74))
 #define FIO3SET        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x78))
 #define FIO3CLR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x7C))
 
-#define FIO4DIR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x80)) 
+#define FIO4DIR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x80))
 #define FIO4MASK       (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x90))
 #define FIO4PIN        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x94))
 #define FIO4SET        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x98))
 #define FIO4CLR        (*(volatile uint32_t *) (FIO_BASE_ADDR + 0x9C))
 
 /* FIOs can be accessed through WORD, HALF-WORD or BYTE. */
-#define FIO0DIR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x01)) 
-#define FIO1DIR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x21)) 
-#define FIO2DIR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x41)) 
-#define FIO3DIR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x61)) 
-#define FIO4DIR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x81)) 
+#define FIO0DIR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x01))
+#define FIO1DIR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x21))
+#define FIO2DIR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x41))
+#define FIO3DIR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x61))
+#define FIO4DIR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x81))
 
-#define FIO0DIR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x02)) 
-#define FIO1DIR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x22)) 
-#define FIO2DIR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x42)) 
-#define FIO3DIR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x62)) 
-#define FIO4DIR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x82)) 
+#define FIO0DIR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x02))
+#define FIO1DIR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x22))
+#define FIO2DIR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x42))
+#define FIO3DIR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x62))
+#define FIO4DIR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x82))
 
-#define FIO0DIR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x03)) 
-#define FIO1DIR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x23)) 
-#define FIO2DIR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x43)) 
-#define FIO3DIR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x63)) 
-#define FIO4DIR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x83)) 
+#define FIO0DIR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x03))
+#define FIO1DIR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x23))
+#define FIO2DIR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x43))
+#define FIO3DIR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x63))
+#define FIO4DIR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x83))
 
-#define FIO0DIR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x04)) 
-#define FIO1DIR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x24)) 
-#define FIO2DIR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x44)) 
-#define FIO3DIR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x64)) 
-#define FIO4DIR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x84)) 
+#define FIO0DIR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x04))
+#define FIO1DIR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x24))
+#define FIO2DIR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x44))
+#define FIO3DIR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x64))
+#define FIO4DIR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x84))
 
-#define FIO0DIRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x00)) 
-#define FIO1DIRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x20)) 
-#define FIO2DIRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x40)) 
-#define FIO3DIRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x60)) 
-#define FIO4DIRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x80)) 
+#define FIO0DIRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x00))
+#define FIO1DIRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x20))
+#define FIO2DIRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x40))
+#define FIO3DIRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x60))
+#define FIO4DIRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x80))
 
-#define FIO0DIRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x02)) 
-#define FIO1DIRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x22)) 
-#define FIO2DIRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x42)) 
-#define FIO3DIRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x62)) 
-#define FIO4DIRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x82)) 
+#define FIO0DIRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x02))
+#define FIO1DIRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x22))
+#define FIO2DIRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x42))
+#define FIO3DIRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x62))
+#define FIO4DIRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x82))
 
-#define FIO0MASK0      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x10)) 
-#define FIO1MASK0      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x30)) 
-#define FIO2MASK0      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x50)) 
-#define FIO3MASK0      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x70)) 
-#define FIO4MASK0      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x90)) 
+#define FIO0MASK0      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x10))
+#define FIO1MASK0      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x30))
+#define FIO2MASK0      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x50))
+#define FIO3MASK0      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x70))
+#define FIO4MASK0      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x90))
 
-#define FIO0MASK1      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x11)) 
-#define FIO1MASK1      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x21)) 
-#define FIO2MASK1      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x51)) 
-#define FIO3MASK1      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x71)) 
-#define FIO4MASK1      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x91)) 
+#define FIO0MASK1      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x11))
+#define FIO1MASK1      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x21))
+#define FIO2MASK1      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x51))
+#define FIO3MASK1      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x71))
+#define FIO4MASK1      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x91))
 
-#define FIO0MASK2      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x12)) 
-#define FIO1MASK2      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x32)) 
-#define FIO2MASK2      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x52)) 
-#define FIO3MASK2      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x72)) 
-#define FIO4MASK2      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x92)) 
+#define FIO0MASK2      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x12))
+#define FIO1MASK2      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x32))
+#define FIO2MASK2      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x52))
+#define FIO3MASK2      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x72))
+#define FIO4MASK2      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x92))
 
-#define FIO0MASK3      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x13)) 
-#define FIO1MASK3      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x33)) 
-#define FIO2MASK3      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x53)) 
-#define FIO3MASK3      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x73)) 
-#define FIO4MASK3      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x93)) 
+#define FIO0MASK3      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x13))
+#define FIO1MASK3      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x33))
+#define FIO2MASK3      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x53))
+#define FIO3MASK3      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x73))
+#define FIO4MASK3      (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x93))
 
-#define FIO0MASKL      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x10)) 
-#define FIO1MASKL      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x30)) 
-#define FIO2MASKL      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x50)) 
-#define FIO3MASKL      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x70)) 
-#define FIO4MASKL      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x90)) 
+#define FIO0MASKL      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x10))
+#define FIO1MASKL      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x30))
+#define FIO2MASKL      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x50))
+#define FIO3MASKL      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x70))
+#define FIO4MASKL      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x90))
 
-#define FIO0MASKU      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x12)) 
-#define FIO1MASKU      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x32)) 
-#define FIO2MASKU      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x52)) 
-#define FIO3MASKU      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x72)) 
-#define FIO4MASKU      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x92)) 
+#define FIO0MASKU      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x12))
+#define FIO1MASKU      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x32))
+#define FIO2MASKU      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x52))
+#define FIO3MASKU      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x72))
+#define FIO4MASKU      (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x92))
 
-#define FIO0PIN0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x14)) 
-#define FIO1PIN0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x34)) 
-#define FIO2PIN0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x54)) 
-#define FIO3PIN0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x74)) 
-#define FIO4PIN0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x94)) 
+#define FIO0PIN0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x14))
+#define FIO1PIN0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x34))
+#define FIO2PIN0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x54))
+#define FIO3PIN0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x74))
+#define FIO4PIN0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x94))
 
-#define FIO0PIN1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x15)) 
-#define FIO1PIN1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x25)) 
-#define FIO2PIN1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x55)) 
-#define FIO3PIN1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x75)) 
-#define FIO4PIN1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x95)) 
+#define FIO0PIN1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x15))
+#define FIO1PIN1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x25))
+#define FIO2PIN1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x55))
+#define FIO3PIN1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x75))
+#define FIO4PIN1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x95))
 
-#define FIO0PIN2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x16)) 
-#define FIO1PIN2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x36)) 
-#define FIO2PIN2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x56)) 
-#define FIO3PIN2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x76)) 
-#define FIO4PIN2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x96)) 
+#define FIO0PIN2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x16))
+#define FIO1PIN2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x36))
+#define FIO2PIN2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x56))
+#define FIO3PIN2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x76))
+#define FIO4PIN2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x96))
 
-#define FIO0PIN3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x17)) 
-#define FIO1PIN3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x37)) 
-#define FIO2PIN3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x57)) 
-#define FIO3PIN3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x77)) 
-#define FIO4PIN3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x97)) 
+#define FIO0PIN3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x17))
+#define FIO1PIN3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x37))
+#define FIO2PIN3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x57))
+#define FIO3PIN3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x77))
+#define FIO4PIN3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x97))
 
-#define FIO0PINL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x14)) 
-#define FIO1PINL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x34)) 
-#define FIO2PINL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x54)) 
-#define FIO3PINL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x74)) 
-#define FIO4PINL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x94)) 
+#define FIO0PINL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x14))
+#define FIO1PINL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x34))
+#define FIO2PINL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x54))
+#define FIO3PINL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x74))
+#define FIO4PINL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x94))
 
-#define FIO0PINU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x16)) 
-#define FIO1PINU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x36)) 
-#define FIO2PINU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x56)) 
-#define FIO3PINU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x76)) 
-#define FIO4PINU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x96)) 
+#define FIO0PINU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x16))
+#define FIO1PINU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x36))
+#define FIO2PINU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x56))
+#define FIO3PINU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x76))
+#define FIO4PINU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x96))
 
-#define FIO0SET0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x18)) 
-#define FIO1SET0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x38)) 
-#define FIO2SET0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x58)) 
-#define FIO3SET0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x78)) 
-#define FIO4SET0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x98)) 
+#define FIO0SET0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x18))
+#define FIO1SET0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x38))
+#define FIO2SET0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x58))
+#define FIO3SET0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x78))
+#define FIO4SET0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x98))
 
-#define FIO0SET1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x19)) 
-#define FIO1SET1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x29)) 
-#define FIO2SET1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x59)) 
-#define FIO3SET1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x79)) 
-#define FIO4SET1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x99)) 
+#define FIO0SET1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x19))
+#define FIO1SET1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x29))
+#define FIO2SET1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x59))
+#define FIO3SET1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x79))
+#define FIO4SET1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x99))
 
-#define FIO0SET2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1A)) 
-#define FIO1SET2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x3A)) 
-#define FIO2SET2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5A)) 
-#define FIO3SET2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7A)) 
-#define FIO4SET2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9A)) 
+#define FIO0SET2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1A))
+#define FIO1SET2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x3A))
+#define FIO2SET2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5A))
+#define FIO3SET2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7A))
+#define FIO4SET2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9A))
 
-#define FIO0SET3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1B)) 
-#define FIO1SET3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x3B)) 
-#define FIO2SET3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5B)) 
-#define FIO3SET3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7B)) 
-#define FIO4SET3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9B)) 
+#define FIO0SET3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1B))
+#define FIO1SET3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x3B))
+#define FIO2SET3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5B))
+#define FIO3SET3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7B))
+#define FIO4SET3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9B))
 
-#define FIO0SETL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x18)) 
-#define FIO1SETL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x38)) 
-#define FIO2SETL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x58)) 
-#define FIO3SETL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x78)) 
-#define FIO4SETL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x98)) 
+#define FIO0SETL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x18))
+#define FIO1SETL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x38))
+#define FIO2SETL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x58))
+#define FIO3SETL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x78))
+#define FIO4SETL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x98))
 
-#define FIO0SETU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x1A)) 
-#define FIO1SETU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x3A)) 
-#define FIO2SETU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x5A)) 
-#define FIO3SETU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x7A)) 
-#define FIO4SETU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x9A)) 
+#define FIO0SETU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x1A))
+#define FIO1SETU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x3A))
+#define FIO2SETU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x5A))
+#define FIO3SETU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x7A))
+#define FIO4SETU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x9A))
 
-#define FIO0CLR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1C)) 
-#define FIO1CLR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x3C)) 
-#define FIO2CLR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5C)) 
-#define FIO3CLR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7C)) 
-#define FIO4CLR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9C)) 
+#define FIO0CLR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1C))
+#define FIO1CLR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x3C))
+#define FIO2CLR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5C))
+#define FIO3CLR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7C))
+#define FIO4CLR0       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9C))
 
-#define FIO0CLR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1D)) 
-#define FIO1CLR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x2D)) 
-#define FIO2CLR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5D)) 
-#define FIO3CLR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7D)) 
-#define FIO4CLR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9D)) 
+#define FIO0CLR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1D))
+#define FIO1CLR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x2D))
+#define FIO2CLR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5D))
+#define FIO3CLR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7D))
+#define FIO4CLR1       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9D))
 
-#define FIO0CLR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1E)) 
-#define FIO1CLR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x3E)) 
-#define FIO2CLR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5E)) 
-#define FIO3CLR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7E)) 
-#define FIO4CLR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9E)) 
+#define FIO0CLR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1E))
+#define FIO1CLR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x3E))
+#define FIO2CLR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5E))
+#define FIO3CLR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7E))
+#define FIO4CLR2       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9E))
 
-#define FIO0CLR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1F)) 
-#define FIO1CLR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x3F)) 
-#define FIO2CLR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5F)) 
-#define FIO3CLR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7F)) 
-#define FIO4CLR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9F)) 
+#define FIO0CLR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x1F))
+#define FIO1CLR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x3F))
+#define FIO2CLR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x5F))
+#define FIO3CLR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x7F))
+#define FIO4CLR3       (*(volatile uint8_t *) (FIO_BASE_ADDR + 0x9F))
 
-#define FIO0CLRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x1C)) 
-#define FIO1CLRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x3C)) 
-#define FIO2CLRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x5C)) 
-#define FIO3CLRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x7C)) 
-#define FIO4CLRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x9C)) 
+#define FIO0CLRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x1C))
+#define FIO1CLRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x3C))
+#define FIO2CLRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x5C))
+#define FIO3CLRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x7C))
+#define FIO4CLRL       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x9C))
 
-#define FIO0CLRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x1E)) 
-#define FIO1CLRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x3E)) 
-#define FIO2CLRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x5E)) 
-#define FIO3CLRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x7E)) 
-#define FIO4CLRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x9E)) 
+#define FIO0CLRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x1E))
+#define FIO1CLRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x3E))
+#define FIO2CLRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x5E))
+#define FIO3CLRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x7E))
+#define FIO4CLRU       (*(volatile uint16_t *) (FIO_BASE_ADDR + 0x9E))
 
 
 /* System Control Block(SCB) modules include Memory Accelerator Module,
-Phase Locked Loop, VPB divider, Power Control, External Interrupt, 
+Phase Locked Loop, VPB divider, Power Control, External Interrupt,
 Reset, and Code Security/Debugging */
 #define SCB_BASE_ADDR	0xE01FC000
 
@@ -415,7 +415,7 @@ Reset, and Code Security/Debugging */
 #define CLKSRCSEL      (*(volatile uint32_t *) (SCB_BASE_ADDR + 0x10C))
 #define PCLKSEL0       (*(volatile uint32_t *) (SCB_BASE_ADDR + 0x1A8))
 #define PCLKSEL1       (*(volatile uint32_t *) (SCB_BASE_ADDR + 0x1AC))
-	
+
 /* External Interrupts */
 #define EXTINT         (*(volatile uint32_t *) (SCB_BASE_ADDR + 0x140))
 #define INTWAKE        (*(volatile uint32_t *) (SCB_BASE_ADDR + 0x144))
@@ -433,7 +433,7 @@ Reset, and Code Security/Debugging */
 #define AHBCFG2        (*(volatile uint32_t *) (SCB_BASE_ADDR + 0x18C))
 
 /* System Controls and Status */
-#define SCS            (*(volatile uint32_t *) (SCB_BASE_ADDR + 0x1A0))	
+#define SCS            (*(volatile uint32_t *) (SCB_BASE_ADDR + 0x1A0))
 
 
 /* External Memory Controller (EMC) */
@@ -506,7 +506,7 @@ Reset, and Code Security/Debugging */
 
 #define EMC_STA_EXT_WAIT  (*(volatile uint32_t *) (EMC_BASE_ADDR + 0x880))
 
-	
+
 /* Timer 0 */
 #define TMR0_BASE_ADDR		0xE0004000
 #define T0IR           (*(volatile uint32_t *) (TMR0_BASE_ADDR + 0x00))
@@ -835,72 +835,72 @@ Reset, and Code Security/Debugging */
 
 /* CAN CONTROLLERS AND ACCEPTANCE FILTER */
 #define CAN_ACCEPT_BASE_ADDR		0xE003C000
-#define CAN_AFMR		(*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x00))  	
-#define CAN_SFF_SA 		(*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x04))  	
+#define CAN_AFMR		(*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x00))
+#define CAN_SFF_SA 		(*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x04))
 #define CAN_SFF_GRP_SA 	(*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x08))
 #define CAN_EFF_SA 		(*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x0C))
-#define CAN_EFF_GRP_SA 	(*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x10))  	
+#define CAN_EFF_GRP_SA 	(*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x10))
 #define CAN_EOT 		(*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x14))
-#define CAN_LUT_ERR_ADR (*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x18))  	
+#define CAN_LUT_ERR_ADR (*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x18))
 #define CAN_LUT_ERR 	(*(volatile uint32_t *) (CAN_ACCEPT_BASE_ADDR + 0x1C))
 
-#define CAN_CENTRAL_BASE_ADDR		0xE0040000  	
-#define CAN_TX_SR 	(*(volatile uint32_t *) (CAN_CENTRAL_BASE_ADDR + 0x00))  	
-#define CAN_RX_SR 	(*(volatile uint32_t *) (CAN_CENTRAL_BASE_ADDR + 0x04))  	
+#define CAN_CENTRAL_BASE_ADDR		0xE0040000
+#define CAN_TX_SR 	(*(volatile uint32_t *) (CAN_CENTRAL_BASE_ADDR + 0x00))
+#define CAN_RX_SR 	(*(volatile uint32_t *) (CAN_CENTRAL_BASE_ADDR + 0x04))
 #define CAN_MSR 	(*(volatile uint32_t *) (CAN_CENTRAL_BASE_ADDR + 0x08))
 
 #define CAN1_BASE_ADDR		0xE0044000
-#define CAN1MOD 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x00))  	
-#define CAN1CMR 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x04))  	
-#define CAN1GSR 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x08))  	
-#define CAN1ICR 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x0C))  	
+#define CAN1MOD 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x00))
+#define CAN1CMR 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x04))
+#define CAN1GSR 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x08))
+#define CAN1ICR 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x0C))
 #define CAN1IER 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x10))
-#define CAN1BTR 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x14))  	
-#define CAN1EWL 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x18))  	
-#define CAN1SR 		(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x1C))  	
-#define CAN1RFS 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x20))  	
+#define CAN1BTR 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x14))
+#define CAN1EWL 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x18))
+#define CAN1SR 		(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x1C))
+#define CAN1RFS 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x20))
 #define CAN1RID 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x24))
-#define CAN1RDA 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x28))  	
+#define CAN1RDA 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x28))
 #define CAN1RDB 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x2C))
-  	
-#define CAN1TFI1 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x30))  	
-#define CAN1TID1 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x34))  	
+
+#define CAN1TFI1 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x30))
+#define CAN1TID1 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x34))
 #define CAN1TDA1 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x38))
-#define CAN1TDB1 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x3C))  	
-#define CAN1TFI2 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x40))  	
-#define CAN1TID2 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x44))  	
-#define CAN1TDA2 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x48))  	
+#define CAN1TDB1 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x3C))
+#define CAN1TFI2 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x40))
+#define CAN1TID2 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x44))
+#define CAN1TDA2 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x48))
 #define CAN1TDB2 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x4C))
-#define CAN1TFI3 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x50))  	
-#define CAN1TID3 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x54))  	
-#define CAN1TDA3 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x58))  	
+#define CAN1TFI3 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x50))
+#define CAN1TID3 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x54))
+#define CAN1TDA3 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x58))
 #define CAN1TDB3 	(*(volatile uint32_t *) (CAN1_BASE_ADDR + 0x5C))
 
 #define CAN2_BASE_ADDR		0xE0048000
-#define CAN2MOD 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x00))  	
-#define CAN2CMR 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x04))  	
-#define CAN2GSR 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x08))  	
-#define CAN2ICR 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x0C))  	
+#define CAN2MOD 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x00))
+#define CAN2CMR 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x04))
+#define CAN2GSR 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x08))
+#define CAN2ICR 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x0C))
 #define CAN2IER 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x10))
-#define CAN2BTR 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x14))  	
-#define CAN2EWL 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x18))  	
-#define CAN2SR 		(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x1C))  	
-#define CAN2RFS 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x20))  	
+#define CAN2BTR 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x14))
+#define CAN2EWL 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x18))
+#define CAN2SR 		(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x1C))
+#define CAN2RFS 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x20))
 #define CAN2RID 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x24))
-#define CAN2RDA 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x28))  	
+#define CAN2RDA 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x28))
 #define CAN2RDB 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x2C))
-  	
-#define CAN2TFI1 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x30))  	
-#define CAN2TID1 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x34))  	
+
+#define CAN2TFI1 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x30))
+#define CAN2TID1 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x34))
 #define CAN2TDA1 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x38))
-#define CAN2TDB1 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x3C))  	
-#define CAN2TFI2 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x40))  	
-#define CAN2TID2 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x44))  	
-#define CAN2TDA2 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x48))  	
+#define CAN2TDB1 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x3C))
+#define CAN2TFI2 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x40))
+#define CAN2TID2 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x44))
+#define CAN2TDA2 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x48))
 #define CAN2TDB2 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x4C))
-#define CAN2TFI3 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x50))  	
-#define CAN2TID3 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x54))  	
-#define CAN2TDA3 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x58))  	
+#define CAN2TFI3 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x50))
+#define CAN2TID3 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x54))
+#define CAN2TDA3 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x58))
 #define CAN2TDB3 	(*(volatile uint32_t *) (CAN2_BASE_ADDR + 0x5C))
 
 
@@ -1136,9 +1136,9 @@ Reset, and Code Security/Debugging */
 #define MAC_POWERDOWN       (*(volatile uint32_t *) (MAC_BASE_ADDR + 0xFF4)) /* Power-down reg */
 #define MAC_MODULEID        (*(volatile uint32_t *) (MAC_BASE_ADDR + 0xFFC)) /* Module ID reg (RO) */
 
-/* LCD Controller */    
+/* LCD Controller */
 
-#define LCD_BASE_ADDR 0xFFE10000                               
+#define LCD_BASE_ADDR 0xFFE10000
 #define LCD_CFG       (*(volatile uint32_t *) 0xE01FC1B8)
 #define LCD_TIMH      (*(volatile uint32_t *) (LCD_BASE_ADDR + 0x000))
 #define LCD_TIMV      (*(volatile uint32_t *) (LCD_BASE_ADDR + 0x004))
@@ -1172,11 +1172,11 @@ Reset, and Code Security/Debugging */
 
 #define CLKSRCSEL_CLKSRC_MASK 0x00000003U
 
-#define GET_CLKSRCSEL_CLKSRC( reg) \
-  GET_FIELD( reg, CLKSRCSEL_CLKSRC_MASK, 0)
+#define GET_CLKSRCSEL_CLKSRC(reg) \
+  GET_FIELD(reg, CLKSRCSEL_CLKSRC_MASK, 0)
 
-#define SET_CLKSRCSEL_CLKSRC( reg, val) \
-  SET_FIELD( reg, val, CLKSRCSEL_CLKSRC_MASK, 0)
+#define SET_CLKSRCSEL_CLKSRC(reg, val) \
+  SET_FIELD(reg, val, CLKSRCSEL_CLKSRC_MASK, 0)
 
 /* PLLCON */
 
@@ -1188,37 +1188,37 @@ Reset, and Code Security/Debugging */
 
 #define PLLCFG_MSEL_MASK 0x00007fffU
 
-#define GET_PLLCFG_MSEL( reg) \
-  GET_FIELD( reg, PLLCFG_MSEL_MASK, 0)
+#define GET_PLLCFG_MSEL(reg) \
+  GET_FIELD(reg, PLLCFG_MSEL_MASK, 0)
 
-#define SET_PLLCFG_MSEL( reg, val) \
-  SET_FIELD( reg, val, PLLCFG_MSEL_MASK, 0)
+#define SET_PLLCFG_MSEL(reg, val) \
+  SET_FIELD(reg, val, PLLCFG_MSEL_MASK, 0)
 
 #define PLLCFG_NSEL_MASK 0x00ff0000U
 
-#define GET_PLLCFG_NSEL( reg) \
-  GET_FIELD( reg, PLLCFG_NSEL_MASK, 16)
+#define GET_PLLCFG_NSEL(reg) \
+  GET_FIELD(reg, PLLCFG_NSEL_MASK, 16)
 
-#define SET_PLLCFG_NSEL( reg, val) \
-  SET_FIELD( reg, val, PLLCFG_NSEL_MASK, 16)
+#define SET_PLLCFG_NSEL(reg, val) \
+  SET_FIELD(reg, val, PLLCFG_NSEL_MASK, 16)
 
 /* PLLSTAT */
 
 #define PLLSTAT_MSEL_MASK 0x00007fffU
 
-#define GET_PLLSTAT_MSEL( reg) \
-  GET_FIELD( reg, PLLSTAT_MSEL_MASK, 0)
+#define GET_PLLSTAT_MSEL(reg) \
+  GET_FIELD(reg, PLLSTAT_MSEL_MASK, 0)
 
-#define SET_PLLSTAT_MSEL( reg, val) \
-  SET_FIELD( reg, val, PLLSTAT_MSEL_MASK, 0)
+#define SET_PLLSTAT_MSEL(reg, val) \
+  SET_FIELD(reg, val, PLLSTAT_MSEL_MASK, 0)
 
 #define PLLSTAT_NSEL_MASK 0x00ff0000U
 
-#define GET_PLLSTAT_NSEL( reg) \
-  GET_FIELD( reg, PLLSTAT_NSEL_MASK, 16)
+#define GET_PLLSTAT_NSEL(reg) \
+  GET_FIELD(reg, PLLSTAT_NSEL_MASK, 16)
 
-#define SET_PLLSTAT_NSEL( reg, val) \
-  SET_FIELD( reg, val, PLLSTAT_NSEL_MASK, 16)
+#define SET_PLLSTAT_NSEL(reg, val) \
+  SET_FIELD(reg, val, PLLSTAT_NSEL_MASK, 16)
 
 #define PLLSTAT_PLLE 0x01000000U
 
@@ -1230,21 +1230,21 @@ Reset, and Code Security/Debugging */
 
 #define CCLKCFG_CCLKSEL_MASK 0x000000ffU
 
-#define GET_CCLKCFG_CCLKSEL( reg) \
-  GET_FIELD( reg, CCLKCFG_CCLKSEL_MASK, 0)
+#define GET_CCLKCFG_CCLKSEL(reg) \
+  GET_FIELD(reg, CCLKCFG_CCLKSEL_MASK, 0)
 
-#define SET_CCLKCFG_CCLKSEL( reg, val) \
-  SET_FIELD( reg, val, CCLKCFG_CCLKSEL_MASK, 0)
+#define SET_CCLKCFG_CCLKSEL(reg, val) \
+  SET_FIELD(reg, val, CCLKCFG_CCLKSEL_MASK, 0)
 
 /* MEMMAP */
 
 #define MEMMAP_MAP_MASK 0x00000003U
 
-#define GET_MEMMAP_MAP( reg) \
-  GET_FIELD( reg, MEMMAP_MAP_MASK, 0)
+#define GET_MEMMAP_MAP(reg) \
+  GET_FIELD(reg, MEMMAP_MAP_MASK, 0)
 
-#define SET_MEMMAP_MAP( reg, val) \
-  SET_FIELD( reg, val, MEMMAP_MAP_MASK, 0)
+#define SET_MEMMAP_MAP(reg, val) \
+  SET_FIELD(reg, val, MEMMAP_MAP_MASK, 0)
 
 /* TIR */
 
@@ -1300,229 +1300,229 @@ Reset, and Code Security/Debugging */
 
 #define PCLKSEL0_PCLK_WDT_MASK 0x00000003U
 
-#define GET_PCLKSEL0_PCLK_WDT( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_WDT_MASK, 0)
+#define GET_PCLKSEL0_PCLK_WDT(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_WDT_MASK, 0)
 
-#define SET_PCLKSEL0_PCLK_WDT( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_WDT_MASK, 0)
+#define SET_PCLKSEL0_PCLK_WDT(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_WDT_MASK, 0)
 
 #define PCLKSEL0_PCLK_TIMER0_MASK 0x0000000cU
 
-#define GET_PCLKSEL0_PCLK_TIMER0( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_TIMER0_MASK, 2)
+#define GET_PCLKSEL0_PCLK_TIMER0(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_TIMER0_MASK, 2)
 
-#define SET_PCLKSEL0_PCLK_TIMER0( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_TIMER0_MASK, 2)
+#define SET_PCLKSEL0_PCLK_TIMER0(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_TIMER0_MASK, 2)
 
 #define PCLKSEL0_PCLK_TIMER1_MASK 0x00000030U
 
-#define GET_PCLKSEL0_PCLK_TIMER1( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_TIMER1_MASK, 4)
+#define GET_PCLKSEL0_PCLK_TIMER1(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_TIMER1_MASK, 4)
 
-#define SET_PCLKSEL0_PCLK_TIMER1( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_TIMER1_MASK, 4)
+#define SET_PCLKSEL0_PCLK_TIMER1(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_TIMER1_MASK, 4)
 
 #define PCLKSEL0_PCLK_UART0_MASK 0x000000c0U
 
-#define GET_PCLKSEL0_PCLK_UART0( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_UART0_MASK, 6)
+#define GET_PCLKSEL0_PCLK_UART0(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_UART0_MASK, 6)
 
-#define SET_PCLKSEL0_PCLK_UART0( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_UART0_MASK, 6)
+#define SET_PCLKSEL0_PCLK_UART0(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_UART0_MASK, 6)
 
 #define PCLKSEL0_PCLK_UART1_MASK 0x00000300U
 
-#define GET_PCLKSEL0_PCLK_UART1( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_UART1_MASK, 8)
+#define GET_PCLKSEL0_PCLK_UART1(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_UART1_MASK, 8)
 
-#define SET_PCLKSEL0_PCLK_UART1( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_UART1_MASK, 8)
+#define SET_PCLKSEL0_PCLK_UART1(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_UART1_MASK, 8)
 
 #define PCLKSEL0_PCLK_PWM0_MASK 0x00000c00U
 
-#define GET_PCLKSEL0_PCLK_PWM0( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_PWM0_MASK, 10)
+#define GET_PCLKSEL0_PCLK_PWM0(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_PWM0_MASK, 10)
 
-#define SET_PCLKSEL0_PCLK_PWM0( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_PWM0_MASK, 10)
+#define SET_PCLKSEL0_PCLK_PWM0(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_PWM0_MASK, 10)
 
 #define PCLKSEL0_PCLK_PWM1_MASK 0x00003000U
 
-#define GET_PCLKSEL0_PCLK_PWM1( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_PWM1_MASK, 12)
+#define GET_PCLKSEL0_PCLK_PWM1(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_PWM1_MASK, 12)
 
-#define SET_PCLKSEL0_PCLK_PWM1( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_PWM1_MASK, 12)
+#define SET_PCLKSEL0_PCLK_PWM1(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_PWM1_MASK, 12)
 
 #define PCLKSEL0_PCLK_I2C0_MASK 0x0000c000U
 
-#define GET_PCLKSEL0_PCLK_I2C0( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_I2C0_MASK, 14)
+#define GET_PCLKSEL0_PCLK_I2C0(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_I2C0_MASK, 14)
 
-#define SET_PCLKSEL0_PCLK_I2C0( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_I2C0_MASK, 14)
+#define SET_PCLKSEL0_PCLK_I2C0(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_I2C0_MASK, 14)
 
 #define PCLKSEL0_PCLK_SPI_MASK 0x00030000U
 
-#define GET_PCLKSEL0_PCLK_SPI( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_SPI_MASK, 16)
+#define GET_PCLKSEL0_PCLK_SPI(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_SPI_MASK, 16)
 
-#define SET_PCLKSEL0_PCLK_SPI( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_SPI_MASK, 16)
+#define SET_PCLKSEL0_PCLK_SPI(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_SPI_MASK, 16)
 
 #define PCLKSEL0_PCLK_RTC_MASK 0x000c0000U
 
-#define GET_PCLKSEL0_PCLK_RTC( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_RTC_MASK, 18)
+#define GET_PCLKSEL0_PCLK_RTC(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_RTC_MASK, 18)
 
-#define SET_PCLKSEL0_PCLK_RTC( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_RTC_MASK, 18)
+#define SET_PCLKSEL0_PCLK_RTC(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_RTC_MASK, 18)
 
 #define PCLKSEL0_PCLK_SSP1_MASK 0x00300000U
 
-#define GET_PCLKSEL0_PCLK_SSP1( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_SSP1_MASK, 20)
+#define GET_PCLKSEL0_PCLK_SSP1(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_SSP1_MASK, 20)
 
-#define SET_PCLKSEL0_PCLK_SSP1( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_SSP1_MASK, 20)
+#define SET_PCLKSEL0_PCLK_SSP1(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_SSP1_MASK, 20)
 
 #define PCLKSEL0_PCLK_DAC_MASK 0x00c00000U
 
-#define GET_PCLKSEL0_PCLK_DAC( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_DAC_MASK, 22)
+#define GET_PCLKSEL0_PCLK_DAC(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_DAC_MASK, 22)
 
-#define SET_PCLKSEL0_PCLK_DAC( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_DAC_MASK, 22)
+#define SET_PCLKSEL0_PCLK_DAC(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_DAC_MASK, 22)
 
 #define PCLKSEL0_PCLK_ADC_MASK 0x03000000U
 
-#define GET_PCLKSEL0_PCLK_ADC( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_ADC_MASK, 24)
+#define GET_PCLKSEL0_PCLK_ADC(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_ADC_MASK, 24)
 
-#define SET_PCLKSEL0_PCLK_ADC( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_ADC_MASK, 24)
+#define SET_PCLKSEL0_PCLK_ADC(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_ADC_MASK, 24)
 
 #define PCLKSEL0_PCLK_CAN1_MASK 0x0c000000U
 
-#define GET_PCLKSEL0_PCLK_CAN1( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_CAN1_MASK, 26)
+#define GET_PCLKSEL0_PCLK_CAN1(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_CAN1_MASK, 26)
 
-#define SET_PCLKSEL0_PCLK_CAN1( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_CAN1_MASK, 26)
+#define SET_PCLKSEL0_PCLK_CAN1(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_CAN1_MASK, 26)
 
 #define PCLKSEL0_PCLK_CAN2_MASK 0x30000000U
 
-#define GET_PCLKSEL0_PCLK_CAN2( reg) \
-  GET_FIELD( reg, PCLKSEL0_PCLK_CAN2_MASK, 28)
+#define GET_PCLKSEL0_PCLK_CAN2(reg) \
+  GET_FIELD(reg, PCLKSEL0_PCLK_CAN2_MASK, 28)
 
-#define SET_PCLKSEL0_PCLK_CAN2( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL0_PCLK_CAN2_MASK, 28)
+#define SET_PCLKSEL0_PCLK_CAN2(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL0_PCLK_CAN2_MASK, 28)
 
 /* PCLKSEL1 */
 
 #define PCLKSEL1_PCLK_BAT_RAM_MASK 0x00000003U
 
-#define GET_PCLKSEL1_PCLK_BAT_RAM( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_BAT_RAM_MASK, 0)
+#define GET_PCLKSEL1_PCLK_BAT_RAM(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_BAT_RAM_MASK, 0)
 
-#define SET_PCLKSEL1_PCLK_BAT_RAM( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_BAT_RAM_MASK, 0)
+#define SET_PCLKSEL1_PCLK_BAT_RAM(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_BAT_RAM_MASK, 0)
 
 #define PCLKSEL1_PCLK_GPIO_MASK 0x0000000cU
 
-#define GET_PCLKSEL1_PCLK_GPIO( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_GPIO_MASK, 2)
+#define GET_PCLKSEL1_PCLK_GPIO(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_GPIO_MASK, 2)
 
-#define SET_PCLKSEL1_PCLK_GPIO( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_GPIO_MASK, 2)
+#define SET_PCLKSEL1_PCLK_GPIO(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_GPIO_MASK, 2)
 
 #define PCLKSEL1_PCLK_PCB_MASK 0x00000030U
 
-#define GET_PCLKSEL1_PCLK_PCB( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_PCB_MASK, 4)
+#define GET_PCLKSEL1_PCLK_PCB(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_PCB_MASK, 4)
 
-#define SET_PCLKSEL1_PCLK_PCB( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_PCB_MASK, 4)
+#define SET_PCLKSEL1_PCLK_PCB(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_PCB_MASK, 4)
 
 #define PCLKSEL1_PCLK_I2C1_MASK 0x000000c0U
 
-#define GET_PCLKSEL1_PCLK_I2C1( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_I2C1_MASK, 6)
+#define GET_PCLKSEL1_PCLK_I2C1(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_I2C1_MASK, 6)
 
-#define SET_PCLKSEL1_PCLK_I2C1( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_I2C1_MASK, 6)
+#define SET_PCLKSEL1_PCLK_I2C1(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_I2C1_MASK, 6)
 
 #define PCLKSEL1_PCLK_SSP0_MASK 0x00000c00U
 
-#define GET_PCLKSEL1_PCLK_SSP0( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_SSP0_MASK, 10)
+#define GET_PCLKSEL1_PCLK_SSP0(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_SSP0_MASK, 10)
 
-#define SET_PCLKSEL1_PCLK_SSP0( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_SSP0_MASK, 10)
+#define SET_PCLKSEL1_PCLK_SSP0(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_SSP0_MASK, 10)
 
 #define PCLKSEL1_PCLK_TIMER2_MASK 0x00003000U
 
-#define GET_PCLKSEL1_PCLK_TIMER2( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_TIMER2_MASK, 12)
+#define GET_PCLKSEL1_PCLK_TIMER2(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_TIMER2_MASK, 12)
 
-#define SET_PCLKSEL1_PCLK_TIMER2( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_TIMER2_MASK, 12)
+#define SET_PCLKSEL1_PCLK_TIMER2(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_TIMER2_MASK, 12)
 
 #define PCLKSEL1_PCLK_TIMER3_MASK 0x0000c000U
 
-#define GET_PCLKSEL1_PCLK_TIMER3( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_TIMER3_MASK, 14)
+#define GET_PCLKSEL1_PCLK_TIMER3(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_TIMER3_MASK, 14)
 
-#define SET_PCLKSEL1_PCLK_TIMER3( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_TIMER3_MASK, 14)
+#define SET_PCLKSEL1_PCLK_TIMER3(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_TIMER3_MASK, 14)
 
 #define PCLKSEL1_PCLK_UART2_MASK 0x00030000U
 
-#define GET_PCLKSEL1_PCLK_UART2( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_UART2_MASK, 16)
+#define GET_PCLKSEL1_PCLK_UART2(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_UART2_MASK, 16)
 
-#define SET_PCLKSEL1_PCLK_UART2( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_UART2_MASK, 16)
+#define SET_PCLKSEL1_PCLK_UART2(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_UART2_MASK, 16)
 
 #define PCLKSEL1_PCLK_UART3_MASK 0x000c0000U
 
-#define GET_PCLKSEL1_PCLK_UART3( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_UART3_MASK, 18)
+#define GET_PCLKSEL1_PCLK_UART3(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_UART3_MASK, 18)
 
-#define SET_PCLKSEL1_PCLK_UART3( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_UART3_MASK, 18)
+#define SET_PCLKSEL1_PCLK_UART3(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_UART3_MASK, 18)
 
 #define PCLKSEL1_PCLK_I2C2_MASK 0x00300000U
 
-#define GET_PCLKSEL1_PCLK_I2C2( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_I2C2_MASK, 20)
+#define GET_PCLKSEL1_PCLK_I2C2(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_I2C2_MASK, 20)
 
-#define SET_PCLKSEL1_PCLK_I2C2( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_I2C2_MASK, 20)
+#define SET_PCLKSEL1_PCLK_I2C2(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_I2C2_MASK, 20)
 
 #define PCLKSEL1_PCLK_I2S_MASK 0x00c00000U
 
-#define GET_PCLKSEL1_PCLK_I2S( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_I2S_MASK, 22)
+#define GET_PCLKSEL1_PCLK_I2S(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_I2S_MASK, 22)
 
-#define SET_PCLKSEL1_PCLK_I2S( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_I2S_MASK, 22)
+#define SET_PCLKSEL1_PCLK_I2S(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_I2S_MASK, 22)
 
 #define PCLKSEL1_PCLK_MCI_MASK 0x03000000U
 
-#define GET_PCLKSEL1_PCLK_MCI( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_MCI_MASK, 24)
+#define GET_PCLKSEL1_PCLK_MCI(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_MCI_MASK, 24)
 
-#define SET_PCLKSEL1_PCLK_MCI( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_MCI_MASK, 24)
+#define SET_PCLKSEL1_PCLK_MCI(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_MCI_MASK, 24)
 
 #define PCLKSEL1_PCLK_SYSCON_MASK 0x30000000U
 
-#define GET_PCLKSEL1_PCLK_SYSCON( reg) \
-  GET_FIELD( reg, PCLKSEL1_PCLK_SYSCON_MASK, 28)
+#define GET_PCLKSEL1_PCLK_SYSCON(reg) \
+  GET_FIELD(reg, PCLKSEL1_PCLK_SYSCON_MASK, 28)
 
-#define SET_PCLKSEL1_PCLK_SYSCON( reg, val) \
-  SET_FIELD( reg, val, PCLKSEL1_PCLK_SYSCON_MASK, 28)
+#define SET_PCLKSEL1_PCLK_SYSCON(reg, val) \
+  SET_FIELD(reg, val, PCLKSEL1_PCLK_SYSCON_MASK, 28)
 
 /* RTC_ILR */
 
@@ -1559,19 +1559,19 @@ typedef struct {
 
 #define SSP_CR0_DSS_MASK 0x0000000fU
 
-#define GET_SSP_CR0_DSS( reg) \
-  GET_FIELD( reg, SSP_CR0_DSS_MASK, 0)
+#define GET_SSP_CR0_DSS(reg) \
+  GET_FIELD(reg, SSP_CR0_DSS_MASK, 0)
 
-#define SET_SSP_CR0_DSS( reg, val) \
-  SET_FIELD( reg, val, SSP_CR0_DSS_MASK, 0)
+#define SET_SSP_CR0_DSS(reg, val) \
+  SET_FIELD(reg, val, SSP_CR0_DSS_MASK, 0)
 
 #define SSP_CR0_FRF_MASK 0x00000030U
 
-#define GET_SSP_CR0_FRF( reg) \
-  GET_FIELD( reg, SSP_CR0_FRF_MASK, 4)
+#define GET_SSP_CR0_FRF(reg) \
+  GET_FIELD(reg, SSP_CR0_FRF_MASK, 4)
 
-#define SET_SSP_CR0_FRF( reg, val) \
-  SET_FIELD( reg, val, SSP_CR0_FRF_MASK, 4)
+#define SET_SSP_CR0_FRF(reg, val) \
+  SET_FIELD(reg, val, SSP_CR0_FRF_MASK, 4)
 
 #define SSP_CR0_CPOL 0x00000040U
 
@@ -1579,11 +1579,11 @@ typedef struct {
 
 #define SSP_CR0_SCR_MASK 0x0000ff00U
 
-#define GET_SSP_CR0_SCR( reg) \
-  GET_FIELD( reg, SSP_CR0_SCR_MASK, 8)
+#define GET_SSP_CR0_SCR(reg) \
+  GET_FIELD(reg, SSP_CR0_SCR_MASK, 8)
 
-#define SET_SSP_CR0_SCR( reg, val) \
-  SET_FIELD( reg, val, SSP_CR0_SCR_MASK, 8)
+#define SET_SSP_CR0_SCR(reg, val) \
+  SET_FIELD(reg, val, SSP_CR0_SCR_MASK, 8)
 
 /* SSP_CR1 */
 
@@ -1673,7 +1673,7 @@ typedef struct {
 
 #define GPDMA_STATUS_CH_1 0x00000002U
 
-#define GPDMA_CH_BASE_ADDR( i) \
+#define GPDMA_CH_BASE_ADDR(i) \
   ((volatile lpc24xx_dma_channel *) \
     ((i) ? GPDMA_CH1_BASE_ADDR : GPDMA_CH0_BASE_ADDR))
 
@@ -1693,29 +1693,29 @@ typedef struct {
 
 #define GPDMA_CH_CTRL_TSZ_MASK 0x00000fffU
 
-#define GET_GPDMA_CH_CTRL_TSZ( reg) \
-  GET_FIELD( reg, GPDMA_CH_CTRL_TSZ_MASK, 0)
+#define GET_GPDMA_CH_CTRL_TSZ(reg) \
+  GET_FIELD(reg, GPDMA_CH_CTRL_TSZ_MASK, 0)
 
-#define SET_GPDMA_CH_CTRL_TSZ( reg, val) \
-  SET_FIELD( reg, val, GPDMA_CH_CTRL_TSZ_MASK, 0)
+#define SET_GPDMA_CH_CTRL_TSZ(reg, val) \
+  SET_FIELD(reg, val, GPDMA_CH_CTRL_TSZ_MASK, 0)
 
 #define GPDMA_CH_CTRL_TSZ_MAX 0x00000fffU
 
 #define GPDMA_CH_CTRL_SBSZ_MASK 0x00007000U
 
-#define GET_GPDMA_CH_CTRL_SBSZ( reg) \
-  GET_FIELD( reg, GPDMA_CH_CTRL_SBSZ_MASK, 12)
+#define GET_GPDMA_CH_CTRL_SBSZ(reg) \
+  GET_FIELD(reg, GPDMA_CH_CTRL_SBSZ_MASK, 12)
 
-#define SET_GPDMA_CH_CTRL_SBSZ( reg, val) \
-  SET_FIELD( reg, val, GPDMA_CH_CTRL_SBSZ_MASK, 12)
+#define SET_GPDMA_CH_CTRL_SBSZ(reg, val) \
+  SET_FIELD(reg, val, GPDMA_CH_CTRL_SBSZ_MASK, 12)
 
 #define GPDMA_CH_CTRL_DBSZ_MASK 0x00038000U
 
-#define GET_GPDMA_CH_CTRL_DBSZ( reg) \
-  GET_FIELD( reg, GPDMA_CH_CTRL_DBSZ_MASK, 15)
+#define GET_GPDMA_CH_CTRL_DBSZ(reg) \
+  GET_FIELD(reg, GPDMA_CH_CTRL_DBSZ_MASK, 15)
 
-#define SET_GPDMA_CH_CTRL_DBSZ( reg, val) \
-  SET_FIELD( reg, val, GPDMA_CH_CTRL_DBSZ_MASK, 15)
+#define SET_GPDMA_CH_CTRL_DBSZ(reg, val) \
+  SET_FIELD(reg, val, GPDMA_CH_CTRL_DBSZ_MASK, 15)
 
 #define GPDMA_CH_CTRL_BSZ_1 0x00000000U
 
@@ -1735,19 +1735,19 @@ typedef struct {
 
 #define GPDMA_CH_CTRL_SW_MASK 0x001c0000U
 
-#define GET_GPDMA_CH_CTRL_SW( reg) \
-  GET_FIELD( reg, GPDMA_CH_CTRL_SW_MASK, 18)
+#define GET_GPDMA_CH_CTRL_SW(reg) \
+  GET_FIELD(reg, GPDMA_CH_CTRL_SW_MASK, 18)
 
-#define SET_GPDMA_CH_CTRL_SW( reg, val) \
-  SET_FIELD( reg, val, GPDMA_CH_CTRL_SW_MASK, 18)
+#define SET_GPDMA_CH_CTRL_SW(reg, val) \
+  SET_FIELD(reg, val, GPDMA_CH_CTRL_SW_MASK, 18)
 
 #define GPDMA_CH_CTRL_DW_MASK 0x00e00000U
 
-#define GET_GPDMA_CH_CTRL_DW( reg) \
-  GET_FIELD( reg, GPDMA_CH_CTRL_DW_MASK, 21)
+#define GET_GPDMA_CH_CTRL_DW(reg) \
+  GET_FIELD(reg, GPDMA_CH_CTRL_DW_MASK, 21)
 
-#define SET_GPDMA_CH_CTRL_DW( reg, val) \
-  SET_FIELD( reg, val, GPDMA_CH_CTRL_DW_MASK, 21)
+#define SET_GPDMA_CH_CTRL_DW(reg, val) \
+  SET_FIELD(reg, val, GPDMA_CH_CTRL_DW_MASK, 21)
 
 #define GPDMA_CH_CTRL_W_8 0x00000000U
 
@@ -1761,11 +1761,11 @@ typedef struct {
 
 #define GPDMA_CH_CTRL_PROT_MASK 0x70000000U
 
-#define GET_GPDMA_CH_CTRL_PROT( reg) \
-  GET_FIELD( reg, GPDMA_CH_CTRL_PROT_MASK, 28)
+#define GET_GPDMA_CH_CTRL_PROT(reg) \
+  GET_FIELD(reg, GPDMA_CH_CTRL_PROT_MASK, 28)
 
-#define SET_GPDMA_CH_CTRL_PROT( reg, val) \
-  SET_FIELD( reg, val, GPDMA_CH_CTRL_PROT_MASK, 28)
+#define SET_GPDMA_CH_CTRL_PROT(reg, val) \
+  SET_FIELD(reg, val, GPDMA_CH_CTRL_PROT_MASK, 28)
 
 #define GPDMA_CH_CTRL_ITC 0x80000000U
 
@@ -1775,19 +1775,19 @@ typedef struct {
 
 #define GPDMA_CH_CFG_SRCPER_MASK 0x0000001eU
 
-#define GET_GPDMA_CH_CFG_SRCPER( reg) \
-  GET_FIELD( reg, GPDMA_CH_CFG_SRCPER_MASK, 1)
+#define GET_GPDMA_CH_CFG_SRCPER(reg) \
+  GET_FIELD(reg, GPDMA_CH_CFG_SRCPER_MASK, 1)
 
-#define SET_GPDMA_CH_CFG_SRCPER( reg, val) \
-  SET_FIELD( reg, val, GPDMA_CH_CFG_SRCPER_MASK, 1)
+#define SET_GPDMA_CH_CFG_SRCPER(reg, val) \
+  SET_FIELD(reg, val, GPDMA_CH_CFG_SRCPER_MASK, 1)
 
 #define GPDMA_CH_CFG_DESTPER_MASK 0x000003c0U
 
-#define GET_GPDMA_CH_CFG_DESTPER( reg) \
-  GET_FIELD( reg, GPDMA_CH_CFG_DESTPER_MASK, 6)
+#define GET_GPDMA_CH_CFG_DESTPER(reg) \
+  GET_FIELD(reg, GPDMA_CH_CFG_DESTPER_MASK, 6)
 
-#define SET_GPDMA_CH_CFG_DESTPER( reg, val) \
-  SET_FIELD( reg, val, GPDMA_CH_CFG_DESTPER_MASK, 6)
+#define SET_GPDMA_CH_CFG_DESTPER(reg, val) \
+  SET_FIELD(reg, val, GPDMA_CH_CFG_DESTPER_MASK, 6)
 
 #define GPDMA_CH_CFG_PER_SSP0_TX 0x00000000U
 
@@ -1805,11 +1805,11 @@ typedef struct {
 
 #define GPDMA_CH_CFG_FLOW_MASK 0x00003800U
 
-#define GET_GPDMA_CH_CFG_FLOW( reg) \
-  GET_FIELD( reg, GPDMA_CH_CFG_FLOW_MASK, 11)
+#define GET_GPDMA_CH_CFG_FLOW(reg) \
+  GET_FIELD(reg, GPDMA_CH_CFG_FLOW_MASK, 11)
 
-#define SET_GPDMA_CH_CFG_FLOW( reg, val) \
-  SET_FIELD( reg, val, GPDMA_CH_CFG_FLOW_MASK, 11)
+#define SET_GPDMA_CH_CFG_FLOW(reg, val) \
+  SET_FIELD(reg, val, GPDMA_CH_CFG_FLOW_MASK, 11)
 
 #define GPDMA_CH_CFG_FLOW_MEM_TO_MEM_DMA 0x00000000U
 
@@ -1859,11 +1859,11 @@ typedef struct {
 
 #define ETH_RX_CTRL_SIZE_MASK 0x000007ffU
 
-#define GET_ETH_RX_CTRL_SIZE( reg) \
-  GET_FIELD( reg, ETH_RX_CTRL_SIZE_MASK, 0)
+#define GET_ETH_RX_CTRL_SIZE(reg) \
+  GET_FIELD(reg, ETH_RX_CTRL_SIZE_MASK, 0)
 
-#define SET_ETH_RX_CTRL_SIZE( reg, val) \
-  SET_FIELD( reg, val, ETH_RX_CTRL_SIZE_MASK, 0)
+#define SET_ETH_RX_CTRL_SIZE(reg, val) \
+  SET_FIELD(reg, val, ETH_RX_CTRL_SIZE_MASK, 0)
 
 #define ETH_RX_CTRL_INTERRUPT 0x80000000U
 
@@ -1871,11 +1871,11 @@ typedef struct {
 
 #define ETH_RX_STAT_RXSIZE_MASK 0x000007ffU
 
-#define GET_ETH_RX_STAT_RXSIZE( reg) \
-  GET_FIELD( reg, ETH_RX_STAT_RXSIZE_MASK, 0)
+#define GET_ETH_RX_STAT_RXSIZE(reg) \
+  GET_FIELD(reg, ETH_RX_STAT_RXSIZE_MASK, 0)
 
-#define SET_ETH_RX_STAT_RXSIZE( reg, val) \
-  SET_FIELD( reg, val, ETH_RX_STAT_RXSIZE_MASK, 0)
+#define SET_ETH_RX_STAT_RXSIZE(reg, val) \
+  SET_FIELD(reg, val, ETH_RX_STAT_RXSIZE_MASK, 0)
 
 #define ETH_RX_STAT_BYTES 0x00000100U
 
@@ -1911,11 +1911,11 @@ typedef struct {
 
 #define ETH_TX_CTRL_SIZE_MASK 0x000007ffU
 
-#define GET_ETH_TX_CTRL_SIZE( reg) \
-  GET_FIELD( reg, ETH_TX_CTRL_SIZE_MASK, 0)
+#define GET_ETH_TX_CTRL_SIZE(reg) \
+  GET_FIELD(reg, ETH_TX_CTRL_SIZE_MASK, 0)
 
-#define SET_ETH_TX_CTRL_SIZE( reg, val) \
-  SET_FIELD( reg, val, ETH_TX_CTRL_SIZE_MASK, 0)
+#define SET_ETH_TX_CTRL_SIZE(reg, val) \
+  SET_FIELD(reg, val, ETH_TX_CTRL_SIZE_MASK, 0)
 
 #define ETH_TX_CTRL_OVERRIDE 0x04000000U
 
@@ -1933,11 +1933,11 @@ typedef struct {
 
 #define ETH_TX_STAT_COLLISION_COUNT_MASK 0x01e00000U
 
-#define GET_ETH_TX_STAT_COLLISION_COUNT( reg) \
-  GET_FIELD( reg, ETH_TX_STAT_COLLISION_COUNT_MASK, 21)
+#define GET_ETH_TX_STAT_COLLISION_COUNT(reg) \
+  GET_FIELD(reg, ETH_TX_STAT_COLLISION_COUNT_MASK, 21)
 
-#define SET_ETH_TX_STAT_COLLISION_COUNT( reg, val) \
-  SET_FIELD( reg, val, ETH_TX_STAT_COLLISION_COUNT_MASK, 21)
+#define SET_ETH_TX_STAT_COLLISION_COUNT(reg, val) \
+  SET_FIELD(reg, val, ETH_TX_STAT_COLLISION_COUNT_MASK, 21)
 
 #define ETH_TX_STAT_DEFER 0x02000000U
 
@@ -2027,69 +2027,69 @@ typedef struct {
 
 #define AHBCFG_BREAK_BURST_MASK 0x00000006U
 
-#define GET_AHBCFG_BREAK_BURST( reg) \
-  GET_FIELD( reg, AHBCFG_BREAK_BURST_MASK, 1)
+#define GET_AHBCFG_BREAK_BURST(reg) \
+  GET_FIELD(reg, AHBCFG_BREAK_BURST_MASK, 1)
 
-#define SET_AHBCFG_BREAK_BURST( reg, val) \
-  SET_FIELD( reg, val, AHBCFG_BREAK_BURST_MASK, 1)
+#define SET_AHBCFG_BREAK_BURST(reg, val) \
+  SET_FIELD(reg, val, AHBCFG_BREAK_BURST_MASK, 1)
 
 #define AHBCFG_QUANTUM_BUS_CYCLE 0x00000008U
 
 #define AHBCFG_QUANTUM_SIZE_MASK 0x000000f0U
 
-#define GET_AHBCFG_QUANTUM_SIZE( reg) \
-  GET_FIELD( reg, AHBCFG_QUANTUM_SIZE_MASK, 4)
+#define GET_AHBCFG_QUANTUM_SIZE(reg) \
+  GET_FIELD(reg, AHBCFG_QUANTUM_SIZE_MASK, 4)
 
-#define SET_AHBCFG_QUANTUM_SIZE( reg, val) \
-  SET_FIELD( reg, val, AHBCFG_QUANTUM_SIZE_MASK, 4)
+#define SET_AHBCFG_QUANTUM_SIZE(reg, val) \
+  SET_FIELD(reg, val, AHBCFG_QUANTUM_SIZE_MASK, 4)
 
 #define AHBCFG_DEFAULT_MASTER_MASK 0x00000700U
 
-#define GET_AHBCFG_DEFAULT_MASTER( reg) \
-  GET_FIELD( reg, AHBCFG_DEFAULT_MASTER_MASK, 8)
+#define GET_AHBCFG_DEFAULT_MASTER(reg) \
+  GET_FIELD(reg, AHBCFG_DEFAULT_MASTER_MASK, 8)
 
-#define SET_AHBCFG_DEFAULT_MASTER( reg, val) \
-  SET_FIELD( reg, val, AHBCFG_DEFAULT_MASTER_MASK, 8)
+#define SET_AHBCFG_DEFAULT_MASTER(reg, val) \
+  SET_FIELD(reg, val, AHBCFG_DEFAULT_MASTER_MASK, 8)
 
 #define AHBCFG_EP1_MASK 0x00007000U
 
-#define GET_AHBCFG_EP1( reg) \
-  GET_FIELD( reg, AHBCFG_EP1_MASK, 12)
+#define GET_AHBCFG_EP1(reg) \
+  GET_FIELD(reg, AHBCFG_EP1_MASK, 12)
 
-#define SET_AHBCFG_EP1( reg, val) \
-  SET_FIELD( reg, val, AHBCFG_EP1_MASK, 12)
+#define SET_AHBCFG_EP1(reg, val) \
+  SET_FIELD(reg, val, AHBCFG_EP1_MASK, 12)
 
 #define AHBCFG_EP2_MASK 0x00070000U
 
-#define GET_AHBCFG_EP2( reg) \
-  GET_FIELD( reg, AHBCFG_EP2_MASK, 16)
+#define GET_AHBCFG_EP2(reg) \
+  GET_FIELD(reg, AHBCFG_EP2_MASK, 16)
 
-#define SET_AHBCFG_EP2( reg, val) \
-  SET_FIELD( reg, val, AHBCFG_EP2_MASK, 16)
+#define SET_AHBCFG_EP2(reg, val) \
+  SET_FIELD(reg, val, AHBCFG_EP2_MASK, 16)
 
 #define AHBCFG_EP3_MASK 0x00700000U
 
-#define GET_AHBCFG_EP3( reg) \
-  GET_FIELD( reg, AHBCFG_EP3_MASK, 20)
+#define GET_AHBCFG_EP3(reg) \
+  GET_FIELD(reg, AHBCFG_EP3_MASK, 20)
 
-#define SET_AHBCFG_EP3( reg, val) \
-  SET_FIELD( reg, val, AHBCFG_EP3_MASK, 20)
+#define SET_AHBCFG_EP3(reg, val) \
+  SET_FIELD(reg, val, AHBCFG_EP3_MASK, 20)
 
 #define AHBCFG_EP4_MASK 0x07000000U
 
-#define GET_AHBCFG_EP4( reg) \
-  GET_FIELD( reg, AHBCFG_EP4_MASK, 24)
+#define GET_AHBCFG_EP4(reg) \
+  GET_FIELD(reg, AHBCFG_EP4_MASK, 24)
 
-#define SET_AHBCFG_EP4( reg, val) \
-  SET_FIELD( reg, val, AHBCFG_EP4_MASK, 24)
+#define SET_AHBCFG_EP4(reg, val) \
+  SET_FIELD(reg, val, AHBCFG_EP4_MASK, 24)
 
 #define AHBCFG_EP5_MASK 0x70000000U
 
-#define GET_AHBCFG_EP5( reg) \
-  GET_FIELD( reg, AHBCFG_EP5_MASK, 28)
+#define GET_AHBCFG_EP5(reg) \
+  GET_FIELD(reg, AHBCFG_EP5_MASK, 28)
 
-#define SET_AHBCFG_EP5( reg, val) \
-  SET_FIELD( reg, val, AHBCFG_EP5_MASK, 28)
+#define SET_AHBCFG_EP5(reg, val) \
+  SET_FIELD(reg, val, AHBCFG_EP5_MASK, 28)
 
 /* EMC */
 

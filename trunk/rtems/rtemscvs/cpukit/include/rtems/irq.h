@@ -15,7 +15,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: irq.h,v 1.3 2009/02/19 19:29:19 joel Exp $
+ * $Id: irq.h,v 1.4 2009/11/29 11:52:52 ralf Exp $
  */
 
 #ifndef _RTEMS_IRQ_H
@@ -34,7 +34,7 @@ extern "C" {
 typedef unsigned char  rtems_irq_prio;
 struct  __rtems_irq_connect_data__;     /* forward declaratiuon */
 
-typedef unsigned int rtems_irq_number; 
+typedef unsigned int rtems_irq_number;
 typedef void *rtems_irq_hdl_param;
 typedef void (*rtems_irq_hdl)           (rtems_irq_hdl_param);
 typedef void (*rtems_irq_enable)        (const struct __rtems_irq_connect_data__*);

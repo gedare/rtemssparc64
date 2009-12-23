@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ffuart.h,v 1.1 2009/06/04 16:33:31 joel Exp $
+ *  $Id: ffuart.h,v 1.2 2009/11/30 05:02:22 ralf Exp $
  */
 
 #ifndef __FFUART_H__
@@ -47,4 +47,4 @@ typedef struct {
 #define FULL_RECEIVE 0x01
 
 #endif
-  
+

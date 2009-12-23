@@ -16,7 +16,7 @@
  *  ERC32 modifications of respective RTEMS file: COPYRIGHT (c) 1995.
  *  European Space Agency.
  *
- *  $Id: bspstart.c,v 1.1 2009/11/23 20:09:58 joel Exp $
+ *  $Id: bspstart.c,v 1.2 2009/11/29 15:33:26 ralf Exp $
  */
 
 #include <bsp.h>
@@ -24,17 +24,17 @@
 
 /*
  * Tells us if data cache snooping is available
- */ 
+ */
 int CPU_SPARC_HAS_SNOOPING;
 
 /*
  * set_snooping
- * 
+ *
  * Read the data cache configuration register to determine if
  * bus snooping is available. This is needed for some drivers so
- * that they can select the most efficient copy routines.  
+ * that they can select the most efficient copy routines.
  */
-static inline int set_snooping(void) 
+static inline int set_snooping(void)
 {
   unsigned int tmp = *(unsigned int *)0x80000014; /* Cache control register */
   return ((tmp>>23) & 1); /* Data cache snooping enabled */

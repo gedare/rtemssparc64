@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.10 2009/03/02 12:12:17 joel Exp $
+ *  $Id: cpu.c,v 1.11 2009/12/02 09:48:25 ralf Exp $
  */
 
 #include <rtems/system.h>
@@ -46,7 +46,7 @@ void _CPU_Initialize(void)
  *
  *  XXX document implementation including references if appropriate
  */
- 
+
 uint32_t   _CPU_ISR_Get_level( void )
 {
   /*
@@ -64,7 +64,7 @@ uint32_t   _CPU_ISR_Get_level( void )
  *
  *  XXX document implementation including references if appropriate
  */
- 
+
 void _CPU_ISR_install_raw_handler(
   uint32_t    vector,
   proc_ptr    new_handler,
@@ -166,10 +166,10 @@ void *_CPU_Thread_Idle_body( uintptr_t ignored )
 
     /* Differentiate between IRQ off and on (for debugging) */
     if(st & 1)
-      for(;;); 
+      for(;;);
     else
-      for(;;); 
- 
+      for(;;);
+
     /* insert your "halt" instruction here */ ;
   }
 #endif

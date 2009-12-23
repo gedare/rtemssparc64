@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.5 2009/08/10 16:04:41 joel Exp $
+ *  $Id: init.c,v 1.6 2009/11/30 03:33:24 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -90,7 +90,7 @@ rtems_task Init(
       break;
   }
 
-  puts( "Signal sent from ISR has been processed" ); 
+  puts( "Signal sent from ISR has been processed" );
   puts( "*** END OF TEST 38 ***" );
   rtems_test_exit( 0 );
 }

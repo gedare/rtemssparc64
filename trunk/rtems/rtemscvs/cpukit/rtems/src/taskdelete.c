@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: taskdelete.c,v 1.10 2008/05/22 20:38:03 joel Exp $
+ *  $Id: taskdelete.c,v 1.11 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -52,7 +52,7 @@
  */
 
 rtems_status_code rtems_task_delete(
-  Objects_Id id
+  rtems_id id
 )
 {
   register Thread_Control *the_thread;

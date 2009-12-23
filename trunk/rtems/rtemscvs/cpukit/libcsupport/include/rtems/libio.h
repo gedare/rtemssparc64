@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: libio.h,v 1.58 2009/10/08 07:07:36 ccj Exp $
+ *  $Id: libio.h,v 1.59 2009/12/10 14:10:57 ralf Exp $
  */
 
 #ifndef _RTEMS_RTEMS_LIBIO_H
@@ -566,7 +566,7 @@ typedef struct rtems_termios_callbacks {
   int    (*firstOpen)(int major, int minor, void *arg);
   int    (*lastClose)(int major, int minor, void *arg);
   int    (*pollRead)(int minor);
-  int    (*write)(int minor, const char *buf, int len);
+  ssize_t (*write)(int minor, const char *buf, size_t len);
   int    (*setAttributes)(int minor, const struct termios *t);
   int    (*stopRemoteTx)(int minor);
   int    (*startRemoteTx)(int minor);

@@ -12,7 +12,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: conio.h,v 1.1 2005/07/06 18:46:04 joel Exp $
+ *  $Id: conio.h,v 1.2 2009/12/07 16:21:07 ralf Exp $
  */
 
 #ifndef _CONIO_H
@@ -82,7 +82,7 @@ void    gba_putch(char _c);
 void    gba_puts(const char *_str);
 int     gba_printf(const char *_format, ...);
 void    gba_gotoxy(int _x, int _y);
-char    gba_getch(void);
+int     gba_getch(void);
 
 
 #ifdef __cplusplus

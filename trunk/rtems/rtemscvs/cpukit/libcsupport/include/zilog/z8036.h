@@ -1,7 +1,7 @@
 /**
  * @file rtems/zilog/z8036.h
  */
- 
+
 /*
  *  This include file defines information related to a Zilog Z8036
  *  Counter/Timer/IO Chip.  It is a memory mapped part.
@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: z8036.h,v 1.9 2005/01/28 08:04:27 ralf Exp $
+ *  $Id: z8036.h,v 1.10 2009/11/29 11:57:23 ralf Exp $
  */
 
 #ifndef _RTEMS_ZILOG_Z8036_H

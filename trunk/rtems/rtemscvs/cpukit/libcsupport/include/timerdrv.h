@@ -3,7 +3,7 @@
  *
  *  This file describes the Timer Driver for all boards.
  */
- 
+
 /*
  *
  *  COPYRIGHT (c) 1989-1999.
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timerdrv.h,v 1.12 2008/09/01 11:42:19 ralf Exp $
+ *  $Id: timerdrv.h,v 1.13 2009/11/29 11:57:22 ralf Exp $
  */
 
 #ifndef _RTEMS_TIMERDRV_H

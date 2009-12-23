@@ -12,7 +12,7 @@
  *
  *  This terms of the RTEMS license apply to this file.
  *
- *  $Id: spurious.c,v 1.10 2009/03/09 16:53:22 joel Exp $
+ *  $Id: spurious.c,v 1.11 2009/11/29 15:33:26 ralf Exp $
  */
 
 #include <bsp.h>
@@ -63,7 +63,7 @@ rtems_isr bsp_spurious_handler(
       printk( "fp exception\n" );
       break;
     case 0x09:
-      printk("data access exception at 0x%08x\n", 
+      printk("data access exception at 0x%08x\n",
         ERC32_MEC.First_Failing_Address );
       break;
     case 0x0A:

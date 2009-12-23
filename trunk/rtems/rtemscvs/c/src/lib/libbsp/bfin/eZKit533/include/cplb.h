@@ -1,5 +1,5 @@
 /*  cplb.h
- *  
+ *
  *  Copyright (c) 2006 by Atos Automacao Industrial Ltda.
  *             written by Alain Schaefer <alain.schaefer@easc.ch>
  *
@@ -7,14 +7,14 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cplb.h,v 1.1 2007/09/10 22:23:08 joel Exp $
+ *  $Id: cplb.h,v 1.2 2009/11/30 03:38:33 ralf Exp $
  */
 #ifndef _CPLB_H
 #define _CPLB_H
 
 /* CPLB configurations */
 #define CPLB_DEF_CACHE_WT	CPLB_L1_CHBL | CPLB_WT
-#define CPLB_DEF_CACHE_WB	CPLB_L1_CHBL 
+#define CPLB_DEF_CACHE_WB	CPLB_L1_CHBL
 #define CPLB_CACHE_ENABLED	CPLB_L1_CHBL | CPLB_DIRTY
 
 #define CPLB_DEF_CACHE		CPLB_L1_CHBL | CPLB_WT

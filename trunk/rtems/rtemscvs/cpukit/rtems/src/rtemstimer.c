@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtemstimer.c,v 1.25 2009/01/06 05:02:25 ralf Exp $
+ *  $Id: rtemstimer.c,v 1.26 2009/11/30 09:08:35 thomas Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -56,10 +56,9 @@ void _Timer_Manager_initialization(void)
   );
 
   /*
-   *  Initialize the pointer to the Timer Server TCB to NULL indicating
-   *  that task-based timer support is not initialized.
+   *  Initialize the pointer to the default timer server control block to NULL
+   *  indicating that task-based timer support is not initialized.
    */
 
-  _Timer_Server = NULL;
-  _Timer_Server_schedule_operation = NULL;
+  _Timer_server = NULL;
 }

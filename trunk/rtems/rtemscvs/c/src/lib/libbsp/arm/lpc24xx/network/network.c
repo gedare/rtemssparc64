@@ -398,7 +398,7 @@ static void lpc24xx_eth_receive_task(void *arg)
   volatile lpc24xx_eth_transfer_descriptor *const desc =
     (volatile lpc24xx_eth_transfer_descriptor *)
       LPC24XX_ETH_RECEIVE_DESC_START;
-  volatile lpc24xx_eth_receive_info *const info = 
+  volatile lpc24xx_eth_receive_info *const info =
     (volatile lpc24xx_eth_receive_info *)
       LPC24XX_ETH_RECEIVE_INFO_START;
   struct mbuf **const mbuf_table =
@@ -416,7 +416,7 @@ static void lpc24xx_eth_receive_task(void *arg)
 
     /* Wait for events */
     sc = rtems_bsdnet_event_receive(
-      LPC24XX_ETH_EVENT_INITIALIZE | LPC24XX_ETH_EVENT_INTERRUPT, 
+      LPC24XX_ETH_EVENT_INITIALIZE | LPC24XX_ETH_EVENT_INTERRUPT,
       RTEMS_EVENT_ANY | RTEMS_WAIT,
       RTEMS_NO_TIMEOUT,
       &events
@@ -695,7 +695,7 @@ static void lpc24xx_eth_transmit_task(void *arg)
     /* Wait for events */
     sc = rtems_bsdnet_event_receive(
       LPC24XX_ETH_EVENT_INITIALIZE
-        | LPC24XX_ETH_EVENT_START 
+        | LPC24XX_ETH_EVENT_START
         | LPC24XX_ETH_EVENT_INTERRUPT,
       RTEMS_EVENT_ANY | RTEMS_WAIT,
       RTEMS_NO_TIMEOUT,
@@ -899,15 +899,14 @@ static void lpc24xx_eth_interface_init(void *arg)
     /* Enable module power */
     lpc24xx_module_enable(
       LPC24XX_MODULE_ETHERNET,
-      0,
       LPC24XX_MODULE_PCLK_DEFAULT
     );
 
     /* Module IO configuration */
     #ifdef LPC24XX_ETHERNET_RMII
-    	lpc24xx_io_config(LPC24XX_MODULE_ETHERNET, 0, 0);
+    	lpc24xx_io_config(LPC24XX_MODULE_ETHERNET, 0);
     #else
-    	lpc24xx_io_config(LPC24XX_MODULE_ETHERNET, 0, 1);
+    	lpc24xx_io_config(LPC24XX_MODULE_ETHERNET, 1);
     #endif
 
     /* Soft reset */
@@ -950,8 +949,8 @@ static void lpc24xx_eth_interface_init(void *arg)
     /* Start receive task */
     if (e->receive_task == RTEMS_ID_NONE) {
       e->receive_task = rtems_bsdnet_newproc(
-        "ntrx", 
-        4096, 
+        "ntrx",
+        4096,
         lpc24xx_eth_receive_task,
         e
       );
@@ -962,8 +961,8 @@ static void lpc24xx_eth_interface_init(void *arg)
     /* Start transmit task */
     if (e->transmit_task == RTEMS_ID_NONE) {
       e->transmit_task = rtems_bsdnet_newproc(
-        "nttx", 
-        4096, 
+        "nttx",
+        4096,
         lpc24xx_eth_transmit_task,
         e
       );

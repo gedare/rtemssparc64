@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.11 2009/08/10 14:49:50 joel Exp $
+ *  $Id: task1.c,v 1.12 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include "system.h"
@@ -34,7 +34,7 @@ rtems_task Task_1_through_3(
 
   /*
    * Use TOD_MILLISECONDS_TO_TICKS not RTEMS_MILLISECONDS_TO_TICKS to
-   * test C implementation in SuperCore -- not macro version used 
+   * test C implementation in SuperCore -- not macro version used
    * everywhere else.
    */
   ticks = TOD_MILLISECONDS_TO_TICKS( task_number( tid ) * 5 * 1000 );

@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-$Id: boxtest.c,v 1.2 2008/08/19 15:47:14 joel Exp $
+$Id: boxtest.c,v 1.3 2009/11/29 14:53:01 ralf Exp $
 
 	BoxTest.c -- Code for performing hardware box test against viewing frustrum
 
@@ -83,6 +83,6 @@ int BoxTest(v16 x, v16 y, v16 z, v16 width, v16 height, v16 depth)
 int BoxTestf(float x, float y, float z, float width, float height, float depth)
 //---------------------------------------------------------------------------------
 {
-  return BoxTest(floattov16(x), floattov16(y), floattov16(z), 
+  return BoxTest(floattov16(x), floattov16(y), floattov16(z),
                  floattov16(width), floattov16(height), floattov16(depth));
 }

@@ -1,23 +1,39 @@
-/* tfs.h:
- *	Header file for TFS transactions, used by both application and monitor.
- * 
- *	General notice:
- *	This code is part of a boot-monitor package developed as a generic base
- *	platform for embedded system designs.  As such, it is likely to be
- *	distributed to various projects beyond the control of the original
- *	author.  Please notify the author of any enhancements made or bugs found
- *	so that all may benefit from the changes.  In addition, notification back
- *	to the author will allow the new user to pick up changes that may have
- *	been made by other users after this version of the code was distributed.
+/*
+ *  tfs.h - Header file for TFS transactions, used by both application and 
+ *  monnitor.
  *
- *	Note1: the majority of this code was edited with 4-space tabs.
- *	Note2: as more and more contributions are accepted, the term "author"
- *		   is becoming a mis-representation of credit.
+ *  Based upon code from MicroMonitor 1.17 from http://www.umonfw.com/
+ *  which includes this notice:
  *
- *	Original author:	Ed Sutter
- *	Email:				esutter@lucent.com
- *	Phone:				908-582-2351
+ **************************************************************************
+ *  General notice:
+ *  This code is part of a boot-monitor package developed as a generic base
+ *  platform for embedded system designs.  As such, it is likely to be
+ *  distributed to various projects beyond the control of the original
+ *  author.  Please notify the author of any enhancements made or bugs found
+ *  so that all may benefit from the changes.  In addition, notification back
+ *  to the author will allow the new user to pick up changes that may have
+ *  been made by other users after this version of the code was distributed.
+ *
+ *  Note1: the majority of this code was edited with 4-space tabs.
+ *  Note2: as more and more contributions are accepted, the term "author"
+ *         is becoming a mis-representation of credit.
+ *
+ *  Original author:    Ed Sutter
+ *  Email:              esutter@alcatel-lucent.com
+ *  Phone:              908-582-2351
+ **************************************************************************
+ *
+ *  Ed Sutter has been informed that this code is being used in RTEMS.
+ *
+ *  This code was reformatted by Joel Sherrill from OAR Corporation and
+ *  Fernando Nicodemos <fgnicodemos@terra.com.br> from NCB - Sistemas
+ *  Embarcados Ltda. (Brazil) to be more compliant with RTEMS coding
+ *  standards and to eliminate C++ style comments.
+ *
+ *  $Id: tfs.h,v 1.4 2009/12/04 18:24:58 joel Exp $
  */
+
 #ifndef _tfs_h
 #define _tfs_h
 
@@ -62,8 +78,8 @@
 #define TFS_ULVL2	0x00000400	/* '2'	level 2 */
 #define TFS_ULVL3	0x00000600	/* '3'	level 3 */
 #define TFS_NSTALE	0x00000800	/* File is NOT stale, invisible to user.
-								 * When this bit is clear, the file is 
-								 * considered stale (see notes in tfsadd()). 
+								 * When this bit is clear, the file is
+								 * considered stale (see notes in tfsadd()).
 								 * See notes in tfsclose() for this.
 								 */
 #define TFS_ACTIVE	0x00008000	/* Used to indicate that file is not deleted. */

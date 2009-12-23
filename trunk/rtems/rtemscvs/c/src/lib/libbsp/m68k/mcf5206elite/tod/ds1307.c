@@ -25,7 +25,7 @@
  *
  * http://www.rtems.com/license/LICENSE.
  *
- * @(#) $Id: ds1307.c,v 1.5 2004/04/21 10:42:52 ralf Exp $
+ * @(#) $Id: ds1307.c,v 1.6 2009/12/08 13:12:45 ralf Exp $
  */
 
 #include <rtems.h>
@@ -171,7 +171,7 @@ ds1307_get_time(int minor, rtems_time_of_day *time)
  *     -1, if error occured
  */
 int
-ds1307_set_time(int minor, rtems_time_of_day *time)
+ds1307_set_time(int minor, const rtems_time_of_day *time)
 {
     i2c_bus_number bus;
     i2c_address addr;

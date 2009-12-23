@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.11 2009/11/16 10:07:24 ralf Exp $
+ *  $Id: bspstart.c,v 1.12 2009/11/29 15:27:06 ralf Exp $
  */
 
 #include <string.h>
@@ -30,7 +30,7 @@ au1x00_uart_t *uart3 = (au1x00_uart_t *)AU1X00_UART3_ADDR;
  */
 void bsp_start( void )
 {
-  unsigned int compare = 0; 
+  unsigned int compare = 0;
 
   mips_set_sr( 0x7f00 );  /* all interrupts unmasked but globally off */
                           /* depend on the IRC to take care of things */

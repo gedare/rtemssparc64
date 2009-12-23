@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console.c,v 1.29 2009/10/17 19:55:40 joel Exp $
+ *  $Id: console.c,v 1.30 2009/12/10 14:43:52 ralf Exp $
  */
 
 #include <bsp.h>
@@ -281,7 +281,7 @@ void console_outbyte_interrupt(
  *
  */
 
-int console_write_support (int minor, const char *buf, int len)
+ssize_t console_write_support (int minor, const char *buf, size_t len)
 {
   int nwrite = 0;
 

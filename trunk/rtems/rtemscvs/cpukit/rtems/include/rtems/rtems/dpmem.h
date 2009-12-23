@@ -23,14 +23,14 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: dpmem.h,v 1.21 2009/08/05 18:17:12 joel Exp $
+ *  $Id: dpmem.h,v 1.23 2009/12/15 18:26:40 humph Exp $
  */
 
 #ifndef _RTEMS_RTEMS_DPMEM_H
 #define _RTEMS_RTEMS_DPMEM_H
 
 /**
- *  This constant is defined to extern most of the time when using 
+ *  This constant is defined to extern most of the time when using
  *  this header file.  However by defining it to nothing, the data
  *  declared in this header file can be instantiated.  This is done
  *  in a single per manager file.
@@ -99,7 +99,7 @@ rtems_status_code rtems_port_create(
   void         *internal_start,
   void         *external_start,
   uint32_t      length,
-  Objects_Id   *id
+  rtems_id     *id
 );
 
 /**
@@ -111,7 +111,7 @@ rtems_status_code rtems_port_create(
  */
 rtems_status_code rtems_port_ident(
   rtems_name    name,
-  Objects_Id   *id
+  rtems_id     *id
 );
 
 /**
@@ -121,7 +121,7 @@ rtems_status_code rtems_port_ident(
  *  the port associated with ID.
  */
 rtems_status_code rtems_port_delete(
-  Objects_Id id
+  rtems_id   id
 );
 
 /**
@@ -132,7 +132,7 @@ rtems_status_code rtems_port_delete(
  *  external port address for the specified port ID.
  */
 rtems_status_code rtems_port_external_to_internal(
-  Objects_Id   id,
+  rtems_id     id,
   void        *external,
   void       **internal
 );
@@ -145,7 +145,7 @@ rtems_status_code rtems_port_external_to_internal(
  *  internal port address for the specified port ID.
  */
 rtems_status_code rtems_port_internal_to_external(
-  Objects_Id   id,
+  rtems_id     id,
   void        *internal,
   void       **external
 );

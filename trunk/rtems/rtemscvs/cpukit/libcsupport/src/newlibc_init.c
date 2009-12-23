@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: newlibc_init.c,v 1.2 2008/09/17 16:12:02 joel Exp $
+ *  $Id: newlibc_init.c,v 1.3 2009/11/29 13:35:32 ralf Exp $
  *
  */
 
@@ -21,7 +21,7 @@
 
 /*
  *  Init libc for CYGNUS newlib
- * 
+ *
  *  Set up _REENT to use our global libc_global_reent.
  *  (newlib provides a global of its own, but we prefer our own name for it)
  *

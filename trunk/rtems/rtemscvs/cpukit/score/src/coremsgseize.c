@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: coremsgseize.c,v 1.20 2009/09/13 16:05:14 joel Exp $
+ *  $Id: coremsgseize.c,v 1.21 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -78,7 +78,7 @@ void _CORE_message_queue_Seize(
     _ISR_Enable( level );
 
     *size_p = the_message->Contents.size;
-    _Thread_Executing->Wait.count = 
+    _Thread_Executing->Wait.count =
       _CORE_message_queue_Get_message_priority( the_message );
     _CORE_message_queue_Copy_buffer(
       the_message->Contents.buffer,
@@ -88,7 +88,7 @@ void _CORE_message_queue_Seize(
 
     #if !defined(RTEMS_SCORE_COREMSG_ENABLE_BLOCKING_SEND)
       /*
-       *  There is not an API with blocking sends enabled. 
+       *  There is not an API with blocking sends enabled.
        *  So return immediately.
        */
       _CORE_message_queue_Free_message_buffer(the_message_queue, the_message);
@@ -119,7 +119,7 @@ void _CORE_message_queue_Seize(
        *  waiting task.
        */
       _CORE_message_queue_Set_message_priority(
-        the_message, 
+        the_message,
         the_thread->Wait.count
       );
       the_message->Contents.size = (size_t) the_thread->Wait.option;

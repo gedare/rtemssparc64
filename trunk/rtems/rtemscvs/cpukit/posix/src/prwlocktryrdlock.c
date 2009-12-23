@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: prwlocktryrdlock.c,v 1.5 2009/02/03 10:10:52 ralf Exp $
+ *  $Id: prwlocktryrdlock.c,v 1.6 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -40,7 +40,7 @@ int pthread_rwlock_tryrdlock(
 {
   POSIX_RWLock_Control  *the_rwlock;
   Objects_Locations      location;
-  
+
   if ( !rwlock )
     return EINVAL;
 

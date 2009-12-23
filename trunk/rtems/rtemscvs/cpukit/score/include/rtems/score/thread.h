@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/thread.h
  *
  *  This include file contains all constants and structures associated
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: thread.h,v 1.88 2009/11/09 11:35:36 joel Exp $
+ *  $Id: thread.h,v 1.90 2009/12/02 18:15:16 humph Exp $
  */
 
 #ifndef _RTEMS_SCORE_THREAD_H
@@ -47,16 +47,8 @@ extern "C" {
  *  The user can define this at configure time and go back to ticks
  *  resolution.
  */
-#ifndef __RTEMS_USE_TICKS_CPU_USAGE_STATISTICS__
+#ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
   #include <rtems/score/timestamp.h>
-
-  /**
-   *  This macro enables the nanosecond accurate statistics
-   *
-   *  When not defined, the older style tick accurate granularity
-   *  is used.
-   */
-  #define RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
 
   typedef Timestamp_Control Thread_CPU_usage_t;
 #else
@@ -76,10 +68,6 @@ extern "C" {
 #include <rtems/score/tqdata.h>
 #include <rtems/score/watchdog.h>
 
-#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
-  /* XXX include something for timespec */
-#endif
-
 /**
  *  The following defines the "return type" of a thread.
  *
@@ -92,7 +80,7 @@ typedef void *Thread;
 
 /**
  *  @brief Type of the numeric argument of a thread entry function with at
- *  least one numeric argument. 
+ *  least one numeric argument.
  *
  *  This numeric argument type designates an unsigned integer type with the
  *  property that any valid pointer to void can be converted to this type and
@@ -274,13 +262,13 @@ typedef struct {
   /** This field contains any options in effect on this blocking operation. */
   uint32_t              option;
   /** This field will contain the return status from a blocking operation.
-   * 
+   *
    *  @note The following assumes that all API return codes can be
    *        treated as an uint32_t.
    */
   uint32_t              return_code;
 
-  /** This field is the chain header for the second through Nth tasks 
+  /** This field is the chain header for the second through Nth tasks
    *  of the same priority blocked waiting on the same object.
    */
   Chain_Control         Block2n;
@@ -377,7 +365,7 @@ struct Thread_Control_struct {
   /** This field is true if the thread is offered globally */
   bool                                  is_global;
 #endif
-  /** This field is is true if the post task context switch should be 
+  /** This field is is true if the post task context switch should be
    *  executed for this thread at the next context switch.
    */
   bool                                  do_post_task_switch_extension;
@@ -516,7 +504,7 @@ SCORE_EXTERN Thread_Control *_Thread_Allocated_fp;
  */
 SCORE_EXTERN struct _reent **_Thread_libc_reent;
 
-#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+#ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
 
   /**
    * This contains the time since boot when the last context switch occurred.

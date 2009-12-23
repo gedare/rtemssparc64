@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: io.c,v 1.30 2008/12/17 22:46:04 joel Exp $
+ *  $Id: io.c,v 1.31 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -67,7 +67,7 @@ void _IO_Manager_initialization(void)
    *  have to allocate a new driver table and copy theirs to it.
    */
 
-  _IO_Driver_address_table = (rtems_driver_address_table *) 
+  _IO_Driver_address_table = (rtems_driver_address_table *)
       _Workspace_Allocate_or_fatal_error(
         sizeof( rtems_driver_address_table ) * ( number_of_drivers )
       );

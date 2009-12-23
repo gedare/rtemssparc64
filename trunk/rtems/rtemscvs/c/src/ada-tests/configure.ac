@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.24 2008/02/04 17:18:01 joel Exp $
+##
+## $Id: configure.ac,v 1.25 2009/11/28 06:28:39 ralf Exp $
 
 AC_PREREQ(2.59)
 AC_INIT([rtems-ada-tests],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -12,7 +12,7 @@ RTEMS_CANONICAL_TARGET_CPU
 AM_INIT_AUTOMAKE([no-define foreign 1.9])
 AM_MAINTAINER_MODE
 
-AC_CHECK_PROGS([M4],[gm4 m4]) 
+AC_CHECK_PROGS([M4],[gm4 m4])
 RTEMS_PROG_GNAT
 RTEMS_CANONICALIZE_TOOLS
 

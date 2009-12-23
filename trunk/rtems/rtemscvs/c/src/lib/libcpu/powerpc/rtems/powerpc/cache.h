@@ -1,5 +1,5 @@
 /*
- * $Id: cache.h,v 1.5 2005/02/14 04:39:30 ralf Exp $
+ * $Id: cache.h,v 1.6 2009/11/30 05:07:54 ralf Exp $
  */
 
 #ifndef _RTEMS_POWERPC_CACHE_H
@@ -25,7 +25,7 @@
 /*
  * FIXME: This is not used anywhere.
  */
-#if (PPC_D_CACHE != 0) 
+#if (PPC_D_CACHE != 0)
 #define _CPU_Data_Cache_Block_Invalidate( _address ) \
   do { register void *__address = (_address); \
        register uint32_t   _zero = 0; \

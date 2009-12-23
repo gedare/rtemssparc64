@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/07/16 15:00:44 joel Exp $
+ *  $Id: init.c,v 1.2 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include "tmacros.h"
@@ -32,7 +32,7 @@ void *POSIX_Init(
   puts( "Init - pthread_cond_broadcast - auto initialize - EINVAL" );
   sc = pthread_cond_broadcast( &cond2 );
   fatal_posix_service_status( sc, EINVAL, "cond lock EINVAL" );
-  
+
   puts( "Init - pthread_cond_destroy - OK" );
   sc = pthread_cond_destroy( &cond1 );
   fatal_posix_service_status( sc, 0, "cond destroy OK" );

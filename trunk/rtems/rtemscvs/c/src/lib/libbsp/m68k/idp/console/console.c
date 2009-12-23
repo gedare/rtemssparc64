@@ -6,7 +6,7 @@
  *
  *  Updated to RTEMS 3.2.0 by Joel Sherrill.
  *
- *  $Id: console.c,v 1.11 2008/09/05 08:22:30 ralf Exp $
+ *  $Id: console.c,v 1.12 2009/12/17 08:42:16 thomas Exp $
  */
 
 #define MIDP_INIT
@@ -135,7 +135,7 @@ char inbyte(
   int port
 )
 {
-  unsigned char tmp_char;
+  char tmp_char;
 
   /* If you come into this routine without checking is_character_ready() first
      and you want nonblocking code, then it's your own fault */

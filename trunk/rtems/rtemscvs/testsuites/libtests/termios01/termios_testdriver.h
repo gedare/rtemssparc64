@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: termios_testdriver.h,v 1.1 2009/08/15 17:54:48 joel Exp $
+ *  $Id: termios_testdriver.h,v 1.2 2009/11/30 03:33:23 ralf Exp $
  */
 
 #ifndef _TERMIOS_TESTDRIVER_H
@@ -44,7 +44,7 @@ extern "C" {
  *  @param[in] minor is the device driver minor number
  *  @param[in] arg is the parameters to this call
  *
- *  @return This method returns RTEMS_SUCCESSFUL when 
+ *  @return This method returns RTEMS_SUCCESSFUL when
  *          the device driver is successfully initialized.
  */
 rtems_device_driver termios_test_driver_initialize(
@@ -52,7 +52,7 @@ rtems_device_driver termios_test_driver_initialize(
   rtems_device_minor_number  minor,
   void                      *arg
 );
- 
+
 /**
  *  @brief Console Open Entry Point
  *
@@ -63,7 +63,7 @@ rtems_device_driver termios_test_driver_initialize(
  *  @param[in] minor is the device driver minor number
  *  @param[in] arg is the parameters to this call
  *
- *  @return This method returns RTEMS_SUCCESSFUL when 
+ *  @return This method returns RTEMS_SUCCESSFUL when
  *          the device driver is successfully opened.
  */
 rtems_device_driver termios_test_driver_open(
@@ -82,7 +82,7 @@ rtems_device_driver termios_test_driver_open(
  *  @param[in] minor is the device driver minor number
  *  @param[in] arg is the parameters to this call
  *
- *  @return This method returns RTEMS_SUCCESSFUL when 
+ *  @return This method returns RTEMS_SUCCESSFUL when
  *          the device is successfully closed.
  */
 rtems_device_driver termios_test_driver_close(
@@ -101,7 +101,7 @@ rtems_device_driver termios_test_driver_close(
  *  @param[in] minor is the device driver minor number
  *  @param[in] arg is the parameters to this call
  *
- *  @return This method returns RTEMS_SUCCESSFUL when 
+ *  @return This method returns RTEMS_SUCCESSFUL when
  *          the device is successfully read from.
  */
 rtems_device_driver termios_test_driver_read(
@@ -120,7 +120,7 @@ rtems_device_driver termios_test_driver_read(
  *  @param[in] minor is the device driver minor number
  *  @param[in] arg is the parameters to this call
  *
- *  @return This method returns RTEMS_SUCCESSFUL when 
+ *  @return This method returns RTEMS_SUCCESSFUL when
  *          the device is successfully written.
  */
 rtems_device_driver termios_test_driver_write(
@@ -139,7 +139,7 @@ rtems_device_driver termios_test_driver_write(
  *  @param[in] minor is the device driver minor number
  *  @param[in] arg is the parameters to this call
  *
- *  @return This method returns RTEMS_SUCCESSFUL when 
+ *  @return This method returns RTEMS_SUCCESSFUL when
  *          the device driver IO control operation is
  *          successfully performed.
  */

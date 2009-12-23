@@ -1,4 +1,4 @@
-## $Id: Makefile.am,v 1.10 2008/02/01 21:28:08 joel Exp $
+## $Id: Makefile.am,v 1.11 2009/12/14 18:28:02 joel Exp $
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../../../testsuites/automake/compile.am
@@ -9,12 +9,12 @@ include $(top_srcdir)/ada.am
 # handling can be verified in the binding.
 AM_ADAFLAGS += -gnatp
 
-noinst_PROGRAMS = ada_sp09.exe
+noinst_PROGRAMS = ada_sp09
 
-ada_sp09_exe_SOURCES = sp09.adb config.h sptest.adb sptest.ads
-ada_sp09_exe_SOURCES += ../../support/init.c
+ada_sp09_SOURCES = sp09.adb config.h sptest.adb sptest.ads
+ada_sp09_SOURCES += ../../support/init.c
 
-ada_sp09.exe: sp09.adb init.$(OBJEXT)
+ada_sp09$(EXEEXT): sp09.adb init.$(OBJEXT)
 	$(GNATCOMPILE) -margs -a $< -o $@
 
 scndir = $(rtems_ada_testsdir)

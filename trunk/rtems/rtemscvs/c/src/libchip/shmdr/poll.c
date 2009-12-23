@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: poll.c,v 1.16 2008/09/05 14:48:37 joel Exp $
+ *  $Id: poll.c,v 1.17 2009/11/30 03:42:53 ralf Exp $
  */
 
 #include <rtems.h>
@@ -49,7 +49,7 @@ void Shm_install_timer(void)
 
   status = rtems_timer_create( rtems_build_name( 'S', 'H', 'P', 'L' ), &id );
   assert( !status );
-  
+
   status = rtems_timer_fire_after( id, 1, Shm_Poll_TSR, NULL );
   assert( !status );
 }

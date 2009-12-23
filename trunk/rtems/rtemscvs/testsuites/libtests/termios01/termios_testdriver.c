@@ -8,13 +8,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: termios_testdriver.c,v 1.5 2009/10/26 07:58:21 ralf Exp $
+ *  $Id: termios_testdriver.c,v 1.7 2009/12/10 14:26:32 ralf Exp $
  */
 
 #include "tmacros.h"
 #include <rtems/libio.h>
 #include <stdlib.h>
-#include <assert.h>
 #include <termios.h>
 #include <rtems/termiostypes.h>
 #include "termios_testdriver.h"
@@ -31,9 +30,9 @@ void termios_test_driver_outbyte_polled(
 {
 }
 
-int termios_test_driver_write_support (int minor, const char *buf, int len)
+ssize_t termios_test_driver_write_support (int minor, const char *buf, size_t len)
 {
-  int nwrite = 0;
+  size_t nwrite = 0;
 
   while (nwrite < len) {
 #if (TERMIOS_TEST_DRIVER_USE_INTERRUPTS)

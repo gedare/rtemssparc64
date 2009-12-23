@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ckinit.c,v 1.6 2008/09/30 05:44:29 ralf Exp $
+ *  $Id: ckinit.c,v 1.7 2009/11/29 15:33:26 ralf Exp $
  */
 
 #include <bsp.h>
@@ -66,7 +66,7 @@ uint32_t bsp_clock_nanoseconds_since_last_tick(void)
   clicks = LEON_REG.Timer_Counter_1;
 
   /* Down counter */
-  return (uint32_t) 
+  return (uint32_t)
      (rtems_configuration_get_microseconds_per_tick() - clicks) * 1000;
 }
 

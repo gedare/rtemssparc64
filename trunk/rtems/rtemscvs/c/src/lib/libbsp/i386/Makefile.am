@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.10 2005/10/17 08:00:27 ralf Exp $
+## $Id: Makefile.am,v 1.11 2009/11/28 06:24:47 ralf Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../aclocal
@@ -13,7 +13,7 @@ EXTRA_DIST =
 EXTRA_DIST += shared/comm/uart.c shared/comm/uart.h
 EXTRA_DIST += shared/comm/tty_drv.c shared/comm/tty_drv.h
 EXTRA_DIST += shared/comm/i386_io.h
-EXTRA_DIST += shared/comm/i386-stub-glue.c shared/comm/i386-stub.c 
+EXTRA_DIST += shared/comm/i386-stub-glue.c shared/comm/i386-stub.c
 EXTRA_DIST += shared/comm/gdb_glue.c
 
 EXTRA_DIST += shared/comm/GDB.HOWTO

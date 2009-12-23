@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.6 2009/08/06 19:24:38 joel Exp $
+ *  $Id: init.c,v 1.8 2009/12/08 17:52:53 joel Exp $
  */
 
 #include <pmacros.h>
@@ -43,29 +43,29 @@ void *POSIX_Init(
   Queue = mq_open( "Queue", O_CREAT | O_RDWR, 0x777, &attr );
   if ( Queue == (-1) )
     perror( "mq_open failed" );
-  assert( Queue != (-1) );
+  rtems_test_assert(  Queue != (-1) );
 
   puts( "Init - Open message queue instance 2 - FAIL - ENFILE " );
   second_Queue = mq_open( "Queue2", O_CREAT | O_RDWR, 0x777, &attr );
   if ( second_Queue != (-1) )
     puts( "mq_open did not failed" );
-  assert( second_Queue == (-1) );
-  assert( errno == ENFILE );
+  rtems_test_assert(  second_Queue == (-1) );
+  rtems_test_assert(  errno == ENFILE );
 
   puts( "Init - Unlink message queue instance 1" );
   sc = mq_unlink( "Queue" );
   if ( sc != 0 )
     perror( "mq_unlink failed" );
-  assert( sc == 0 );
+  rtems_test_assert(  sc == 0 );
 
   puts( "Init - Close message queue instance 1" );
   sc = mq_close( Queue );
   if ( sc != 0 )
     perror( "mq_close failed" );
-  assert( sc == 0 );
+  rtems_test_assert(  sc == 0 );
 
   sb = rtems_workspace_get_information( &start );
-  assert( start.Free.number == 1 );
+  rtems_test_assert(  start.Free.number == 1 );
   to_alloc = start.Free.largest;
 
   /* find the largest we can actually allocate */
@@ -91,8 +91,8 @@ void *POSIX_Init(
   name = Get_Longest_Name();
   while ( attr.mq_msgsize > 0 ) {
     sb = rtems_workspace_allocate( to_alloc, &alloced );
-    assert( sb );
-   
+    rtems_test_assert(  sb );
+
     second_Queue = mq_open(name,O_CREAT | O_RDWR, 0x777, &attr );
 
     /* free the memory we snagged, then check the status */
@@ -114,13 +114,13 @@ void *POSIX_Init(
     sc = mq_unlink( name );
     if ( sc != 0 )
       perror( "mq_unlink failed" );
-    assert( sc == 0 );
+    rtems_test_assert(  sc == 0 );
 
   puts( "Init - Close message queue" );
     sc = mq_close( second_Queue );
     if ( sc != 0 )
       perror( "mq_close failed" );
-    assert( sc == 0 );
+    rtems_test_assert(  sc == 0 );
 
   puts( "*** END OF POSIX MESSAGE QUEUE TEST 4 ***" );
   rtems_test_exit( 0 );

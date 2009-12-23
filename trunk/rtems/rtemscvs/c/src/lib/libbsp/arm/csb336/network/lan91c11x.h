@@ -9,7 +9,7 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: lan91c11x.h,v 1.2 2007/03/12 11:18:44 joel Exp $
+ *  $Id: lan91c11x.h,v 1.3 2009/11/29 14:52:59 ralf Exp $
  */
 #ifndef __LAN91C11X_H__
 #define __LAN91C11X_H__
@@ -29,7 +29,7 @@ void lan91c11x_lock(void);
 #define LAN91C11X_BASE_ADDR 0x12000000
 
 #define LAN91C11X_REG(_b_, _r_) ((((_b_) & 0xf) << 4) | ((_r_) & 0xf))
-                                       
+
 
 #define LAN91C11X_TCR             (LAN91C11X_REG(0, 0x0))
 #define LAN91C11X_EPHSTAT         (LAN91C11X_REG(0, 0x2))

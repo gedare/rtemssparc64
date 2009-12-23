@@ -1,11 +1,11 @@
-/* 
+/*
  *	websSSL.h -- SSL Patch header
  *
  * Copyright (c) GoAhead Software Inc., 1992-2000. All Rights Reserved.
  *
  *	See the file "license.txt" for information on usage and redistribution
  *
- *	$Id: websSSL.h,v 1.1 2003/04/11 16:34:49 joel Exp $
+ *	$Id: websSSL.h,v 1.2 2009/11/29 13:20:53 ralf Exp $
  */
 
 #ifndef _h_websSSL
@@ -13,8 +13,8 @@
 
 /******************************** Description *********************************/
 
-/* 
- *	Header file for the GoAhead Patch for SSL. This defines the interface to 
+/*
+ *	Header file for the GoAhead Patch for SSL. This defines the interface to
  *	integrate SSL into the GoAhead Webserver.
  */
 

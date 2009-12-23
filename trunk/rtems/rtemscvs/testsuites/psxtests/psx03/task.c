@@ -8,14 +8,14 @@
  *
  *  Output parameters:  NONE
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.c,v 1.8 2004/04/16 09:23:25 ralf Exp $
+ *  $Id: task.c,v 1.9 2009/12/08 17:52:52 joel Exp $
  */
 
 #include "system.h"
@@ -33,7 +33,7 @@ void *Task_1(
 
   puts( "Task_1: pthread_kill - SIGUSR2 to Init" );
   status = pthread_kill( Init_id, SIGUSR2 );
-  assert( !status );
+  rtems_test_assert( !status );
 
   pthread_exit( NULL );
 
@@ -54,7 +54,7 @@ void *Task_2(
 
   puts( "Task_1: pthread_kill - SIGUSR1 to Init" );
   status = pthread_kill( Init_id, SIGUSR1 );
-  assert( !status );
+  rtems_test_assert( !status );
 
   pthread_exit( NULL );
 

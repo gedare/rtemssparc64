@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: pheapresizeblock.c,v 1.4 2009/09/06 15:24:08 joel Exp $
+ *  $Id: pheapresizeblock.c,v 1.5 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -35,7 +35,7 @@ bool _Protected_heap_Resize_block(
   uintptr_t          avail_mem_size;
 
   _RTEMS_Lock_allocator();
-    status = _Heap_Resize_block( 
+    status = _Heap_Resize_block(
       the_heap, starting_address, size, &old_mem_size, &avail_mem_size );
   _RTEMS_Unlock_allocator();
   return (status == HEAP_RESIZE_SUCCESSFUL);

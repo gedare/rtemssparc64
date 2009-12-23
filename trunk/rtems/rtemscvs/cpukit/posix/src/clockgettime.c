@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: clockgettime.c,v 1.13 2008/12/08 19:41:30 joel Exp $
+ *  $Id: clockgettime.c,v 1.14 2009/11/30 15:44:20 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -58,7 +58,7 @@ int clock_gettime(
   if ( clock_id == CLOCK_THREAD_CPUTIME )
     rtems_set_errno_and_return_minus_one( ENOSYS );
 #endif
-  
+
   rtems_set_errno_and_return_minus_one( EINVAL );
 
   return 0;

@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: check.c,v 1.62 2009/09/09 14:58:35 joel Exp $
+ *  $Id: check.c,v 1.63 2009/11/29 12:12:39 ralf Exp $
  *
  */
 
@@ -153,7 +153,7 @@ void Stack_check_Initialize( void )
       p[2] = 0xDEADF00D;          /* DEAD FOOD GOOD DOG */
       p[3] = 0x600D0D06;
   }
-  
+
   /*
    * If appropriate, setup the interrupt stack for high water testing
    * also.
@@ -441,7 +441,7 @@ void Stack_check_Dump_threads_usage(
   } else {
     (*print_handler)( print_context, "%8" PRId32 "\n", used );
   }
-    
+
 
 }
 
@@ -474,7 +474,7 @@ void rtems_stack_checker_report_usage_with_plugin(
   print_handler = print;
 
   (*print)( context, "Stack usage by thread\n");
-  (*print)( context, 
+  (*print)( context,
 "    ID      NAME    LOW          HIGH     CURRENT     AVAILABLE     USED\n"
   );
 

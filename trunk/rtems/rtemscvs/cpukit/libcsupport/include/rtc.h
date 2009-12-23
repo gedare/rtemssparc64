@@ -3,7 +3,7 @@
  *
  * Real-time clock driver interface.
  */
- 
+
 /*
  *  COPYRIGHT (c) 1989-2001.
  *  On-Line Applications Research Corporation (OAR).
@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtc.h,v 1.5 2009/05/27 14:20:57 joel Exp $
+ *  $Id: rtc.h,v 1.6 2009/11/29 11:57:22 ralf Exp $
  */
 
 #ifndef _RTEMS_RTC_H

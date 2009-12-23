@@ -8,7 +8,7 @@
  *
  * http://www.rtems.com/license/LICENSE
  *
- * $Id: rtc.c,v 1.2 2008/09/05 04:16:29 ralf Exp $
+ * $Id: rtc.c,v 1.3 2009/12/07 07:12:20 ralf Exp $
  */
 
 #include <rtems.h>
@@ -65,7 +65,7 @@ nds_rtc_get_time (int minor, rtems_time_of_day * time)
  */
 
 int
-nds_rtc_set_time (int minor, rtems_time_of_day * time)
+nds_rtc_set_time (int minor, const rtems_time_of_day * time)
 {
   return -1;
 }

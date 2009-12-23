@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: pthread.h,v 1.27 2009/06/24 06:38:52 joel Exp $
+ *  $Id: pthread.h,v 1.28 2009/11/30 15:44:20 ralf Exp $
  */
 
 #ifndef _RTEMS_POSIX_PTHREAD_H
@@ -46,7 +46,7 @@ extern const pthread_attr_t _POSIX_Threads_Default_attributes;
 /**
  *  When the user configures a set of POSIX API initialization threads,
  *  This variable will point to the method used to initialize them.
- *  
+ *
  *  @note It is instantiated and initialized by confdefs.h based upon
  *        application requirements.
  */
@@ -95,7 +95,7 @@ RTEMS_INLINE_ROUTINE void _POSIX_Threads_Free(
  *  @param[in] id is the id to lookup
  *  @param[in] location points to the returned location value
  *
- *  @return This methods returns a pointer to the corresponding Thread_Control. 
+ *  @return This methods returns a pointer to the corresponding Thread_Control.
  */
 RTEMS_INLINE_ROUTINE Thread_Control *_POSIX_Threads_Get(
   pthread_t          id,

@@ -35,7 +35,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: telnetd.c,v 1.17 2009/11/13 11:57:52 ralf Exp $
+ * $Id: telnetd.c,v 1.18 2009/12/17 19:41:20 joel Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -334,7 +334,7 @@ rtems_status_code rtems_telnetd_initialize( void)
   telnetd_task_id = telnetd_spawn_task(
     "TNTD",
     rtems_telnetd_config.priority,
-    RTEMS_MINIMUM_STACK_SIZE,
+    rtems_telnetd_config.stack_size,
     rtems_task_telnetd,
     0
   );

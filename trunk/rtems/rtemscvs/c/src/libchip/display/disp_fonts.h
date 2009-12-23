@@ -18,7 +18,7 @@
 +-----------------------------------------------------------------+
 | This file declares general data structures for font management  |
 +-----------------------------------------------------------------+
-|  $Id: disp_fonts.h,v 1.2 2008/07/14 08:45:32 thomas Exp $
+|  $Id: disp_fonts.h,v 1.3 2009/11/30 03:42:52 ralf Exp $
 \*===============================================================*/
 
 #ifndef DISP_FONTS_H
@@ -30,8 +30,8 @@ typedef int8_t disp_font_dimen;
 
 struct disp_font_bounding_box
 {
-  disp_font_dimen w, h, x, y; 
-}; 
+  disp_font_dimen w, h, x, y;
+};
 
 struct disp_font_glyph
 {

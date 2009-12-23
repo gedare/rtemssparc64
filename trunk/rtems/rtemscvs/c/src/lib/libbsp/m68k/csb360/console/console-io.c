@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console-io.c,v 1.3 2007/03/12 11:18:16 joel Exp $
+ *  $Id: console-io.c,v 1.4 2009/11/29 14:59:40 ralf Exp $
  */
 
 #include <bsp.h>
@@ -54,13 +54,13 @@ void console_outbyte_polled(
     while ((uart->ucsr & MCF5272_USR_TXRDY) == 0) {
         continue;
     }
-    
+
     uart->udata = ch;
     for (i = 0; i < 1000; i++) g_cnt++;
 }
 
 /*
- *  console_inbyte_nonblocking 
+ *  console_inbyte_nonblocking
  *
  *  This routine polls for a character.
  */

@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timerident.c,v 1.9 2008/01/23 22:57:43 joel Exp $
+ *  $Id: timerident.c,v 1.10 2009/12/15 18:26:42 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -44,7 +44,7 @@
 
 rtems_status_code rtems_timer_ident(
   rtems_name    name,
-  Objects_Id   *id
+  rtems_id     *id
 )
 {
   Objects_Name_or_id_lookup_errors  status;

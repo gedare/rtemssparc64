@@ -1,3 +1,33 @@
+2009-12-11	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* clock/ckinit.c: Fix warning.
+
+2009-12-11	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* startup/bspgetworkarea.c: Make bsp_mem_size available for page table
+	initialization.
+
+2009-12-10	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* include/bsp.h, startup/bspgetworkarea.c: Rework bsp_size_memory() to
+	ensure that multiboot information regarding memory size is used as
+	the primary source. This was broken in the move to supporting a
+	unified workspace. It worked this way in 4.9 so this was a
+	regression.
+
+2009-12-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* startup/bspgetworkarea.c: Add debug printk's.
+	* startup/linkcmds: Using "-Wl,--defsym -Wl,RamSize=0x1000000"
+	results in _RamSize being defined.  Handle this properly.
+
+
+
+2009-12-08	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* include/bsp.h: BSP should not define
+	CONFIGURE_NUMBER_OF_TERMIOS_PORTS.
+
 2009-11-23	Joel Sherrill <joel.sherrill@oarcorp.com>
 
 	* ne2000/ne2000.c: Logic on defaulting port number was inverted when

@@ -1,7 +1,7 @@
 /*
  *  LEON2 Opencores Ethernet MAC Configuration Information
  *
- *  $Id: leon_open_eth.c,v 1.2 2006/01/09 10:36:06 ralf Exp $
+ *  $Id: leon_open_eth.c,v 1.3 2009/11/29 15:33:26 ralf Exp $
  */
 
 
@@ -28,8 +28,8 @@
 #define OPEN_ETH_VECTOR 0x1C
 
 open_eth_configuration_t leon_open_eth_configuration = {
-  OPEN_ETH_BASE_ADDRESS,        /* base address */ 
-  OPEN_ETH_VECTOR,              /* vector number */ 
+  OPEN_ETH_BASE_ADDRESS,        /* base address */
+  OPEN_ETH_VECTOR,              /* vector number */
   TDA_COUNT,                 /* number of transmit descriptors */
   RDA_COUNT,                 /* number of receive descriptors */
   0                   /* 100 MHz operation */

@@ -1,5 +1,5 @@
 //
-//      $Id: x_bsun.S,v 1.1 1998/12/14 23:15:31 joel Exp $
+//      $Id: x_bsun.S,v 1.2 2009/12/04 04:24:06 ralf Exp $
 //
 //	x_bsun.sa 3.3 7/1/91
 //
@@ -15,8 +15,8 @@
 //		Copyright (C) Motorola, Inc. 1990
 //			All Rights Reserved
 //
-//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA 
-//	The copyright notice above does not evidence any  
+//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA
+//	The copyright notice above does not evidence any
 //	actual or intended publication of such source code.
 
 X_BSUN:	//idnt    2,1 | Motorola 040 Floating Point Software Package

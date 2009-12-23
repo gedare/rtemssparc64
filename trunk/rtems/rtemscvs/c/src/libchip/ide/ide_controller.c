@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: ide_controller.c,v 1.11 2009/10/08 07:24:22 ccj Exp $
+ * $Id: ide_controller.c,v 1.12 2009/11/30 03:42:53 ralf Exp $
  *
  */
 
@@ -60,7 +60,7 @@ ide_controller_initialize(rtems_device_major_number  major,
 
         if ((IDE_Controller_Table[minor].probe == NULL ||
              IDE_Controller_Table[minor].probe(minor)) &&
-            (IDE_Controller_Table[minor].fns->ctrl_probe == NULL || 
+            (IDE_Controller_Table[minor].fns->ctrl_probe == NULL ||
 	     IDE_Controller_Table[minor].fns->ctrl_probe(minor)))
         {
             status = rtems_io_register_name(IDE_Controller_Table[minor].name,

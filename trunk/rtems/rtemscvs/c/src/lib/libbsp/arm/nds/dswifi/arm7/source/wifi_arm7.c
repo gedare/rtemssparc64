@@ -1,7 +1,7 @@
 // DS Wifi interface code
 // Copyright (C) 2005-2006 Stephen Stair - sgstair@akkit.org - http://www.akkit.org
 // wifi_arm7.c - arm7 wifi interface code
-/****************************************************************************** 
+/******************************************************************************
 DSWifi Lib and test materials are licenced under the MIT open source licence:
 Copyright (c) 2005-2006 Stephen Stair
 
@@ -67,7 +67,7 @@ void InitFlashData() {
 
 int ReadFlashByte(int address) {
 	if(address<0 || address>511) return 0;
-	return FlashData[address];		
+	return FlashData[address];
 }
 
 int ReadFlashBytes(int address, int numbytes) {
@@ -115,7 +115,7 @@ int crc16_slow(u8 * data, int length) {
     return crc;
 }
 
-void GetWfcSettings() {
+void GetWfcSettings(void) {
    u8 data[256];
    int i,n, c;
    unsigned long s;
@@ -517,7 +517,7 @@ void Wifi_TxRaw(u16 * data, int datalen) {
 	WifiData->stats[WSTAT_TXDATABYTES]+=datalen-12;
 }
 
-int Wifi_TxCheck() {
+int Wifi_TxCheck(void) {
 	if(WIFI_REG(0xA8)&0x8000) return 0;
 	return 1;
 }
@@ -528,7 +528,7 @@ int Wifi_TxCheck() {
 //  Wifi Interrupts
 //
 
-void Wifi_Intr_RxEnd() {
+void Wifi_Intr_RxEnd(void) {
 	int base;
 	int packetlen;
 	int full_packetlen;
@@ -546,7 +546,7 @@ void Wifi_Intr_RxEnd() {
 		WifiData->stats[WSTAT_RXBYTES]+=full_packetlen;
 		WifiData->stats[WSTAT_RXDATABYTES]+=full_packetlen-12;
 
-		
+
 		// process packet here
 		temp=Wifi_ProcessReceivedFrame(base,full_packetlen); // returns packet type
 		if(temp&WifiData->reqPacketFlags || WifiData->reqReqFlags&WFLAG_REQ_PROMISC) { // if packet type is requested, forward it to the rx queue
@@ -570,7 +570,7 @@ void Wifi_Intr_RxEnd() {
 u16 count_ofs_list[CNT_STAT_NUM] = {
 	0x1B0, 0x1B2, 0x1B4, 0x1B6, 0x1B8, 0x1BA, 0x1BC, 0x1BE, 0x1C0, 0x1C4, 0x1D0, 0x1D2, 0x1D4, 0x1D6, 0x1D8, 0x1DA, 0x1DC, 0x1DE
 };
-void Wifi_Intr_CntOverflow() {
+void Wifi_Intr_CntOverflow(void) {
 	int i;
 	int s,d;
 	s=CNT_STAT_START;
@@ -581,13 +581,13 @@ void Wifi_Intr_CntOverflow() {
 	}
 }
 
-void Wifi_Intr_StartTx() {
+void Wifi_Intr_StartTx(void) {
 	if(WifiData->reqReqFlags&WFLAG_REQ_PROMISC) { // attempt to ensure packet is received
 
 	}
 }
 
-void Wifi_Intr_TxEnd() { // assume that we can now tx something new.
+void Wifi_Intr_TxEnd(void) { // assume that we can now tx something new.
 	if(arm7qlen) {
 		Wifi_TxRaw(arm7q, arm7qlen);
 		keepalive_time=0;
@@ -609,18 +609,18 @@ void Wifi_Intr_TxEnd() { // assume that we can now tx something new.
 	}
 }
 
-void Wifi_Intr_TBTT() {
+void Wifi_Intr_TBTT(void) {
 	if(WIFI_REG(0xA8)&0x8000) {
 		WIFI_REG(0xAE)=0x000D;
 	}
 }
 
-void Wifi_Intr_DoNothing() {
+void Wifi_Intr_DoNothing(void) {
 }
 
 
 
-void Wifi_Interrupt() {
+void Wifi_Interrupt(void) {
 	int wIF;
 	if(!WifiData) return;
 	if(!(WifiData->flags7&WFLAG_ARM7_RUNNING)) return;
@@ -635,7 +635,7 @@ void Wifi_Interrupt() {
 	if(wIF& 0x0020) { W_IF=0x0020;  Wifi_Intr_CntOverflow();  } // 5) AckCount Overflow
 	if(wIF& 0x0040) { W_IF=0x0040;  Wifi_Intr_DoNothing();  } // 6) Start Rx
 	if(wIF& 0x0080) { W_IF=0x0080;  Wifi_Intr_StartTx();  } // 7) Start Tx
-	if(wIF& 0x0100) { W_IF=0x0100;  Wifi_Intr_DoNothing();  } // 8) 
+	if(wIF& 0x0100) { W_IF=0x0100;  Wifi_Intr_DoNothing();  } // 8)
 	if(wIF& 0x0200) { W_IF=0x0200;  Wifi_Intr_DoNothing();  } // 9)
 	if(wIF& 0x0400) { W_IF=0x0400;  Wifi_Intr_DoNothing();  } //10)
 	if(wIF& 0x0800) { W_IF=0x0800;  Wifi_Intr_DoNothing();  } //11) RF Wakeup
@@ -653,7 +653,7 @@ void Wifi_Interrupt() {
 
 
 
-void Wifi_Update() {
+void Wifi_Update(void) {
 	int i;
 	if(!WifiData) return;
    WifiData->random ^=(W_RANDOM ^ (W_RANDOM<<11) ^ (W_RANDOM<<22));
@@ -1055,9 +1055,9 @@ void Wifi_SetChannel(int channel) {
             Wifi_RFWrite( (ReadFlashByte(n)<<8) | ReadFlashByte(n+channel+1) | 0x050000 );
             n+=15;
         }
-		
+
 		swiDelay( 12583 ); // 1500 us delay
-        
+
 		break;
     default:
         break;
@@ -1180,7 +1180,7 @@ int Wifi_SendOpenSystemAuthPacket() {
 	return Wifi_TxQueue((u16 *)data, i+6);
 }
 
-int Wifi_SendSharedKeyAuthPacket() {
+int Wifi_SendSharedKeyAuthPacket(void) {
 	// max size is 12+24+4+6 = 46
 	u8 data[64];
 	int i;
@@ -1232,7 +1232,7 @@ int Wifi_SendAssocPacket() { // uses arm7 data in our struct
 	} else {
 		((u16 *)(data+i))[0]=0x0021; // CAPS info
 	}
-	
+
 	((u16 *)(data+i))[1]=WIFI_REG(0x8E); // Listen interval
 	i+=4;
 	data[i++]=0; // SSID element
@@ -1247,7 +1247,7 @@ int Wifi_SendAssocPacket() { // uses arm7 data in our struct
 		for(j=2;j<16;j++) WifiData->baserates7[j]=WifiData->baserates7[j-1];
 	}
 	WifiData->baserates7[1]=0x04;
-	
+
 	WifiData->baserates7[15]=0;
 	for(j=0;j<16;j++) if(WifiData->baserates7[j]==0) break;
 	numrates=j;
@@ -1500,9 +1500,9 @@ int Wifi_ProcessReceivedFrame(int macbase, int framelen) {
 							if(WifiData->authlevel==WIFI_AUTHLEVEL_AUTHENTICATED || WifiData->authlevel==WIFI_AUTHLEVEL_DEASSOCIATED) {
 								WifiData->authlevel=WIFI_AUTHLEVEL_ASSOCIATED;
 								WifiData->authctr=0;
-								
 
-								
+
+
 							}
 						} else { // status code = failure!
 							WifiData->curMode=WIFIMODE_CANNOTASSOCIATE;
@@ -1513,7 +1513,7 @@ int Wifi_ProcessReceivedFrame(int macbase, int framelen) {
 
 
 			return WFLAG_PACKET_MGT;
-		case 0x00: // 0000 00 Assoc Request  
+		case 0x00: // 0000 00 Assoc Request
 		case 0x08: // 0010 00 Reassoc Request
 		case 0x10: // 0100 00 Probe Request
 		case 0x24: // 1001 00 ATIM
@@ -1547,7 +1547,7 @@ int Wifi_ProcessReceivedFrame(int macbase, int framelen) {
                                 if(((u16 *)(data+24))[2]==0) { // status code: successful
                                     // scrape challenge text and send challenge reply
                                     if(data[24+6]==0x10) { // 16 = challenge text - this value must be 0x10 or else!
-                                        Wifi_SendSharedKeyAuthPacket2(data[24+7],data+24+8);                                        
+                                        Wifi_SendSharedKeyAuthPacket2(data[24+7],data+24+8);
                                     }
                                 } else { // rejected, just give up.
                                     WifiData->curMode=WIFIMODE_CANNOTASSOCIATE;

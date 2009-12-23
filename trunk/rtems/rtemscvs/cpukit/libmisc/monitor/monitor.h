@@ -3,9 +3,9 @@
  *
  * The RTEMS monitor task.
  */
- 
+
 /*
- *  $Id: monitor.h,v 1.38 2008/12/19 14:59:35 joel Exp $
+ *  $Id: monitor.h,v 1.39 2009/11/29 11:57:23 ralf Exp $
  */
 
 #ifndef __MONITOR_H

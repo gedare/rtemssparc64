@@ -56,7 +56,7 @@
  *  Further modified for the PPC405EX Haleakala board by
  *  Michael Hamel ADInstruments Ltd May 2008
  *
- *  $Id: bspstart.c,v 1.7 2009/10/23 07:32:44 thomas Exp $
+ *  $Id: bspstart.c,v 1.9 2009/12/17 08:42:16 thomas Exp $
  */
 #include <string.h>
 #include <fcntl.h>
@@ -71,6 +71,8 @@
 
 #include <stdio.h>
 
+LINKER_SYMBOL(intrStack_start);
+LINKER_SYMBOL(intrStack_size);
 /*
  *  Driver configuration parameters
  */
@@ -170,8 +172,6 @@ BSP_output_char_function_type BSP_output_char = DirectUARTWrite;
 void bsp_start( void )
 {
   rtems_status_code sc = RTEMS_SUCCESSFUL;
-  LINKER_SYMBOL(intrStack_start);
-  LINKER_SYMBOL(intrStack_size);
   ppc_cpu_id_t myCpu;
   ppc_cpu_revision_t myCpuRevision;
 
@@ -182,8 +182,8 @@ void bsp_start( void )
   EarlyUARTInit(115200);
 
   /*
-   * Get CPU identification dynamically. Note that the get_ppc_cpu_type() 
-   * function store the result in global variables 
+   * Get CPU identification dynamically. Note that the get_ppc_cpu_type()
+   * function store the result in global variables
    * so that it can be used later...
    */
   myCpu       = get_ppc_cpu_type();
@@ -200,9 +200,9 @@ void bsp_start( void )
   bsp_timer_internal_clock  = TRUE;
   bsp_timer_average_overhead = 2;
   bsp_timer_least_valid = 3;
-  
+
   /*
-   * Initialize default raw exception handlers. 
+   * Initialize default raw exception handlers.
    */
   sc = ppc_exc_initialize(
     PPC_INTERRUPT_DISABLE_MASK_DEFAULT,

@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/11/12 00:21:51 joel Exp $
+ *  $Id: init.c,v 1.2 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include <pmacros.h>
@@ -46,7 +46,7 @@ rtems_task Init(
 
   remaining = usleep( 3 * 1000000 );
   rtems_test_assert( !remaining );
-  
+
   sc = clock_gettime( CLOCK_REALTIME, &tv );
   rtems_test_assert( !sc );
 

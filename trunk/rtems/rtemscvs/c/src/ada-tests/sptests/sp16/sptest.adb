@@ -10,18 +10,17 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-2007.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: sptest.adb,v 1.6 2007/10/18 19:36:29 humph Exp $
+--  $Id: sptest.adb,v 1.8 2009/12/14 21:28:54 joel Exp $
 --
 
 with INTERFACES; use INTERFACES;
-with RTEMS;
 with TEST_SUPPORT;
 with TEXT_IO;
 with UNSIGNED32_IO;
@@ -36,6 +35,7 @@ package body SPTEST is
    procedure INIT (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -240,6 +240,7 @@ package body SPTEST is
    procedure TASK_1 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       RNID              : RTEMS.ID;
       SEGMENT_ADDRESS_1 : RTEMS.ADDRESS;
       SEGMENT_ADDRESS_2 : RTEMS.ADDRESS;
@@ -518,7 +519,8 @@ TEST_SUPPORT.PAUSE;
         "TA1 - return_segment - return segment to region 4 - "
       );
       PUT_ADDRESS_FROM_AREA_4( segment_address_1 );
-      RTEMS.REGION_RETURN_SEGMENT( SPTEST.REGION_ID( 4 ), segment_address_1, STATUS );
+      RTEMS.REGION_RETURN_SEGMENT(
+         SPTEST.REGION_ID( 4 ), segment_address_1, STATUS );
       TEST_SUPPORT.DIRECTIVE_FAILED( status, "region_return_segment" );
       TEXT_IO.NEW_LINE;
 
@@ -526,7 +528,8 @@ TEST_SUPPORT.PAUSE;
         "TA1 - region_return_segment - return segment to region 4 - "
       );
       PUT_ADDRESS_FROM_AREA_4( segment_address_3 );
-      RTEMS.REGION_RETURN_SEGMENT( SPTEST.REGION_ID( 4 ), segment_address_3, STATUS );
+      RTEMS.REGION_RETURN_SEGMENT(
+         SPTEST.REGION_ID( 4 ), segment_address_3, STATUS );
       TEST_SUPPORT.DIRECTIVE_FAILED( status, "region_return_segment" );
       TEXT_IO.NEW_LINE;
 
@@ -547,6 +550,7 @@ TEST_SUPPORT.PAUSE;
    procedure TASK_2 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       PREVIOUS_PRIORITY : RTEMS.TASK_PRIORITY;
       SEGMENT_ADDRESS_1 : RTEMS.ADDRESS;
       SEGMENT_ADDRESS_2 : RTEMS.ADDRESS;
@@ -633,6 +637,7 @@ TEST_SUPPORT.PAUSE;
    procedure TASK_3 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       SEGMENT_ADDRESS_1 : RTEMS.ADDRESS;
       SEGMENT_ADDRESS_2 : RTEMS.ADDRESS;
       STATUS            : RTEMS.STATUS_CODES;
@@ -675,6 +680,7 @@ TEST_SUPPORT.PAUSE;
    procedure TASK_4 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       SEGMENT_ADDRESS_1 : RTEMS.ADDRESS;
       SEGMENT_ADDRESS_2 : RTEMS.ADDRESS;
       STATUS            : RTEMS.STATUS_CODES;
@@ -727,6 +733,7 @@ TEST_SUPPORT.PAUSE;
    procedure TASK_5 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       SEGMENT_ADDRESS_1 : RTEMS.ADDRESS;
       SEGMENT_ADDRESS_2 : RTEMS.ADDRESS;
       STATUS            : RTEMS.STATUS_CODES;

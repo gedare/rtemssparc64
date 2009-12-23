@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: regionextend.c,v 1.15 2009/10/11 22:37:38 joel Exp $
+ *  $Id: regionextend.c,v 1.16 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -43,9 +43,9 @@
  */
 
 rtems_status_code rtems_region_extend(
-  Objects_Id          id,
-  void               *starting_address,
-  uintptr_t           length
+  rtems_id   id,
+  void      *starting_address,
+  uintptr_t  length
 )
 {
   uintptr_t           amount_extended;

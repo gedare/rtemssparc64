@@ -13,7 +13,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: conio.c,v 1.2 2008/09/30 04:33:52 ralf Exp $
+ *  $Id: conio.c,v 1.3 2009/12/07 16:21:07 ralf Exp $
  */
 
 /*****************************************************************************
@@ -377,7 +377,7 @@ static unsigned char inputch = ASCII_CR;    /**< input character value */
  *  @param  None
  *  @return Selected char code
  */
-char gba_getch(void)
+int gba_getch(void)
 {
   int  keyx, key  = 0;
 

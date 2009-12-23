@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: amba.c,v 1.10 2009/10/30 12:33:11 ralf Exp $
+ *  $Id: amba.c,v 1.11 2009/11/29 15:33:27 ralf Exp $
  */
 
 #include <bsp.h>
@@ -27,9 +27,9 @@ int LEON3_Cpu_Index = 0;
  *  bsp_predriver_hook
  *
  *  BSP predriver hook.  Called just before drivers are initialized.
- *  Used to scan system bus. Probes for AHB masters, AHB slaves and 
+ *  Used to scan system bus. Probes for AHB masters, AHB slaves and
  *  APB slaves. Addresses to configuration areas of the AHB masters,
- *  AHB slaves, APB slaves and APB master are storeds in 
+ *  AHB slaves, APB slaves and APB master are storeds in
  *  amba_ahb_masters, amba_ahb_slaves and amba.
  */
 
@@ -64,7 +64,7 @@ void bsp_predriver_hook(void)
       }
 #endif
   }
-  
+
   /* find GP Timer */
   i = amba_find_apbslv(&amba_conf,VENDOR_GAISLER,GAISLER_GPTIMER,&dev);
   if ( i > 0 ){

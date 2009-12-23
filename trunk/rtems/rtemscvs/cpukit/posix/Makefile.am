@@ -1,13 +1,11 @@
 ##
-## $Id: Makefile.am,v 1.72 2009/09/24 11:14:12 joel Exp $
+## $Id: Makefile.am,v 1.79 2009/12/10 07:18:03 ralf Exp $
 ##
 
 include $(top_srcdir)/automake/multilib.am
 include $(top_srcdir)/automake/compile.am
 
 EXTRA_DIST =
-
-if LIBPOSIX
 
 AM_CPPFLAGS += -D__RTEMS_INSIDE__
 
@@ -17,9 +15,13 @@ libposix_a_SOURCES =
 
 # Some POSIX functions that are nice to always have
 ## 20 Nov 2008: Now using these from newlib's posix directory
-libposix_a_SOURCES += src/sleep.c src/usleep.c 
+libposix_a_SOURCES += src/sleep.c src/usleep.c
 libposix_a_SOURCES += src/nanosleep.c src/clockgettime.c src/clocksettime.c \
     src/clockgetres.c
+
+include_rtems_posixdir = $(includedir)/rtems/posix
+
+include_rtems_posix_HEADERS = include/rtems/posix/sigset.h
 
 if HAS_PTHREADS
 # include
@@ -29,9 +31,8 @@ include_HEADERS = include/sched.h include/aio.h include/mqueue.h \
 
 # include/rtems/posix
 
-include_rtems_posixdir = $(includedir)/rtems/posix
 
-include_rtems_posix_HEADERS = include/rtems/posix/cancel.h \
+include_rtems_posix_HEADERS += include/rtems/posix/cancel.h \
     include/rtems/posix/cond.h include/rtems/posix/config.h \
     include/rtems/posix/key.h include/rtems/posix/mqueue.h \
     include/rtems/posix/mutex.h include/rtems/posix/posixapi.h \
@@ -59,8 +60,15 @@ libposix_a_SOURCES += src/aio_cancel.c src/aio_error.c src/aio_fsync.c \
 
 ## ENOSYS_C_FILES
 libposix_a_SOURCES += src/_execve.c src/execl.c src/execle.c src/execlp.c \
-    src/execv.c src/execve.c src/execvp.c src/fork.c src/pthreadatfork.c \
-    src/wait.c src/waitpid.c src/vfork.c
+    src/execv.c src/execve.c src/execvp.c
+endif
+
+libposix_a_SOURCES += src/fork.c src/vfork.c
+
+libposix_a_SOURCES += src/wait.c src/waitpid.c
+
+if HAS_PTHREADS
+libposix_a_SOURCES +=  src/pthreadatfork.c
 
 ## BARRIER_C_FILES
 libposix_a_SOURCES += src/barrierattrdestroy.c src/barrierattrgetpshared.c \
@@ -127,9 +135,17 @@ libposix_a_SOURCES += src/psignal.c src/alarm.c src/kill.c src/killinfo.c \
     src/kill_r.c src/pause.c src/psignalclearprocesssignals.c \
     src/psignalsetprocesssignals.c src/psignalchecksignal.c \
     src/psignalclearsignals.c src/psignalunblockthread.c src/pthreadkill.c \
-    src/pthreadsigmask.c src/sigaction.c src/sigaddset.c src/sigdelset.c \
-    src/sigemptyset.c src/sigfillset.c src/sigismember.c src/sigpending.c \
-    src/sigprocmask.c src/sigqueue.c src/sigsuspend.c src/sigtimedwait.c \
+    src/pthreadsigmask.c src/sigaction.c
+endif
+
+libposix_a_SOURCES += src/sigaddset.c src/sigdelset.c src/sigfillset.c \
+   src/sigemptyset.c src/sigismember.c
+
+libposix_a_SOURCES += src/sigprocmask.c
+
+if HAS_PTHREADS
+libposix_a_SOURCES += src/sigpending.c \
+    src/sigqueue.c src/sigsuspend.c src/sigtimedwait.c \
     src/sigwait.c src/sigwaitinfo.c src/signal_2.c src/ualarm.c
 
 ## RWLOCK_C_FILES
@@ -155,7 +171,7 @@ libposix_a_SOURCES += src/pspin.c src/pspindestroy.c src/pspininit.c \
 
 ## TIME_C_FILES
 libposix_a_SOURCES += src/adjtime.c src/posixtimespecabsolutetimeout.c \
-    src/clockgetcpuclockid.c src/clockgetenableattr.c src/clocksetenableattr.c 
+    src/clockgetcpuclockid.c src/clockgetenableattr.c src/clocksetenableattr.c
 
 ## TIMER_C_FILES
 libposix_a_SOURCES += src/ptimer.c src/timercreate.c src/timerdelete.c \
@@ -174,7 +190,6 @@ libposix_a_SOURCES += src/sched_getparam.c src/sched_getprioritymax.c \
     src/sched_getprioritymin.c src/sched_getscheduler.c \
     src/sched_rr_get_interval.c src/sched_setparam.c \
     src/sched_setscheduler.c src/sched_yield.c src/sysconf.c
-endif
 endif
 
 include $(srcdir)/preinstall.am

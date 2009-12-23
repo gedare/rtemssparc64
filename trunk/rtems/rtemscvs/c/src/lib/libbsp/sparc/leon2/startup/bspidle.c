@@ -9,13 +9,13 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *  Ported to LEON implementation of the SPARC by On-Line Applications
- *  Research Corporation (OAR) under contract to the European Space 
+ *  Research Corporation (OAR) under contract to the European Space
  *  Agency (ESA).
  *
- *  LEON modifications of respective RTEMS file: COPYRIGHT (c) 1995. 
+ *  LEON modifications of respective RTEMS file: COPYRIGHT (c) 1995.
  *  European Space Agency.
  *
- *  $Id: bspidle.c,v 1.1 2009/08/19 16:13:01 joel Exp $
+ *  $Id: bspidle.c,v 1.2 2009/11/29 15:33:26 ralf Exp $
  */
 
 #include <bsp.h>

@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/07/09 18:21:58 joel Exp $
+ *  $Id: init.c,v 1.2 2009/11/30 03:33:25 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -35,7 +35,7 @@ void timespec_divide_by_zero(void)
   _Timespec_Divide( &t1, &zero, &ival_percentage, &fval_percentage );
   rtems_test_assert( ival_percentage == 0 );
   rtems_test_assert( fval_percentage == 0 );
-  
+
 }
 
 rtems_task Init(

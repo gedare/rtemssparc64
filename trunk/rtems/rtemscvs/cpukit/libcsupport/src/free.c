@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: free.c,v 1.7 2009/09/06 15:24:05 joel Exp $
+ *  $Id: free.c,v 1.8 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -36,7 +36,7 @@ void free(
    *  Do not attempt to free memory if in a critical section or ISR.
    */
 
-  if ( _System_state_Is_up(_System_state_Get()) && 
+  if ( _System_state_Is_up(_System_state_Get()) &&
        !malloc_is_system_state_OK() ) {
       malloc_deferred_free(ptr);
       return;

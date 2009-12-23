@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: registers_alt.h,v 1.2 2008/08/19 15:47:14 joel Exp $
+	$Id: registers_alt.h,v 1.3 2009/11/29 14:53:01 ralf Exp $
 
 	Copyright (C) 2005
 		Michael Noland (joat)
@@ -28,7 +28,7 @@
 
 /*
 	This file should be deprecated.
-	
+
 	All hardware register defines should be replaced with REG_ for consistency and namespacing
 
 	http://forum.gbadev.org/viewtopic.php?t=4993

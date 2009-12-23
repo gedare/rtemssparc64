@@ -2,13 +2,13 @@
  * Motorola MC9328MXL Interrupt handler
  *
  * Copyright (c) 2004 by Jay Monkman <jtm@lopingdog.com>
- *      
+ *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq.c,v 1.6 2007/09/12 15:23:30 joel Exp $
+ *  $Id: irq.c,v 1.7 2009/11/30 05:03:56 ralf Exp $
  */
 #include <bsp.h>
 #include <irq.h>
@@ -38,7 +38,7 @@ static int isValidInterrupt(int irq)
 int BSP_install_rtems_irq_handler  (const rtems_irq_connect_data* irq)
 {
     rtems_interrupt_level level;
-    
+
     if (!isValidInterrupt(irq->name)) {
       return 0;
     }
@@ -65,13 +65,13 @@ int BSP_install_rtems_irq_handler  (const rtems_irq_connect_data* irq)
     {
     	irq->on(irq);
     }
-    
+
     rtems_interrupt_enable(level);
-    
+
     return 1;
 }
 
-/* 
+/*
  * Remove and interrupt handler
  *
  * You should only have to add the code to mask the interrupt.

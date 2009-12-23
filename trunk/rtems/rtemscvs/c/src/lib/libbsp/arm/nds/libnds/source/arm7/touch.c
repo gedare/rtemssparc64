@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: touch.c,v 1.2 2008/08/19 15:47:14 joel Exp $
+	$Id: touch.c,v 1.4 2009/12/07 07:12:20 ralf Exp $
 
 	Touch screen control for the ARM7
 
@@ -42,7 +42,7 @@ static u8 range = 20;
 static u8 min_range = 20;
 
 //---------------------------------------------------------------------------------
-u8 CheckStylus(){
+u8 CheckStylus(void){
 //---------------------------------------------------------------------------------
 
 	SerialWaitBusy();
@@ -94,7 +94,7 @@ uint16 touchRead(uint32 command) {
 	uint32 oldIME = REG_IME;
 
 	REG_IME = 0;
-	
+
 	SerialWaitBusy();
 
 	// Write the command and wait for it to complete

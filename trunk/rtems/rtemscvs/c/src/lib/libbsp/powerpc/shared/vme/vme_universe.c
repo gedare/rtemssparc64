@@ -1,4 +1,4 @@
-/*$Id: vme_universe.c,v 1.12 2009/11/03 18:45:04 thomas Exp $*/
+/*$Id: vme_universe.c,v 1.14 2009/12/02 00:33:47 strauman Exp $*/
 
 /* Implementation of the VME.h and VMEDMA.h APIs for the BSP using the
  * vmeUniverse/vmeTsi148 drivers
@@ -45,19 +45,19 @@
  * This file is named 'vme_universe.c' for historical reasons.
  */
 
-/* 
+/*
  * Authorship
  * ----------
  * This software was created by
  *     Till Straumann <strauman@slac.stanford.edu>, 9/2005,
  * 	   Stanford Linear Accelerator Center, Stanford University.
- * 
+ *
  * Acknowledgement of sponsorship
  * ------------------------------
  * This software was produced by
  *     the Stanford Linear Accelerator Center, Stanford University,
  * 	   under Contract DE-AC03-76SFO0515 with the Department of Energy.
- * 
+ *
  * Government disclaimer of liability
  * ----------------------------------
  * Neither the United States nor the United States Department of Energy,
@@ -66,18 +66,18 @@
  * completeness, or usefulness of any data, apparatus, product, or process
  * disclosed, or represents that its use would not infringe privately owned
  * rights.
- * 
+ *
  * Stanford disclaimer of liability
  * --------------------------------
  * Stanford University makes no representations or warranties, express or
  * implied, nor assumes any liability for the use of this software.
- * 
+ *
  * Stanford disclaimer of copyright
  * --------------------------------
  * Stanford University, owner of the copyright, hereby disclaims its
  * copyright and all other rights in this software.  Hence, anyone may
- * freely use it for any purpose without restriction.  
- * 
+ * freely use it for any purpose without restriction.
+ *
  * Maintenance of notices
  * ----------------------
  * In the interest of clarity regarding the origin and status of this
@@ -86,9 +86,9 @@
  * or distributed by the recipient and are to be affixed to any copy of
  * software made or distributed by the recipient that contains a copy or
  * derivative of this software.
- * 
+ *
  * ------------------ SLAC Software Notices, Set 4 OTT.002a, 2004 FEB 03
- */ 
+ */
 typedef struct {
 	int				(*xlate_adrs)(int, int, unsigned long, unsigned long, unsigned long *);
 	int				(*install_isr)(unsigned long, BSP_VME_ISR_t, void *);
@@ -305,7 +305,7 @@ VMEDmaListClass	pc;
 					pci_addr,
 					vme_addr,
 					n_bytes);
-					
+
 	}
 
 	return BSP_VMEDmaListDescriptorSetupTool(d, attr_mask, xfer_mode, pci_addr, vme_addr, n_bytes);
@@ -344,7 +344,7 @@ void          *carg;
 		BSP_disableVME_int_lvl(vec);
 		return 0;
 	}
-	
+
 	if ( cb ) {
 		if ( BSP_installVME_isr(vec, (BSP_VME_ISR_t)cb, usr_arg) )
 			return -4;
@@ -373,6 +373,8 @@ unsigned short	rval;
 #define VME_CLEAR_BRIDGE_ERRORS tsi_clear_errors
 #endif
 
+extern unsigned short (*_BSP_clear_vmebridge_errors)(int);
+
 int BSP_VMEInit(void)
 {
 #if defined(_VME_DRIVER_UNIVERSE)
@@ -392,7 +394,6 @@ int BSP_VMEInit(void)
 	vmeTsi148Reset();
 #ifdef VME_CLEAR_BRIDGE_ERRORS
 	{
-	extern unsigned short (*_BSP_clear_vmebridge_errors)(void);
 
 	  _BSP_clear_vmebridge_errors = VME_CLEAR_BRIDGE_ERRORS;
 
@@ -426,7 +427,7 @@ int err;
 
 /* This feature is only supported by the Universe driver (not Tsi148) */
 #if defined(BSP_PCI_VME_DRIVER_DOES_EOI) && defined(BSP_PIC_DO_EOI)
-#ifdef 	_VME_DRIVER_TSI148 
+#ifdef 	_VME_DRIVER_TSI148
 #error  "BSP_PCI_VME_DRIVER_DOES_EOI/BSP_PIC_DO_EOI feature can only be used with vmeUniverse"
 #endif
   if ( vmeUniverse0PciIrqLine < 0 )

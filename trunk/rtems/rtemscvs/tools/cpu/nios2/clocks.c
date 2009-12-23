@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: clocks.c,v 1.2 2006/08/15 21:02:55 joel Exp $
+ *  $Id: clocks.c,v 1.3 2009/12/10 07:20:06 ralf Exp $
  */
 
 #include "ptf.h"
@@ -51,7 +51,7 @@ clock_desc *find_clocks( struct ptf *sopc, struct ptf *cfg )
 
     struct ptf named     = { item, 0, 0, 0, 0 };
     struct ptf_item clk_cfg = { 2, &all, &named };
-  
+
     clocks = NULL;
     ptf_match(sopc, &clk_spec, add_clock_spec, &clocks);
 

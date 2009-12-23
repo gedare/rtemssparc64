@@ -7,14 +7,14 @@
  *
  *  Output parameters:  NONE
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task2.c,v 1.6 2003/09/04 18:53:38 joel Exp $
+ *  $Id: task2.c,v 1.7 2009/12/08 17:52:52 joel Exp $
  */
 
 #include "system.h"
@@ -28,7 +28,7 @@ void *Task_2(
 
   printf( "Task_2: sending SIGUSR1\n" );
   status = pthread_kill( Init_id, SIGUSR1 );
-  assert( !status );
+  rtems_test_assert(  !status );
 
      /* switch to Init */
 

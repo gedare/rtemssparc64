@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: signalsend.c,v 1.9 2009/01/06 05:00:45 ralf Exp $
+ *  $Id: signalsend.c,v 1.10 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -41,7 +41,7 @@
  */
 
 rtems_status_code rtems_signal_send(
-  Objects_Id        id,
+  rtems_id          id,
   rtems_signal_set  signal_set
 )
 {

@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mg5uart_reg.c,v 1.3 2004/03/31 02:02:23 ralf Exp $
+ *  $Id: mg5uart_reg.c,v 1.4 2009/11/30 05:09:01 ralf Exp $
  */
 
 #include <rtems.h>
@@ -20,13 +20,13 @@
 #ifndef _MG5UART_MULTIPLIER
 #define _MG5UART_MULTIPLIER 1
 #define _MG5UART_NAME(_X) _X
-#define _MG5UART_TYPE uint32_t  
+#define _MG5UART_TYPE uint32_t
 #endif
 
 #define CALCULATE_REGISTER_ADDRESS( _base, _reg ) \
   (_MG5UART_TYPE *)((_base) + ((_reg) * _MG5UART_MULTIPLIER ))
 
-/* 
+/*
  *  MG5UART Get Register Routine
  */
 

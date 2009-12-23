@@ -15,10 +15,9 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: dormant.c,v 1.6 2009/10/30 11:07:04 ralf Exp $
+ *  $Id: dormant.c,v 1.7 2009/12/08 17:52:47 joel Exp $
  */
 
-#include <assert.h>
 #include "system.h"
 
 void Dormant_task(void)
@@ -27,7 +26,7 @@ void Dormant_task(void)
   ext_tsk( );
 
   puts( "ERROR==>ext_tsk of DORMANT returned" );
-  assert(0);
+  rtems_test_assert(0);
 }
 
 

@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: regionresizesegment.c,v 1.11 2009/10/10 15:15:12 joel Exp $
+ *  $Id: regionresizesegment.c,v 1.12 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -44,7 +44,7 @@
  */
 
 rtems_status_code rtems_region_resize_segment(
-  Objects_Id  id,
+  rtems_id    id,
   void       *segment,
   uintptr_t   size,
   uintptr_t  *old_size

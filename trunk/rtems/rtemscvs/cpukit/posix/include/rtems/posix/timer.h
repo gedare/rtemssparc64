@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.h,v 1.20 2008/12/17 21:23:35 joel Exp $
+ *  $Id: timer.h,v 1.21 2009/11/30 15:44:20 ralf Exp $
  */
 
 #ifndef _RTEMS_POSIX_TIMER_H
@@ -25,7 +25,7 @@ extern "C" {
 
 /* Timer is free */
 #define POSIX_TIMER_STATE_FREE        0x01
-                                                                
+
 /* Created timer but not running          */
 #define POSIX_TIMER_STATE_CREATE_NEW  0x02
 

@@ -2,8 +2,8 @@
  * @file rtems/score/arm.h
  */
 
-/*  
- *  $Id: arm.h,v 1.15 2009/10/01 21:47:42 joel Exp $
+/*
+ *  $Id: arm.h,v 1.17 2009/12/15 15:14:12 thomas Exp $
  *
  *  COPYRIGHT (c) 2000 Canon Research Centre France SA.
  *  Emmanuel Raguet, mailto:raguet@crf.canon.fr
@@ -49,6 +49,9 @@ extern "C" {
 
 #elif defined(__ARM_ARCH_5TE__)
 #  define CPU_MODEL_NAME  "ARMv5TE"
+
+#elif defined(__ARM_ARCH_5TEJ__)
+#  define CPU_MODEL_NAME  "ARMv5TEJ"
 
 #elif defined(__ARM_ARCH_6J__)
 #  define CPU_MODEL_NAME  "ARMv6J"

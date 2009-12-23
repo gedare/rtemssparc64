@@ -14,7 +14,7 @@
  * the new terms are clearly indicated on the first page of each file where
  * they apply.
  *
- *  $Id: start.S,v 1.11 2009/11/11 14:29:08 strauman Exp $
+ *  $Id: start.S,v 1.12 2009/12/02 01:46:45 strauman Exp $
  */
 
 #include <rtems/asm.h>
@@ -22,7 +22,6 @@
 #include <libcpu/io.h>
 #include "ppc-asm.h"
 
-	.file	"startsim.s"
 	.section ".got2","aw"
 	.align	2
 
@@ -98,6 +97,22 @@ _start:
 	mr	sp,r0			/* use user defined stack */
 
 .Lnostack:
+#ifdef __ALTIVEC__
+	/* enable altivec; this requires the ALTIVEC user
+	 * extension to be installed in the user extension
+	 * slot 0!
+	 */
+	mfmsr r0
+	oris  r0, r0, (1<<(31-16-6))
+	mtmsr r0
+	/*
+	 * set vscr and vrsave to known values
+	 */
+	li    r0, 0
+	mtvrsave r0
+	vxor   0,0,0
+	mtvscr 0
+#endif
 	/* set up initial stack frame */
 	addi	sp,sp,-4		/* make sure we don't overwrite debug mem */
 	/* align */

@@ -1,4 +1,4 @@
-/* $Id: if_sim.c,v 1.1 2009/09/11 22:53:25 strauman Exp $ */
+/* $Id: if_sim.c,v 1.2 2009/11/30 04:34:19 ralf Exp $ */
 
 /* Trivial driver for PSIM's emulated ethernet device 'hw_ethtap'.
  *
@@ -256,7 +256,7 @@ int                f;
 					ifp->if_flags &= ~(IFF_RUNNING | IFF_OACTIVE);
 				}
 			}
-			
+
 		break;
 
 		case SIO_RTEMS_SHOW_STATS:
@@ -461,7 +461,7 @@ rtems_irq_connect_data ihdl;
 
 	ihdl.name   = ifcfg->irno;
 	ihdl.hdl    = ifsim_isr;
-	ihdl.handle = sc; 
+	ihdl.handle = sc;
 	ihdl.on     = ifsim_irq_on;
 	ihdl.off    = ifsim_irq_off;
 	ihdl.isOn   = ifsim_irq_ison;

@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  score/src/timespecsubtract.c
  */
 
@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timespecsubtract.c,v 1.1 2007/04/05 21:17:27 joel Exp $
+ *  $Id: timespecsubtract.c,v 1.2 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -32,7 +32,7 @@ void _Timespec_Subtract(
 
   if (end->tv_nsec < start->tv_nsec) {
     result->tv_sec  = end->tv_sec - start->tv_sec - 1;
-    result->tv_nsec = 
+    result->tv_nsec =
       (TOD_NANOSECONDS_PER_SECOND - start->tv_nsec) + end->tv_nsec;
   } else {
     result->tv_sec  = end->tv_sec - start->tv_sec;

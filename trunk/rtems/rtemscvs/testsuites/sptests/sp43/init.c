@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.17 2009/11/23 14:58:30 joel Exp $
+ *  $Id: init.c,v 1.19 2009/12/08 17:52:56 joel Exp $
  */
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__
@@ -175,7 +175,7 @@ rtems_task Init(
   put_name( tmpName, FALSE );
   puts( " - rtems_build_name for TEMP" );
 
-  
+
   /*
    * rtems_object_get_name - cases
    */
@@ -270,24 +270,24 @@ rtems_task Init(
    */
 
   puts( "rtems_build_id - build an id to match init task" );
-  tmpId = rtems_build_id( OBJECTS_CLASSIC_API, OBJECTS_RTEMS_TASKS, 1, 1 ),
-  assert( tmpId == main_task );
-  
+  tmpId = rtems_build_id( OBJECTS_CLASSIC_API, OBJECTS_RTEMS_TASKS, 1, 1 );
+  rtems_test_assert( tmpId == main_task );
+
   puts( "rtems_object_id_get_api - OK" );
   part = rtems_object_id_get_api( main_task );
-  assert( part == OBJECTS_CLASSIC_API );
+  rtems_test_assert( part == OBJECTS_CLASSIC_API );
 
   puts( "rtems_object_id_get_class - OK" );
   part = rtems_object_id_get_class( main_task );
-  assert( part == OBJECTS_RTEMS_TASKS );
+  rtems_test_assert( part == OBJECTS_RTEMS_TASKS );
 
   puts( "rtems_object_id_get_node - OK" );
   part = rtems_object_id_get_node( main_task );
-  assert( part == 1 );
+  rtems_test_assert( part == 1 );
 
   puts( "rtems_object_id_get_index - OK" );
   part = rtems_object_id_get_index( main_task );
-  assert( part == 1 );
+  rtems_test_assert( part == 1 );
 
   /*
    * Start another screen and do the API/Class min/max routines
@@ -332,7 +332,7 @@ rtems_task Init(
    *  Another screen break for the API and class name tests
    */
   rtems_test_pause();
- 
+
   printf( "rtems_object_get_api_name(0) = %s\n", rtems_object_get_api_name(0) );
   printf( "rtems_object_get_api_name(255) = %s\n",
     rtems_object_get_api_name(255));
@@ -344,14 +344,14 @@ rtems_task Init(
   printf( "rtems_object_get_api_name(ITRON_API) = %s\n",
      rtems_object_get_api_name(OBJECTS_ITRON_API) );
 
-  printf( "rtems_object_get_api_class_name(0, RTEMS_TASKS) = %s\n", 
+  printf( "rtems_object_get_api_class_name(0, RTEMS_TASKS) = %s\n",
     rtems_object_get_api_class_name( 0, OBJECTS_RTEMS_TASKS ) );
-  printf( "rtems_object_get_api_class_name(CLASSIC_API, 0) = %s\n", 
+  printf( "rtems_object_get_api_class_name(CLASSIC_API, 0) = %s\n",
     rtems_object_get_api_class_name( OBJECTS_CLASSIC_API, 0 ) );
-  printf("rtems_object_get_api_class_name(INTERNAL_API, MUTEXES) = %s\n", 
+  printf("rtems_object_get_api_class_name(INTERNAL_API, MUTEXES) = %s\n",
     rtems_object_get_api_class_name(
        OBJECTS_INTERNAL_API, OBJECTS_INTERNAL_MUTEXES));
-  printf("rtems_object_get_api_class_name(CLASSIC_API, RTEMS_BARRIERS) = %s\n", 
+  printf("rtems_object_get_api_class_name(CLASSIC_API, RTEMS_BARRIERS) = %s\n",
     rtems_object_get_api_class_name(
        OBJECTS_CLASSIC_API, OBJECTS_RTEMS_BARRIERS));
 
@@ -360,7 +360,7 @@ rtems_task Init(
    */
 
   rtems_test_pause();
-  
+
   puts( "rtems_object_get_class_information - INVALID_ADDRESS" );
   sc = rtems_object_get_class_information(
              OBJECTS_INTERNAL_API, OBJECTS_INTERNAL_THREADS, NULL );

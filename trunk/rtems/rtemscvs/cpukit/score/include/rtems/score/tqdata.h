@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/tqdata.h
  *
  *  This include file contains all the constants and structures
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: tqdata.h,v 1.25 2008/01/22 18:28:53 joel Exp $
+ *  $Id: tqdata.h,v 1.26 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_TQDATA_H

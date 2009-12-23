@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: dpmeminternal2external.c,v 1.8 2007/11/30 21:49:41 joel Exp $
+ *  $Id: dpmeminternal2external.c,v 1.9 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -44,9 +44,9 @@
  */
 
 rtems_status_code rtems_port_internal_to_external(
-  Objects_Id   id,
-  void        *internal,
-  void       **external
+  rtems_id   id,
+  void      *internal,
+  void     **external
 )
 {
   register Dual_ported_memory_Control *the_port;

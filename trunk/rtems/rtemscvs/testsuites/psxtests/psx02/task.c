@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.c,v 1.9 2009/05/11 01:41:15 joel Exp $
+ *  $Id: task.c,v 1.10 2009/12/08 17:52:52 joel Exp $
  */
 
 #include "system.h"
@@ -32,10 +32,10 @@ void *Task_1_through_3(
   for ( i=0 ; i<5 ; i++ ) {
     print_current_time( "Task1: ", "" );
     status = pthread_kill( Init_id, SIGUSR1 );
-    assert( !status );
+    rtems_test_assert(  !status );
 
     seconds = sleep( 1 );
-    assert( !seconds );
+    rtems_test_assert(  !seconds );
   }
   puts( "*** END OF POSIX TEST 2 ***" );
   rtems_test_exit( 0 );

@@ -1,15 +1,15 @@
-/* 
+/*
  *  This file implements a benchmark timer using the count/compare
  *  CP0 registers.
  *
  *  Copyright (c) 2005 by Cogent Computer Systems
  *  Written by Jay Monkman <jtm@lopingdog.com>
- *	
+ *
  *  The license and distribution terms for this file may be
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.c,v 1.7 2008/09/05 04:57:51 ralf Exp $
+ *  $Id: timer.c,v 1.8 2009/11/29 15:27:06 ralf Exp $
  */
 
 #include <assert.h>

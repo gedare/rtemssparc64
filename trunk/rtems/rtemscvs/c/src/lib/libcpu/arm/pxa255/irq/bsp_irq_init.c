@@ -1,12 +1,12 @@
 /*
  * PXA255 interrupt controller by Yang Xi <hiyangxi@gmail.com>
  * Copyright (c) 2004 by Jay Monkman <jtm@lopgindog.com>
- * 
+ *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp_irq_init.c,v 1.3 2009/08/22 13:59:55 joel Exp $
+ *  $Id: bsp_irq_init.c,v 1.4 2009/11/30 05:02:23 ralf Exp $
  */
 
 #include <irq.h>
@@ -20,8 +20,8 @@ void dummy_handler(uint32_t vector)
 
 void (*IRQ_table[PRIMARY_IRQS])(uint32_t vector);
 
-/* 
- * Interrupt system initialization. Disable interrupts, clear 
+/*
+ * Interrupt system initialization. Disable interrupts, clear
  * any that are pending.
  */
 void BSP_rtems_irq_mngt_init(void)

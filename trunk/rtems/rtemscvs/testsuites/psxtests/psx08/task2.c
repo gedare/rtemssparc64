@@ -8,14 +8,14 @@
  *
  *  Output parameters:  NONE
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task2.c,v 1.8 2004/04/16 09:23:25 ralf Exp $
+ *  $Id: task2.c,v 1.9 2009/12/08 17:52:53 joel Exp $
  */
 
 #include "system.h"
@@ -37,13 +37,13 @@ void *Task_2(
   status = pthread_join( Init_id, NULL );
   if ( status != EINVAL )
     printf( "status = %d\n", status );
-  assert( status == EINVAL );
+  rtems_test_assert(  status == EINVAL );
 
   puts( "Task_2: join to self task (Init) -- EDEADLK" );
   status = pthread_join( pthread_self(), NULL );
   if ( status != EDEADLK )
     printf( "status = %d\n", status );
-  assert( status == EDEADLK );
+  rtems_test_assert(  status == EDEADLK );
 
   puts( "Task_2: exitting" );
 

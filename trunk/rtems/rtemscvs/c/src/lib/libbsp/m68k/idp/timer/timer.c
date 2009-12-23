@@ -1,4 +1,4 @@
-/* 
+/*
  *  Code Modified for the MC68230 by Doug McBride, Colorado Space Grant College
  *
  *  COPYRIGHT (c) 1989-1999.
@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.c,v 1.19 2008/09/30 16:25:54 joel Exp $
+ *  $Id: timer.c,v 1.20 2009/11/29 14:59:41 ralf Exp $
  */
 
 #include <rtems.h>

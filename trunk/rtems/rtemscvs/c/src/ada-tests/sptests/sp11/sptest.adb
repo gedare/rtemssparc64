@@ -10,18 +10,17 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-1997.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: sptest.adb,v 1.4 2003/09/04 18:50:40 joel Exp $
+--  $Id: sptest.adb,v 1.6 2009/12/14 21:28:53 joel Exp $
 --
 
 with INTERFACES; use INTERFACES;
-with RTEMS;
 with TEST_SUPPORT;
 with TEXT_IO;
 with UNSIGNED32_IO;
@@ -36,6 +35,7 @@ package body SPTEST is
    procedure INIT (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -145,6 +145,7 @@ package body SPTEST is
    procedure TASK_1 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       EVENTOUT : RTEMS.EVENT_SET;
       TIME     : RTEMS.TIME_OF_DAY;
       STATUS   : RTEMS.STATUS_CODES;
@@ -636,6 +637,7 @@ package body SPTEST is
    procedure TASK_2 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       EVENTOUT : RTEMS.EVENT_SET;
       TIME     : RTEMS.TIME_OF_DAY;
       STATUS   : RTEMS.STATUS_CODES;
@@ -670,7 +672,7 @@ package body SPTEST is
       TEST_SUPPORT.DIRECTIVE_FAILED( STATUS, "EVENT_SEND of 14 and 15" );
 
       TEXT_IO.PUT_LINE( 
-     "TA2 - event_receive - waiting forever on EVENT_17 or EVENT_18 - EVENT_ANY"
+   "TA2 - event_receive - waiting forever on EVENT_17 or EVENT_18 - EVENT_ANY"
       );
       RTEMS.EVENT_RECEIVE( 
          RTEMS.EVENT_17 + RTEMS.EVENT_18,
@@ -780,6 +782,8 @@ package body SPTEST is
       IGNORED_ADDRESS : in     RTEMS.ADDRESS
    )
    is
+      pragma Unreferenced(IGNORED_ID);
+      pragma Unreferenced(IGNORED_ADDRESS);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -798,6 +802,8 @@ package body SPTEST is
       IGNORED_ADDRESS : in     RTEMS.ADDRESS
    )
    is
+      pragma Unreferenced(IGNORED_ID);
+      pragma Unreferenced(IGNORED_ADDRESS);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -816,6 +822,8 @@ package body SPTEST is
       IGNORED_ADDRESS : in     RTEMS.ADDRESS
    )
    is
+      pragma Unreferenced(IGNORED_ID);
+      pragma Unreferenced(IGNORED_ADDRESS);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -834,6 +842,8 @@ package body SPTEST is
       IGNORED_ADDRESS : in     RTEMS.ADDRESS
    )
    is
+      pragma Unreferenced(IGNORED_ID);
+      pragma Unreferenced(IGNORED_ADDRESS);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -852,6 +862,8 @@ package body SPTEST is
       IGNORED_ADDRESS : in     RTEMS.ADDRESS
    )
    is
+      pragma Unreferenced(IGNORED_ID);
+      pragma Unreferenced(IGNORED_ADDRESS);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -870,6 +882,8 @@ package body SPTEST is
       IGNORED_ADDRESS : in     RTEMS.ADDRESS
    )
    is
+      pragma Unreferenced(IGNORED_ID);
+      pragma Unreferenced(IGNORED_ADDRESS);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -888,6 +902,8 @@ package body SPTEST is
       IGNORED_ADDRESS : in     RTEMS.ADDRESS
    )
    is
+      pragma Unreferenced(IGNORED_ID);
+      pragma Unreferenced(IGNORED_ADDRESS);
       STATUS : RTEMS.STATUS_CODES;
    begin
 

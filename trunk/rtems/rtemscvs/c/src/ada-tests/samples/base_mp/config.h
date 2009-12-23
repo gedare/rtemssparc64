@@ -10,16 +10,16 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: config.h,v 1.3 2005/05/01 06:27:13 ralf Exp $
+ *  $Id: config.h,v 1.4 2009/11/30 03:43:34 ralf Exp $
  */
 
 /* configuration information */
- 
+
 #define CONFIGURE_MP_APPLICATION
- 
+
 #define CONFIGURE_APPLICATION_NEEDS_CONSOLE_DRIVER
 #define CONFIGURE_APPLICATION_NEEDS_CLOCK_DRIVER
- 
+
 #define CONFIGURE_MAXIMUM_TASKS           2
 
 #define CONFIGURE_POSIX_INIT_THREAD_TABLE

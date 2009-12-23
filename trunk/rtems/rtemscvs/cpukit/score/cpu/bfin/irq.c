@@ -8,12 +8,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq.c,v 1.4 2008/08/14 15:25:14 joel Exp $
+ *  $Id: irq.c,v 1.5 2009/12/04 04:25:29 ralf Exp $
  */
- 
+
 
 #if 0 /* this file no longer used */
- 
+
 #include <rtems/system.h>
 #include <rtems/score/cpu.h>
 #include <rtems/score/isr.h>

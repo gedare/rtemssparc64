@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: semtimedwait.c,v 1.12 2009/10/10 15:21:41 joel Exp $
+ *  $Id: semtimedwait.c,v 1.13 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -53,7 +53,7 @@ int sem_timedwait(
    *  then we do a polling operation and convert the UNSATISFIED
    *  status into the appropriate error.
    *
-   *  If the status is POSIX_ABSOLUTE_TIMEOUT_INVALID, 
+   *  If the status is POSIX_ABSOLUTE_TIMEOUT_INVALID,
    *  POSIX_ABSOLUTE_TIMEOUT_IS_IN_PAST, or POSIX_ABSOLUTE_TIMEOUT_IS_NOW,
    *  then we should not wait.
    */

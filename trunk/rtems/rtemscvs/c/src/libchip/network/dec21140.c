@@ -7,7 +7,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: dec21140.c,v 1.43 2009/02/19 19:25:53 joel Exp $
+ * $Id: dec21140.c,v 1.46 2009/12/11 13:05:22 ralf Exp $
  *
  * ------------------------------------------------------------------------
  * [22.05.2000,StWi/CWA] added support for the DEC/Intel 21143 chip
@@ -49,16 +49,17 @@
   #define DEC21140_SUPPORTED
   #define PCI_DRAM_OFFSET 0
 #endif
-#if defined(__PPC__) && (defined(mpc604) || defined(mpc750) || defined(ppc603e))
+#if defined(__PPC__)
   #define DEC21140_SUPPORTED
 #endif
+
+#include <bsp.h>
 
 #if !defined(PCI_DRAM_OFFSET)
   #undef DEC21140_SUPPORTED
 #endif
 
 #if defined(DEC21140_SUPPORTED)
-#include <bsp.h>
 #include <rtems/pci.h>
 
 #if defined(__PPC__)
@@ -1002,7 +1003,7 @@ rtems_dec21140_driver_attach (struct rtems_bsdnet_ifconfig *config, int attach)
    tmp = (unsigned int)(lvalue & (unsigned int)(~MEM_MASK))
       + (unsigned int)PCI_MEM_BASE;
 
-   sc->base = (unsigned int *)(tmp);
+   sc->base = (uint32_t*)(tmp);
 
    pci_read_config_byte(pbus,
                         pdev,

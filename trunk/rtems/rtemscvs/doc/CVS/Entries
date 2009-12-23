@@ -18,7 +18,6 @@ D/started_ada////
 D/tools////
 D/user////
 /.cvsignore/1.3/Fri Oct 23 12:47:31 2009//
-/ChangeLog/1.261/Wed Nov 25 15:50:03 2009//
 /HELP.html/1.12/Fri Oct 23 12:47:31 2009//
 /Makefile.am/1.22/Fri Oct 23 12:47:31 2009//
 /README/1.6/Fri Oct 23 12:47:31 2009//
@@ -31,3 +30,4 @@ D/user////
 /rtems_footer.html.in/1.6/Fri Oct 23 12:47:31 2009//
 /rtems_header.html.in/1.4/Fri Oct 23 12:47:31 2009//
 /setup.def/1.3/Fri Oct 23 12:47:31 2009//
+/ChangeLog/1.263/Tue Dec 22 15:27:19 2009//

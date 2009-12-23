@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/isr.h
  *
  *  This include file contains all the constants and structures associated
@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: isr.h,v 1.30 2009/07/17 09:08:22 thomas Exp $
+ *  $Id: isr.h,v 1.31 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_ISR_H
@@ -199,7 +199,7 @@ void _ISR_Dispatch( void );
  *  Invokes the thread dispatcher or signal extension if necessary.
  *
  *  It should be called at the end of interrupt processing.  The interrupt nest
- *  level must be zero before calling this routine. 
+ *  level must be zero before calling this routine.
  *
  *  This is a high level replacement of _ISR_Dispatch().  It must be invoked
  *  within an environment such that a call to _Thread_Dispatch() is allowed.

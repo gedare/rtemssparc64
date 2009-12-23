@@ -35,7 +35,7 @@
 | *  http://www.rtems.com/license/LICENSE.
 | **************************************************************************
 |
-|  $Id: bsp.h,v 1.43 2009/10/28 01:24:10 strauman Exp $
+|  $Id: bsp.h,v 1.45 2009/12/10 18:44:10 joel Exp $
 +--------------------------------------------------------------------------*/
 
 #ifndef _BSP_H
@@ -53,8 +53,6 @@ extern "C" {
 #include <rtems/clockdrv.h>
 #include <libcpu/cpu.h>
 #include <rtems/bspIo.h>
-
-#define CONFIGURE_NUMBER_OF_TERMIOS_PORTS 1
 
 /*
  * Network driver configuration
@@ -163,10 +161,6 @@ extern int rtems_dec21140_driver_attach(struct rtems_bsdnet_ifconfig *, int);
 
 extern interrupt_gate_descriptor Interrupt_descriptor_table[IDT_SIZE];
 extern segment_descriptors Global_descriptor_table   [GDT_SIZE];
-
-extern uint32_t                  rtemsFreeMemStart;
-  /* Address of start of free memory - should be used when creating new
-     partitions or regions and updated afterwards. */
 
 /*-------------------------------------------------------------------------+
 | Function Prototypes.

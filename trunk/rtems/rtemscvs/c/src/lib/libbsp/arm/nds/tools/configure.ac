@@ -1,5 +1,5 @@
 ##
-## $Id: configure.ac,v 1.1 2008/04/16 18:37:33 joel Exp $
+## $Id: configure.ac,v 1.2 2009/11/28 06:28:39 ralf Exp $
 ##
 
 AC_PREREQ(2.60)
@@ -8,7 +8,7 @@ AC_CONFIG_SRCDIR([runtest])
 RTEMS_TOP(../../../../../../..)
 
 # HACK: so we use the default native flags and do not inherit cross cflags
-# HACK: I really hope we get a better solution soon. --joel 
+# HACK: I really hope we get a better solution soon. --joel
 CFLAGS=
 AC_PROG_CC
 AC_PROG_CXX

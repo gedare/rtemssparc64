@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.10 2009/10/30 06:12:29 ralf Exp $
+ *  $Id: init.c,v 1.12 2009/12/08 17:52:56 joel Exp $
  */
 
 #include <tmacros.h>
@@ -30,20 +30,20 @@ void test_case_one(void)
   puts( "Init - _Heap_Initialize (for test one) - OK" );
   heap_size = _Heap_Initialize( &Heap, Memory, sizeof(Memory), 8 );
   printf( "Init - Heap size=%" PRIu32 "\n", heap_size );
-  assert( heap_size );
+  rtems_test_assert( heap_size );
 
   puts( "Init - _Heap_Allocate - too large size (overflow)- not OK");
 #define UINTPTR_MAX 64
   ptr1 = _Heap_Allocate( &Heap, UINTPTR_MAX );
-  assert( !ptr1 );
+  rtems_test_assert( !ptr1 );
 
   puts( "Init - _Heap_Allocate_aligned - OK");
   ptr1 = _Heap_Allocate_aligned( &Heap, 64, 32 );
-  assert( ptr1 );
+  rtems_test_assert( ptr1 );
 
   puts( "Init - _Heap_Resize_block - OK");
   hc = _Heap_Resize_block( &Heap, ptr1, 4, &old, &avail );
-  assert( !hc );
+  rtems_test_assert( !hc );
 }
 
 /*
@@ -61,15 +61,15 @@ void test_case_two(void)
   puts( "\nInit - _Heap_Initialize (for test two) - OK" );
   heap_size = _Heap_Initialize( &Heap, Memory, sizeof(Memory), 8 );
   printf( "Init - Heap size=%" PRIu32 "\n", heap_size );
-  assert( heap_size );
+  rtems_test_assert( heap_size );
 
   puts( "Init - _Heap_Allocate_aligned - OK");
   ptr1 = _Heap_Allocate_aligned( &Heap, 64, 4 );
-  assert( ptr1 );
+  rtems_test_assert( ptr1 );
 
   puts( "Init - _Heap_Resize_block - OK");
   hc = _Heap_Resize_block( &Heap, ptr1, 56, &old, &avail );
-  assert( !hc );
+  rtems_test_assert( !hc );
 }
 
 /*
@@ -117,7 +117,7 @@ rtems_task Init(
 )
 {
   puts( "\n\n*** TEST 63 ***" );
-  
+
   test_case_one();
 
   test_case_two();

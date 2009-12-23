@@ -5,7 +5,7 @@
  *  which should be provided by all BSPs for VMEbus Single Board
  *  Computers but currently only a few do so.
  */
- 
+
 /*
  *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: vmeintr.h,v 1.10 2005/01/28 08:04:27 ralf Exp $
+ *  $Id: vmeintr.h,v 1.11 2009/11/29 11:57:22 ralf Exp $
  */
 
 #ifndef _RTEMS_VMEINTR_H

@@ -1,5 +1,5 @@
 /*  RTEMS Clock Tick Driver for Blackfin.  Uses Blackfin Core Timer.
- * 
+ *
  *  Copyright (c) 2008 Kallisti Labs, Los Gatos, CA, USA
  *             written by Allan Hessenflow <allanh@kallisti.com>
  *
@@ -7,9 +7,9 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: clock.c,v 1.3 2008/09/25 20:07:47 joel Exp $
+ *  $Id: clock.c,v 1.4 2009/11/30 05:03:49 ralf Exp $
  */
- 
+
 
 #include <rtems.h>
 #include <stdlib.h>

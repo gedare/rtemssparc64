@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.25 2009/10/20 09:38:18 ralf Exp $
+##
+## $Id: configure.ac,v 1.26 2009/11/28 06:28:40 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-m68k-mvme162],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -15,7 +15,7 @@ RTEMS_PROG_CC_FOR_TARGET
 RTEMS_CANONICALIZE_TOOLS
 RTEMS_PROG_CCAS
 
-RTEMS_CHECK_NETWORKING 
+RTEMS_CHECK_NETWORKING
 
 ## RTEMS_CONFIG_BUILD_SUBDIRS(tools)
 

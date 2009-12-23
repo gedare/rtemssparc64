@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.58 2009/10/23 07:32:45 thomas Exp $
+## $Id: Makefile.am,v 1.59 2009/12/02 01:46:45 strauman Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -78,7 +78,8 @@ libbsp_a_LIBADD = ../../../libcpu/@RTEMS_CPU@/shared/cpuIdent.rel \
     ../../../libcpu/@RTEMS_CPU@/@exceptions@/exc_bspsupport.rel \
     ../../../libcpu/@RTEMS_CPU@/@exceptions@/irq_bspsupport.rel \
     ../../../libcpu/@RTEMS_CPU@/mpc6xx/mmu.rel \
-    ../../../libcpu/@RTEMS_CPU@/mpc6xx/timer.rel
+    ../../../libcpu/@RTEMS_CPU@/mpc6xx/timer.rel \
+    ../../../libcpu/@RTEMS_CPU@/mpc6xx/altivec.rel
 
 include $(srcdir)/preinstall.am
 include $(top_srcdir)/../../../../automake/local.am

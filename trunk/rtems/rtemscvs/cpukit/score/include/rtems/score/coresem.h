@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/coresem.h
  *
  *  This include file contains all the constants and structures associated
@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: coresem.h,v 1.27 2009/09/13 20:54:01 joel Exp $
+ *  $Id: coresem.h,v 1.28 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_CORESEM_H

@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.38 2009/07/17 13:53:04 thomas Exp $
+## $Id: Makefile.am,v 1.39 2009/11/28 06:24:46 ralf Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -62,7 +62,7 @@ network_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 endif
 
 # libcpu libraries could go here
-libbsp_a_LIBADD = 
+libbsp_a_LIBADD =
 if HAS_NETWORKING
 libbsp_a_LIBADD += network.rel
 endif

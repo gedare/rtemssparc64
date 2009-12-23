@@ -10,7 +10,7 @@
  * Saskatoon, Saskatchewan, CANADA
  * eric@skatter.usask.ca
  *
- *  $Id: bsp.h,v 1.33 2008/09/18 17:38:57 joel Exp $
+ *  $Id: bsp.h,v 1.34 2009/11/29 14:59:40 ralf Exp $
  */
 
 /*  bsp.h
@@ -92,14 +92,14 @@ m68k_isr_entry set_vector(
  * definitions for PGH360 board
  */
 #if defined(PGH360)
-/* 
+/*
  * logical SPI addresses of SPI slaves available
  */
 #define PGH360_SPI_ADDR_EEPROM     0
 #define PGH360_SPI_ADDR_DISP4_DATA 1
 #define PGH360_SPI_ADDR_DISP4_CTRL 2
 
-/* 
+/*
  * Port B bit locations of SPI slave selects
  */
 #define PGH360_PB_SPI_DISP4_RS_MSK   (1<<15)

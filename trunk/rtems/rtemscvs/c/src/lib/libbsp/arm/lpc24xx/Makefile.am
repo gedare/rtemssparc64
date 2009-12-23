@@ -5,7 +5,7 @@
 # @brief Makefile of LibBSP for the LPC24XX boards.
 #
 
-# $Id: Makefile.am,v 1.23 2009/11/03 11:34:37 ralf Exp $
+# $Id: Makefile.am,v 1.24 2009/12/15 15:20:46 thomas Exp $
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
 
@@ -34,6 +34,7 @@ include_bsp_HEADERS += ../../shared/include/stackalloc.h
 include_bsp_HEADERS += ../../shared/tod.h
 include_bsp_HEADERS += ../shared/include/linker-symbols.h
 include_bsp_HEADERS += ../shared/include/start.h
+include_bsp_HEADERS += ../shared/lpc/include/lpc-timer.h
 include_bsp_HEADERS += include/irq-config.h
 include_bsp_HEADERS += include/irq.h
 include_bsp_HEADERS += include/lpc24xx.h
@@ -42,6 +43,7 @@ include_bsp_HEADERS += include/ssp.h
 include_bsp_HEADERS += include/dma.h
 include_bsp_HEADERS += include/i2c.h
 include_bsp_HEADERS += include/io.h
+include_bsp_HEADERS += include/lpc-clock-config.h
 
 include_HEADERS += ../../shared/include/tm27.h
 
@@ -61,6 +63,7 @@ EXTRA_DIST = startup/linkcmds.lpc24xx_ea
 EXTRA_DIST += startup/linkcmds.lpc24xx_ncs_rom_int
 EXTRA_DIST += startup/linkcmds.lpc24xx_ncs_rom_ext
 EXTRA_DIST += startup/linkcmds.lpc24xx_ncs_ram
+EXTRA_DIST += startup/linkcmds.lpc2362
 
 ###############################################################################
 #                  LibBSP                                                     #
@@ -100,7 +103,7 @@ libbsp_a_SOURCES += ../../shared/console.c \
 	console/console-config.c
 
 # Clock
-libbsp_a_SOURCES += clock/clock-config.c \
+libbsp_a_SOURCES += ../shared/lpc/clock/lpc-clock-config.c \
 	../../../shared/clockdrv_shell.h
 
 # RTC

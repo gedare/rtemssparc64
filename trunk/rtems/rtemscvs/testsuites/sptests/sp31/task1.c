@@ -11,11 +11,13 @@
  *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
+ *  Copyright (c) 2009 embedded brains GmbH.
+ *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.12 2009/10/26 17:13:09 ralf Exp $
+ *  $Id: task1.c,v 1.16 2009/12/08 21:03:29 joel Exp $
  */
 
 #include "system.h"
@@ -33,6 +35,22 @@ rtems_timer_service_routine Should_not_fire_TSR(
 )
 {
   TSR_fired = 1;
+}
+
+rtems_timer_service_routine Do_nothing(
+  rtems_id  ignored_id,
+  void     *ignored_address
+)
+{
+  /* Do nothing */
+}
+
+static Watchdog_Interval schedule_time( void )
+{
+  const Watchdog_Control *watchdog =
+    &_Timer_server->Interval_watchdogs.System_watchdog;
+
+  return watchdog->initial + watchdog->start_time;
 }
 
 rtems_task Task_1(
@@ -105,7 +123,7 @@ rtems_task Task_1(
   printf( "Timer 1 scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
     info.start_time + info.initial );
   printf( "Timer Server scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
-    _Timer_Server->Timer.initial + _Timer_Server->Timer.start_time );
+    schedule_time() );
 
   puts( "TA1 - rtems_task_wake_after - 1 second" );
   status = rtems_task_wake_after( 1 * rtems_clock_get_ticks_per_second() );
@@ -121,9 +139,8 @@ rtems_task Task_1(
   printf( "Timer 1 scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
     info.start_time + info.initial );
   printf( "Timer Server scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
-    _Timer_Server->Timer.initial + _Timer_Server->Timer.start_time );
-  assert(  (info.start_time + info.initial) ==
-    (_Timer_Server->Timer.initial + _Timer_Server->Timer.start_time) );
+    schedule_time() );
+  rtems_test_assert( (info.start_time + info.initial) == schedule_time() );
 
   puts( "TA1 - rtems_task_wake_after - 1 second" );
   status = rtems_task_wake_after( 1 * rtems_clock_get_ticks_per_second() );
@@ -139,9 +156,8 @@ rtems_task Task_1(
   printf( "Timer 1 scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
     info.start_time + info.initial );
   printf( "Timer Server scheduled for %" PRIdWatchdog_Interval " ticks since boot\n",
-    _Timer_Server->Timer.initial + _Timer_Server->Timer.start_time );
-  assert(  (info.start_time + info.initial) ==
-    (_Timer_Server->Timer.initial + _Timer_Server->Timer.start_time) );
+    schedule_time() );
+  rtems_test_assert( (info.start_time + info.initial) == schedule_time() );
 
   puts( "TA1 - rtems_timer_cancel - timer 1" );
   status = rtems_timer_cancel( tmid );
@@ -260,6 +276,67 @@ rtems_task Task_1(
   directive_failed( status, "rtems_task_wake_after" );
 
   Print_time();
+
+  puts( "TA1 - rtems_timer_cancel - timer 1" );
+  status = rtems_timer_cancel( tmid );
+  directive_failed( status, "rtems_timer_cancel" );
+
+/* TOD timer insert with non empty TOD timer chain */
+
+  status = rtems_clock_get_tod( &time );
+  directive_failed( status, "rtems_clock_get_tod" );
+
+  time.second += 3;
+
+  puts( "TA1 - rtems_timer_server_fire_when - timer 1 in 3 seconds" );
+  status = rtems_timer_server_fire_when( tmid, &time, Do_nothing, NULL );
+  directive_failed( status, "rtems_timer_server_fire_when" );
+
+  puts( "TA1 - rtems_timer_server_fire_when - timer 2 in 3 seconds" );
+  status = rtems_timer_server_fire_when( tmid2, &time, Do_nothing, NULL );
+  directive_failed( status, "rtems_timer_server_fire_when" );
+
+  puts( "TA1 - rtems_task_wake_after - 1 second" );
+  status = rtems_task_wake_after( 1 * rtems_clock_get_ticks_per_second() );
+  directive_failed( status, "rtems_task_wake_after" );
+
+  puts( "TA1 - rtems_timer_server_fire_when - timer 2 in 3 seconds" );
+  status = rtems_timer_server_fire_when( tmid2, &time, Do_nothing, NULL );
+  directive_failed( status, "rtems_timer_server_fire_when" );
+
+  puts( "TA1 - rtems_timer_cancel - timer 1" );
+  status = rtems_timer_cancel( tmid );
+  directive_failed( status, "rtems_timer_cancel" );
+
+  puts( "TA1 - rtems_timer_cancel - timer 2" );
+  status = rtems_timer_cancel( tmid2 );
+  directive_failed( status, "rtems_timer_cancel" );
+
+/* TOD chain processing with time wrap */
+
+  time.second = 30;
+
+  status = rtems_clock_set( &time );
+  directive_failed( status, "rtems_clock_set" );
+
+  time.second = 31;
+
+  puts( "TA1 - rtems_timer_server_fire_when - timer 1 in 1 seconds" );
+  status = rtems_timer_server_fire_when( tmid, &time, Do_nothing, NULL );
+  directive_failed( status, "rtems_timer_server_fire_when" );
+
+  time.second = 29;
+
+  status = rtems_clock_set( &time );
+  directive_failed( status, "rtems_clock_set" );
+
+  puts( "TA1 - rtems_timer_server_fire_after - timer 2 in 1 tick" );
+  status = rtems_timer_server_fire_after( tmid2, 1, Do_nothing, NULL );
+  directive_failed( status, "rtems_timer_server_fire_after" );
+
+  puts( "TA1 - rtems_task_wake_after - 1 tick" );
+  status = rtems_task_wake_after( 1 );
+  directive_failed( status, "rtems_task_wake_after" );
 
   puts( "TA1 - rtems_timer_cancel - timer 1" );
   status = rtems_timer_cancel( tmid );

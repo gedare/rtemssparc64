@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: uart.h,v 1.2 2008/09/06 17:34:02 ralf Exp $
+ *  $Id: uart.h,v 1.3 2009/11/30 05:03:49 ralf Exp $
  */
 
 #ifndef _uart_h_
@@ -50,7 +50,7 @@ rtems_device_driver bfin_uart_open(rtems_device_major_number major,
 
 void bfin_uart_isr(int source);
 
- 
+
 #ifdef __cplusplus
 }
 #endif

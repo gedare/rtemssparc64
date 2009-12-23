@@ -1,8 +1,8 @@
-/** 
+/**
  *  @file  rtems/score/threadsync.h
  *
  *  This include file contains all constants and structures associated
- *  with synchronizing a thread blocking operation with potential 
+ *  with synchronizing a thread blocking operation with potential
  *  actions in an ISR.
  */
 
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: threadsync.h,v 1.2 2008/01/29 23:58:17 joel Exp $
+ *  $Id: threadsync.h,v 1.3 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_THREAD_SYNC_H

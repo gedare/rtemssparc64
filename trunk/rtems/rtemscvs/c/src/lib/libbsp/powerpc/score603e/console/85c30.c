@@ -10,8 +10,8 @@
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
- * 
- *  $Id: 85c30.c,v 1.12 2009/05/05 16:24:03 jennifer Exp $
+ *
+ *  $Id: 85c30.c,v 1.13 2009/11/30 04:33:54 ralf Exp $
  */
 
 #include <rtems.h>

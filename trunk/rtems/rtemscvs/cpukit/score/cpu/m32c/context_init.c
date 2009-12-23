@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: context_init.c,v 1.2 2008/10/28 21:44:58 joel Exp $
+ *  $Id: context_init.c,v 1.3 2009/11/29 13:51:53 ralf Exp $
  */
 
 #include <stdint.h>
@@ -56,7 +56,7 @@ void _CPU_Context_Initialize(
   if ( !new_level )         /* interrupt level 0 --> enabled */
     frame->flg |= 0x40;
   frame->a0 = 0x01020304;
-  frame->a1 =0xa1a2a3a4; 
+  frame->a1 =0xa1a2a3a4;
   frame->r0r2 = 0;
   frame->r1r3 = 0;
   frame->frameLow = ((uint32_t)frame)  & 0xffff;

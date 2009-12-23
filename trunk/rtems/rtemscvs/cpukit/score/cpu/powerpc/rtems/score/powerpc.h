@@ -38,7 +38,7 @@
  * Note:
  *      This file is included by both C and assembler code ( -DASM )
  *
- *  $Id: powerpc.h,v 1.30 2009/10/21 13:19:09 thomas Exp $
+ *  $Id: powerpc.h,v 1.31 2009/12/04 05:24:33 ralf Exp $
  */
 
 
@@ -61,7 +61,7 @@ extern "C" {
  *  This file contains the information required to build
  *  RTEMS for the PowerPC family.
  */
- 
+
 /* Generic ppc */
 
 #ifdef _SOFT_FLOAT
@@ -72,7 +72,7 @@ extern "C" {
 #define CPU_MODEL_NAME "Generic (classic FPU)"
 #endif
 
-#define PPC_ALIGNMENT			8  
+#define PPC_ALIGNMENT			8
 #define PPC_STRUCTURE_ALIGNMENT	32
 
 /*
@@ -132,7 +132,7 @@ extern "C" {
  *  support doubles (8-byte floating point numbers).
  *
  *  If the model does NOT have FP support, then the model does
- *  NOT have double length FP registers. 
+ *  NOT have double length FP registers.
  */
 
 #if (PPC_HAS_FPU)

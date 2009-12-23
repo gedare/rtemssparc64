@@ -12,7 +12,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console.c,v 1.3 2008/09/22 21:49:19 joel Exp $
+ *  $Id: console.c,v 1.4 2009/12/07 16:21:07 ralf Exp $
  */
 
 #include <stdio.h>
@@ -74,7 +74,7 @@ static int gba_setAttributes(int minor, const struct termios *t)
 /** BSP_output_char for printk support */
 BSP_output_char_function_type     BSP_output_char = (BSP_output_char_function_type)     gba_putch;
 /** BSP_poll_char for printk support */
-BSP_polling_getchar_function_type BSP_poll_char   = (BSP_polling_getchar_function_type) gba_getch;
+BSP_polling_getchar_function_type BSP_poll_char   = gba_getch;
 
 /**
  *  @brief Console device driver INITIALIZE entry point

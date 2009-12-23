@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: idtr.S,v 1.3 2004/04/01 10:06:06 ralf Exp $
+ *  $Id: idtr.S,v 1.4 2009/12/04 04:23:01 ralf Exp $
  */
 
 #include <rtems/asm.h>
@@ -26,7 +26,7 @@ PUBLIC (i386_get_info_from_IDTR)
 PUBLIC (i386_set_IDTR)
 PUBLIC (i386_get_info_from_GDTR)
 PUBLIC (i386_set_GDTR)
-		
+
 SYM (i386_get_info_from_IDTR):
 	movl	4(esp), ecx	    /* get location where table address */
                                     /*    must be stored */
@@ -52,7 +52,7 @@ SYM (i386_get_info_from_IDTR):
 extern void i386_set_IDTR (interrupt_gate_descriptor* table,
 		           unsigned limit);
  */
-SYM (i386_set_IDTR):			
+SYM (i386_set_IDTR):
 
 	leal	4(esp), edx	    /* load in edx address of input */
                                     /*    parameter "table" */
@@ -73,8 +73,8 @@ SYM (i386_set_IDTR):
 extern void i386_get_info_from_GDTR (segment_descriptors** table,
 				     unsigned* limit);
  */
-	
-SYM (i386_get_info_from_GDTR):	
+
+SYM (i386_get_info_from_GDTR):
 	movl	4(esp), ecx	    /* get location where table address */
                                     /*    must be stored */
 	movl	8(esp), edx	    /* get location table size must be stored */
@@ -97,7 +97,7 @@ SYM (i386_get_info_from_GDTR):
  * Must be called with interrupts masked at processor level!!!.
  *   extern void i386_set_GDTR (segment_descriptors*, unsigned limit);
  */
-SYM (i386_set_GDTR):			
+SYM (i386_set_GDTR):
 
 	leal	4(esp), edx	    /* load in edx address of input */
                                     /*   parameter "table" */
@@ -111,7 +111,7 @@ SYM (i386_set_GDTR):
 	lgdt	(edx)
 
 	ret
-		
+
 END_CODE
 
 END

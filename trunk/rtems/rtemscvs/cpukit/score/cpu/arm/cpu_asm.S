@@ -1,5 +1,5 @@
 /*
- *  $Id: cpu_asm.S,v 1.10 2009/09/18 08:07:23 thomas Exp $
+ *  $Id: cpu_asm.S,v 1.11 2009/12/04 05:22:05 ralf Exp $
  *
  *  This file contains all assembly code for the ARM implementation
  *  of RTEMS.
@@ -37,9 +37,9 @@
  *
  *  Using the ldm/stm opcodes save 2-3 us on 100 MHz ARM9TDMI with
  *  a 16 bit data bus.
- *        
+ *
  */
- 
+
 DEFINE_FUNCTION_ARM(_CPU_Context_switch)
 /* Start saving context */
 	mrs	r2, cpsr
@@ -47,7 +47,7 @@ DEFINE_FUNCTION_ARM(_CPU_Context_switch)
 
 
 /* Start restoring context */
-_restore:       
+_restore:
 	ldmia	r1,  {r2, r4, r5, r6, r7, r8, r9, r10, r11, r13, r14}
 	msr	cpsr, r2
 #ifdef __thumb__

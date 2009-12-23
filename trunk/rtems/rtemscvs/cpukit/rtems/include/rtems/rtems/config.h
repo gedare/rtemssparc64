@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: config.h,v 1.19 2009/09/13 20:44:37 joel Exp $
+ *  $Id: config.h,v 1.20 2009/11/29 11:55:14 ralf Exp $
  */
 
 #ifndef _RTEMS_RTEMS_CONFIG_H
@@ -44,7 +44,7 @@ extern "C" {
  */
 typedef struct {
   /**
-   * This field contains the maximum number of Classic API 
+   * This field contains the maximum number of Classic API
    * Tasks which are configured for this application.
    */
   uint32_t                    maximum_tasks;
@@ -56,51 +56,51 @@ typedef struct {
   bool                        notepads_enabled;
 
   /**
-   * This field contains the maximum number of Classic API 
+   * This field contains the maximum number of Classic API
    * Timers which are configured for this application.
    */
   uint32_t                    maximum_timers;
 
   /**
-   * This field contains the maximum number of Classic API 
+   * This field contains the maximum number of Classic API
    * Semaphores which are configured for this application.
    */
   uint32_t                    maximum_semaphores;
 
   /**
-   * This field contains the maximum number of Classic API 
+   * This field contains the maximum number of Classic API
    * Message Queues which are configured for this application.
    */
   uint32_t                    maximum_message_queues;
 
   /**
-   * This field contains the maximum number of Classic API 
+   * This field contains the maximum number of Classic API
    * Partitions which are configured for this application.
    */
   uint32_t                    maximum_partitions;
 
   /**
-   * This field contains the maximum number of Classic API 
+   * This field contains the maximum number of Classic API
    * Regions which are configured for this application.
    */
   uint32_t                    maximum_regions;
 
   /**
-   * This field contains the maximum number of Classic API 
+   * This field contains the maximum number of Classic API
    * Dual Ported Memory Areas which are configured for this
    * application.
    */
   uint32_t                    maximum_ports;
 
   /**
-   * This field contains the maximum number of Classic API 
+   * This field contains the maximum number of Classic API
    * Rate Monotonic Periods which are configured for this
    * application.
    */
   uint32_t                    maximum_periods;
 
   /**
-   * This field contains the maximum number of Classic API 
+   * This field contains the maximum number of Classic API
    * Barriers which are configured for this application.
    */
   uint32_t                    maximum_barriers;

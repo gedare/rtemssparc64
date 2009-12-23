@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.27 2006/12/02 06:02:42 ralf Exp $
+##
+## $Id: configure.ac,v 1.28 2009/11/28 06:28:41 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libcpu-mips],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])

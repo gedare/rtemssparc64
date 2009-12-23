@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: chain.h,v 1.22 2007/03/13 05:17:12 ralf Exp $
+ *  $Id: chain.h,v 1.24 2009/11/30 13:20:29 thomas Exp $
  */
 
 #ifndef _RTEMS_SCORE_CHAIN_H
@@ -94,6 +94,22 @@ typedef struct {
 } Chain_Control;
 
 /**
+ *  @brief Chain initializer for an empty chain with designator @a name.
+ */
+#define CHAIN_INITIALIZER_EMPTY(name) \
+  { \
+    (Chain_Node *) &(name).permanent_null, \
+    NULL, \
+    (Chain_Node *) &(name) \
+  }
+
+/**
+ *  @brief Chain definition for an empty chain with designator @a name.
+ */
+#define CHAIN_DEFINE_EMPTY(name) \
+  Chain_Control name = CHAIN_INITIALIZER_EMPTY(name)
+
+/**
  *  @brief Initialize a Chain Header
  *
  *  This routine initializes @a the_chain structure to manage the
@@ -146,7 +162,7 @@ Chain_Node *_Chain_Get(
  *  @brief Insert a node on a chain
  *
  *  This routine inserts @a the_node on a chain immediately following
- *  @a after_node.  
+ *  @a after_node.
  *
  *  @note It disables interrupts to ensure the atomicity
  *  of the extract operation.

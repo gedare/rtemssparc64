@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.12 2006/12/02 05:55:54 ralf Exp $
+##
+## $Id: configure.ac,v 1.13 2009/11/28 06:28:40 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-m68k-mvme162-tools],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -22,7 +22,7 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(unistd.h sys/vme.h)
 AC_FUNC_MMAP
 
-AM_CONDITIONAL(SLOAD_BUILDABLE, 
+AM_CONDITIONAL(SLOAD_BUILDABLE,
 test "$ac_cv_header_sys_vme_h" = "yes" \
 -a  "$ac_cv_header_unistd_h" = "yes" \
 -a "$ac_cv_header_stdc" = "yes" )

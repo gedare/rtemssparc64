@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: leon_open_eth.c,v 1.2 2006/01/09 10:41:21 ralf Exp $
+ *  $Id: leon_open_eth.c,v 1.3 2009/11/29 15:33:27 ralf Exp $
  */
 
 
@@ -24,7 +24,7 @@
 #define RDA_COUNT     16
 #define TDA_COUNT     16
 
-open_eth_configuration_t leon_open_eth_configuration; 
+open_eth_configuration_t leon_open_eth_configuration;
 
 int rtems_leon_open_eth_driver_attach(
   struct rtems_bsdnet_ifconfig *config,
@@ -54,7 +54,7 @@ int rtems_leon_open_eth_driver_attach(
   }
 
 
-  if (device_found) 
+  if (device_found)
   {
     /* clear control register and reset NIC */
     *(volatile int *) base_addr = 0;
@@ -69,7 +69,7 @@ int rtems_leon_open_eth_driver_attach(
     if (rtems_open_eth_driver_attach( config, &leon_open_eth_configuration )) {
       LEON_Clear_interrupt(leon_open_eth_configuration.vector);
       LEON_Unmask_interrupt(leon_open_eth_configuration.vector);
-    } 
+    }
   }
   return 0;
 }

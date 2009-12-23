@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: devices.h,v 1.1 2006/08/09 21:05:32 joel Exp $
+ *  $Id: devices.h,v 1.2 2009/12/10 07:20:06 ralf Exp $
  */
 
 #ifndef __NIOS2GEN_DEVICES_H
@@ -14,7 +14,7 @@
 #include "ptf.h"
 #include "bridges.h"
 
-typedef struct dev_descr 
+typedef struct dev_descr
 {
   int slaves;
   char *cfgname;
@@ -24,9 +24,9 @@ typedef struct dev_descr
 device_desc;
 
 device_desc *find_devices(
-  struct ptf *ptf, 
-  struct ptf *cfg, 
-  struct ptf *cpu, 
+  struct ptf *ptf,
+  struct ptf *cfg,
+  struct ptf *cpu,
   bus_bridge_pair *bridges);
 
 #endif

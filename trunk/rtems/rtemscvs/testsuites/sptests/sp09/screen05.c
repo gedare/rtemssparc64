@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: screen05.c,v 1.18 2009/09/28 23:07:56 joel Exp $
+ *  $Id: screen05.c,v 1.19 2009/11/30 03:33:24 ralf Exp $
  */
 
 #include "system.h"
@@ -121,7 +121,7 @@ void Screen5()
   status = rtems_semaphore_create(
     Semaphore_name[ 1 ],
     1,
-    RTEMS_INHERIT_PRIORITY | RTEMS_PRIORITY_CEILING | 
+    RTEMS_INHERIT_PRIORITY | RTEMS_PRIORITY_CEILING |
       RTEMS_BINARY_SEMAPHORE | RTEMS_PRIORITY,
     10,
     &Junk_id

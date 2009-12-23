@@ -23,7 +23,7 @@
 /* derived from: */
 /*
  *  This file contains the TTY driver table for the EP1A
- * 
+ *
  *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
  *
@@ -31,7 +31,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: config.c,v 1.3 2008/07/14 16:15:26 thomas Exp $
+ *  $Id: config.c,v 1.4 2009/11/30 04:26:10 ralf Exp $
  */
 
 #include <libchip/serial.h>

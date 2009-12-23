@@ -5,7 +5,7 @@
  */
 
 /*
- * $Id: mon-editor.c,v 1.3 2009/10/14 16:16:18 ralf Exp $
+ * $Id: mon-editor.c,v 1.4 2009/11/29 12:12:39 ralf Exp $
  *
  * 2001-01-30 KJO (vac4050@cae597.rsc.raytheon.com):
  *  Fixed rtems_monitor_command_lookup() to accept partial
@@ -242,7 +242,7 @@ rtems_monitor_line_editor (
 
     extended_key = rtems_monitor_getchar ();
     c = extended_key & KEYS_NORMAL_MASK;
-    
+
     /*
      * Make the extended_key usable as a boolean.
      */

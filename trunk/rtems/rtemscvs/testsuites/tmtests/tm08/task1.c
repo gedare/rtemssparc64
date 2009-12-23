@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.19 2009/08/10 14:49:56 joel Exp $
+ *  $Id: task1.c,v 1.20 2009/11/30 03:33:25 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -105,11 +105,11 @@ rtems_task test_task(
   benchmark_timer_initialize();
     for ( index=1 ; index <= OPERATION_COUNT ; index++ )
       (void) rtems_task_set_priority(
-        Test_task_id, 
+        Test_task_id,
         RTEMS_MAXIMUM_PRIORITY - 2u,
         &old_priority
       );
-     
+
   end_time = benchmark_timer_read();
 
   put_time(

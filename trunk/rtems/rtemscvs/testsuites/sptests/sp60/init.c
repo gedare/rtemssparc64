@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/07/20 01:05:33 joel Exp $
+ *  $Id: init.c,v 1.2 2009/11/30 03:33:25 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -38,19 +38,19 @@ rtems_task Init(
   puts( "Init - rtems_rate_monotonic_period - short period" );
   sc = rtems_rate_monotonic_period(period1, RTEMS_MILLISECONDS_TO_TICKS(200) );
   directive_failed( sc, "rtems_rate_monotonic_period" );
- 
+
   puts( "Init - rtems_rate_monotonic_period - long period initiated" );
   sc = rtems_rate_monotonic_period(period2, RTEMS_MILLISECONDS_TO_TICKS(1000) );
   directive_failed( sc, "rtems_rate_monotonic_period" );
- 
+
   puts( "Init - rtems_rate_monotonic_period - long period block" );
   sc = rtems_rate_monotonic_period(period2, RTEMS_MILLISECONDS_TO_TICKS(1000) );
   directive_failed( sc, "rtems_rate_monotonic_period" );
- 
+
   puts( "Init - rtems_rate_monotonic_period - verify long period expired" );
   sc = rtems_rate_monotonic_period(period1, RTEMS_PERIOD_STATUS );
   fatal_directive_status(sc, RTEMS_TIMEOUT, "rtems_task_period status");
- 
+
   puts( "*** END OF TEST 60 ***" );
   rtems_test_exit(0);
 }

@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.44 2009/11/10 06:55:28 strauman Exp $
+ *  $Id: cpu.c,v 1.45 2009/12/04 04:26:31 ralf Exp $
  */
 
 #include <rtems.h>
@@ -76,7 +76,7 @@ void _CPU_Initialize(void)
    * As a courtesy, we double-check here but it
    * may be too late (which is also why we don't
    * enable SSE here).
-   */ 
+   */
   {
   uint32_t cr4;
     __asm__ __volatile__("mov %%cr4, %0":"=r"(cr4));

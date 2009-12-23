@@ -6,7 +6,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: greth.c,v 1.7 2007/09/07 15:01:15 joel Exp $
+ *  $Id: greth.c,v 1.9 2009/12/17 20:35:40 joel Exp $
  *
  * 2007-09-07, Ported GBIT support from 4.6.5
  */
@@ -114,13 +114,13 @@ struct greth_softc
 {
 
    struct arpcom arpcom;
-   
+
    greth_regs *regs;
-   
+
    int acceptBroadcast;
    rtems_id rxDaemonTid;
    rtems_id txDaemonTid;
-   
+
    unsigned int tx_ptr;
    unsigned int tx_dptr;
    unsigned int tx_cnt;
@@ -132,7 +132,7 @@ struct greth_softc
    struct mbuf **rxmbuf;
    struct mbuf **txmbuf;
    rtems_vector_number vector;
-   
+
    /*Status*/
    struct phy_device_info phydev;
    int fd;
@@ -141,20 +141,20 @@ struct greth_softc
    int gbit_mac;
    int auto_neg;
    unsigned int auto_neg_time;
-   
+
    /*
     * Statistics
     */
    unsigned long rxInterrupts;
-   
+
    unsigned long rxPackets;
    unsigned long rxLengthError;
    unsigned long rxNonOctet;
    unsigned long rxBadCRC;
    unsigned long rxOverrun;
-   
+
    unsigned long txInterrupts;
-   
+
    unsigned long txDeferred;
    unsigned long txHeartbeat;
    unsigned long txLateCollision;
@@ -180,10 +180,10 @@ greth_interrupt_handler (rtems_vector_number v)
 {
         uint32_t status;
         /* read and clear interrupt cause */
-        
+
         status = greth.regs->status;
         greth.regs->status = status;
-        
+
         /* Frame received? */
         if (status & (GRETH_STATUS_RXERR | GRETH_STATUS_RXIRQ))
         {
@@ -225,7 +225,7 @@ static void write_mii(uint32_t phy_addr, uint32_t reg_addr, uint32_t data)
     while (greth.regs->mdio_ctrl & GRETH_MDIO_BUSY) {}
 }
 
-static void print_init_info(struct greth_softc *sc) 
+static void print_init_info(struct greth_softc *sc)
 {
         printf("greth: driver attached\n");
         printf("**** PHY ****\n");
@@ -265,12 +265,12 @@ greth_initialize_hardware (struct greth_softc *sc)
     int tmp1;
     int tmp2;
     unsigned int msecs;
-    rtems_clock_time_value tstart, tnow;
+    struct timeval tstart, tnow;
 
     greth_regs *regs;
 
     regs = sc->regs;
-    
+
     /* Reset the controller.  */
     greth.rxInterrupts = 0;
     greth.rxPackets = 0;
@@ -278,23 +278,23 @@ greth_initialize_hardware (struct greth_softc *sc)
     regs->ctrl = 0;
     regs->ctrl = GRETH_CTRL_RST;	/* Reset ON */
     regs->ctrl = 0;			/* Reset OFF */
-    
+
     /* Check if mac is gbit capable*/
-    sc->gbit_mac = (regs->ctrl >> 27) & 1;  
-    
+    sc->gbit_mac = (regs->ctrl >> 27) & 1;
+
     /* Get the phy address which assumed to have been set
        correctly with the reset value in hardware*/
     phyaddr = (regs->mdio_ctrl >> 11) & 0x1F;
 
     /* get phy control register default values */
     while ((phyctrl = read_mii(phyaddr, 0)) & 0x8000) {}
-    
+
     /* reset PHY and wait for completion */
     write_mii(phyaddr, 0, 0x8000 | phyctrl);
 
     while ((read_mii(phyaddr, 0)) & 0x8000) {}
-    
-    /* Check if PHY is autoneg capable and then determine operating mode, 
+
+    /* Check if PHY is autoneg capable and then determine operating mode,
        otherwise force it to 10 Mbit halfduplex */
     sc->gb = 0;
     sc->fd = 0;
@@ -305,7 +305,7 @@ greth_initialize_hardware (struct greth_softc *sc)
             /*wait for auto negotiation to complete*/
             msecs = 0;
             sc->auto_neg = 1;
-            if ( rtems_clock_get(RTEMS_CLOCK_GET_TIME_VALUE,&tstart) == RTEMS_NOT_DEFINED){
+            if ( rtems_clock_get_tod_timeval(&tstart) == RTEMS_NOT_DEFINED){
                 /* Not inited, set to epoch */
                 rtems_time_of_day time;
                 time.year   = 1988;
@@ -317,14 +317,14 @@ greth_initialize_hardware (struct greth_softc *sc)
                 time.ticks  = 0;
                 rtems_clock_set(&time);
 
-                tstart.seconds = 0;
-                tstart.microseconds = 0;
-                rtems_clock_get(RTEMS_CLOCK_GET_TIME_VALUE,&tstart);
+                tstart.tv_sec = 0;
+                tstart.tv_usec = 0;
+                rtems_clock_get_tod_timeval(&tstart);
             }
             while (!(((phystatus = read_mii(phyaddr, 1)) >> 5) & 1)) {
-                    if ( rtems_clock_get(RTEMS_CLOCK_GET_TIME_VALUE,&tnow) != RTEMS_SUCCESSFUL )
-                      printk("rtems_clock_get failed\n\r");
-                    msecs = (tnow.seconds-tstart.seconds)*1000+(tnow.microseconds-tstart.microseconds)/1000;
+                    if ( rtems_clock_get_tod_timeval(&tnow) != RTEMS_SUCCESSFUL )
+                      printk("rtems_clock_get_tod_timeval failed\n\r");
+                    msecs = (tnow.tv_sec-tstart.tv_sec)*1000+(tnow.tv_usec-tstart.tv_usec)/1000;
                     if ( msecs > GRETH_AUTONEGO_TIMEOUT_MS ){
                             sc->auto_neg_time = msecs;
                             printk("Auto negotiation timed out. Selecting default config\n\r");
@@ -374,9 +374,9 @@ auto_neg_done:
     sc->phydev.device = 0;
     sc->phydev.rev = 0;
     phystatus = read_mii(phyaddr, 1);
-    
+
     /*Read out PHY info if extended registers are available */
-    if (phystatus & 1) {  
+    if (phystatus & 1) {
             tmp1 = read_mii(phyaddr, 2);
             tmp2 = read_mii(phyaddr, 3);
 
@@ -418,7 +418,7 @@ auto_neg_done:
     sc->rx_ptr = 0;
     regs->txdesc = (int) sc->txdesc;
     regs->rxdesc = (int) sc->rxdesc;
-    
+
     sc->rxmbuf = calloc(sc->rxbufs, sizeof(*sc->rxmbuf));
     sc->txmbuf = calloc(sc->txbufs, sizeof(*sc->txmbuf));
 
@@ -450,9 +450,9 @@ auto_neg_done:
     sc->rxdesc[sc->rxbufs - 1].ctrl |= GRETH_RXD_WRAP;
 
     /* set ethernet address.  */
-    regs->mac_addr_msb = 
+    regs->mac_addr_msb =
       sc->arpcom.ac_enaddr[0] << 8 | sc->arpcom.ac_enaddr[1];
-    regs->mac_addr_lsb = 
+    regs->mac_addr_lsb =
       sc->arpcom.ac_enaddr[2] << 24 | sc->arpcom.ac_enaddr[3] << 16 |
       sc->arpcom.ac_enaddr[4] << 8 | sc->arpcom.ac_enaddr[5];
 
@@ -481,13 +481,13 @@ greth_rxDaemon (void *arg)
     struct mbuf *m;
     unsigned int len, len_status, bad;
     rtems_event_set events;
-    
+
     for (;;)
       {
         rtems_bsdnet_event_receive (INTERRUPT_EVENT,
                                     RTEMS_WAIT | RTEMS_EVENT_ANY,
                                     RTEMS_NO_TIMEOUT, &events);
-        
+
 #ifdef GRETH_ETH_DEBUG
     printf ("r\n");
 #endif
@@ -562,7 +562,7 @@ greth_rxDaemon (void *arg)
                     dp->rx_ptr = (dp->rx_ptr + 1) % dp->rxbufs;
             }
       }
-    
+
 }
 
 static int inside = 0;
@@ -573,7 +573,7 @@ sendpacket (struct ifnet *ifp, struct mbuf *m)
     unsigned char *temp;
     struct mbuf *n;
     unsigned int len;
-    
+
     /*printf("Send packet entered\n");*/
     if (inside) printf ("error: sendpacket re-entered!!\n");
     inside = 1;
@@ -614,16 +614,16 @@ sendpacket (struct ifnet *ifp, struct mbuf *m)
             if ((m = m->m_next) == NULL)
                     break;
     }
-    
+
     m_freem (n);
-    
+
     /* don't send long packets */
 
     if (len <= GRETH_MAXBUF_LEN) {
             if (dp->tx_ptr < dp->txbufs-1) {
                     dp->txdesc[dp->tx_ptr].ctrl = GRETH_TXD_ENABLE | len;
             } else {
-                    dp->txdesc[dp->tx_ptr].ctrl = 
+                    dp->txdesc[dp->tx_ptr].ctrl =
                             GRETH_TXD_WRAP | GRETH_TXD_ENABLE | len;
             }
             dp->regs->ctrl = dp->regs->ctrl | GRETH_CTRL_TXEN;
@@ -645,7 +645,7 @@ sendpacket_gbit (struct ifnet *ifp, struct mbuf *m)
         /*
          * Waiting for Transmitter ready
          */
-        
+
         len = 0;
 #ifdef GRETH_DEBUG
         printf("TXD: 0x%08x\n", (int) m->m_data);
@@ -674,17 +674,17 @@ sendpacket_gbit (struct ifnet *ifp, struct mbuf *m)
             if (dp->tx_ptr < dp->txbufs-1) {
                     if ((m->m_next) == NULL) {
                             dp->txdesc[dp->tx_ptr].ctrl = GRETH_TXD_ENABLE | GRETH_TXD_CS | m->m_len;
-                            break; 
+                            break;
                     } else {
                             dp->txdesc[dp->tx_ptr].ctrl = GRETH_TXD_ENABLE | GRETH_TXD_MORE | GRETH_TXD_CS | m->m_len;
                     }
             } else {
                     if ((m->m_next) == NULL) {
-                            dp->txdesc[dp->tx_ptr].ctrl = 
+                            dp->txdesc[dp->tx_ptr].ctrl =
                                     GRETH_TXD_WRAP | GRETH_TXD_ENABLE | GRETH_TXD_CS | m->m_len;
                             break;
                     } else {
-                            dp->txdesc[dp->tx_ptr].ctrl = 
+                            dp->txdesc[dp->tx_ptr].ctrl =
                                     GRETH_TXD_WRAP | GRETH_TXD_ENABLE | GRETH_TXD_MORE | GRETH_TXD_CS | m->m_len;
                     }
             }
@@ -692,7 +692,7 @@ sendpacket_gbit (struct ifnet *ifp, struct mbuf *m)
             dp->tx_ptr = (dp->tx_ptr + 1) % dp->txbufs;
             dp->tx_cnt++;
             m = m->m_next;
-            
+
     }
         dp->txmbuf[dp->tx_ptr] = m;
         dp->tx_cnt++;
@@ -711,25 +711,25 @@ greth_txDaemon (void *arg)
     struct ifnet *ifp = &sc->arpcom.ac_if;
     struct mbuf *m;
     rtems_event_set events;
-    
+
     for (;;)
     {
             /*
              * Wait for packet
              */
-            
+
             rtems_bsdnet_event_receive (START_TRANSMIT_EVENT,
                                         RTEMS_EVENT_ANY | RTEMS_WAIT,
                                         RTEMS_NO_TIMEOUT, &events);
 #ifdef GRETH_DEBUG
             printf ("t\n");
 #endif
-            
+
             /*
              * Send packets till queue is empty
              */
-            
-            
+
+
             for (;;)
 	    {
                     /*
@@ -754,20 +754,20 @@ greth_txDaemon_gbit (void *arg)
     struct ifnet *ifp = &sc->arpcom.ac_if;
     struct mbuf *m;
     rtems_event_set events;
-    
+
     for (;;)
     {
             /*
              * Wait for packet
              */
-            
+
             rtems_bsdnet_event_receive (START_TRANSMIT_EVENT,
                                         RTEMS_EVENT_ANY | RTEMS_WAIT,
                                         RTEMS_NO_TIMEOUT, &events);
 #ifdef GRETH_DEBUG
             printf ("t\n");
 #endif
-            
+
             /*
              * Send packets till queue is empty
              */
@@ -795,10 +795,10 @@ static void
 greth_start (struct ifnet *ifp)
 {
     struct greth_softc *sc = ifp->if_softc;
-    
+
     ifp->if_flags |= IFF_OACTIVE;
     rtems_event_send (sc->txDaemonTid, START_TRANSMIT_EVENT);
-    
+
 }
 
 /*
@@ -830,7 +830,7 @@ greth_init (void *arg)
                   sc->txDaemonTid = rtems_bsdnet_newproc ("DCtx", 4096,
                                                           greth_txDaemon, sc);
           }
-          
+
       }
 
     /*
@@ -963,7 +963,7 @@ rtems_greth_driver_attach (struct rtems_bsdnet_ifconfig *config,
     sc->vector = chip->vector;
     sc->txbufs = chip->txd_count;
     sc->rxbufs = chip->rxd_count;
-    
+
     /*
      * Set up network interface values
      */

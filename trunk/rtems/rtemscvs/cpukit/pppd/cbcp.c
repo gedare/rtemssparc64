@@ -18,7 +18,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#define RCSID	"$Id: cbcp.c,v 1.6 2007/03/27 15:47:35 ralf Exp $"
+#define RCSID	"$Id: cbcp.c,v 1.7 2009/11/30 15:59:00 ralf Exp $"
 
 #include <stdio.h>
 #include <string.h>
@@ -166,7 +166,7 @@ cbcp_input(unit, inpacket, pktlen)
 #endif
 
     len -= CBCP_MINLEN;
- 
+
     switch(code) {
     case CBCP_REQ:
         us->us_id = id;
@@ -229,7 +229,7 @@ cbcp_printpkt(p, plen, printer, arg)
     if (code >= 1 && code <= sizeof(cbcp_codenames) / sizeof(char *))
 	printer(arg, " %s", cbcp_codenames[code-1]);
     else
-	printer(arg, " code=0x%x", code); 
+	printer(arg, " code=0x%x", code);
 
     printer(arg, " id=0x%x", id);
     len -= HEADERLEN;
@@ -252,7 +252,7 @@ cbcp_printpkt(p, plen, printer, arg)
 	    if (opt >= 1 && opt <= sizeof(cbcp_optionnames) / sizeof(char *))
 	    	printer(arg, " %s", cbcp_optionnames[opt-1]);
 	    else
-	        printer(arg, " option=0x%x", opt); 
+	        printer(arg, " option=0x%x", opt);
 
 	    if (olen > 2) {
 	        GETCHAR(delay, p);
@@ -401,13 +401,13 @@ cbcp_send(us, code, buf, len)
     outp = outpacket_buf;
 
     outlen = 4 + len;
-    
+
     MAKEHEADER(outp, PPP_CBCP);
 
     PUTCHAR(code, outp);
     PUTCHAR(us->us_id, outp);
     PUTSHORT(outlen, outp);
-    
+
     if (len)
         BCOPY(buf, outp, len);
 
@@ -427,7 +427,7 @@ cbcp_recvack(us, pckt, len)
     if (len) {
         GETCHAR(type, pckt);
 	GETCHAR(opt_len, pckt);
-     
+
 	if (opt_len > 2)
 	    GETCHAR(delay, pckt);
 

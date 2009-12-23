@@ -77,15 +77,15 @@ int lpc24xx_eth_attach_detach(
  *
  * @code
  * #include <bsp.h>
- * 
+ *
  * #define CONFIGURE_INIT
  *
- * #define CONFIGURE_IDLE_TASK_BODY lpc24xx_idle
+ * #define CONFIGURE_IDLE_TASK_BODY bsp_idle_thread
  *
  * #include <confdefs.h>
  * @endcode
  */
-void *lpc24xx_idle(uintptr_t ignored);
+void *bsp_idle_thread(uintptr_t ignored);
 
 /** @} */
 

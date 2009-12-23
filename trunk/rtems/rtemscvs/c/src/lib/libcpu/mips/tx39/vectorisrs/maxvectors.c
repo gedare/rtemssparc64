@@ -1,6 +1,6 @@
-/* 
+/*
  *  This file contains the maximum number of vectors.  This can not
- *  be determined without knowing the RTEMS CPU model. 
+ *  be determined without knowing the RTEMS CPU model.
  *
  *  COPYRIGHT (c) 1989-2000.
  *  On-Line Applications Research Corporation (OAR).
@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: maxvectors.c,v 1.3 2004/04/15 13:33:57 ralf Exp $
+ *  $Id: maxvectors.c,v 1.4 2009/11/30 05:09:01 ralf Exp $
  */
 
 /*

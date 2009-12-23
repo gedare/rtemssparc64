@@ -8,7 +8,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * @(#) $Id: msdos_create.c,v 1.15 2009/06/12 01:53:33 ccj Exp $
+ * @(#) $Id: msdos_create.c,v 1.16 2009/11/29 13:18:56 ralf Exp $
  *
  */
 #if HAVE_CONFIG_H
@@ -80,7 +80,7 @@ msdos_creat_node(rtems_filesystem_location_info_t  *parent_loc,
     uint32_t          byte = 0;
 
     fat_dir_pos_init(&dir_pos);
-    
+
     memset(short_node, 0, MSDOS_DIRECTORY_ENTRY_STRUCT_SIZE);
     memset(dot_dotdot, 0, MSDOS_DIRECTORY_ENTRY_STRUCT_SIZE * 2);
 

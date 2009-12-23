@@ -1,6 +1,6 @@
 /*
   ------------------------------------------------------------------------
-  $Id: rtemsMessageQueue.h,v 1.8 2008/12/16 20:55:45 joel Exp $
+  $Id: rtemsMessageQueue.h,v 1.10 2009/12/22 13:12:57 joel Exp $
   ------------------------------------------------------------------------
 
   COPYRIGHT (c) 1997
@@ -55,7 +55,7 @@ public:
   enum Scope { local = RTEMS_LOCAL,
                global = RTEMS_GLOBAL };
 
-  // only the first 4 characters of the name are taken  
+  // only the first 4 characters of the name are taken
 
   // creates a message queue
   rtemsMessageQueue(const char* name,
@@ -83,7 +83,7 @@ public:
   virtual const rtems_status_code destroy();
 
   // connect to an existing message queue object, will not be the owner
-  const rtemsMessageQueue& operator=(const rtemsMessageQueue& message_queue);  
+  const rtemsMessageQueue& operator=(const rtemsMessageQueue& message_queue);
   virtual const rtems_status_code connect(const char *name,
                                           const uint32_t node = RTEMS_SEARCH_ALL_NODES);
 
@@ -154,7 +154,7 @@ const rtems_status_code rtemsMessageQueue::receive(const void *buffer,
                                                    rtems_interval micro_secs,
                                                    bool wait)
 {
-  rtems_interval usecs =
+  rtems_interval usecs = micro_secs &&
     (micro_secs < rtems_configuration_get_microseconds_per_tick()) ?
     rtems_configuration_get_microseconds_per_tick() : micro_secs;
   return set_status_code(rtems_message_queue_receive(id,

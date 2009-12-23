@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/06/08 21:05:20 joel Exp $
+ *  $Id: init.c,v 1.2 2009/11/30 09:08:35 thomas Exp $
  */
 
 #if defined(USE_TIMER_SERVER)
@@ -111,6 +111,9 @@ rtems_task Init(
 #define CONFIGURE_MAXIMUM_TIMERS             1
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
+
+#define CONFIGURE_INIT_TASK_PRIORITY (RTEMS_MINIMUM_PRIORITY + 1)
+#define CONFIGURE_INIT_TASK_INITIAL_MODES RTEMS_DEFAULT_MODES
 
 #define CONFIGURE_INIT
 #include <rtems/confdefs.h>

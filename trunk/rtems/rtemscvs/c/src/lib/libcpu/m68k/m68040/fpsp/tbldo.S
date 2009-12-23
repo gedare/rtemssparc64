@@ -1,5 +1,5 @@
 //
-//      $Id: tbldo.S,v 1.1 1998/12/14 23:15:30 joel Exp $
+//      $Id: tbldo.S,v 1.2 2009/12/04 04:24:06 ralf Exp $
 //
 //	tbldo.sa 3.1 12/10/90
 //
@@ -8,19 +8,19 @@
 //			of indirection in do_func for monadic
 //			functions.  Dyadic functions require two
 //			levels, and the tables are still contained
-//			in do_func.  The table is arranged for 
+//			in do_func.  The table is arranged for
 //			index with a 10-bit index, with the first
 //			7 bits the opcode, and the remaining 3
 //			the stag.  For dyadic functions, all
 //			valid addresses are to the generic entry
-//			point. 
+//			point.
 //
 
 //		Copyright (C) Motorola, Inc. 1990
 //			All Rights Reserved
 //
-//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA 
-//	The copyright notice above does not evidence any  
+//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA
+//	The copyright notice above does not evidence any
 //	actual or intended publication of such source code.
 
 //TBLDO	idnt    2,1 | Motorola 040 Floating Point Software Package
@@ -59,7 +59,7 @@ tblpre:
 	.long	smovcr		//$00-7 fmovecr all
 
 	.long	sint		//$01-0 fint norm
-	.long	szero		//$01-1 fint zero 
+	.long	szero		//$01-1 fint zero
 	.long	sinf		//$01-2 fint inf
 	.long	src_nan		//$01-3 fint nan
 	.long	sintd		//$01-4 fint denorm inx

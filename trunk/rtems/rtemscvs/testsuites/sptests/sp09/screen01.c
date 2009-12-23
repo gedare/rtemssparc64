@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: screen01.c,v 1.17 2009/10/04 22:02:18 joel Exp $
+ *  $Id: screen01.c,v 1.18 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include "system.h"
@@ -115,7 +115,7 @@ void Screen1()
   );
 
   puts( "TA1 - rtems_object_get_classic_name - bad ID" );
-  status = rtems_object_get_classic_name( 
+  status = rtems_object_get_classic_name(
     rtems_build_id( OBJECTS_ITRON_API, OBJECTS_ITRON_TASKS, 1, 1 ),
     &task_name
   );

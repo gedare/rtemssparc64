@@ -1,3 +1,18 @@
+2009-12-16      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* console/console.c: adapted to new prototype for *_write
+	function
+
+2009-12-08	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* startup/init5206e.c: Make prototype of CopyDataClearBSSAndStart
+	global.
+
+2009-12-08	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* include/i2c.h (i2c_transfer_done): Fix type mismatch.
+	* tod/ds1307.c (ds1307_set_time): Fix broken prototype.
+
 2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* make/custom/mcf5206elite.cfg: Remove RTEMS_BSP_FAMILY.

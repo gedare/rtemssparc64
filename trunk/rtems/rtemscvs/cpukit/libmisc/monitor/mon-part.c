@@ -1,7 +1,7 @@
 /*
  * RTEMS Monitor partition support
  *
- *  $Id: mon-part.c,v 1.5 2009/01/02 13:01:21 ralf Exp $
+ *  $Id: mon-part.c,v 1.6 2009/11/29 12:12:39 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -39,7 +39,7 @@ rtems_monitor_part_dump_header(
   ID       NAME   ATTR        STARTADDR LENGTH    BUF_SIZE  USED_BLOCKS\n");
 /*23456789 123456789 123456789 123456789 123456789 123456789 123456789 1234
           1         2         3         4         5         6         7    */
-           
+
     rtems_monitor_separator();
 }
 

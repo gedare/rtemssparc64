@@ -1,14 +1,14 @@
 /*
  *  Rate Monotonic Manager -- Report Statistics for All Periods
  *
- *  COPYRIGHT (c) 1989-2007.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ratemonreportstatistics.c,v 1.9 2009/10/04 22:15:00 joel Exp $
+ *  $Id: ratemonreportstatistics.c,v 1.12 2009/12/02 18:22:18 humph Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -23,8 +23,7 @@
 #include <rtems/bspIo.h>
 #include <rtems/score/timespec.h>
 
-#if defined(RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS) || \
-    defined(RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS)
+#ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
   /* We print to 1/10's of milliseconds */
   #define NANOSECONDS_DIVIDER 1000
   #define PERCENT_FMT     "%04" PRId32
@@ -54,10 +53,8 @@ void rtems_rate_monotonic_report_statistics_with_plugin(
     return;
 
   (*print)( context, "Period information by period\n" );
-  #if defined(RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS)
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
     (*print)( context, "--- CPU times are in seconds ---\n" );
-  #endif
-  #if defined(RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS)
     (*print)( context, "--- Wall times are in seconds ---\n" );
   #endif
 /*
@@ -74,28 +71,22 @@ ididididid NNNN ccccc mmmmmm X
 \n");
 */
   (*print)( context, "   ID     OWNER COUNT MISSED     "
-       #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+       #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
           "     "
        #endif
           "CPU TIME     "
-       #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
-          "    "
-       #endif
-       #ifdef RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS
-          "      "
+       #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
+          "          "
        #endif
           "   WALL TIME\n"
   );
   (*print)( context, "                               "
-       #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+       #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
           "     "
        #endif
           "MIN/MAX/AVG    "
-       #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
-          "    "
-       #endif
-       #ifdef RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS
-          "      "
+       #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
+          "          "
        #endif
           "  MIN/MAX/AVG\n"
   );
@@ -110,7 +101,7 @@ ididididid NNNN ccccc mmmmmm X
     status = rtems_rate_monotonic_get_statistics( id, &the_stats );
     if ( status != RTEMS_SUCCESSFUL )
       continue;
-    
+
     /* If the above passed, so should this but check it anyway */
     status = rtems_rate_monotonic_get_status( id, &the_status );
     #if defined(RTEMS_DEBUG)
@@ -121,7 +112,7 @@ ididididid NNNN ccccc mmmmmm X
     rtems_object_get_name( the_status.owner, sizeof(name), name );
 
     /*
-     *  Print part of report line that is not dependent on granularity 
+     *  Print part of report line that is not dependent on granularity
      */
     (*print)( context,
       "0x%08" PRIx32 " %4s %5" PRId32 " %6" PRId32 " ",
@@ -141,7 +132,7 @@ ididididid NNNN ccccc mmmmmm X
      *  print CPU Usage part of statistics
      */
     {
-    #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+    #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
       struct timespec  cpu_average;
       struct timespec *min_cpu = &the_stats.min_cpu_time;
       struct timespec *max_cpu = &the_stats.max_cpu_time;
@@ -177,7 +168,7 @@ ididididid NNNN ccccc mmmmmm X
      *  print wall time part of statistics
      */
     {
-    #ifdef RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS
+    #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
       struct timespec  wall_average;
       struct timespec *min_wall = &the_stats.min_wall_time;
       struct timespec *max_wall = &the_stats.max_wall_time;

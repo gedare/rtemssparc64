@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.7 2009/10/27 14:10:54 ralf Exp $
+ *  $Id: init.c,v 1.8 2009/11/30 03:33:23 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -45,12 +45,12 @@ void *POSIX_Init(
   printf( "Init's ID is 0x%08" PRIxpthread_t "\n", Init_id );
 
   Allocate_majority_of_workspace(NAME_MAX);
- 
+
   attr.mq_maxmsg  = MAXMSG;
   attr.mq_msgsize = MSGSIZE;
   puts("Init: mq_open - Workspace not available - ENOMEM");
   mq = mq_open( Get_Longest_Name(), O_CREAT, 0x777, &attr );
-  fatal_posix_service_status_errno(mq, ENOMEM, "no workspace available");  
+  fatal_posix_service_status_errno(mq, ENOMEM, "no workspace available");
 
   puts( "*** END OF POSIX MESSAGE QUEUE 02 TEST ***" );
   rtems_test_exit( 0 );

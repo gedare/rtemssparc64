@@ -1,3 +1,33 @@
+2009-12-18	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	PR 1474
+	* libchip/i2c/spi-sd-card.c, libchip/ide/ata.c: Update for block
+	device API change.
+
+2009-12-17	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libchip/network/greth.c: Eliminate unused type
+	rtems_clock_time_value.
+
+2009-12-11	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libchip/network/dec21140.c: Warning elimination
+	(dec21140_softc->base now is an uint32_t).
+
+2009-12-11	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	PR 1483/cpukit
+	* libchip/network/dec21140.c, libchip/network/elnk.c,
+	libchip/network/if_dc.c: Move #include <rtems/pci.h> into #if
+	*_SUPPORTED-guarded code sections.
+
+2009-12-08	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libchip/network/dec21140.c, libchip/network/elnk.c,
+	libchip/network/if_dc.c: Ensure PCI drivers are built on all
+	supported configurations. PowerPC conditionals were not current and
+	code was not being built on supported BSPs.
+
 2009-11-23	Joel Sherrill <joel.sherrill@OARcorp.com>
 
 	* libchip/network/smc91111.c: Formatting.

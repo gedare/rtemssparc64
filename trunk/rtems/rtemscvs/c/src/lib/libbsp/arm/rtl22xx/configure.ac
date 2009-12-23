@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.8 2009/10/20 09:33:52 ralf Exp $
+##
+## $Id: configure.ac,v 1.9 2009/11/28 06:28:39 ralf Exp $
 
 AC_PREREQ(2.59)
 AC_INIT([rtems-c-src-lib-libbsp-arm-rtl22xx],[_RTEMS_VERSION],[rtems-bugs@rtems.com])
@@ -15,12 +15,12 @@ RTEMS_PROG_CC_FOR_TARGET
 RTEMS_CANONICALIZE_TOOLS
 RTEMS_PROG_CCAS
 
-RTEMS_CHECK_NETWORKING 
+RTEMS_CHECK_NETWORKING
 AM_CONDITIONAL(HAS_NETWORKING,test "$HAS_NETWORKING" = "yes")
 
 RTEMS_BSPOPTS_SET([ON_SKYEYE],[*],[])
 RTEMS_BSPOPTS_HELP([ON_SKYEYE],
-[If defined, enable options which optimize executingon the Skyeye 
+[If defined, enable options which optimize executingon the Skyeye
  simulator.  Speed up the clock ticks while the idle task is running so
  time spent in the idle task is minimized.  This significantly reduces
  the wall time required to execute the RTEMS test suites.])

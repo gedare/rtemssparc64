@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: devices.c,v 1.1 2006/08/09 21:05:32 joel Exp $
+ *  $Id: devices.c,v 1.2 2009/12/10 07:20:06 ralf Exp $
  */
 
 #include <stdio.h>
@@ -65,9 +65,9 @@ void set_dev_cfgname(struct ptf_item *pi, void *arg)
 
 
 device_desc *find_devices(
-  struct ptf *ptf, 
-  struct ptf *cfg, 
-  struct ptf *cpu, 
+  struct ptf *ptf,
+  struct ptf *cfg,
+  struct ptf *cpu,
   bus_bridge_pair *bridges)
 {
     struct ptf system     = { section, "SYSTEM", 0, 0, 0 };

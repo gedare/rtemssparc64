@@ -1,4 +1,4 @@
-## $Id: Makefile.am,v 1.10 2008/02/01 21:28:06 joel Exp $
+## $Id: Makefile.am,v 1.11 2009/12/14 18:28:02 joel Exp $
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../../../testsuites/automake/compile.am
@@ -7,11 +7,12 @@ include $(top_srcdir)/ada.am
 
 AM_ADAFLAGS += -I$(srcdir)/..
 
-noinst_PROGRAMS = mp01_ada_mp01_node1.exe
-mp01_ada_mp01_node1_exe_SOURCES = mp01_node1.adb ../mptest.adb config.h ../mptest.ads
-mp01_ada_mp01_node1_exe_SOURCES += ../../../support/init.c
+noinst_PROGRAMS = mp01_ada_mp01_node1
+mp01_ada_mp01_node1_SOURCES = mp01_node1.adb ../mptest.adb config.h
+mp01_ada_mp01_node1_SOURCES += ../mptest.ads
+mp01_ada_mp01_node1_SOURCES += ../../../support/init.c
 
-mp01_ada_mp01_node1.exe: mp01_node1.adb ../mptest.adb init.$(OBJEXT)
+mp01_ada_mp01_node1$(EXEEXT): mp01_node1.adb ../mptest.adb init.$(OBJEXT)
 	$(GNATCOMPILE) -margs -a $< -o $@
 
 scndir = $(rtems_ada_testsdir)

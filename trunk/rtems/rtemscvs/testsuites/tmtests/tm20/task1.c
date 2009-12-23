@@ -6,12 +6,11 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.20 2009/05/09 21:24:06 joel Exp $
+ *  $Id: task1.c,v 1.21 2009/12/08 17:53:00 joel Exp $
  */
 
 #define CONFIGURE_INIT
 #include "system.h"
-#include <assert.h>
 
 rtems_device_major_number _STUB_major = 1;
 
@@ -160,7 +159,7 @@ rtems_task Task_1(
 
     buffer_count++;
 
-    assert( buffer_count < PARTITION_BUFFER_POINTERS );
+    rtems_test_assert( buffer_count < PARTITION_BUFFER_POINTERS );
   }
 
   benchmark_timer_initialize();

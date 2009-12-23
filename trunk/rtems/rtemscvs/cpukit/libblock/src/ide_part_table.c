@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: ide_part_table.c,v 1.14 2009/06/12 01:53:31 ccj Exp $
+ * $Id: ide_part_table.c,v 1.15 2009/11/30 12:39:51 thomas Exp $
  *
  *****************************************************************************/
 
@@ -513,6 +513,7 @@ rtems_ide_part_table_initialize(char *dev_name)
     rc = rtems_ide_part_table_get(dev_name, disk_desc);
     if (rc != RTEMS_SUCCESSFUL)
     {
+        free(disk_desc);
         return rc;
     }
 

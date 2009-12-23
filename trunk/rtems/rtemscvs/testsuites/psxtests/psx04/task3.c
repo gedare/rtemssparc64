@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task3.c,v 1.9 2009/06/17 22:58:19 ccj Exp $
+ *  $Id: task3.c,v 1.10 2009/12/08 17:52:52 joel Exp $
  */
 
 #include "system.h"
@@ -35,24 +35,24 @@ void *Task_3(
 
   printf( "Task_3: sigqueue SIGUSR1 with value= %d\n", value.sival_int );
   status = sigqueue( getpid(), SIGUSR1, value );
-  assert( !status );
+  rtems_test_assert(  !status );
 
      /* catch signal with sigwaitinfo */
 
   empty_line();
 
   status = sigemptyset( &mask );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   status = sigaddset( &mask, SIGUSR1 );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   printf( "Task_3: sigwaitinfo SIGUSR1 with value= %d\n", value.sival_int );
   status = sigwaitinfo( &mask, &info );
 
      /* switch to Init */
 
-  assert( !(status==-1) );
+  rtems_test_assert(  !(status==-1) );
   printf(
     "Task_3: si_signo= %d si_code= %d value= %d\n",
     info.si_signo,
@@ -65,17 +65,17 @@ void *Task_3(
   empty_line();
 
   status = sigemptyset( &mask );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   status = sigaddset( &mask, SIGUSR1 );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   printf( "Task_3: sigwait SIGUSR1\n" );
   status = sigwait( &mask, &sig );
 
      /* switch to Init */
 
-  assert( !status );
+  rtems_test_assert(  !status );
   printf( "Task_3: signo= %d\n", sig );
 
      /* catch signal with pause */
@@ -83,17 +83,17 @@ void *Task_3(
   empty_line();
 
   status = sigemptyset( &mask );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   status = sigaddset( &mask, SIGUSR1 );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   printf( "Task_3: pause\n" );
   status = pause( );
 
      /* switch to Init */
 
-  assert( !(status==-1) );
+  rtems_test_assert(  !(status==-1) );
   printf( "Task_3: pause= %d\n", status );
 
 
@@ -103,11 +103,11 @@ void *Task_3(
 
   printf( "Task_3: sending SIGUSR2\n" );
   status = pthread_kill( Init_id, SIGUSR2 );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   printf( "Task_3: sleep so the Init task can reguest a signal\n" );
   remaining = sleep( 1 );
-  assert( !status );
+  rtems_test_assert(  !status );
 
      /* end of task 3 */
   printf( "Task_3: exit\n" );

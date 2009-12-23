@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.9 2009/07/21 23:06:13 joel Exp $
+ *  $Id: init.c,v 1.10 2009/11/30 03:33:24 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -132,7 +132,7 @@ rtems_task Init(
   printf(
     "Event sent from ISR hitting synchronization point has %soccurred\n",
     (( case_hit == TRUE ) ? "" : "NOT ")
-  ); 
+  );
 
   /*
    * Test Event send successful from ISR -- receive has timeout
@@ -167,7 +167,7 @@ rtems_task Init(
     "Event sent from ISR (with timeout) hitting synchronization "
       "point has %soccurred\n",
     (( case_hit == TRUE ) ? "" : "NOT ")
-  ); 
+  );
 
   puts( "*** END OF TEST 39 ***" );
   rtems_test_exit( 0 );

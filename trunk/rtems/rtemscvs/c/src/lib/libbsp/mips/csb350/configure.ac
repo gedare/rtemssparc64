@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.10 2009/10/20 09:32:14 ralf Exp $
+##
+## $Id: configure.ac,v 1.11 2009/11/28 06:28:40 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-mips-csb350],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -15,7 +15,7 @@ RTEMS_PROG_CC_FOR_TARGET
 RTEMS_CANONICALIZE_TOOLS
 RTEMS_PROG_CCAS
 
-RTEMS_CHECK_NETWORKING 
+RTEMS_CHECK_NETWORKING
 AM_CONDITIONAL(HAS_NETWORKING,test "$HAS_NETWORKING" = "yes")
 
 RTEMS_BSP_CLEANUP_OPTIONS(1, 1)

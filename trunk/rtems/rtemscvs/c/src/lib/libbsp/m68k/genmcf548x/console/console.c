@@ -68,7 +68,7 @@
                            MCF548X_PSC_SR_PE_CRCERR | \
                            MCF548X_PSC_SR_OE )
 
-static int IntUartPollWrite(int minor, const char *buf, int len);
+static ssize_t IntUartPollWrite(int minor, const char *buf, size_t len);
 static int IntUartPollRead (int minor);
 
 static void
@@ -291,7 +291,11 @@ static int
 IntUartSetAttributes(int minor, const struct termios *t)
 {
 /* set default index values */
+#ifdef HAS_DBUG
+	int                         baud     = DBUG_SETTINGS.console_baudrate;
+#else
 	int                         baud     = (int)BSP_CONSOLE_BAUD;
+#endif
 	int                         databits = (int)MCF548X_PSC_MR_BC_8;
 	int                         parity   = (int)MCF548X_PSC_MR_PM_NONE;
 	int                         stopbits = (int)MCF548X_PSC_MR_SB_STOP_BITS_1;
@@ -387,7 +391,7 @@ IntUartInterruptHandler(rtems_vector_number v)
 		{
 
 		   /* put data in rx buffer */
-			info->rx_buffer[info->rx_in] = *((uint8_t *)&MCF548X_PSC_RB(chan));
+			info->rx_buffer[info->rx_in] = *((volatile uint8_t *)&MCF548X_PSC_RB(chan));
 
            /* check for errors */
            if ( MCF548X_PSC_SR(chan) & MCF548X_PSC_SR_ERROR )
@@ -521,15 +525,15 @@ IntUartInitialize(void)
    to initiate a transmit sequence. Calling this routine enables Tx
    interrupts.
  ***************************************************************************/
-static int
-IntUartInterruptWrite (int minor, const char *buf, int len)
+static ssize_t
+IntUartInterruptWrite (int minor, const char *buf, size_t len)
 {
 	int level;
 
 	rtems_interrupt_disable(level);
 
 	/* write out character */
-	MCF548X_PSC_TB(minor) = *buf;
+	*(volatile uint8_t *)(&MCF548X_PSC_TB(minor)) = *buf;
 
 	/* enable tx interrupt */
 	IntUartInfo[minor].imr |= MCF548X_PSC_IMR_TXRDY;
@@ -670,9 +674,10 @@ if (!((MCF548X_PSC_SR(minor) & MCF548X_PSC_SR_RXRDY)))
    appropriate internal uart channel waiting till each one is sucessfully
    transmitted.
  ***************************************************************************/
-static int
-IntUartPollWrite (int minor, const char *buf, int len)
+static ssize_t
+IntUartPollWrite (int minor, const char *buf, size_t len)
 {
+	size_t retval = len;
 /* loop over buffer */
 	while ( len-- )
 	{
@@ -682,7 +687,7 @@ IntUartPollWrite (int minor, const char *buf, int len)
 		/* transmit data byte */
 		*((uint8_t *)&MCF548X_PSC_TB(minor)) = *buf++;
 	}
-	return 0;
+	return retval;
 }
 
 /***************************************************************************

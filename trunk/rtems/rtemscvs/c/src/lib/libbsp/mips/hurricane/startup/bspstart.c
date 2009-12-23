@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.10 2008/09/16 19:04:16 joel Exp $
+ *  $Id: bspstart.c,v 1.11 2009/11/29 15:27:06 ralf Exp $
  */
 
 #include <string.h>
@@ -19,7 +19,7 @@
 #include <bsp.h>
 
 uint32_t bsp_clicks_per_microsecond;
- 
+
 /*
  *  bsp_start
  *

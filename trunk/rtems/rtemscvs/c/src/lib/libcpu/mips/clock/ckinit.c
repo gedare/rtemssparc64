@@ -27,7 +27,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ckinit.c,v 1.17 2008/09/05 22:06:51 joel Exp $
+ *  $Id: ckinit.c,v 1.18 2009/11/30 05:09:01 ralf Exp $
  */
 
 /*
@@ -84,7 +84,7 @@ uint32_t   Clock_isrs;              /* ISRs until next tick */
 /*
  * These are set by clock driver during its init
  */
- 
+
 rtems_device_major_number rtems_clock_major = ~0;
 rtems_device_minor_number rtems_clock_minor;
 
@@ -160,7 +160,7 @@ void Install_clock(
    *  Hardware specific initialize goes here
    */
 
-  mips_timer_rate = rtems_configuration_get_microseconds_per_tick() * 
+  mips_timer_rate = rtems_configuration_get_microseconds_per_tick() *
      bsp_clicks_per_microsecond;
   mips_set_timer( mips_timer_rate );
   mips_enable_in_interrupt_mask(CLOCK_VECTOR_MASK);
@@ -195,13 +195,13 @@ rtems_device_driver Clock_initialize(
 )
 {
   Install_clock( Clock_isr );
- 
+
   /*
    * make major/minor avail to others such as shared memory driver
    */
- 
+
   rtems_clock_major = major;
   rtems_clock_minor = minor;
- 
+
   return RTEMS_SUCCESSFUL;
 }

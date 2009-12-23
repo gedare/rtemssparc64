@@ -1,5 +1,5 @@
 /*
- *  $Id: clockgetres.c,v 1.10 2009/09/13 20:42:10 joel Exp $
+ *  $Id: clockgetres.c,v 1.11 2009/11/30 15:44:20 ralf Exp $
  */
 
 /*
@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: clockgetres.c,v 1.10 2009/09/13 20:42:10 joel Exp $
+ *  $Id: clockgetres.c,v 1.11 2009/11/30 15:44:20 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -53,7 +53,7 @@ int clock_getres(
       if ( res ) {
         res->tv_sec = rtems_configuration_get_microseconds_per_tick() /
             TOD_MICROSECONDS_PER_SECOND;
-        res->tv_nsec = rtems_configuration_get_nanoseconds_per_tick(); 
+        res->tv_nsec = rtems_configuration_get_nanoseconds_per_tick();
       }
       break;
 

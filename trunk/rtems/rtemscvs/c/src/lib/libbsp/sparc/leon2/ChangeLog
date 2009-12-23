@@ -1,3 +1,17 @@
+2009-12-11	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	PR 1483/cpukit
+	* pci/pci.c: Rename pci_config into rtems_pci_config_t.
+
+2009-12-10	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* console/console.c:
+	Reflect changes to rtems_termios_callbacks->write.
+
+2009-12-10	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* console/console.c: Let bsp_in_char return int.
+
 2009-11-23	Joel Sherrill <joel.sherrill@OARcorp.com>
 
 	* Makefile.am: sparc/shared/bspstart.c was really leon2 specific. So

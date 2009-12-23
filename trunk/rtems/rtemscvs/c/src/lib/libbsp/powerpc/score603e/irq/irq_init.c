@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_init.c,v 1.9 2009/10/23 07:32:45 thomas Exp $
+ *  $Id: irq_init.c,v 1.10 2009/11/30 04:33:54 ralf Exp $
  */
 
 #include <libcpu/io.h>
@@ -29,7 +29,7 @@
 
 #define SHOW_ISA_PCI_BRIDGE_SETTINGS 1
 #define SCAN_PCI_PRINT               1
-#define TRACE_IRQ_INIT               0 
+#define TRACE_IRQ_INIT               0
 
 typedef struct {
   unsigned char bus;	/* few chance the PCI/ISA bridge is not on first bus but ... */

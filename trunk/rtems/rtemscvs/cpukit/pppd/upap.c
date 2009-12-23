@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#define RCSID	"$Id: upap.c,v 1.9 2008/09/08 06:45:43 ralf Exp $"
+#define RCSID	"$Id: upap.c,v 1.10 2009/11/30 15:59:00 ralf Exp $"
 
 /*
  * TODO:
@@ -122,7 +122,7 @@ upap_init(int unit)
 void
 upap_authwithpeer(
     int unit,
-    char *user, 
+    char *user,
     char *password)
 {
     upap_state *u = &upap[unit];
@@ -505,7 +505,7 @@ upap_sauthreq(upap_state *u)
     outlen = UPAP_HEADERLEN + 2 * sizeof (u_char) +
 	u->us_userlen + u->us_passwdlen;
     outp = outpacket_buf;
-    
+
     MAKEHEADER(outp, PPP_PAP);
 
     PUTCHAR(UPAP_AUTHREQ, outp);

@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/copyrt.h
  *
  *  This include file contains the copyright notice for RTEMS
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: copyrt.h,v 1.15 2008/03/05 03:08:49 joel Exp $
+ *  $Id: copyrt.h,v 1.16 2009/11/28 05:58:53 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_COPYRT_H

@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: pritask.c,v 1.14 2009/10/27 06:56:21 ralf Exp $
+ *  $Id: pritask.c,v 1.15 2009/11/30 03:33:24 ralf Exp $
  */
 
 #include "system.h"
@@ -52,7 +52,7 @@ rtems_task Priority_task(
   }
 
   /* special case of setting priority while holding a resource */
-  { 
+  {
     rtems_task_priority priority;
     rtems_task_priority old_priority;
 

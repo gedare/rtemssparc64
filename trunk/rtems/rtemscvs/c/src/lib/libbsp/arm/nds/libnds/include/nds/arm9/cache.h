@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: cache.h,v 1.2 2008/08/19 15:47:14 joel Exp $
+	$Id: cache.h,v 1.3 2009/11/29 14:53:01 ralf Exp $
 
 	key input code -- provides slightly higher level input forming
 
@@ -45,7 +45,7 @@ extern "C" {
 */
 void	IC_InvalidateAll(void);
 
-	
+
 /*! \fn IC_InvalidateRange(const void *base, u32 size)
 	\brief invalidate the instruction cache for a range of addresses.
 	\param base base address of the region to invalidate

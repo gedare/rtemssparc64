@@ -1,5 +1,5 @@
 /*  bsp.h
- *  
+ *
  *  This include file contains all board IO definitions for eZKit533.
  *
  *  Copyright (c) 2006 by Atos Automacao Industrial Ltda.
@@ -10,9 +10,9 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.10 2008/09/25 20:08:27 joel Exp $
+ *  $Id: bsp.h,v 1.11 2009/11/30 03:38:33 ralf Exp $
  */
- 
+
 
 #ifndef _BSP_H
 #define _BSP_H
@@ -29,9 +29,9 @@ extern "C" {
 #include <rtems/console.h>
 #include <rtems/clockdrv.h>
 #include <rtems/score/bfin.h>
-#include <rtems/bfin/bf533.h> 
+#include <rtems/bfin/bf533.h>
 
-/* 
+/*
  * PLL and clock setup values:
  */
 

@@ -1,6 +1,6 @@
 /*  lm32.h
  *
- *  This file sets up basic CPU dependency settings based on 
+ *  This file sets up basic CPU dependency settings based on
  *  compiler settings.  For example, it can determine if
  *  floating point is available.  This particular implementation
  *  is specified to the NO CPU port.
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: lm32.h,v 1.1 2008/12/04 22:53:15 joel Exp $
+ *  $Id: lm32.h,v 1.2 2009/12/04 04:27:21 ralf Exp $
  *
  *  Jukka Pietarinen <jukka.pietarinen@mrf.fi>, 2008,
  *  Micro-Research Finland Oy
@@ -37,25 +37,25 @@ extern "C" {
  *  that this port supports and which RTEMS CPU model they correspond
  *  to.
  */
- 
+
 #if defined(rtems_multilib)
 /*
- *  Figure out all CPU Model Feature Flags based upon compiler 
- *  predefines. 
+ *  Figure out all CPU Model Feature Flags based upon compiler
+ *  predefines.
  */
 
 #define CPU_MODEL_NAME  "rtems_multilib"
 #define LM32_HAS_FPU     0
 
 #elif defined(__lm32__)
- 
+
 #define CPU_MODEL_NAME  "lm32"
 #define LM32_HAS_FPU     0
- 
+
 #else
- 
+
 #error "Unsupported CPU Model"
- 
+
 #endif
 
 /*

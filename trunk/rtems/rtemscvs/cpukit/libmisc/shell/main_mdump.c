@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: main_mdump.c,v 1.8 2009/07/23 14:32:34 joel Exp $
+ *  $Id: main_mdump.c,v 1.9 2009/11/29 12:12:39 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -52,7 +52,7 @@ int rtems_shell_main_mdump(
       return -1;
     }
     if (max <= 0) {
-      max = 1;      /* print 1 item if 0 or neg. */ 
+      max = 1;      /* print 1 item if 0 or neg. */
       res = 0;
     } else {
       max--;

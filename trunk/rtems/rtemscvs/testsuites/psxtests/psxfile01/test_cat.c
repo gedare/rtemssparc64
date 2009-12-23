@@ -2,7 +2,15 @@
  *  A test support function which performs a crude version of
  *  "cat" so you can look at specific parts of a file.
  *
- *  $Id: test_cat.c,v 1.3 2004/04/16 09:23:25 ralf Exp $
+ *  COPYRIGHT (c) 1989-2009.
+ *  On-Line Applications Research Corporation (OAR).
+ *
+ *  The license and distribution terms for this file may be
+ *  found in the file LICENSE in this distribution or at
+ *  http://www.rtems.com/license/LICENSE.
+ *
+ *
+ *  $Id: test_cat.c,v 1.4 2009/12/08 17:52:53 joel Exp $
  */
 
 #include <stdio.h>
@@ -14,8 +22,6 @@
 #include <errno.h>
 #include <string.h>
 #include <ctype.h>
-
-#include <assert.h>
 
 #include <pmacros.h>
 
@@ -41,7 +47,7 @@ void test_cat(
   off_t          offset = (off_t)offset_arg;
 
   my_length = (length) ? length : sizeof( test_cat_buffer );
-  assert( my_length <= sizeof( test_cat_buffer ) );
+  rtems_test_assert( my_length <= sizeof( test_cat_buffer ) );
 
   fd = open( file, O_RDONLY );
   if ( fd == -1 ) {
@@ -51,7 +57,7 @@ void test_cat(
 
   for ( ;; ) {
     status = lseek( fd, offset, SEEK_SET );
-    assert( status != -1 );
+    rtems_test_assert( status != -1 );
 
     status = read( fd, test_cat_buffer, sizeof(test_cat_buffer) );
     if ( status <= 0 ) {
@@ -79,5 +85,5 @@ void test_cat(
   }
 
   status = close( fd );
-  assert( !status );
+  rtems_test_assert( !status );
 }

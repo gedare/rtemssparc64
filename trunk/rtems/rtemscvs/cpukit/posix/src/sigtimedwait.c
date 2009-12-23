@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: sigtimedwait.c,v 1.16 2009/07/03 18:40:31 joel Exp $
+ *  $Id: sigtimedwait.c,v 1.17 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -79,7 +79,7 @@ int sigtimedwait(
    */
   if ( !set )
     rtems_set_errno_and_return_minus_one( EINVAL );
-  
+
   /*  NOTE: This is very specifically a RELATIVE not ABSOLUTE time
    *        in the Open Group specification.
    */

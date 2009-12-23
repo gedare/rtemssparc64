@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: shell_cmdset.c,v 1.5 2008/12/18 15:25:27 joel Exp $
+ *  $Id: shell_cmdset.c,v 1.6 2009/11/29 12:12:39 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -41,7 +41,7 @@
  * Help list the topics
  *   help [topic] list the commands for the topic
  *   help [command] help for the command
- * 
+ *
  */
 
 rtems_shell_cmd_t   * rtems_shell_first_cmd;
@@ -111,7 +111,7 @@ rtems_shell_cmd_t *rtems_shell_add_cmd_struct(
 )
 {
   rtems_shell_cmd_t *shell_pvt;
-  
+
   shell_pvt = rtems_shell_first_cmd;
   while (shell_pvt) {
     if (strcmp(shell_pvt->name, shell_cmd->name) == 0)
@@ -126,13 +126,13 @@ rtems_shell_cmd_t *rtems_shell_add_cmd_struct(
     while (shell_pvt->next)
       shell_pvt = shell_pvt->next;
     shell_pvt->next = shell_cmd;
-  }  
+  }
   rtems_shell_add_topic( shell_cmd->topic );
   return shell_cmd;
 }
 
 /*
- *  Add a command as a set of arguments to the set and 
+ *  Add a command as a set of arguments to the set and
  *  allocate the command structure on the fly.
  */
 rtems_shell_cmd_t * rtems_shell_add_cmd(

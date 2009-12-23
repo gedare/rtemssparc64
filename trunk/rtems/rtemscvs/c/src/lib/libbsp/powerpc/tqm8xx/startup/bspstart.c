@@ -17,7 +17,7 @@
  * The license and distribution terms for this file may be found in the file
  * LICENSE in this distribution or at http://www.rtems.com/license/LICENSE.
  *
- * $Id: bspstart.c,v 1.9 2009/11/03 18:45:04 thomas Exp $
+ * $Id: bspstart.c,v 1.10 2009/11/30 04:30:48 ralf Exp $
  */
 
 #include <stdlib.h>
@@ -82,7 +82,7 @@ const char *bsp_tqm_get_cib_string( const char *cib_id)
 {
   char srch_pattern[10] = "";
   char *fnd_str;
-  /* 
+  /*
    * create search pattern
    */
   strcat(srch_pattern,"-");
@@ -164,17 +164,17 @@ void bsp_start( void)
   /*
    * get the (internal) bus frequency
    * NOTE: the external bus may be clocked at a lower speed
-   * but this does not concern the internal units like PIT, 
+   * but this does not concern the internal units like PIT,
    * DEC, baudrate generator etc)
    */
-  if (RTEMS_SUCCESSFUL != 
+  if (RTEMS_SUCCESSFUL !=
       bsp_tqm_get_cib_uint32("cu",
 			     &BSP_bus_frequency)) {
     BSP_panic("Cannot determine BUS frequency\n");
   }
 
-  bsp_clicks_per_usec = BSP_bus_frequency/1000000/16; 
-  bsp_timer_least_valid = 3; 
+  bsp_clicks_per_usec = BSP_bus_frequency/1000000/16;
+  bsp_timer_least_valid = 3;
   bsp_timer_average_overhead = 3;
 
   /* Initialize exception handler */

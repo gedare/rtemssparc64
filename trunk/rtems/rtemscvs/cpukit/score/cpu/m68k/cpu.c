@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.33 2009/05/15 07:20:38 thomas Exp $
+ *  $Id: cpu.c,v 1.34 2009/12/04 05:25:25 ralf Exp $
  */
 
 #include <rtems/system.h>
@@ -49,7 +49,7 @@ void _CPU_Initialize(void)
  *
  *  _CPU_ISR_Get_level
  */
- 
+
 uint32_t   _CPU_ISR_Get_level( void )
 {
   uint32_t   level;
@@ -63,7 +63,7 @@ uint32_t   _CPU_ISR_Get_level( void )
  *
  *  _CPU_ISR_install_raw_handler
  */
- 
+
 void _CPU_ISR_install_raw_handler(
   uint32_t    vector,
   proc_ptr    new_handler,
@@ -88,7 +88,7 @@ void _CPU_ISR_install_raw_handler(
   /*
    *  On CPU models without a VBR, it is necessary for there to be some
    *  header code for each ISR which saves a register, loads the vector
-   *  number, and jumps to _ISR_Handler. 
+   *  number, and jumps to _ISR_Handler.
    */
 
   m68k_get_vbr( interrupt_table );

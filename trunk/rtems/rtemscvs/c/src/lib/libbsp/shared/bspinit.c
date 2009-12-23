@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspinit.c,v 1.2 2009/05/06 16:38:16 joel Exp $
+ *  $Id: bspinit.c,v 1.3 2009/11/30 04:54:28 ralf Exp $
  */
 
 #include <stdlib.h>
@@ -38,7 +38,7 @@ void Init (rtems_task_argument arg)
   if (boot_cmdline)
   {
     cmdline = malloc (strlen (boot_cmdline) + 1);
-  
+
     if (cmdline)
     {
       strcpy (cmdline, boot_cmdline);
@@ -62,7 +62,7 @@ void Init (rtems_task_argument arg)
       if (argv)
       {
         int a;
-        
+
         command = cmdline;
         argv[0] = command;
 
@@ -76,13 +76,13 @@ void Init (rtems_task_argument arg)
         argc = 0;
     }
   }
-  
+
 #ifdef RTEMS_NETWORKING
   rtems_bsdnet_initialize_network ();
 #endif
 
   result = main (argc, argv);
- 
+
   free (argv);
   free (cmdline);
 

@@ -27,7 +27,7 @@
 | *  http://www.rtems.com/license/LICENSE.
 | **************************************************************************
 |
-|  $Id: console.c,v 1.46 2009/11/06 06:12:03 strauman Exp $
+|  $Id: console.c,v 1.47 2009/11/30 04:52:27 ralf Exp $
 +--------------------------------------------------------------------------*/
 
 #include <stdio.h>
@@ -228,8 +228,8 @@ console_initialize(rtems_device_major_number major,
                    void                      *arg)
 {
   rtems_status_code status;
-  
- 
+
+
   /* Initialize the KBD interface */
   kbd_init();
 

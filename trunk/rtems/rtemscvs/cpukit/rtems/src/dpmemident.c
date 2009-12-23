@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: dpmemident.c,v 1.8 2008/01/23 22:57:43 joel Exp $
+ *  $Id: dpmemident.c,v 1.9 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -42,8 +42,8 @@
  */
 
 rtems_status_code rtems_port_ident(
-  rtems_name    name,
-  Objects_Id   *id
+  rtems_name  name,
+  rtems_id   *id
 )
 {
   Objects_Name_or_id_lookup_errors  status;

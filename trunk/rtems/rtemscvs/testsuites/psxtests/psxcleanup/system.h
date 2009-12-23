@@ -7,7 +7,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.2 2009/10/12 00:00:04 joel Exp $
+ *  $Id: system.h,v 1.3 2009/11/30 03:33:23 ralf Exp $
  */
 
 /* functions */
@@ -61,5 +61,5 @@ void *task_c(
 TEST_EXTERN pthread_t        Init_id;
 TEST_EXTERN pthread_t        Task_id;
 
-#undef TEST_EXTERN 
+#undef TEST_EXTERN
 /* end of include file */

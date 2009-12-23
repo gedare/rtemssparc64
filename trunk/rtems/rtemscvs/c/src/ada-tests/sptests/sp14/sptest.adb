@@ -10,18 +10,17 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-1997.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: sptest.adb,v 1.6 2005/05/03 21:41:44 joel Exp $
+--  $Id: sptest.adb,v 1.7 2009/12/14 21:17:58 joel Exp $
 --
 
 with ADDRESS_IO;
-with RTEMS;
 with TEST_SUPPORT;
 with TEXT_IO;
 with UNSIGNED32_IO;
@@ -37,6 +36,7 @@ package body SPTEST is
    procedure INIT (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -128,6 +128,7 @@ package body SPTEST is
    procedure TASK_1 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       PREVIOUS_MODE : RTEMS.MODE;
       STATUS        : RTEMS.STATUS_CODES;
    begin
@@ -195,7 +196,7 @@ package body SPTEST is
       SPTEST.ASR_FIRED   := FALSE;
 
       loop
-         exit when SPTEST.SIGNAL_SENT = TRUE;
+         exit when SPTEST.SIGNAL_SENT;
       end loop;
 
       if SPTEST.TIMER_GOT_THIS_ID = SPTEST.TIMER_ID( 1 ) and then
@@ -248,6 +249,7 @@ package body SPTEST is
    procedure TASK_2 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 

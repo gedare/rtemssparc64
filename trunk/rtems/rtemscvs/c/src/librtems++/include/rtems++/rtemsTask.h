@@ -1,6 +1,6 @@
 /*
   ------------------------------------------------------------------------
-  $Id: rtemsTask.h,v 1.5 2006/12/13 15:52:00 joel Exp $
+  $Id: rtemsTask.h,v 1.6 2009/11/28 05:48:23 ralf Exp $
   ------------------------------------------------------------------------
 
   COPYRIGHT (c) 1997
@@ -71,7 +71,7 @@ public:
   enum Scope { local = RTEMS_LOCAL,
                global = RTEMS_GLOBAL };
 
-  // only the first 4 characters of the name are taken  
+  // only the first 4 characters of the name are taken
 
   // creates a task
   rtemsTask(const char* name,

@@ -10,7 +10,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpuIdent.h,v 1.23 2009/11/03 18:45:04 thomas Exp $
+ *  $Id: cpuIdent.h,v 1.24 2009/11/30 05:07:54 ralf Exp $
  */
 
 #ifndef _LIBCPU_CPUIDENT_H
@@ -66,7 +66,7 @@ typedef enum
  * below.
  */
 
-typedef struct { 
+typedef struct {
 	unsigned has_altivec		: 1;
 	unsigned has_fpu			: 1;
 	unsigned has_hw_ptbl_lkup	: 1;

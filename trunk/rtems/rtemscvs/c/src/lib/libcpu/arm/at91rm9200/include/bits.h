@@ -3,13 +3,13 @@
  *
  * Copyright (c) 2002 by Cogent Computer Systems
  * Written by Mike Kelly <mike@cogcomp.com>
- *      
+ *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bits.h,v 1.2 2007/03/12 11:17:07 joel Exp $
+ *  $Id: bits.h,v 1.3 2009/11/30 04:58:24 ralf Exp $
  */
 #ifndef __BITS_H__
 #define __BITS_H__

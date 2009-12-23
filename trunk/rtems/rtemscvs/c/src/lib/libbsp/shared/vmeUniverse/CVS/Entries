@@ -1,15 +1,15 @@
 /README.porting/1.5/Fri Oct 23 12:51:11 2009//
 /README.universe/1.3/Fri Oct 23 12:51:11 2009//
-/VME.h/1.4/Fri Oct 23 12:51:11 2009//
-/VMEDMA.h/1.2/Fri Oct 23 12:51:11 2009//
-/bspVmeDmaList.c/1.2/Fri Oct 23 12:51:11 2009//
-/bspVmeDmaList.h/1.2/Fri Oct 23 12:51:11 2009//
-/bspVmeDmaListP.h/1.2/Fri Oct 23 12:51:11 2009//
-/vmeTsi148.c/1.15/Fri Oct 23 12:51:11 2009//
-/vmeTsi148.h/1.7/Fri Oct 23 12:51:11 2009//
-/vmeTsi148DMA.h/1.2/Fri Oct 23 12:51:11 2009//
-/vmeUniverse.c/1.25/Fri Oct 23 12:51:11 2009//
-/vmeUniverse.h/1.13/Fri Oct 23 12:51:11 2009//
-/vmeUniverseDMA.h/1.2/Fri Oct 23 12:51:11 2009//
-/vme_am_defs.h/1.7/Fri Oct 23 12:51:11 2009//
+/VME.h/1.5/Tue Dec 22 15:26:31 2009//
+/VMEDMA.h/1.3/Tue Dec 22 15:26:32 2009//
+/bspVmeDmaList.c/1.3/Tue Dec 22 15:26:32 2009//
+/bspVmeDmaList.h/1.3/Tue Dec 22 15:26:33 2009//
+/bspVmeDmaListP.h/1.3/Tue Dec 22 15:26:33 2009//
+/vmeTsi148.c/1.16/Tue Dec 22 15:26:34 2009//
+/vmeTsi148.h/1.8/Tue Dec 22 15:26:34 2009//
+/vmeTsi148DMA.h/1.3/Tue Dec 22 15:26:34 2009//
+/vmeUniverse.c/1.26/Tue Dec 22 15:26:34 2009//
+/vmeUniverse.h/1.14/Tue Dec 22 15:26:34 2009//
+/vmeUniverseDMA.h/1.3/Tue Dec 22 15:26:34 2009//
+/vme_am_defs.h/1.8/Tue Dec 22 15:26:34 2009//
 D

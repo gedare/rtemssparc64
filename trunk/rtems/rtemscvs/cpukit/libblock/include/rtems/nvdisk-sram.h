@@ -1,5 +1,5 @@
 /*
- *  $Id: nvdisk-sram.h,v 1.1 2008/05/01 04:15:36 ccj Exp $
+ *  $Id: nvdisk-sram.h,v 1.2 2009/11/29 11:57:22 ralf Exp $
  *
  * RTEMS Project (http://www.rtems.org/)
  *
@@ -9,7 +9,7 @@
 /**
  * NV Disk Static RAM Device Driver.
  *
- * This driver maps an NV disk to static RAM. You can use this 
+ * This driver maps an NV disk to static RAM. You can use this
  */
 
 #if !defined (_RTEMS_NVDISK_SRAM_H_)

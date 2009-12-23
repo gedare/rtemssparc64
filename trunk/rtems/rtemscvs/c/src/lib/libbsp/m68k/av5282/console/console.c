@@ -22,12 +22,12 @@
                                  MCF5282_UART_USR_PE | \
                                  MCF5282_UART_USR_OE )
 
-static int IntUartPollWrite(int minor, const char *buf, int len);
-static int IntUartInterruptWrite (int minor, const char *buf, int len);
+static ssize_t IntUartPollWrite(int minor, const char *buf, size_t len);
+static ssize_t IntUartInterruptWrite (int minor, const char *buf, size_t len);
 
 static void
 _BSP_null_char( char c )
-{ 
+{
 	int level;
 
     if (c == '\n')
@@ -155,7 +155,7 @@ IntUartSet(int minor, int baud, int databits, int parity, int stopbits, int hwfl
    Description : This provides the hardware-dependent portion of tcsetattr().
    value and sets it. At the moment this just sets the baud rate.
 
-   Note: The highest baudrate is 115200 as this stays within 
+   Note: The highest baudrate is 115200 as this stays within
    an error of +/- 5% at 25MHz processor clock
  ***************************************************************************/
 static int
@@ -337,7 +337,7 @@ IntUartInitialize(void)
 		info->stopbits = -1;
 		info->hwflow   = -1;
 		info->iomode   = TERMIOS_POLLED;
-		
+
 		MCF5282_UART_UACR(chan) = 0;
 		MCF5282_UART_UIMR(chan) = 0;
 		if ( info->iomode != TERMIOS_POLLED )
@@ -385,13 +385,13 @@ IntUartInitialize(void)
 /***************************************************************************
    Function : IntUartInterruptWrite
 
-   Description : This writes a single character to the appropriate uart 
+   Description : This writes a single character to the appropriate uart
    channel. This is either called during an interrupt or in the user's task
-   to initiate a transmit sequence. Calling this routine enables Tx 
+   to initiate a transmit sequence. Calling this routine enables Tx
    interrupts.
  ***************************************************************************/
-static int
-IntUartInterruptWrite (int minor, const char *buf, int len)
+static ssize_t
+IntUartInterruptWrite (int minor, const char *buf, size_t len)
 {
 	int level;
 
@@ -494,7 +494,7 @@ IntUartTaskRead(int minor)
 	/* copy data into local buffer from rx buffer */
 	while ( ( index < count ) && ( index < RX_BUFFER_SIZE ) )
 	{
-		/* copy data byte */ 
+		/* copy data byte */
 		buffer[index] = info->rx_buffer[info->rx_out];
 		index++;
 
@@ -521,7 +521,7 @@ IntUartTaskRead(int minor)
 /***************************************************************************
    Function : IntUartPollRead
 
-   Description : This reads a character from the internal uart. It returns 
+   Description : This reads a character from the internal uart. It returns
    to the caller without blocking if not character is waiting.
  ***************************************************************************/
 static int
@@ -537,13 +537,14 @@ IntUartPollRead (int minor)
 /***************************************************************************
    Function : IntUartPollWrite
 
-   Description : This writes out each character in the buffer to the 
-   appropriate internal uart channel waiting till each one is sucessfully 
+   Description : This writes out each character in the buffer to the
+   appropriate internal uart channel waiting till each one is sucessfully
    transmitted.
  ***************************************************************************/
-static int
-IntUartPollWrite (int minor, const char *buf, int len)
+static ssize_t
+IntUartPollWrite (int minor, const char *buf, size_t len)
 {
+	size_t retval = len;
 	/* loop over buffer */
 	while ( len-- )
 	{
@@ -553,7 +554,7 @@ IntUartPollWrite (int minor, const char *buf, int len)
 		/* transmit data byte */
 		MCF5282_UART_UTB(minor) = *buf++;
 	}
-	return(0);
+	return retval;
 }
 
 /***************************************************************************
@@ -575,7 +576,7 @@ rtems_device_driver console_initialize(
 
 	/* set io modes for the different channels and initialize device */
     IntUartInfo[minor].iomode = TERMIOS_IRQ_DRIVEN;
-	IntUartInitialize(); 
+	IntUartInitialize();
 
 	/* Register the console port */
 	status = rtems_io_register_name ("/dev/console", major, CONSOLE_PORT);
@@ -608,7 +609,7 @@ rtems_device_driver console_initialize(
 /***************************************************************************
    Function : console_open
 
-   Description : This actually opens the device depending on the minor 
+   Description : This actually opens the device depending on the minor
    number set during initialisation. The device specific access routines are
    passed to termios when the devices is opened depending on whether it is
    polled or not.

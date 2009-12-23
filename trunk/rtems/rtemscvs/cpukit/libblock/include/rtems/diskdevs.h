@@ -5,12 +5,12 @@
  *
  * @brief Block device disk management API.
  */
- 
+
 /*
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Victor V. Vengerov <vvv@oktet.ru>
  *
- * @(#) $Id: diskdevs.h,v 1.16 2009/10/20 07:53:19 thomas Exp $
+ * @(#) $Id: diskdevs.h,v 1.18 2009/12/18 15:59:29 thomas Exp $
  */
 
 #ifndef _RTEMS_DISKDEVS_H
@@ -37,7 +37,7 @@ typedef struct rtems_disk_device rtems_disk_device;
  * non-negative integers starting at zero.  There are also logical disks which
  * contain a subset of consecutive disk blocks.  The logical disks are used to
  * represent the partitions of a disk.  The disk devices are accessed via the
- * @ref rtems_bdbuf "block device buffer module". 
+ * @ref rtems_bdbuf "block device buffer module".
  *
  * @{
  */
@@ -143,57 +143,37 @@ struct rtems_disk_device {
  * @{
  */
 
-static inline dev_t rtems_disk_physical_device_number(
+static inline dev_t rtems_disk_get_device_identifier(
   const rtems_disk_device *dd
 )
-{
-  return dd->phys_dev->dev;
-}
-
-static inline rtems_device_major_number rtems_disk_physical_major_number(
-  const rtems_disk_device *dd
-)
-{
-  return rtems_filesystem_dev_major_t(dd->phys_dev->dev);
-}
-
-static inline rtems_device_minor_number rtems_disk_physical_minor_number(
-  const rtems_disk_device *dd
-)
-{
-  return rtems_filesystem_dev_minor_t(dd->phys_dev->dev);
-}
-
-static inline dev_t rtems_disk_device_number(const rtems_disk_device *dd)
 {
   return dd->dev;
 }
 
-static inline rtems_device_major_number rtems_disk_major_number(
+static inline rtems_device_major_number rtems_disk_get_major_number(
   const rtems_disk_device *dd
 )
 {
   return rtems_filesystem_dev_major_t(dd->dev);
 }
 
-static inline rtems_device_minor_number rtems_disk_minor_number(
+static inline rtems_device_minor_number rtems_disk_get_minor_number(
   const rtems_disk_device *dd
 )
 {
   return rtems_filesystem_dev_minor_t(dd->dev);
 }
 
-static inline void *rtems_disk_driver_data(const rtems_disk_device *dd)
+static inline void *rtems_disk_get_driver_data(
+  const rtems_disk_device *dd
+)
 {
   return dd->driver_data;
 }
 
-static inline uint32_t rtems_disk_block_size(const rtems_disk_device *dd)
-{
-  return dd->block_size;
-}
-
-static inline uint32_t rtems_disk_media_block_size(const rtems_disk_device *dd)
+static inline uint32_t rtems_disk_get_media_block_size(
+  const rtems_disk_device *dd
+)
 {
   return dd->media_block_size;
 }

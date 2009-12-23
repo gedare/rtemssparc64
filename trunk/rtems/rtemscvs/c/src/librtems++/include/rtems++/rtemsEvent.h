@@ -1,6 +1,6 @@
 /*
   ------------------------------------------------------------------------
-  $Id: rtemsEvent.h,v 1.7 2008/12/16 20:55:45 joel Exp $
+  $Id: rtemsEvent.h,v 1.9 2009/12/22 13:12:57 joel Exp $
   ------------------------------------------------------------------------
 
   COPYRIGHT (c) 1997
@@ -40,7 +40,7 @@ public:
   enum Condition { any = RTEMS_EVENT_ANY,
                    all = RTEMS_EVENT_ALL};
 
-  // only the first 4 characters of the name are taken  
+  // only the first 4 characters of the name are taken
 
   // connect to a task
   rtemsEvent(const char* name, uint32_t node = RTEMS_SEARCH_ALL_NODES);
@@ -49,7 +49,7 @@ public:
   rtemsEvent(const rtemsEvent& event);
   rtemsEvent();
 
-  virtual ~rtemsEvent();    
+  virtual ~rtemsEvent();
 
   // connect to an existing task object, will not be the owner
   const rtemsEvent& operator=(const rtemsEvent& event);
@@ -74,7 +74,7 @@ public:
   const rtems_id task_id_is() const { return id; }
   const rtems_name task_name_is() const { return name; }
 
-private:   
+private:
   // task name
   rtems_name name;
 
@@ -109,7 +109,7 @@ const rtems_status_code rtemsEvent::receive(const rtems_event_set event_in,
                                             const WaitMode wait,
                                             const Condition condition)
 {
-  rtems_interval usecs =
+  rtems_interval usecs = micro_secs &&
     (micro_secs < rtems_configuration_get_microseconds_per_tick()) ?
     rtems_configuration_get_microseconds_per_tick() : micro_secs;
   set_status_code(rtems_event_receive(event_in,

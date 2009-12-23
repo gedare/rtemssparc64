@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: main_netstats.c,v 1.6 2009/02/17 15:09:57 joel Exp $
+ *  $Id: main_netstats.c,v 1.7 2009/11/29 12:12:39 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -56,7 +56,7 @@ int rtems_shell_main_netstats(                       /* command */
   int   verbose = 0;
   struct getopt_data getopt_reent;
 
-  memset(&getopt_reent, 0, sizeof(getopt_data)); 
+  memset(&getopt_reent, 0, sizeof(getopt_data));
   while ( (option = getopt_r( argc, argv, "Aimfpcutv", &getopt_reent)) != -1 ) {
 
     switch ((char)option) {
@@ -75,7 +75,7 @@ int rtems_shell_main_netstats(                       /* command */
         return -1;
     }
   }
-  
+
   if ( verbose ) {
     printf(
       "doAll=%d\n"

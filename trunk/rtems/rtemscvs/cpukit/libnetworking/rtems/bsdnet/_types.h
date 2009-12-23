@@ -27,9 +27,9 @@
  */
 
 /*
- * $Id: _types.h,v 1.2 2008/12/11 00:40:41 ralf Exp $
+ * $Id: _types.h,v 1.3 2009/11/30 15:57:51 ralf Exp $
  */
- 
+
 #ifndef _RTEMS_BSDNET__TYPES_H_
 #define _RTEMS_BSDNET__TYPES_H_
 

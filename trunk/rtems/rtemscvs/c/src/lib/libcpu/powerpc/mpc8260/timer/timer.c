@@ -44,7 +44,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.c,v 1.9 2009/11/03 18:45:04 thomas Exp $
+ *  $Id: timer.c,v 1.10 2009/11/30 05:07:54 ralf Exp $
  */
 
 #include <rtems.h>
@@ -73,7 +73,7 @@ void benchmark_timer_initialize(void)
 /*
   m860.tbscr |= M860_TBSCR_TBIRQ(4) | M860_TBSCR_TBE;
 */
-				
+
 
   Timer_starting = get_itimer();
 }

@@ -12,7 +12,7 @@
  *
  * Copyright (C) 2007 Till Straumann <strauman@slac.stanford.edu>
  *
- * Copyright (C) 2009 embedded brains GmbH.                      
+ * Copyright (C) 2009 embedded brains GmbH.
  *
  * Derived from file "libcpu/powerpc/new-exceptions/bspsupport/vectors_init.c".
  * Derived from file "libcpu/powerpc/new-exceptions/e500_raw_exc_init.c".
@@ -21,7 +21,7 @@
  * found in found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ppc_exc_initialize.c,v 1.1 2009/10/23 09:51:03 thomas Exp $
+ * $Id: ppc_exc_initialize.c,v 1.3 2009/12/02 01:41:57 strauman Exp $
  */
 
 #include <rtems.h>
@@ -135,6 +135,11 @@ rtems_status_code ppc_exc_initialize(
   /* Use current MMU / RI settings when running C exception handlers */
   ppc_exc_msr_bits = ppc_machine_state_register() & (MSR_DR | MSR_IR | MSR_RI);
 
+#ifdef __ALTIVEC__
+  /* Need vector unit enabled to save/restore altivec context */
+  ppc_exc_msr_bits |= MSR_VE;
+#endif
+ 
   if (ppc_cpu_is(PPC_e200z6)) {
     ppc_exc_initialize_e200();
   } else if (ppc_cpu_is_bookE() == PPC_BOOKE_STD || ppc_cpu_is_bookE() == PPC_BOOKE_E500) {

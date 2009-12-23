@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.h,v 1.13 2008/12/17 22:12:23 joel Exp $
+ *  $Id: task.h,v 1.14 2009/11/29 13:35:32 ralf Exp $
  */
 
 #ifndef _RTEMS_ITRON_TASK_H
@@ -59,7 +59,7 @@ ITRON_EXTERN Objects_Information _ITRON_Task_Information;
 /**
  *  When the user configures a set of ITRON API initialization tasks,
  *  This variable will point to the method used to initialize them.
- *  
+ *
  *  @note It is instantiated and initialized by confdefs.h based upon
  *        application requirements.
  */

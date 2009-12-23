@@ -17,7 +17,7 @@
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: mptest.adb,v 1.5 2007/10/01 22:58:09 joel Exp $
+--  $Id: mptest.adb,v 1.6 2009/12/14 21:28:53 joel Exp $
 --
 
 with INTERFACES; use INTERFACES;
@@ -204,7 +204,7 @@ package body MPTEST is
 
             exit when RTEMS.IS_STATUS_SUCCESSFUL( STATUS );
 
-            exit when not RTEMS.ARE_STATUSES_EQUAL( STATUS, RTEMS.NOT_DEFINED );
+            exit when not RTEMS.ARE_STATUSES_EQUAL(STATUS, RTEMS.NOT_DEFINED);
    
          end loop;
          TEST_SUPPORT.DIRECTIVE_FAILED( STATUS, "SIGNAL_SEND" );

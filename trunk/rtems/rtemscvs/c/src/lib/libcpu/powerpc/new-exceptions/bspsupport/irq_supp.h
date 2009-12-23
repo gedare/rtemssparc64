@@ -3,12 +3,12 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_supp.h,v 1.4 2009/10/23 07:32:46 thomas Exp $
+ *  $Id: irq_supp.h,v 1.5 2009/11/30 05:07:54 ralf Exp $
  */
 
 #ifndef IRQ_SHARED_IRQ_C_GLUE_H
 #define IRQ_SHARED_IRQ_C_GLUE_H
-/* 
+/*
  *  This header describes the routines that are needed by the shared
  *  version of 'irq.c' (implementing the RTEMS irq API). They
  *  must be provided by the BSP.

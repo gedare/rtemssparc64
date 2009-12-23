@@ -7,7 +7,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: pipe.h,v 1.2 2008/12/08 04:38:32 ralf Exp $
+ * $Id: pipe.h,v 1.3 2009/11/29 13:18:56 ralf Exp $
  */
 
 #ifndef _RTEMS_PIPE_H
@@ -115,7 +115,7 @@ extern int pipe_lseek(
 extern void rtems_pipe_initialize (void);
 
 #ifdef __cplusplus
-}  
+}
 #endif
 
 #endif

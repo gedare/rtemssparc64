@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ratemongetstatus.c,v 1.15 2009/10/30 17:54:29 joel Exp $
+ *  $Id: ratemongetstatus.c,v 1.18 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -23,8 +23,7 @@
 #include <rtems/rtems/ratemon.h>
 #include <rtems/score/thread.h>
 
-#if defined(RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS) || \
-    defined(RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS)
+#ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
   #include <rtems/score/timespec.h>
 #endif
 
@@ -46,17 +45,15 @@
  */
 
 rtems_status_code rtems_rate_monotonic_get_status(
-  Objects_Id                           id,
-  rtems_rate_monotonic_period_status  *status
+  rtems_id                            id,
+  rtems_rate_monotonic_period_status *status
 )
 {
+  Thread_CPU_usage_t             executed;
   Objects_Locations              location;
+  Rate_monotonic_Period_time_t   since_last_period;
   Rate_monotonic_Control        *the_period;
-  #if defined(RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS) || \
-      defined(RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS)
-    Timestamp_Control            uptime;
-    Timestamp_Control            temp;
-  #endif
+  bool                           valid_status;
 
   if ( !status )
     return RTEMS_INVALID_ADDRESS;
@@ -68,46 +65,42 @@ rtems_status_code rtems_rate_monotonic_get_status(
       status->owner = the_period->owner->Object.id;
       status->state = the_period->state;
 
+      /*
+       *  If the period is inactive, there is no information.
+       */
       if ( status->state == RATE_MONOTONIC_INACTIVE ) {
-        #ifdef RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS
+        #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
           _Timespec_Set_to_zero( &status->since_last_period );
-        #else
-          status->since_last_period = 0;
-        #endif
-        #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
           _Timespec_Set_to_zero( &status->executed_since_last_period );
         #else
+          status->since_last_period = 0;
           status->executed_since_last_period = 0;
         #endif
+
       } else {
+
         /*
-         *  Both nanoseconds granularity options have to know the uptime.
-         *  This lets them share one single invocation of _TOD_Get_uptime().
+         *  Grab the current status.
          */
-        #if defined(RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS) || \
-            defined(RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS)
-          _TOD_Get_uptime( &uptime );
-        #endif
-
-        #ifdef RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS
-          _Timestamp_Subtract( &the_period->time_at_period, &uptime, &temp );
-          _Timestamp_To_timespec( &temp, &status->since_last_period );
-        #else
-          status->since_last_period =
-            _Watchdog_Ticks_since_boot - the_period->time_at_period;
-        #endif
-
-        #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
-          _Timestamp_Subtract(
-            &_Thread_Time_of_last_context_switch,
-            &uptime,
-            &temp
+        valid_status =
+          _Rate_monotonic_Get_status(
+            the_period, &since_last_period, &executed
           );
-          _Timestamp_To_timespec( &temp, &status->executed_since_last_period );
+        if (!valid_status) {
+          _Thread_Enable_dispatch();
+          return RTEMS_NOT_DEFINED;
+        }
+
+        #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
+          _Timestamp_To_timespec(
+            &since_last_period, &status->since_last_period
+          );
+          _Timestamp_To_timespec(
+            &executed, &status->executed_since_last_period
+          );
         #else
-          status->executed_since_last_period =
-            the_period->owner->cpu_time_used -
-            the_period->owner_executed_at_period;
+          status->since_last_period = since_last_period;
+          status->executed_since_last_period = executed;
         #endif
       }
 

@@ -19,7 +19,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.27 2009/07/17 13:50:31 thomas Exp $
+ *  $Id: cpu.c,v 1.28 2009/12/04 05:22:04 ralf Exp $
  */
 
 #include <rtems/system.h>
@@ -93,10 +93,10 @@ void _CPU_ISR_install_vector(
 )
 {
   /* Redirection table starts at the end of the vector table */
-  volatile uint32_t *table = (volatile uint32_t *) (MAX_EXCEPTIONS * 4); 
+  volatile uint32_t *table = (volatile uint32_t *) (MAX_EXCEPTIONS * 4);
 
   uint32_t current_handler = table [vector];
-  
+
   /* The current handler is now the old one */
   if (old_handler != NULL) {
     *old_handler = (proc_ptr) current_handler;

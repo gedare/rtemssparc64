@@ -1,9 +1,9 @@
 /**
  * @file rtems/rtems_bsdnet.h
  */
- 
+
 /*
- *  $Id: servers.h,v 1.1 2005/02/03 05:34:01 ralf Exp $
+ *  $Id: servers.h,v 1.2 2009/11/30 15:57:51 ralf Exp $
  */
 
 #ifndef _RTEMS_BSDNET_SERVERS_H

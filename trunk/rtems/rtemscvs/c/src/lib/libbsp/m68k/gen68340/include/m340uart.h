@@ -20,7 +20,7 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: m340uart.h,v 1.6 2008/06/05 22:09:39 joel Exp $
+ *  $Id: m340uart.h,v 1.7 2009/12/17 08:42:16 thomas Exp $
  */
 
 #ifndef __m340uart_H__
@@ -81,7 +81,7 @@ Find_Right_m340_UART_Config(float ChannelA_ReceiverBaudRate, float ChannelA_Tran
 extern rtems_isr InterruptHandler (rtems_vector_number v);
 
 extern int dbugRead (int minor);
-extern int dbugWrite (int minor, const char *buf, int len);
+extern ssize_t dbugWrite (int minor, const char *buf, size_t len);
 
 extern float m340_Baud_Rates_Table[16][2];
 

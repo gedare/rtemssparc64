@@ -6,8 +6,6 @@
 /igmp_var.h/1.7/Fri Oct 23 12:52:48 2009//
 /in.c/1.6/Fri Oct 23 12:52:48 2009//
 /in.h/1.20/Fri Oct 23 12:52:48 2009//
-/in_cksum.c/1.16/Fri Oct 23 12:52:48 2009//
-/in_cksum_arm.h/1.4/Fri Oct 23 12:52:48 2009//
 /in_cksum_i386.h/1.5/Fri Oct 23 12:52:48 2009//
 /in_cksum_m68k.h/1.9/Fri Oct 23 12:52:48 2009//
 /in_cksum_powerpc.h/1.3/Fri Oct 23 12:52:48 2009//
@@ -45,4 +43,6 @@
 /udp.h/1.1/Fri Oct 23 12:52:48 2009//
 /udp_usrreq.c/1.15/Fri Oct 23 12:52:48 2009//
 /udp_var.h/1.5/Fri Oct 23 12:52:48 2009//
+/in_cksum.c/1.17/Tue Dec 22 15:27:07 2009//
+/in_cksum_arm.h/1.5/Tue Dec 22 15:27:07 2009//
 D

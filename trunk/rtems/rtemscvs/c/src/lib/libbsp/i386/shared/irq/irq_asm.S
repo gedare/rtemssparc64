@@ -8,7 +8,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_asm.S,v 1.15 2009/11/10 06:51:52 strauman Exp $
+ *  $Id: irq_asm.S,v 1.16 2009/11/30 03:47:10 ralf Exp $
  */
 
 #include <rtems/asm.h>
@@ -28,7 +28,7 @@
 #define FRM_SIZ (16+512)
 #define SSE_OFF 16
 #else
-#define FRM_SIZ 16 
+#define FRM_SIZ 16
 #endif
 
 	BEGIN_CODE
@@ -137,7 +137,7 @@ SYM (_ISR_Handler):
 
 	/*
 	 *  We want to insure that the old stack pointer is in ebp
-	 *  By saving it on every interrupt, all we have to do is 
+	 *  By saving it on every interrupt, all we have to do is
 	 *  movl ebp->esp near the end of every interrupt.
 	 */
 

@@ -1,19 +1,18 @@
-/**
- * @file rtems/umon.h
- *
- *  This file contains the RTEMS specific interface to MicroMonitor.
- */
-
 /*
- *  COPYRIGHT (c) 1989-2007.
+ * umon.h - RTEMS specific interface to MicroMonitor.
+ *
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
+ *
+ *  Modified by Fernando Nicodemos <fgnicodemos@terra.com.br>
+ *  from NCB - Sistemas Embarcados Ltda. (Brazil)
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: umon.h,v 1.1 2009/06/15 15:38:38 joel Exp $
- */
+ *  $Id: umon.h,v 1.2 2009/11/30 22:00:47 joel Exp $
+*/
 
 #ifndef __rtems_umon_h
 #define __rtems_umon_h

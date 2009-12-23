@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mc146818a.h,v 1.5 2008/09/07 03:38:38 ralf Exp $
+ *  $Id: mc146818a.h,v 1.6 2009/11/30 03:42:53 ralf Exp $
  */
 
 #ifndef __LIBCHIP_MC146818A_h
@@ -43,7 +43,7 @@
 #define MC146818A_STATUSD     0x0d    /* status register D */
 #define  MC146818ASD_PWR       0x80   /* clock lost power */
 
- 
+
 /*
  *  Driver function table
  */

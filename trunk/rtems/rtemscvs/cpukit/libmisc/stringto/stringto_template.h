@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: stringto_template.h,v 1.3 2009/07/23 14:32:34 joel Exp $
+ *  $Id: stringto_template.h,v 1.5 2009/12/01 22:16:10 joel Exp $
  */
 
 #include <rtems/stringto.h>
@@ -98,15 +98,22 @@ rtems_status_code STRING_TO_NAME (
 
   /* If the user wants the end pointer back, then return it. */
   if ( endptr )
-    *endptr = end; 
+    *endptr = end;
 
   /* nothing was converted */
   if ( end == s )
     return RTEMS_NOT_DEFINED;
 
+  /*
+   * In theory, we should check this but newlib never returns anything
+   * but range errors.  So this is unreachable code based upon the newlib
+   * implementation of strXXX methods as of 1 December 2009. --joel
+   */
+  #if 0
   /* there was a conversion error */
   if ( (result == ZERO) && errno )
     return RTEMS_INVALID_NUMBER;
+  #endif
 
   #ifdef STRING_TO_MAX
     /* there was an overflow */

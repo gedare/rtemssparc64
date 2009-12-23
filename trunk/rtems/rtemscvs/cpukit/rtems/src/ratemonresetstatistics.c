@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ratemonresetstatistics.c,v 1.3 2007/11/30 21:49:41 joel Exp $
+ *  $Id: ratemonresetstatistics.c,v 1.4 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -40,7 +40,7 @@
  */
 
 rtems_status_code rtems_rate_monotonic_reset_statistics(
-  Objects_Id                               id
+  rtems_id id
 )
 {
   Objects_Locations              location;

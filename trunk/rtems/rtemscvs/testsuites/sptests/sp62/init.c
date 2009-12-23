@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.5 2009/10/27 11:14:19 ralf Exp $
+ *  $Id: init.c,v 1.6 2009/11/30 03:33:25 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -38,7 +38,7 @@ rtems_task Blocker(
 
   puts( "Blocker - Got memory after resize" );
   case_hit = true;
-  
+
   (void) rtems_task_delete( RTEMS_SELF );
 }
 
@@ -53,7 +53,7 @@ rtems_task Init(
   size_t             size;
 
   puts( "\n\n*** TEST 62 ***" );
-  
+
   puts( "Init - rtems_task_create Blocker - OK" );
   sc = rtems_task_create(
     rtems_build_name( 'B', 'L', 'C', 'K' ),

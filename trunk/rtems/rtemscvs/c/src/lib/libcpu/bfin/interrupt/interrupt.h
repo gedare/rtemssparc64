@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: interrupt.h,v 1.2 2008/09/06 17:34:02 ralf Exp $
+ *  $Id: interrupt.h,v 1.3 2009/11/30 05:03:49 ralf Exp $
  */
 
 #ifndef _interrupt_h_
@@ -73,7 +73,7 @@ void bfin_interrupt_enable_all(int source, bool enable);
 /* disable a source independently of the individual ISR enables (starts
    out all enabled) */
 void bfin_interrupt_enable_global(int source, bool enable);
- 
+
 #ifdef __cplusplus
 }
 #endif

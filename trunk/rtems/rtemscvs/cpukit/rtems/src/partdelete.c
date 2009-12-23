@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: partdelete.c,v 1.7 2007/11/30 21:49:41 joel Exp $
+ *  $Id: partdelete.c,v 1.8 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -42,7 +42,7 @@
  */
 
 rtems_status_code rtems_partition_delete(
-  Objects_Id id
+  rtems_id id
 )
 {
   register Partition_Control *the_partition;

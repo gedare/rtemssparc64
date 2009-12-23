@@ -45,7 +45,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.c,v 1.7 2008/09/05 12:11:47 ralf Exp $
+ *  $Id: timer.c,v 1.8 2009/11/30 05:07:54 ralf Exp $
  */
 
 #include <rtems.h>
@@ -75,7 +75,7 @@ void benchmark_timer_initialize(void)
               | USIU_TBSCR_TBF 		/* freeze timebase during debug */
               | USIU_TBSCR_TBE;		/* enable timebase */
   usiu.tbscrk = 0;
-  
+
   Timer_starting = get_itimer();
 }
 

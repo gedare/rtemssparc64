@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: uart.c,v 1.1 2008/12/04 22:55:13 joel Exp $
+ *  $Id: uart.c,v 1.2 2009/11/29 14:48:22 ralf Exp $
  *
  *  Jukka Pietarinen <jukka.pietarinen@mrf.fi>, 2008,
  *  Micro-Research Finland Oy
@@ -40,7 +40,7 @@ void BSP_uart_init(int baud)
   uartwrite(LM32_UART_MCR, LM32_UART_MCR_DTR | LM32_UART_MCR_RTS);
 
   /* Set baud rate */
-  uartwrite(LM32_UART_DIV, CPU_FREQUENCY/baud);   
+  uartwrite(LM32_UART_DIV, CPU_FREQUENCY/baud);
 }
 
 void BSP_uart_polled_write(char ch)

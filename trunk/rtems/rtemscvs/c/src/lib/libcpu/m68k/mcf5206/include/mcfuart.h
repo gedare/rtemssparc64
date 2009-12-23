@@ -9,7 +9,7 @@
  *
  * http://www.rtems.com/license/LICENSE.
  *
- * @(#) $Id: mcfuart.h,v 1.5 2008/09/02 12:52:52 ralf Exp $
+ * @(#) $Id: mcfuart.h,v 1.7 2009/12/17 08:42:16 thomas Exp $
  *
  */
 
@@ -27,7 +27,7 @@
 #define SYSTEM_CLOCK_FREQUENCY BSP_SYSTEM_FREQUENCY
 #endif
 
-/* 
+/*
  * The following structure is a descriptor of single UART channel.
  * It contains the initialization information about channel and
  * current operating values
@@ -37,12 +37,12 @@ typedef struct mcfuart {
    uint8_t             intvec;           /* UART interrupt vector number, or
                                                 0 if polled I/O */
    void               *tty;              /* termios channel descriptor */
-   
+
    volatile const uint8_t  *tx_buf;      /* Transmit buffer from termios */
    volatile uint32_t        tx_buf_len;  /* Transmit buffer length */
    volatile uint32_t        tx_ptr;      /* Index of next char to transmit*/
    rtems_isr_entry          old_handler; /* Saved interrupt handler */
-   
+
    tcflag_t                 c_iflag;    /* termios input mode flags */
    bool                     parerr_mark_flag; /* Parity error processing
                                                   state */
@@ -89,14 +89,14 @@ mcfuart_poll_read(mcfuart *uart);
 /* mcfuart_interrupt_write --
  *     This function initiate transmitting of the buffer in interrupt mode.
  */
-int
-mcfuart_interrupt_write(mcfuart *uart, const char *buf, int len);
+ssize_t
+mcfuart_interrupt_write(mcfuart *uart, const char *buf, size_t len);
 
 /* mcfuart_poll_write --
  *     This function transmit buffer byte-by-byte in polling mode.
  */
-int
-mcfuart_poll_write(mcfuart *uart, const char *buf, int len);
+ssize_t
+mcfuart_poll_write(mcfuart *uart, const char *buf, size_t len);
 
 /* mcfuart_stop_remote_tx --
  *     This function stop data flow from remote device.

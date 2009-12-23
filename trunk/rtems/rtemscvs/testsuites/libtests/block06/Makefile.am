@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.1 2009/11/09 16:27:42 thomas Exp $
+## $Id: Makefile.am,v 1.2 2009/11/30 12:41:10 thomas Exp $
 ##
 
 MANAGERS = io semaphore event
@@ -7,7 +7,7 @@ MANAGERS = io semaphore event
 rtems_tests_PROGRAMS = block06
 block06_SOURCES = init.c
 
-dist_rtems_tests_DATA = block06.scn
+dist_rtems_tests_DATA = block06.scn block06.doc
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../automake/compile.am

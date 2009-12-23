@@ -10,14 +10,14 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-2007.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: sptest.adb,v 1.9 2007/10/18 19:36:29 humph Exp $
+--  $Id: sptest.adb,v 1.11 2009/12/14 21:28:53 joel Exp $
 --
 
 with INTERFACES; use INTERFACES;
@@ -40,6 +40,7 @@ package body SPTEST is
    procedure INIT (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -220,15 +221,18 @@ package body SPTEST is
    procedure TASK_1 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       QID                        : RTEMS.ID;
       BIG_SEND_BUFFER            : BIG_BUFFER_TYPE;
-      BIG_SEND_BUFFER_POINTER    : RTEMS.ADDRESS := BIG_SEND_BUFFER'ADDRESS;
+      BIG_SEND_BUFFER_POINTER    : constant RTEMS.ADDRESS
+                                      := BIG_SEND_BUFFER'ADDRESS;
       BIG_RECEIVE_BUFFER         : BIG_BUFFER_TYPE;
-      BIG_RECEIVE_BUFFER_POINTER : RTEMS.ADDRESS := BIG_RECEIVE_BUFFER'ADDRESS;
+      BIG_RECEIVE_BUFFER_POINTER : constant RTEMS.ADDRESS
+                                      := BIG_RECEIVE_BUFFER'ADDRESS;
       BUFFER                     : SPTEST.BUFFER;
       BUFFER_POINTER             : RTEMS.ADDRESS := BUFFER'ADDRESS;
       COUNT                      : RTEMS.UNSIGNED32;
-      MESSAGE_SIZE               : RTEMS.UNSIGNED32;
+      MESSAGE_SIZE               : RTEMS.UNSIGNED32 := 0;
       STATUS                     : RTEMS.STATUS_CODES;
       SIZE                       : RTEMS.UNSIGNED32;
    begin
@@ -612,7 +616,7 @@ TEST_SUPPORT.PAUSE;
               SPTEST.QUEUE_ID( 1 ),
               STATUS
           );
-          TEST_SUPPORT.DIRECTIVE_FAILED( status, "message_queue_create of Q1" );
+          TEST_SUPPORT.DIRECTIVE_FAILED(status, "message_queue_create of Q1");
 
           BIG_SEND_BUFFER := (others => CHARACTER'POS( 'A' ));
           BIG_RECEIVE_BUFFER := (others => CHARACTER'POS( 'Z' ));
@@ -662,7 +666,8 @@ TEST_SUPPORT.PAUSE;
           end if;
 
           if (BIG_SEND_BUFFER( BIG_SEND_BUFFER'FIRST .. Integer( SIZE )) /=
-            BIG_RECEIVE_BUFFER( BIG_RECEIVE_BUFFER'FIRST .. Integer( SIZE ))) then
+            BIG_RECEIVE_BUFFER( BIG_RECEIVE_BUFFER'FIRST .. Integer( SIZE )))
+          then
               TEXT_IO.PUT_LINE("TA1 - exact size data match failed");
           end if;
 
@@ -690,10 +695,11 @@ TEST_SUPPORT.PAUSE;
    procedure TASK_2 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       BUFFER            : SPTEST.BUFFER;
       BUFFER_POINTER    : RTEMS.ADDRESS;
       PREVIOUS_PRIORITY : RTEMS.TASK_PRIORITY;
-      MESSAGE_SIZE      : RTEMS.UNSIGNED32;
+      MESSAGE_SIZE      : RTEMS.UNSIGNED32 := 0;
       STATUS            : RTEMS.STATUS_CODES;
    begin
 
@@ -826,10 +832,11 @@ TEST_SUPPORT.PAUSE;
    procedure TASK_3 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       BUFFER         : SPTEST.BUFFER;
       BUFFER_POINTER : RTEMS.ADDRESS;
       COUNT          : RTEMS.UNSIGNED32;
-      MESSAGE_SIZE   : RTEMS.UNSIGNED32;
+      MESSAGE_SIZE   : RTEMS.UNSIGNED32 := 0;
       STATUS         : RTEMS.STATUS_CODES;
    begin
 

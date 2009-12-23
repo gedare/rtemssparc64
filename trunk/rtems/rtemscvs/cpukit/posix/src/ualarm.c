@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ualarm.c,v 1.10 2009/10/04 22:08:43 joel Exp $
+ *  $Id: ualarm.c,v 1.11 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -40,10 +40,10 @@ void _POSIX_signals_Ualarm_TSR(
    * It's OK, there isn't a way this should fail.
    */
   (void) kill( getpid(), SIGALRM );
-  
+
   /*
    * If the reset interval is non-zero, reschedule ourselves.
-   */ 
+   */
   _Watchdog_Reset( &_POSIX_signals_Ualarm_timer );
 }
 
@@ -98,7 +98,7 @@ useconds_t ualarm(
     tp.tv_nsec = (useconds % TOD_MICROSECONDS_PER_SECOND) * 1000;
     ticks = _Timespec_To_ticks( &tp );
     if ( ticks == 0 )
-      ticks = 1; 
+      ticks = 1;
 
     _Watchdog_Insert_ticks( the_timer, _Timespec_To_ticks( &tp ) );
   }

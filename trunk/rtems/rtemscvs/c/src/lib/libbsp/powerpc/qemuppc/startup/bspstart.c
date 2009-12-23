@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.3 2009/10/23 07:32:45 thomas Exp $
+ *  $Id: bspstart.c,v 1.4 2009/11/30 04:34:19 ralf Exp $
  */
 
 #include <string.h>
@@ -74,7 +74,7 @@ void bsp_start( void )
 
   /*
    *  initialize the device driver parameters
-   * assume we are running with 20MHz bus 
+   * assume we are running with 20MHz bus
    * this should speed up some tests :-)
    */
   BSP_bus_frequency        = 20;

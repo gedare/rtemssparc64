@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.11 2006/12/02 05:51:28 ralf Exp $
+##
+## $Id: configure.ac,v 1.12 2009/11/28 06:28:39 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-c4x-c4xsim-tools],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])

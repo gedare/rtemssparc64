@@ -33,7 +33,7 @@ static bool lpc24xx_dma_channel_occupation [GPDMA_CH_NUMBER];
 void lpc24xx_dma_initialize(void)
 {
   /* Enable module power */
-  lpc24xx_module_enable(LPC24XX_MODULE_GPDMA, 0, LPC24XX_MODULE_PCLK_DEFAULT);
+  lpc24xx_module_enable(LPC24XX_MODULE_GPDMA, LPC24XX_MODULE_PCLK_DEFAULT);
 
   /* Disable module */
   GPDMA_CONFIG = 0;
@@ -82,17 +82,17 @@ void lpc24xx_dma_channel_disable(unsigned channel, bool force)
   if (channel < GPDMA_CH_NUMBER) {
     volatile lpc24xx_dma_channel *ch = GPDMA_CH_BASE_ADDR(channel);
     uint32_t cfg = ch->cfg;
- 
+
     if (!force) {
       /* Halt */
       ch->cfg = SET_FLAG(cfg, GPDMA_CH_CFG_HALT);
- 
+
       /* Wait for inactive */
       do {
         cfg = ch->cfg;
       } while (IS_FLAG_SET(cfg, GPDMA_CH_CFG_ACTIVE));
     }
- 
+
     /* Disable */
     ch->cfg = CLEAR_FLAG(cfg, GPDMA_CH_CFG_EN);
   }

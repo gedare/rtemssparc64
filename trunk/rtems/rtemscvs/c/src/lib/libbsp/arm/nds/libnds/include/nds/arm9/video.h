@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: video.h,v 1.2 2008/08/19 15:47:14 joel Exp $
+	$Id: video.h,v 1.3 2009/11/29 14:53:01 ralf Exp $
 
 	Video registers and defines
 
@@ -374,7 +374,7 @@ typedef struct {
     u16 ydx;
     u16 ydy;
     u32 centerX;
-    u32 centerY;    
+    u32 centerY;
 } bg_rotation;
 
 typedef struct {

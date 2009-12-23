@@ -1,5 +1,5 @@
 /*  Support for Blackfin interrupt controller
- * 
+ *
  *  Copyright (c) 2008 Kallisti Labs, Los Gatos, CA, USA
  *             written by Allan Hessenflow <allanh@kallisti.com>
  *
@@ -7,9 +7,9 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: interrupt.c,v 1.2 2008/09/05 14:54:19 ralf Exp $
+ *  $Id: interrupt.c,v 1.3 2009/11/30 05:03:49 ralf Exp $
  */
- 
+
 
 #include <rtems.h>
 #include <rtems/libio.h>

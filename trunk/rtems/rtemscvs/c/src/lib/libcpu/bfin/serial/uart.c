@@ -1,5 +1,5 @@
 /*  UART driver for Blackfin
- * 
+ *
  *  Copyright (c) 2008 Kallisti Labs, Los Gatos, CA, USA
  *             written by Allan Hessenflow <allanh@kallisti.com>
  *
@@ -7,9 +7,9 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: uart.c,v 1.1 2008/08/15 20:18:41 joel Exp $
+ *  $Id: uart.c,v 1.3 2009/12/11 04:15:58 ralf Exp $
  */
- 
+
 
 #include <rtems.h>
 #include <rtems/libio.h>
@@ -34,7 +34,7 @@ static void initializeHardware(int minor) {
   uint16_t r;
 
   base = uartsConfig->channels[minor].base_address;
- 
+
   *(uint16_t volatile *) (base + UART_IER_OFFSET) = 0;
 
   if (uartsConfig->channels[minor].force_baud)
@@ -60,12 +60,12 @@ static void initializeHardware(int minor) {
 static int pollRead(int minor) {
   int c;
   char *base;
- 
+
   base = uartsConfig->channels[minor].base_address;
- 
+
   /* check to see if driver is using interrupts so this call will be
      harmless (though non-functional) in case some debug code tries to
-     use it */ 
+     use it */
   if (!uartsConfig->channels[minor].use_interrupts &&
       *((uint16_t volatile *) (base + UART_LSR_OFFSET)) & UART_LSR_DR)
     c = *((uint16_t volatile *) (base + UART_RBR_OFFSET));
@@ -87,7 +87,7 @@ char bfin_uart_poll_read(int minor) {
 
 void bfin_uart_poll_write(int minor, char c) {
   char *base;
- 
+
   base = uartsConfig->channels[minor].base_address;
 
   while (!(*((uint16_t volatile *) (base + UART_LSR_OFFSET)) & UART_LSR_THRE))
@@ -148,17 +148,18 @@ void debug_write_word(int word) {
  *
  */
 
-static int pollWrite(int minor, const char *buf, int len) {
+static ssize_t pollWrite(int minor, const char *buf, size_t len) {
 
-  while (len-- > 0)
+  size_t count;
+  for ( count = 0; count < len; count++ )
     bfin_uart_poll_write(minor, *buf++);
 
-  return 0;
+  return count;
 }
 
 static void enableInterrupts(int minor) {
   char *base;
- 
+
   base = uartsConfig->channels[minor].base_address;
 
   *(uint16_t volatile *) (base + UART_IER_OFFSET) = UART_IER_ETBEI |
@@ -175,7 +176,7 @@ static void disableAllInterrupts(void) {
   }
 }
 
-static int interruptWrite(int minor, const char *buf, int len) {
+static ssize_t interruptWrite(int minor, const char *buf, size_t len) {
   char *base;
 
   base = uartsConfig->channels[minor].base_address;
@@ -183,7 +184,8 @@ static int interruptWrite(int minor, const char *buf, int len) {
   uartsConfig->channels[minor].flags |= BFIN_UART_XMIT_BUSY;
   *(uint16_t volatile *) (base + UART_THR_OFFSET) = *buf;
 
-  return 0;
+  /* one byte written */
+  return 1;
 }
 
 static int setAttributes(int minor, const struct termios *termios) {

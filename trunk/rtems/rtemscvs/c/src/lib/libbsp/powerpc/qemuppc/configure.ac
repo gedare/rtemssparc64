@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.2 2009/10/20 05:09:00 ralf Exp $
+##
+## $Id: configure.ac,v 1.3 2009/11/28 06:28:40 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-h8300-h8sim],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])

@@ -7,8 +7,10 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: testcase.h,v 1.1 2009/09/04 21:28:56 joel Exp $
+ *  $Id: testcase.h,v 1.3 2009/12/08 17:52:56 joel Exp $
  */
+
+#include <assert.h>
 
 #define FATAL_ERROR_TEST_NAME            "11"
 #define FATAL_ERROR_DESCRIPTION          "asserting with non-NULL strings..."
@@ -19,6 +21,6 @@
 void force_error()
 {
   __assert_func( __FILE__, __LINE__, NULL, "forced" );
-   
+
   /* we will not run this far */
 }

@@ -3,13 +3,13 @@
  *
  * Copyright (c) 2004 by Cogent Computer Systems
  * Written by Jay Monkman <jtm@lopingdog.com>
- *	
+ *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bspreset.c,v 1.1 2008/09/22 21:49:15 joel Exp $
+ *  $Id: bspreset.c,v 1.2 2009/11/29 14:53:00 ralf Exp $
 */
 #include <bsp.h>
 #include <at91rm9200.h>

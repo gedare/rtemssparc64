@@ -8,19 +8,17 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: sigemptyset.c,v 1.7 2004/04/15 13:24:47 ralf Exp $
+ *  $Id: sigemptyset.c,v 1.8 2009/12/04 15:47:56 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
 #include "config.h"
 #endif
 
-#include <pthread.h>
 #include <errno.h>
 
 #include <rtems/system.h>
-#include <rtems/posix/pthread.h>
-#include <rtems/posix/psignal.h>
+#include <rtems/posix/sigset.h>
 #include <rtems/seterr.h>
 
 int sigemptyset(

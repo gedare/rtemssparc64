@@ -1,7 +1,7 @@
 // DS Wifi interface code
 // Copyright (C) 2005-2006 Stephen Stair - sgstair@akkit.org - http://www.akkit.org
 // wifi_arm9.c - arm9 wifi support code
-/****************************************************************************** 
+/******************************************************************************
 DSWifi Lib and test materials are licenced under the MIT open source licence:
 Copyright (c) 2005-2006 Stephen Stair
 
@@ -24,6 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ******************************************************************************/
 
+#include <unistd.h>
 
 #include <nds.h>
 #include "dsregs.h"
@@ -166,7 +167,7 @@ void * wHeapAlloc(int size) {
         }
     }
 #endif
-    return voidptr;    
+    return voidptr;
 }
 
 void wHeapFree(void * data) {
@@ -354,11 +355,11 @@ void Wifi_SetSyncHandler(WifiSyncHandler wshfunc) {
    synchandler=wshfunc;
 }
 
-void Wifi_DisableWifi() {
+void Wifi_DisableWifi(void) {
 	WifiData->reqMode=WIFIMODE_DISABLED;
 	WifiData->reqReqFlags &= ~WFLAG_REQ_APCONNECT;
 }
-void Wifi_EnableWifi() {
+void Wifi_EnableWifi(void) {
 	WifiData->reqMode=WIFIMODE_NORMAL;
 	WifiData->reqReqFlags &= ~WFLAG_REQ_APCONNECT;
 }
@@ -367,7 +368,7 @@ void Wifi_SetPromiscuousMode(int enable) {
 	else WifiData->reqReqFlags &= ~WFLAG_REQ_PROMISC;
 }
 
-void Wifi_ScanMode() {
+void Wifi_ScanMode(void) {
 	WifiData->reqMode=WIFIMODE_SCAN;
 	WifiData->reqReqFlags &= ~WFLAG_REQ_APCONNECT;
 }
@@ -379,7 +380,7 @@ void Wifi_SetChannel(int channel) {
 }
 
 
-int Wifi_GetNumAP() {
+int Wifi_GetNumAP(void) {
 	int i,j;
 	j=0;
 	for(i=0;i<WIFI_MAX_AP;i++) if(WifiData->aplist[i].flags&WFLAG_APDATA_ACTIVE) j++;
@@ -477,7 +478,7 @@ int Wifi_ConnectAP(Wifi_AccessPoint * apdata, int wepmode, int wepkeyid, u8 * we
 		WifiData->reqReqFlags |= WFLAG_REQ_APCONNECT | WFLAG_REQ_APCOPYVALUES;
 		wifi_connect_state=1;
 	} else {
-		WifiData->reqMode=WIFIMODE_SCAN;		
+		WifiData->reqMode=WIFIMODE_SCAN;
 		wifi_connect_point = *apdata;
 	}
 	return 0;
@@ -487,7 +488,7 @@ void Wifi_AutoConnect(void) {
 		wifi_connect_state=ASSOCSTATUS_CANNOTCONNECT;
 	} else {
 		wifi_connect_state=4;
-		WifiData->reqMode=WIFIMODE_SCAN;		
+		WifiData->reqMode=WIFIMODE_SCAN;
 	}
 }
 
@@ -498,7 +499,7 @@ void sgIP_DNS_Record_Localhost(void)
     const unsigned char * resdata_c = (unsigned char *)&(wifi_hw->ipaddr);
     rec = sgIP_DNS_GetUnusedRecord();
     rec->flags=SGIP_DNS_FLAG_ACTIVE | SGIP_DNS_FLAG_BUSY;
-    
+
     rec->addrlen    = 4;
     rec->numalias   = 1;
     gethostname(rec->aliases[0], 256);
@@ -514,12 +515,12 @@ void sgIP_DNS_Record_Localhost(void)
     rec->flags=SGIP_DNS_FLAG_ACTIVE | SGIP_DNS_FLAG_BUSY|SGIP_DNS_FLAG_RESOLVED;
 }
 
-int Wifi_AssocStatus() {
+int Wifi_AssocStatus(void) {
 	switch(wifi_connect_state) {
 		case -1: // error
 			return ASSOCSTATUS_CANNOTCONNECT;
 		case 0: // searching
-			{ 
+			{
 				int i;
 				Wifi_AccessPoint ap;
 				i=Wifi_FindMatchingAP(1,&wifi_connect_point,&ap);
@@ -611,7 +612,7 @@ int Wifi_AssocStatus() {
 					}
 				}
 			}
-#else		
+#else
 			// should never get here (dhcp state) without sgIP!
 			Wifi_DisconnectAP();
 			wifi_connect_state=-1;
@@ -692,7 +693,7 @@ int Wifi_TransmitFunction(sgIP_Hub_HWInterface * hw, sgIP_memblock * mb) {
       sgIP_memblock_free(mb);
 		return 0; //?
 	}
-	
+
 	ethhdr_print('T',mb->datastart);
 	framehdr[0]=0;
 	framehdr[1]=0;
@@ -803,33 +804,33 @@ unsigned long Wifi_Init(int initflags) {
     case WIFIINIT_OPTION_USEHEAP_128:
         wHeapAllocInit(128*1024);
         break;
-    case WIFIINIT_OPTION_USEHEAP_64:     
+    case WIFIINIT_OPTION_USEHEAP_64:
         wHeapAllocInit(64*1024);
         break;
-    case WIFIINIT_OPTION_USEHEAP_256:    
+    case WIFIINIT_OPTION_USEHEAP_256:
         wHeapAllocInit(256*1024);
         break;
-    case WIFIINIT_OPTION_USEHEAP_512:    
+    case WIFIINIT_OPTION_USEHEAP_512:
         wHeapAllocInit(512*1024);
         break;
     case WIFIINIT_OPTION_USECUSTOMALLOC:
         break;
     }
     sgIP_Init();
-    
+
 #endif
-    
+
 	WifiData->flags9 = WFLAG_ARM9_ACTIVE | (initflags & WFLAG_ARM9_INITFLAGMASK) ;
 	return (u32) &Wifi_Data_Struct;
 }
 
-int Wifi_CheckInit() {
+int Wifi_CheckInit(void) {
 	if(!WifiData) return 0;
 	return ((WifiData->flags7 & WFLAG_ARM7_ACTIVE) && (WifiData->flags9 & WFLAG_ARM9_ARM7READY));
 }
 
 
-void Wifi_Update() {
+void Wifi_Update(void) {
 	int cnt;
 	int base, base2, len, fulllen;
 	if(!WifiData) return;
@@ -874,7 +875,7 @@ void Wifi_Update() {
 				// destination matches our mac address, or the broadcast address.
 				//if(framehdr[6]&0x4000) { // wep enabled (when receiving WEP packets, the IV is stripped for us! how nice :|
 				//	base2+=24; hdrlen=28;  // base2+=[wifi hdr 12byte]+[802 header hdrlen]+[slip hdr 8byte]
-				//} else { 
+				//} else {
 					base2+=22; hdrlen=24;
 				//}
           //  SGIP_DEBUG_MESSAGE(("%04X %04X %04X %04X %04X",Wifi_RxReadOffset(base2-8,0),Wifi_RxReadOffset(base2-7,0),Wifi_RxReadOffset(base2-6,0),Wifi_RxReadOffset(base2-5,0),Wifi_RxReadOffset(base2-4,0)));
@@ -925,7 +926,7 @@ void Wifi_Update() {
 // Ip addr get/set functions
 #ifdef WIFI_USE_TCP_SGIP
 
-u32 Wifi_GetIP() {
+u32 Wifi_GetIP(void) {
 	if(wifi_hw) return wifi_hw->ipaddr;
 	return 0;
 }

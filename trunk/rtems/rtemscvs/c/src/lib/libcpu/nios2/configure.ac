@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.4 2006/12/12 14:47:57 ralf Exp $
+##
+## $Id: configure.ac,v 1.5 2009/11/28 06:28:41 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libcpu-nios2],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])

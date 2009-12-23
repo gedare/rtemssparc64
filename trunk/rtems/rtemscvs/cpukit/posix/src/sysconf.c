@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: sysconf.c,v 1.15 2009/05/15 16:00:24 joel Exp $
+ *  $Id: sysconf.c,v 1.16 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -42,7 +42,7 @@ long sysconf(
 
   if ( name == _SC_GETPW_R_SIZE_MAX )
     return 1024;
-  
+
   if ( name == _SC_PAGESIZE )
     return PAGE_SIZE;
 

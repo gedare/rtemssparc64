@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: putk.c,v 1.1 2009/06/16 13:34:35 joel Exp $
+ *  $Id: putk.c,v 1.2 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -20,7 +20,7 @@
  *
  * Kernel putk (e.g. puts) function requiring minimal infrastrure.
  */
-void putk(const char *s) 
+void putk(const char *s)
 {
   const char *p = s;
 

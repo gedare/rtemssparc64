@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ptf.h,v 1.2 2006/08/15 21:02:55 joel Exp $
+ *  $Id: ptf.h,v 1.3 2009/12/10 07:20:06 ralf Exp $
  */
 
 #if !defined(__PTF_H)
@@ -46,22 +46,22 @@ void ptf_printf(FILE *s, struct ptf *tree, char *prefix);
 void ptf_dump_ptf_item(FILE *s, struct ptf_item *pi);
 
 struct ptf *ptf_find(
-  struct ptf *tree, 
-  struct ptf_item *item, 
+  struct ptf *tree,
+  struct ptf_item *item,
   ptf_item_type ttype,
-  char *name, 
+  char *name,
   char *value);
 
 struct ptf *ptf_next(
-  struct ptf_item *item, 
+  struct ptf_item *item,
   ptf_item_type ttype,
-  char *name, 
+  char *name,
   char *value);
 
 int ptf_match(
   struct ptf *const ptf,
-  struct ptf_item *const match, 
-  const ptf_match_action action, 
+  struct ptf_item *const match,
+  const ptf_match_action action,
   void *arg);
 
 char *ptf_defused_name(char *);

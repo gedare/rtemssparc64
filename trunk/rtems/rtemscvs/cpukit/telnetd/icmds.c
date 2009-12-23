@@ -6,7 +6,7 @@
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- *  $Id: icmds.c,v 1.6 2007/12/22 08:27:18 ccj Exp $
+ *  $Id: icmds.c,v 1.7 2009/12/02 09:44:07 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -54,11 +54,11 @@ static int main_udp(int argc,char * argv[]) {
 /*+++++++++++++++++++++++++++++++++++++++++++++*/
 
 void _rtems_telnetd_register_icmds(void) {
- rtems_shell_add_cmd("inet"    ,"net","inet routes"               ,main_inet);   
- rtems_shell_add_cmd("mbuf"    ,"net","mbuf stats"                ,main_mbuf);   
- rtems_shell_add_cmd("if"      ,"net","if   stats"                ,main_if  );   
- rtems_shell_add_cmd("ip"      ,"net","ip   stats"                ,main_ip  );   
- rtems_shell_add_cmd("icmp"    ,"net","icmp stats"                ,main_icmp);   
- rtems_shell_add_cmd("tcp"     ,"net","tcp  stats"                ,main_tcp );   
- rtems_shell_add_cmd("udp"     ,"net","udp  stats"                ,main_udp );   
+ rtems_shell_add_cmd("inet"    ,"net","inet routes"               ,main_inet);
+ rtems_shell_add_cmd("mbuf"    ,"net","mbuf stats"                ,main_mbuf);
+ rtems_shell_add_cmd("if"      ,"net","if   stats"                ,main_if  );
+ rtems_shell_add_cmd("ip"      ,"net","ip   stats"                ,main_ip  );
+ rtems_shell_add_cmd("icmp"    ,"net","icmp stats"                ,main_icmp);
+ rtems_shell_add_cmd("tcp"     ,"net","tcp  stats"                ,main_tcp );
+ rtems_shell_add_cmd("udp"     ,"net","udp  stats"                ,main_udp );
 }

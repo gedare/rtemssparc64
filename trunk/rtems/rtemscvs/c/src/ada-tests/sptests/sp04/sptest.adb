@@ -10,18 +10,17 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-2007.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: sptest.adb,v 1.8 2007/10/10 20:58:47 humph Exp $
+--  $Id: sptest.adb,v 1.9 2009/12/14 21:17:57 joel Exp $
 --
 
 with INTERFACES; use INTERFACES;
-with RTEMS;
 with TEST_SUPPORT;
 with TEXT_IO;
 
@@ -74,6 +73,7 @@ package body SPTEST is
    procedure INIT (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       TIME   : RTEMS.TIME_OF_DAY;
       STATUS : RTEMS.STATUS_CODES;
    begin
@@ -174,6 +174,7 @@ package body SPTEST is
    procedure TASK_1 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       SECONDS       : RTEMS.UNSIGNED32;
       OLD_SECONDS   : RTEMS.UNSIGNED32;
       PREVIOUS_MODE : RTEMS.MODE;
@@ -289,6 +290,7 @@ package body SPTEST is
    procedure TASK_2 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
    begin
 
       LOOP
@@ -305,6 +307,7 @@ package body SPTEST is
    procedure TASK_3 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
    begin
 
       LOOP
@@ -322,6 +325,7 @@ package body SPTEST is
       UNUSED : in     RTEMS.TCB_POINTER;
       HEIR   : in     RTEMS.TCB_POINTER
    ) is
+      pragma Unreferenced(UNUSED);
       INDEX  : RTEMS.UNSIGNED32;
       TIME   : RTEMS.TIME_OF_DAY;
       STATUS : RTEMS.STATUS_CODES;

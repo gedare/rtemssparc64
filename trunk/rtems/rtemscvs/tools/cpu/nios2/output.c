@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: output.c,v 1.2 2006/08/15 21:02:55 joel Exp $
+ *  $Id: output.c,v 1.3 2009/12/10 07:20:06 ralf Exp $
  */
 
 #include <stdio.h>
@@ -91,7 +91,7 @@ void fwrite_devhead_line(struct ptf_item *pi, void *arg)
   }
   else
   {
-    fprintf(dinfo->file, "#define %s_%s %s\n", 
+    fprintf(dinfo->file, "#define %s_%s %s\n",
       dinfo->dev->cfgname, dinfo->orig_value,
       pi->item[pi->level]->value);
   };
@@ -109,7 +109,7 @@ void fwrite_device_header(struct ptf_item *pi, void *arg)
 
   f = ptf_find(pi->item[pi->level]->sub, &fi, item, 0, 0);
 
-  while(f != NULL) 
+  while(f != NULL)
   {
     dinfo->orig_value = f->value;
     if(f->name && strncmp(f->name, "N2G_DEFINE_", 11)==0)
@@ -192,4 +192,4 @@ void fwrite_header_file( FILE *file, struct ptf *cfg, device_desc *devices, cloc
   ptf_match(cfg, &matchepilog, fwrite_value, file);
 }
 
- 
+

@@ -1,4 +1,4 @@
-/*  clock.s 
+/*  clock.s
  *
  *  This file contains the assembly code for the IDT 4650 clock driver.
  *
@@ -17,7 +17,7 @@
  *      Transition Networks makes no representations about the suitability
  *      of this software for any purpose.
  *
- *  $Id: clock.S,v 1.7 2004/04/03 00:15:56 ralf Exp $
+ *  $Id: clock.S,v 1.8 2009/11/30 05:09:01 ralf Exp $
  */
 /* @(#)clock.S       08/20/96     1.2 */
 

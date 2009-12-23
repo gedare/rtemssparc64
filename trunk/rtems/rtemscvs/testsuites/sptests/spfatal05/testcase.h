@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: testcase.h,v 1.3 2009/09/04 21:28:56 joel Exp $
+ *  $Id: testcase.h,v 1.4 2009/11/30 03:33:25 ralf Exp $
  */
 
 /*
@@ -60,13 +60,13 @@ void force_error()
     RTEMS_DEFAULT_ATTRIBUTES,
     &id
   );
-  directive_failed( status, "rtems_task_create" ); 
+  directive_failed( status, "rtems_task_create" );
 
   status = rtems_task_start( id, EmptyTask, 0 );
   directive_failed( status, "rtems_task_start" );
 
   status = rtems_task_wake_after( 10 );
   directive_failed( status, "rtems_task_wake_after" );
-  
+
   /* we will not run this far */
 }

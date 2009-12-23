@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: termios.c,v 1.57 2008/09/01 11:42:19 ralf Exp $
+ *  $Id: termios.c,v 1.60 2009/12/17 20:26:08 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -374,6 +374,10 @@ rtems_termios_close (void *arg)
 			/*
 			 * default: just flush output buffer
 			 */
+			sc = rtems_semaphore_obtain (tty->osem, RTEMS_WAIT, RTEMS_NO_TIMEOUT);
+			if (sc != RTEMS_SUCCESSFUL) {
+				rtems_fatal_error_occurred (sc);
+			}
 		        drainOutput (tty);
 		}
 
@@ -549,9 +553,8 @@ rtems_termios_ioctl (void *arg)
 			tty->rawInBufSemaphoreFirstTimeout = RTEMS_NO_TIMEOUT;
 		}
 		else {
-			rtems_interval ticksPerSecond;
-			rtems_clock_get (RTEMS_CLOCK_GET_TICKS_PER_SECOND, &ticksPerSecond);
-			tty->vtimeTicks = tty->termios.c_cc[VTIME] * ticksPerSecond / 10;
+			tty->vtimeTicks = tty->termios.c_cc[VTIME] * 
+			              rtems_clock_get_ticks_per_second() / 10;
 			if (tty->termios.c_cc[VTIME]) {
 				tty->rawInBufSemaphoreOptions = RTEMS_WAIT;
 				tty->rawInBufSemaphoreTimeout = tty->vtimeTicks;
@@ -973,13 +976,13 @@ fillBufferPoll (struct rtems_termios_tty *tty)
 	else {
 		rtems_interval then, now;
 		if (!tty->termios.c_cc[VMIN] && tty->termios.c_cc[VTIME])
-			rtems_clock_get (RTEMS_CLOCK_GET_TICKS_SINCE_BOOT, &then);
+			then = rtems_clock_get_ticks_since_boot();
 		for (;;) {
 			n = (*tty->device.pollRead)(tty->minor);
 			if (n < 0) {
 				if (tty->termios.c_cc[VMIN]) {
 					if (tty->termios.c_cc[VTIME] && tty->ccount) {
-						rtems_clock_get (RTEMS_CLOCK_GET_TICKS_SINCE_BOOT, &now);
+						now = rtems_clock_get_ticks_since_boot();
 						if ((now - then) > tty->vtimeTicks) {
 							break;
 						}
@@ -988,7 +991,7 @@ fillBufferPoll (struct rtems_termios_tty *tty)
 				else {
 					if (!tty->termios.c_cc[VTIME])
 						break;
-					rtems_clock_get (RTEMS_CLOCK_GET_TICKS_SINCE_BOOT, &now);
+					now = rtems_clock_get_ticks_since_boot();
 					if ((now - then) > tty->vtimeTicks) {
 						break;
 					}
@@ -1000,7 +1003,7 @@ fillBufferPoll (struct rtems_termios_tty *tty)
 				if (tty->ccount >= tty->termios.c_cc[VMIN])
 					break;
 				if (tty->termios.c_cc[VMIN] && tty->termios.c_cc[VTIME])
-					rtems_clock_get (RTEMS_CLOCK_GET_TICKS_SINCE_BOOT, &then);
+					then = rtems_clock_get_ticks_since_boot();
 			}
 		}
 	}
@@ -1021,7 +1024,7 @@ fillBufferQueue (struct rtems_termios_tty *tty)
 		/*
 		 * Process characters read from raw queue
 		 */
-		while ((tty->rawInBuf.Head != tty->rawInBuf.Tail) && 
+		while ((tty->rawInBuf.Head != tty->rawInBuf.Tail) &&
                        (tty->ccount < (CBUFSIZE-1))) {
 			unsigned char c;
 			unsigned int newHead;

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ratemonperiod.c,v 1.22 2009/11/10 23:27:34 joel Exp $
+ *  $Id: ratemonperiod.c,v 1.27 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -23,6 +23,76 @@
 #include <rtems/rtems/ratemon.h>
 #include <rtems/score/thread.h>
 
+bool _Rate_monotonic_Get_status(
+  Rate_monotonic_Control        *the_period,
+  Rate_monotonic_Period_time_t  *wall_since_last_period,
+  Thread_CPU_usage_t            *cpu_since_last_period
+)
+{
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
+    Timestamp_Control        uptime;
+  #endif
+    Thread_Control          *owning_thread = the_period->owner;
+    Thread_CPU_usage_t       used;
+
+  /*
+   *  Determine elapsed wall time since period initiated.
+   */
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
+    _TOD_Get_uptime( &uptime );
+    _Timestamp_Subtract(
+      &the_period->time_period_initiated, &uptime, wall_since_last_period
+    );
+  #else
+    *wall_since_last_period =
+      _Watchdog_Ticks_since_boot - the_period->time_period_initiated;
+  #endif
+
+  /*
+   *  Determine cpu usage since period initiated.
+   */
+  used = owning_thread->cpu_time_used;
+
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
+    if (owning_thread == _Thread_Executing) {
+
+      Thread_CPU_usage_t ran;
+
+      /* How much time time since last context switch */
+      _Timestamp_Subtract(
+        &_Thread_Time_of_last_context_switch, &uptime, &ran
+      );
+
+      /* cpu usage += ran */
+      _Timestamp_Add_to( &used, &ran );
+
+      /*
+       *  The cpu usage info was reset while executing.  Can't
+       *  determine a status.
+       */
+      if (_Timestamp_Less_than(&used, &the_period->cpu_usage_period_initiated))
+        return false;
+
+       /* used = current cpu usage - cpu usage at start of period */
+      _Timestamp_Subtract(
+         &the_period->cpu_usage_period_initiated,
+         &used,
+         cpu_since_last_period
+      );
+    }
+  #else
+      /*
+       *  The cpu usage info was reset while executing.  Can't
+       *  determine a status.
+       */
+      if (used < the_period->cpu_usage_period_initiated)
+        return false;
+
+      *cpu_since_last_period = used - the_period->cpu_usage_period_initiated;
+  #endif
+  return true;
+}
+
 void _Rate_monotonic_Initiate_statistics(
   Rate_monotonic_Control *the_period
 )
@@ -30,13 +100,10 @@ void _Rate_monotonic_Initiate_statistics(
   Thread_Control *owning_thread = the_period->owner;
 
   /*
-   *  If any statistics are at nanosecond granularity, we need to
-   *  obtain the uptime.
+   *  If using nanosecond statistics, we need to obtain the uptime.
    */
-  #if defined(RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS) || \
-      defined(RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS)
-
-    struct timespec  uptime;
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
+    Timestamp_Control  uptime;
 
     _TOD_Get_uptime( &uptime );
   #endif
@@ -44,24 +111,24 @@ void _Rate_monotonic_Initiate_statistics(
   /*
    *  Set the starting point and the CPU time used for the statistics.
    */
-  #ifdef RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS
-    the_period->time_at_period = uptime;
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
+    the_period->time_period_initiated = uptime;
   #else
-    the_period->time_at_period = _Watchdog_Ticks_since_boot;
+    the_period->time_period_initiated = _Watchdog_Ticks_since_boot;
   #endif
 
-  the_period->owner_executed_at_period = owning_thread->cpu_time_used;
+  the_period->cpu_usage_period_initiated = owning_thread->cpu_time_used;
 
   /*
-   *  If using nanosecond granularity for CPU Usage Statistics and the
-   *  period's thread is currently executing, then we need to take into
-   *  account how much time the executing thread has run since the last
-   *  context switch.  When this routine is invoked from
-   *  rtems_rate_monotonic_period, the owner will be the executing thread.
-   *  When this routine is invoked from _Rate_monotonic_Timeout, it will not.
+   *  If using nanosecond statistics and the period's thread is currently
+   *  executing, then we need to take into account how much time the
+   *  executing thread has run since the last context switch.  When this
+   *  routine is invoked from rtems_rate_monotonic_period, the owner will
+   *  be the executing thread.  When this routine is invoked from
+   *  _Rate_monotonic_Timeout, it will not.
    */
-  #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
-    if (owning_thread == _Thread_Executing) { 
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
+    if (owning_thread == _Thread_Executing) {
 
       rtems_thread_cpu_usage_t ran;
 
@@ -73,7 +140,7 @@ void _Rate_monotonic_Initiate_statistics(
 	&_Thread_Time_of_last_context_switch, &uptime, &ran
       );
 
-      _Timespec_Add_to( &the_period->owner_executed_at_period, &ran );
+      _Timespec_Add_to( &the_period->cpu_usage_period_initiated, &ran );
     }
   #endif
 }
@@ -82,18 +149,10 @@ void _Rate_monotonic_Update_statistics(
   Rate_monotonic_Control    *the_period
 )
 {
-  Rate_monotonic_Statistics      *stats;
   Thread_CPU_usage_t              executed;
   Rate_monotonic_Period_time_t    since_last_period;
-  #if defined(RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS) || \
-      defined(RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS)
-    Timestamp_Control             uptime;
-
-    /*
-     * Obtain the current time since boot
-     */
-    _TOD_Get_uptime( &uptime );
-  #endif
+  Rate_monotonic_Statistics      *stats;
+  bool                            valid_status;
 
   /*
    *  Assume we are only called in states where it is appropriate
@@ -111,62 +170,23 @@ void _Rate_monotonic_Update_statistics(
     stats->missed_count++;
 
   /*
-   *  Grab basic information for time statistics.
+   *  Grab status for time statistics.
    */
-  #ifdef RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS
-    _Timespec_Subtract(
-      &the_period->time_at_period,
-      &uptime,
-      &since_last_period
-    );
-  #else
-    since_last_period = _Watchdog_Ticks_since_boot - the_period->time_at_period;
-  #endif
-
-  #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
-    {
-      Thread_CPU_usage_t ran, used;
-       
-      /* Grab CPU usage when the thread got switched in */
-      used = _Thread_Executing->cpu_time_used;
-
-      /* partial period, cpu usage info reset while executing.  Throw away */
-      if (_Timestamp_Less_than( &used, &the_period->owner_executed_at_period))
-        return;
-
-      /* How much time time since last context switch */
-      _Timestamp_Subtract(&_Thread_Time_of_last_context_switch, &uptime, &ran);
-
-      /* executed += ran */
-      _Timestamp_Add_to( &used, &ran );
-
-       /* executed = current cpu usage - value at start of period */
-      _Timestamp_Subtract( 
-         &the_period->owner_executed_at_period,
-         &used,
-         &executed
-      );
-    }
-  #else
-      /* partial period, cpu usage info reset while executing.  Throw away */
-      if (the_period->owner->cpu_time_used <
-          the_period->owner_executed_at_period)
-        return;
-      executed = the_period->owner->cpu_time_used -
-        the_period->owner_executed_at_period;
-  #endif
+  valid_status =
+    _Rate_monotonic_Get_status( the_period, &since_last_period, &executed );
+  if (!valid_status)
+    return;
 
   /*
    *  Update CPU time
    */
-
-  #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
     _Timestamp_Add_to( &stats->total_cpu_time, &executed );
 
-    if ( _Timestamp_Less_than( &executed, &stats->min_cpu_time ) ) 
+    if ( _Timestamp_Less_than( &executed, &stats->min_cpu_time ) )
       stats->min_cpu_time = executed;
 
-    if ( _Timestamp_Greater_than( &executed, &stats->max_cpu_time ) ) 
+    if ( _Timestamp_Greater_than( &executed, &stats->max_cpu_time ) )
       stats->max_cpu_time = executed;
   #else
     stats->total_cpu_time  += executed;
@@ -181,8 +201,15 @@ void _Rate_monotonic_Update_statistics(
   /*
    *  Update Wall time
    */
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
+    _Timestamp_Add_to( &stats->total_wall_time, &since_last_period );
 
-  #ifndef RTEMS_ENABLE_NANOSECOND_RATE_MONOTONIC_STATISTICS
+    if ( _Timestamp_Less_than( &since_last_period, &stats->min_wall_time ) )
+      stats->min_wall_time = since_last_period;
+
+    if ( _Timestamp_Greater_than( &since_last_period, &stats->max_wall_time ) )
+      stats->max_wall_time = since_last_period;
+  #else
 
     /* Sanity check wall time */
     if ( since_last_period < executed )
@@ -194,14 +221,6 @@ void _Rate_monotonic_Update_statistics(
       stats->min_wall_time = since_last_period;
 
     if ( since_last_period > stats->max_wall_time )
-      stats->max_wall_time = since_last_period;
-  #else
-    _Timestamp_Add_to( &stats->total_wall_time, &since_last_period );
-
-    if ( _Timestamp_Less_than( &since_last_period, &stats->min_wall_time ) )
-      stats->min_wall_time = since_last_period;
-
-    if ( _Timestamp_Greater_than( &since_last_period, &stats->max_wall_time ) )
       stats->max_wall_time = since_last_period;
   #endif
 }
@@ -223,8 +242,8 @@ void _Rate_monotonic_Update_statistics(
  */
 
 rtems_status_code rtems_rate_monotonic_period(
-  Objects_Id        id,
-  rtems_interval    length
+  rtems_id       id,
+  rtems_interval length
 )
 {
   Rate_monotonic_Control              *the_period;
@@ -330,7 +349,7 @@ rtems_status_code rtems_rate_monotonic_period(
           /*
            *  Update statistics from the concluding period
            */
-          _Rate_monotonic_Initiate_statistics( the_period );
+          _Rate_monotonic_Update_statistics( the_period );
 
           _ISR_Enable( level );
 

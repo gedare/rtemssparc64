@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: memory.c,v 1.1 2006/08/15 21:02:55 joel Exp $
+ *  $Id: memory.c,v 1.2 2009/12/10 07:20:06 ralf Exp $
  */
 
 #include <stdio.h>
@@ -72,14 +72,14 @@ memory_desc *find_memory(device_desc *devices)
           {
             tmd->dev = dd;
 
-            if(memory == NULL) 
+            if(memory == NULL)
             {
               tmd->next = NULL;
               memory = tmd;
             }
             else
             {
-              if(tmd->size > memory->size) 
+              if(tmd->size > memory->size)
               {
                 tmd->next = memory;
                 memory = tmd;
@@ -101,4 +101,4 @@ memory_desc *find_memory(device_desc *devices)
   return memory;
 }
 
- 
+

@@ -7,14 +7,14 @@
  *
  *  Output parameters:  NONE
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.1 2007/12/19 18:41:15 jennifer Exp $
+ *  $Id: task1.c,v 1.2 2009/12/08 17:52:53 joel Exp $
  */
 
 #include "system.h"
@@ -30,7 +30,7 @@ void *Task_1(
 
   seconds = sleep( 5 );
   printf( "Task_1: %d seconds left\n", seconds );
-  assert( seconds );
+  rtems_test_assert(  seconds );
 
      /* switch to Init */
 

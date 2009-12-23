@@ -9,7 +9,7 @@
  *
  * http://www.rtems.com/license/LICENSE.
  *
- * @(#) $Id: i2c.h,v 1.5 2008/09/08 09:52:49 thomas Exp $
+ * @(#) $Id: i2c.h,v 1.6 2009/12/08 13:15:55 ralf Exp $
  */
 
 #ifndef __RTEMS__I2C_H__
@@ -67,7 +67,7 @@ typedef struct i2c_message {
 #define I2C_MSG_ERRSKIP (0x04)  /* Skip message if last transfered message
                                    is failed */
 /* Type for function which is called when transfer over I2C bus is finished */
-typedef void (*i2c_transfer_done) (uint32_t         arg);
+typedef void (*i2c_transfer_done) (void *arg);
 
 /* i2c_initialize --
  *     I2C driver initialization. This function usually called on device

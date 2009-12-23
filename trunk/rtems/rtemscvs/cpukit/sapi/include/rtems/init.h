@@ -13,7 +13,7 @@
  *     + initialize the RTEMS executive
  *     + shutdown the RTEMS executive
  */
- 
+
 /*
  *  COPYRIGHT (c) 1989-2008.
  *  On-Line Applications Research Corporation (OAR).
@@ -22,7 +22,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.h,v 1.18 2008/12/15 19:21:01 joel Exp $
+ *  $Id: init.h,v 1.19 2009/11/29 13:51:52 ralf Exp $
  */
 
 #ifndef _RTEMS_INIT_H

@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: coremutex.c,v 1.33 2009/05/28 20:38:12 joel Exp $
+ *  $Id: coremutex.c,v 1.34 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -64,8 +64,8 @@ CORE_mutex_Status _CORE_mutex_Initialize(
     the_mutex->holder_id  = _Thread_Executing->Object.id;
     if ( _CORE_mutex_Is_inherit_priority( &the_mutex->Attributes ) ||
          _CORE_mutex_Is_priority_ceiling( &the_mutex->Attributes ) ) {
-      
-      if ( _Thread_Executing->current_priority < 
+
+      if ( _Thread_Executing->current_priority <
              the_mutex->Attributes.priority_ceiling )
        return CORE_MUTEX_STATUS_CEILING_VIOLATED;
 #ifdef __RTEMS_STRICT_ORDER_MUTEX__

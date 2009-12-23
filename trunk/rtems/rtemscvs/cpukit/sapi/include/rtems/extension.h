@@ -5,7 +5,7 @@
  *
  * @brief User Extensions API.
  */
- 
+
 /*
  *  COPYRIGHT (c) 1989-2008.
  *  On-Line Applications Research Corporation (OAR).
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: extension.h,v 1.21 2009/09/25 17:51:45 joel Exp $
+ *  $Id: extension.h,v 1.22 2009/11/29 13:51:51 ralf Exp $
  */
 
 #ifndef _RTEMS_EXTENSION_H
@@ -52,7 +52,7 @@ typedef User_extensions_routine
  *
  * @brief The User Extensions Manager allows the application developer to
  * augment the executive by allowing them to supply extension routines which
- * are invoked at critical system events. 
+ * are invoked at critical system events.
  *
  * @section ClassicUserExtensionsSets Extension Sets
  *
@@ -152,12 +152,12 @@ typedef User_extensions_routine
  * - Task deletion
  * - Task context switch
  * - Post task context switch
- * - Task begins to execute 
+ * - Task begins to execute
  *
  * At the following system events, the extensions are invoked in reverse order:
  *
  * - Task deletion
- * - Fatal error detection 
+ * - Fatal error detection
  *
  * At these system events, the extensions are invoked in reverse order to
  * insure that if an extension set is built upon another, the more complicated

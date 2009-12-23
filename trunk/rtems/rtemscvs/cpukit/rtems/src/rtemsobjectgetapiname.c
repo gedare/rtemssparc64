@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtemsobjectgetapiname.c,v 1.3 2009/11/23 14:53:04 joel Exp $
+ *  $Id: rtemsobjectgetapiname.c,v 1.4 2009/11/30 15:59:55 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -22,10 +22,10 @@
 #include <rtems/assoc.h>
 
 rtems_assoc_t rtems_objects_api_assoc[] = {
-  { "Internal", OBJECTS_INTERNAL_API, 0}, 
-  { "Classic",  OBJECTS_CLASSIC_API, 0}, 
-  { "POSIX",    OBJECTS_POSIX_API, 0}, 
-  { "ITRON",    OBJECTS_ITRON_API, 0}, 
+  { "Internal", OBJECTS_INTERNAL_API, 0},
+  { "Classic",  OBJECTS_CLASSIC_API, 0},
+  { "POSIX",    OBJECTS_POSIX_API, 0},
+  { "ITRON",    OBJECTS_ITRON_API, 0},
   { 0, 0, 0 }
 };
 

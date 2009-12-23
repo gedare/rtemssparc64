@@ -9,11 +9,11 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp_irq_asm.S,v 1.5 2009/07/17 13:52:16 thomas Exp $
+ *  $Id: bsp_irq_asm.S,v 1.6 2009/11/30 05:03:56 ralf Exp $
  */
 #define __asm__
-	
-/* 
+
+/*
  * BSP specific interrupt handler for INT or FIQ. In here
  * you do determine which interrupt happened and call its
  * handler.
@@ -29,7 +29,7 @@ bsp_interrupt_dispatch :
   ldr	r1, [r0]
   mov   r1, r1, LSR #16         /* get the NIVECTOR into 16 LSbits */
 
-  /* find the ISR's address based on the vector */	
+  /* find the ISR's address based on the vector */
   ldr   r0, =bsp_vector_table
   mov   r1, r1, LSL #3          /* Shift vector to get offset into table */
   add   r1, r0, r1              /* r1 has address of vector entry */

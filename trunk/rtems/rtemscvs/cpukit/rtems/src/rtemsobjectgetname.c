@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtemsobjectgetname.c,v 1.2 2008/01/29 21:52:20 joel Exp $
+ *  $Id: rtemsobjectgetname.c,v 1.3 2009/11/30 15:59:55 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -30,4 +30,4 @@ char *rtems_object_get_name(
 )
 {
   return _Objects_Get_name_as_string( id, length, name );
-} 
+}

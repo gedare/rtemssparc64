@@ -1,3 +1,43 @@
+2009-12-17      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* mpc5xx/irq/irq.c: removed warning
+
+2009-12-16      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* mpc5xx/include/console.h,
+	mpc5xx/console-generic/console-generic.c,
+	mpc8xx/include/console.h,
+	mpc8xx/console-generic/console-generic.c,
+	mpc8260/include/console.h,
+	mpc8260/console-generic/console-generic.c: adapted to new prototype
+	for *_write function
+
+2009-12-04	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* new-exceptions/bspsupport/ppc_exc_bspsupp.h: Removed file.
+	* new-exceptions/bspsupport/ppc_exc_test.c,
+	new-exceptions/bspsupport/README: Update for removed file.
+
+2009-12-01	Till Straumann <strauman@slac.stanford.edu>
+
+	* new-exceptions/cpu.c, new-exceptions/cpu_asm.S,
+	new-exceptions/bspsupport/ppc_exc_asm_macros.h,
+	new-exceptions/bspsupport/ppc_exc_initialize.c,
+	new-exceptions/bspsupport/vectors.h:
+	Added AltiVec support (save/restore volatile vregs
+	across exceptions).
+
+2009-12-01	Till Straumann <strauman@slac.stanford.edu>
+
+	* Makefile.am, mpc6xx/altivec: new directory implementing
+	support for AltiVec context saving/restoring.
+
+2009-12-01	Till Straumann <strauman@slac.stanford.edu>
+
+	* mpc6xx/mmu/bat.c, mpc6xx/mmu/pte121.c: skip data-
+	streaming (dssall etc.) instructions on PPC_PSIM
+	currently (unimplemented by PSIM :-( ).
+
 2009-11-17	Till Straumann <strauman@slac.stanford.edu>
 
 	* new-exceptions/bspsupport/ppc_exc_categories.c:
@@ -5,16 +45,16 @@
 	for firmware I/O.
 
 	Added entries for AltiVec on PSIM.
-	
+
 2009-11-15	Till Straumann <strauman@slac.stanford.edu>
 
 	* shared/include/cpuIdent.c: Set 604 features + altivec if
 	running on PSIM.
-	
+
 2009-11-03  Thomas Doerfler  <Thomas.Doerfler@imd-systems.de>
 
 	* shared/include/powerpc-utility.h, shared/include/byteorder.h,
-	shared/include/cpuIdent.h: 
+	shared/include/cpuIdent.h:
 	add c++ declaration brackets
 	* Makefile.am, mpc8260/clock: removed mpc8260 specific clock
 	driver

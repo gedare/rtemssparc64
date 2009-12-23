@@ -1,6 +1,6 @@
 /*  nios2.h
  *
- *  This file sets up basic CPU dependency settings based on 
+ *  This file sets up basic CPU dependency settings based on
  *  compiler settings.  For example, it can determine if
  *  floating point is available.  This particular implementation
  *  is specific to the NIOS2 port.
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: nios2.h,v 1.3 2008/09/10 15:41:37 joel Exp $
+ *  $Id: nios2.h,v 1.4 2009/12/02 09:48:25 ralf Exp $
  *
  */
 
@@ -35,7 +35,7 @@ extern "C" {
  *  that this port supports and which RTEMS CPU model they correspond
  *  to.
  */
- 
+
 /*
  *  Define the name of the CPU family and specific model.
  */
@@ -45,7 +45,7 @@ extern "C" {
 
 /*
  *  See also nios2-rtems-gcc -print-multi-lib for all valid combinations of
- *  
+ *
  *    -mno-hw-mul
  *    -mhw-mulx
  *    -mstack-check

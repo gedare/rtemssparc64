@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.4 2009/02/12 15:55:40 joel Exp $
+ *  $Id: cpu.c,v 1.5 2009/12/04 04:27:21 ralf Exp $
  *
  *  Jukka Pietarinen <jukka.pietarinen@mrf.fi>, 2008,
  *  Micro-Research Finland Oy
@@ -50,7 +50,7 @@ void _CPU_Initialize(void)
  *
  *  XXX document implementation including references if appropriate
  */
- 
+
 uint32_t   _CPU_ISR_Get_level( void )
 {
   /*
@@ -68,7 +68,7 @@ uint32_t   _CPU_ISR_Get_level( void )
  *
  *  XXX document implementation including references if appropriate
  */
- 
+
 void _CPU_ISR_install_raw_handler(
   uint32_t    vector,
   proc_ptr    new_handler,

@@ -1,12 +1,12 @@
 /*
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2009/11/09 15:04:03 joel Exp $
+ *  $Id: init.c,v 1.4 2009/12/08 17:52:53 joel Exp $
  */
 
 #include <pmacros.h>
@@ -63,7 +63,7 @@ void doit(
   TSR_status   = 0;
 
   status = rtems_timer_fire_after( timer_id, 10, TSR, NULL );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   start = rtems_clock_get_ticks_since_boot();
   do {
@@ -94,7 +94,7 @@ void *POSIX_Init(
     rtems_build_name( 'T', 'M', '1', ' ' ),
     &timer_id
   );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   doit( Cancel_duringISR_TSR, "pthread_cancel" );
   doit( SetState_duringISR_TSR, "pthread_setcancelstate" );

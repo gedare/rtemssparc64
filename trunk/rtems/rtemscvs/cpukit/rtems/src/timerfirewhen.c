@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timerfirewhen.c,v 1.9 2008/12/08 19:41:31 joel Exp $
+ *  $Id: timerfirewhen.c,v 1.10 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -43,7 +43,7 @@
  */
 
 rtems_status_code rtems_timer_fire_when(
-  Objects_Id                          id,
+  rtems_id                            id,
   rtems_time_of_day                  *wall_time,
   rtems_timer_service_routine_entry   routine,
   void                               *user_data

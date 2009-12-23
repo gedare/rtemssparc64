@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.38 2009/10/27 14:10:54 ralf Exp $
+ *  $Id: init.c,v 1.39 2009/11/30 03:33:23 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -73,12 +73,12 @@ void *POSIX_Init(
   status = sched_rr_get_interval( 4, &tr );
   rtems_test_assert( status == -1 );
   rtems_test_assert( errno == ESRCH );
-  
+
   puts( "Init: sched_rr_get_interval -- EINVAL (invalid interval pointer)" );
   status = sched_rr_get_interval( getpid(), NULL );
   rtems_test_assert( status == -1 );
   rtems_test_assert( errno == EINVAL );
-  
+
   /* print the round robin time quantum */
 
   status = sched_rr_get_interval( getpid(), &tr );

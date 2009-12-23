@@ -1,3 +1,66 @@
+2009-12-15	Glenn Humphrey <glenn.humphrey@OARcorp.com>
+
+	* sp69/init.c: Fixed warnings.
+
+2009-12-10	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* sp14/sp14.doc, sp14/sp14.scn: doc file have scn contents. Fix and
+	update.
+
+2009-12-10	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* sp69/init.c, sp69/sp69.doc, sp69/sp69.scn: Add test for statistics on
+	expired periods. This detected the recently introduced PR1480.
+
+2009-12-10	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* sp69/.cvsignore: New file.
+
+2009-12-08	Glenn Humphrey <glenn.humphrey@OARcorp.com>
+
+	* Makefile.am, configure.ac: Added a test for rate_monotonic_get_status
+	to ensure that all paths are tested.
+	* sp69/Makefile.am, sp69/init.c, sp69/sp69.doc, sp69/sp69.scn: New files.
+
+2009-12-08	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* sp31/task1.c: Fixed spacing.
+
+2009-12-08	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* sp18/init.c, sp31/task1.c, sp43/init.c, sp63/init.c, sp64/init.c,
+	spfatal10/testcase.h, spfatal11/testcase.h, spobjgetnext/init.c,
+	spwkspace/init.c: Use rtems_test_assert() consistently instead of
+	system assert(). rtems_test_assert() is designed to integrate into
+	the RTEMS test suite infrastructure.
+
+2009-12-04	Sebastian Huber <Sebastian.Huber@embedded-brains.de>
+
+	* sp31/sp31.scn, sp31/task1.c, spintrcritical17/init.c: New test
+	cases. Updated copyright notice.
+
+2009-12-02	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* sp25/task1.c: Use PRIuPTR for segment_sizes.
+
+2009-11-30	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* sp68/Makefile.in, sp68/.cvsignore,
+	* spintrcritical17/Makefile.in, spintrcritical17/.cvsignore:
+	removed unneeded Makefile.in, added cvsignore
+	
+2009-11-30	Sebastian Huber <Sebastian.Huber@embedded-brains.de>
+
+	* sp68/init.c, sp68/Makefile.am, sp68/sp68.doc, sp68/sp68.scn,
+	spintrcritical17/init.c, spintrcritical17/Makefile.am,
+	spintrcritical17/spintrcritical17.doc,
+	spintrcritical17/spintrcritical17.scn: New files.
+	* Makefile.am, configure.ac: Update for test sp68 and spintrcritical17.
+	* sp31/task1.c, sp67/init.c: Changes for new timer server
+	implementation.
+	* sp52/init.c: The init task must be preemptible to let the timer
+	server run.
+
 2009-11-23	Joel Sherrill <joel.sherrill@oarcorp.com>
 
 	PR 1460/cpukit
@@ -152,6 +215,11 @@
 	sp63/init.c, sp65/init.c, sp67/init.c, spintrcritical11/init.c
 	spobjgetnext/init.c, spprintk/init.c:
 	Eliminate unused vars.
+
+2009-10-23	Sebastian Huber <Sebastian.Huber@embedded-brains.de>
+
+	* spintrcritical06/init.c, spintrcritical15/init.c, sp46/init.c: Fixed
+	confdefs.h define typos.
 
 2009-10-20	Ralf Corsépius <ralf.corsepius@rtems.org>
 

@@ -21,7 +21,7 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console.c,v 1.22 2009/09/30 04:09:04 ralf Exp $
+ *  $Id: console.c,v 1.23 2009/12/17 08:42:16 thomas Exp $
  */
 
 #include <termios.h>
@@ -231,8 +231,8 @@ smc1PollRead (int minor)
  * Polling devices:
  *	Transmit all characters.
  */
-static int
-smc1InterruptWrite (int minor, const char *buf, int len)
+static ssize_t
+smc1InterruptWrite (int minor, const char *buf, size_t len)
 {
 	smcTxBd->buffer = (char *)buf;
 	smcTxBd->length = len;
@@ -240,9 +240,10 @@ smc1InterruptWrite (int minor, const char *buf, int len)
 	return 0;
 }
 
-static int
-smc1PollWrite (int minor, const char *buf, int len)
+static ssize_t
+smc1PollWrite (int minor, const char *buf, size_t len)
 {
+	size_t retval = len;
 	while (len--) {
 		static char txBuf;
 		while (smcTxBd->status & M360_BD_READY)
@@ -252,7 +253,7 @@ smc1PollWrite (int minor, const char *buf, int len)
 		smcTxBd->length = 1;
 		smcTxBd->status = M360_BD_READY | M360_BD_WRAP;
 	}
-	return 0;
+	return retval;
 }
 
 /*

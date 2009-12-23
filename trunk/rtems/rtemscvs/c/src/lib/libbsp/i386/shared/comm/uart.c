@@ -4,7 +4,7 @@
  * as far as this copyight notice is kept unchanged, but does not imply
  * an endorsement by T.sqware of the product in which it is included.
  *
- *  $Id: uart.c,v 1.17 2009/05/06 16:36:19 joel Exp $
+ *  $Id: uart.c,v 1.18 2009/12/10 13:55:22 ralf Exp $
  */
 
 #include <stdio.h>
@@ -405,7 +405,7 @@ BSP_uart_polled_write(int uart, int val)
 }
 
 void
-BSP_output_char_via_serial(int val)
+BSP_output_char_via_serial(char val)
 {
   BSP_uart_polled_write(BSPConsolePort, val);
   if (val == '\n') BSP_uart_polled_write(BSPConsolePort,'\r');
@@ -434,8 +434,8 @@ BSP_uart_polled_read(int uart)
   return (int)(val & 0xff);
 }
 
-unsigned
-BSP_poll_char_via_serial()
+int
+BSP_poll_char_via_serial(void)
 {
 	return BSP_uart_polled_read(BSPConsolePort);
 }

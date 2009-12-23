@@ -8,7 +8,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: openpic_xxx_irq.c,v 1.3 2009/10/23 07:32:44 thomas Exp $
+ *  $Id: openpic_xxx_irq.c,v 1.4 2009/11/30 04:25:26 ralf Exp $
  */
 
 #include <stdlib.h>
@@ -109,7 +109,7 @@ printk("ERROR BSP_irq_enable_at_i8259s Being Called for %d\n", (int)name);
       BSP_irq_enable_at_i8259s ((int) name);
     }
 #endif
-    
+
     if (is_pci_irq(name)) {
       /*
        * Enable interrupt at OPENPIC level

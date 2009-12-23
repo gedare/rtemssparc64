@@ -1,5 +1,5 @@
 /*  console-io.c
- * 
+ *
  *  This file contains the hardware specific portions of the TTY driver
  *  for the serial ports for ezkit533.
  *
@@ -11,9 +11,9 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console-io.c,v 1.3 2008/08/18 21:51:35 joel Exp $
+ *  $Id: console-io.c,v 1.5 2009/12/11 04:09:43 ralf Exp $
  */
- 
+
 
 #include <rtems.h>
 #include <rtems/libio.h>
@@ -56,7 +56,7 @@ static void eZKit533_BSP_output_char(char c) {
   bfin_uart_poll_write(0, c);
 }
 
-static char eZKit533_BSP_poll_char(void) {
+static int eZKit533_BSP_poll_char(void) {
 
   return bfin_uart_poll_read(0);
 }

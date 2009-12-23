@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/07/21 15:07:26 joel Exp $
+ *  $Id: init.c,v 1.2 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include "tmacros.h"
@@ -54,7 +54,7 @@ void *POSIX_Init(
   puts( "Init -  pthread_create - OK" );
   sc = pthread_create( &Thread, NULL, BlockingThread, NULL );
   fatal_posix_service_status( sc, 0, "Thread create ok" );
- 
+
   puts( "Init - sleep to let BlockingThread run" );
   sleep(1);
 

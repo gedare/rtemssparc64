@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: clockgetuptime.c,v 1.2 2008/12/08 19:41:30 joel Exp $
+ *  $Id: clockgetuptime.c,v 1.3 2009/11/30 15:59:55 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -45,7 +45,7 @@ rtems_status_code rtems_clock_get_uptime(
 {
   if ( !uptime )
     return RTEMS_INVALID_ADDRESS;
-  
+
   _TOD_Get_uptime_as_timespec( uptime );
   return RTEMS_SUCCESSFUL;
 }

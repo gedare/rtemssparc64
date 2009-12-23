@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timercreate.c,v 1.9 2005/01/20 18:22:28 joel Exp $
+ *  $Id: timercreate.c,v 1.10 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -42,8 +42,8 @@
  */
 
 rtems_status_code rtems_timer_create(
-  rtems_name    name,
-  Objects_Id   *id
+  rtems_name  name,
+  rtems_id   *id
 )
 {
   Timer_Control *the_timer;

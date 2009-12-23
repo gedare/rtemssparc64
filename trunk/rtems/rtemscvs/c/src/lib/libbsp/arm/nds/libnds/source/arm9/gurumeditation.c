@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-  $Id: gurumeditation.c,v 1.3 2008/08/20 16:31:41 joel Exp $
+  $Id: gurumeditation.c,v 1.4 2009/11/29 14:53:01 ralf Exp $
 
   Copyright (C) 2005
   	Dave Murphy (WinterMute)
@@ -236,7 +236,7 @@ static void defaultHandler(void) {
 			exceptionAddress = getExceptionAddress( codeAddress, thumbState);
 		else
 			exceptionAddress = codeAddress;
-			
+
 	} else {
 		if (thumbState)
 			offset = 2;

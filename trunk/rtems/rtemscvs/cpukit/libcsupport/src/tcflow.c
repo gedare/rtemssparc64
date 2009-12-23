@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: tcflow.c,v 1.7 2009/09/30 05:57:20 ralf Exp $
+ *  $Id: tcflow.c,v 1.8 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -20,7 +20,7 @@
 #include <unistd.h>
 
 int tcflow (
-  int fd __attribute__((unused)), 
+  int fd __attribute__((unused)),
   int action __attribute__((unused)))
 {
   return 0;

@@ -1,11 +1,11 @@
 /*
- *  Dynamically build the shell prompt 
+ *  Dynamically build the shell prompt
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: shell_getprompt.c,v 1.1 2008/08/27 12:48:41 joel Exp $
+ *  $Id: shell_getprompt.c,v 1.2 2009/11/29 12:12:39 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -38,7 +38,7 @@ void rtems_shell_get_prompt(
 )
 {
   char curdir[256];
-  
+
   /* XXX: show_prompt user adjustable */
   getcwd(curdir,sizeof(curdir));
   snprintf(prompt, size - 1, "%s%s[%s] %c ",

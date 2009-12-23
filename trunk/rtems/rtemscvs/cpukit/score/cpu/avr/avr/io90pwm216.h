@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: io90pwm216.h,v 1.1 2009/08/06 14:52:04 joel Exp $ */
+/* $Id: io90pwm216.h,v 1.2 2009/11/30 16:01:44 ralf Exp $ */
 
 /* avr/io90pwm216.h - definitions for AT90PWM216 */
 
@@ -45,7 +45,7 @@
 #  define _AVR_IOXXX_H_ "io90pwm216.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif 
+#endif
 
 /* I/O registers */
 
@@ -1169,7 +1169,7 @@
 /* Lock Bits */
 #define __LOCK_BITS_EXIST
 #define __BOOT_LOCK_BITS_0_EXIST
-#define __BOOT_LOCK_BITS_1_EXIST 
+#define __BOOT_LOCK_BITS_1_EXIST
 
 
 /* Signature */

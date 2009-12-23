@@ -21,7 +21,7 @@
  *  ERC32 modifications of respective RTEMS file: COPYRIGHT (c) 1995.
  *  European Space Agency.
  *
- *  $Id: ckinit.c,v 1.16 2008/09/30 05:44:27 ralf Exp $
+ *  $Id: ckinit.c,v 1.17 2009/11/29 15:33:26 ralf Exp $
  */
 
 #include <bsp.h>
@@ -52,7 +52,7 @@ uint32_t bsp_clock_nanoseconds_since_last_tick(void)
 
   clicks = ERC32_MEC.Real_Time_Clock_Counter;
 
-  return (uint32_t) 
+  return (uint32_t)
     (rtems_configuration_get_microseconds_per_tick() - clicks) * 1000;
 }
 

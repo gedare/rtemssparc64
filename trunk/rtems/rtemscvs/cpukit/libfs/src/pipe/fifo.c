@@ -7,7 +7,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: fifo.c,v 1.3 2008/12/05 21:54:06 joel Exp $
+ * $Id: fifo.c,v 1.4 2009/12/17 20:26:08 joel Exp $
  */
 
 
@@ -560,6 +560,6 @@ void rtems_pipe_initialize (void)
     rtems_fatal_error_occurred (sc);
 
   rtems_interval now;
-  rtems_clock_get(RTEMS_CLOCK_GET_TICKS_SINCE_BOOT, &now);
+  now = rtems_clock_get_ticks_since_boot();
   rtems_pipe_no = now;
 }

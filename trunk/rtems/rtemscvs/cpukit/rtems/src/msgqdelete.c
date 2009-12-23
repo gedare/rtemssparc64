@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: msgqdelete.c,v 1.6 2007/11/30 21:49:41 joel Exp $
+ *  $Id: msgqdelete.c,v 1.7 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -50,7 +50,7 @@
  */
 
 rtems_status_code rtems_message_queue_delete(
-  Objects_Id id
+  rtems_id id
 )
 {
   register Message_queue_Control *the_message_queue;

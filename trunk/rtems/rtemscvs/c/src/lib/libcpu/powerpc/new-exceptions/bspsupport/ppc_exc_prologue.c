@@ -9,13 +9,13 @@
 /*
  * Copyright (C) 2007 Till Straumann <strauman@slac.stanford.edu>
  *
- * Copyright (C) 2009 embedded brains GmbH.                      
+ * Copyright (C) 2009 embedded brains GmbH.
  *
  * The license and distribution terms for this file may be
  * found in found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ppc_exc_prologue.c,v 1.1 2009/10/23 09:51:03 thomas Exp $
+ * $Id: ppc_exc_prologue.c,v 1.2 2009/11/30 05:07:54 ralf Exp $
  */
 
 #include <string.h>

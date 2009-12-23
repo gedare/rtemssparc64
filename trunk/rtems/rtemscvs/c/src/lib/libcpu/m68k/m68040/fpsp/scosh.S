@@ -1,5 +1,5 @@
 //
-//      $Id: scosh.S,v 1.1 1998/12/14 23:15:26 joel Exp $
+//      $Id: scosh.S,v 1.2 2009/12/04 04:24:06 ralf Exp $
 //
 //	scosh.sa 3.1 12/10/90
 //
@@ -51,8 +51,8 @@
 //		Copyright (C) Motorola, Inc. 1990
 //			All Rights Reserved
 //
-//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA 
-//	The copyright notice above does not evidence any  
+//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA
+//	The copyright notice above does not evidence any
 //	actual or intended publication of such source code.
 
 //SCOSH	idnt	2,1 | Motorola 040 Floating Point Software Package

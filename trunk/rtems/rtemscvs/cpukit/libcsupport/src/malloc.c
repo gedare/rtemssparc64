@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: malloc.c,v 1.57 2008/09/17 18:37:55 joel Exp $
+ *  $Id: malloc.c,v 1.58 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -73,7 +73,7 @@ void *malloc(
   return_this = _Protected_heap_Allocate( RTEMS_Malloc_Heap, size );
 
   if ( !return_this ) {
-    if (rtems_malloc_sbrk_helpers) 
+    if (rtems_malloc_sbrk_helpers)
       return_this = (*rtems_malloc_sbrk_helpers->extend)( size );
     if ( !return_this ) {
       errno = ENOMEM;

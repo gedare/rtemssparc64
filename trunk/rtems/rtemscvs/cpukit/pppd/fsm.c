@@ -17,7 +17,7 @@
  * WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-#define RCSID	"$Id: fsm.c,v 1.10 2008/08/26 10:24:22 ralf Exp $"
+#define RCSID	"$Id: fsm.c,v 1.11 2009/11/30 15:59:00 ralf Exp $"
 
 /*
  * TODO:
@@ -326,28 +326,28 @@ fsm_input(
     case CONFREQ:
 	fsm_rconfreq(f, id, inp, len);
 	break;
-    
+
     case CONFACK:
 	fsm_rconfack(f, id, inp, len);
 	break;
-    
+
     case CONFNAK:
     case CONFREJ:
 	fsm_rconfnakrej(f, code, id, inp, len);
 	break;
-    
+
     case TERMREQ:
 	fsm_rtermreq(f, id, inp, len);
 	break;
-    
+
     case TERMACK:
 	fsm_rtermack(f);
 	break;
-    
+
     case CODEREJ:
 	fsm_rcoderej(f, inp, len);
 	break;
-    
+
     default:
 	if( !f->callbacks->extcode
 	   || !(*f->callbacks->extcode)(f, code, id, inp, len) )

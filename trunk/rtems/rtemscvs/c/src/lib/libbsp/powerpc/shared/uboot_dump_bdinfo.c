@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: uboot_dump_bdinfo.c,v 1.1 2007/06/20 21:42:24 joel Exp $
+ *  $Id: uboot_dump_bdinfo.c,v 1.2 2009/11/30 04:28:12 ralf Exp $
  */
 
 
@@ -27,7 +27,7 @@
 
 /*
  *  Dump U-Boot Board Information Structure
- *  
+ *
  *  u - pointer to information structure
  */
 void dumpUBootBDInfo(
@@ -78,7 +78,7 @@ void dumpUBootBDInfo(
       u->bi_pcifreq
     #endif
   );
- 
+
 }
 #endif
 

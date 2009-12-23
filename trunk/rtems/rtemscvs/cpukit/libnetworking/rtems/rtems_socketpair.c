@@ -2,18 +2,18 @@
  *  socketpair() for RTEMS
  *
  *  This file exists primarily to document what is required to provide
- *  a functional implementation of socketpair() for RTEMS. 
+ *  a functional implementation of socketpair() for RTEMS.
  *
  *  The socketpair() service requires that the "local domain" sockets
  *  be functional.  This is denoted by the domain constants AF_LOCAL
  *  and AF_UNIX and the protocol constants PF_LOCAL and PF_UNIX.  The
  *  local domain functionality is implemented in the file kern/uipc_usrreq.c
  *  which was not part of the initial port of the FreeBSD stack to
- *  RTEMS.  
+ *  RTEMS.
  *
  *  The FreeBSD socketpair implementation appears to be dependent on
  *  file system features which are not available currently in RTEMS.
- *  
+ *
  *  COPYRIGHT (c) 1989-2007.
  *  On-Line Applications Research Corporation (OAR).
  *
@@ -21,7 +21,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtems_socketpair.c,v 1.2 2008/12/22 07:47:28 ralf Exp $
+ *  $Id: rtems_socketpair.c,v 1.3 2009/11/30 15:57:51 ralf Exp $
  */
 
 #if HAVE_CONFIG_H

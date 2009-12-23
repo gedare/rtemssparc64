@@ -1,4 +1,4 @@
-/* $Id: bspreset.c,v 1.2 2009/02/11 16:13:56 joel Exp $ */
+/* $Id: bspreset.c,v 1.3 2009/11/30 04:28:46 ralf Exp $ */
 
 #include "console.inl"
 #include <rtems/bspIo.h>
@@ -16,7 +16,7 @@ void bsp_reset(void)
   printk("Printing a stack trace for your convenience :-)\n");
   CPU_print_stack();
   /* shutdown and reboot */
-   
+
 #if defined(mvme2100)
   *(unsigned char*)0xffe00000 |= 0x80;
 #else

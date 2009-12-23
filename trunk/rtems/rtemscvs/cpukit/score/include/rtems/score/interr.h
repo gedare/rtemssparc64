@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/interr.h
  *
  *  This include file contains constants and prototypes related
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: interr.h,v 1.27 2009/10/12 12:15:59 ralf Exp $
+ *  $Id: interr.h,v 1.28 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_INTERR_H
