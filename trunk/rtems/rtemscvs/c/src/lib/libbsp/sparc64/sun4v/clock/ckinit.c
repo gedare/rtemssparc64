@@ -19,6 +19,7 @@
 #include <rtems.h>
 #include <bsp.h>
 #include <bspopts.h>
+#include <asm.h>
 
 /* this is probably wrong, and not the right way to do things */
 #define CPU_FREQ (5000000)
@@ -36,16 +37,27 @@ uint64_t sun4v_cycles_per_tick;
 void Clock_driver_support_at_tick(void)
 {
   uint64_t tick_reg;
+  int bit_mask;
+
+
+  bit_mask = SPARC_SOFTINT_TM_BIT;
+//  sparc64_clear_interrupt_bits(SPARC_SOFTINT_TM_BIT);
+//  sparc64_clear_interrupt_tm;
+
+//  asm volatile("wr %%g0, %c0, %%softint_clr": : "i" (0x01) );
+
+  /* TODO: this could be more efficiently implemented as a single assembly 
+   * inline */
   sparc64_read_tick(tick_reg);
   tick_reg += sun4v_cycles_per_tick;
   sparc64_write_tick_cmpr(tick_reg);
 }
 
 /* this should be #define, but set_vector is not declared right in shell */
-void Clock_driver_support_install_isr(rtems_isr_entry _new, rtems_isr_entry _old)
-{
-    _old = set_vector( _new, CLOCK_VECTOR, 1 ); 
-}
+#define Clock_driver_support_install_isr(_new, _old) \
+  do { \
+    _old = set_vector( _new, CLOCK_VECTOR, 1 ); \
+  } while ( 0 )
 
 void Clock_driver_support_initialize_hardware(void)
 {

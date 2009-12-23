@@ -167,6 +167,8 @@ extern "C" {
 
 #define SPARC_TSTATE_IE_MASK  0x00000200  /* bit 9 */
 
+#define SPARC_SOFTINT_TM_BIT    1       /* bit 0 */
+
 #ifdef ASM
 
 /* 
@@ -260,9 +262,20 @@ extern "C" {
  */
 #define sparc64_write_tick_cmpr( _tick_cmpr ) \
   do { \
-    asm volatile( "wr %%g0, %0, %%tick_cmpr" :  "=r" (_tick_cmpr) : \
-                                                "0" (_tick_cmpr) ); \
+    asm volatile( "wr %%g0, %0, %%tick_cmpr" :  "=r" (_tick_cmpr)  \
+                                             :  "0" (_tick_cmpr) ); \
   } while ( 0 )
+
+#define sparc64_clear_interrupt_bits( _bit_mask ) \
+  asm volatile( "wr %%g0, %0, %%softint_clr" : "=r" (_bit_mask) \
+                                             : "0" (_bit_mask)); \
+
+#define sparc64_clear_interrupt_tm \
+do { \
+  asm volatile( "wr %%g0, $1, %%softint_clr"); \
+} while ( 0 )
+
+
 
 /************* DELETED ****************/
 /*
