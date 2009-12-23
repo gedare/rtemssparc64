@@ -19,15 +19,6 @@
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
- *
- *  Ported to LEON implementation of the SPARC by On-Line Applications
- *  Research Corporation (OAR) under contract to the European Space 
- *  Agency (ESA).
- *
- *  LEON modifications of respective RTEMS file: COPYRIGHT (c) 1995. 
- *  European Space Agency.
- *
- *  $Id: setvec.c,v 1.3 2009/08/19 16:13:01 joel Exp $
  */
 
 #include <bsp.h>
@@ -54,6 +45,7 @@ rtems_isr_entry set_vector(                   /* returns old vector */
    *
    */
   /* TODO: FIXME*/
+  /* Interrupts have real_trap numbers between 0x41 and 0x4F (levels 1 - 15) */
 
   return previous_isr;
 }
