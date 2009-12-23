@@ -20,7 +20,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ppc_exc_test.c,v 1.3 2007/12/11 06:35:54 strauman Exp $
+ *  $Id: ppc_exc_test.c,v 1.4 2009/12/14 14:51:50 thomas Exp $
  */
 
 
@@ -29,7 +29,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "vectors.h"
-#include "ppc_exc_bspsupp.h"
 
 
 typedef struct regs_ {

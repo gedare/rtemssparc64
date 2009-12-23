@@ -6,7 +6,7 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: dumpbuf.h,v 1.4 2007/03/12 20:23:58 joel Exp $
+ *  $Id: dumpbuf.h,v 1.5 2009/11/29 11:57:23 ralf Exp $
  */
 
 #ifndef __DUMP_BUFFER_h
@@ -21,7 +21,7 @@ extern "C" {
  *
  *  This method prints @a length bytes beginning at @a buffer in
  *  a nice format similar to what one would expect from a debugger
- *  or ROM monitor.  
+ *  or ROM monitor.
  *
  *  @param[in] buffer is the address of the buffer
  *  @param[in] length is the length of the buffer

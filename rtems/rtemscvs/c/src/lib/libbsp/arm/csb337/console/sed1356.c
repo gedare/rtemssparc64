@@ -1,5 +1,5 @@
 /*
- *  SED1356 Support
+ *  SED1356 Support for KIT637_V6 (CSB637)
  *
  *  Based upon code from MicroMonitor 1.17 from http://www.umonfw.com/
  *  which includes this notice:
@@ -25,10 +25,12 @@
  *
  *  Ed Sutter has been informed that this code is being used in RTEMS.
  *
- *  The code has been reformatted to be more compliant with RTEMS
- *  coding standards and to eliminate C++ style comments.
+ *  This code was reformatted by Joel Sherrill from OAR Corporation and
+ *  Fernando Nicodemos <fgnicodemos@terra.com.br> from NCB - Sistemas
+ *  Embarcados Ltda. (Brazil) to be more compliant with RTEMS coding
+ *  standards and to eliminate C++ style comments.
  *
- *  $Id: sed1356.c,v 1.1 2009/06/02 22:19:44 joel Exp $
+ *  $Id: sed1356.c,v 1.4 2009/12/08 19:34:48 joel Exp $
  */
 
 #include <bsp.h>
@@ -83,7 +85,7 @@ void sed_scroll(void);
 #define SED1356_REG_LCD_DISP_START_LO_and_MID    SED_REG16(0x42)
 #define SED1356_REG_LCD_DISP_START_HI           SED_REG16(0x44)
 #define SED1356_REG_LCD_ADD_OFFSET_LO_and_HI    SED_REG16(0x46)
-#define SED1356_REG_LCD_PIXEL_PAN             SED_REG16(0x48)  
+#define SED1356_REG_LCD_PIXEL_PAN             SED_REG16(0x48)
 #define SED1356_REG_LCD_FIFO_THRESH_LO_and_HI    SED_REG16(0x4a)
 #endif
 
@@ -242,7 +244,7 @@ void sed_putchar(char c)
         sed_scroll();
       }
       break;
-  } 
+  }
 
 } /* sed_putchar() */
 
@@ -259,7 +261,7 @@ void sed_writechar(uint8_t c)
   uint8_t font_data8;
   uint16_t wr16;
 
-  /* Convert the current row,col and color depth values 
+  /* Convert the current row,col and color depth values
    * into an address
    */
   sed_mem_add = SED_GET_ADD(sed_row, sed_col, sed_color_depth);
@@ -277,8 +279,8 @@ void sed_writechar(uint8_t c)
         for (font_row = 0; font_row < FONT_HEIGHT; font_row++) {
           /* get the font row of data */
           font_data8 = font8x16[(c * FONT_HEIGHT) + font_row];
-    
-    
+
+
           for (font_col = 0; font_col < 8; font_col += 4)
           {
             /* get a words worth of pixels */
@@ -363,7 +365,7 @@ void sed_update_fb_offset(void)
 {
   /* write the new sed_fb_offset value */
   if (sed_disp_mode_crt) {
-  /* before we change the address offset, wait for the display to 
+  /* before we change the address offset, wait for the display to
    * go from active to non-active, unless the display is not enabled
    */
   if (SED1356_REG_DISP_MODE & H2SED(SED1356_DISP_MODE_CRT)) {  /* CRT is on */
@@ -453,7 +455,7 @@ void sed_clearscreen(void)
     /* 16-bits bypasses the lookup table */
     default: wr16 = vga_lookup[bg]; break;
   }
-  for (i = 0; i < fbsize; i += 2){  
+  for (i = 0; i < fbsize; i += 2){
     sed_write_frame_buffer(i, wr16);
   }
 }

@@ -1,9 +1,9 @@
 /.cvsignore/1.1/Fri Oct 23 12:47:46 2009//
 /Makefile.am/1.25/Fri Oct 23 12:47:46 2009//
-/init.c/1.32/Wed Nov 25 14:28:35 2009//
 /psx05.scn/1.11/Fri Oct 23 12:47:46 2009//
 /system.h/1.10/Fri Oct 23 12:47:46 2009//
-/task.c/1.8/Fri Oct 23 12:47:46 2009//
-/task2.c/1.7/Fri Oct 23 12:47:46 2009//
-/task3.c/1.6/Fri Oct 23 12:47:46 2009//
+/init.c/1.34/Result of merge//
+/task.c/1.9/Tue Dec 22 15:27:22 2009//
+/task2.c/1.8/Tue Dec 22 15:27:22 2009//
+/task3.c/1.7/Tue Dec 22 15:27:22 2009//
 D

@@ -7,7 +7,7 @@
  *  code.
  *
  */
- 
+
 /*
  *  COPYRIGHT (c) 1989-2008.
  *  On-Line Applications Research Corporation (OAR).
@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: chain.h,v 1.1 2008/07/03 01:37:38 ccj Exp $
+ *  $Id: chain.h,v 1.3 2009/11/30 13:20:29 thomas Exp $
  */
 
 #ifndef _RTEMS_CHAIN_H
@@ -43,6 +43,17 @@ typedef Chain_Node rtems_chain_node;
  */
 typedef Chain_Control rtems_chain_control;
 
+/**
+ *  @brief Chain initializer for an empty chain with designator @a name.
+ */
+#define RTEMS_CHAIN_INITIALIZER_EMPTY(name) \
+  CHAIN_INITIALIZER_EMPTY(name)
+
+/**
+ *  @brief Chain definition for an empty chain with designator @a name.
+ */
+#define RTEMS_CHAIN_DEFINE_EMPTY(name) \
+  CHAIN_DEFINE_EMPTY(name)
 
 #include <rtems/chain.inl>
 

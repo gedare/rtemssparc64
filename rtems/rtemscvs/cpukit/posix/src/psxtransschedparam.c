@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: psxtransschedparam.c,v 1.3 2009/08/01 21:49:40 joel Exp $
+ *  $Id: psxtransschedparam.c,v 1.4 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -63,7 +63,7 @@ int _POSIX_Thread_Translate_sched_param(
 
     if ( !_POSIX_Priority_Is_valid( param->ss_low_priority ) )
       return EINVAL;
-    
+
     *budget_algorithm  = THREAD_CPU_BUDGET_ALGORITHM_CALLOUT;
     *budget_callout = _POSIX_Threads_Sporadic_budget_callout;
     return 0;

@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.91 2009/11/04 15:55:10 ralf Exp $
+# $Id: Makefile.am,v 1.94 2009/12/19 05:51:44 ralf Exp $
 
 TARGET = bfin-rtems4.10
 
@@ -12,10 +12,10 @@ BINUTILS_OPTS +=
 
 GCC_VERS = 4.4.2
 GCC_PKGVERS = $(GCC_VERS)
-GCC_RPMREL = 6
-NEWLIB_VERS = 1.17.0
+GCC_RPMREL = 9
+NEWLIB_VERS = 1.18.0
 NEWLIB_PKGVERS = $(NEWLIB_VERS)
-NEWLIB_RPMREL = `expr 58 + $(GCC_RPMREL)`
+NEWLIB_RPMREL = `expr $(GCC_RPMREL) - 8`
 include ../gcc.am
 GCC_OPTS += --languages=cxx
 

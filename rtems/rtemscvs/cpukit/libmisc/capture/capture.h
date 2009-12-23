@@ -1,10 +1,10 @@
 /**
  * @file rtems/capture.h
  */
- 
+
 /*
   ------------------------------------------------------------------------
-  $Id: capture.h,v 1.10 2009/11/08 08:15:59 ralf Exp $
+  $Id: capture.h,v 1.11 2009/11/29 11:57:23 ralf Exp $
   ------------------------------------------------------------------------
 
   Copyright Objective Design Systems Pty Ltd, 2002
@@ -119,7 +119,7 @@ typedef struct rtems_capture_control_s
                                      RTEMS_CAPTURE_DELETE | \
                                      RTEMS_CAPTURE_BEGIN | \
                                      RTEMS_CAPTURE_EXITTED)
-                                     
+
 /**
  * rtems_capture_task_t
  *

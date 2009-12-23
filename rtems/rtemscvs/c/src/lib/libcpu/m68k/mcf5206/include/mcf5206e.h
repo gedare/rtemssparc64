@@ -11,7 +11,7 @@
  *
  * http://www.rtems.com/license/LICENSE.
  *
- * @(#) $Id: mcf5206e.h,v 1.5 2004/04/15 13:33:56 ralf Exp $
+ * @(#) $Id: mcf5206e.h,v 1.6 2009/11/30 05:27:08 ralf Exp $
  */
 
 #ifndef __MCF5206E_H__
@@ -582,7 +582,7 @@
 #define MCF5206E_TMR_CE_NONE     (0x0000) /* Disable Interrupt on capture
                                              event */
 #define MCF5206E_TMR_OM          (0x0020) /* Output Mode - Toggle output */
-#define MCF5206E_TMR_ORI         (0x0010) /* Output Reference Interrupt 
+#define MCF5206E_TMR_ORI         (0x0010) /* Output Reference Interrupt
                                              Enable */
 #define MCF5206E_TMR_FRR         (0x0008) /* Free Run/Restart */
 #define MCF5206E_TMR_ICLK        (0x0006) /* Input Clock Source */

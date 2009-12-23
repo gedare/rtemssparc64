@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.2 2009/07/02 15:24:36 joel Exp $
+ *  $Id: init.c,v 1.3 2009/11/30 03:33:25 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -21,9 +21,9 @@ rtems_task Init(
   rtems_task_argument ignored
 )
 {
-  rtems_chain_control  chain1;  
+  rtems_chain_control  chain1;
   rtems_chain_node    *p;
-  test_node            node1, node2;  
+  test_node            node1, node2;
   int                  id;
 
   puts( "\n\n*** TEST OF RTEMS CHAIN API ***" );

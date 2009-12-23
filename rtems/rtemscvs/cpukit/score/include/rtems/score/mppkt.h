@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/mppkt.h
  *
  *  This package is the specification for the Packet Handler.
@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mppkt.h,v 1.21 2006/01/16 15:13:58 joel Exp $
+ *  $Id: mppkt.h,v 1.22 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_MPPKT_H

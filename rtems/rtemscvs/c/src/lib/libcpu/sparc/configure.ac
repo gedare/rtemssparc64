@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.24 2007/07/31 20:23:52 joel Exp $
+##
+## $Id: configure.ac,v 1.25 2009/11/28 06:28:41 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libcpu-sparc],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])

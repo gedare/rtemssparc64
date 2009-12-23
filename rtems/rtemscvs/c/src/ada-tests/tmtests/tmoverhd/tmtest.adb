@@ -10,23 +10,21 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-2007.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: tmtest.adb,v 1.14 2008/09/29 20:44:58 joel Exp $
+--  $Id: tmtest.adb,v 1.15 2009/12/14 21:17:59 joel Exp $
 --
 
 with DUMMY_RTEMS;
-with INTERFACES; use INTERFACES;
-with RTEMS;
 with TEST_SUPPORT;
 with TEXT_IO;
 with TIME_TEST_SUPPORT;
-with UNSIGNED32_IO;
+with TIMER_DRIVER;
 
 package body TMTEST is
 
@@ -38,6 +36,7 @@ package body TMTEST is
    procedure INIT (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -123,6 +122,7 @@ package body TMTEST is
    procedure TASK_1 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       NAME           : RTEMS.NAME;
       OVERHEAD       : RTEMS.UNSIGNED32;
       ID             : RTEMS.ID;
@@ -141,8 +141,6 @@ package body TMTEST is
       BUFFER_POINTER : RTEMS.ADDRESS;
       MESSAGE_SIZE   : RTEMS.UNSIGNED32;
       COUNT          : RTEMS.UNSIGNED32;
-      MAJOR          : RTEMS.DEVICE_MAJOR_NUMBER;
-      MINOR          : RTEMS.DEVICE_MINOR_NUMBER;
       ERROR          : RTEMS.UNSIGNED32;
       STATUS         : RTEMS.STATUS_CODES;
    begin
@@ -156,8 +154,6 @@ package body TMTEST is
       MASK := 0;
       SIGNALS := 0;
       EVENTS := 0;
-      MAJOR := 0;
-      MINOR := 0;
       ERROR := 0;
      
 -- TASK_CREATE

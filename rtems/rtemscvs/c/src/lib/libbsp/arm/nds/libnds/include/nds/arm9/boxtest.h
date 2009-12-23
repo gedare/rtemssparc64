@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-$Id: boxtest.h,v 1.2 2008/08/19 15:47:14 joel Exp $
+$Id: boxtest.h,v 1.3 2009/11/29 14:53:01 ralf Exp $
 
 BoxTest.h -- Code for performing hardware box test against viewing frustrum
 
@@ -35,10 +35,10 @@ distribution.
 #include <nds/arm9/video.h>
 #include <nds/arm9/videoGL.h>
 
-/*! \file boxtest.h 
-\brief Box Test Functions. 
+/*! \file boxtest.h
+\brief Box Test Functions.
 
-*/ 
+*/
 
 #ifdef __cplusplus
 extern "C" {
@@ -78,7 +78,7 @@ int BoxTestf(float x, float y, float z, float width, float height, float depth);
 \param height (width, height, depth) describe the size of the box referenced from (x, y, z)
 \param depth (width, height, depth) describe the size of the box referenced from (x, y, z)
 
-Performs a test to determine if the provided box is in the view frustum.  BoxTestResult must be called to get the result of this 
+Performs a test to determine if the provided box is in the view frustum.  BoxTestResult must be called to get the result of this
 operation.
 */
 void BoxTest_Asynch(v16 x, v16 y, v16 z, v16 height, v16 width, v16 depth);
@@ -92,7 +92,7 @@ void BoxTest_Asynch(v16 x, v16 y, v16 z, v16 height, v16 width, v16 depth);
 \param height (width, height, depth) describe the size of the box referenced from (x, y, z)
 \param depth (width, height, depth) describe the size of the box referenced from (x, y, z)
 
-Performs a test to determine if the provided box is in the view frustum.  BoxTestResult must be called to get the result of this 
+Performs a test to determine if the provided box is in the view frustum.  BoxTestResult must be called to get the result of this
 operation.
 */
 void BoxTestf_Asynch(float x, float y, float z, float width, float height, float depth);

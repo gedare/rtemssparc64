@@ -3,7 +3,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: main_msdosfmt.c,v 1.7 2009/07/23 14:32:34 joel Exp $
+ *  $Id: main_msdosfmt.c,v 1.8 2009/11/29 12:12:39 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -40,11 +40,11 @@ int rtems_shell_main_msdos_format(
     cluster_align:       0,
     info_level:          0
   };
-  
+
   unsigned long tmp;
   const char*   driver = NULL;
   int           arg;
-  
+
   for (arg = 1; arg < argc; arg++) {
     if (argv[arg][0] == '-') {
       switch (argv[arg][1]) {
@@ -74,7 +74,7 @@ int rtems_shell_main_msdos_format(
 
           rqdata.sectors_per_cluster = (uint32_t) tmp;
           break;
-          
+
         case 'r':
           arg++;
           if (arg == argc) {
@@ -92,7 +92,7 @@ int rtems_shell_main_msdos_format(
 
           rqdata.files_per_root_dir = (uint32_t) tmp;
           break;
-          
+
         case 't':
           arg++;
           if (arg == argc) {
@@ -117,11 +117,11 @@ int rtems_shell_main_msdos_format(
         case 'v':
           rqdata.info_level++;
           break;
-          
+
         default:
           fprintf (stderr, "error: invalid option: %s\n", argv[arg]);
           return 1;
-          
+
       }
     } else {
       if (!driver)
@@ -137,7 +137,7 @@ int rtems_shell_main_msdos_format(
     fprintf (stderr, "error: no driver\n");
     return 1;
   }
-  
+
   printf ("msdos format: %s\n", driver);
 
   if (rqdata.info_level)
@@ -152,7 +152,7 @@ int rtems_shell_main_msdos_format(
     printf (" %-20s: %d\n", "quick_format", rqdata.quick_format);
     printf (" %-20s: %lu\n", "cluster align", rqdata.cluster_align);
   }
-  
+
   if (msdos_format (driver, &rqdata) < 0) {
     fprintf (stderr, "error: format failed: %s\n", strerror (errno));
     return 1;

@@ -1,6 +1,6 @@
 /*
   ------------------------------------------------------------------------
-  $Id: rtemsTimer.h,v 1.6 2008/12/16 20:55:45 joel Exp $
+  $Id: rtemsTimer.h,v 1.7 2009/11/28 05:48:23 ralf Exp $
   ------------------------------------------------------------------------
 
   COPYRIGHT (c) 1997
@@ -130,7 +130,7 @@ const rtems_status_code rtemsTimer::cancel()
 }
 
 const rtems_status_code rtemsTimer::reset()
-{ 
+{
   return set_status_code(rtems_timer_reset(id));
 }
 

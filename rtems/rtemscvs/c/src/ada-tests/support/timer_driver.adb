@@ -9,18 +9,17 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-1997.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: timer_driver.adb,v 1.4 2008/09/29 20:44:57 joel Exp $
+--  $Id: timer_driver.adb,v 1.5 2009/12/14 21:17:58 joel Exp $
 --
 
-with RTEMS;
-with Interfaces.C;
+with Interfaces;
 
 package body Timer_Driver is
 

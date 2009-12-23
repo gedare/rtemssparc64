@@ -1,7 +1,7 @@
 /*
  * This file contains the ARM BSP startup package. It includes application,
  * board, and monitor specific initialization and configuration. The generic CPU
- * dependent initialization has been performed before this routine is invoked. 
+ * dependent initialization has been performed before this routine is invoked.
  *
  *
  * Copyright (c) 2000 Canon Research Centre France SA.
@@ -11,8 +11,8 @@
  *   found in found in the file LICENSE in this distribution or at
  *   http://www.rtems.com/license/LICENSE.
  *
- * $Id: bspstart.c,v 1.17 2008/09/22 21:49:21 joel Exp $
- */ 
+ * $Id: bspstart.c,v 1.18 2009/11/29 14:53:00 ralf Exp $
+ */
 
 #include <bsp.h>
 #include <rtems/bspIo.h>
@@ -32,7 +32,7 @@ Thread bsp_idle_task(uint32_t ignored)
     asm volatile ("MCR p15,0,r0,c7,c0,4     \n");
   }
 }
- 
+
 /*
  *  BSP Specific Initialization in C
  */

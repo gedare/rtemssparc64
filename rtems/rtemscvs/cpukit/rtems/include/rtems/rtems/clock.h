@@ -21,7 +21,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: clock.h,v 1.23 2009/08/05 18:17:12 joel Exp $
+ *  $Id: clock.h,v 1.25 2009/12/17 20:27:28 joel Exp $
  */
 
 #ifndef _RTEMS_RTEMS_CLOCK_H
@@ -64,23 +64,13 @@ typedef enum {
 } rtems_clock_get_options;
 
 /**
- *  Standard flavor style to return TOD in for a rtems_clock_get option.
- */
-typedef struct {
-  /** This is the seconds portion of a time of day. */
-  uint32_t    seconds;
-  /** This is the microseconds portion of a time of day. */
-  uint32_t    microseconds;
-} rtems_clock_time_value;
-
-/**
  *  Type for the nanoseconds since last tick BSP extension.
  */
 typedef Watchdog_Nanoseconds_since_last_tick_routine
   rtems_nanoseconds_extension_routine;
 
 /**
- *  @brief Obtain Current Time of Day 
+ *  @brief Obtain Current Time of Day
  *
  *  This routine implements the rtems_clock_get directive.  It returns
  *  one of the following:
@@ -228,11 +218,11 @@ rtems_status_code rtems_clock_set_nanoseconds_extension(
  *
  *  This directive returns the system uptime.
  *
- *  @param[in] uptime is a pointer to the time structure 
+ *  @param[in] uptime is a pointer to the time structure
  *
  *  @return This method returns RTEMS_SUCCESSFUL if there was not an
  *          error.  Otherwise, a status code is returned indicating the
- *          source of the error.  If successful, the uptime will be 
+ *          source of the error.  If successful, the uptime will be
  *          filled in.
  */
 rtems_status_code rtems_clock_get_uptime(

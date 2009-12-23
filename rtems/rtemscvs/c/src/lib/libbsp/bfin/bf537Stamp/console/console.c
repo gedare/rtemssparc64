@@ -1,5 +1,5 @@
 /*  Console driver for bf537Stamp
- * 
+ *
  *  Copyright (c) 2008 Kallisti Labs, Los Gatos, CA, USA
  *             written by Allan Hessenflow <allanh@kallisti.com>
  *
@@ -7,9 +7,9 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console.c,v 1.3 2008/09/25 14:10:45 joel Exp $
+ *  $Id: console.c,v 1.5 2009/12/11 04:10:27 ralf Exp $
  */
- 
+
 
 #include <rtems.h>
 #include <rtems/libio.h>
@@ -69,7 +69,7 @@ static void bf537Stamp_BSP_output_char(char c) {
   bfin_uart_poll_write(0, c);
 }
 
-static char bf537Stamp_BSP_poll_char(void) {
+static int bf537Stamp_BSP_poll_char(void) {
 
   return bfin_uart_poll_read(0);
 }

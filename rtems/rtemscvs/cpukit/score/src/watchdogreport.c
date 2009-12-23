@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: watchdogreport.c,v 1.1 2008/11/26 16:33:30 joel Exp $
+ *  $Id: watchdogreport.c,v 1.2 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -31,8 +31,8 @@ void _Watchdog_Report(
     "%s%s%4d %5d %p %p 0x%08x %p\n",
     ((name) ? name : ""),
     ((name) ? " "  : ""),
-    watch->delta_interval, 
-    watch->initial, 
+    watch->delta_interval,
+    watch->initial,
     watch,
     watch->routine,
     watch->id,

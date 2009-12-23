@@ -33,7 +33,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: start.S,v 1.7 2009/04/28 06:34:00 ccj Exp $
+ *  $Id: start.S,v 1.8 2009/11/30 04:56:28 ralf Exp $
  */
 
 #include <rtems/asm.h>
@@ -43,7 +43,7 @@
 #warning Call to boot_card has changed and needs checking.
 #warning The call is "void boot_card(const char* cmdline);"
 #warning Please check and remove these warnings.
-	
+
         BEGIN_CODE
         PUBLIC(start)
 

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: corespinlockrelease.c,v 1.2 2007/11/06 19:52:36 humph Exp $
+ *  $Id: corespinlockrelease.c,v 1.3 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -50,7 +50,7 @@ CORE_spinlock_Status _CORE_spinlock_Release(
     if ( the_spinlock->lock == CORE_SPINLOCK_UNLOCKED ) {
       _ISR_Enable( level );
       return CORE_SPINLOCK_NOT_LOCKED;
-    } 
+    }
 
     /*
      *  It must locked by the current thread before it can be unlocked.
@@ -58,8 +58,8 @@ CORE_spinlock_Status _CORE_spinlock_Release(
     if ( the_spinlock->holder != _Thread_Executing->Object.id ) {
       _ISR_Enable( level );
       return CORE_SPINLOCK_NOT_HOLDER;
-    } 
-    
+    }
+
     /*
      *  Let it be unlocked.
      */

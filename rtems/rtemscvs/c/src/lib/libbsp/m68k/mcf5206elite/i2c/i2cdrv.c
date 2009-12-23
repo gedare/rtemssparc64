@@ -12,7 +12,7 @@
  *
  * http://www.rtems.com/license/LICENSE.
  *
- * @(#) $Id: i2cdrv.c,v 1.8 2008/09/08 09:52:49 thomas Exp $
+ * @(#) $Id: i2cdrv.c,v 1.9 2009/11/29 14:59:41 ralf Exp $
  */
 
 #include <rtems.h>
@@ -119,7 +119,7 @@ i2cdrv_unload(void)
             i2cdrv_bus_clock_div_current = i2cdrv_bus_clock_div[qel->bus];
             mcfmbus_select_clock_divider(&mbus, i2cdrv_bus_clock_div_current);
         }
-        sc = mcfmbus_i2c_transfer(&mbus, qel->nmsg, qel->msg, 
+        sc = mcfmbus_i2c_transfer(&mbus, qel->nmsg, qel->msg,
 				  i2cdrv_done,qel);
         if (sc != RTEMS_SUCCESSFUL)
         {

@@ -11,7 +11,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: irq.h,v 1.5 2005/05/17 14:41:50 jennifer Exp $
+ *  $Id: irq.h,v 1.6 2009/11/29 14:53:00 ralf Exp $
 */
 
 #ifndef __IRQ_H__
@@ -60,11 +60,11 @@ typedef unsigned int rtems_irq_number;
 #define BSP_KBDINT    16
 #define BSP_SS2RX     17
 #define BSP_SS2TX     18
-#define BSP_UTXINT2   19 
-#define BSP_URXINT2   20 
+#define BSP_UTXINT2   19
+#define BSP_URXINT2   20
  /* int interrupt status/mask register 3 */
 #define BSP_DAIINT    21
-#define BSP_MAX_INT   22 
+#define BSP_MAX_INT   22
 
 /*
  * Type definition for RTEMS managed interrupts

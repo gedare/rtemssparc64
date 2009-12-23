@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.4 2009/10/26 14:07:51 ralf Exp $
+ *  $Id: init.c,v 1.5 2009/11/30 03:33:25 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -67,7 +67,7 @@ rtems_task Init(
   puts( "Init - rtems_task_start - delay task - OK" );
   status = rtems_task_start( task_id, Blocking_task, 0 );
   directive_failed( status, "rtems_task_start" );
-  
+
   puts( "Init - rtems_region_create - OK" );
   status = rtems_region_create(
     rtems_build_name('R', 'N', '0', '1'),

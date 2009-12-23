@@ -6,12 +6,12 @@
  *  found in the file LICENSE in this distribution or at
  *
  *  http://www.rtems.com/license/LICENSE.
- * 
- *  $Id: bspstart.c,v 1.13 2008/09/19 15:49:28 joel Exp $
+ *
+ *  $Id: bspstart.c,v 1.14 2009/11/29 14:59:41 ralf Exp $
  */
 
 #include <bsp.h>
- 
+
 /*
  * Read/write copy of common cache
  *   Split I/D cache

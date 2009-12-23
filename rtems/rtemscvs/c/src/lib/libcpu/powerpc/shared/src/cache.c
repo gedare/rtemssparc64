@@ -11,7 +11,7 @@
  * Modified for MPC8260 Andy Dachs <a.dachs@sstl.co.uk>
  * Surrey Satellite Technology Limited (SSTL), 2001
  *
- *  $Id: cache.c,v 1.11 2008/08/20 04:02:57 ralf Exp $
+ *  $Id: cache.c,v 1.12 2009/11/30 05:07:54 ralf Exp $
  */
 
 #include <rtems.h>
@@ -23,10 +23,10 @@
  * They provide the basic implementation for the rtems_* cache
  * management routines. If a given function has no meaning for the CPU,
  * it does nothing by default.
- * 
+ *
  * FIXME: Some functions simply have not been implemented.
  */
- 
+
 #if defined(ppc603) || defined(ppc603e) || defined(mpc8260) /* And possibly others */
 
 /* Helpful macros */

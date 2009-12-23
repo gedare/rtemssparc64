@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: signalmp.c,v 1.12 2008/01/29 21:52:20 joel Exp $
+ *  $Id: signalmp.c,v 1.13 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -46,7 +46,7 @@
 rtems_status_code _Signal_MP_Send_request_packet (
   Signal_MP_Remote_operations operation,
   Objects_Id                  task_id,
-  rtems_signal_set      signal_in
+  rtems_signal_set            signal_in
 )
 {
   Signal_MP_Packet *the_packet;

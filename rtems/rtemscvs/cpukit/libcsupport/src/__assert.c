@@ -1,4 +1,4 @@
-/*  __assert - small RTEMS Specific Implementation 
+/*  __assert - small RTEMS Specific Implementation
  *
  *  COPYRIGHT (c) 2007.
  *  On-Line Applications Research Corporation (OAR).
@@ -7,7 +7,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: __assert.c,v 1.6 2009/09/30 05:05:30 ralf Exp $
+ *  $Id: __assert.c,v 1.7 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -19,7 +19,7 @@
 
 #if defined(RTEMS_NEWLIB) && !defined(HAVE___ASSERT_FUNC)
 /*
- * Newlib 1.16.0 added this method.  Together these provide an 
+ * Newlib 1.16.0 added this method.  Together these provide an
  * RTEMS safe, low memory implementation.
  */
 void __assert_func(

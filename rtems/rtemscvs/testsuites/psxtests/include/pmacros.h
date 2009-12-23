@@ -1,5 +1,12 @@
 /*
- *  $Id: pmacros.h,v 1.10 2009/10/31 05:15:14 ralf Exp $
+ *  COPYRIGHT (c) 1989-2009.
+ *  On-Line Applications Research Corporation (OAR).
+ *
+ *  The license and distribution terms for this file may be
+ *  found in the file LICENSE in this distribution or at
+ *  http://www.rtems.com/license/LICENSE.
+ *
+ *  $Id: pmacros.h,v 1.11 2009/12/08 17:52:52 joel Exp $
  */
 
 #ifndef __POSIX_TEST_MACROS_h
@@ -9,7 +16,6 @@
 #include <bsp.h>
 #endif
 #include <pthread.h>
-#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -64,10 +70,10 @@
     \
     tv.tv_sec = mktime( &tm ); \
     tv.tv_nsec = 0; \
-    assert( tv.tv_sec != -1 ); \
+    rtems_test_assert(  tv.tv_sec != -1 ); \
     \
     status = clock_settime( CLOCK_REALTIME, &tv ); \
-    assert( !status ); \
+    rtems_test_assert(  !status ); \
   } while ( 0 )
 
 #define print_current_time(s1, s2) \
@@ -77,7 +83,7 @@
     struct timespec _tv; \
     \
     _status = clock_gettime( CLOCK_REALTIME, &_tv ); \
-    assert( !_status ); \
+    rtems_test_assert(  !_status ); \
     \
     (void) ctime_r( &_tv.tv_sec, _time_buffer ); \
     _time_buffer[ strlen( _time_buffer ) - 1 ] = 0; \

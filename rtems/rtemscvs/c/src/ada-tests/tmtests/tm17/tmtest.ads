@@ -10,19 +10,18 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-1997.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: tmtest.ads,v 1.7 2008/03/11 20:12:52 joel Exp $
+--  $Id: tmtest.ads,v 1.8 2009/12/14 21:17:58 joel Exp $
 --
 
 with RTEMS;
 with TIME_TEST_SUPPORT;
-with TIMER_DRIVER;
 
 package TMTEST is
 

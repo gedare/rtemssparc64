@@ -1,4 +1,4 @@
-/** 
+/**
  * @file
  *
  * @ingroup ScoreAPIMutex
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: apimutex.h,v 1.13 2009/09/06 15:24:06 joel Exp $
+ *  $Id: apimutex.h,v 1.14 2009/11/28 05:58:53 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_APIMUTEX_H

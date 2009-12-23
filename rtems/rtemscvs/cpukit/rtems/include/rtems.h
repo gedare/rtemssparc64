@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtems.h,v 1.36 2009/08/05 18:17:11 joel Exp $
+ *  $Id: rtems.h,v 1.37 2009/11/29 11:55:14 ralf Exp $
  */
 
 #ifndef _RTEMS_H
@@ -91,7 +91,7 @@ const char *rtems_get_version_string(void);
 
 /**********************************************************************
  *      CONSTANTS WHICH MAY BE USED IN OBJECT NAME TO ID SEARCHES
- **********************************************************************/ 
+ **********************************************************************/
 
 /**
  * @brief Indicates that a search is across all nodes.
@@ -119,7 +119,7 @@ const char *rtems_get_version_string(void);
 
 /**********************************************************************
  *        Parameters and return Id's for _Objects_Get_next
- **********************************************************************/ 
+ **********************************************************************/
 
 /**
  * @brief Lowest valid index value for the index portion of an object

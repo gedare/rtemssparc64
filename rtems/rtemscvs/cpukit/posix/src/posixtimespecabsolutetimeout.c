@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: posixtimespecabsolutetimeout.c,v 1.3 2008/07/18 18:45:56 joel Exp $
+ *  $Id: posixtimespecabsolutetimeout.c,v 1.4 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -42,7 +42,7 @@ POSIX_Absolute_timeout_conversion_results_t _POSIX_Absolute_timeout_to_ticks(
   struct timespec current_time;
   struct timespec difference;
 
-  
+
   /*
    *  Make sure there is always a value returned.
    */

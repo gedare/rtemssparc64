@@ -1,14 +1,14 @@
 /*
  *  times() - POSIX 1003.1b 4.5.2 - Get Process Times
  *
- *  COPYRIGHT (c) 1989-2008.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: __times.c,v 1.21 2009/09/15 09:29:54 ralf Exp $
+ *  $Id: __times.c,v 1.24 2009/12/02 18:22:18 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -22,7 +22,7 @@
 #include <sys/time.h>
 #include <errno.h>
 #include <assert.h>
-#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+#ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
   #include <rtems/score/timestamp.h>
 #endif
 
@@ -51,13 +51,13 @@ clock_t _times(
    *  this thread.
    */
 
-  #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
     {
       Timestamp_Control per_tick;
       uint32_t          ticks;
       uint32_t          fractional_ticks;
-      
-      _Timestamp_Set( 
+
+      _Timestamp_Set(
         &per_tick,
         rtems_configuration_get_microseconds_per_tick() /
             TOD_MICROSECONDS_PER_SECOND,

@@ -13,7 +13,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: pci.c,v 1.21 2009/05/05 16:29:50 jennifer Exp $
+ *  $Id: pci.c,v 1.23 2009/12/11 12:58:28 ralf Exp $
  *
  *  Till Straumann, <strauman@slac.stanford.edu>, 1/2002
  *   - separated bridge detection code out of this file
@@ -162,7 +162,7 @@ const pci_config_access_functions pci_indirect_functions = {
   indirect_pci_write_config_dword
 };
 
-pci_config BSP_pci_configuration = {
+rtems_pci_config_t BSP_pci_configuration = {
   (volatile unsigned char*)PCI_CONFIG_ADDR,
   (volatile unsigned char*)PCI_CONFIG_DATA,
   &pci_indirect_functions
@@ -323,7 +323,7 @@ static int test_intname(
     }
   }
 
-   if( _nopin  ) 
+   if( _nopin  )
    {
       printk("pci : Device %d:0x%02x:%d supplied a bogus interrupt_pin %d\n", pbus, pslot, pfun, int_pin );
       return -1;

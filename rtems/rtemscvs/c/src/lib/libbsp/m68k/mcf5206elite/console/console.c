@@ -12,7 +12,7 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console.c,v 1.7 2004/04/21 16:01:34 ralf Exp $
+ *  $Id: console.c,v 1.8 2009/12/17 08:42:16 thomas Exp $
  */
 
 #include <termios.h>
@@ -63,8 +63,8 @@ console_poll_read(int minor)
  * RETURNS:
  *     result code
  */
-static int
-console_interrupt_write(int minor, const char *buf, int len)
+static ssize_t
+console_interrupt_write(int minor, const char *buf, size_t len)
 {
     return mcfuart_interrupt_write(&uart[minor], buf, len);
 }
@@ -80,8 +80,8 @@ console_interrupt_write(int minor, const char *buf, int len)
  * RETURNS:
  *     result code
  */
-static int
-console_poll_write(int minor, const char *buf, int len)
+static ssize_t
+console_poll_write(int minor, const char *buf, size_t len)
 {
     return mcfuart_poll_write(&uart[minor], buf, len);
 }

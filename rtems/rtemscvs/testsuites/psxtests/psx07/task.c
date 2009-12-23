@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.c,v 1.8 2009/08/19 14:55:24 joel Exp $
+ *  $Id: task.c,v 1.9 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include "system.h"
@@ -46,7 +46,7 @@ void *Task_2(
    */
 
   /*
-   *  Consume time so the cpu budget callout will run.  
+   *  Consume time so the cpu budget callout will run.
    *
    *  DO NOT BLOCK!!!
    */
@@ -56,7 +56,7 @@ void *Task_2(
       now = time(&now);
     } while (start == now);
     start = time(&start);
-    
+
     printf( "Time elapsed Task_2: %2d (seconds)\n", i++ );
   }
 

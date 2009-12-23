@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu_asm.c,v 1.1 2008/10/28 20:03:19 joel Exp $
+ *  $Id: cpu_asm.c,v 1.2 2009/12/04 05:23:14 ralf Exp $
  */
 
 #include <rtems/system.h>
@@ -84,7 +84,7 @@ void _ISR_Handler(void)
    *
    *  LABEL "exit interrupt (simple case):
    *  #if ( CPU_HAS_SOFTWARE_INTERRUPT_STACK == TRUE )
-   *    if outermost interrupt 
+   *    if outermost interrupt
    *      restore stack
    *  #endif
    *  prepare to get out of interrupt

@@ -39,7 +39,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.c,v 1.12 2008/09/09 13:18:58 thomas Exp $
+ *  $Id: timer.c,v 1.13 2009/11/30 05:07:54 ralf Exp $
  */
 
 #include <rtems.h>
@@ -67,7 +67,7 @@ void benchmark_timer_initialize(void)
   /* set interrupt level and enable timebase. This should never */
   /*  generate an interrupt however. */
   m8xx.tbscr |= M8xx_TBSCR_TBIRQ(4) | M8xx_TBSCR_TBE;
-  
+
   Timer_starting = get_itimer();
 }
 

@@ -1,7 +1,7 @@
 /*
  *  asm_utils.s
  *
- *  $Id: asm_utils.S,v 1.3 2004/04/01 10:07:37 ralf Exp $
+ *  $Id: asm_utils.S,v 1.4 2009/11/30 05:07:54 ralf Exp $
  *
  *  Copyright (C) 1999 Eric Valette (valette@crf.canon.fr)
  *
@@ -25,11 +25,11 @@ codemove:
 	beq	7f	/* Protect against 0 count */
 	mtctr	r0
 	bge	cr1,2f
-	
+
 	la	r8,-4(r4)
 	la	r7,-4(r3)
 1:	lwzu	r0,4(r8)
-	stwu	r0,4(r7)	
+	stwu	r0,4(r7)
 	bdnz	1b
 	b	4f
 
@@ -39,23 +39,23 @@ codemove:
 3:	lwzu	r0,-4(r8)
 	stwu	r0,-4(r7)
 	bdnz	3b
-	
+
 /* Now flush the cache:	note that we must start from a cache aligned
- * address. Otherwise we might miss one cache line. 
+ * address. Otherwise we might miss one cache line.
  */
 4:	cmpwi	r6,0
 	add	r5,r3,r5
-	beq	7f	/* Always flush prefetch queue in any case */ 
+	beq	7f	/* Always flush prefetch queue in any case */
 	subi	r0,r6,1
 	andc	r3,r3,r0
 	mr	r4,r3
-5:	cmplw	r4,r5	
+5:	cmplw	r4,r5
 	dcbst	0,r4
 	add	r4,r4,r6
 	blt	5b
 	sync		/* Wait for all dcbst to complete on bus */
 	mr	r4,r3
-6:	cmplw	r4,r5	
+6:	cmplw	r4,r5
 	icbi	0,r4
 	add	r4,r4,r6
 	blt	6b

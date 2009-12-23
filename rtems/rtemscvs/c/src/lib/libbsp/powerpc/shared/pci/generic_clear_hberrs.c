@@ -1,5 +1,5 @@
 /*
- *  $Id: generic_clear_hberrs.c,v 1.1 2007/11/21 08:03:30 strauman Exp $
+ *  $Id: generic_clear_hberrs.c,v 1.2 2009/11/30 04:33:31 ralf Exp $
  */
 
 #include <libcpu/io.h>
@@ -56,7 +56,7 @@ int             count;
     if ( !PCI_STATUS_OK(pcistat) ) {
         printk("Unable to clear PCI errors: still 0x%04x after 10 attempts\n", pcistat);
     }
-	
+
 	rval &= PCI_ERR_BITS;
 
 	/* Some VME bridges (Tsi148) don't propagate VME bus errors to PCI status reg. */

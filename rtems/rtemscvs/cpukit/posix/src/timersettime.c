@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timersettime.c,v 1.7 2008/12/08 19:41:30 joel Exp $
+ *  $Id: timersettime.c,v 1.9 2009/12/10 22:20:11 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -50,7 +50,7 @@ int timer_settime(
     /* The number of nanoseconds is not correct */
     rtems_set_errno_and_return_minus_one( EINVAL );
   }
-  
+
   if ( flags != TIMER_ABSTIME && flags != POSIX_TIMER_RELATIVE ) {
     rtems_set_errno_and_return_minus_one( EINVAL );
   }
@@ -62,8 +62,8 @@ int timer_settime(
     struct timespec now;
     _TOD_Get( &now );
     /* Check for seconds in the past */
-    if ( _Timespec_Greater_than( &now, &normalize.it_value ) ) 
-      rtems_set_errno_and_return_minus_one( EINVAL ); 
+    if ( _Timespec_Greater_than( &now, &normalize.it_value ) )
+      rtems_set_errno_and_return_minus_one( EINVAL );
     _Timespec_Subtract( &now, &normalize.it_value, &normalize.it_value );
   }
 
@@ -95,8 +95,8 @@ int timer_settime(
        /* Convert from seconds and nanoseconds to ticks */
        ptimer->ticks  = _Timespec_To_ticks( &value->it_interval );
        initial_period = _Timespec_To_ticks( &normalize.it_value );
-       
-        
+
+
        activated = _POSIX_Timer_Insert_helper(
          &ptimer->Timer,
          initial_period,
@@ -104,11 +104,15 @@ int timer_settime(
          _POSIX_Timer_TSR,
          ptimer
        );
-       if ( !activated )
+       if ( !activated ) {
+         _Thread_Enable_dispatch();
          return 0;
+       }
 
-       /* The timer has been started and is running */
-       /* return the old ones in "ovalue" */
+       /*
+        * The timer has been started and is running.  So we return the
+        * old ones in "ovalue"
+        */
        if ( ovalue )
          *ovalue = ptimer->timer_data;
        ptimer->timer_data = normalize;
@@ -116,7 +120,7 @@ int timer_settime(
        /* Indicate that the time is running */
        ptimer->state = POSIX_TIMER_STATE_CREATE_RUN;
        _TOD_Get( &ptimer->time );
-        _Thread_Enable_dispatch();
+       _Thread_Enable_dispatch();
        return 0;
 
 #if defined(RTEMS_MULTIPROCESSING)

@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/debug.h
  *
  *  This include file contains the information pertaining to the debug
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: debug.h,v 1.20 2009/08/11 19:00:45 joel Exp $
+ *  $Id: debug.h,v 1.21 2009/11/29 13:51:52 ralf Exp $
  */
 
 #ifndef _RTEMS_DEBUG_H

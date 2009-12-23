@@ -2,14 +2,14 @@
  *  Thread Handler
  *
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: threadtickletimeslice.c,v 1.9 2009/09/11 15:35:52 joel Exp $
+ *  $Id: threadtickletimeslice.c,v 1.11 2009/12/02 18:22:19 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -49,7 +49,7 @@ void _Thread_Tickle_timeslice( void )
 
   executing = _Thread_Executing;
 
-  #ifndef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+  #ifdef __RTEMS_USE_TICKS_FOR_STATISTICS__
     /*
      *  Increment the number of ticks this thread has been executing
      */

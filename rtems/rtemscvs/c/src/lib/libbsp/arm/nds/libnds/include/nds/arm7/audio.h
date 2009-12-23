@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: audio.h,v 1.2 2008/08/19 15:47:14 joel Exp $
+	$Id: audio.h,v 1.4 2009/12/07 07:12:20 ralf Exp $
 
 	ARM7 audio control
 
@@ -87,7 +87,7 @@ extern "C" {
 
 /*---------------------------------------------------------------------------------
 	microphone code based on neimod's microphone example.
-	See: http://neimod.com/dstek/ 
+	See: http://neimod.com/dstek/
 	Chris Double (chris.double@double.co.nz)
 	http://www.double.co.nz/nintendo_ds
 ---------------------------------------------------------------------------------*/
@@ -96,38 +96,38 @@ extern "C" {
 /*---------------------------------------------------------------------------------
 	Read a byte from the microphone
 ---------------------------------------------------------------------------------*/
-u8 MIC_ReadData();
+u8 MIC_ReadData(void);
 
 /*---------------------------------------------------------------------------------
 	Fill the buffer with data from the microphone. The buffer will be
 	signed sound data at 16kHz. Once the length of the buffer is
-	reached, no more data will be stored. Uses ARM7 timer 0.  
+	reached, no more data will be stored. Uses ARM7 timer 0.
 ---------------------------------------------------------------------------------*/
 void StartRecording(u8* buffer, int length);
 
 /*---------------------------------------------------------------------------------
 	Stop recording data, and return the length of data recorded.
 ---------------------------------------------------------------------------------*/
-int StopRecording();
+int StopRecording(void);
 
 /* This must be called during IRQ_TIMER0 */
-void ProcessMicrophoneTimerIRQ();
+void ProcessMicrophoneTimerIRQ(void);
 
 void PM_SetAmp(u8 control);
 
 //---------------------------------------------------------------------------------
-// Turn the microphone on 
+// Turn the microphone on
 //---------------------------------------------------------------------------------
-static inline void MIC_On() {
+static inline void MIC_On(void) {
 //---------------------------------------------------------------------------------
   PM_SetAmp(PM_AMP_ON);
 }
 
 
 //---------------------------------------------------------------------------------
-// Turn the microphone off 
+// Turn the microphone off
 //---------------------------------------------------------------------------------
-static inline void MIC_Off() {
+static inline void MIC_Off(void) {
 //---------------------------------------------------------------------------------
   PM_SetAmp(PM_AMP_OFF);
 }

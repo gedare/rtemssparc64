@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: libio.c,v 1.47 2009/09/15 09:53:01 ralf Exp $
+ *  $Id: libio.c,v 1.48 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -26,9 +26,9 @@
 #include <assert.h>
 #include <errno.h>
 
-/* define this to alias O_NDELAY to  O_NONBLOCK, i.e., 
+/* define this to alias O_NDELAY to  O_NONBLOCK, i.e.,
  * O_NDELAY is accepted on input but fcntl(F_GETFL) returns
- * O_NONBLOCK. This is because rtems has no distinction 
+ * O_NONBLOCK. This is because rtems has no distinction
  * between the two (but some systems have).
  * Note that accepting this alias creates a problem:
  * an application trying to clear the non-blocking flag
@@ -165,7 +165,7 @@ rtems_libio_t *rtems_libio_allocate( void )
       goto failed;
     iop = rtems_libio_iop_freelist;
     next = iop->data1;
-    (void) memset( iop, 0, sizeof(rtems_libio_t) ); 
+    (void) memset( iop, 0, sizeof(rtems_libio_t) );
     iop->flags = LIBIO_FLAGS_OPEN;
     iop->sem = sema;
     rtems_libio_iop_freelist = next;

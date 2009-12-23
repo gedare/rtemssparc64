@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.c,v 1.4 2008/09/05 11:32:22 ralf Exp $
+ *  $Id: timer.c,v 1.5 2009/11/30 04:53:31 ralf Exp $
  */
 
 #define TIMER_WRAPS_AFTER_1MS 0
@@ -74,8 +74,8 @@ void benchmark_timer_initialize( void )
                         ALTERA_AVALON_TIMER_CONTROL_START_MSK;
 
   /* This is the most safe place for resetting the overflow
-     counter - just _after_ we reset the timer. Depending 
-     on the SOPC configuration, the counter may not be 
+     counter - just _after_ we reset the timer. Depending
+     on the SOPC configuration, the counter may not be
      stoppable and it doesn't make sense to assume that
      there is any "safe" period before resetting. */
 
@@ -129,7 +129,7 @@ int benchmark_timer_read( void )
   if(total < LEAST_VALID) return 0;
 
   if(benchmark_timer_find_average_overhead != TRUE) total-= AVG_OVERHEAD;
- 
+
   return total;
 }
 

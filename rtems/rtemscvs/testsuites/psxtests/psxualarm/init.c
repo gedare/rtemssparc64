@@ -1,12 +1,12 @@
 /*
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2009/10/27 14:10:54 ralf Exp $
+ *  $Id: init.c,v 1.4 2009/12/08 17:52:53 joel Exp $
  */
 
 #define CONFIGURE_INIT
@@ -79,12 +79,12 @@ void *POSIX_Init(
 
   /* unblock Signal and see if it happened */
   status = sigemptyset( &mask );
-  assert( !status );
+  rtems_test_assert(  !status );
   status = sigaddset( &mask, SIGALRM );
-  assert( !status );
+  rtems_test_assert(  !status );
   puts( "Init: Unblock SIGALRM" );
   status = sigprocmask( SIG_UNBLOCK, &mask, NULL );
-  assert( !status );
+  rtems_test_assert(  !status );
   status = sleep(10);
 
   /* stop ularm */

@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.5 2009/09/09 18:28:17 joel Exp $
+ *  $Id: init.c,v 1.7 2009/11/30 12:51:50 thomas Exp $
  */
 
 #include <tmacros.h>
@@ -42,7 +42,7 @@ rtems_task Periodic_Task(
     status = rtems_rate_monotonic_period( period_id, 25 );
     directive_failed(status, "rate_monotonic_period");
     partial_loop = 0;
-  
+
     start = rtems_clock_get_ticks_since_boot();
     end   = start + 5;
     while ( end <= rtems_clock_get_ticks_since_boot() )
@@ -114,7 +114,7 @@ rtems_task Init(
 #define CONFIGURE_MAXIMUM_PERIODS         1
 #define CONFIGURE_INIT_TASK_STACK_SIZE    (RTEMS_MINIMUM_STACK_SIZE * 2)
 #define CONFIGURE_INIT_TASK_PRIORITY      10
-#define CONFIGURE_INIT_TASK_MODES         RTEMS_DEFAULT_MODES
+#define CONFIGURE_INIT_TASK_INITIAL_MODES RTEMS_DEFAULT_MODES
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 

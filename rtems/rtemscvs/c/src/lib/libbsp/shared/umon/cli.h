@@ -1,23 +1,38 @@
-/* cli.h:
- * Header file for Command Line Interface related stuff.
+/*
+ *  cli.h - Header file for Command Line Interface related stuff
  *
- *	General notice:
- *	This code is part of a boot-monitor package developed as a generic base
- *	platform for embedded system designs.  As such, it is likely to be
- *	distributed to various projects beyond the control of the original
- *	author.  Please notify the author of any enhancements made or bugs found
- *	so that all may benefit from the changes.  In addition, notification back
- *	to the author will allow the new user to pick up changes that may have
- *	been made by other users after this version of the code was distributed.
+ *  Based upon code from MicroMonitor 1.17 from http://www.umonfw.com/
+ *  which includes this notice:
  *
- *	Note1: the majority of this code was edited with 4-space tabs.
- *	Note2: as more and more contributions are accepted, the term "author"
- *		   is becoming a mis-representation of credit.
+ **************************************************************************
+ *  General notice:
+ *  This code is part of a boot-monitor package developed as a generic base
+ *  platform for embedded system designs.  As such, it is likely to be
+ *  distributed to various projects beyond the control of the original
+ *  author.  Please notify the author of any enhancements made or bugs found
+ *  so that all may benefit from the changes.  In addition, notification back
+ *  to the author will allow the new user to pick up changes that may have
+ *  been made by other users after this version of the code was distributed.
  *
- *	Original author:	Ed Sutter
- *	Email:				esutter@lucent.com
- *	Phone:				908-582-2351
+ *  Note1: the majority of this code was edited with 4-space tabs.
+ *  Note2: as more and more contributions are accepted, the term "author"
+ *         is becoming a mis-representation of credit.
+ *
+ *  Original author:    Ed Sutter
+ *  Email:              esutter@alcatel-lucent.com
+ *  Phone:              908-582-2351
+ **************************************************************************
+ *
+ *  Ed Sutter has been informed that this code is being used in RTEMS.
+ *
+ *  This code was reformatted by Joel Sherrill from OAR Corporation and
+ *  Fernando Nicodemos <fgnicodemos@terra.com.br> from NCB - Sistemas
+ *  Embarcados Ltda. (Brazil) to be more compliant with RTEMS coding
+ *  standards and to eliminate C++ style comments.
+ *
+ *  $Id: cli.h,v 1.3 2009/11/30 22:00:47 joel Exp $
  */
+
 #ifndef _cli_h
 #define _cli_h
 
@@ -68,7 +83,7 @@ struct	monCommand {
  *		reason. The docommand() function does not print a message here, it
  *		is assumed that the error message was printed by the local function.
  *	CMD_PARAM_ERROR:
- *		Command line did not parse properly.  Control was passed to a 
+ *		Command line did not parse properly.  Control was passed to a
  *		local command function, but argument syntax caused it to choke.
  *		In this case docommand() will print out the generic CLI syntax error
  *		message.
@@ -96,7 +111,7 @@ struct	monCommand {
 #define CMD_MONRC_DENIED	-6
 
 /* Notes on help text array:
- * The monitor's CLI processor assumes that every command's help text 
+ * The monitor's CLI processor assumes that every command's help text
  * array abides by a few basic rules...
  * First of all, it assumes that every array has AT LEAST two strings.
  * The first string in the array of strings is assumed to be a one-line

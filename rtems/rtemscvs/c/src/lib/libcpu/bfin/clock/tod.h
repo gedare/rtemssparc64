@@ -1,5 +1,5 @@
 /*  tod.h
- *  
+ *
  *  Real Time Clock definitions for eZKit533.
  *
  *  Copyright (c) 2006 by Atos Automacao Industrial Ltda.
@@ -10,8 +10,8 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: tod.h,v 1.3 2009/05/27 14:22:10 joel Exp $
- */ 
+ *  $Id: tod.h,v 1.4 2009/11/30 05:03:49 ralf Exp $
+ */
 
 
 #ifndef TOD_H

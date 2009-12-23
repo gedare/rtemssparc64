@@ -11,7 +11,7 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.c,v 1.13 2009/10/30 19:28:46 thomas Exp $
+ *  $Id: timer.c,v 1.14 2009/11/30 05:07:54 ralf Exp $
  */
 
 #include <rtems/system.h>
@@ -42,7 +42,7 @@ int Timer_get_clicks_overhead(void)
 }
 
 /*
- * benchmark_timer_initialize 
+ * benchmark_timer_initialize
  */
 void benchmark_timer_initialize(void)
 {

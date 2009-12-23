@@ -8,7 +8,6 @@
 /bsp.t/1.13/Fri Oct 23 12:47:31 2009//
 /c_user.texi/1.32/Wed Nov 25 15:50:03 2009//
 /chains.t/1.5/Fri Oct 23 12:47:31 2009//
-/clock.t/1.24/Fri Oct 23 12:47:31 2009//
 /concepts.t/1.19/Wed Nov 25 15:50:03 2009//
 /conf.t/1.63/Fri Oct 23 12:47:31 2009//
 /cpuuse.t/1.4/Fri Oct 23 12:47:31 2009//
@@ -47,4 +46,5 @@
 /task.t/1.43/Fri Oct 23 12:47:31 2009//
 /timer.t/1.22/Fri Oct 23 12:47:31 2009//
 /userext.t/1.22/Fri Oct 23 12:47:31 2009//
+/clock.t/1.25/Tue Dec 22 15:27:19 2009//
 D

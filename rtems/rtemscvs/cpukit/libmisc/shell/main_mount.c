@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: main_mount.c,v 1.6 2009/10/08 07:07:36 ccj Exp $
+ *  $Id: main_mount.c,v 1.7 2009/11/29 12:12:39 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -62,13 +62,13 @@ int rtems_shell_libc_mounter(
   /*
    * Mount the disk.
    */
-  
+
   if (mount (&mt_entry, fs->fs_ops, options, (char*) driver, (char*) path) < 0)
   {
     fprintf (stderr, "mount: mount failed: %s\n", strerror (errno));
     return 1;
   }
-  
+
   return 0;
 }
 
@@ -86,7 +86,7 @@ int rtems_shell_main_mount(
   int                        arg;
 
   rtems_shell_mount_fsys_init();
-  
+
   for (arg = 1; arg < argc; arg++) {
     if (argv[arg][0] == '-') {
       if (argv[arg][1] == 't') {
@@ -159,26 +159,26 @@ int rtems_shell_main_mount(
     fprintf (stderr, "mount: no file-system; see the -L option\n");
     return 1;
   }
-  
+
   if (fs->driver_needed && !driver) {
     fprintf (stderr, "mount: no driver\n");
     return 1;
   }
-  
+
   if (!mount_point) {
     fprintf (stderr, "mount: no mount point\n");
     return 1;
   }
-  
+
   /*
    * Mount the disk.
    */
-  
+
   if (fs->mounter (driver, mount_point, fs, options))
     return 1;
 
   printf ("mounted %s -> %s\n", driver, mount_point);
-  
+
   return 0;
 }
 

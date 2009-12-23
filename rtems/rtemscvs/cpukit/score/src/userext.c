@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: userext.c,v 1.16 2009/09/25 17:51:46 joel Exp $
+ *  $Id: userext.c,v 1.17 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -45,13 +45,13 @@ void _User_extensions_Handler_initialization(void)
       _Workspace_Allocate_or_fatal_error(
         number_of_extensions * sizeof( User_extensions_Control )
       );
-  
+
     memset (
       extension,
       0,
       number_of_extensions * sizeof( User_extensions_Control )
     );
-  
+
     for ( i = 0 ; i < number_of_extensions ; i++ ) {
       _User_extensions_Add_set_with_table (extension, &initial_extensions[i]);
       extension++;

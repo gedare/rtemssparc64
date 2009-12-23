@@ -1,8 +1,8 @@
 /* MD5C.C - RSA Data Security, Inc., MD5 message-digest algorithm
  *
- * $Id: md5c.c,v 1.3 2008/09/01 07:02:00 ralf Exp $
+ * $Id: md5c.c,v 1.4 2009/11/29 13:20:52 ralf Exp $
  */
- 
+
 /* Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All
 rights reserved.
 

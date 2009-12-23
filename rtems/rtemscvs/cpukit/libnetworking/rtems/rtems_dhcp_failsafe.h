@@ -1,5 +1,5 @@
-/*      
-  $Id: rtems_dhcp_failsafe.h,v 1.1 2008/05/01 02:57:49 ccj Exp $
+/*
+  $Id: rtems_dhcp_failsafe.h,v 1.2 2009/11/30 15:57:51 ralf Exp $
 
   Description: Wrapper around DHCP client to restart it when the interface
                moves to another network.

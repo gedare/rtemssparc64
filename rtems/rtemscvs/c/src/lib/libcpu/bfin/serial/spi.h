@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: spi.h,v 1.2 2008/09/06 17:34:02 ralf Exp $
+ *  $Id: spi.h,v 1.3 2009/11/30 05:03:49 ralf Exp $
  */
 
 
@@ -40,7 +40,7 @@ typedef struct {
 
 extern rtems_libi2c_bus_ops_t bfin_spi_libi2c_bus_ops;
 
- 
+
 void bfin_spi_isr(int source);
 
 

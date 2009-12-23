@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.am,v 1.57 2009/11/03 18:45:04 thomas Exp $
+# $Id: Makefile.am,v 1.59 2009/12/02 01:33:51 strauman Exp $
 #
 
 ACLOCAL_AMFLAGS = -I ../../../aclocal
@@ -109,8 +109,8 @@ endif
 ppc403_console_rel_CPPFLAGS = $(AM_CPPFLAGS)
 ppc403_console_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
-include_HEADERS = 
-shared_cpuIdent_rel_SOURCES = shared/include/cpuIdent.c 
+include_HEADERS =
+shared_cpuIdent_rel_SOURCES = shared/include/cpuIdent.c
 shared_cpuIdent_rel_CPPFLAGS = $(AM_CPPFLAGS)
 shared_cpuIdent_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
@@ -241,7 +241,14 @@ noinst_PROGRAMS += mpc6xx/timer.rel
 mpc6xx_timer_rel_SOURCES = mpc6xx/timer/timer.c
 mpc6xx_timer_rel_CPPFLAGS = $(AM_CPPFLAGS)
 mpc6xx_timer_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+
+# mpc6xx/altivec
+noinst_PROGRAMS += mpc6xx/altivec.rel
+mpc6xx_altivec_rel_SOURCES = mpc6xx/altivec/vec_sup.c mpc6xx/altivec/vec_sup_asm.S
+mpc6xx_altivec_rel_CPPFLAGS = $(AM_CPPFLAGS)
+mpc6xx_altivec_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 endif
+EXTRA_DIST      += mpc6xx/altivec/README
 
 if e500
 # mpc6xx/clock

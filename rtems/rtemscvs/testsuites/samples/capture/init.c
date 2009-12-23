@@ -17,7 +17,7 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2009/10/24 05:50:06 ralf Exp $
+ *  $Id: init.c,v 1.4 2009/11/30 03:33:23 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -55,7 +55,7 @@ rtems_task Init(
 
   rtems_monitor_init (0);
   rtems_capture_cli_init (0);
-  
+
   setup_tasks_to_watch ();
 
   rtems_task_delete (RTEMS_SELF);

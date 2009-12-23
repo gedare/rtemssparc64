@@ -6,8 +6,8 @@
  * The license and distribution terms for this file may be
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
- * 
- *  $Id: rtemspppd.c,v 1.6 2005/11/07 16:17:14 joel Exp $
+ *
+ *  $Id: rtemspppd.c,v 1.7 2009/11/30 15:59:00 ralf Exp $
  */
 
 #include <rtems.h>

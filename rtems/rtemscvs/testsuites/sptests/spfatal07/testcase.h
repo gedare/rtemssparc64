@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: testcase.h,v 1.5 2009/09/04 21:28:56 joel Exp $
+ *  $Id: testcase.h,v 1.6 2009/11/30 03:33:25 ralf Exp $
  */
 
 /*
@@ -40,7 +40,7 @@ rtems_initialization_tasks_table Initialization_tasks[] = {
 
 void force_error()
 {
-  #if (CPU_ALLOCATE_INTERRUPT_STACK == TRUE) 
+  #if (CPU_ALLOCATE_INTERRUPT_STACK == TRUE)
     Configuration.interrupt_stack_size = (STACK_MINIMUM_SIZE-1);
     rtems_initialize_data_structures();
   #else
@@ -50,6 +50,6 @@ void force_error()
     );
     rtems_test_exit(0);
   #endif
-   
+
   /* we will not run this far */
 }

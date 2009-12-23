@@ -7,14 +7,14 @@
  *
  *  Output parameters:  NONE
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task2.c,v 1.7 2003/09/04 18:53:38 joel Exp $
+ *  $Id: task2.c,v 1.8 2009/12/08 17:52:53 joel Exp $
  */
 
 #include "system.h"
@@ -30,14 +30,14 @@ void *Task_2(
   status = pthread_mutex_lock( &Mutex2_id );
   if ( status )
     printf( "status =%d\n", status );
-  assert( !status );
+  rtems_test_assert(  !status );
   printf( "Task 2: mutex acquired\n" );
 
      /* switch to init */
 
   printf( "Task 2: unlock Mutex 2\n" );
   status = pthread_mutex_unlock( &Mutex2_id );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   printf( "Task 2: exit\n" );
   pthread_exit( NULL );

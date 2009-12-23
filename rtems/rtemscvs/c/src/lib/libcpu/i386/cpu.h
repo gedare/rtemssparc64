@@ -1,5 +1,5 @@
 /*
- * cpu.h  - This file contains definitions for data structure related 
+ * cpu.h  - This file contains definitions for data structure related
  *          to Intel system programming. More information can be found
  *	    on Intel site and more precisely in the following book :
  *
@@ -15,7 +15,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: cpu.h,v 1.13 2004/04/15 13:33:56 ralf Exp $
+ * $Id: cpu.h,v 1.14 2009/12/04 04:23:01 ralf Exp $
  */
 
 #ifndef _LIBCPU_i386_CPU_H
@@ -147,7 +147,7 @@ do { register unsigned short __port  = _port; \
    } while (0)
 
 /*
- * Type definition for raw interrupts. 
+ * Type definition for raw interrupts.
  */
 
 typedef unsigned char  rtems_vector_offset;
@@ -167,16 +167,16 @@ typedef struct __rtems_raw_irq_connect_data__{
    * libcpu library, this library should have no knowledge of
    * board specific hardware to manage interrupts and thus the
    * "on" routine must enable the irq both at device and PIC level.
-   * 
+   *
    */
-    rtems_raw_irq_enable	on;	
+    rtems_raw_irq_enable	on;
   /*
    * function for disabling raw interrupts. In order to be consistent
    * with the fact that the raw connexion can defined in the
    * libcpu library, this library should have no knowledge of
    * board specific hardware to manage interrupts and thus the
    * "on" routine must disable the irq both at device and PIC level.
-   * 
+   *
    */
   rtems_raw_irq_disable		off;
   /*
@@ -204,7 +204,7 @@ typedef struct {
 
 /*
  * C callable function enabling to get handler currently connected to a vector
- * 
+ *
  */
 rtems_raw_irq_hdl get_hdl_from_vector(rtems_vector_offset);
 
@@ -335,7 +335,7 @@ typedef union {
   page_table_bits	bits;
   unsigned int		table_entry;
 } page_table_entry;
- 
+
 /*
  * definitions related to page table entry
  */
@@ -371,12 +371,12 @@ extern void 	_CPU_disable_cache();
 extern void 	_CPU_enable_cache();
 extern int 	_CPU_map_phys_address
                       (void **mappedAddress, void *physAddress,
-		       int size, int flag); 
-extern int 	_CPU_unmap_virt_address (void *mappedAddress, int size); 
+		       int size, int flag);
+extern int 	_CPU_unmap_virt_address (void *mappedAddress, int size);
 extern int 	_CPU_change_memory_mapping_attribute
                          (void **newAddress, void *mappedAddress,
 			  unsigned int size, unsigned int flag);
-extern int  	_CPU_display_memory_attribute(); 
+extern int  	_CPU_display_memory_attribute();
 
 # endif /* ASM */
 

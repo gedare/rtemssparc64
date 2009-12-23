@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: isr_entries.S,v 1.9 2005/02/25 05:18:49 jtm Exp $
+ *  $Id: isr_entries.S,v 1.10 2009/11/30 05:09:01 ralf Exp $
  */
 
 #include <rtems/asm.h>
@@ -32,7 +32,7 @@ FRAME(exc_dbg_code,sp,0,ra)
         j       k0
 	nop
 ENDFRAME(exc_dbg_code)
-	
+
 /* XXX this is dependent on IDT/SIM and needs to be addressed */
 FRAME(exc_utlb_code,sp,0,ra)
         la      k0, (R_VEC+((48)*8))
@@ -40,7 +40,7 @@ FRAME(exc_utlb_code,sp,0,ra)
 	nop
 ENDFRAME(exc_utlb_code)
 
-/* 
+/*
  * MIPS ISA Level 32
  * XXX Again, reliance on SIM. Not good.??????????
  */
@@ -69,8 +69,8 @@ FRAME(exc_norm_code,sp,0,ra)
 	j	k0
 	nop
 ENDFRAME(exc_norm_code)
-	
-/* 
+
+/*
  * MIPS ISA Level 3
  * XXX Again, reliance on SIM. Not good.
  */

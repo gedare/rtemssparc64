@@ -1,4 +1,4 @@
-/* 
+/*
  * irq_init.c
  *
  *  This file contains the implementation of rtems initialization
@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_init.c,v 1.2 2005/04/25 14:37:10 jennifer Exp $
+ *  $Id: irq_init.c,v 1.3 2009/11/30 05:07:54 ralf Exp $
  */
 
 #include <rtems.h>
@@ -90,7 +90,7 @@ void CPU_USIU_irq_init()
   usiu.siel = usiu.siel;
 }
 
-/* 
+/*
  * Initialize UIMB interrupt management
  */
 void
@@ -102,7 +102,7 @@ void CPU_rtems_irq_mng_init(unsigned cpuId)
 {
   rtems_raw_except_connect_data vectorDesc;
   int i;
-  
+
   CPU_USIU_irq_init();
   CPU_UIMB_irq_init();
   /*
@@ -130,7 +130,7 @@ void CPU_rtems_irq_mng_init(unsigned cpuId)
        */
       BSP_panic("Unable to initialize RTEMS interrupt Management\n");
     }
-  
+
   /*
    * We must connect the raw irq handler for the two
    * expected interrupt sources : decrementer and external interrupts.

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtemsbuildid.c,v 1.1 2008/01/29 21:52:20 joel Exp $
+ *  $Id: rtemsbuildid.c,v 1.2 2009/11/30 15:59:55 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -28,4 +28,4 @@ rtems_id rtems_build_id(
 )
 {
   return _Objects_Build_id( api, class, node, index );
-} 
+}

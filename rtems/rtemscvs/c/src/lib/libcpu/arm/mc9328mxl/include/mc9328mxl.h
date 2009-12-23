@@ -3,13 +3,13 @@
  *
  * Copyright (c) 2003 by Cogent Computer Systems
  * Written by Jay Monkman <jtm@lopingdog.com>
- *	
+ *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mc9328mxl.h,v 1.4 2008/12/11 08:32:48 ralf Exp $
+ *  $Id: mc9328mxl.h,v 1.5 2009/11/30 05:03:56 ralf Exp $
  */
 #ifndef __MC9328MXL_H__
 #define __MC9328MXL_H__
@@ -75,12 +75,12 @@
 #define MC9328MXL_TMR_TCTL_CAP_FALL           (2 << 6)
 #define MC9328MXL_TMR_TCTL_CAP_ANY            (3 << 6)
 #define MC9328MXL_TMR_TCTL_OM                 (bit(5))
-#define MC9328MXL_TMR_TCTL_IRQEN              (bit(4))               
+#define MC9328MXL_TMR_TCTL_IRQEN              (bit(4))
 #define MC9328MXL_TMR_TCTL_CLKSRC_STOP        (0 << 1)
 #define MC9328MXL_TMR_TCTL_CLKSRC_PCLK1       (1 << 1)
 #define MC9328MXL_TMR_TCTL_CLKSRC_PCLK_DIV16  (2 << 1)
 #define MC9328MXL_TMR_TCTL_CLKSRC_TIN         (3 << 1)
-#define MC9328MXL_TMR_TCTL_CLKSRC_32KHX       (4 << 1) 
+#define MC9328MXL_TMR_TCTL_CLKSRC_32KHX       (4 << 1)
 #define MC9328MXL_TMR_TCTL_TEN                (bit(0))
 
 #define MC9328MXL_UART1_RXD   (*((volatile uint32_t *)((MC9328MXL_UART1_BASE) + 0x00)))
@@ -221,7 +221,7 @@ typedef struct {
 #define MC9328MXL_UART_CR3_INVT       (bit(1))
 #define MC9328MXL_UART_CR3_BPEN       (bit(0))
 
-#define MC9328MXL_UART_CR4_CTSTL(_x_) (((_x_) & 0x3f) << 10)      
+#define MC9328MXL_UART_CR4_CTSTL(_x_) (((_x_) & 0x3f) << 10)
 #define MC9328MXL_UART_CR4_INVR       (bit(9))
 #define MC9328MXL_UART_CR4_ENIRI      (bit(8))
 #define MC9328MXL_UART_CR4_WKEN       (bit(7))
@@ -313,7 +313,7 @@ typedef struct {
 #define MC9328MXL_PLL_SPCTL_MFI_SHIFT      (10)
 #define MC9328MXL_PLL_SPCTL_MFN_MASK       (0x000003ff)
 #define MC9328MXL_PLL_SPCTL_MFN_SHIFT      (0)
-    
+
 
 #define MC9328MXL_GPIOA_DDIR    (*((volatile uint32_t *)((MC9328MXL_GPIOA_BASE) + 0x00)))
 #define MC9328MXL_GPIOA_OCR1    (*((volatile uint32_t *)((MC9328MXL_GPIOA_BASE) + 0x04)))

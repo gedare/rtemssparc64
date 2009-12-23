@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.c,v 1.9 2009/10/29 05:00:52 ralf Exp $
+ *  $Id: task.c,v 1.10 2009/12/08 17:52:53 joel Exp $
  */
 
 #include "system.h"
@@ -50,10 +50,10 @@ void *Task_1(
   struct timespec delay;
 
   status = clock_gettime( CLOCK_REALTIME, &start );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   status = sched_rr_get_interval( getpid(), &delay );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   /* double the rr interval for confidence */
 
@@ -69,7 +69,7 @@ void *Task_1(
   for ( ; ; ) {
 
     status = clock_gettime( CLOCK_REALTIME, &current );
-    assert( !status );
+    rtems_test_assert(  !status );
 
     diff_timespec( &start, &current, &difference );
 

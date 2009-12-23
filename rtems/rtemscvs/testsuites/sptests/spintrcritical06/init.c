@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.9 2009/08/12 20:50:43 joel Exp $
+ *  $Id: init.c,v 1.11 2009/11/30 12:51:50 thomas Exp $
  */
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__ 1
@@ -46,7 +46,7 @@ Thread_blocking_operation_States getState(void)
   Semaphore_Control *sem;
 
   sem = (Semaphore_Control *)_Objects_Get(
-    &_Semaphore_Information, Semaphore, &location ); 
+    &_Semaphore_Information, Semaphore, &location );
   if ( location != OBJECTS_LOCAL ) {
     puts( "Bad object lookup" );
     rtems_test_exit(0);
@@ -143,7 +143,7 @@ rtems_task Init(
 #define CONFIGURE_MAXIMUM_TIMERS      1
 #define CONFIGURE_MAXIMUM_SEMAPHORES  1
 #define CONFIGURE_INIT_TASK_PRIORITY  INIT_PRIORITY
-#define CONFIGURE_INIT_TASK_MODE      RTEMS_PREEMPT
+#define CONFIGURE_INIT_TASK_INITIAL_MODES RTEMS_PREEMPT
 #define CONFIGURE_MICROSECONDS_PER_TICK  2000
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 

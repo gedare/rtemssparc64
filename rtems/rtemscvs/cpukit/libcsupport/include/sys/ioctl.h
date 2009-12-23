@@ -34,9 +34,9 @@
  *	@(#)ioctl.h	8.6 (Berkeley) 3/28/94
  * $FreeBSD: src/sys/sys/ioctl.h,v 1.13 2004/06/11 11:16:26 phk Exp $
  */
- 
+
 /*
- * $Id: ioctl.h,v 1.2 2004/10/26 10:45:02 ralf Exp $
+ * $Id: ioctl.h,v 1.3 2009/11/29 11:57:22 ralf Exp $
  */
 
 #ifndef	_SYS_IOCTL_H_

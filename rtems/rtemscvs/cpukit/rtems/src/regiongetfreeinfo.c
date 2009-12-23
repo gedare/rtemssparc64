@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: regiongetfreeinfo.c,v 1.8 2009/10/10 15:15:12 joel Exp $
+ *  $Id: regiongetfreeinfo.c,v 1.9 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -45,7 +45,7 @@
  */
 
 rtems_status_code rtems_region_get_free_information(
-  Objects_Id              id,
+  rtems_id                id,
   Heap_Information_block *the_info
 )
 {

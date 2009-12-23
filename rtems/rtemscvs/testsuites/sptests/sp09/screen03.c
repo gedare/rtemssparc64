@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: screen03.c,v 1.16 2009/09/28 23:07:56 joel Exp $
+ *  $Id: screen03.c,v 1.17 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include "system.h"
@@ -71,7 +71,7 @@ void Screen3()
   #if defined(__m32c__)
     skipUnsatisfied = true;
   #endif
- 
+
   if ( skipUnsatisfied ) {
     puts(
       "TA1 - rtems_task_create - stack size - RTEMS_UNSATISFIED  -- SKIPPED"

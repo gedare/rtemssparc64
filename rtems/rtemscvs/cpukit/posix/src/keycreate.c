@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: keycreate.c,v 1.13 2009/07/22 00:09:31 joel Exp $
+ *  $Id: keycreate.c,v 1.14 2009/11/30 15:44:20 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -72,7 +72,7 @@ int pthread_key_create(
             true,
             INTERNAL_ERROR_IMPLEMENTATION_KEY_CREATE_INCONSISTENCY
           );
-      #endif 
+      #endif
       bytes_to_allocate = sizeof( void * ) *
         (_Objects_Information_table[ the_api ][ 1 ]->maximum + 1);
       table = _Workspace_Allocate( bytes_to_allocate );

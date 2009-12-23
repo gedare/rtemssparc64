@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/address.h
  *
  *  This include file contains the information required to manipulate
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: address.h,v 1.16 2006/01/16 15:13:58 joel Exp $
+ *  $Id: address.h,v 1.17 2009/11/28 05:58:53 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_ADDRESS_H

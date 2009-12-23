@@ -53,7 +53,7 @@
  *
  *  Modifications for PPC405GP by Dennis Ehlin
  *
- *  $Id: bspstart.c,v 1.15 2009/10/23 07:32:45 thomas Exp $
+ *  $Id: bspstart.c,v 1.16 2009/11/30 04:31:36 ralf Exp $
  */
 
 #include <string.h>
@@ -111,8 +111,8 @@ void bsp_start( void )
   ppc_cpu_revision_t myCpuRevision;
 
   /*
-   * Get CPU identification dynamically. Note that the get_ppc_cpu_type() 
-   * function store the result in global variables 
+   * Get CPU identification dynamically. Note that the get_ppc_cpu_type()
+   * function store the result in global variables
    * so that it can be used latter...
    */
   myCpu 	    = get_ppc_cpu_type();
@@ -134,7 +134,7 @@ void bsp_start( void )
   bsp_timer_least_valid = 3;
 
   /*
-   * Initialize default raw exception handlers. 
+   * Initialize default raw exception handlers.
    */
   sc = ppc_exc_initialize(
     PPC_INTERRUPT_DISABLE_MASK_DEFAULT,

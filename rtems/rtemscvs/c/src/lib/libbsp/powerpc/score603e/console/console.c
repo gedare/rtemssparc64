@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console.c,v 1.16 2009/08/07 15:49:23 joel Exp $
+ *  $Id: console.c,v 1.17 2009/12/17 08:42:16 thomas Exp $
  */
 
 #include <bsp.h>
@@ -254,10 +254,10 @@ rtems_device_driver console_initialize(
  *  Console Termios output entry point.
  *
  */
-int console_write_support(
+ssize_t console_write_support(
   int   minor,
   const char *buf,
-  int   len)
+  size_t   len)
 {
   int nwrite = 0;
   volatile uint8_t         *csr;

@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_init.c,v 1.4 2009/10/23 07:32:45 thomas Exp $
+ *  $Id: irq_init.c,v 1.5 2009/11/30 04:34:37 ralf Exp $
  */
 
 #include <libcpu/io.h>
@@ -73,7 +73,7 @@ void BSP_rtems_irq_mng_init(unsigned cpuId)
 	unsigned char pol[56];
 	int i;
 
-	/* Note: The openpic driver initializes only as many 
+	/* Note: The openpic driver initializes only as many
 	 *       'pic-external' interrupt sources as reported
 	 *       by the feature register.
 	 *       The 8540's openpic supports 12 core-external
@@ -103,7 +103,7 @@ void BSP_rtems_irq_mng_init(unsigned cpuId)
 	 *             to 'low/0' will disable the interrupt but
 	 *             I found this not to be true: on the device
 	 *             I tested the interrupt was asserted hard.
-	 */            
+	 */
 
 	/* core-external sources on the mvme3100 are active-low,
 	 * core-internal sources are active high.

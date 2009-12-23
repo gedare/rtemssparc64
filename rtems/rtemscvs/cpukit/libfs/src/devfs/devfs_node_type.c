@@ -3,7 +3,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: devfs_node_type.c,v 1.1 2008/09/17 16:12:02 joel Exp $
+ *  $Id: devfs_node_type.c,v 1.2 2009/11/29 13:18:56 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -17,7 +17,7 @@ int devFS_node_type(
 )
 {
   /*
-   * There is only one type of node: device 
+   * There is only one type of node: device
    */
 
   return RTEMS_FILESYSTEM_DEVICE;

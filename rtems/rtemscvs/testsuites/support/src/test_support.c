@@ -1,18 +1,12 @@
-/*  long_name
- *
- *  This set of routines is create names that are the maximum length or one over
- *  the maximum length.
- *
- *  Output parameters:  constant character string of max length or max length + 1
- *
- *  COPYRIGHT (c) 1989-2008.
+/*
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test_support.c,v 1.4 2009/10/26 05:30:29 ralf Exp $
+ *  $Id: test_support.c,v 1.6 2009/12/08 21:39:21 humph Exp $
  */
 
 #include <fcntl.h>
@@ -22,7 +16,7 @@
 static char  Too_Long_Name[PATH_MAX + 2];
 static char  Longest_Name[PATH_MAX + 1];
 
-const char *Get_Too_Long_Name(void) 
+const char *Get_Too_Long_Name(void)
 {
   int i;
 
@@ -43,7 +37,7 @@ const char *Get_Longest_Name(void)
 }
 
 void Allocate_majority_of_workspace( int smallest )
-{ 
+{
   bool                   result;
   Heap_Information_block info;
   void                   *temp;
@@ -54,9 +48,9 @@ void Allocate_majority_of_workspace( int smallest )
     perror("==> Error Getting workspace information");
 
   do {
-    result = rtems_workspace_allocate( 
-      info.Free.largest-16, 
-      &temp 
+    result = rtems_workspace_allocate(
+      info.Free.largest-16,
+      &temp
     );
     if ((!result) || (!temp))
       perror("Unable to allocate from workspace");

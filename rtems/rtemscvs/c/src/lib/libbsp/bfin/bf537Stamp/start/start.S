@@ -1,5 +1,5 @@
 /*
- *  $Id: start.S,v 1.3 2009/05/28 20:55:46 joel Exp $
+ *  $Id: start.S,v 1.4 2009/11/30 03:38:33 ralf Exp $
  */
 
 #include <libcpu/bf537.h>
@@ -59,30 +59,30 @@ __start:
 	p0.l = start;
 	p1.h = HI(CEC_EVT15);
 	p1.l = LO(CEC_EVT15);
-	
+
 	[p1] = p0;
 
 	r0 = 0x8000 (z);
 	sti r0;
 
 	raise 15;
-	
+
 	p0.h = wait;
 	p0.l = wait;
 
 	reti = p0;
 	rti;
-	
+
 	/* wait for event 15 */
 wait:
 	jump wait;
-	
+
 start:
 	[--sp] = reti; /* allow us to process interrupts later */
 
 	/* mask interrupts for now */
 	cli r0;
-	
+
 	p0.h = _bss_start;
 	p0.l = _bss_start;
 	p1.h = _end;
@@ -90,7 +90,7 @@ start:
 	r0 = p0;
 	r1 = p1;
 	r1 = r1 - r0;
-	p1 = r1;	
+	p1 = r1;
 	r0 = 0;
 
 	/* Set _bss_start until _end to zero */

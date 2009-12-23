@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/tod.h
  *
  *  This include file contains all the constants and structures associated
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: tod.h,v 1.39 2009/09/13 20:50:56 joel Exp $
+ *  $Id: tod.h,v 1.40 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_TOD_H
@@ -112,7 +112,7 @@ extern "C" {
 /**
  *  @defgroup ScoreTOD Time Of Day (TOD) Handler
  *
- *  This handler encapsulates functionality used to manage time of day. 
+ *  This handler encapsulates functionality used to manage time of day.
  */
 /**@{*/
 
@@ -158,7 +158,7 @@ void _TOD_Set(
 /** @brief _TOD_Get
  *
  *  This routine returns the current time of day with potential accuracy
- *  to the nanosecond.  
+ *  to the nanosecond.
  *
  *  @param[in] time is a pointer to the time to be returned
  */
@@ -169,7 +169,7 @@ void _TOD_Get(
 /** @brief _TOD_Get_uptime
  *
  *  This routine returns the system uptime with potential accuracy
- *  to the nanosecond.  
+ *  to the nanosecond.
  *
  *  @param[in] time is a pointer to the uptime to be returned
  */
@@ -180,7 +180,7 @@ void _TOD_Get_uptime(
 /** @brief _TOD_Get_uptime_as_timespec
  *
  *  This routine returns the system uptime with potential accuracy
- *  to the nanosecond.  
+ *  to the nanosecond.
  *
  *  @param[in] time is a pointer to the uptime to be returned
  */

@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/07/07 14:30:12 joel Exp $
+ *  $Id: init.c,v 1.2 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include "tmacros.h"
@@ -34,7 +34,7 @@ void *POSIX_Init(
   puts( "Init - pthread_mutex_lock - auto initialize - EINVAL" );
   sc = pthread_mutex_lock( &mutex2 );
   fatal_posix_service_status( sc, EINVAL, "mutex lock EINVAL" );
-  
+
   puts( "Init - pthread_mutex_unlock - OK" );
   sc = pthread_mutex_unlock( &mutex1 );
   fatal_posix_service_status( sc, 0, "mutex unlock OK" );
@@ -53,7 +53,7 @@ void *POSIX_Init(
   puts( "Init - pthread_mutex_getprioceiling - auto initialize - EINVAL" );
   sc = pthread_mutex_getprioceiling( &mutex2, &prioceiling );
   fatal_posix_service_status( sc, EINVAL, "mutex getprioceiling EINVAL" );
-  
+
   puts( "Init - pthread_mutex_destroy - OK" );
   sc = pthread_mutex_destroy( &mutex1 );
   fatal_posix_service_status( sc, 0, "mutex destroy OK" );

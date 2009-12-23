@@ -10,18 +10,17 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-2007.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: test_support.adb,v 1.10 2007/10/10 20:58:48 humph Exp $
+--  $Id: test_support.adb,v 1.12 2009/12/14 21:28:54 joel Exp $
 --
 
 with Interfaces; use Interfaces;
-with RTEMS;
 with Unsigned32_IO;
 with Status_IO;
 with Text_IO;
@@ -132,12 +131,6 @@ package body Test_Support is
       Text_IO.Put_Line( "<pause> " );
       -- Text_IO.Get_Line( Ignored_String, Ignored_Last );
 
-   -- exception
-
-   --    when Text_IO.End_Error =>
-   --    -- ignore this error.  It happens when redirecting input from /dev/null 
-   --    return;
-
    end Pause;
 
 --PAGE
@@ -160,12 +153,6 @@ package body Test_Support is
       Text_IO.Put_Line( "> " );
    --    Text_IO.Get_Line( Ignored_String, Ignored_Last );
  
-   -- exception
-
-   --    when Text_IO.End_Error =>
-   --    -- ignore this error.  It happens when redirecting input from /dev/null 
-   --    return;
-
    end Pause_And_Screen_Number;
 
 --PAGE
@@ -190,7 +177,7 @@ package body Test_Support is
       Text_IO.Put( C3 );
       Text_IO.Put( C4 );
 
-      if New_Line = True then
+      if New_Line then
          Text_IO.New_Line;
       end if;
 
@@ -208,8 +195,6 @@ package body Test_Support is
 
       -- probably OK
       return RTEMS.Get_Index( TID ) - 1;
-      --   Ignoring this component.
-      --   - RTEMS.Configuration.RTEMS_API_Configuration.Number_Of_Initialization_Tasks;
 
    end Task_Number;
 

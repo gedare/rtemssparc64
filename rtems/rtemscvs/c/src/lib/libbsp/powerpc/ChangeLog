@@ -1,3 +1,45 @@
+2009-12-16      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* shared/console/uart.c, shared/console/uart.h: adapted to new
+	prototype for *_write function
+
+2009-12-11	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	PR 1483/cpukit
+	* shared/pci/pci.c: Rename pci_config into rtems_pci_config_t.
+
+2009-12-10	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* shared/irq/irq_init.c: Add missing initializer.
+
+2009-12-10	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* shared/console/polled_io.c: Add prototype for boot_udelay.
+
+2009-12-03	Till Straumann <strauman@slac.stanford.edu>
+
+	* acinclude.m4, beatnik: Imported/added 'beatnik'
+	BSP.
+
+2009-12-01	Till Straumann <strauman@slac.stanford.edu>
+
+	* shared/start/start.S: Added AltiVec support (initializing
+	MSR[VE], VSCR and VRSAVE).
+
+2009-12-01	Till Straumann <strauman@slac.stanford.edu>
+
+	* shared/vme/vme_universe.c: moved extern declaration
+	out of local scope.
+
+2009-12-01	Till Straumann <strauman@slac.stanford.edu>
+
+	* shared/startup/panic.c: Fixed compiler warning.
+
+2009-12-01	Till Straumann <strauman@slac.stanford.edu>
+
+	* shared/startup/probeMemEnd.c: removed __here_s_the_real_end
+	check. __rtems_end should be good enough.
+
 2009-11-11	Till Straumann <strauman@slac.stanford.edu>
 
 	* shared/start/start.S: Align initial stack to

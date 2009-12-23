@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: io4434.h,v 1.1 2009/08/06 14:52:04 joel Exp $ */
+/* $Id: io4434.h,v 1.2 2009/11/30 16:01:43 ralf Exp $ */
 
 /* avr/io4434.h - definitions for AT90S4434 */
 
@@ -45,7 +45,7 @@
 #  define _AVR_IOXXX_H_ "io4434.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif 
+#endif
 
 /* I/O registers */
 

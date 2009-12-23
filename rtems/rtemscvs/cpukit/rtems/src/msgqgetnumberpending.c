@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: msgqgetnumberpending.c,v 1.8 2007/11/30 21:49:41 joel Exp $
+ *  $Id: msgqgetnumberpending.c,v 1.9 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -51,8 +51,8 @@
  */
 
 rtems_status_code rtems_message_queue_get_number_pending(
-  Objects_Id  id,
-  uint32_t   *count
+  rtems_id  id,
+  uint32_t *count
 )
 {
   register Message_queue_Control *the_message_queue;

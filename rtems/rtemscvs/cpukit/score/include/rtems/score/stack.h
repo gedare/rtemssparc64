@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/stack.h
  *
  *  This include file contains all information about the thread
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: stack.h,v 1.18 2008/08/18 19:18:52 joel Exp $
+ *  $Id: stack.h,v 1.19 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_STACK_H

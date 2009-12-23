@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/10/01 23:52:36 joel Exp $
+ *  $Id: init.c,v 1.2 2009/12/08 17:52:49 joel Exp $
  */
 
 #include "tmacros.h"
@@ -23,20 +23,20 @@ rtems_task Init(
 
   printf( "tcdrain(12) - EBADF\n" );
   sc = tcdrain(12);
-  assert( sc == -1 );
-  assert( errno == EBADF );
+  rtems_test_assert( sc == -1 );
+  rtems_test_assert( errno == EBADF );
 
   printf( "tcdrain(stdin) - OK\n" );
   sc = tcdrain(0);
-  assert( !sc );
+  rtems_test_assert( !sc );
 
   printf( "tcdrain(stdout) - OK\n" );
   tcdrain(1);
-  assert( !sc );
+  rtems_test_assert( !sc );
 
   printf( "tcdrain(stderr) - OK\n" );
   tcdrain(2);
-  assert( !sc );
+  rtems_test_assert( !sc );
 
   printf( "*** END OF TERMIOS 02 TEST ***\n" );
   exit( 0 );

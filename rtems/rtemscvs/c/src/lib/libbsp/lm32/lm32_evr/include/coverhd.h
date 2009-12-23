@@ -2,9 +2,9 @@
  *
  *  This include file has defines to represent the overhead associated
  *  with calling a particular directive from C.  These are used in the
- *  Timing Test Suite to ignore the overhead required to pass arguments 
- *  to directives.  On some CPUs and/or target boards, this overhead 
- *  is significant and makes it difficult to distinguish internal 
+ *  Timing Test Suite to ignore the overhead required to pass arguments
+ *  to directives.  On some CPUs and/or target boards, this overhead
+ *  is significant and makes it difficult to distinguish internal
  *  RTEMS execution time from that used to call the directive.
  *  This file should be updated after running the C overhead timing
  *  test.  Once this update has been performed, the RTEMS Time Test
@@ -21,7 +21,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: coverhd.h,v 1.1 2008/12/04 22:54:49 joel Exp $
+ *  $Id: coverhd.h,v 1.2 2009/11/29 14:48:22 ralf Exp $
  */
 
 #ifndef __COVERHD_h

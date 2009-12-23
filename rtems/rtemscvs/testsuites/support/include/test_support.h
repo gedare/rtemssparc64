@@ -1,7 +1,12 @@
 /*
- *  Support routines for test code.
+ *  COPYRIGHT (c) 1989-2009.
+ *  On-Line Applications Research Corporation (OAR).
  *
- *  $Id: test_support.h,v 1.2 2009/10/26 05:33:50 ralf Exp $
+ *  The license and distribution terms for this file may be
+ *  found in the file LICENSE in this distribution or at
+ *  http://www.rtems.com/license/LICENSE.
+ *
+ *  $Id: test_support.h,v 1.3 2009/12/08 21:39:21 humph Exp $
  */
 
 #ifndef __TEST_SUPPORT_h
@@ -11,9 +16,35 @@
 extern "C" {
 #endif
 
-extern void Allocate_majority_of_workspace( int smallest );
-extern const char *Get_Too_Long_Name(void);
-extern const char *Get_Longest_Name(void);
+/*
+ *  Allocate a number of small blocks from the heap
+ *  until the largest free block of memory available is
+ *  smaller than smallest.
+ *
+ *  NOTE: The memory CANNOT be freed.
+ */
+void Allocate_majority_of_workspace( int smallest );
+
+/*
+ *  Return a pointer to the POSIX name that is slightly
+ *  beyond the legal limit.
+ */
+const char *Get_Too_Long_Name(void);
+
+/*
+ *  Return a pointer to the longest legal POSIX name.
+ */
+const char *Get_Longest_Name(void);
+
+/*
+ *  Spin for specified number of ticks.
+ */
+void rtems_test_spin_for_ticks(int ticks);
+
+/*
+ *  Spin until the next clock tick
+ */
+void rtems_test_spin_until_next_tick( void );
 
 #ifdef __cplusplus
 };

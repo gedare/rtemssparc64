@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: msgqurgent.c,v 1.12 2009/01/06 05:05:03 ralf Exp $
+ *  $Id: msgqurgent.c,v 1.13 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -57,9 +57,9 @@
 #endif
 
 rtems_status_code rtems_message_queue_urgent(
-  Objects_Id            id,
-  const void           *buffer,
-  size_t                size
+  rtems_id    id,
+  const void *buffer,
+  size_t      size
 )
 {
   register Message_queue_Control  *the_message_queue;

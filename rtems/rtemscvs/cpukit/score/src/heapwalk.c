@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: heapwalk.c,v 1.25 2009/09/29 05:29:35 ralf Exp $
+ *  $Id: heapwalk.c,v 1.26 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -366,7 +366,7 @@ bool _Heap_Walk(
         block,
         next_block
       );
-      
+
       return false;
     }
 
@@ -378,7 +378,7 @@ bool _Heap_Walk(
         block,
         block_size
       );
-      
+
       return false;
     }
 
@@ -391,7 +391,7 @@ bool _Heap_Walk(
         block_size,
         min_block_size
       );
-      
+
       return false;
     }
 
@@ -403,10 +403,10 @@ bool _Heap_Walk(
         block,
         next_block
       );
-      
+
       return false;
     }
-   
+
     if ( !_Heap_Is_prev_used( next_block ) ) {
       if ( !_Heap_Walk_check_free_block( source, printer, heap, block ) ) {
         return false;

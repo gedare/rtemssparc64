@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iotn26.h,v 1.1 2009/08/06 14:52:06 joel Exp $ */
+/* $Id: iotn26.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
 
 /* avr/iotn26.h - definitions for ATtiny26 */
 
@@ -42,7 +42,7 @@
 #  define _AVR_IOXXX_H_ "iotn26.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif 
+#endif
 
 #ifndef _AVR_IOTN26_H_
 #define _AVR_IOTN26_H_ 1

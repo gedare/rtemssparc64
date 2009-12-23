@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtems_memalign.c,v 1.2 2008/09/17 18:37:55 joel Exp $
+ *  $Id: rtems_memalign.c,v 1.3 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -40,7 +40,7 @@ int rtems_memalign(
   /*
    *  Do not attempt to allocate memory if not in correct system state.
    */
-  if ( _System_state_Is_up(_System_state_Get()) && 
+  if ( _System_state_Is_up(_System_state_Get()) &&
        !malloc_is_system_state_OK() )
     return EINVAL;
 
@@ -85,7 +85,7 @@ int rtems_memalign(
       (*rtems_malloc_boundary_helpers->at_malloc)(return_this, size);
   #endif
 
-  *pointer = return_this; 
+  *pointer = return_this;
   return 0;
 }
 #endif

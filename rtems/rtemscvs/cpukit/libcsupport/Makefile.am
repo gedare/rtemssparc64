@@ -1,5 +1,5 @@
 ##
-##  $Id: Makefile.am,v 1.114 2009/11/11 20:36:44 joel Exp $
+##  $Id: Makefile.am,v 1.116 2009/12/01 14:22:58 joel Exp $
 ##
 
 include $(top_srcdir)/automake/multilib.am
@@ -70,7 +70,7 @@ if NEWLIB
 SYSTEM_CALL_C_FILES += src/readv.c src/writev.c
 endif
 
-DIRECTORY_SCAN_C_FILES = 
+DIRECTORY_SCAN_C_FILES =
 ## 20 Nov 2008: Now using these from newlib's posix directory
 DIRECTORY_SCAN_C_FILES += src/opendir.c src/closedir.c src/readdir.c \
      src/rewinddir.c src/scandir.c src/seekdir.c src/telldir.c
@@ -103,8 +103,8 @@ TERMINAL_IDENTIFICATION_C_FILES += src/ttyname.c
 
 LIBC_GLUE_C_FILES = src/__getpid.c src/__gettod.c src/__times.c \
     src/truncate.c src/access.c src/stat.c src/lstat.c src/pathconf.c \
-    src/newlibc_reent.c src/newlibc_init.c src/newlibc_exit.c src/no_posix.c \
-    src/utsname.c
+    src/newlibc_reent.c src/newlibc_init.c src/newlibc_exit.c \
+    src/kill_noposix.c src/sleep_noposix.c src/utsname.c
 
 BSD_LIBC_C_FILES = src/strlcpy.c src/strlcat.c src/issetugid.c
 

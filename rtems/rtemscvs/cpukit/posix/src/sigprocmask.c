@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: sigprocmask.c,v 1.4 2003/09/04 18:54:26 joel Exp $
+ *  $Id: sigprocmask.c,v 1.6 2009/12/10 07:17:48 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -19,11 +19,6 @@
 
 #include <pthread.h>
 #include <signal.h>
-#include <errno.h>
-
-#include <rtems/system.h>
-#include <rtems/posix/pthread.h>
-#include <rtems/posix/psignal.h>
 
 int sigprocmask(
   int               how,
@@ -35,5 +30,9 @@ int sigprocmask(
    *  P1003.1c/Draft 10, p. 38 maps sigprocmask to pthread_sigmask.
    */
 
+#if defined(RTEMS_POSIX_API)
   return pthread_sigmask( how, set, oset );
+#else
+  return -1;
+#endif
 }

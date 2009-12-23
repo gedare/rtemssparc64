@@ -1,4 +1,4 @@
-/*  clock.s 
+/*  clock.s
  *
  *  This file contains the assembly code for the Hurricane BSP clock driver.
  *
@@ -17,7 +17,7 @@
  *      Transition Networks makes no representations about the suitability
  *      of this software for any purpose.
  *
- *  $Id: clock.S,v 1.2 2006/03/17 10:34:12 ralf Exp $
+ *  $Id: clock.S,v 1.3 2009/11/29 15:27:06 ralf Exp $
  */
 
 #include <iregdef.h>

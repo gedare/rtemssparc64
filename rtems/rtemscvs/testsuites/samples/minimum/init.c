@@ -1,4 +1,4 @@
-/*  Minimum Size Application Initialization 
+/*  Minimum Size Application Initialization
  *
  *  COPYRIGHT (c) 1989-2008.
  *  On-Line Applications Research Corporation (OAR).
@@ -7,7 +7,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.18 2009/10/24 05:51:21 ralf Exp $
+ *  $Id: init.c,v 1.19 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include <bsp.h>
@@ -20,7 +20,7 @@ rtems_task Init(
 
   /* Real application would call idle loop functionality */
 
-  /* but in this case, just return and fall into a fatal error */ 
+  /* but in this case, just return and fall into a fatal error */
 }
 
 /* configuration information */

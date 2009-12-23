@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: tmacros.h,v 1.49 2009/11/09 14:49:35 joel Exp $
+ *  $Id: tmacros.h,v 1.52 2009/12/08 21:39:21 humph Exp $
  */
 
 #ifndef __TMACROS_h
@@ -23,7 +23,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 #include <rtems/error.h>
 #include <rtems/score/thread.h> /*  _Thread_Dispatch_disable_level */
 
@@ -46,12 +45,13 @@ extern "C" {
  *  Check that that the dispatch disable level is proper for the
  *  mode/state of the test.  Normally it should be 0 when in task space.
  */
-
 #define check_dispatch_disable_level( _expect ) \
   do { \
     if ( (_expect) != -1 && _Thread_Dispatch_disable_level != (_expect) ) { \
-      printf( "\n_Thread_Dispatch_disable_level is (%" PRId32 ") not %d\n", \
-              _Thread_Dispatch_disable_level, (_expect) ); \
+      printk( \
+        "\n_Thread_Dispatch_disable_level is (%" PRId32 \
+           ") not %d detected at %s:%d\n", \
+         _Thread_Dispatch_disable_level, (_expect), __FILE__, __LINE__ ); \
       FLUSH_OUTPUT(); \
       rtems_test_exit( 1 ); \
     } \
@@ -60,7 +60,6 @@ extern "C" {
 /*
  *  These macros properly report errors within the Classic API
  */
-
 #define directive_failed( _dirstat, _failmsg )  \
  fatal_directive_status( _dirstat, RTEMS_SUCCESSFUL, _failmsg )
 
@@ -250,16 +249,18 @@ extern "C" {
         number_of_initialization_tasks )
 
 #define rtems_test_assert(__exp) \
-  if (!(__exp)) { \
-    printf( "%s: %d %s\n", __FILE__, __LINE__, #__exp ); \
-    rtems_test_exit(0); \
-  }
+  do { \
+    if (!(__exp)) { \
+      printf( "%s: %d %s\n", __FILE__, __LINE__, #__exp ); \
+      rtems_test_exit(0); \
+    } \
+  } while (0)
 
 /*
  * Various inttypes.h-stype macros to assist printing
  * certain system types on different targets.
  */
- 
+
 /* HACK: Presume time_t to be a "long" */
 /* HACK: There is no portable way to print time_t's */
 #define PRItime_t "ld"

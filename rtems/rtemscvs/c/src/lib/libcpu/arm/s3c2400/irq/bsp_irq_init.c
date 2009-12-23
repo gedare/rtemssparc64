@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp_irq_init.c,v 1.2 2006/06/03 03:12:06 jtm Exp $
+ *  $Id: bsp_irq_init.c,v 1.3 2009/11/30 05:03:56 ralf Exp $
  */
 #include <irq.h>
 #include <bsp.h>
@@ -18,7 +18,7 @@
 
 extern void default_int_handler();
 
-void BSP_rtems_irq_mngt_init() 
+void BSP_rtems_irq_mngt_init()
 {
     long *vectorTable;
     int i;

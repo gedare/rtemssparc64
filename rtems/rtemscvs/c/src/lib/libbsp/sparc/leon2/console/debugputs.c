@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: debugputs.c,v 1.3 2007/05/09 17:49:53 joel Exp $
+ *  $Id: debugputs.c,v 1.4 2009/11/29 15:33:26 ralf Exp $
  */
 
 #include <bsp.h>
@@ -40,7 +40,7 @@ void console_outbyte_polled(
 }
 
 /*
- *  console_inbyte_nonblocking 
+ *  console_inbyte_nonblocking
  *
  *  This routine polls for a character.
  */

@@ -17,7 +17,7 @@
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: mptest.adb,v 1.6 2007/10/01 22:58:09 joel Exp $
+--  $Id: mptest.adb,v 1.7 2009/12/14 21:28:53 joel Exp $
 --
 
 with INTERFACES; use INTERFACES;
@@ -58,7 +58,7 @@ package body MPTEST is
       pragma Import (C, BSP_MPCI_PRINT_STATISTICS, "MPCI_Print_statistics" );
    begin
  
-      RTEMS.TASK_MODE( RTEMS.NO_PREEMPT, RTEMS.PREEMPT_MASK, OLD_MODE, STATUS );
+      RTEMS.TASK_MODE(RTEMS.NO_PREEMPT, RTEMS.PREEMPT_MASK, OLD_MODE, STATUS);
       TEST_SUPPORT.DIRECTIVE_FAILED( STATUS, "TASK_MODE" );
 
       BSP_MPCI_PRINT_STATISTICS;
@@ -101,7 +101,8 @@ package body MPTEST is
 
       RTEMS.TIMER_FIRE_AFTER(
          MPTEST.STOP_TIMER_ID,
-         TEST_SUPPORT.MAXIMUM_LONG_TEST_DURATION * TEST_SUPPORT.TICKS_PER_SECOND,
+         TEST_SUPPORT.MAXIMUM_LONG_TEST_DURATION *
+            TEST_SUPPORT.TICKS_PER_SECOND,
          MPTEST.STOP_TEST_TSR'ACCESS,
          RTEMS.NULL_ADDRESS,
          STATUS

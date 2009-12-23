@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.5 2009/10/24 06:14:30 ralf Exp $
+ *  $Id: init.c,v 1.6 2009/11/30 03:33:25 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -44,7 +44,7 @@ rtems_task Init(
   printk( "%%u of -16 -- %u\n", -16 );
 
   /* string formats */
-  printk( "%%s of Mary Had a Little Lamb -- (%s)\n", 
+  printk( "%%s of Mary Had a Little Lamb -- (%s)\n",
           "Mary Had a Little Lamb" );
   printk( "%%s of NULL -- (%s)\n", NULL );
   printk( "%%12s of joel -- (%20s)\n", "joel" );

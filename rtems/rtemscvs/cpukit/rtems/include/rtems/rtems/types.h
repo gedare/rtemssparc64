@@ -6,14 +6,14 @@
  * @brief Types used by the Classic API.
  */
 
-/*  COPYRIGHT (c) 1989-2008.
+/*  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: types.h,v 1.31 2009/08/06 16:32:54 joel Exp $
+ *  $Id: types.h,v 1.33 2009/12/02 18:22:18 humph Exp $
  */
 
 #ifndef _RTEMS_RTEMS_TYPES_H
@@ -124,14 +124,13 @@ typedef Watchdog_Interval rtems_interval;
  * @brief Represents the CPU usage per thread.
  *
  * When using nano seconds granularity timing, RTEMS may internally use a
- * variety of represenations.
+ * variety of representations.
  */
-#ifndef __RTEMS_USE_TICKS_CPU_USAGE_STATISTICS__
+#ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
   typedef struct timespec rtems_thread_cpu_usage_t;
 #else
   typedef uint32_t rtems_thread_cpu_usage_t;
 #endif
-
 
 /**
  * @brief Data structure to manage and manipulate calendar time.

@@ -28,7 +28,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ftpfs.c,v 1.22 2009/06/12 01:53:33 ccj Exp $
+ * $Id: ftpfs.c,v 1.23 2009/12/21 15:13:24 joel Exp $
  */
 
 #include <ctype.h>
@@ -1282,7 +1282,7 @@ static int rtems_ftpfs_ioctl(
       me->timeout = *timeout;
       break;
     default:
-      rtems_set_errno_and_return_minus_one( EBADRQC);
+      rtems_set_errno_and_return_minus_one(EINVAL);
   }
 
   return 0;

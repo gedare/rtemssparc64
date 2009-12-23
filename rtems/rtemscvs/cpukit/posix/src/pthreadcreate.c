@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: pthreadcreate.c,v 1.18 2009/06/24 06:38:52 joel Exp $
+ *  $Id: pthreadcreate.c,v 1.19 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -212,7 +212,7 @@ int pthread_create(
   #if defined(RTEMS_DEBUG)
     /*
      *  _Thread_Start only fails if the thread was in the incorrect state
-     *  
+     *
      *  NOTE: This can only happen if someone slips in and touches the
      *        thread while we are creating it.
      */

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: malloc_get_statistics.c,v 1.2 2008/05/13 20:45:51 ericn Exp $
+ *  $Id: malloc_get_statistics.c,v 1.3 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -20,7 +20,7 @@
 
 int malloc_get_statistics(
   rtems_malloc_statistics_t *stats
-) 
+)
 {
   if ( !stats )
     return -1;

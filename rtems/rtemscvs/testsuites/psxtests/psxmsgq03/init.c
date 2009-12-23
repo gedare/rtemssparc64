@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.2 2009/10/25 06:25:04 ralf Exp $
+ *  $Id: init.c,v 1.4 2009/12/08 17:52:53 joel Exp $
  */
 
 #define CONFIGURE_INIT
@@ -55,14 +55,14 @@ void *POSIX_Init(
   if ( Queue == (-1) ) {
     perror( "mq_open failed" );
   }
-  assert( Queue != (-1) );
+  rtems_test_assert(  Queue != (-1) );
 
   puts( "Init - send to message queue" );
   status = mq_send( Queue, (const char *)&status, sizeof(int), 1 );
   if ( status == (-1) ) {
     perror( "mq_status failed" );
   }
-  assert( status != (-1) );
+  rtems_test_assert(  status != (-1) );
 
   /*
    * Now create the timer we will send to a full queue from.
@@ -98,7 +98,7 @@ void *POSIX_Init(
     );
     rtems_test_exit( 0 );
   }
- 
+
   puts( "Init - mq_send from ISR returned correct status" );
 
   puts( "*** END OF POSIX MESSAGE QUEUE TEST 3 ***" );

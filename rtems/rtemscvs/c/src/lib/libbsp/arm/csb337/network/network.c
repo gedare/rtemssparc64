@@ -9,7 +9,7 @@
  *  July 2009: Joel Sherrill merged csb637 PHY differences from
  *             MicroMonitor 1.17.
  *
- *  $Id: network.c,v 1.6 2009/07/29 19:06:53 joel Exp $
+ *  $Id: network.c,v 1.7 2009/11/29 14:53:00 ralf Exp $
  */
 
 #include <rtems.h>
@@ -523,8 +523,8 @@ void  at91rm9200_emac_init_hw(at91rm9200_emac_softc_t *sc)
 	#if defined(PHY_DBG)
           printk("10MBIT, ");
         #endif
-      }                
-                        
+      }
+
       if (emac_link_status & (PHY_STAT_100BASE_X_FDX | PHY_STAT_10BASE_FDX)) {
         EMAC_REG(EMAC_CFG) |= EMAC_CFG_FD;
 	#if defined(PHY_DBG)
@@ -535,7 +535,7 @@ void  at91rm9200_emac_init_hw(at91rm9200_emac_softc_t *sc)
 	#if defined(PHY_DBG)
           printk("Half Duplex.\n");
         #endif
-      }                
+      }
 
       /* Set PHY LED modes.  Traffic Meter Mode for ACTLED
        * Set Bit 6 - Traffic Mode on

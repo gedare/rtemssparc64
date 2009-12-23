@@ -4,7 +4,7 @@
  * MODULE DESCRIPTION:
  * Micro FrameBuffer interface for Embedded Systems.
  *
- * $Id: fb.h,v 1.1 2009/08/21 18:39:59 joel Exp $
+ * $Id: fb.h,v 1.2 2009/11/29 11:57:23 ralf Exp $
  */
 
 #ifndef _MW_FB_H
@@ -46,8 +46,8 @@ extern "C" {
 struct fb_bitfield {
 	uint32_t offset;		/* beginning of bitfield	*/
 	uint32_t length;		/* length of bitfield		*/
-	uint32_t msb_right;		/* != 0 : Most significant bit is */ 
-					/* right */ 
+	uint32_t msb_right;		/* != 0 : Most significant bit is */
+					/* right */
 };
 
 struct fb_var_screeninfo {

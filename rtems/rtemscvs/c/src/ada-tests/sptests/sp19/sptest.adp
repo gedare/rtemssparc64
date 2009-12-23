@@ -13,12 +13,11 @@
 --  COPYRIGHT (c) 1989, 1990, 1991, 1992, 1993, 1994.
 --  On-Line Applications Research Corporation (OAR).
 --
---  $Id: sptest.adp,v 1.4 2003/09/04 13:46:40 joel Exp $
+--  $Id: sptest.adp,v 1.5 2009/12/14 21:17:58 joel Exp $
 --
 
 with INTERFACES; use INTERFACES;
 with FLOAT_IO;
-with RTEMS;
 with TEST_SUPPORT;
 with TEXT_IO;
 with UNSIGNED32_IO;
@@ -261,6 +260,7 @@ package body SPTEST is
    procedure FP_TASK (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS     : RTEMS.STATUS_CODES;
       TID        : RTEMS.ID;
       TIME       : RTEMS.TIME_OF_DAY;
@@ -344,6 +344,7 @@ package body SPTEST is
    procedure TASK_1 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS     : RTEMS.STATUS_CODES;
       TID        : RTEMS.ID;
       TIME       : RTEMS.TIME_OF_DAY;

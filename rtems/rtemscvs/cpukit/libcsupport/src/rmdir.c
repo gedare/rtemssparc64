@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rmdir.c,v 1.15 2009/06/12 01:53:32 ccj Exp $
+ *  $Id: rmdir.c,v 1.16 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -34,7 +34,7 @@ int rmdir(
   rtems_filesystem_location_info_t  loc;
   int                               i;
   int                               result;
-  
+
   /*
    *  Get the parent node of the node we wish to remove. Find the parent path.
    */
@@ -55,11 +55,11 @@ int rmdir(
   /*
    * Start from the parent to find the node that should be under it.
    */
-  
+
   loc = parentloc;
   name = pathname + parentpathlen;
   name += rtems_filesystem_prefix_separators( name, strlen( name ) );
-  
+
   result = rtems_filesystem_evaluate_relative_path( name , strlen( name ),
                                                     0, &loc, false );
   if ( result != 0 ) {

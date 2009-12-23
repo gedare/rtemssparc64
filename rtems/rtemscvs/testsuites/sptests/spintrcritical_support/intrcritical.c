@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: intrcritical.c,v 1.3 2009/09/08 19:22:49 joel Exp $
+ *  $Id: intrcritical.c,v 1.4 2009/11/30 03:33:25 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -41,7 +41,7 @@ static bool interrupt_critical_busy_wait( void )
 
   if ( max > 0 ) {
     Maximum_current = max - 1;
-    
+
     return false;
   } else {
     Maximum_current = Maximum;

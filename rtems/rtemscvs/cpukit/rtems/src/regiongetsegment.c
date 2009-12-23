@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: regiongetsegment.c,v 1.16 2009/10/10 15:15:12 joel Exp $
+ *  $Id: regiongetsegment.c,v 1.17 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -46,7 +46,7 @@
  */
 
 rtems_status_code rtems_region_get_segment(
-  Objects_Id         id,
+  rtems_id           id,
   uintptr_t          size,
   rtems_option       option_set,
   rtems_interval     timeout,

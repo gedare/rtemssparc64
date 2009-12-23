@@ -19,9 +19,9 @@
  *
  *  This driver uses the termios pseudo driver.
  */
- 
+
 /*
- * $Id: ns16550.c,v 1.43 2009/10/21 13:24:35 thomas Exp $
+ * $Id: ns16550.c,v 1.44 2009/11/30 03:42:53 ralf Exp $
  */
 
 #include <stdlib.h>

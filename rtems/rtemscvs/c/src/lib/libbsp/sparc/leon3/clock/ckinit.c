@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ckinit.c,v 1.14 2008/09/30 05:44:31 ralf Exp $
+ *  $Id: ckinit.c,v 1.15 2009/11/29 15:33:27 ralf Exp $
  */
 
 #include <bsp.h>
@@ -36,7 +36,7 @@
     (rtems_configuration_get_user_multiprocessing_table() ? LEON3_Cpu_Index : 0)
 #else
   #define LEON3_CLOCK_INDEX 0
-#endif 
+#endif
 
 
 volatile LEON3_Timer_Regs_Map *LEON3_Timer_Regs = 0;

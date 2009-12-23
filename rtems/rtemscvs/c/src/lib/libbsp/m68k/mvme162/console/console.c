@@ -15,7 +15,7 @@
  *  for the RTEMS executive. Its licensing policies are those of the
  *  RTEMS above.
  *
- *  $Id: console.c,v 1.17 2008/09/05 08:37:50 ralf Exp $
+ *  $Id: console.c,v 1.18 2009/12/17 08:42:16 thomas Exp $
  */
 
 #define M162_INIT
@@ -126,7 +126,7 @@ bool char_ready(int port, char *ch)
 
 char inbyte(int port)
 {
-  unsigned char tmp_char;
+  char tmp_char;
 
   while ( !char_ready(port, &tmp_char) );
   return tmp_char;

@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.23 2009/10/20 09:38:19 ralf Exp $
+##
+## $Id: configure.ac,v 1.24 2009/11/28 06:28:40 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-m68k-sim68000],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -19,7 +19,7 @@ RTEMS_PROG_CCAS
 RTEMS_BSPOPTS_SET([CONSOLE_USE_INTERRUPTS],[*],[0])
 RTEMS_BSPOPTS_HELP([CONSOLE_USE_INTERRUPTS],
 [The erc32 console driver can operate in either polled or interrupt mode.
-Under the simulator (especially when FAST_UART is defined), polled seems to operate 
+Under the simulator (especially when FAST_UART is defined), polled seems to operate
 better.  It is common for a task to print a line (like the end of test message) and
 then exit.  In this case, the program returns control to the simulator command line
 before the program has even queued the output to the uart.  Thus sis has no chance

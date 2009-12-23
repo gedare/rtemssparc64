@@ -1,12 +1,12 @@
-/bspgetworkarea.c/1.7/Fri Oct 23 12:49:27 2009//
 /bspidle.c/1.1/Fri Oct 23 12:49:27 2009//
-/bspstart.c/1.52/Wed Nov 25 15:49:40 2009//
 /linkcmds/1.19/Wed Nov 25 15:49:40 2009//
-/panic.c/1.4/Fri Oct 23 12:49:27 2009//
-/pgtbl_activate.c/1.3/Fri Oct 23 12:49:27 2009//
-/pgtbl_setup.c/1.7/Wed Nov 25 15:49:40 2009//
 /pretaskinghook.c/1.8/Fri Oct 23 12:49:27 2009//
-/probeMemEnd.c/1.4/Wed Nov 25 15:49:40 2009//
-/sbrk.c/1.8/Fri Oct 23 12:49:27 2009//
 /zerobss.c/1.4/Fri Oct 23 12:49:27 2009//
+/bspgetworkarea.c/1.8/Tue Dec 22 15:26:20 2009//
+/bspstart.c/1.53/Tue Dec 22 15:26:20 2009//
+/panic.c/1.6/Tue Dec 22 15:26:20 2009//
+/pgtbl_activate.c/1.4/Tue Dec 22 15:26:20 2009//
+/pgtbl_setup.c/1.8/Tue Dec 22 15:26:20 2009//
+/probeMemEnd.c/1.6/Tue Dec 22 15:26:20 2009//
+/sbrk.c/1.9/Tue Dec 22 15:26:20 2009//
 D

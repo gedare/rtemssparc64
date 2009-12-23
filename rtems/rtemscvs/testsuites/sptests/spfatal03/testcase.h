@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: testcase.h,v 1.4 2009/09/04 21:28:56 joel Exp $
+ *  $Id: testcase.h,v 1.5 2009/11/30 03:33:25 ralf Exp $
  */
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
@@ -19,7 +19,7 @@
 #define FATAL_ERROR_DESCRIPTION          "Core Mutex obtain in critical section"
 #define FATAL_ERROR_EXPECTED_SOURCE      INTERNAL_ERROR_CORE
 #define FATAL_ERROR_EXPECTED_IS_INTERNAL FALSE
-#define FATAL_ERROR_EXPECTED_ERROR       INTERNAL_ERROR_MUTEX_OBTAIN_FROM_BAD_STATE 
+#define FATAL_ERROR_EXPECTED_ERROR       INTERNAL_ERROR_MUTEX_OBTAIN_FROM_BAD_STATE
 
 void force_error(void)
 {
@@ -45,6 +45,6 @@ void force_error(void)
 
   _Thread_Enable_dispatch();
   puts("ERROR -- Obtain semaphore should not have returned");
- 
+
   /* we will not run this far */
 }

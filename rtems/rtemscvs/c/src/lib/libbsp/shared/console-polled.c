@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console-polled.c,v 1.11 2009/08/28 18:24:10 joel Exp $
+ *  $Id: console-polled.c,v 1.12 2009/12/10 16:55:36 ralf Exp $
  */
 
 #include <bsp.h>
@@ -35,10 +35,10 @@ void console_initialize_hardware(void);
  *  Console Termios Support Entry Points
  *
  */
-int console_write_support (
+ssize_t console_write_support (
   int         minor,
   const char *bufarg,
-  int         len
+  size_t      len
 )
 {
   int nwrite = 0;

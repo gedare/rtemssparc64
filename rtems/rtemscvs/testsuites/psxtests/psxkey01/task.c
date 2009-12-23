@@ -8,14 +8,14 @@
  *
  *  Output parameters:  NONE
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.c,v 1.3 2009/10/27 14:10:54 ralf Exp $
+ *  $Id: task.c,v 1.4 2009/12/08 17:52:53 joel Exp $
  */
 
 #include "system.h"
@@ -34,14 +34,14 @@ void *Task_1(
   status = pthread_setspecific( Key_id[0], (void *)&Data_array[ 1 ] );
   if ( status )
     printf( "status = %d\n", status );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   key_data = pthread_getspecific( Key_id[0] );
   printf( "Task_1: Got the key value of %ld\n",
           (unsigned long) ((uint32_t *)key_data - Data_array) );
   if ( status )
     printf( "status = %d\n", status );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   puts( "Task_1: exitting" );
   pthread_exit( NULL );

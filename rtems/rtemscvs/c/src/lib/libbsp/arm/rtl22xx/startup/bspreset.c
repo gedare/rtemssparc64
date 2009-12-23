@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspreset.c,v 1.2 2009/08/10 03:16:35 joel Exp $
+ *  $Id: bspreset.c,v 1.3 2009/11/29 14:53:02 ralf Exp $
  */
 
 #include <bsp.h>
@@ -29,9 +29,9 @@ void bsp_reset(void)
                   "bx  %[tmp]           \n" \
                   "nop                  \n" \
                   : [tmp]"=&r" (tmp) );
-  #else                   
+  #else
     asm volatile ("b _start");
-  #endif   
+  #endif
   while(1);
 #endif
 }

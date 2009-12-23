@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cancel.h,v 1.11 2009/07/21 14:16:00 joel Exp $
+ *  $Id: cancel.h,v 1.12 2009/11/30 15:44:20 ralf Exp $
  */
 
 #ifndef _RTEMS_POSIX_CANCEL_H
@@ -49,7 +49,7 @@ void _POSIX_Threads_cancel_run(
 /**
  *  @brief _POSIX_Thread_Evaluate_cancellation_and_enable_dispatch
  *
- *  This routine separates a piece of code that existed as part of 
+ *  This routine separates a piece of code that existed as part of
  *  another routine, but had to be separated to improve coverage.
  *
  *  @param[in] the_thread is the thread to evaluate canceling

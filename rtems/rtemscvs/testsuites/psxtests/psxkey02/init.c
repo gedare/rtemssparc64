@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/07/30 18:48:56 joel Exp $
+ *  $Id: init.c,v 1.3 2009/12/08 17:52:53 joel Exp $
  */
 
 #include <pthread.h>
@@ -27,16 +27,16 @@ void *POSIX_Init(
   void                   *alloced;
 
   puts( "\n\n*** TEST KEY 02 ***" );
-  
+
   puts( "Init - rtems_workspace_get_information - OK" );
   sb = rtems_workspace_get_information( &start );
-  assert( sb );
+  rtems_test_assert(  sb );
 
   #if 0
     printf( "Init - workspace free = %d\n", start.Free.largest );
     printf( "Init - workspace free blocks = %d\n", start.Free.number );
   #endif
-  assert( start.Free.number == 1 );
+  rtems_test_assert(  start.Free.number == 1 );
   to_alloc = start.Free.largest;
 
   /* find the largest we can actually allocate */
@@ -57,16 +57,16 @@ void *POSIX_Init(
    * Verify heap is still in same shape if we couldn't allocate a task
    */
   sb = rtems_workspace_get_information( &info );
-  assert( sb );
-  assert( info.Free.largest == start.Free.largest );
-  assert( info.Free.number  == start.Free.number  );
+  rtems_test_assert(  sb );
+  rtems_test_assert(  info.Free.largest == start.Free.largest );
+  rtems_test_assert(  info.Free.number  == start.Free.number  );
 
   puts( "Init - pthread_key_create - ENOMEM" );
   while (1) {
-    
+
     sb = rtems_workspace_allocate( to_alloc, &alloced );
-    assert( sb );
-   
+    rtems_test_assert(  sb );
+
     sc = pthread_key_create( &key, NULL );
 
     /* free the memory we snagged, then check the status */
@@ -88,9 +88,9 @@ void *POSIX_Init(
       printf( "Init - workspace free/blocks = %d/%d\n",
         info.Free.largest, info.Free.number );
     #endif
-    assert( sb );
-    assert( info.Free.largest == start.Free.largest );
-    assert( info.Free.number  == start.Free.number  );
+    rtems_test_assert(  sb );
+    rtems_test_assert(  info.Free.largest == start.Free.largest );
+    rtems_test_assert(  info.Free.number  == start.Free.number  );
 
     to_alloc -= 8;
     if ( to_alloc == 0 )
@@ -105,7 +105,7 @@ void *POSIX_Init(
    */
   puts( "Init - pthread_key_delete - OK" );
   sc = pthread_key_delete( key );
-  assert( sc == 0 );
+  rtems_test_assert(  sc == 0 );
 
   puts( "Init - verify workspace has same memory" );
   sb = rtems_workspace_get_information( &info );
@@ -113,9 +113,9 @@ void *POSIX_Init(
     printf( "Init - workspace free/blocks = %d/%d\n",
       info.Free.largest, info.Free.number );
   #endif
-  assert( sb );
-  assert( info.Free.largest == start.Free.largest );
-  assert( info.Free.number  == start.Free.number  );
+  rtems_test_assert(  sb );
+  rtems_test_assert(  info.Free.largest == start.Free.largest );
+  rtems_test_assert(  info.Free.number  == start.Free.number  );
 
   puts( "*** END OF TEST KEY 02 ***" );
   rtems_test_exit(0);

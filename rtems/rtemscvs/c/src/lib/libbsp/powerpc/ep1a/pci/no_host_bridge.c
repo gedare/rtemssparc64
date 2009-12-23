@@ -6,22 +6,22 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: no_host_bridge.c,v 1.3 2008/10/02 17:27:07 joel Exp $
+ *  $Id: no_host_bridge.c,v 1.4 2009/11/30 04:25:26 ralf Exp $
  */
-                                                                                
+
 #include <libcpu/io.h>
 #include <libcpu/spr.h>
-                                                                                
+
 #include <bsp.h>
 #include <bsp/pci.h>
 #include <bsp/consoleIo.h>
 #include <bsp/residual.h>
 #include <bsp/openpic.h>
-                                                                                
+
 #include <rtems/bspIo.h>
 
 /*
- * For the 8240 and the 8245 there is no host bridge the 
+ * For the 8240 and the 8245 there is no host bridge the
  * Open PIC device is built into the processor chip.
  */
 

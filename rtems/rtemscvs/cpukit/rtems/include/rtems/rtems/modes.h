@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: modes.h,v 1.18 2009/08/05 18:17:12 joel Exp $
+ *  $Id: modes.h,v 1.19 2009/11/29 11:55:14 ralf Exp $
  */
 
 #ifndef _RTEMS_RTEMS_MODES_H
@@ -55,7 +55,7 @@ typedef uint32_t   Modes_Control;
  *  current execution mode.
  */
 #define RTEMS_CURRENT_MODE      0
- 
+
 /** This mode constant corresponds to the timeslice enable/disable bit. */
 #define RTEMS_TIMESLICE_MASK  0x00000200
 

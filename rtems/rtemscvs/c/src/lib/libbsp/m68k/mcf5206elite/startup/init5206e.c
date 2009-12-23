@@ -25,12 +25,14 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init5206e.c,v 1.7 2008/08/19 11:23:02 ralf Exp $
+ *  $Id: init5206e.c,v 1.8 2009/12/08 17:34:56 ralf Exp $
  */
 
 #include <rtems.h>
 #include <bsp.h>
 #include "mcf5206/mcf5206e.h"
+
+extern void CopyDataClearBSSAndStart(unsigned long ramsize);
 
 #define m68k_set_cacr( _cacr ) \
   asm volatile ( "movec %0,%%cacr\n\t" \
@@ -80,7 +82,6 @@
 void
 Init5206e(void)
 {
-    extern void CopyDataClearBSSAndStart(unsigned long ramsize);
 
     /* Set Module Base Address register */
     m68k_set_mbar((MBAR & MCF5206E_MBAR_BA) | MCF5206E_MBAR_V);

@@ -11,14 +11,14 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: start.S,v 1.7 2009/04/28 06:11:20 ccj Exp $
+ *  $Id: start.S,v 1.8 2009/11/29 14:53:00 ralf Exp $
 */
 
 #warning Call to boot_card has changed and needs checking.
 #warning The call is "void boot_card(const char* cmdline);"
 #warning You need to pass a NULL.
 #warning Please check and remove these warnings.
-	
+
 /* Some standard definitions...*/
 
 .equ Mode_USR,        	     0x10

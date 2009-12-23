@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.24 2009/10/20 09:31:28 ralf Exp $
+##
+## $Id: configure.ac,v 1.25 2009/11/28 06:28:41 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-sh-gensh1],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -21,7 +21,7 @@ RTEMS_BSPOPTS_HELP([CPU_CLOCK_RATE_HZ],[cpu clock rate in HZ])
 
 RTEMS_BSPOPTS_SET([START_HW_INIT],[*],[])
 RTEMS_BSPOPTS_HELP([START_HW_INIT],
-[If defined, selects whether 'early_hw_init()' is called from 'start.S'; 
+[If defined, selects whether 'early_hw_init()' is called from 'start.S';
  'bsp_hw_init()' is always called from 'bspstart.c'])
 
 ## Used in scitab/Makefile.am

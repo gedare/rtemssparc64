@@ -9,7 +9,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspIo.h,v 1.9 2009/06/16 13:34:35 joel Exp $
+ *  $Id: bspIo.h,v 1.10 2009/11/29 11:52:51 ralf Exp $
  */
 #ifndef _RTEMS_BSPIO_H
 #define _RTEMS_BSPIO_H
@@ -62,7 +62,7 @@ extern void putk(const char *s);
  *  as they see fit.
  */
 extern int printk_plugin(void *context, const char *fmt, ...);
- 
+
 /*
  *  Type definition for function which can be plugged in to
  *  certain reporting routines to redirect the output

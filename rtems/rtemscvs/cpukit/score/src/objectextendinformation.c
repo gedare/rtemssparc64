@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: objectextendinformation.c,v 1.19 2009/08/07 00:19:04 joel Exp $
+ *  $Id: objectextendinformation.c,v 1.20 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H

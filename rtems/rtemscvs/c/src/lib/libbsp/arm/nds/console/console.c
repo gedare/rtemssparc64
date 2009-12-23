@@ -9,7 +9,7 @@
  *
  * http://www.rtems.com/license/LICENSE
  *
- * $Id: console.c,v 1.2 2008/08/20 16:31:41 joel Exp $
+ * $Id: console.c,v 1.4 2009/12/07 16:22:43 ralf Exp $
  */
 
 #include <bsp.h>
@@ -51,7 +51,7 @@ console_push (char c)
   ch = c;
 }
 
-char
+int
 nds_getch (void)
 {
   char c;
@@ -62,17 +62,15 @@ nds_getch (void)
   return c;
 }
 
-BSP_output_char_function_type BSP_output_char =
-  (BSP_output_char_function_type) nds_putch;
-BSP_polling_getchar_function_type BSP_poll_char =
-  (BSP_polling_getchar_function_type) nds_getch;
+BSP_output_char_function_type BSP_output_char = nds_putch;
+BSP_polling_getchar_function_type BSP_poll_char = nds_getch;
 
 /*
  * console write operation.
  */
 
 static int
-nds_write (rtems_device_minor_number minor, const char *buf, int len)
+nds_write (int minor, const char *buf, int len)
 {
   int count;
 

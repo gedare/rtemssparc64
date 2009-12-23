@@ -7,14 +7,14 @@
  *
  *  Output parameters:  NONE
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task3.c,v 1.7 2009/10/27 14:10:54 ralf Exp $
+ *  $Id: task3.c,v 1.8 2009/12/08 17:52:53 joel Exp $
  */
 
 #include "system.h"
@@ -29,13 +29,13 @@ void *Task_3(
   printf( "Task_3: ID is 0x%08" PRIxpthread_t "\n", Task_id );
 
   status = pthread_mutex_lock( &Mutex_id );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   puts( "Task_3: pthread_cond_wait" );
   status = pthread_cond_wait( &Cond1_id, &Mutex_id );
   if ( status != EINVAL )
     printf( "status = %d\n", status );
-  assert( status == EINVAL );
+  rtems_test_assert(  status == EINVAL );
   puts( "Task_3: pthread_cond_wait - EINVAL (mutex not locked after signal)");
 
   puts( "Task_3: task exit" );

@@ -8,7 +8,7 @@
  *
  * http://www.rtems.com/license/LICENSE.
  *
- * @(#) $Id: i2c.c,v 1.7 2008/09/08 09:52:49 thomas Exp $
+ * @(#) $Id: i2c.c,v 1.8 2009/11/29 14:59:41 ralf Exp $
  */
 
 #include <bsp.h>
@@ -72,7 +72,7 @@ i2c_transfer_wait_sema(i2c_bus_number bus, i2c_message *msg, int nmsg)
     );
     if (sc != RTEMS_SUCCESSFUL)
         return I2C_RESOURCE_NOT_AVAILABLE;
-    sc = i2c_transfer(bus, nmsg, msg, 
+    sc = i2c_transfer(bus, nmsg, msg,
 		      i2c_transfer_sema_done_func, &sema);
     if (sc != RTEMS_SUCCESSFUL)
     {
@@ -107,7 +107,7 @@ i2c_transfer_wait_poll(i2c_bus_number bus, i2c_message *msg, int nmsg)
     volatile bool poll_done_flag;
     rtems_status_code sc;
     poll_done_flag = false;
-    sc = i2c_transfer(bus, nmsg, msg, 
+    sc = i2c_transfer(bus, nmsg, msg,
 		      i2c_transfer_poll_done_func,(void *)&poll_done_flag);
     if (sc != RTEMS_SUCCESSFUL)
         return sc;

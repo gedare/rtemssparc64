@@ -1,5 +1,5 @@
 /*
- *  $Id: rtems_malloc_mbuf.c,v 1.3 2008/08/18 21:42:41 joel Exp $
+ *  $Id: rtems_malloc_mbuf.c,v 1.4 2009/11/30 15:57:51 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -27,7 +27,7 @@
 extern void *malloc(size_t);
 
 /*
- * Default allocator for mbuf data. Over-ride in user code to change 
+ * Default allocator for mbuf data. Over-ride in user code to change
  * the way mbuf's are allocated.
  */
 

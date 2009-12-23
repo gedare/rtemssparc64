@@ -49,7 +49,7 @@ uint32_t benchmark_timer_read(void)
   }
 }
 
-void benchmark_timer_disable_subtracting_average_overhead( bool find_average_overhead )
+void benchmark_timer_disable_subtracting_average_overhead(bool find_average_overhead )
 {
   benchmark_timer_find_average_overhead = find_average_overhead;
 }

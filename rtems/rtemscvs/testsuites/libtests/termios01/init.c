@@ -6,11 +6,10 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.5 2009/10/27 11:43:29 ralf Exp $
+ *  $Id: init.c,v 1.8 2009/12/11 02:12:57 joel Exp $
  */
 
 #include "tmacros.h"
-#include <assert.h>
 #include <termios.h>
 #include <rtems/termiostypes.h>
 #include <fcntl.h>
@@ -129,11 +128,11 @@ void test_termios_baud2index(void)
   );
   puts( "termios_baud_to_index(-2) - NOT OK" );
   i = rtems_termios_baud_to_index( -2 );
-  assert ( i == -1 );
+  rtems_test_assert( i == -1 );
 
   puts( "termios_baud_to_index(572) - NOT OK" );
   i = rtems_termios_baud_to_index( -2 );
-  assert ( i == -1 );
+  rtems_test_assert( i == -1 );
 
   if ( i != -1 )
   for (i=0 ; baud_table[i].constant != -1 ; i++ ) {
@@ -160,11 +159,11 @@ void test_termios_baud2number(void)
   );
   puts( "termios_baud_to_number(-2) - NOT OK" );
   i = rtems_termios_baud_to_number( -2 );
-  assert ( i == -1 );
+  rtems_test_assert( i == -1 );
 
   puts( "termios_baud_to_number(572) - NOT OK" );
   i = rtems_termios_baud_to_number( -2 );
-  assert ( i == -1 );
+  rtems_test_assert( i == -1 );
 
   for (i=0 ; baud_table[i].constant != -1 ; i++ ) {
     printf( "termios_baud_to_number(B%" PRIdrtems_termios_baud_t ") - OK\n", baud_table[i].baud );
@@ -194,11 +193,11 @@ void test_termios_number_to_baud(void)
   );
   puts( "termios_number_to_baud(-2) - NOT OK" );
   i = rtems_termios_number_to_baud( -2 );
-  assert ( i == -1 );
+  rtems_test_assert( i == -1 );
 
   puts( "termios_number_to_baud(572) - NOT OK" );
   i = rtems_termios_number_to_baud( -2 );
-  assert ( i == -1 );
+  rtems_test_assert( i == -1 );
 
   for (i=0 ; baud_table[i].constant != -1 ; i++ ) {
     printf( "termios_number_to_baud(B%" PRIdrtems_termios_baud_t ") - OK\n", baud_table[i].baud );
@@ -422,7 +421,7 @@ rtems_task Init(
 
   /*
    * Test character size
-   */ 
+   */
   puts(
     "\n"
     "Init - open - " TERMIOS_TEST_DRIVER_DEVICE_NAME " - OK"
@@ -444,7 +443,7 @@ rtems_task Init(
 
   /*
    * Test parity
-   */ 
+   */
   puts(
     "\n"
     "Init - open - " TERMIOS_TEST_DRIVER_DEVICE_NAME " - OK"
@@ -468,7 +467,7 @@ rtems_task Init(
 
   /*
    * Test stop bits
-   */ 
+   */
   puts(
     "\n"
     "Init - open - " TERMIOS_TEST_DRIVER_DEVICE_NAME " - OK"
@@ -503,7 +502,7 @@ rtems_task Init(
 #define CONFIGURE_MAXIMUM_DRIVERS 3
 
 /* one for the console and one for the test port */
-#define CONFIGURE_NUMBER_OF_TERMIOS_PORTS 2
+#define CONFIGURE_NUMBER_OF_TERMIOS_PORTS 3
 
 /* we need to be able to open the test device */
 #define CONFIGURE_LIBIO_MAXIMUM_FILE_DESCRIPTORS 4

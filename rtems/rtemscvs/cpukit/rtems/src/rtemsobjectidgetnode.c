@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtemsobjectidgetnode.c,v 1.2 2009/11/23 14:53:04 joel Exp $
+ *  $Id: rtemsobjectidgetnode.c,v 1.3 2009/11/30 15:59:56 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -25,4 +25,4 @@ int rtems_object_id_get_node(
 )
 {
   return _Objects_Get_node( id );
-} 
+}

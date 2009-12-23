@@ -1,6 +1,6 @@
 /*
  *  This file implements simple console IO via JTAG UART.
- * 
+ *
  *  Based on no_cpu/console.c
  *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console.c,v 1.6 2009/03/26 11:18:03 joel Exp $
+ *  $Id: console.c,v 1.7 2009/11/30 04:53:31 ralf Exp $
  */
 
 #define NO_BSP_INIT
@@ -25,7 +25,7 @@
 /*  is_character_ready
  *
  *  If a character is available, this routine reads it and stores
- *  it in 
+ *  it in
  *  reads the character and stores
  *
  *  Input parameters: NONE
@@ -92,7 +92,7 @@ int console_inbyte_nonblocking(
  */
 
 void console_outbyte_polled(
-  int  port, 
+  int  port,
   char ch
 )
 {

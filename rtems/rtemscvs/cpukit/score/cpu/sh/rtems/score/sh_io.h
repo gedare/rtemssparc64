@@ -16,7 +16,7 @@
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * 
+ *
  *
  *  COPYRIGHT (c) 1998-2001.
  *  On-Line Applications Research Corporation (OAR).
@@ -25,12 +25,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: sh_io.h,v 1.6 2005/01/28 15:56:09 ralf Exp $
+ *  $Id: sh_io.h,v 1.7 2009/12/04 05:25:30 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_SH_IO_H
 #define _RTEMS_SCORE_SH_IO_H
- 
+
 #define readb(addr) 	(*(volatile unsigned char *) (addr))
 #define readw(addr) 	(*(volatile unsigned short *) (addr))
 #define readl(addr) 	(*(volatile unsigned int *) (addr))

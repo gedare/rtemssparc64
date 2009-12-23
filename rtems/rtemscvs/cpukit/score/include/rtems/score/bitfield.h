@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/bitfield.h
  *
  *  This include file contains all bit field manipulation routines.
@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bitfield.h,v 1.19 2009/05/08 04:55:53 ccj Exp $
+ *  $Id: bitfield.h,v 1.20 2009/11/28 05:58:53 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_BITFIELD_H
@@ -37,7 +37,7 @@ extern "C" {
  *  This table is used by the generic bitfield routines to perform
  *  a highly optimized bit scan without the use of special CPU
  *  instructions.
- */ 
+ */
 #ifndef SCORE_INIT
 extern const unsigned char __log2table[256];
 #else

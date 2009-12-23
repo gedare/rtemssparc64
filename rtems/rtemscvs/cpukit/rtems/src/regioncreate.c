@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: regioncreate.c,v 1.12 2009/09/06 15:24:05 joel Exp $
+ *  $Id: regioncreate.c,v 1.13 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -53,7 +53,7 @@ rtems_status_code rtems_region_create(
   uintptr_t           length,
   uintptr_t           page_size,
   rtems_attribute     attribute_set,
-  Objects_Id         *id
+  rtems_id           *id
 )
 {
   rtems_status_code  return_status;

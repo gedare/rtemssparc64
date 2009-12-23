@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: debugputs.c,v 1.8 2009/08/19 16:28:55 joel Exp $
+ *  $Id: debugputs.c,v 1.9 2009/11/29 15:33:27 ralf Exp $
  */
 
 #include <bsp.h>
@@ -45,7 +45,7 @@ void console_outbyte_polled(
 }
 
 /*
- *  console_inbyte_nonblocking 
+ *  console_inbyte_nonblocking
  *
  *  This routine polls for a character.
  */

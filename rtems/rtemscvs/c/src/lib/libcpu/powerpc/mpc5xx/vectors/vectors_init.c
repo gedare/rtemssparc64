@@ -1,4 +1,4 @@
-/* 
+/*
  * vectors_init.c Exception hanlding initialisation (and generic handler).
  *
  *  This include file describe the data structure and the functions implemented
@@ -16,7 +16,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: vectors_init.c,v 1.1 2004/04/12 22:04:28 joel Exp $
+ *  $Id: vectors_init.c,v 1.2 2009/11/30 05:07:54 ralf Exp $
  */
 #include <rtems/bspIo.h>
 #include <libcpu/vectors.h>
@@ -32,7 +32,7 @@ rtems_exception_handler_t* exception_handler_table[NUM_EXCEPTIONS];
 void C_default_exception_handler(CPU_Exception_frame* excPtr)
 {
   int recoverable = 0;
-  
+
   printk("exception handler called for exception %d\n", excPtr->_EXC_number);
   printk("\t Next PC or Address of fault = %x\n", excPtr->EXC_SRR0);
   printk("\t Saved MSR = %x\n", excPtr->EXC_SRR1);
@@ -76,7 +76,7 @@ void C_default_exception_handler(CPU_Exception_frame* excPtr)
   if (excPtr->_EXC_number == ASM_DEC_VECTOR)
        recoverable = 1;
   if (excPtr->_EXC_number == ASM_SYS_VECTOR)
-#ifdef TEST_RAW_EXCEPTION_CODE      
+#ifdef TEST_RAW_EXCEPTION_CODE
     recoverable = 1;
 #else
     recoverable = 0;

@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iom8535.h,v 1.1 2009/08/06 14:52:06 joel Exp $ */
+/* $Id: iom8535.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
 
 /* avr/iom8535.h - definitions for ATmega8535 */
 
@@ -45,7 +45,7 @@
 #  define _AVR_IOXXX_H_ "iom8535.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif 
+#endif
 
 /* I/O registers */
 
@@ -394,9 +394,9 @@
 #define    CS01         1
 #define    CS00         0
 
-/* 
-   The ADHSM bit has been removed from all documentation, 
-   as being not needed at all since the comparator has proven 
+/*
+   The ADHSM bit has been removed from all documentation,
+   as being not needed at all since the comparator has proven
    to be fast enough even without feeding it more power.
 */
 
@@ -703,7 +703,7 @@
 /* Lock Bits */
 #define __LOCK_BITS_EXIST
 #define __BOOT_LOCK_BITS_0_EXIST
-#define __BOOT_LOCK_BITS_1_EXIST 
+#define __BOOT_LOCK_BITS_1_EXIST
 
 
 /* Signature */

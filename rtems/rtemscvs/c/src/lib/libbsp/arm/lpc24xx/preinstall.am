@@ -81,6 +81,10 @@ $(PROJECT_INCLUDE)/bsp/start.h: ../shared/include/start.h $(PROJECT_INCLUDE)/bsp
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/start.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/start.h
 
+$(PROJECT_INCLUDE)/bsp/lpc-timer.h: ../shared/lpc/include/lpc-timer.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/lpc-timer.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/lpc-timer.h
+
 $(PROJECT_INCLUDE)/bsp/irq-config.h: include/irq-config.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/irq-config.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/irq-config.h
@@ -112,6 +116,10 @@ PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/i2c.h
 $(PROJECT_INCLUDE)/bsp/io.h: include/io.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/io.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/io.h
+
+$(PROJECT_INCLUDE)/bsp/lpc-clock-config.h: include/lpc-clock-config.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/lpc-clock-config.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/lpc-clock-config.h
 
 $(PROJECT_INCLUDE)/tm27.h: ../../shared/include/tm27.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/tm27.h

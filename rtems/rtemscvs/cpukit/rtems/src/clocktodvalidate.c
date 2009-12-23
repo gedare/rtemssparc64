@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: clocktodvalidate.c,v 1.13 2009/05/04 11:09:05 joel Exp $
+ *  $Id: clocktodvalidate.c,v 1.14 2009/11/30 15:59:55 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -54,7 +54,7 @@ bool _TOD_Validate(
   uint32_t   days_in_month;
   uint32_t   ticks_per_second;
 
-  ticks_per_second = TOD_MICROSECONDS_PER_SECOND / 
+  ticks_per_second = TOD_MICROSECONDS_PER_SECOND /
 	    rtems_configuration_get_microseconds_per_tick();
   if ((!the_tod)                                  ||
       (the_tod->ticks  >= ticks_per_second)       ||

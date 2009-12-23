@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: canceleval.c,v 1.3 2009/10/10 16:03:38 joel Exp $
+ *  $Id: canceleval.c,v 1.4 2009/11/30 15:44:20 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -34,5 +34,5 @@ void _POSIX_Thread_Evaluate_cancellation_and_enable_dispatch(
     _POSIX_Thread_Exit( the_thread, PTHREAD_CANCELED );
   } else
     _Thread_Enable_dispatch();
-  
+
 }

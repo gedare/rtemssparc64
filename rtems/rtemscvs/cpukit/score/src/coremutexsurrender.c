@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: coremutexsurrender.c,v 1.21 2009/07/07 17:29:47 joel Exp $
+ *  $Id: coremutexsurrender.c,v 1.22 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -84,7 +84,7 @@ CORE_mutex_Status _CORE_mutex_Surrender(
 
   the_mutex->nest_count--;
 
-  if ( the_mutex->nest_count != 0 ) { 
+  if ( the_mutex->nest_count != 0 ) {
     /*
      *  All error checking is on the locking side, so if the lock was
      *  allowed to acquired multiple times, then we should just deal with

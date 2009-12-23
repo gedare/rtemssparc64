@@ -27,8 +27,8 @@
  *
  * this is derived from "timer.c" available in the m68k/gen68360 BSP
  * adapted by Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
- * 
- *  $Id: timer.c,v 1.3 2008/09/30 16:26:47 joel Exp $
+ *
+ *  $Id: timer.c,v 1.4 2009/11/30 04:30:48 ralf Exp $
  */
 
 /*

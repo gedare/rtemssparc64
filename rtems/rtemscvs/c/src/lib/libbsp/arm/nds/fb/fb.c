@@ -8,7 +8,7 @@
  *
  * http://www.rtems.com/license/LICENSE
  *
- * $Id: fb.c,v 1.7 2009/08/21 18:36:02 joel Exp $
+ * $Id: fb.c,v 1.8 2009/11/29 14:53:01 ralf Exp $
  */
 
 #include <stdlib.h>
@@ -30,7 +30,7 @@
 
 static struct fb_var_screeninfo fb_var_info = {
   .xres                = SCREEN_WIDTH,		/* screen size x, y  */
-  .yres                = SCREEN_HEIGHT,		
+  .yres                = SCREEN_HEIGHT,
   .bits_per_pixel      = 16			/* bits per pixel    */
 };
 
@@ -48,7 +48,7 @@ static struct fb_fix_screeninfo fb_fix_info = {
 
 static struct fb_var_screeninfo fb_var_info2 = {
   .xres                = SCREEN_WIDTH,		/* screen size x, y  */
-  .yres                = SCREEN_HEIGHT,		
+  .yres                = SCREEN_HEIGHT,
   .bits_per_pixel      = 16			/* bits per pixel    */
 };
 

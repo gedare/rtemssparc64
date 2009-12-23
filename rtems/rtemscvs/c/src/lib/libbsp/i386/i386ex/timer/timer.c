@@ -1,4 +1,4 @@
-/*  
+/*
  *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
  *
@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.c,v 1.17 2008/09/30 16:25:38 joel Exp $
+ *  $Id: timer.c,v 1.18 2009/11/30 04:52:53 ralf Exp $
  */
 
 #include <rtems.h>

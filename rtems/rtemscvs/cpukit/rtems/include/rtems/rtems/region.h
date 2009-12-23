@@ -21,7 +21,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: region.h,v 1.33 2009/09/06 15:24:05 joel Exp $
+ *  $Id: region.h,v 1.35 2009/12/15 18:26:41 humph Exp $
  */
 
 #ifndef _RTEMS_RTEMS_REGION_H
@@ -47,7 +47,7 @@
 /**@{*/
 
 /**
- *  This constant is defined to extern most of the time when using 
+ *  This constant is defined to extern most of the time when using
  *  this header file.  However by defining it to nothing, the data
  *  declared in this header file can be instantiated.  This is done
  *  in a single per manager file.
@@ -107,7 +107,7 @@ rtems_status_code rtems_region_create(
   uintptr_t           length,
   uintptr_t           page_size,
   rtems_attribute     attribute_set,
-  Objects_Id         *id
+  rtems_id           *id
 );
 
 /**
@@ -119,7 +119,7 @@ rtems_status_code rtems_region_create(
  *  the memory starting at starting_address.
  */
 rtems_status_code rtems_region_extend(
-  Objects_Id          id,
+  rtems_id            id,
   void               *starting_address,
   uintptr_t           length
 );
@@ -134,7 +134,7 @@ rtems_status_code rtems_region_extend(
  */
 rtems_status_code rtems_region_ident(
   rtems_name    name,
-  Objects_Id   *id
+  rtems_id     *id
 );
 
 /**
@@ -145,7 +145,7 @@ rtems_status_code rtems_region_ident(
  *  this region.
  */
 rtems_status_code rtems_region_get_information(
-  Objects_Id              id,
+  rtems_id                id,
   Heap_Information_block *the_info
 );
 
@@ -153,11 +153,11 @@ rtems_status_code rtems_region_get_information(
  *  @brief rtems_region_get_free_information
  *
  *  This routine implements the rtems_region_get_free_information directive.
- *  This directive returns information about the free blocks in the 
+ *  This directive returns information about the free blocks in the
  *  heap associated with this region.
  */
 rtems_status_code rtems_region_get_free_information(
-  Objects_Id              id,
+  rtems_id                id,
   Heap_Information_block *the_info
 );
 
@@ -168,7 +168,7 @@ rtems_status_code rtems_region_get_free_information(
  *  region indicated by ID is deleted.
  */
 rtems_status_code rtems_region_delete(
-  Objects_Id id
+  rtems_id   id
 );
 
 /**
@@ -183,7 +183,7 @@ rtems_status_code rtems_region_delete(
  *  immediately is based on the no_wait option in the option_set.
  */
 rtems_status_code rtems_region_get_segment(
-  Objects_Id         id,
+  rtems_id           id,
   uintptr_t          size,
   rtems_option       option_set,
   rtems_interval     timeout,
@@ -197,7 +197,7 @@ rtems_status_code rtems_region_get_segment(
  *  returns the size in bytes of the specified user memory area.
  */
 rtems_status_code rtems_region_get_segment_size(
-  Objects_Id         id,
+  rtems_id           id,
   void              *segment,
   uintptr_t         *size
 );
@@ -214,7 +214,7 @@ rtems_status_code rtems_region_get_segment_size(
  *  satisfied.
  */
 rtems_status_code rtems_region_return_segment(
-  Objects_Id  id,
+  rtems_id    id,
   void       *segment
 );
 
@@ -239,7 +239,7 @@ rtems_status_code rtems_region_return_segment(
  *  segment.
  */
 rtems_status_code rtems_region_resize_segment(
-  Objects_Id  id,
+  rtems_id    id,
   void       *segment,
   uintptr_t   size,
   uintptr_t  *old_size

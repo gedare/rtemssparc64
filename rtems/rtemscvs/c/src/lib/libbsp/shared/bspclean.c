@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspclean.c,v 1.4 2008/09/22 21:50:54 joel Exp $
+ *  $Id: bspclean.c,v 1.5 2009/11/30 04:56:10 ralf Exp $
  */
 
 #include <rtems.h>
@@ -37,5 +37,5 @@ void bsp_cleanup( void )
    */
   #if (BSP_PRESS_KEY_FOR_RESET) || (BSP_RESET_BOARD_AT_EXIT)
     bsp_reset();
-  #endif 
+  #endif
 }

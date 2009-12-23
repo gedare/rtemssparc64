@@ -31,7 +31,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: openpic.h,v 1.10 2007/12/07 09:10:55 strauman Exp $
+ * $Id: openpic.h,v 1.11 2009/11/30 04:33:10 ralf Exp $
  */
 
 #ifndef _RTEMS_OPENPIC_H
@@ -336,7 +336,7 @@ extern unsigned openpic_set_eoi_delay(unsigned tb_cycles);
  * and 'level sensitive', respectively.
  * NOTE: if you do pass arrays then their size must either
  *       match the number of sources read from the device or
- *       that value must be overridden by specifying 
+ *       that value must be overridden by specifying
  *       a non-zero 'num_sources' parameter.
  *
  * Nonzero 'epic_freq' activates the EOI delay if the EPIC is

@@ -6,7 +6,7 @@
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Eugeny S. Mints <Eugeny.Mints@oktet.ru>
  *
- * @(#) $Id: fat_file.c,v 1.14 2009/04/29 08:31:26 ccj Exp $
+ * @(#) $Id: fat_file.c,v 1.15 2009/11/29 13:18:56 ralf Exp $
  *
  */
 
@@ -115,7 +115,7 @@ fat_file_open(
         rtems_set_errno_and_return_minus_one( ENOMEM );
 
     memset(lfat_fd, 0, sizeof(fat_file_fd_t));
-    
+
     lfat_fd->links_num = 1;
     lfat_fd->flags &= ~FAT_FILE_REMOVED;
     lfat_fd->map.last_cln = FAT_UNDEFINED_VALUE;
@@ -584,7 +584,7 @@ fat_file_extend(
     }
 
     fat_fd->fat_file_size = new_length;
-    
+
     return RC_OK;
 }
 

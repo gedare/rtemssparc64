@@ -1,15 +1,13 @@
 /*
- * Cogent CSB337 Linker script
+ *  Cogent CSB337 Linker script
  *
- * Copyright (c) 2004 by Jay Monkman <jtm@lopingdog.com>
+ *  Copyright (c) 2004 by Jay Monkman <jtm@lopingdog.com>
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
- *
  *  http://www.rtems.com/license/LICENSE.
  *
- *
- *  $Id: linkcmds.csb337,v 1.1 2009/11/03 11:40:06 ralf Exp $
+ *  $Id: linkcmds.csb337,v 1.2 2009/11/30 22:00:36 joel Exp $
  */
 
 OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm",

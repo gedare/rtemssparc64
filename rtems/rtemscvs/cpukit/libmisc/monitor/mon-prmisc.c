@@ -4,7 +4,7 @@
  *
  * TODO:
  *
- *  $Id: mon-prmisc.c,v 1.23 2009/10/02 13:33:00 ralf Exp $
+ *  $Id: mon-prmisc.c,v 1.24 2009/11/29 12:12:39 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -97,7 +97,7 @@ rtems_monitor_dump_name(rtems_id id)
 {
     char name_buffer[18];
 
-    rtems_object_get_name( id, sizeof(name_buffer), name_buffer );  
+    rtems_object_get_name( id, sizeof(name_buffer), name_buffer );
 
     return fprintf( stdout, name_buffer );
 }

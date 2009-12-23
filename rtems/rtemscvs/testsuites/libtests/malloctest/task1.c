@@ -10,11 +10,11 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.13 2009/10/26 05:53:29 ralf Exp $
+ *  $Id: task1.c,v 1.14 2009/11/30 03:33:22 ralf Exp $
  */
 
 #include "system.h"
-#include <rtems/malloc.h> 
+#include <rtems/malloc.h>
 #include <string.h>
 #include <stdlib.h>
 

@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: screen04.c,v 1.12 2009/09/28 19:39:06 joel Exp $
+ *  $Id: screen04.c,v 1.13 2009/11/30 03:33:24 ralf Exp $
  */
 
 #include "system.h"
@@ -100,7 +100,7 @@ void Screen4()
   status = rtems_clock_get_tod_timeval( &tv );
   directive_failed( status, "clock_get_tod_timeval OK" );
 
-  seconds = tv.tv_sec; 
+  seconds = tv.tv_sec;
   printf( "TA1 - current time - %s\n", ctime(&seconds) );
 
 }

@@ -2,14 +2,14 @@
  *  Thread Handler
  *
  *
- *  COPYRIGHT (c) 1989-2007.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: threaddispatch.c,v 1.18 2009/10/11 14:18:03 joel Exp $
+ *  $Id: threaddispatch.c,v 1.20 2009/12/02 18:22:18 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -30,7 +30,7 @@
 #include <rtems/score/userext.h>
 #include <rtems/score/wkspace.h>
 
-#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+#ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
   #include <rtems/score/timestamp.h>
 #endif
 
@@ -102,7 +102,7 @@ void _Thread_Dispatch( void )
       heir->cpu_time_budget = _Thread_Ticks_per_timeslice;
     _ISR_Enable( level );
 
-    #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+    #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
       {
         Timestamp_Control uptime, ran;
         _TOD_Get_uptime( &uptime );

@@ -10,20 +10,19 @@
  *
  *  Output parameters:  NONE
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.9 2008/02/01 00:45:01 joel Exp $
+ *  $Id: init.c,v 1.10 2009/12/08 17:52:47 joel Exp $
  */
 
 #define CONFIGURE_INIT
 #include "system.h"
 #include <stdio.h>
-#include <assert.h>
 
 void ITRON_Init( void )
 {
@@ -134,5 +133,5 @@ void ITRON_Init( void )
   directive_failed( status, "sta_tsk of TA3" );
 
   exd_tsk();
-  assert(0);
+  rtems_test_assert(0);
 }

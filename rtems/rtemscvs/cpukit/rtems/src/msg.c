@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: msg.c,v 1.32 2009/01/06 05:05:02 ralf Exp $
+ *  $Id: msg.c,v 1.33 2009/11/30 15:59:55 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -53,7 +53,7 @@ void _Message_queue_Manager_initialization(void)
     &_Message_queue_Information,  /* object information table */
     OBJECTS_CLASSIC_API,          /* object API */
     OBJECTS_RTEMS_MESSAGE_QUEUES, /* object class */
-    Configuration_RTEMS_API.maximum_message_queues, 
+    Configuration_RTEMS_API.maximum_message_queues,
                                   /* maximum objects of this class */
     sizeof( Message_queue_Control ),
                                   /* size of this object's control block */

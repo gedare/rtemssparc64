@@ -1,3 +1,87 @@
+2009-12-21	Sebastian Huber <Sebastian.Huber@embedded-brains.de>
+
+	* block06/init.c: Update for disk device API change.  Changed EBADRQC
+	to EINVAL.
+
+2009-12-10	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* termios01/init.c: Increase number of termios ports by 1.
+
+2009-12-10	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* termios01/termios_testdriver.c: 
+	Reflect changes to rtems_termios_callbacks->write.
+
+2009-12-08	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* block01/init.c, block02/init.c, block03/init.c, block04/init.c,
+	block05/init.c, block07/init.c, bspcmdline01/init.c,
+	stringto01/init.c, stringto01/stringto_test_template.h,
+	termios01/init.c, termios01/termios_testdriver.c, termios02/init.c:
+	Use rtems_test_assert() consistently instead of system assert().
+	rtems_test_assert() is designed to integrate into the RTEMS test
+	suite infrastructure.
+
+2009-12-06      Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* POSIX/Makefile.am: Add readv, writev.
+	* POSIX/writev.c, POSIX/readv.c: New.
+
+2009-12-04      Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* POSIX/sigfillset.c: Let main() return "status".
+	* POSIX/Makefile.am: Add sigaddset, sigdelset, sigemptyset,
+	sigismember.
+	* POSIX/sigaddset.c, POSIX/sigdelset.c, POSIX/sigemptyset.c,
+	POSIX/sigismember.c: New.
+
+2009-12-04      Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* POSIX/Makefile.am: Add wait.
+	* POSIX/wait.c: New.
+
+2009-12-03	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* bspcmdline01/test.c: Removed.
+
+2009-12-02	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* Makefile.am: Add POSIX.
+	* configure.ac: Add POSIX/.
+	* POSIX/calloc.c, POSIX/close.c, POSIX/COPYING, POSIX/dup2.c,
+	POSIX/fcntl.c, POSIX/fork.c, POSIX/free.c, POSIX/fstat.c,
+	POSIX/getdents.c, POSIX/getlogin.c, POSIX/getpwnam.c,
+	POSIX/getpwuid.c, POSIX/getuid.c, POSIX/issetugid.c,
+	POSIX/kill.c, POSIX/longjmp.c, POSIX/lseek.c, POSIX/lstat.c,
+	POSIX/Makefile.am, POSIX/Makefile.in, POSIX/malloc.c,
+	POSIX/nanosleep.c, POSIX/open.c, POSIX/pipe.c, 
+	POSIX/posix_memalign.c, POSIX/read.c, POSIX/README,
+	POSIX/realloc.c, POSIX/setjmp.c, POSIX/sigfillset.c,
+	POSIX/sigprocmask.c, POSIX/stat.c, POSIX/unlink.c, POSIX/vfork.c,
+	POSIX/waitpid.c, POSIX/write.c: New.
+
+2009-12-02	Joel Sherrill <joel.sherrill@OARcorp.com>
+
+	* stringto01/init.c: New file.
+
+2009-12-01	Joel Sherrill <joel.sherrill@OARcorp.com>
+
+	* Makefile.am, configure.ac: Add string_to_xxx conversion test.
+	* stringto01/.cvsignore, stringto01/Makefile.am,
+	stringto01/stringto01.doc, stringto01/stringto01.scn,
+	stringto01/stringto_test_template.h: New files.
+
+2009-11-30	Sebastian Huber <Sebastian.Huber@embedded-brains.de>
+
+	* block05/init.c: Check block size. Improved output.
+	* block01/init.c: Free ramdisk before exit.
+	* block01/block01.doc, block02/block02.doc, block03/block03.doc,
+	block04/block04.doc, block05/block05.doc, block06/block06.doc,
+	block07/block07.doc: New files.
+	* block01/Makefile.am, block02/Makefile.am, block03/Makefile.am,
+	block04/Makefile.am, block05/Makefile.am, block06/Makefile.am,
+	block07/Makefile.am: Add new files.
+
 2009-11-21	Joel Sherrill <joel.sherrill@oarcorp.com>
 
 	* block02/.cvsignore, block03/.cvsignore, block04/.cvsignore,

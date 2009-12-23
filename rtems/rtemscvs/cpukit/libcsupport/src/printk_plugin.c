@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: printk_plugin.c,v 1.4 2009/09/30 04:43:35 ralf Exp $
+ * $Id: printk_plugin.c,v 1.5 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -16,7 +16,7 @@
 #include <stdarg.h>
 #include <rtems/bspIo.h>
 
-int printk_plugin( 
+int printk_plugin(
   void *ignored __attribute__((unused)),
   const char *format,
   ...
@@ -29,6 +29,6 @@ int printk_plugin(
   vprintk( format, arg_pointer );
 
   va_end(arg_pointer); /* clean up when done */
-  
+
   return 0;
 }

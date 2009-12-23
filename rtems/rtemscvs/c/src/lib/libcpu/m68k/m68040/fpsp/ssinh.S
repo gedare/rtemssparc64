@@ -1,5 +1,5 @@
 //
-//      $Id: ssinh.S,v 1.1 1998/12/14 23:15:29 joel Exp $
+//      $Id: ssinh.S,v 1.2 2009/12/04 04:24:06 ralf Exp $
 //
 //	ssinh.sa 3.1 12/10/90
 //
@@ -7,7 +7,7 @@
 //       an input argument; sSinhd does the same except for denormalized
 //       input.
 //
-//       Input: Double-extended number X in location pointed to 
+//       Input: Double-extended number X in location pointed to
 //		by address register a0.
 //
 //       Output: The value sinh(X) returned in floating-point register Fp0.
@@ -51,8 +51,8 @@
 //		Copyright (C) Motorola, Inc. 1990
 //			All Rights Reserved
 //
-//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA 
-//	The copyright notice above does not evidence any  
+//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA
+//	The copyright notice above does not evidence any
 //	actual or intended publication of such source code.
 
 //SSINH	idnt	2,1 | Motorola 040 Floating Point Software Package

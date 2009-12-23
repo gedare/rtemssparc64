@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  score/src/ts64divide.c
  */
 
@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ts64divide.c,v 1.2 2009/06/13 22:39:39 joel Exp $
+ *  $Id: ts64divide.c,v 1.3 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H

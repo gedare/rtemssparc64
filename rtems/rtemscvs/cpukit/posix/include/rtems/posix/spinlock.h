@@ -19,7 +19,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: spinlock.h,v 1.2 2008/12/17 21:23:35 joel Exp $
+ *  $Id: spinlock.h,v 1.3 2009/11/30 15:44:20 ralf Exp $
  */
 
 #ifndef _RTEMS_POSIX_SPINLOCK_H
@@ -70,7 +70,7 @@ void _POSIX_Spinlock_Manager_initialization(void);
  *
  *  @param[in] the_spinlock_status is the SuperCore status.
  *
- *  @return the corresponding POSIX status 
+ *  @return the corresponding POSIX status
  */
 int _POSIX_Spinlock_Translate_core_spinlock_return_code(
   CORE_spinlock_Status  the_spinlock_status

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.10 2009/10/27 07:30:34 ralf Exp $
+ *  $Id: init.c,v 1.11 2009/11/30 03:33:24 ralf Exp $
  */
 
 #include <bsp.h>
@@ -111,7 +111,7 @@ rtems_task Init(
 )
 {
   puts( "\n\n*** TEST " TEST_NAME " ***" );
-  puts( "Testing " TEST_SEMAPHORE_TYPE " semaphore flush" ); 
+  puts( "Testing " TEST_SEMAPHORE_TYPE " semaphore flush" );
   doTest();
   puts( "*** END OF TEST " TEST_NAME " ***" );
 

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: testcase.h,v 1.4 2009/09/04 21:28:56 joel Exp $
+ *  $Id: testcase.h,v 1.5 2009/11/30 03:33:25 ralf Exp $
  */
 
 /*
@@ -33,7 +33,7 @@ rtems_initialization_tasks_table Initialization_tasks[] = {
 
 #define FATAL_ERROR_TEST_NAME            "9"
 #define FATAL_ERROR_DESCRIPTION          "Core invalid workspace address"
-#define FATAL_ERROR_EXPECTED_SOURCE      INTERNAL_ERROR_CORE 
+#define FATAL_ERROR_EXPECTED_SOURCE      INTERNAL_ERROR_CORE
 #define FATAL_ERROR_EXPECTED_IS_INTERNAL TRUE
 #define FATAL_ERROR_EXPECTED_ERROR       INTERNAL_ERROR_INVALID_WORKSPACE_ADDRESS
 

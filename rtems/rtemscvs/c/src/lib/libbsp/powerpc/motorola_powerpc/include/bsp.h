@@ -7,7 +7,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: bsp.h,v 1.22 2009/08/21 17:58:42 joel Exp $
+ * $Id: bsp.h,v 1.24 2009/12/08 17:24:21 ericn Exp $
  */
 #ifndef _BSP_H
 #define _BSP_H
@@ -43,11 +43,11 @@
  * NOTE: VME addresses should NEVER be translated using these constants!
  *       they are strictly for BSP internal use. Drivers etc. should use
  *       the translation routines int VME.h (BSP_vme2local_adrs/BSP_local2vme_adrs).
- * 
+ *
  *           CPU ADDR                  PCI_ADDR                                VME ADDR
- * 
+ *
  *           00000000                  XXXXXXXX                                XXXXXXXX
- *    ^  ^   ........         
+ *    ^  ^   ........
  *    |  |
  *    |  |  e.g., RAM                  XXXXXXXX
  *    |  |                                                                     00000000
@@ -70,7 +70,7 @@
  *        VME devices   hostbridge                 mapped by
  *       visible here                              universe
  *                    =====================================================
- * 
+ *
  */
 
 /* fundamental addresses for BSP (CHRPxxx and PREPxxx are from libcpu/io.h) */
@@ -82,7 +82,7 @@
 /* offset of pci memory as seen from the CPU */
 #define PCI_MEM_BASE		0
 /* where (in CPU addr. space) does the PCI window start */
-#define PCI_MEM_WIN0		0x80000000 
+#define PCI_MEM_WIN0		0x80000000
 
 #else
 #define	_IO_BASE		PREP_ISA_IO_BASE
@@ -123,6 +123,13 @@
 
 #define BSP_CONSOLE_PORT	BSP_UART_COM1
 #define BSP_UART_BAUD_BASE	115200
+
+#if defined(MVME_HAS_DEC21140)
+struct rtems_bsdnet_ifconfig;
+#define RTEMS_BSP_NETWORK_DRIVER_NAME "dc1"
+#define RTEMS_BSP_NETWORK_DRIVER_ATTACH rtems_dec21140_driver_attach
+extern int rtems_dec21140_driver_attach();
+#endif
 
 #include <bsp/openpic.h>
 /* BSP_PIC_DO_EOI is optionally used by the 'vmeUniverse' driver

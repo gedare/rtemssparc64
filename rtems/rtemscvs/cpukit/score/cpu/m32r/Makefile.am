@@ -1,10 +1,10 @@
 ##
-## $Id: Makefile.am,v 1.2 2008/10/28 20:03:19 joel Exp $
+## $Id: Makefile.am,v 1.3 2009/11/28 06:15:55 ralf Exp $
 ##
 
 include $(top_srcdir)/automake/compile.am
 
-include_HEADERS = 
+include_HEADERS =
 
 include_rtemsdir = $(includedir)/rtems
 include_rtems_HEADERS = rtems/asm.h

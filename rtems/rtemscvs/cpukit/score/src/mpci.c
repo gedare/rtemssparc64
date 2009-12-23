@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mpci.c,v 1.35 2008/12/22 05:52:32 ralf Exp $
+ *  $Id: mpci.c,v 1.36 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -122,7 +122,7 @@ void _MPCI_Create_server( void )
     &_Thread_Internal_information,
     _MPCI_Receive_server_tcb,
     NULL,        /* allocate the stack */
-    _Stack_Minimum() + 
+    _Stack_Minimum() +
       CPU_MPCI_RECEIVE_SERVER_EXTRA_STACK +
       _Configuration_MP_table->extra_mpci_receive_server_stack,
     CPU_ALL_TASKS_ARE_FP,

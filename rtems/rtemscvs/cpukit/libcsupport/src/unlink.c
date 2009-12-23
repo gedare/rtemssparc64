@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: unlink.c,v 1.17 2009/09/15 09:42:46 ralf Exp $
+ *  $Id: unlink.c,v 1.18 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -34,9 +34,9 @@ int unlink(
   /*
    * Get the node to be unlinked. Find the parent path first.
    */
-  
+
   parentpathlen = rtems_filesystem_dirname ( path );
-  
+
   if ( parentpathlen == 0 )
     rtems_filesystem_get_start_loc( path, &i, &parentloc );
   else {
@@ -47,22 +47,22 @@ int unlink(
     if ( result != 0 )
       return -1;
   }
-  
+
   /*
    * Start from the parent to find the node that should be under it.
    */
-  
+
   loc = parentloc;
   name = path + parentpathlen;
   name += rtems_filesystem_prefix_separators( name, strlen( name ) );
-  
+
   result = rtems_filesystem_evaluate_relative_path( name , strlen( name ),
                                                     0, &loc, false );
   if ( result != 0 ) {
     rtems_filesystem_freenode( &parentloc );
     return -1;
   }
-  
+
   if ( !loc.ops->node_type_h ) {
     rtems_filesystem_freenode( &loc );
     rtems_filesystem_freenode( &parentloc );

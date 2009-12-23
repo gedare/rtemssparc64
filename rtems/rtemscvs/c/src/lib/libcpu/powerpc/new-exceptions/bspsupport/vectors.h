@@ -7,29 +7,29 @@
  * @brief PowerPC Exceptions API.
  */
 
-/*                                                               
- * Copyright (C) 1999 Eric Valette (valette@crf.canon.fr)        
- *                    Canon Centre Recherche France.             
+/*
+ * Copyright (C) 1999 Eric Valette (valette@crf.canon.fr)
+ *                    Canon Centre Recherche France.
  *
  * Copyright (C) 2007 Till Straumann <strauman@slac.stanford.edu>
- *                                                               
- * Copyright (C) 2009 embedded brains GmbH.                      
- *                                                               
- * Enhanced by Jay Kulpinski <jskulpin@eng01.gdds.com>           
- * to support 603, 603e, 604, 604e exceptions                    
- *                                                               
- * Moved to "libcpu/powerpc/new-exceptions" and consolidated     
- * by Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>       
- * to be common for all PPCs with new exceptions.                
- *                                                               
+ *
+ * Copyright (C) 2009 embedded brains GmbH.
+ *
+ * Enhanced by Jay Kulpinski <jskulpin@eng01.gdds.com>
+ * to support 603, 603e, 604, 604e exceptions
+ *
+ * Moved to "libcpu/powerpc/new-exceptions" and consolidated
+ * by Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+ * to be common for all PPCs with new exceptions.
+ *
  * Derived from file "libcpu/powerpc/new-exceptions/raw_exception.h".
  * Derived from file "libcpu/powerpc/new-exceptions/bspsupport/ppc_exc_bspsupp.h".
- *                                                                   
- * The license and distribution terms for this file may be           
- * found in found in the file LICENSE in this distribution or at     
- * http://www.rtems.com/license/LICENSE.                             
- *                                                                   
- * $Id: vectors.h,v 1.3 2009/10/23 07:32:46 thomas Exp $        
+ *
+ * The license and distribution terms for this file may be
+ * found in found in the file LICENSE in this distribution or at
+ * http://www.rtems.com/license/LICENSE.
+ *
+ * $Id: vectors.h,v 1.5 2009/12/02 01:41:57 strauman Exp $
  */
 
 /* DO NOT INTRODUCE #ifdef <cpu_flavor> in this file */
@@ -189,6 +189,22 @@
 #define EXC_XER_OFFSET 156
 #define EXC_LR_OFFSET 160
 
+#define EXC_GENERIC_SIZE 176
+
+#ifdef __ALTIVEC__
+#define EXC_VEC_OFFSET EXC_GENERIC_SIZE
+#ifndef PPC_CACHE_ALIGNMENT
+#error "Missing include file!"
+#endif
+/*   20 volatile registers
+ * + cache-aligned area for vcsr, vrsave
+ * + area for alignment
+ */
+#define EXC_VEC_SIZE   (16*20 + 2*PPC_CACHE_ALIGNMENT)
+#else
+#define EXC_VEC_SIZE   (0)
+#endif
+
 /* Exception stack frame -> BSP_Exception_frame */
 #define FRAME_LINK_SPACE 8
 
@@ -197,7 +213,7 @@
  * As SVR4 ABI requires 16, make it 16 (as some
  * exception may need more registers to be processed...)
  */
-#define EXCEPTION_FRAME_END 176
+#define EXCEPTION_FRAME_END (EXC_GENERIC_SIZE + EXC_VEC_SIZE)
 
 /** @} */
 
@@ -413,7 +429,7 @@ typedef int (*ppc_exc_handler_t)(BSP_Exception_frame *f, unsigned vector);
 /**
  * @brief Bits for MSR update.
  *
- * Bits in MSR that are enabled during execution of exception handlers / ISRs 
+ * Bits in MSR that are enabled during execution of exception handlers / ISRs
  * (on classic PPC these are DR/IR/RI [default], on bookE-style CPUs they should
  * be set to 0 during initialization)
  *

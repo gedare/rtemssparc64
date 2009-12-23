@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2009/10/26 09:31:51 ralf Exp $
+ *  $Id: init.c,v 1.4 2009/11/30 03:33:25 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -33,7 +33,7 @@ rtems_task Init(rtems_task_argument ignored)
       rtems_build_name('s', 'e', 'm', ' '),
       1,
       RTEMS_DEFAULT_ATTRIBUTES,
-      0, 
+      0,
       &Semaphores[i]
     );
     /* printf("Creating %i id=0x%08x\n", i, Semaphores[i]); */

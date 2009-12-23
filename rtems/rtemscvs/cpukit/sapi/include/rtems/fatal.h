@@ -1,7 +1,7 @@
 /**
  * @file rtems/fatal.h
  */
- 
+
 /*
  *  This include file contains constants and prototypes related
  *  to the Fatal Error Manager.  This manager processes all fatal or
@@ -19,7 +19,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: fatal.h,v 1.13 2008/01/25 20:14:45 jennifer Exp $
+ *  $Id: fatal.h,v 1.14 2009/11/29 13:51:52 ralf Exp $
  */
 
 #ifndef _RTEMS_FATAL_H

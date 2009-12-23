@@ -1,5 +1,5 @@
 #
-#  $Id: Makefile.am,v 1.2 2008/12/08 13:14:32 ralf Exp $
+#  $Id: Makefile.am,v 1.3 2009/11/28 06:15:55 ralf Exp $
 #
 
 include $(top_srcdir)/automake/compile.am
@@ -25,7 +25,7 @@ libnfs_a_SOURCES += proto/mount_prot.h proto/nfs_prot.h
 
 include_HEADERS = src/librtemsNfs.h
 
-# PGMS=${ARCH}/nfs.obj ${ARCH}/rpcio.obj ${ARCH}/dirutils.obj 
+# PGMS=${ARCH}/nfs.obj ${ARCH}/rpcio.obj ${ARCH}/dirutils.obj
 
 libnfs_a_CPPFLAGS = $(AM_CPPFLAGS)
 libnfs_a_CPPFLAGS += -I$(srcdir)/proto

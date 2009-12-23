@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: time.h,v 1.13 2008/12/05 22:27:47 joel Exp $
+ *  $Id: time.h,v 1.14 2009/11/30 15:44:20 ralf Exp $
  */
 
 #ifndef _RTEMS_POSIX_TIME_H
@@ -48,7 +48,7 @@ typedef enum {
  *
  *  @return This method returns the number of ticks in @a ticks_out
  *          and a status value indicating whether the absolute time
- *          is valid, in the past, equal to the current time or in 
+ *          is valid, in the past, equal to the current time or in
  *          the future as it should be.
  */
 POSIX_Absolute_timeout_conversion_results_t _POSIX_Absolute_timeout_to_ticks(

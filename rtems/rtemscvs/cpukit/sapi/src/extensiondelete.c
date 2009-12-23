@@ -5,7 +5,7 @@
  *
  * @brief User Extensions Implementation.
  */
- 
+
 /*
  *  COPYRIGHT (c) 1989-2007.
  *  On-Line Applications Research Corporation (OAR).
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: extensiondelete.c,v 1.6 2009/09/25 17:51:45 joel Exp $
+ *  $Id: extensiondelete.c,v 1.7 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H

@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: writev.c,v 1.2 2008/09/01 11:42:19 ralf Exp $
+ *  $Id: writev.c,v 1.3 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -60,7 +60,7 @@ ssize_t writev(
 
   /*
    *  OpenGroup says that you are supposed to return EINVAL if the
-   *  sum of the iov_len values in the iov array would overflow a 
+   *  sum of the iov_len values in the iov array would overflow a
    *  ssize_t.
    *
    *  Also we would like to ensure that no IO is performed if there
@@ -84,7 +84,7 @@ ssize_t writev(
 
     if ( iov[v].iov_len )
       all_zeros = false;
-   
+
     /* check for wrap */
     old    = total;
     total += iov[v].iov_len;
@@ -98,7 +98,7 @@ ssize_t writev(
   if ( all_zeros == true ) {
     return 0;
   }
-   
+
   /*
    *  Now process the writev().
    */

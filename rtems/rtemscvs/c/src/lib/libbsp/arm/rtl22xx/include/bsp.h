@@ -2,14 +2,14 @@
  * Philips LPC22XX/LPC21xx BSP header file
  *
  * by Ray,Xu <Rayx.cn@gmail.com>
- *  
+ *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp.h,v 1.8 2009/08/21 17:58:33 joel Exp $
+ *  $Id: bsp.h,v 1.9 2009/11/29 14:53:01 ralf Exp $
 */
 #ifndef _BSP_H
 #define _BSP_H
@@ -26,7 +26,7 @@ extern "C" {
 #include <rtems/clockdrv.h>
 
 
-#define CONFIG_ARM_CLK 60000000L 
+#define CONFIG_ARM_CLK 60000000L
 /* cclk=cco/(2*P) */
 /* cco = cclk*2*P 	*/
 
@@ -77,7 +77,7 @@ extern "C" {
 // Core clk [Hz]
 #define FCCLK	          FOSC<<2
 /**
-* help file 
+* help file
 */
 /* System configure, Fosc Fcclk Fcco Fpclk must be defined*/
 #define Fosc    11059200          // osc freq,10MHz~25MHz,

@@ -5,7 +5,7 @@
  */
 
 /*
- *  $Id: arm_exc_handler_low.S,v 1.2 2009/09/18 08:07:23 thomas Exp $
+ *  $Id: arm_exc_handler_low.S,v 1.3 2009/12/04 05:22:04 ralf Exp $
  *
  *  Copyright (c) 2007 by Ray Xu, <Rayx.cn@gmail.com>
  *          Thumb support added.
@@ -63,7 +63,7 @@ _go_back_1:
 	ldr     sp,  [r13, #REG_SP]
 	ldr     lr,  [r13, #REG_LR]
 	add     r13,r13,#SIZE_REGS
-	movs	pc,r14			/* return  */ 
+	movs	pc,r14			/* return  */
 	
 /* FIXME:       _Exception_Handler_Abort is untested */
 DEFINE_FUNCTION_ARM(_Exception_Handler_Abort)

@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: regionprocessqueue.c,v 1.2 2007/05/08 15:34:14 ralf Exp $
+ *  $Id: regionprocessqueue.c,v 1.3 2009/11/30 15:59:55 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -51,10 +51,10 @@ void _Region_Process_queue(
    *  Switch from using the memory allocation mutex to using a
    *  dispatching disabled critical section.  We have to do this
    *  because this thread may unblock one or more threads that were
-   *  waiting on memory.  
+   *  waiting on memory.
    *
    *  NOTE: Be sure to disable dispatching before unlocking the mutex
-   *        since we do not want to open a window where a context 
+   *        since we do not want to open a window where a context
    *        switch could occur.
    */
   _Thread_Disable_dispatch();

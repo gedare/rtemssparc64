@@ -1,16 +1,16 @@
 //
-//      $Id: x_unimp.S,v 1.1 1998/12/14 23:15:33 joel Exp $
+//      $Id: x_unimp.S,v 1.2 2009/12/04 04:24:06 ralf Exp $
 //
 //	x_unimp.sa 3.3 7/1/91
 //
-//	fpsp_unimp --- FPSP handler for unimplemented instruction	
+//	fpsp_unimp --- FPSP handler for unimplemented instruction
 //	exception.
 //
 // Invoked when the user program encounters a floating-point
 // op-code that hardware does not support.  Trap vector# 11
 // (See table 8-1 MC68030 User's Manual).
 //
-// 
+//
 // Note: An fsave for an unimplemented inst. will create a short
 // fsave stack.
 //
@@ -24,8 +24,8 @@
 //		Copyright (C) Motorola, Inc. 1990
 //			All Rights Reserved
 //
-//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA 
-//	The copyright notice above does not evidence any  
+//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA
+//	The copyright notice above does not evidence any
 //	actual or intended publication of such source code.
 
 X_UNIMP:	//idnt    2,1 | Motorola 040 Floating Point Software Package

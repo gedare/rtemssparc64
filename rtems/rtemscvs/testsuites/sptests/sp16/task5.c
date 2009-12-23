@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task5.c,v 1.9 2009/07/01 19:23:58 joel Exp $
+ *  $Id: task5.c,v 1.10 2009/11/30 03:33:24 ralf Exp $
  */
 
 #include "system.h"
@@ -46,7 +46,7 @@ rtems_task Task5(
 
   /*
    * Use TOD_MICROSECONDS_TO_TICKS not RTEMS_MICROSECONDS_TO_TICKS to
-   * test C implementation in SuperCore -- not macro version used 
+   * test C implementation in SuperCore -- not macro version used
    * everywhere else.
    */
   status = rtems_task_wake_after( TOD_MICROSECONDS_TO_TICKS( 1000000 ) );

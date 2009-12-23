@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: userext.h,v 1.30 2009/10/12 12:16:23 ralf Exp $
+ *  $Id: userext.h,v 1.31 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_USEREXT_H
@@ -139,7 +139,7 @@ typedef void( *User_extensions_thread_restart_extension )(
  * The context switches initiated through _Thread_Start_multitasking() and
  * _Thread_Stop_multitasking() are not covered by this extension.  The
  * executing thread may run with a minimal setup, for example with a freed task
- * stack. 
+ * stack.
  */
 typedef void( *User_extensions_thread_switch_extension )(
   Thread_Control *,

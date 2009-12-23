@@ -1,7 +1,7 @@
 /*
  *  Submitted as part of PR1357
  *
- *  $Id: init.c,v 1.3 2009/10/26 15:15:56 ralf Exp $
+ *  $Id: init.c,v 1.4 2009/11/30 03:33:25 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -40,7 +40,7 @@ rtems_task Init(rtems_task_argument ignored)
   sc = rtems_task_create(
     rtems_build_name('t', 's', 't', '0'),
     100,
-    RTEMS_MINIMUM_STACK_SIZE, 
+    RTEMS_MINIMUM_STACK_SIZE,
     RTEMS_NO_ASR,
     RTEMS_DEFAULT_ATTRIBUTES,
     &ti

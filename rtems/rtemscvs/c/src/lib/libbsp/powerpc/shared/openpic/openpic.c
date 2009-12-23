@@ -12,7 +12,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: openpic.c,v 1.17 2009/10/03 04:47:45 ralf Exp $
+ * $Id: openpic.c,v 1.18 2009/11/30 04:33:10 ralf Exp $
  */
 
 /*
@@ -315,7 +315,7 @@ void openpic_init(int main_pic, unsigned char *polarities, unsigned char *senses
 
 			/* round to nearest integer:
 			 *   round(Bus_freq/33000000) = floor( 2*(Bus_freq/33e6) + 1 ) / 2
-			 */ 
+			 */
 			ratio   = epic_freq / 16500000 + 1;
 			ratio >>= 2; /* EICR value is half actual divisor */
 			if ( 0==ratio )

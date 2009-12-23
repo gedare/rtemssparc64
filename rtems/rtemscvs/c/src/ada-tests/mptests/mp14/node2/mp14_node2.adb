@@ -3,7 +3,8 @@
 --
 --  DESCRIPTION:
 --
---  This is the entry point for Test MP14_NODE2 of the Single Processor Test Suite.
+--  This is the entry point for Test MP14_NODE2 of the Multiprocessor
+--  Test Suite.
 --
 --  DEPENDENCIES: 
 --
@@ -16,7 +17,7 @@
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: mp14_node2.adb,v 1.1 2007/10/03 20:12:15 joel Exp $
+--  $Id: mp14_node2.adb,v 1.2 2009/12/14 21:28:53 joel Exp $
 --
 
 with RTEMS;

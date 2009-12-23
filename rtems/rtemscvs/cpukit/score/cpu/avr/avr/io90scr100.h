@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: io90scr100.h,v 1.1 2009/08/06 14:52:04 joel Exp $ */
+/* $Id: io90scr100.h,v 1.2 2009/11/30 16:01:44 ralf Exp $ */
 
 /* avr/io90scr100.h - definitions for AT90SCR100 */
 
@@ -42,7 +42,7 @@
 #  define _AVR_IOXXX_H_ "io90scr100.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif 
+#endif
 
 
 #ifndef _AVR_AT90SCR100_H_

@@ -18,7 +18,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.5 2009/09/26 15:47:16 joel Exp $
+ *  $Id: init.c,v 1.6 2009/11/30 03:33:25 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -141,7 +141,7 @@ void Fatal_extension(
     else
       printk( "ERROR==> Fatal Extension is internal set to FALSE expected TRUE\n" );
   }
-  
+
   if ( error !=  FATAL_ERROR_EXPECTED_ERROR ) {
     printk( "ERROR==> Fatal Error Expected (");
     Put_Error( source, FATAL_ERROR_EXPECTED_ERROR );

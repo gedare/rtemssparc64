@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: condget.c,v 1.2 2009/01/05 20:26:01 joel Exp $
+ *  $Id: condget.c,v 1.3 2009/11/30 15:44:20 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -57,4 +57,4 @@ POSIX_Condition_variables_Control *_POSIX_Condition_variables_Get (
     location
   );
 }
- 
+

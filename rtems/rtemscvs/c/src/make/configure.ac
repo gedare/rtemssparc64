@@ -1,10 +1,10 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.29 2009/10/16 14:39:09 ralf Exp $
+##
+## $Id: configure.ac,v 1.30 2009/11/28 06:28:41 ralf Exp $
 
-## 
+##
 ## This script configures the configuration files below make/
-## 
+##
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-make],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])

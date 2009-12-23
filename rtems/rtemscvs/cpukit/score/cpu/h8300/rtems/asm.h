@@ -19,15 +19,15 @@
  *  notice.  This file is freely distributable as long as the source
  *  of the file is noted.  This file is:
  *
- *  
+ *
  *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
- *  
+ *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
- *  
- *  $Id: asm.h,v 1.7 2005/10/27 07:28:20 ralf Exp $
+ *
+ *  $Id: asm.h,v 1.8 2009/12/04 05:22:48 ralf Exp $
  */
 
 #ifndef _RTEMS_ASM_H

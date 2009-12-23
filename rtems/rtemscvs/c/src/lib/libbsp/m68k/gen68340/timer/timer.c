@@ -14,7 +14,7 @@
  *
  * e-mail: g_montel@yahoo.com
  *
- *  $Id: timer.c,v 1.10 2008/09/30 16:25:49 joel Exp $
+ *  $Id: timer.c,v 1.11 2009/12/17 08:42:16 thomas Exp $
  */
 
 /*
@@ -187,8 +187,6 @@ void Fifo_Full_benchmark_timer_initialize (void)
 	{
          rtems_isr_entry old_handler;
 	 rtems_status_code sc;
-
-	 extern void _Debug_ISR_Handler_Console(void);
 
 	 sc = rtems_interrupt_catch (InterruptHandler,
 	  			     TIMER1_VECTOR,

@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.14 2009/10/20 05:02:47 ralf Exp $
+##
+## $Id: configure.ac,v 1.15 2009/11/28 06:28:41 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-powerpc-mbx5xx],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -19,7 +19,7 @@ RTEMS_CHECK_NETWORKING
 AM_CONDITIONAL(HAS_NETWORKING,test "$HAS_NETWORKING" = "yes")
 
 RTEMS_BSPOPTS_SET([WATCHDOG_TIMEOUT],[*],[0xFFFF])
-RTEMS_BSPOPTS_HELP([WATCHDOG_TIMEOUT], 
+RTEMS_BSPOPTS_HELP([WATCHDOG_TIMEOUT],
 [Define to the desired timeout (in steps of 1/20 msec) to enable the
  watchdog.  Default is to disable the watchdog entirely.])
 
@@ -46,7 +46,7 @@ RTEMS_BSPOPTS_HELP([PRINTK_MINOR],
 
 RTEMS_BSP_CLEANUP_OPTIONS(0, 0)
 
-# Explicitly list a Makefile here 
+# Explicitly list a Makefile here
 AC_CONFIG_FILES([Makefile])
 
 RTEMS_PPC_EXCEPTIONS

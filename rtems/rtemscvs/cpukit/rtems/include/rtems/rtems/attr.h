@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: attr.h,v 1.25 2009/08/05 18:17:12 joel Exp $
+ *  $Id: attr.h,v 1.26 2009/11/29 11:55:14 ralf Exp $
  */
 
 #ifndef _RTEMS_RTEMS_ATTR_H
@@ -52,13 +52,13 @@ typedef uint32_t   rtems_attribute;
  */
 #define RTEMS_GLOBAL              0x00000002
 
-/** 
+/**
  *  This is the attribute constant which reflects that blocking
  *  tasks will be managed using FIFO discipline.
  */
 #define RTEMS_FIFO                0x00000000
 
-/** 
+/**
  *  This is the attribute constant which reflects that blocking
  *  tasks will be managed using task priority discipline.
  */

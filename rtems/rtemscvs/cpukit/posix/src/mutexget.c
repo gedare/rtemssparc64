@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mutexget.c,v 1.3 2009/07/06 22:02:34 joel Exp $
+ *  $Id: mutexget.c,v 1.4 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -58,7 +58,7 @@
       } \
     } \
   } while (0)
- 
+
 POSIX_Mutex_Control *_POSIX_Mutex_Get (
   pthread_mutex_t   *mutex,
   Objects_Locations *location

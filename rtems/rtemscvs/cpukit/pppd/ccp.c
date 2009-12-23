@@ -25,7 +25,7 @@
  * OR MODIFICATIONS.
  */
 
-#define RCSID	"$Id: ccp.c,v 1.8 2008/09/08 06:45:43 ralf Exp $"
+#define RCSID	"$Id: ccp.c,v 1.9 2009/11/30 15:59:00 ralf Exp $"
 
 #include <stdlib.h>
 #include <string.h>
@@ -68,7 +68,7 @@ static option_t ccp_option_list[] = {
       "don't use draft deflate #", OPT_A2COPY,
       &ccp_allowoptions[0].deflate_draft, 0, 0 },
     { "predictor1", o_bool, &ccp_wantoptions[0].predictor_1,
-      "request Predictor-1", 1, 
+      "request Predictor-1", 1,
       &ccp_allowoptions[0].predictor_1, 0, 0 },
     { "nopredictor1", o_bool, &ccp_wantoptions[0].predictor_1,
       "don't allow Predictor-1", OPT_A2COPY,
@@ -979,7 +979,7 @@ ccp_reqci(
  */
 static char *
 method_name(
-    ccp_options *opt, 
+    ccp_options *opt,
     ccp_options *opt2)
 {
     static char result[64];

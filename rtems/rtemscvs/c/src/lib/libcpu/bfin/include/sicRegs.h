@@ -7,7 +7,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: sicRegs.h,v 1.2 2008/09/25 20:07:47 joel Exp $
+ *  $Id: sicRegs.h,v 1.3 2009/11/30 05:03:49 ralf Exp $
  */
 
 #ifndef _sicRegs_h_
@@ -17,7 +17,7 @@
 
 #define SIC_IMASK                (SIC_BASE_ADDRESS + 0x000c)
 #define SIC_IAR_BASE_ADDRESS     (SIC_BASE_ADDRESS + 0x0010)
-#define SIC_IAR_PITCH                                   0x04 
+#define SIC_IAR_PITCH                                   0x04
 #define SIC_IAR0                 (SIC_BASE_ADDRESS + 0x0010)
 #if SIC_IAR_COUNT > 1
 #define SIC_IAR1                 (SIC_BASE_ADDRESS + 0x0014)

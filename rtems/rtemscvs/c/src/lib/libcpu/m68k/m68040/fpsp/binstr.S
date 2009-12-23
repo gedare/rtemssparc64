@@ -1,5 +1,5 @@
 //
-//      $Id: binstr.S,v 1.1 1998/12/14 23:15:19 joel Exp $
+//      $Id: binstr.S,v 1.2 2009/12/04 04:24:06 ralf Exp $
 //
 //	binstr.sa 3.3 12/19/90
 //
@@ -61,8 +61,8 @@
 //		Copyright (C) Motorola, Inc. 1990
 //			All Rights Reserved
 //
-//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA 
-//	The copyright notice above does not evidence any  
+//	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF MOTOROLA
+//	The copyright notice above does not evidence any
 //	actual or intended publication of such source code.
 
 //BINSTR    idnt    2,1 | Motorola 040 Floating Point Software Package

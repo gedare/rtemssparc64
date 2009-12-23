@@ -20,8 +20,8 @@ two paragraphs in the transferred software.
 COPYRIGHT IDT CORPORATION 1996
 LICENSED MATERIAL - PROGRAM PROPERTY OF IDT
 
-  $Id: iregdef.h,v 1.14 2005/02/04 05:38:26 ralf Exp $
-*/ 
+  $Id: iregdef.h,v 1.15 2009/12/04 05:24:40 ralf Exp $
+*/
 
 /*
 **	iregdef.h - IDT R3000 register structure header file
@@ -39,7 +39,7 @@ LICENSED MATERIAL - PROGRAM PROPERTY OF IDT
  *         Look towards end of this file.
  */
 /*
-** register names 
+** register names
 */
 #define r0	$0
 #define r1	$1

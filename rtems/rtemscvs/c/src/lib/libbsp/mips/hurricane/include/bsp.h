@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.8 2008/09/19 15:49:54 joel Exp $
+ *  $Id: bsp.h,v 1.9 2009/11/29 15:27:06 ralf Exp $
  */
 
 #ifndef _BSP_H
@@ -35,7 +35,7 @@ extern uint32_t mips_get_timer( void );
  *  Simple spin delay in microsecond units for device drivers.
  *  This is very dependent on the clock speed of the target.
  *
- *  NOTE: This macro generates a warning like "integer constant out 
+ *  NOTE: This macro generates a warning like "integer constant out
  *        of range" which is safe to ignore.  In 64 bit mode, unsigned32
  *        types are actually 64 bits long so that comparisons between
  *        unsigned32 types and pointers are valid.  The warning is caused

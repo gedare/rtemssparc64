@@ -6,10 +6,10 @@
  *  The license and distribution terms for this file may be
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
- * 
+ *
  *  Modified for mvme3100 by T. Straumann, 2007.
  *
- *  $Id: start.S,v 1.5 2009/10/20 17:55:18 strauman Exp $
+ *  $Id: start.S,v 1.6 2009/11/30 04:34:37 ralf Exp $
  *
  */
 
@@ -45,7 +45,7 @@ __rtems_entry_point:
 	 * mapping a possible larger area as memory (not-guarded, caching-enabled)
 	 * than actual physical memory is available.
 	 * In case of speculative loads this may cause 'memory-select' errors
-	 * which seem to raise 'core_fault_in' (found no description in 
+	 * which seem to raise 'core_fault_in' (found no description in
 	 * the manual but I experienced this problem).
 	 * Such errors (if HID1[RFXE] is clear) may *stall* execution
 	 * leading to mysterious 'hangs'.
@@ -79,7 +79,7 @@ __rtems_entry_point:
 	li  r5, (CPU_STACK_ALIGNMENT - 1)
 	andc r1, r9, r5
 	/*
-	 * We are now in a environment that is totally independent from 
+	 * We are now in a environment that is totally independent from
 	 * bootloader setup.
 	 */
     /* pass result of 'save_boot_params' to 'boot_card' in R3 */

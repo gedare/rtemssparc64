@@ -4,7 +4,7 @@
  *  This include file contains the executive's pre-initialized tables
  *  used when in a single processor configuration.
  */
- 
+
 /*
  *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: sptables.h,v 1.10 2008/03/11 20:59:58 joel Exp $
+ *  $Id: sptables.h,v 1.11 2009/11/29 13:51:52 ralf Exp $
  */
 
 #ifndef _RTEMS_SPTABLES_H

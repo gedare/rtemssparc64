@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cleanuppush.c,v 1.6 2008/01/18 16:31:56 jennifer Exp $
+ *  $Id: cleanuppush.c,v 1.7 2009/11/30 15:44:20 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -41,7 +41,7 @@ void pthread_cleanup_push(
 
   /*
    *  The POSIX standard does not address what to do when the routine
-   *  is NULL.  It also does not address what happens when we cannot 
+   *  is NULL.  It also does not address what happens when we cannot
    *  allocate memory or anything else bad happens.
    */
   if ( !routine )

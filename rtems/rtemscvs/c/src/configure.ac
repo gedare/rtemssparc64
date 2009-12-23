@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
-## 
-## $Id: configure.ac,v 1.100 2009/10/23 14:53:46 ralf Exp $
+##
+## $Id: configure.ac,v 1.101 2009/11/28 06:28:39 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -39,7 +39,7 @@ make/custom/default.cfg: \$(srcdir)/make/custom/default.cfg.in
 	cp \$(srcdir)/make/custom/default.cfg.in make/custom/default.cfg
 EOF
 
-# Collect and copy the BSP's make/custom/*.cfg files from the toplevel make 
+# Collect and copy the BSP's make/custom/*.cfg files from the toplevel make
 # directory into the build tree's <bsp>/make/custom subdirectories
 CUSTOM_CFG_FILES=
 f="${RTEMS_BSP}.cfg"
@@ -222,7 +222,7 @@ AC_CONFIG_FILES([Makefile],
  MAKE=${MAKE}])
 
 AC_CONFIG_FILES([
-support/Makefile 
+support/Makefile
 
 libchip/Makefile
 

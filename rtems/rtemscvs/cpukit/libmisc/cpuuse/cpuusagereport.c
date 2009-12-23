@@ -1,14 +1,14 @@
 /*
  *  CPU Usage Reporter
  *
- *  COPYRIGHT (c) 1989-2007
+ *  COPYRIGHT (c) 1989-2009
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpuusagereport.c,v 1.10 2009/11/11 16:28:06 joel Exp $
+ *  $Id: cpuusagereport.c,v 1.13 2009/12/02 18:22:18 humph Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -27,11 +27,11 @@
 #include <rtems/cpuuse.h>
 #include <rtems/bspIo.h>
 
-#if defined(RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS)
+#ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
   #include <rtems/score/timestamp.h>
 #endif
 
-#ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+#ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
   extern Timestamp_Control  CPU_usage_Uptime_at_last_reset;
 #else
   extern uint32_t           CPU_usage_Ticks_at_last_reset;
@@ -53,7 +53,7 @@ void rtems_cpu_usage_report_with_plugin(
   Objects_Information *information;
   char                 name[13];
   uint32_t             ival, fval;
-  #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
     Timestamp_Control  uptime, total, ran;
   #else
     uint32_t           total_units = 0;
@@ -67,7 +67,7 @@ void rtems_cpu_usage_report_with_plugin(
    *  the number of "ticks" we gave credit for to give the user a rough
    *  guideline as to what each number means proportionally.
    */
-  #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
     _TOD_Get_uptime( &uptime );
     _Timestamp_Subtract( &CPU_usage_Uptime_at_last_reset, &uptime, &total );
   #else
@@ -85,13 +85,13 @@ void rtems_cpu_usage_report_with_plugin(
       }
     }
   #endif
-  
+
   (*print)(
      context,
      "-------------------------------------------------------------------------------\n"
      "                              CPU USAGE BY THREAD\n"
      "------------+----------------------------------------+---------------+---------\n"
-     #if defined(RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS)
+     #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
        " ID         | NAME                                   | SECONDS       | PERCENT\n"
      #else
        " ID         | NAME                                   | TICKS         | PERCENT\n"
@@ -113,7 +113,7 @@ void rtems_cpu_usage_report_with_plugin(
           continue;
 
         rtems_object_get_name( the_thread->Object.id, sizeof(name), name );
- 
+
         (*print)(
           context,
           " 0x%08" PRIx32 " | %-38s |",
@@ -121,7 +121,7 @@ void rtems_cpu_usage_report_with_plugin(
           name
         );
 
-        #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+        #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
           /*
            * If this is the currently executing thread, account for time
            * since the last context switch.
@@ -152,7 +152,7 @@ void rtems_cpu_usage_report_with_plugin(
             uint64_t ival_64;
 
             ival_64 = the_thread->cpu_time_used;
-            ival_64 *= 10000;
+            ival_64 *= 100000;
             ival = ival_64 / total_units;
           } else {
             ival = 0;
@@ -171,7 +171,7 @@ void rtems_cpu_usage_report_with_plugin(
     }
   }
 
-  #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
     (*print)(
        context,
        "------------+----------------------------------------+---------------+---------\n"

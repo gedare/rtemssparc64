@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: imfs_eval.c,v 1.23 2009/06/12 01:53:33 ccj Exp $
+ *  $Id: imfs_eval.c,v 1.24 2009/11/29 13:18:56 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -110,7 +110,7 @@ int IMFS_evaluate_permission(
   else {
     /* must be other - do nothing */;
   }
-  
+
   /*
    * If all of the flags are set we have permission
    * to do this.
@@ -311,7 +311,7 @@ int IMFS_evaluate_for_make(
   /*
    *  Evaluate all tokens until we are done or an error occurs.
    */
-  
+
   while( !done ) {
 
     type = IMFS_get_token( &path[i], pathlen, token, &len );

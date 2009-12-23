@@ -1,4 +1,4 @@
-/*  
+/*
  *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/09/29 00:06:43 joel Exp $
+ *  $Id: init.c,v 1.2 2009/11/30 03:33:25 ralf Exp $
  */
 
 #include "tmacros.h"

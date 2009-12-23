@@ -1,7 +1,7 @@
-/** 
+/**
  *  @file  rtems/score/timestamp64.h
  *
- *  This include file contains helpers for manipulating 
+ *  This include file contains helpers for manipulating
  *  64-bit integer timestamps.
  */
 
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timestamp64.h,v 1.1 2008/12/09 21:27:35 joel Exp $
+ *  $Id: timestamp64.h,v 1.2 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_TIMESTAMP64_H
@@ -96,7 +96,7 @@ typedef int64_t Timestamp64_Control;
  *
  *  @param[in] _time points to the timestamp instance to validate.
  *
- *  @return This method returns true if @a time is valid and 
+ *  @return This method returns true if @a time is valid and
  *          false otherwise.
  */
 #define _Timestamp64_Is_valid( _time ) \
@@ -109,7 +109,7 @@ typedef int64_t Timestamp64_Control;
  *  @param[in] _lhs points to the left hand side timestamp
  *  @param[in] _rhs points to the right hand side timestamp
  *
- *  @return This method returns true if @a _lhs is less than the @a _rhs and 
+ *  @return This method returns true if @a _lhs is less than the @a _rhs and
  *          false otherwise.
  */
 #if defined(CPU_RTEMS_SCORE_TIMESTAMP_INT64_INLINE)
@@ -129,7 +129,7 @@ typedef int64_t Timestamp64_Control;
  *  @param[in] _lhs points to the left hand side timestamp
  *  @param[in] _rhs points to the right hand side timestamp
  *
- *  @return This method returns true if @a _lhs is greater than the @a _rhs and 
+ *  @return This method returns true if @a _lhs is greater than the @a _rhs and
  *          false otherwise.
  */
 #if defined(CPU_RTEMS_SCORE_TIMESTAMP_INT64_INLINE)
@@ -149,7 +149,7 @@ typedef int64_t Timestamp64_Control;
  *  @param[in] _lhs points to the left hand side timestamp
  *  @param[in] _rhs points to the right hand side timestamp
  *
- *  @return This method returns true if @a _lhs is equal to  @a _rhs and 
+ *  @return This method returns true if @a _lhs is equal to  @a _rhs and
  *          false otherwise.
  */
 #if defined(CPU_RTEMS_SCORE_TIMESTAMP_INT64_INLINE)
@@ -168,7 +168,7 @@ typedef int64_t Timestamp64_Control;
  *  to the first.
  *
  *  @param[in] _time points to the base time to be added to
- *  @param[in] _add points to the timestamp to add to the first argument 
+ *  @param[in] _add points to the timestamp to add to the first argument
  *
  *  @return This method returns the number of seconds @a time increased by.
  */
@@ -186,7 +186,7 @@ typedef int64_t Timestamp64_Control;
  *
  *  This routine adds two timestamps.  The second argument is added
  *  to the first.
- *  
+ *
  *  @node This routine places a special requirement on the addition
  *        operation.  It must return the number of units that the
  *        seconds field changed as the result of the addition.  Since this
@@ -194,7 +194,7 @@ typedef int64_t Timestamp64_Control;
  *        it is generally safe to assume that only one second changed.
  *
  *  @param[in] _time points to the base time to be added to
- *  @param[in] _add points to the timestamp to add to the first argument 
+ *  @param[in] _add points to the timestamp to add to the first argument
  *
  *  @return This method returns the number of seconds @a time increased by.
  */
@@ -265,7 +265,7 @@ void _Timestamp64_From_ticks(
 /** @brief Divide Timestamp By Integer
  *
  *  This routine divides a timestamp by an integer value.  The expected
- *  use is to assist in benchmark calculations where you typically 
+ *  use is to assist in benchmark calculations where you typically
  *  divide a duration by a number of iterations.
  *
  *  @param[in] _time points to the total
@@ -289,7 +289,7 @@ void _Timestamp64_From_ticks(
 
 /** @brief Divide Timestamp
  *
- *  This routine divides a timestamp by another timestamp.  The 
+ *  This routine divides a timestamp by another timestamp.  The
  *  intended use is for calculating percentages to three decimal points.
  *
  *  @param[in] _lhs points to the left hand number

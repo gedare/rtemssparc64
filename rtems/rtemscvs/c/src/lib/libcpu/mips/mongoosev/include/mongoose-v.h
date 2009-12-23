@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mongoose-v.h,v 1.9 2004/03/31 11:11:30 ralf Exp $
+ *  $Id: mongoose-v.h,v 1.10 2009/11/30 05:09:01 ralf Exp $
  */
 
 #ifndef __MONGOOSEV_h
@@ -122,10 +122,10 @@
 #define MONGOOSEV_UART_ALL_RX_STATUS_BITS          0x0013
 #define MONGOOSEV_UART_ALL_STATUS_BITS             0x001F
 
-/* 
- *  The Peripheral Interrupt Status, Cause, and Mask registers have the 
- *  same bit assignments although some revisions of the document have 
- *  the Cause and Status registers incorrect.  
+/*
+ *  The Peripheral Interrupt Status, Cause, and Mask registers have the
+ *  same bit assignments although some revisions of the document have
+ *  the Cause and Status registers incorrect.
  */
 
 #define MONGOOSEV_UART0_IRQ_SHIFT 11
@@ -193,7 +193,7 @@
 ** Peripheral Command bits (non-uart, those are defined above)
 */
 #define MONGOOSEV_COMMAND_ENABLE_EDAC	MONGOOSEV_EDAC_SERR_BIT
-#define MONGOOSEV_COMMAND_OVERRIDE_EDAC MONGOOSEV_EDAC_MERR_BIT         
+#define MONGOOSEV_COMMAND_OVERRIDE_EDAC MONGOOSEV_EDAC_MERR_BIT
 
 
 

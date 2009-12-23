@@ -17,18 +17,20 @@
  * The license and distribution terms for this file may be
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
+ *
+ * $Id: init.c,v 1.4 2009/12/08 17:52:49 joel Exp $
  */
 
 #include <stdio.h>
-#include <assert.h>
+#include "tmacros.h"
 
 #include <rtems.h>
 #include <rtems/ramdisk.h>
 #include <rtems/diskdevs.h>
 
-#define ASSERT_SC(sc) assert((sc) == RTEMS_SUCCESSFUL)
+#define ASSERT_SC(sc) rtems_test_assert((sc) == RTEMS_SUCCESSFUL)
 
-#define ASSERT_SC_EQ(sc, sc_expected) assert((sc) == (sc_expected))
+#define ASSERT_SC_EQ(sc, sc_expected) rtems_test_assert((sc) == (sc_expected))
 
 #define BLOCK_SIZE 512U
 
@@ -49,7 +51,7 @@ static void test_diskdevs(void)
   dev_t const big_minor_dev = rtems_filesystem_make_dev_t(0, (rtems_device_minor_number) -2);
   ramdisk *const rd = ramdisk_allocate(NULL, BLOCK_SIZE, BLOCK_COUNT, false);
 
-  assert(rd != NULL);
+  rtems_test_assert(rd != NULL);
 
   sc = rtems_disk_io_initialize();
   ASSERT_SC(sc);
@@ -125,13 +127,13 @@ static void test_diskdevs(void)
   ASSERT_SC(sc);
 
   physical_dd = rtems_disk_obtain(physical_dev);
-  assert(physical_dd != NULL && physical_dd->uses == 2);
+  rtems_test_assert(physical_dd != NULL && physical_dd->uses == 2);
 
   sc = rtems_disk_release(physical_dd);
   ASSERT_SC(sc);
 
   logical_dd = rtems_disk_obtain(logical_dev);
-  assert(logical_dd != NULL && logical_dd->uses == 1);
+  rtems_test_assert(logical_dd != NULL && logical_dd->uses == 1);
 
   sc = rtems_disk_delete(physical_dev);
   ASSERT_SC(sc);
@@ -140,10 +142,10 @@ static void test_diskdevs(void)
   ASSERT_SC_EQ(sc, RTEMS_RESOURCE_IN_USE);
 
   dd = rtems_disk_obtain(physical_dev);
-  assert(dd == NULL);
+  rtems_test_assert(dd == NULL);
 
   dd = rtems_disk_obtain(logical_dev);
-  assert(dd == NULL);
+  rtems_test_assert(dd == NULL);
 
   sc = rtems_disk_release(logical_dd);
   ASSERT_SC(sc);
@@ -152,6 +154,8 @@ static void test_diskdevs(void)
 
   sc = rtems_io_unregister_driver(major);
   ASSERT_SC(sc);
+
+  ramdisk_free(rd);
 
   sc = rtems_disk_io_done();
   ASSERT_SC(sc);

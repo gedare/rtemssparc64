@@ -10,28 +10,28 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp_irq_asm.S,v 1.2 2009/07/17 13:52:16 thomas Exp $
+ *  $Id: bsp_irq_asm.S,v 1.3 2009/11/30 05:03:56 ralf Exp $
  */
 
 #define __asm__
-                
-/* 
- * Function to obtain, execute an IT handler and acknowledge the IT 
+
+/*
+ * Function to obtain, execute an IT handler and acknowledge the IT
  */
 
         .globl bsp_interrupt_dispatch
-        
-bsp_interrupt_dispatch :      
+
+bsp_interrupt_dispatch :
 
         ldr     r0, =0x14400014  /* Read rINTOFFSET */
         ldr     r1, [r0]
 
         ldr     r0, =bsp_vector_table
         ldr     r0, [r0, r1, LSL #2]    /* Read the address */
-        
+
         stmdb     sp!,{lr}
         ldr     lr, =IRQ_return         /* prepare the return from handler  */
-        
+
         mov pc, r0
 
 IRQ_return:

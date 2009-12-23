@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.8 2009/11/12 00:21:51 joel Exp $
+ *  $Id: init.c,v 1.10 2009/12/08 17:52:53 joel Exp $
  */
 
 #include <pmacros.h>
@@ -17,7 +17,7 @@ void check_enosys(int status);
 
 void check_enosys(int status)
 {
-  if ( (status == -1) && (errno == ENOSYS) ) 
+  if ( (status == -1) && (errno == ENOSYS) )
     return;
   puts( "ERROR -- did not return ENOSYS as expected" );
   rtems_test_exit(0);
@@ -106,7 +106,7 @@ rtems_task Init(
 
   remaining = sleep( 3 );
   rtems_test_assert( !remaining );
-  
+
   /* print new times to make sure it has changed and we can get the realtime */
   sc = clock_gettime( CLOCK_PROCESS_CPUTIME, &tv );
   rtems_test_assert( !sc );
@@ -210,8 +210,8 @@ rtems_task Init(
   delay_request.tv_sec = 1;
   delay_request.tv_nsec = 35000000;
   sc = nanosleep( &delay_request, NULL );
-  assert( !sc );
-  
+  rtems_test_assert( !sc );
+
   /* print the current real time again */
   sc = clock_gettime( CLOCK_REALTIME, &tv );
   rtems_test_assert( !sc );

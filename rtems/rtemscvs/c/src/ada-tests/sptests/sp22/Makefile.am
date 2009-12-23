@@ -1,15 +1,15 @@
-## $Id: Makefile.am,v 1.8 2008/02/01 21:28:08 joel Exp $
+## $Id: Makefile.am,v 1.9 2009/12/14 18:28:02 joel Exp $
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../../../testsuites/automake/compile.am
 
 include $(top_srcdir)/ada.am
 
-noinst_PROGRAMS = ada_sp22.exe
-ada_sp22_exe_SOURCES = sp22.adb config.h sptest.adb sptest.ads
-ada_sp22_exe_SOURCES += ../../support/init.c
+noinst_PROGRAMS = ada_sp22
+ada_sp22_SOURCES = sp22.adb config.h sptest.adb sptest.ads
+ada_sp22_SOURCES += ../../support/init.c
 
-ada_sp22.exe: sp22.adb init.$(OBJEXT)
+ada_sp22$(EXEEXT): sp22.adb init.$(OBJEXT)
 	$(GNATCOMPILE) -margs -a $< -o $@
 
 scndir = $(rtems_ada_testsdir)

@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: objectget.c,v 1.13 2008/05/06 20:31:33 joel Exp $
+ *  $Id: objectget.c,v 1.14 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -63,7 +63,7 @@ Objects_Control *_Objects_Get(
    *  outside this class.
    *
    *  If the Id matches the api, class, and node but index portion is 0,
-   *  then the subtraction will underflow and the addition of 1 will 
+   *  then the subtraction will underflow and the addition of 1 will
    *  result in a 0 index.  The zeroth element in the local_table is
    *  always NULL.
    *

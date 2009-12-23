@@ -7,7 +7,7 @@
  * Saskatoon, Saskatchewan, CANADA
  * eric@skatter.usask.ca
  *
- *  $Id: init68360.c,v 1.26 2008/09/16 22:15:59 joel Exp $
+ *  $Id: init68360.c,v 1.27 2009/11/29 14:59:40 ralf Exp $
  */
 
 #include <rtems.h>
@@ -465,7 +465,7 @@ void _Init68360 (void)
 	  ram_end  = &ramtest_end;
 	  code_loc = (void *)ramtest_exec;
 	  if ((ram_base < ram_end) &&
-	    !((ram_base <= code_loc) && (code_loc < ram_end))) {	    
+	    !((ram_base <= code_loc) && (code_loc < ram_end))) {
 	    ramtest_exec(ram_base,ram_end);
 	  }
 	}
@@ -477,7 +477,7 @@ void _Init68360 (void)
 	for (i = 0; i < 256; ++i)
 		M68Kvec[i] = vbr[i];
 	m68k_set_vbr (M68Kvec);
-	
+
 	/*
 	 * Step 14: More system initialization
 	 * SDCR (Serial DMA configuration register)

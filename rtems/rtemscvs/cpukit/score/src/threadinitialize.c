@@ -2,14 +2,14 @@
  *  Thread Handler
  *
  *
- *  COPYRIGHT (c) 1989-2008.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: threadinitialize.c,v 1.35 2009/09/13 21:00:11 joel Exp $
+ *  $Id: threadinitialize.c,v 1.38 2009/12/02 18:22:18 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -202,10 +202,10 @@ bool _Thread_Initialize(
   /*
    *  Initialize the CPU usage statistics
    */
-  #ifdef RTEMS_ENABLE_NANOSECOND_CPU_USAGE_STATISTICS
+  #ifndef __RTEMS_USE_TICKS_FOR_STATISTICS__
     _Timestamp_Set_to_zero( &the_thread->cpu_time_used );
   #else
-    the_thread->cpu_time_used         = 0;
+    the_thread->cpu_time_used = 0;
   #endif
 
   /*
@@ -216,7 +216,7 @@ bool _Thread_Initialize(
   /*
    *  We assume the Allocator Mutex is locked and dispatching is
    *  enabled when we get here.  We want to be able to run the
-   *  user extensions with dispatching enabled.  The Allocator 
+   *  user extensions with dispatching enabled.  The Allocator
    *  Mutex provides sufficient protection to let the user extensions
    *  run safely.
    */
@@ -231,7 +231,7 @@ failed:
   for ( i=0 ; i <= THREAD_API_LAST ; i++ )
     if ( the_thread->API_Extensions[i] )
       _Workspace_Free( the_thread->API_Extensions[i] );
-  
+
   if ( extensions_area )
     (void) _Workspace_Free( extensions_area );
 

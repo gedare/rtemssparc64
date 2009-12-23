@@ -9,7 +9,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: threadclearstate.c,v 1.9 2008/12/22 05:52:32 ralf Exp $
+ *  $Id: threadclearstate.c,v 1.10 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -78,7 +78,7 @@ void _Thread_Clear_state(
          *  then we have a new heir.  This may or may not result in a
          *  context switch.
          *
-         *  Normal case: 
+         *  Normal case:
          *    If the current thread is preemptible, then we need to do
          *    a context switch.
          *  Pseudo-ISR case:

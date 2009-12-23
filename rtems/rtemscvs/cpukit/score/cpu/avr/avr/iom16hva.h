@@ -1,4 +1,4 @@
-/* Copyright (c) 2007, Anatoly Sokolov 
+/* Copyright (c) 2007, Anatoly Sokolov
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iom16hva.h,v 1.1 2009/08/06 14:52:05 joel Exp $ */
+/* $Id: iom16hva.h,v 1.2 2009/11/30 16:01:44 ralf Exp $ */
 
 /* iom16hva.h - definitions for ATmega16HVA.  */
 

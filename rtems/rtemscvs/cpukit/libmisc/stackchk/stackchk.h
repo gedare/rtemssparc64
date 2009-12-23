@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: stackchk.h,v 1.15 2008/09/01 09:12:43 ralf Exp $
+ *  $Id: stackchk.h,v 1.16 2009/11/29 11:57:23 ralf Exp $
  */
 
 #ifndef __RTEMS_STACK_CHECKER_h
@@ -44,13 +44,13 @@ bool rtems_stack_checker_is_blown( void );
  */
 void rtems_stack_checker_report_usage( void );
 
-/** @brief Print Stack Usage Report 
+/** @brief Print Stack Usage Report
  *
  *  This method prints a stack usage report for the curently executing
  *  task.
  *
- *  @param[in] context is the context to pass to the print handler 
- *  @param[in] print is the print handler 
+ *  @param[in] context is the context to pass to the print handler
+ *  @param[in] print is the print handler
  *
  *  @note It uses the caller's routine to print the report.
  */

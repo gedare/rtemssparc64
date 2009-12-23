@@ -9,7 +9,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: openpic_i8259_irq.c,v 1.9 2009/10/23 07:32:45 thomas Exp $
+ *  $Id: openpic_i8259_irq.c,v 1.10 2009/11/30 04:33:10 ralf Exp $
  */
 
 #include <stdlib.h>
@@ -111,7 +111,7 @@ BSP_enable_irq_at_pic(const rtems_irq_number name)
       BSP_irq_enable_at_i8259s ((int) name - BSP_ISA_IRQ_LOWEST_OFFSET);
     }
 #endif
-    
+
     if (is_pci_irq(name)) {
       /*
        * Enable interrupt at OPENPIC level

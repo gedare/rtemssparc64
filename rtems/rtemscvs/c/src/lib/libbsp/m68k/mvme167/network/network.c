@@ -1,6 +1,6 @@
 /*  network.c: An 82596 ethernet driver for rtems-bsd.
  *
- *  $Id: network.c,v 1.14 2009/02/17 18:37:02 joel Exp $
+ *  $Id: network.c,v 1.15 2009/11/29 14:59:41 ralf Exp $
  */
 
 #define KERNEL
@@ -1850,7 +1850,7 @@ void uti596_init(
     printk(("uti596_init: After attach, status of board = 0x%x\n", sc->scb.status ))
     #endif
   }
- 
+
   /*
    * In case the ISR discovers there are no resources it reclaims
    * them and restarts

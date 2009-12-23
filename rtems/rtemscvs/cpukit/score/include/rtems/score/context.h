@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/context.h
  *
  *  This include file contains all information about each thread's context.
@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: context.h,v 1.20 2008/12/22 06:05:33 ralf Exp $
+ *  $Id: context.h,v 1.21 2009/11/28 05:58:53 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_CONTEXT_H
@@ -57,7 +57,7 @@ SCORE_EXTERN volatile bool _Context_Switch_necessary;
  *  thread's initial state.
  *
  *  @param[in] _the_context will be initialized
- *  @param[in] _stack is the lowest physical address of the thread's 
+ *  @param[in] _stack is the lowest physical address of the thread's
  *         context
  *  @param[in] _size is the size in octets of the thread's context
  *  @param[in] _isr is the ISR enable level for this thread

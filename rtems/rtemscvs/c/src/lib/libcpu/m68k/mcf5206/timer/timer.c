@@ -18,15 +18,15 @@
  *  found in the file LICENSE in this distribution or at
  *
  *  http://www.rtems.com/license/LICENSE.
- * 
- *  $Id: timer.c,v 1.7 2008/09/05 11:55:58 ralf Exp $
+ *
+ *  $Id: timer.c,v 1.8 2009/11/30 17:14:20 ralf Exp $
  */
 
 #include <rtems.h>
 #include <bsp.h>
 #include "mcf5206/mcf5206e.h"
 
-#define TRR2_VAL 65530  
+#define TRR2_VAL 65530
 
 uint32_t   Timer_interrupts;
 
@@ -50,16 +50,16 @@ benchmark_timer_initialize(void)
 {
     /* Catch timer2 interrupts */
     set_vector(timerisr, BSP_INTVEC_TIMER2, 0);
-    
+
     /* Initialize interrupts for timer2 */
     *MCF5206E_ICR(MBAR, MCF5206E_INTR_TIMER_2) =
         MCF5206E_ICR_AVEC |
         ((BSP_INTLVL_TIMER2 << MCF5206E_ICR_IL_S) & MCF5206E_ICR_IL) |
         ((BSP_INTPRIO_TIMER2 << MCF5206E_ICR_IP_S) & MCF5206E_ICR_IP);
-        
+
     /* Enable interrupts from timer2 */
     *MCF5206E_IMR(MBAR) &= ~MCF5206E_INTR_BIT(MCF5206E_INTR_TIMER_2);
-    
+
     /* Reset Timer */
     *MCF5206E_TMR(MBAR, 2) = MCF5206E_TMR_RST;
     *MCF5206E_TMR(MBAR, 2) = MCF5206E_TMR_ICLK_STOP;
@@ -113,13 +113,13 @@ benchmark_timer_read( void )
      *  rolled over.
      */
     clicks = *MCF5206E_TCN(MBAR, 2);
-  
+
     /* Stop Timer... */
     *MCF5206E_TMR(MBAR, 2) = MCF5206E_TMR_ICLK_STOP |
                              MCF5206E_TMR_RST;
 
     /*
-     *  Total is calculated by taking into account the number of timer 
+     *  Total is calculated by taking into account the number of timer
      *  overflow interrupts since the timer was initialized and clicks
      *  since the last interrupts.
      */

@@ -10,18 +10,17 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-1997.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: sptest.adb,v 1.4 2003/09/04 18:50:40 joel Exp $
+--  $Id: sptest.adb,v 1.5 2009/12/14 21:17:58 joel Exp $
 --
 
 with INTERFACES; use INTERFACES;
-with RTEMS;
 with TEST_SUPPORT;
 with TEXT_IO;
 
@@ -35,6 +34,7 @@ package body SPTEST is
    procedure INIT (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -97,6 +97,7 @@ package body SPTEST is
    procedure PROCESS_ASR (
       SIGNALS : in     RTEMS.SIGNAL_SET
    ) is
+      pragma Unreferenced(SIGNALS);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -113,6 +114,7 @@ package body SPTEST is
    procedure TASK_1 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -132,7 +134,7 @@ package body SPTEST is
       );
       TEST_SUPPORT.DIRECTIVE_FAILED( STATUS, "SIGNAL_SEND" );
 
-      if SPTEST.TASK_2_PREEMPTED = TRUE then
+      if SPTEST.TASK_2_PREEMPTED then
          TEXT_IO.PUT_LINE( "TA1 - TA2 correctly preempted me" );
       end if;
 
@@ -151,6 +153,7 @@ package body SPTEST is
    procedure TASK_2 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 

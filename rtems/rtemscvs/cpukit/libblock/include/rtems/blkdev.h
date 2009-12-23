@@ -5,12 +5,12 @@
  *
  * Block device management.
  */
- 
+
 /*
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Victor V. Vengerov <vvv@oktet.ru>
  *
- * @(#) $Id: blkdev.h,v 1.17 2009/11/20 06:33:38 thomas Exp $
+ * @(#) $Id: blkdev.h,v 1.19 2009/11/30 12:39:51 thomas Exp $
  */
 
 #ifndef _RTEMS_BLKDEV_H
@@ -30,7 +30,7 @@ extern "C" {
  * @ingroup rtems_libblock
  *
  * Interface between device drivers and the
- * @ref rtems_bdbuf "block device buffer module". 
+ * @ref rtems_bdbuf "block device buffer module".
  *
  * The heart of the block device driver is the @ref RTEMS_BLKIO_REQUEST IO
  * control. This call puts IO @ref rtems_blkdev_request "requests" to the block
@@ -49,7 +49,7 @@ typedef enum rtems_blkdev_request_op {
   RTEMS_BLKDEV_CAPABILITIES    /**< Return the driver capabilities set. */
 } rtems_blkdev_request_op;
 
-/** 
+/**
  * Only consecutive multi-sector buffer requests are supported.
  *
  * This option means the cache will only supply multiple buffers that are
@@ -125,7 +125,7 @@ typedef struct rtems_blkdev_request {
   /**
    * Last IO operation completion status.
    */
-  rtems_status_code status; 
+  rtems_status_code status;
 
   /**
    * If @c status is not equal to @c RTEMS_SUCCESSFUL, this field contains the
@@ -182,11 +182,11 @@ typedef struct rtems_blkdev_request {
  * appropriate IO control handler.
  */
 #define RTEMS_GENERIC_BLOCK_DEVICE_DRIVER_ENTRIES \
-  .open_entry = rtems_blkdev_generic_open, \
-  .close_entry = rtems_blkdev_generic_close, \
-  .read_entry = rtems_blkdev_generic_read, \
-  .write_entry = rtems_blkdev_generic_write, \
-  .control_entry = rtems_blkdev_generic_ioctl
+  rtems_blkdev_generic_open, \
+  rtems_blkdev_generic_close, \
+  rtems_blkdev_generic_read, \
+  rtems_blkdev_generic_write, \
+  rtems_blkdev_generic_ioctl
 
 /**
  * Generic block device read primitive.

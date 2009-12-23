@@ -1,4 +1,4 @@
-/** 
+/**
  * @file
  *
  * @ingroup ScoreSysState
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: sysstate.h,v 1.24 2009/09/04 13:09:48 joel Exp $
+ *  $Id: sysstate.h,v 1.25 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_SYSSTATE_H
@@ -50,7 +50,7 @@ typedef enum {
   SYSTEM_STATE_BEFORE_MULTITASKING,
 
   /**
-   * @brief The system is attempting to initiate multitasking. 
+   * @brief The system is attempting to initiate multitasking.
    */
   SYSTEM_STATE_BEGIN_MULTITASKING,
 

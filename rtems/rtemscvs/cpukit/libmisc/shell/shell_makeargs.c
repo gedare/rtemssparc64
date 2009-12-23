@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: shell_makeargs.c,v 1.4 2008/03/05 02:49:35 joel Exp $
+ *  $Id: shell_makeargs.c,v 1.5 2009/11/29 12:12:39 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -19,15 +19,15 @@
 
 int rtems_shell_make_args(
   char  *commandLine,
-  int   *argc_p, 
-  char **argv_p, 
+  int   *argc_p,
+  char **argv_p,
   int    max_args
 )
 {
   int   argc;
   char *command;
   int   status = 0;
-  
+
   argc = 0;
   command = commandLine;
 

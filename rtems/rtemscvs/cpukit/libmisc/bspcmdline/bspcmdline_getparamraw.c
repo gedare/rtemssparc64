@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspcmdline_getparamraw.c,v 1.2 2009/08/06 15:21:14 joel Exp $
+ *  $Id: bspcmdline_getparamraw.c,v 1.3 2009/11/29 12:12:38 ralf Exp $
  */
 
 #include <rtems/bspcmdline.h>
@@ -23,7 +23,7 @@ const char *rtems_bsp_cmdline_get_param_raw(
 
   if ( !name )
     return NULL;
-   
+
   if ( !bsp_boot_cmdline )
     return NULL;
 

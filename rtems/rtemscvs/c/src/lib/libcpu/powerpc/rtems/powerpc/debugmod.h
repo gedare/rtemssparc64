@@ -35,12 +35,12 @@
  * Note:
  *      This file is included by both C and assembler code ( -DASM )
  *
- *  $Id: debugmod.h,v 1.3 2005/02/09 08:01:18 ralf Exp $
+ *  $Id: debugmod.h,v 1.4 2009/11/30 05:07:54 ralf Exp $
  */
 
 /*
  * FIXME: This file is not used anywhere inside of RTEMS source-tree.
- * Notify OAR if you actually use it, otherwise it might be removed in 
+ * Notify OAR if you actually use it, otherwise it might be removed in
  * future versions of RTEMS
  */
 
@@ -65,7 +65,7 @@ extern "C" {
  *
  *    + PPC_DEBUG_MODEL          - PPC_DEBUG_MODEL_STANDARD
  */
- 
+
 /*
  *  Define the debugging assistance models found in the PPC family.
  *

@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_init.c,v 1.26 2009/10/23 07:32:45 thomas Exp $
+ *  $Id: irq_init.c,v 1.28 2009/12/10 08:50:57 ralf Exp $
  */
 
 #include <libcpu/io.h>
@@ -56,6 +56,9 @@ static rtems_irq_global_settings     	initial_config;
 static rtems_irq_connect_data     	defaultIrq = {
   /* vectorIdex,	 hdl		, handle	, on		, off		, isOn */
   0, 			 nop_func	, NULL		, nop_func	, nop_func	, not_connected
+#ifdef BSP_SHARED_HANDLER_SUPPORT
+  , NULL /* next_handler */
+#endif
 };
 static rtems_irq_prio irqPrioTable[BSP_IRQ_NUMBER]={
   /*
@@ -274,11 +277,11 @@ void BSP_rtems_irq_mng_init(unsigned cpuId)
    */
   openpic_init(1, mvme2100_openpic_initpolarities, mvme2100_openpic_initsenses, 16, 16, BSP_bus_frequency);
 #else
-#ifdef TRACE_IRQ_INIT  
+#ifdef TRACE_IRQ_INIT
   printk("Going to initialize raven interrupt controller (openpic compliant)\n");
 #endif
   openpic_init(1, mcp750_openpic_initpolarities, mcp750_openpic_initsenses, 0, 0, 0);
-#ifdef TRACE_IRQ_INIT  
+#ifdef TRACE_IRQ_INIT
   printk("Going to initialize the PCI/ISA bridge IRQ related setting (VIA 82C586)\n");
 #endif
   if ( currentBoard == MESQUITE ) {
@@ -330,8 +333,8 @@ void BSP_rtems_irq_mng_init(unsigned cpuId)
        */
       BSP_panic("Unable to initialize RTEMS interrupt Management!!! System locked\n");
     }
-  
-#ifdef TRACE_IRQ_INIT  
+
+#ifdef TRACE_IRQ_INIT
     printk("RTEMS IRQ management is now operational\n");
 #endif
 }

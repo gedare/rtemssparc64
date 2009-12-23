@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspreset.c,v 1.1 2008/09/22 21:50:15 joel Exp $
+ *  $Id: bspreset.c,v 1.2 2009/11/29 15:27:07 ralf Exp $
  */
 
 #include <rtems.h>
@@ -21,7 +21,7 @@ void bsp_reset( void )
     BSP_IRQ_Benchmarking_Report();
   }
   #endif
- 
+
   /*
    * Now reset the CPU
    */

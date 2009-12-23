@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.9 2008/09/18 17:40:14 joel Exp $
+ *  $Id: bsp.h,v 1.10 2009/11/29 15:27:06 ralf Exp $
  */
 
 #ifndef _BSP_H
@@ -34,7 +34,7 @@ extern "C" {
  */
 extern struct rtems_bsdnet_ifconfig *config;
 
-int rtems_au1x00_emac_attach(struct rtems_bsdnet_ifconfig *config, 
+int rtems_au1x00_emac_attach(struct rtems_bsdnet_ifconfig *config,
                              int attaching);
 #define RTEMS_BSP_NETWORK_DRIVER_NAME	"eth0"
 #define RTEMS_BSP_NETWORK_DRIVER_ATTACH	rtems_au1x00_emac_attach

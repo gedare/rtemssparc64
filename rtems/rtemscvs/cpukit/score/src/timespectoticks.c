@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  score/src/timespectoticks.c
  */
 
@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timespectoticks.c,v 1.2 2008/12/16 17:36:01 joel Exp $
+ *  $Id: timespectoticks.c,v 1.3 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -36,7 +36,7 @@ uint32_t _Timespec_To_ticks(
 {
   uint32_t  ticks;
 
-  if ( (time->tv_sec == 0) && (time->tv_nsec == 0) ) 
+  if ( (time->tv_sec == 0) && (time->tv_nsec == 0) )
     return 0;
 
   ticks  = time->tv_sec * TOD_TICKS_PER_SECOND;

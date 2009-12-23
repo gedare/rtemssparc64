@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: main_date.c,v 1.5 2008/03/05 02:49:35 joel Exp $
+ *  $Id: main_date.c,v 1.6 2009/11/29 12:12:39 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -54,7 +54,7 @@ int rtems_shell_main_date(
 
     sprintf( buf, "%s %s", argv[1], argv[2] );
     result = strptime(
-      buf, 
+      buf,
       "%Y-%m-%d %T",
       &TOD
     );

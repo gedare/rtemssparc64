@@ -10,7 +10,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp.h,v 1.6 2009/08/21 17:58:24 joel Exp $
+ *  $Id: bsp.h,v 1.7 2009/11/29 14:52:59 ralf Exp $
 */
 #ifndef _BSP_H
 #define _BSP_H
@@ -39,7 +39,7 @@ int get_perclk1_freq(void);
 extern struct rtems_bsdnet_ifconfig *config;
 
 /* Change these to match your board */
-int rtems_mc9328mxl_enet_attach(struct rtems_bsdnet_ifconfig *config, 
+int rtems_mc9328mxl_enet_attach(struct rtems_bsdnet_ifconfig *config,
                                 void *chip);
 #define RTEMS_BSP_NETWORK_DRIVER_NAME	"eth0"
 #define RTEMS_BSP_NETWORK_DRIVER_ATTACH	rtems_mc9328mxl_enet_attach

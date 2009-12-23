@@ -7,7 +7,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/10/12 00:00:04 joel Exp $
+ *  $Id: init.c,v 1.2 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include <rtems.h>
@@ -31,7 +31,7 @@ void *POSIX_Init(
 
   puts( "Init - pthread_cleanup_pop - do not execute" );
   pthread_cleanup_pop(0);
- 
+
   puts( "*** END OF POSIX CLEANUP TEST 01 ***\n" );
   rtems_test_exit(0);
 }

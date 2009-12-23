@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/threadmp.h
  *
  *  This include file contains the specification for all routines
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: threadmp.h,v 1.19 2006/04/05 20:08:59 joel Exp $
+ *  $Id: threadmp.h,v 1.20 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_THREADMP_H
@@ -22,7 +22,7 @@
 /**
  *  @defgroup ScoreThreadMP Thread Handler Multiprocessing Support
  *
- *  This handler encapsulates functionality which is related to managing 
+ *  This handler encapsulates functionality which is related to managing
  *  threads in a multiprocessor system configuration.  This handler must
  *  manage proxies which represent remote threads blocking on local
  *  operations.

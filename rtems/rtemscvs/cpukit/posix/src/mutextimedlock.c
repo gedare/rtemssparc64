@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mutextimedlock.c,v 1.10 2009/10/10 15:21:41 joel Exp $
+ *  $Id: mutextimedlock.c,v 1.11 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -56,7 +56,7 @@ int pthread_mutex_timedlock(
    *  then we do a polling operation and convert the UNSATISFIED
    *  status into the appropriate error.
    *
-   *  If the status is POSIX_ABSOLUTE_TIMEOUT_INVALID, 
+   *  If the status is POSIX_ABSOLUTE_TIMEOUT_INVALID,
    *  POSIX_ABSOLUTE_TIMEOUT_IS_IN_PAST, or POSIX_ABSOLUTE_TIMEOUT_IS_NOW,
    *  then we should not wait.
    */
@@ -64,7 +64,7 @@ int pthread_mutex_timedlock(
   if ( status != POSIX_ABSOLUTE_TIMEOUT_IS_IN_FUTURE )
     do_wait = false;
 
-  lock_status = _POSIX_Mutex_Lock_support( mutex, do_wait, ticks ); 
+  lock_status = _POSIX_Mutex_Lock_support( mutex, do_wait, ticks );
   /*
    *  This service only gives us the option to block.  We used a polling
    *  attempt to lock if the abstime was not in the future.  If we did

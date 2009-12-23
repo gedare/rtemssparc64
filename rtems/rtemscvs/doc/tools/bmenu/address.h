@@ -7,7 +7,7 @@
  *  On-Line Applications Research Corporation (OAR).
  *  All rights reserved.
  *
- *  $Id: address.h,v 1.7 2007/12/07 02:58:44 ralf Exp $
+ *  $Id: address.h,v 1.8 2009/12/10 18:09:59 ralf Exp $
  */
 
 #ifndef __ADDRESSES_h
@@ -25,8 +25,8 @@
  *  converted to an access type before being used further.
  */
 
-STATIC INLINE void *_Addresses_Add_offset ( 
-  void       *base, 
+STATIC INLINE void *_Addresses_Add_offset (
+  void       *base,
   size_t      offset
 );
 

@@ -1,7 +1,7 @@
 /*
  *  From Newlib 1.16.0
  *
- *  $Id: start.S,v 1.2 2009/04/28 06:22:13 ccj Exp $
+ *  $Id: start.S,v 1.3 2009/11/30 04:56:52 ralf Exp $
  */
 
 #warning Call to boot_card has changed and needs checking.
@@ -25,7 +25,7 @@ _start:
 	add3	r2, r2, #low(__bss_start); R2 = start of BSS
 	seth	r3, #shigh(_end)
 	add3	r3, r3, #low(_end)	; R3 = end of BSS + 1
-	
+
 	sub	r3, r2		; R3 = BSS size in bytes
 	mv	r4, r3
 	srli	r4, #2		; R4 = BSS size in longwords (rounded down)

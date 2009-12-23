@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/corespinlock.h
  *
  *  This include file contains all the constants and structures associated
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: corespinlock.h,v 1.3 2008/09/04 17:36:23 ralf Exp $
+ *  $Id: corespinlock.h,v 1.4 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_CORESPINLOCK_H
@@ -50,11 +50,11 @@ typedef enum {
    */
   CORE_SPINLOCK_NOT_HOLDER,
   /** This status indicates that a thread reached the limit of time it
-   *  was willing to wait on the spin lock. 
+   *  was willing to wait on the spin lock.
    */
   CORE_SPINLOCK_TIMEOUT,
   /** This status indicates that a thread is currently waiting for this
-   *  spin lock. 
+   *  spin lock.
    */
   CORE_SPINLOCK_IS_BUSY,
   /** This status indicates that the spinlock is currently locked and thus
@@ -92,7 +92,7 @@ typedef struct {
  */
 typedef struct {
   /** XXX may not be needed */
-  CORE_spinlock_Attributes  Attributes; 
+  CORE_spinlock_Attributes  Attributes;
 
   /** This field is the lock.
    */

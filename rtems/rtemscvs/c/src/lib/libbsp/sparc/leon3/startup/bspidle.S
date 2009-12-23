@@ -11,13 +11,13 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bspidle.S,v 1.1 2009/08/19 16:28:55 joel Exp $
+ *  $Id: bspidle.S,v 1.2 2009/11/29 15:33:27 ralf Exp $
  */
 
 
-	
+
 #include <rtems/asm.h>
-	
+
 /* LEON specific power-down function */
 
         .align 4
@@ -26,6 +26,6 @@ SYM(bsp_idle_thread):
 pwdloop:  mov   %g0, %asr19
           ba    pwdloop
           nop
-          retl 
+          retl
           nop
 

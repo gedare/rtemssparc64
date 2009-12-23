@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/priority.h
  *
  *  This include file contains all thread priority manipulation routines.
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: priority.h,v 1.24 2008/12/14 18:31:43 joel Exp $
+ *  $Id: priority.h,v 1.25 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_PRIORITY_H
@@ -26,8 +26,8 @@
  *  This handler encapsulates functionality which is used to manage
  *  thread priorities.  At the SuperCore level 256 priority levels
  *  are supported with lower numbers representing logically more important
- *  threads.  The priority level 0 is reserved for internal RTEMS use. 
- *  Typically it is assigned to threads which defer internal RTEMS 
+ *  threads.  The priority level 0 is reserved for internal RTEMS use.
+ *  Typically it is assigned to threads which defer internal RTEMS
  *  actions from an interrupt to thread level to improve interrupt response.
  *  Priority level 255 is assigned to the IDLE thread and really should not
  *  be used by application threads.  The default IDLE thread implementation

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: tasksetnote.c,v 1.10 2009/10/04 22:15:00 joel Exp $
+ *  $Id: tasksetnote.c,v 1.12 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -50,9 +50,9 @@
  */
 
 rtems_status_code rtems_task_set_note(
-  Objects_Id id,
-  uint32_t   notepad,
-  uint32_t   note
+  rtems_id id,
+  uint32_t notepad,
+  uint32_t note
 )
 {
   register Thread_Control *the_thread;
@@ -61,7 +61,7 @@ rtems_status_code rtems_task_set_note(
 
   if ( !rtems_configuration_get_notepads_enabled() )
     return RTEMS_NOT_CONFIGURED;
-    
+
   /*
    *  NOTE:  There is no check for < RTEMS_NOTEPAD_FIRST because that would
    *         be checking an unsigned number for being negative.

@@ -1,7 +1,7 @@
 /* placeholder (just a shell) */
 
 /*  SPI driver for Blackfin
- * 
+ *
  *  Copyright (c) 2008 Kallisti Labs, Los Gatos, CA, USA
  *             written by Allan Hessenflow <allanh@kallisti.com>
  *
@@ -9,9 +9,9 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: spi.c,v 1.1 2008/08/15 20:18:41 joel Exp $
+ *  $Id: spi.c,v 1.2 2009/11/30 05:03:49 ralf Exp $
  */
- 
+
 
 #include <stdlib.h>
 #include <rtems.h>

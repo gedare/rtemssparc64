@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.2 2009/07/21 17:25:46 joel Exp $
+ *  $Id: init.c,v 1.3 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include <tmacros.h>
@@ -84,7 +84,7 @@ void *POSIX_Init(
     printf( "Init - pthread_mutexattr_settype - %s\n", TypesToCheck[i].name );
     sc = pthread_mutexattr_settype( &attr, TypesToCheck[i].type );
     rtems_test_assert( sc == TypesToCheck[i].status );
-    
+
     type = -2;
 
     if ( TypesToCheck[i].status == 0 ) {

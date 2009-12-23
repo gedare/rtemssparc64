@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.173 2009/11/17 17:33:40 ralf Exp $
+## $Id: configure.ac,v 1.175 2009/12/04 06:05:00 ralf Exp $
 
 AC_PREREQ(2.61)
 AC_INIT([rtems-cpukit],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -154,6 +154,11 @@ RTEMS_CPUOPT([RTEMS_VERSION],
   ["]_RTEMS_VERSION["],
   [RTEMS version string])
 
+RTEMS_CPUOPT([__RTEMS_USE_TICKS_FOR_STATISTICS__],
+  [test x"${USE_TICKS_FOR_STATISTICS}" = x"1"],
+  [1],
+  [disable nanosecond granularity for statistics])
+
 RTEMS_CPUOPT([__RTEMS_USE_TICKS_CPU_USAGE_STATISTICS__],
   [test x"${USE_TICKS_FOR_CPU_USAGE_STATISTICS}" = x"1"],
   [1],
@@ -248,7 +253,6 @@ AM_CONDITIONAL(NEWLIB,test x"$RTEMS_USE_NEWLIB" = x"yes")
 AM_CONDITIONAL(HAS_MP,test x"$enable_multiprocessing" = x"yes" )
 
 AM_CONDITIONAL(HAS_PTHREADS,test x"$rtems_cv_HAS_POSIX_API" = x"yes")
-AM_CONDITIONAL(LIBPOSIX,test x"${RTEMS_CPU}" != x"unix")
 AM_CONDITIONAL(LIBITRON,test x"$rtems_cv_HAS_ITRON_API" = x"yes")
 AM_CONDITIONAL(LIBNETWORKING,test x"$rtems_cv_HAS_NETWORKING" = x"yes")
 

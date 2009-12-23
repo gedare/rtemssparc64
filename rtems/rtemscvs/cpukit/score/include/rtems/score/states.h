@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/states.h
  *
  *  This include file contains thread execution state information.
@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: states.h,v 1.21 2006/09/25 13:36:57 joel Exp $
+ *  $Id: states.h,v 1.22 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_STATES_H
@@ -21,7 +21,7 @@
 /**
  *  @defgroup ScoreStates Thread States Handler
  *
- *  This handler encapsulates functionality which relates to the management of 
+ *  This handler encapsulates functionality which relates to the management of
  *  the state bitmap associated with each thread.
  */
 /**@{*/
@@ -97,7 +97,7 @@ typedef uint32_t   States_Control;
                                  STATES_WAITING_FOR_JOIN_AT_EXIT       | \
                                  STATES_WAITING_FOR_SIGNAL             | \
                                  STATES_WAITING_FOR_BARRIER            | \
-                                 STATES_WAITING_FOR_RWLOCK             ) 
+                                 STATES_WAITING_FOR_RWLOCK             )
 
 /** This macro corresponds to a task waiting which is blocked on
  *  a thread queue. */

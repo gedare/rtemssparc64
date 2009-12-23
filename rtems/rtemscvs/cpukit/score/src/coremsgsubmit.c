@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: coremsgsubmit.c,v 1.24 2009/10/08 07:07:36 ccj Exp $
+ *  $Id: coremsgsubmit.c,v 1.25 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -108,7 +108,7 @@ CORE_message_queue_Status _CORE_message_queue_Submit(
     the_message =
         _CORE_message_queue_Allocate_message_buffer( the_message_queue );
 
-    #if defined(RTEMS_DEBUG) 
+    #if defined(RTEMS_DEBUG)
       /*
        *  NOTE: If the system is consistent, this error should never occur.
        */

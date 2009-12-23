@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.10 2009/10/26 07:49:50 ralf Exp $
+ *  $Id: init.c,v 1.11 2009/11/30 03:33:22 ralf Exp $
  */
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__
@@ -204,7 +204,7 @@ static void test_main_loop(void)
   Heap_Block *next_block = NULL;
 
   puts( "Test the main loop" );
-  
+
   puts( "\tset the blocksize so, that the next block is outside the heap" );
   test_heap_init_custom();
   /* use all blocks */
@@ -270,7 +270,7 @@ static void test_check_free_block(void)
   Heap_Block *first_free_block = NULL;
   Heap_Block *secound_free_block = NULL;
   void *p1 = NULL;
-  
+
   puts( "test the _Heap_Walk_check_free_block() function" );
 
   puts( "\tset a previous size for the next block which is not equal to the size of the actual block" );

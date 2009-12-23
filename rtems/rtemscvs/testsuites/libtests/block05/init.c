@@ -19,7 +19,7 @@
  * http://www.rtems.com/license/LICENSE.
  */
 
-#include <assert.h>
+#include "tmacros.h"
 #include <stdarg.h>
 #include <errno.h>
 
@@ -27,7 +27,7 @@
 #include <rtems/bdbuf.h>
 #include <rtems/diskdevs.h>
 
-#define ASSERT_SC(sc) assert((sc) == RTEMS_SUCCESSFUL)
+#define ASSERT_SC(sc) rtems_test_assert((sc) == RTEMS_SUCCESSFUL)
 
 #define PRIORITY_INIT 1
 
@@ -49,6 +49,7 @@
 
 #define BLOCK_COUNT_B 1
 
+/* In case of trouble change this to 1 or 2 for more output */
 static unsigned output_level = 0;
 
 static dev_t dev_a;
@@ -73,26 +74,48 @@ static volatile enum resume_style {
 } resume;
 
 static volatile enum trig_style {
-  SUSP,
-  NO_SUSP
+  SUSP = 0,
+  CONT
 } trig;
 
 static volatile enum get_type {
-  GET,
+  GET = 0,
   READ
 } trig_get, low_get, high_get;
 
 static volatile enum blk_kind {
-  BLK_A0,
+  BLK_A0 = 0,
   BLK_A1,
   BLK_B0
 } trig_blk, low_blk, high_blk;
 
 static volatile enum rel_type {
-  REL,
+  REL = 0,
   REL_MOD,
   SYNC
 } trig_rel, low_rel, high_rel;
+
+static const char trig_style_desc [] = {
+  'S',
+  'C'
+};
+
+static const char get_type_desc [] = {
+  'G',
+  'R'
+};
+
+static const char *blk_kind_desc [] = {
+  "A0",
+  "A1",
+  "B0"
+};
+
+static const char rel_type_desc [] = {
+  'R',
+  'M',
+  'S'
+};
 
 static void print(unsigned level, const char *fmt, ...)
 {
@@ -122,22 +145,26 @@ static rtems_bdbuf_buffer *get(enum get_type type, enum blk_kind kind)
   rtems_status_code (*get_bd)(dev_t, rtems_blkdev_bnum, rtems_bdbuf_buffer **)
     = NULL;
   dev_t dev = 0;
+  size_t bds_per_group = 0;
 
   switch (kind) {
     case BLK_A0:
       dev = dev_a;
       blk_index = 0;
+      bds_per_group = 2;
       break;
     case BLK_A1:
       dev = dev_a;
       blk_index = 1;
+      bds_per_group = 2;
       break;
     case BLK_B0:
       dev = dev_b;
       blk_index = 0;
+      bds_per_group = 1;
       break;
     default:
-      assert(false);
+      rtems_test_assert(false);
       break;
   }
 
@@ -149,12 +176,17 @@ static rtems_bdbuf_buffer *get(enum get_type type, enum blk_kind kind)
       get_bd = rtems_bdbuf_read;
       break;
     default:
-      assert(false);
+      rtems_test_assert(false);
       break;
   }
 
   sc = (*get_bd)(dev, blk_index, &bd);
-  assert(sc == RTEMS_SUCCESSFUL && bd->dev == dev && bd->block == blk_index);
+  rtems_test_assert(
+    sc == RTEMS_SUCCESSFUL
+      && bd->dev == dev
+      && bd->block == blk_index
+      && bd->group->bds_per_group == bds_per_group
+   );
 
   return bd;
 }
@@ -175,7 +207,7 @@ static void rel(rtems_bdbuf_buffer *bd, enum rel_type type)
       rel_bd = rtems_bdbuf_sync;
       break;
     default:
-      assert(false);
+      rtems_test_assert(false);
       break;
   }
 
@@ -234,7 +266,7 @@ static void task_resume(rtems_task_argument arg)
         do_resume = finish_low && finish_high;
         break;
       default:
-        assert(false);
+        rtems_test_assert(false);
         break;
     }
 
@@ -252,10 +284,18 @@ static void execute_test(unsigned i)
 
   print(
     1,
-    "[%05u]T%i,TG%i,TB%i,TR%i,LG%i,LB%i,LR%i,HG%i,HB%i,HR%i\n",
-    i, trig, trig_get, trig_blk, trig_rel,
-    low_get, low_blk, low_rel,
-    high_get, high_blk, high_rel
+    "[%05u]T(%c,%c,%s,%c)L(%c,%s,%c)H(%c,%s,%c)\n",
+    i,
+    trig_style_desc [trig],
+    get_type_desc [trig_get],
+    blk_kind_desc [trig_blk],
+    rel_type_desc [trig_rel],
+    get_type_desc [low_get],
+    blk_kind_desc [low_blk],
+    rel_type_desc [low_rel],
+    get_type_desc [high_get],
+    blk_kind_desc [high_blk],
+    rel_type_desc [high_rel]
   );
 
   set_task_prio(task_id_low, PRIORITY_LOW);
@@ -270,7 +310,7 @@ static void execute_test(unsigned i)
   ASSERT_SC(sc);
 
   sc = rtems_bdbuf_get(dev_b, 0, &bd);
-  assert(sc == RTEMS_SUCCESSFUL && bd->dev == dev_b && bd->block == 0);
+  rtems_test_assert(sc == RTEMS_SUCCESSFUL && bd->dev == dev_b && bd->block == 0);
 
   sc = rtems_bdbuf_release(bd);
   ASSERT_SC(sc);
@@ -279,11 +319,11 @@ static void execute_test(unsigned i)
     case SUSP:
       suspend = true;
       break;
-    case NO_SUSP:
+    case CONT:
       suspend = false;
       break;
     default:
-      assert(false);
+      rtems_test_assert(false);
       break;
   }
 
@@ -432,7 +472,7 @@ static rtems_task Init(rtems_task_argument argument)
   sc = rtems_task_suspend(task_id_high);
   ASSERT_SC(sc);
 
-  for (trig = SUSP; trig <= NO_SUSP; ++trig) {
+  for (trig = SUSP; trig <= CONT; ++trig) {
     for (trig_get = GET; trig_get <= READ; ++trig_get) {
       for (low_get = GET; low_get <= READ; ++low_get) {
         for (high_get = GET; high_get <= READ; ++high_get) {

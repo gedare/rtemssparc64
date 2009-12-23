@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: termios_setinitialbaud.c,v 1.2 2009/09/30 02:56:20 ralf Exp $
+ *  $Id: termios_setinitialbaud.c,v 1.3 2009/11/29 13:35:32 ralf Exp $
  */
 
 #include <sys/termios.h>
@@ -24,6 +24,6 @@ int  rtems_termios_set_initial_baud(
     return -1;
 
   ttyp->termios.c_cflag = (ttyp->termios.c_cflag & ~CBAUD) | cflags_baud;
-  
+
   return 0;
 }

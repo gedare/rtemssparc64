@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task1.c,v 1.18 2009/10/27 09:04:54 ralf Exp $
+ *  $Id: task1.c,v 1.19 2009/12/02 15:30:58 ralf Exp $
  */
 
 #include "system.h"
@@ -183,7 +183,7 @@ rtems_task Task_1(
   new_line;
   status = rtems_region_get_segment_size(region_id, address_8, &segment_size);
   directive_failed(status, "rtems_region_get_segment_size of segment 8");
-  printf( "TA1 - got segment size of %" PRIu32 "\n", segment_size );
+  printf( "TA1 - got segment size of %" PRIuPTR "\n", segment_size );
 
   /* Get information about the region */
   printf( "TA1 - rtems_region_get_information - 0x%08" PRIxrtems_id "\n", region_id );

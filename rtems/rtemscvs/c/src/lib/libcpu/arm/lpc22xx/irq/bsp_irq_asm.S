@@ -9,11 +9,11 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp_irq_asm.S,v 1.6 2009/07/17 13:52:16 thomas Exp $
+ *  $Id: bsp_irq_asm.S,v 1.7 2009/11/30 04:59:43 ralf Exp $
  */
 #define __asm__
-	
-/* 
+
+/*
  * BSP specific interrupt handler for INT or FIQ. In here
  * you do determine which interrupt happened and call its
  * handler.
@@ -30,7 +30,7 @@ bsp_interrupt_dispatch :
  * From source, determine offset into expanded vector table
  * and load handler address into r0.
  */
- 
+
   ldr 	r0, =0xFFFFF030  /* Read the vector number */
     ldr	r0, [r0]
 #ifdef __thumb__

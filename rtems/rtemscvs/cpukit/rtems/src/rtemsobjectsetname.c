@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtemsobjectsetname.c,v 1.2 2008/02/04 17:16:37 joel Exp $
+ *  $Id: rtemsobjectsetname.c,v 1.3 2009/11/30 15:59:56 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -44,7 +44,7 @@ rtems_status_code rtems_object_set_name(
   information  = _Objects_Get_information_id( tmpId );
   if ( !information )
     return RTEMS_INVALID_ID;
- 
+
   the_object = _Objects_Get( information, tmpId, &location );
   switch ( location ) {
 

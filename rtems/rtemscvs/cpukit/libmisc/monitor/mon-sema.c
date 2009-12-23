@@ -1,7 +1,7 @@
 /*
  * RTEMS Monitor semaphore support
  *
- *  $Id: mon-sema.c,v 1.5 2009/01/02 13:01:21 ralf Exp $
+ *  $Id: mon-sema.c,v 1.6 2009/11/29 12:12:39 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -23,18 +23,18 @@ rtems_monitor_sema_canonical(
     Semaphore_Control       *rtems_sema = (Semaphore_Control *) sema_void;
 
     canonical_sema->attribute = rtems_sema->attribute_set;
-    canonical_sema->priority_ceiling = 
+    canonical_sema->priority_ceiling =
       rtems_sema->Core_control.mutex.Attributes.priority_ceiling;
 
-    canonical_sema->holder_id        = 
+    canonical_sema->holder_id        =
       rtems_sema->Core_control.mutex.holder_id;
 
     if (_Attributes_Is_counting_semaphore(canonical_sema->attribute)) {
       /* we have a counting semaphore */
-      canonical_sema->cur_count  = 
+      canonical_sema->cur_count  =
 	rtems_sema->Core_control.semaphore.count;
 
-      canonical_sema->max_count  = 
+      canonical_sema->max_count  =
 	rtems_sema->Core_control.semaphore.Attributes.maximum_count;
     }
     else {
@@ -54,7 +54,7 @@ rtems_monitor_sema_dump_header(
   ID       NAME   ATTR        PRICEIL CURR_CNT HOLDID \n");
 /*23456789 123456789 123456789 123456789 123456789 123456789 123456789 1234
           1         2         3         4         5         6         7    */
-           
+
     rtems_monitor_separator();
 }
 

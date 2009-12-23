@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2009/11/23 14:58:18 joel Exp $
+ *  $Id: init.c,v 1.4 2009/11/30 03:33:23 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -31,7 +31,7 @@ void *POSIX_Init(
   puts( "Setting current thread name to Justin" );
   status = rtems_object_set_name( pthread_self(), "Justin" );
   directive_failed( status, "rtems_object_set_name" );
- 
+
   ptr = rtems_object_get_name( pthread_self(), 128, name );
   printf( "rtems_object_get_name returned (%s) for init thread\n", ptr );
 
@@ -39,7 +39,7 @@ void *POSIX_Init(
   puts( "Setting current thread name to Jordan" );
   status = rtems_object_set_name( pthread_self(), "Jordan" );
   directive_failed( status, "rtems_object_set_name" );
- 
+
   ptr = rtems_object_get_name( pthread_self(), 128, name );
   printf( "rtems_object_get_name returned (%s) for init thread\n", ptr );
 
@@ -52,7 +52,7 @@ void *POSIX_Init(
   printf( "rtems_object_get_api_name(POSIX_API) = %s\n",
      rtems_object_get_api_name(OBJECTS_POSIX_API) );
 
-  printf("rtems_object_get_api_class_name(POSIX_API, POSIX_KEYS) = %s\n", 
+  printf("rtems_object_get_api_class_name(POSIX_API, POSIX_KEYS) = %s\n",
     rtems_object_get_api_class_name( OBJECTS_POSIX_API, OBJECTS_POSIX_KEYS)
   );
 

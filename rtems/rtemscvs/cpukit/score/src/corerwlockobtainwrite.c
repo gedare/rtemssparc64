@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: corerwlockobtainwrite.c,v 1.4 2008/09/04 17:39:55 ralf Exp $
+ *  $Id: corerwlockobtainwrite.c,v 1.5 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -26,7 +26,7 @@
  *  _CORE_rwlock_Obtain_for_writing
  *
  *  This function waits for the rwlock to become available.  Optionally,
- *  a limit may be placed on the duration of the spin.  
+ *  a limit may be placed on the duration of the spin.
  *
  *  Input parameters:
  *    the_rwlock    - the rwlock control block to initialize

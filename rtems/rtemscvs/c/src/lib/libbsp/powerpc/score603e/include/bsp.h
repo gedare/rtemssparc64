@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.31 2009/08/21 17:58:48 joel Exp $
+ *  $Id: bsp.h,v 1.32 2009/11/30 04:33:54 ralf Exp $
  */
 
 #ifndef _BSP_H
@@ -64,7 +64,7 @@ extern "C" {
 
 #define Initialize_Board_ctrl_register()                         \
   *SCORE603E_BOARD_CTRL_REG = (*SCORE603E_BOARD_CTRL_REG |       \
-                               SCORE603E_BRD_FLASH_DISABLE_MASK) 
+                               SCORE603E_BRD_FLASH_DISABLE_MASK)
 
 #define Processor_Synchronize() \
   asm volatile(" eieio ")

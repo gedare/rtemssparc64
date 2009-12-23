@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: stringto.h,v 1.2 2009/07/23 14:32:34 joel Exp $
+ *  $Id: stringto.h,v 1.3 2009/12/01 22:16:10 joel Exp $
  */
 
 #ifndef __STRING_TO_A_TYPE_h__
@@ -75,6 +75,27 @@ rtems_status_code rtems_string_to_int(
   int         *n,
   char       **endptr,
   int          base
+);
+
+/**
+ *  @brief Convert String to Unsigned Int (with validation)
+ *
+ *  This method converts a string to an unsigned int with range validation.
+ *
+ *  @param[in] s is the string to convert
+ *  @param[in] n points to the variable to place the converted output in
+ *  @param[in] endptr is used to keep track of the position in the string
+ *  @param[in] base is the expected base of the number
+ *
+ *  @return This method returns RTEMS_SUCCESSFUL on successful conversion
+ *          and *n is filled in.  Otherwise, the status indicates the
+ *          source of the error.
+ */
+rtems_status_code rtems_string_to_unsigned_int(
+  const char    *s,
+  unsigned int  *n,
+  char         **endptr,
+  int            base
 );
 
 /**

@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: malloc_initialize.c,v 1.10 2009/09/14 14:48:38 joel Exp $
+ *  $Id: malloc_initialize.c,v 1.11 2009/11/29 13:35:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -83,7 +83,7 @@ void RTEMS_Malloc_Initialize(
    *  be very very careful about destroying the initialization
    *  that has already been done.
    */
-    
+
   /*
    *  If the BSP is not clearing out the workspace, then it is most likely
    *  not clearing out the initial memory for the heap.  There is no
@@ -109,7 +109,7 @@ void RTEMS_Malloc_Initialize(
    */
 
   if ( !rtems_unified_work_area ) {
-    uintptr_t status = _Protected_heap_Initialize( 
+    uintptr_t status = _Protected_heap_Initialize(
       RTEMS_Malloc_Heap,
       heap_begin,
       heap_size,

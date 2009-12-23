@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timercreate.c,v 1.2 2008/01/23 22:57:43 joel Exp $
+ *  $Id: timercreate.c,v 1.3 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -36,10 +36,10 @@ int timer_create(
 
   if ( clock_id != CLOCK_REALTIME )
     rtems_set_errno_and_return_minus_one( EINVAL );
- 
+
   if ( !timerid )
     rtems_set_errno_and_return_minus_one( EINVAL );
- 
+
  /*
   *  The data of the structure evp are checked in order to verify if they
   *  are coherent.

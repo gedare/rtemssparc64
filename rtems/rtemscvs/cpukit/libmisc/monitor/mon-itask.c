@@ -1,7 +1,7 @@
 /*
  * RTEMS Monitor init task support
  *
- *  $Id: mon-itask.c,v 1.19 2009/01/02 13:01:21 ralf Exp $
+ *  $Id: mon-itask.c,v 1.20 2009/11/29 12:12:39 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -101,7 +101,7 @@ rtems_monitor_init_task_dump(
     length += rtems_monitor_symbol_dump(&monitor_itask->entry, verbose);
 
     length += rtems_monitor_pad(25, length);
-    length += fprintf(stdout,"%" PRId32 " [0x%" PRIx32 "]", 
+    length += fprintf(stdout,"%" PRId32 " [0x%" PRIx32 "]",
       monitor_itask->argument, monitor_itask->argument);
 
     length += rtems_monitor_pad(39, length);

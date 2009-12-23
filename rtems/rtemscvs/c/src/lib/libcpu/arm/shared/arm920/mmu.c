@@ -4,7 +4,7 @@
  *  Copyright (c) 2004 by Cogent Computer Systems
  *  Written by Jay Monkman <jtm@lopingdog.com>
  *
- *  $Id: mmu.c,v 1.3 2006/06/03 03:14:07 jtm Exp $
+ *  $Id: mmu.c,v 1.4 2009/11/30 05:03:56 ralf Exp $
  */
 #include <libcpu/mmu.h>
 
@@ -108,9 +108,9 @@ void mmu_init(mmu_sect_map_t *map)
 
         while (sects > 0) {
             lvl1_base[vbase] = MMU_SET_LVL1_SECT(pbase << 20,
-                                                 MMU_SECT_AP_ALL, 
-                                                 0, 
-                                                 c, 
+                                                 MMU_SECT_AP_ALL,
+                                                 0,
+                                                 c,
                                                  b);
             pbase++;
             vbase++;
@@ -249,4 +249,4 @@ void mmu_set_cpu_async_mode(void)
     reg |= 0xc0000000;
     mmu_set_ctrl(reg);
 }
-    
+

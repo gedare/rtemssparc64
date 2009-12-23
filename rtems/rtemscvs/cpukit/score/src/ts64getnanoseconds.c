@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  score/src/ts64toticks.c
  */
 
@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ts64getnanoseconds.c,v 1.1 2008/12/09 21:27:35 joel Exp $
+ *  $Id: ts64getnanoseconds.c,v 1.2 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H

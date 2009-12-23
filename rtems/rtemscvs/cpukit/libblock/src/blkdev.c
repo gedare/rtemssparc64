@@ -5,12 +5,12 @@
  *
  * Block device management.
  */
- 
+
 /*
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Victor V. Vengerov <vvv@oktet.ru>
  *
- * @(#) $Id: blkdev.c,v 1.20 2009/11/12 15:32:11 thomas Exp $
+ * @(#) $Id: blkdev.c,v 1.22 2009/12/18 15:59:30 thomas Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -251,15 +251,18 @@ rtems_blkdev_generic_ioctl(
             break;
 
         case RTEMS_BLKIO_REQUEST:
-        {
-            rtems_blkdev_request *req = args->buffer;
-	    args->ioctl_return = (uint32_t) dd->ioctl(dd, args->command, req);
+            /*
+             * It is not allowed to directly access the driver circumventing
+             * the cache.
+             */
+            rc = RTEMS_INVALID_NAME;
+            args->ioctl_return = -1;
             break;
-        }
 
         default:
-	    args->ioctl_return = (uint32_t) dd->ioctl(dd, args->command,
-			                              args->buffer);
+            args->ioctl_return = (uint32_t) dd->ioctl(dd->phys_dev,
+                                                      args->command,
+                                                      args->buffer);
             break;
     }
     rtems_disk_release(dd);
@@ -272,7 +275,7 @@ rtems_blkdev_ioctl(rtems_disk_device *dd, uint32_t req, void *argp)
 {
     size_t            *arg_size = argp;
     int                rc = 0;
-    
+
     switch (req)
     {
         case RTEMS_BLKIO_GETMEDIABLKSIZE:

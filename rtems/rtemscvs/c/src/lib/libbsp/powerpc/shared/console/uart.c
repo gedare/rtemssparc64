@@ -4,7 +4,7 @@
  * as far as this copyight notice is kept unchanged, but does not imply
  * an endorsement by T.sqware of the product in which it is included.
  *
- *  $Id: uart.c,v 1.16 2008/07/14 08:45:02 thomas Exp $
+ *  $Id: uart.c,v 1.18 2009/12/17 08:42:16 thomas Exp $
  */
 
 #include <stdio.h>
@@ -142,7 +142,7 @@ BSP_uart_init(int uart, int baud, int hwFlow)
 
   /* Sanity check */
   SANITY_CHECK(uart);
-  
+
   /* Make sure any printk activity drains before
    * re-initializing.
    */
@@ -554,8 +554,8 @@ BSP_uart_termios_set(int uart, void *p)
   return;
 }
 
-int
-BSP_uart_termios_write_polled(int minor, const char *buf, int len)
+ssize_t
+BSP_uart_termios_write_polled(int minor, const char *buf, size_t len)
 {
   int uart=minor;	/* could differ, theoretically */
   int nwrite;
@@ -569,8 +569,8 @@ BSP_uart_termios_write_polled(int minor, const char *buf, int len)
   return nwrite;
 }
 
-int
-BSP_uart_termios_write_com(int minor, const char *buf, int len)
+ssize_t
+BSP_uart_termios_write_com(int minor, const char *buf, size_t len)
 {
   int uart=minor;	/* could differ, theoretically */
   assert(buf != NULL);
@@ -756,7 +756,7 @@ BSP_uart_termios_isr_com(int uart)
 
 /*
  * XXX - Note that this can now be one isr with the uart
- *       passed as the parameter. 
+ *       passed as the parameter.
  */
 void
 BSP_uart_termios_isr_com1(void *unused)

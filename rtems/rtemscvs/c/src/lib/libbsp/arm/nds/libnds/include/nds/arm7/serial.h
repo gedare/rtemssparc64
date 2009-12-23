@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-  $Id: serial.h,v 1.2 2008/08/19 15:47:14 joel Exp $
+  $Id: serial.h,v 1.3 2009/12/07 07:12:20 ralf Exp $
 
   ARM7 serial control
 
@@ -141,7 +141,7 @@
 
 
 static inline
-void SerialWaitBusy() {
+void SerialWaitBusy(void) {
 	while (REG_SPICNT & SPI_BUSY)
 		swiDelay(1);
 }

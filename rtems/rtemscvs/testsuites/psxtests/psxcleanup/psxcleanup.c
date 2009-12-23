@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: psxcleanup.c,v 1.3 2009/05/11 01:41:15 joel Exp $
+ *  $Id: psxcleanup.c,v 1.4 2009/11/30 03:33:23 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -155,7 +155,7 @@ void initialize_lock_t(lock_t *l)
 {
   pthread_mutexattr_t mutexattr;    /* mutex attributes */
   pthread_condattr_t  condattr;     /* condition attributes */
-  
+
   if (pthread_mutexattr_init (&mutexattr) != 0) {
     perror ("Error in mutex attribute init\n");
   }
@@ -250,12 +250,12 @@ void *POSIX_Init(
   sleep(1);
 
   /*************** ERROR CASES  ***************/
-  puts("Call pthread_cleanup_push with NULL handler"); 
+  puts("Call pthread_cleanup_push with NULL handler");
   pthread_cleanup_push(NULL, NULL);
 
-  puts("Call pthread_cleanup_pop with no push"); 
+  puts("Call pthread_cleanup_pop with no push");
   pthread_cleanup_pop(1);
- 
+
   /*************** END OF TEST *****************/
   puts( "*** END OF POSIX CLEANUP TEST ***\n" );
   rtems_test_exit(0);

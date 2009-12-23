@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2009/09/27 18:54:13 joel Exp $
+ *  $Id: init.c,v 1.4 2009/11/30 12:51:50 thomas Exp $
  */
 
 #include <tmacros.h>
@@ -99,7 +99,7 @@ rtems_task Init(
 #define CONFIGURE_MAXIMUM_SEMAPHORES     1
 #define CONFIGURE_MICROSECONDS_PER_TICK  1000
 #define CONFIGURE_INIT_TASK_PRIORITY  INIT_PRIORITY
-#define CONFIGURE_INIT_TASK_MODE      RTEMS_PREEMPT
+#define CONFIGURE_INIT_TASK_INITIAL_MODES RTEMS_PREEMPT
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 
 #define CONFIGURE_INIT

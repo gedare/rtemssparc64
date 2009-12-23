@@ -1,4 +1,4 @@
-/* 
+/*
  *  This routine is the initialization task of test to exercise some
  *  timezone functionality.
  *
@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.3 2007/06/20 21:43:24 joel Exp $
+ *  $Id: init.c,v 1.4 2009/11/30 03:33:23 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -45,7 +45,7 @@ rtems_task Init(
   rtems_status_code status;
 
   puts( "\n\n*** TIMEZONE TEST ***" );
-  
+
   build_time( &time, 3, 14, 2007, 15, 9, 26, 5 );
   status = rtems_clock_set( &time );
   directive_failed( status, "rtems_clock_set" );

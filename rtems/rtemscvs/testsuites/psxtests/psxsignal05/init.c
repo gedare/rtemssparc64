@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.1 2009/08/05 18:13:29 joel Exp $
+ *  $Id: init.c,v 1.2 2009/12/08 17:52:53 joel Exp $
  */
 
 #define TEST_NAME                "05"
@@ -74,7 +74,7 @@ void *POSIX_Init(
     true,              /* is_global */
     false              /* check_blocked */
   );
-  assert( bc );
+  rtems_test_assert(  bc );
 
   puts( "*** END OF POSIX TEST SIGNAL " TEST_NAME " ***" );
   rtems_test_exit(0);

@@ -12,7 +12,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: polled_io.c,v 1.13 2007/09/07 16:15:27 joel Exp $
+ * $Id: polled_io.c,v 1.14 2009/12/10 06:02:14 ralf Exp $
  */
 
 #include <rtems/system.h>
@@ -40,7 +40,7 @@
 #include "console.inl"
 
 #ifdef __BOOT__
-extern void boot_udelay();
+extern void boot_udelay(uint32_t   _microseconds);
 void * __palloc(u_long);
 void  pfree(void *);
 #else

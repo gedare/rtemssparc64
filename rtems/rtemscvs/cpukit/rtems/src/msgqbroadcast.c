@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: msgqbroadcast.c,v 1.11 2008/08/05 13:32:38 joel Exp $
+ *  $Id: msgqbroadcast.c,v 1.12 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -54,10 +54,10 @@
  */
 
 rtems_status_code rtems_message_queue_broadcast(
-  Objects_Id            id,
-  const void           *buffer,
-  size_t                size,
-  uint32_t             *count
+  rtems_id    id,
+  const void *buffer,
+  size_t      size,
+  uint32_t   *count
 )
 {
   register Message_queue_Control *the_message_queue;

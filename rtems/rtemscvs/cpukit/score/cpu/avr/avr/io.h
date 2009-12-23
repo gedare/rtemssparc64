@@ -29,7 +29,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: io.h,v 1.1 2009/08/06 14:52:04 joel Exp $ */
+/* $Id: io.h,v 1.2 2009/11/30 16:01:43 ralf Exp $ */
 
 /** \file */
 /** \defgroup avr_io <avr/io.h>: AVR device-specific IO definitions
@@ -45,7 +45,7 @@
     but most of the details come from the respective include file.
 
     Note that this file always includes the following files:
-    \code 
+    \code
     #include <avr/sfr_defs.h>
     #include <avr/portpins.h>
     #include <avr/common.h>
@@ -71,8 +71,8 @@
     <br>
     - \b XRAMEND
     <br>
-    The last possible RAM location that is addressable. This is equal to 
-    RAMEND for devices that do not allow for external RAM. For devices 
+    The last possible RAM location that is addressable. This is equal to
+    RAMEND for devices that do not allow for external RAM. For devices
     that allow external RAM, this will be larger than RAMEND.
     <br>
     - \b E2END
@@ -86,11 +86,11 @@
     - \b SPM_PAGESIZE
     <br>
     For devices with bootloader support, the flash pagesize
-    (in bytes) to be used for the \c SPM instruction. 
+    (in bytes) to be used for the \c SPM instruction.
     - \b E2PAGESIZE
     <br>
     The size of the EEPROM page.
-    
+
 */
 
 #ifndef _AVR_IO_H_

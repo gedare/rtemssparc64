@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspgetworkarea.c,v 1.5 2009/10/10 21:24:15 joel Exp $
+ *  $Id: bspgetworkarea.c,v 1.6 2009/11/29 15:33:27 ralf Exp $
  */
 
 /* #define BSP_GET_WORK_AREA_DEBUG */
@@ -47,7 +47,7 @@ void bsp_get_work_area(
    *  you are allocating the Work Area in a new BSP.
    */
   #ifdef BSP_GET_WORK_AREA_DEBUG
-    { 
+    {
       void *sp = __builtin_frame_address(0);
       void *end = *work_area_start + *work_area_size;
       printk(

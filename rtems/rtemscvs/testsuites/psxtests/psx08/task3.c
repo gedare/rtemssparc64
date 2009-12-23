@@ -8,14 +8,14 @@
  *
  *  Output parameters:  NONE
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task3.c,v 1.5 2004/04/16 09:23:25 ralf Exp $
+ *  $Id: task3.c,v 1.6 2009/12/08 17:52:53 joel Exp $
  */
 
 #include "system.h"
@@ -33,7 +33,7 @@ void *Task_3(
   puts( "Task_3: returned from pthread_join" );
   if ( status )
     printf( "status = %d\n", status );
-  assert( !status );
+  rtems_test_assert(  !status );
 
   if ( return_pointer == &Task2_id )
     puts( "Task_3: pthread_join returned correct pointer" );

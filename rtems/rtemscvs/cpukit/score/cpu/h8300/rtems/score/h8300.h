@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: h8300.h,v 1.6 2005/01/28 15:56:09 ralf Exp $
+ *  $Id: h8300.h,v 1.7 2009/12/04 05:22:48 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_H8300_H
@@ -40,4 +40,4 @@ extern "C" {
 }
 #endif
 
-#endif 
+#endif

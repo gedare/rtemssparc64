@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: psignalunblockthread.c,v 1.9 2009/02/03 10:10:53 ralf Exp $
+ *  $Id: psignalunblockthread.c,v 1.10 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -91,13 +91,13 @@ bool _POSIX_signals_Unblock_thread(
      *    + If it is blocked on an interruptible signal, THEN
      *        we unblock the thread.
      *    + If it is in the ready state AND
-     *      we are sending from an ISR AND 
+     *      we are sending from an ISR AND
      *      it is the interrupted thread AND
      *      it is not blocked, THEN
      *        we need to dispatch at the end of this ISR.
      *    + Any other combination, do nothing.
      */
-    
+
     the_thread->do_post_task_switch_extension = true;
 
     if ( the_thread->current_state & STATES_INTERRUPTIBLE_BY_SIGNAL ) {

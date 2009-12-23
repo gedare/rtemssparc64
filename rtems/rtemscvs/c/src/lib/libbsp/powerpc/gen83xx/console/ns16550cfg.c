@@ -31,13 +31,13 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ns16550cfg.c,v 1.1 2007/07/10 16:00:27 thomas Exp $
+ *  $Id: ns16550cfg.c,v 1.2 2009/11/30 04:26:10 ralf Exp $
  */
 
 #include <rtems.h>
 #include <bsp.h>
 #include "console.h"
-                                                            
+
 typedef struct uart_reg
 {
   volatile unsigned char reg;
@@ -50,7 +50,7 @@ uint8_t Read_ns16550_register(
 {
   struct uart_reg *p = (struct uart_reg *)ulCtrlPort;
   uint8_t  ucData;
-  ucData = p[ucRegNum].reg;  
+  ucData = p[ucRegNum].reg;
   asm volatile("sync");
   return ucData;
 }
@@ -62,6 +62,6 @@ void  Write_ns16550_register(
 )
 {
   struct uart_reg *p = (struct uart_reg *)ulCtrlPort;
-  p[ucRegNum].reg = ucData; 
+  p[ucRegNum].reg = ucData;
   asm volatile("sync");
 }

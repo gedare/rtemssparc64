@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ratemoncreate.c,v 1.9 2007/05/15 20:16:15 joel Exp $
+ *  $Id: ratemoncreate.c,v 1.10 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -41,8 +41,8 @@
  */
 
 rtems_status_code rtems_rate_monotonic_create(
-  rtems_name    name,
-  Objects_Id   *id
+  rtems_name  name,
+  rtems_id   *id
 )
 {
   Rate_monotonic_Control *the_period;

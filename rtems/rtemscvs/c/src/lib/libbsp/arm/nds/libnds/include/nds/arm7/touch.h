@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: touch.h,v 1.2 2008/08/19 15:47:14 joel Exp $
+	$Id: touch.h,v 1.3 2009/12/07 07:12:20 ralf Exp $
 
 	Microphone control for the ARM7
 
@@ -57,7 +57,7 @@ extern "C" {
 
 
 
-touchPosition touchReadXY();
+touchPosition touchReadXY(void);
 
 uint16 touchRead(uint32 command);
 uint32 touchReadTemperature(int * t1, int * t2);

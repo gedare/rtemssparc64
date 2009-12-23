@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: threadqenqueuefifo.c,v 1.9 2008/01/22 18:28:53 joel Exp $
+ *  $Id: threadqenqueuefifo.c,v 1.10 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -65,7 +65,7 @@ Thread_blocking_operation_States _Thread_queue_Enqueue_fifo (
       _ISR_Enable( level );
       return THREAD_BLOCKING_OPERATION_NOTHING_HAPPENED;
     }
-      
+
   /*
    *  An interrupt completed the thread's blocking request.
    *  For example, the blocking thread could have been given

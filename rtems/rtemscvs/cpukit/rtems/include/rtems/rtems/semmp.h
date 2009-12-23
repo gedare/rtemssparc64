@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: semmp.h,v 1.18 2009/08/05 18:17:12 joel Exp $
+ *  $Id: semmp.h,v 1.19 2009/12/15 18:26:41 humph Exp $
  */
 
 #ifndef _RTEMS_RTEMS_SEMMP_H
@@ -150,7 +150,7 @@ Semaphore_MP_Packet *_Semaphore_MP_Get_packet ( void );
  */
 void  _Semaphore_Core_mutex_mp_support (
   Thread_Control *the_thread,
-  rtems_id        id
+  Objects_Id      id
 );
 
 /**
@@ -162,7 +162,7 @@ void  _Semaphore_Core_mutex_mp_support (
  */
 void  _Semaphore_Core_semaphore_mp_support (
   Thread_Control *the_thread,
-  rtems_id        id
+  Objects_Id      id
 );
 
 #ifdef __cplusplus

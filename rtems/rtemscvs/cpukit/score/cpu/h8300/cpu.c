@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.9 2009/02/12 15:55:36 joel Exp $
+ *  $Id: cpu.c,v 1.10 2009/12/04 05:22:48 ralf Exp $
  */
 
 #include <rtems/system.h>
@@ -41,7 +41,7 @@ void _CPU_Initialize(void)
  *
  *  This routine returns the current interrupt level.
  */
- 
+
 uint32_t   _CPU_ISR_Get_level( void )
 {
   unsigned int _ccr;
@@ -61,7 +61,7 @@ uint32_t   _CPU_ISR_Get_level( void )
  *
  *  _CPU_ISR_install_raw_handler
  */
- 
+
 void _CPU_ISR_install_raw_handler(
   uint32_t    vector,
   proc_ptr    new_handler,

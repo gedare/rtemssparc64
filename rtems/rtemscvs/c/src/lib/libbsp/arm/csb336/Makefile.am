@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.24 2009/05/25 21:12:19 joel Exp $
+## $Id: Makefile.am,v 1.25 2009/11/28 06:24:46 ralf Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -36,7 +36,7 @@ libbsp_a_SOURCES += ../../shared/bsplibc.c ../../shared/bsppost.c \
     ../../shared/bspreset.c startup/memmap.c ../../shared/bootcard.c \
     ../../shared/sbrk.c ../../shared/gnatinstallhandler.c
 # console
-libbsp_a_SOURCES += console/uart.c 
+libbsp_a_SOURCES += console/uart.c
 # abort
 libbsp_a_SOURCES += ../shared/abort/abort.c
 

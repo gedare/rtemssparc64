@@ -19,7 +19,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: psxtimer.c,v 1.5 2009/05/17 20:59:23 joel Exp $
+ *  $Id: psxtimer.c,v 1.6 2009/11/30 03:33:23 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -41,7 +41,7 @@ void *POSIX_Init (
   timer_t           timer;
   timer_t           timer1;
   struct itimerspec itimer;
-  
+
   /*
    *  If these are not filled in correctly, we don't pass its error checking.
    */

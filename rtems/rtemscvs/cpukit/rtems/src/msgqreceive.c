@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: msgqreceive.c,v 1.15 2008/09/04 17:45:00 ralf Exp $
+ *  $Id: msgqreceive.c,v 1.16 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -54,11 +54,11 @@
  */
 
 rtems_status_code rtems_message_queue_receive(
-  Objects_Id            id,
-  void                 *buffer,
-  size_t               *size,
-  rtems_option          option_set,
-  rtems_interval        timeout
+  rtems_id        id,
+  void           *buffer,
+  size_t         *size,
+  rtems_option    option_set,
+  rtems_interval  timeout
 )
 {
   register Message_queue_Control *the_message_queue;

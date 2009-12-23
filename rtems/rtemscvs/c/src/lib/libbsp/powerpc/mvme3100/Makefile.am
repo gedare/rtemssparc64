@@ -1,12 +1,12 @@
 ##
-## $Id: Makefile.am,v 1.13 2009/10/23 07:32:45 thomas Exp $
+## $Id: Makefile.am,v 1.14 2009/11/28 06:24:47 ralf Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
 
 # wrapup is the one that actually builds and installs the library
 # from the individual .rel files built in other directories
-SUBDIRS = . 
+SUBDIRS = .
 
 include $(top_srcdir)/../../../../automake/compile.am
 include $(top_srcdir)/../../bsp.am

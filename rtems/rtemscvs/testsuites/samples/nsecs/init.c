@@ -1,4 +1,4 @@
-/* 
+/*
  *  Nanoseconds accuracy timestamp test
  */
 
@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.12 2009/10/26 09:13:53 ralf Exp $
+ *  $Id: init.c,v 1.13 2009/11/30 03:33:23 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -29,7 +29,7 @@ char *my_ctime( time_t t )
   static char b[32];
   ctime_r(&t, b);
   b[ strlen(b) - 1] = '\0';
-  return b; 
+  return b;
 }
 
 void subtract_em(
@@ -117,7 +117,7 @@ rtems_task Init(
     struct timespec diff;
     int j, max = (index * 10000);
     rtems_clock_get_uptime( &start );
-      for (j=0 ; j<max ; j++ ) 
+      for (j=0 ; j<max ; j++ )
         dummy_function_empty_body_to_force_call();
     rtems_clock_get_uptime( &stop );
 

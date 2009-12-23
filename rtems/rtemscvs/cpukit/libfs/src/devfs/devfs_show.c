@@ -3,7 +3,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: devfs_show.c,v 1.2 2008/09/17 19:14:20 joel Exp $
+ *  $Id: devfs_show.c,v 1.3 2009/11/29 13:18:56 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -26,7 +26,7 @@ int devFS_Show(void)
 
   for (i = 0; i < rtems_device_table_size; i++){
     if (device_name_table[i].device_name){
-        printk("/%s %d %d\n", device_name_table[i].device_name, 
+        printk("/%s %d %d\n", device_name_table[i].device_name,
             device_name_table[i].major, device_name_table[i].minor);
     }
   }

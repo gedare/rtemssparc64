@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: protectedheap.h,v 1.10 2009/09/06 15:24:06 joel Exp $
+ *  $Id: protectedheap.h,v 1.11 2009/11/30 13:05:29 thomas Exp $
  */
 
 #ifndef _RTEMS_SCORE_PROTECTED_HEAP_H
@@ -66,19 +66,37 @@ bool _Protected_heap_Extend(
 /**
  * @brief See _Heap_Allocate_aligned_with_boundary().
  */
-void *_Protected_heap_Allocate(
+void *_Protected_heap_Allocate_aligned_with_boundary(
   Heap_Control *heap,
-  uintptr_t size
+  uintptr_t size,
+  uintptr_t alignment,
+  uintptr_t boundary
 );
 
 /**
- * @brief See _Heap_Allocate_aligned_with_boundary().
+ * @brief See _Heap_Allocate_aligned_with_boundary() with boundary equals zero.
  */
-void *_Protected_heap_Allocate_aligned(
+RTEMS_INLINE_ROUTINE void *_Protected_heap_Allocate_aligned(
   Heap_Control *heap,
   uintptr_t size,
   uintptr_t alignment
-);
+)
+{
+  return
+    _Protected_heap_Allocate_aligned_with_boundary( heap, size, alignment, 0 );
+}
+
+/**
+ * @brief See _Heap_Allocate_aligned_with_boundary() with alignment and
+ * boundary equals zero.
+ */
+RTEMS_INLINE_ROUTINE void *_Protected_heap_Allocate(
+  Heap_Control *heap,
+  uintptr_t size
+)
+{
+  return _Protected_heap_Allocate_aligned_with_boundary( heap, size, 0, 0 );
+}
 
 /**
  * @brief See _Heap_Size_of_alloc_area().

@@ -4,7 +4,7 @@
  *  This include file contains all the private support information for
  *  POSIX Message Queues.
  */
- 
+
 /*
  *  COPYRIGHT (c) 1989-2008.
  *  On-Line Applications Research Corporation (OAR).
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mqueue.h,v 1.26 2008/12/17 21:23:35 joel Exp $
+ *  $Id: mqueue.h,v 1.27 2009/11/30 15:44:20 ralf Exp $
  */
 
 #ifndef _RTEMS_POSIX_MQUEUE_H

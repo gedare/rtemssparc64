@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.2 2009/07/28 23:49:47 joel Exp $
+ *  $Id: init.c,v 1.3 2009/11/30 03:33:25 ralf Exp $
  */
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__
@@ -27,7 +27,7 @@ rtems_task Init(
 
   puts( "Init - restore System State and shutdown for real" );
   _System_state_Set( SYSTEM_STATE_UP );
-  
+
   puts( "*** END OF TEST 61 ***" );
   rtems_test_exit(0);
 }

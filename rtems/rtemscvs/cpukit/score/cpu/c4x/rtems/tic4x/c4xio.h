@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: c4xio.h,v 1.7 2008/09/10 15:41:37 joel Exp $
+ *  $Id: c4xio.h,v 1.8 2009/11/29 13:51:52 ralf Exp $
  */
 
 #ifndef _RTEMS_TIC4X_C4XIO_H
@@ -90,7 +90,7 @@ struct c4x_timer {
 /*
  *  IO Flags
  *
- *  NOTE: iof on c3x, iiof on c4x 
+ *  NOTE: iof on c3x, iiof on c4x
  */
 
 #ifdef _TMS320C40

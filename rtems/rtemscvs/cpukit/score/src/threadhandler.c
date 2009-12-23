@@ -9,7 +9,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: threadhandler.c,v 1.28 2009/10/14 15:55:43 joel Exp $
+ *  $Id: threadhandler.c,v 1.29 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -88,7 +88,7 @@ void _Thread_Handler( void )
   executing = _Thread_Executing;
 
   /*
-   * Some CPUs need to tinker with the call frame or registers when the 
+   * Some CPUs need to tinker with the call frame or registers when the
    * thread actually begins to execute for the first time.  This is a
    * hook point where the port gets a shot at doing whatever it requires.
    */

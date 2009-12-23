@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: newlibc_exit.c,v 1.8 2009/10/14 16:26:22 ralf Exp $
+ *  $Id: newlibc_exit.c,v 1.9 2009/11/29 13:35:32 ralf Exp $
  *
  */
 
@@ -131,14 +131,14 @@ void libc_wrapup(void)
     #else
       #define FINI_SYMBOL _fini
     #endif
- 
+
     extern void FINI_SYMBOL( void );
   #endif
 
 void EXIT_SYMBOL(int status)
 {
   /*
-   *  If the toolset uses init/fini sections, then we need to 
+   *  If the toolset uses init/fini sections, then we need to
    *  run the global destructors now.
    */
   #if defined(__USE_INIT_FINI__)

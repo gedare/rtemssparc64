@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/score/wkspace.h
  *
  *  This include file contains information related to the
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: wkspace.h,v 1.29 2008/12/22 06:05:34 ralf Exp $
+ *  $Id: wkspace.h,v 1.30 2009/11/28 05:58:54 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_WKSPACE_H
@@ -37,7 +37,7 @@ extern "C" {
 
 /** @brief Executive Workspace Control
  *
- *  The is the heap control structure that used to manage the 
+ *  The is the heap control structure that used to manage the
  *  RTEMS Executive Workspace.
  */
 SCORE_EXTERN Heap_Control _Workspace_Area;  /* executive heap header */

@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.9 2009/10/27 05:13:49 ralf Exp $
+ *  $Id: init.c,v 1.10 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include <sys/types.h>
@@ -38,7 +38,7 @@ void check_enosys(int status);
 
 void check_enosys(int status)
 {
-  if ( (status == -1) && (errno == ENOSYS) ) 
+  if ( (status == -1) && (errno == ENOSYS) )
     return;
   puts( "ERROR -- did not return ENOSYS as expected" );
   rtems_test_exit(0);

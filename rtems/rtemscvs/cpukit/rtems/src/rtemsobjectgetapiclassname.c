@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtemsobjectgetapiclassname.c,v 1.6 2009/11/23 14:53:04 joel Exp $
+ *  $Id: rtemsobjectgetapiclassname.c,v 1.7 2009/11/30 15:59:55 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -70,13 +70,13 @@ rtems_assoc_t rtems_object_api_itron_assoc[] = {
 #endif
 
 const char *rtems_object_get_api_class_name(
-  int the_api, 
+  int the_api,
   int the_class
 )
 {
   const rtems_assoc_t *api_assoc;
   const rtems_assoc_t *class_assoc;
-  
+
   if ( the_api == OBJECTS_INTERNAL_API )
     api_assoc = rtems_object_api_internal_assoc;
   else if ( the_api == OBJECTS_CLASSIC_API )

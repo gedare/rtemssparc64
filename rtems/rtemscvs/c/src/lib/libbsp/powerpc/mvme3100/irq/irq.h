@@ -17,7 +17,7 @@
  *
  *  Adapted for the mvme3100 BSP by T. Straumann, 2007.
  *
- *  $Id: irq.h,v 1.1.1.1 2007/12/14 06:30:04 strauman Exp $
+ *  $Id: irq.h,v 1.2 2009/11/30 04:34:37 ralf Exp $
  */
 
 #ifndef BSP_POWERPC_IRQ_H
@@ -97,7 +97,7 @@ extern "C" {
 #define BSP_UART_COM2_IRQ		(BSP_CORE_IRQ_LOWEST_OFFSET + 26)
 #define BSP_I2C_IRQ				(BSP_CORE_IRQ_LOWEST_OFFSET + 27)
 
-/* 
+/*
  * Some internal (CORE) name definitions
  */
 /* Ethernet (FEC) */

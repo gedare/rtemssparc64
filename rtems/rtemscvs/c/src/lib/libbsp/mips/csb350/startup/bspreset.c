@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspreset.c,v 1.1 2008/09/22 21:53:42 joel Exp $
+ *  $Id: bspreset.c,v 1.2 2009/11/29 15:27:06 ralf Exp $
  */
 #include <rtems.h>
 #include <libcpu/au1x00.h>
@@ -14,7 +14,7 @@
 void bsp_reset(void)
 {
   void (*reset_func)(void);
-  
+
   reset_func = (void *)0xbfc00000;
 
   mips_set_sr( 0x00200000 ); /* all interrupts off, boot exception vectors */

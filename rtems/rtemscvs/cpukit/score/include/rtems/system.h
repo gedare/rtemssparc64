@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  rtems/system.h
  *
  *  This include file contains information that is included in every
@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.60 2009/05/05 14:29:55 joel Exp $
+ *  $Id: system.h,v 1.61 2009/11/29 13:51:52 ralf Exp $
  */
 
 #ifndef _RTEMS_SYSTEM_H
@@ -45,7 +45,7 @@ extern "C" {
 #define SCORE_EXTERN  extern
 #endif
 
-/** 
+/**
  *  The following ensures that all data is declared in the space
  *  of the initialization routine for either the Initialization Manager
  *  or the initialization file for the appropriate API.  It is
@@ -59,7 +59,7 @@ extern "C" {
 #define SAPI_EXTERN  extern
 #endif
 
-/** 
+/**
  *  The following ensures that all data is declared in the space
  *  of the initialization routine for either the Initialization Manager
  *  or the initialization file for the appropriate API.  It is
@@ -73,7 +73,7 @@ extern "C" {
 #define RTEMS_EXTERN  extern
 #endif
 
-/** 
+/**
  *  The following ensures that all data is declared in the space
  *  of the initialization routine for either the Initialization Manager
  *  or the initialization file for the appropriate API.  It is
@@ -87,7 +87,7 @@ extern "C" {
 #define POSIX_EXTERN  extern
 #endif
 
-/** 
+/**
  *  The following ensures that all data is declared in the space
  *  of the initialization routine for either the Initialization Manager
  *  or the initialization file for the appropriate API.  It is
@@ -180,7 +180,7 @@ typedef void * proc_ptr;
 #include <stdint.h>
 #include <rtems/score/cpu.h>        /* processor specific information */
 
-/** 
+/**
  *  This macro is used to obtain the offset of a field in a structure.
  */
 #define RTEMS_offsetof(type, field) \

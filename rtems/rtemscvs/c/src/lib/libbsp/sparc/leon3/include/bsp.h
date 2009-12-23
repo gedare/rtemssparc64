@@ -10,13 +10,13 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *  Ported to ERC32 implementation of the SPARC by On-Line Applications
- *  Research Corporation (OAR) under contract to the European Space 
+ *  Research Corporation (OAR) under contract to the European Space
  *  Agency (ESA).
  *
- *  ERC32 modifications of respective RTEMS file: COPYRIGHT (c) 1995. 
+ *  ERC32 modifications of respective RTEMS file: COPYRIGHT (c) 1995.
  *  European Space Agency.
  *
- *  $Id: bsp.h,v 1.12 2009/08/19 16:28:55 joel Exp $
+ *  $Id: bsp.h,v 1.13 2009/11/29 15:33:27 ralf Exp $
  */
 
 #ifndef _BSP_H
@@ -91,13 +91,13 @@ extern int   CPU_SPARC_HAS_SNOOPING;
 extern int   RAM_START;
 extern int   RAM_END;
 extern int   RAM_SIZE;
- 
+
 extern int   PROM_START;
 extern int   PROM_END;
 extern int   PROM_SIZE;
 
 extern int   CLOCK_SPEED;
- 
+
 extern int   end;        /* last address in the program */
 
 /* miscellaneous stuff assumed to exist */

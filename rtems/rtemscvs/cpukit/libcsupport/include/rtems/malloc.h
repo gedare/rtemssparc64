@@ -12,7 +12,7 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: malloc.h,v 1.7 2009/11/11 20:36:44 joel Exp $
+ * $Id: malloc.h,v 1.9 2009/11/30 13:05:29 thomas Exp $
  */
 
 #ifndef _RTEMS_MALLOC_H
@@ -51,7 +51,7 @@ typedef struct {
   void (*at_free)(void *);
 } rtems_malloc_statistics_functions_t;
 
-extern rtems_malloc_statistics_functions_t 
+extern rtems_malloc_statistics_functions_t
   rtems_malloc_statistics_helpers_table;
 extern rtems_malloc_statistics_functions_t *rtems_malloc_statistics_helpers;
 
@@ -87,7 +87,7 @@ typedef void (*rtems_malloc_dirtier_t)(void *, size_t);
 extern rtems_malloc_dirtier_t *rtems_malloc_dirty_helper;
 
 /** @brief Dirty memory function
- *  
+ *
  *  This method fills the specified area with a non-zero pattern
  *  to aid in debugging programs which do not initialize their
  *  memory allocated from the heap.
@@ -115,12 +115,12 @@ int malloc_get_statistics(
  */
 void malloc_report_statistics(void);
 
-/** @brief Print Malloc Statistic Usage Report 
+/** @brief Print Malloc Statistic Usage Report
  *
  *  This method prints a malloc statistics report.
  *
- *  @param[in] context is the context to pass to the print handler 
- *  @param[in] print is the print handler 
+ *  @param[in] context is the context to pass to the print handler
+ *  @param[in] print is the print handler
  *
  *  @note It uses the CALLER's routine to print the report.
  */
@@ -169,7 +169,11 @@ int rtems_memalign(
  * @return A pointer to the begin of the allocated memory area, or @c NULL if
  * no memory is available or the parameters are inconsistent.
  */
-void *rtems_malloc(size_t size, uintptr_t alignment, uintptr_t boundary);
+void *rtems_heap_allocate_aligned_with_boundary(
+  size_t size,
+  uintptr_t alignment,
+  uintptr_t boundary
+);
 
 #ifdef __cplusplus
 }

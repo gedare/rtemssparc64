@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  @(#) $Id: msdos_mknod.c,v 1.8 2009/04/29 08:31:27 ccj Exp $
+ *  @(#) $Id: msdos_mknod.c,v 1.9 2009/11/29 13:18:56 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -56,7 +56,7 @@ int msdos_mknod(
     rtems_status_code    sc = RTEMS_SUCCESSFUL;
     msdos_fs_info_t     *fs_info = pathloc->mt_entry->fs_info;
     msdos_token_types_t  type = 0;
-    
+
     /*
      *  Figure out what type of msdos node this is.
      */

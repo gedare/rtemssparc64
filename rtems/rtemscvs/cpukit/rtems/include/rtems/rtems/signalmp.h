@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: signalmp.h,v 1.17 2009/08/05 18:17:12 joel Exp $
+ *  $Id: signalmp.h,v 1.18 2009/12/15 18:26:41 humph Exp $
  */
 
 #ifndef _RTEMS_RTEMS_SIGNALMP_H
@@ -75,7 +75,7 @@ typedef struct {
 rtems_status_code _Signal_MP_Send_request_packet (
   Signal_MP_Remote_operations operation,
   Objects_Id                  task_id,
-  rtems_signal_set      signal_in
+  rtems_signal_set            signal_in
 );
 
 /**

@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.77 2009/09/25 18:30:11 joel Exp $
+## $Id: Makefile.am,v 1.79 2009/11/30 13:05:29 thomas Exp $
 ##
 
 include $(top_srcdir)/automake/multilib.am
@@ -138,7 +138,7 @@ libscore_a_SOURCES += src/objectallocatebyindex.c src/objectgetbyindex.c
 endif
 
 ## PROTECTED_HEAP_C_FILES
-libscore_a_SOURCES += src/pheapallocatealigned.c src/pheapallocate.c \
+libscore_a_SOURCES += src/pheapallocate.c \
     src/pheapextend.c src/pheapfree.c src/pheapgetsize.c \
     src/pheapgetblocksize.c src/pheapgetfreeinfo.c src/pheapgetinfo.c \
     src/pheapinit.c src/pheapresizeblock.c src/pheapwalk.c
@@ -158,7 +158,7 @@ libscore_a_SOURCES += src/thread.c src/threadchangepriority.c \
 
 ## THREAD_C_FILES only used by ITRON API
 if LIBITRON
-libscore_a_SOURCES += src/threadrotatequeue.c 
+libscore_a_SOURCES += src/threadrotatequeue.c
 endif
 
 ## THREADQ_C_FILES

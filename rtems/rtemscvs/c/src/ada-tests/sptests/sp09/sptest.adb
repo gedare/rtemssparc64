@@ -10,18 +10,17 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-2007.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: sptest.adb,v 1.11 2007/10/18 19:36:29 humph Exp $
+--  $Id: sptest.adb,v 1.13 2009/12/14 21:28:53 joel Exp $
 --
 
 with INTERFACES; use INTERFACES;
-with RTEMS;
 with TEST_SUPPORT;
 with TEXT_IO;
 
@@ -35,6 +34,7 @@ package body SPTEST is
    procedure INIT (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -143,7 +143,7 @@ package body SPTEST is
 
    procedure SCREEN_1
    is
-      NOTEPAD_VALUE     : RTEMS.UNSIGNED32;
+      NOTEPAD_VALUE     : RTEMS.UNSIGNED32 := 0;
       SELF_ID           : RTEMS.ID;
       PREVIOUS_PRIORITY : RTEMS.TASK_PRIORITY;
       STATUS            : RTEMS.STATUS_CODES;
@@ -1194,7 +1194,7 @@ package body SPTEST is
       BUFFER         : SPTEST.BUFFER;
       BUFFER_POINTER : RTEMS.ADDRESS;
       COUNT          : RTEMS.UNSIGNED32;
-      MESSAGE_SIZE   : RTEMS.UNSIGNED32;
+      MESSAGE_SIZE   : RTEMS.UNSIGNED32 := 0;
       STATUS         : RTEMS.STATUS_CODES;
    begin
 
@@ -1323,7 +1323,7 @@ package body SPTEST is
         RTEMS.INVALID_ID,
         "MESSAGE_QUEUE_GET_NUMBER_PENDING WITH ILLEGAL ID"
       );
-      TEXT_IO.PUT_LINE( "TA1 - message_queue_get_number_pending - INVALID_ID" );
+      TEXT_IO.PUT_LINE("TA1 - message_queue_get_number_pending - INVALID_ID");
 
       RTEMS.MESSAGE_QUEUE_FLUSH( 100, COUNT, STATUS );
       TEST_SUPPORT.FATAL_DIRECTIVE_STATUS(
@@ -3024,6 +3024,7 @@ package body SPTEST is
    procedure TASK_1 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
    begin
 
       SPTEST.SCREEN_1;
@@ -3080,6 +3081,7 @@ package body SPTEST is
    procedure TASK_2 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -3115,9 +3117,10 @@ package body SPTEST is
    procedure TASK_3 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       BUFFER         : SPTEST.BUFFER;
       BUFFER_POINTER : RTEMS.ADDRESS;
-      MESSAGE_SIZE   : RTEMS.UNSIGNED32;
+      MESSAGE_SIZE   : RTEMS.UNSIGNED32 := 0;
       STATUS         : RTEMS.STATUS_CODES;
    begin
 
@@ -3158,6 +3161,7 @@ package body SPTEST is
    procedure TASK_4 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 

@@ -1,5 +1,5 @@
 /*---------------------------------------------------------------------------------
-	$Id: system.h,v 1.2 2008/08/19 15:47:14 joel Exp $
+	$Id: system.h,v 1.3 2009/11/29 14:53:01 ralf Exp $
 
 	Power control, keys, and HV clock registers
 
@@ -211,7 +211,7 @@ typedef struct tPERSONAL_DATA {
 	unsigned settingsLost		: 1;	//!<	User Settings Lost (0=Normal, 1=Prompt/Settings Lost)
 	unsigned RESERVED2			: 6;	//!<	???
   } _user_data;
-  
+
   u16	RESERVED3;
   u32	rtcOffset;
   u32	RESERVED4;
@@ -236,7 +236,7 @@ typedef struct tPERSONAL_DATA {
 
 */
 struct __argv {
-	int argvMagic;		//!< argv magic number, set to 0x5f617267 ('_arg') if valid 
+	int argvMagic;		//!< argv magic number, set to 0x5f617267 ('_arg') if valid
 	char *commandLine;	//!< base address of command line, set of null terminated strings
 	int length;			//!< total length of command line
 };

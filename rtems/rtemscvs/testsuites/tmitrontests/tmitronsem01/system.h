@@ -3,19 +3,18 @@
  *  This include file contains information that is included in every
  *  function in the test set.
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.6 2004/04/01 15:16:32 ralf Exp $
+ *  $Id: system.h,v 1.7 2009/12/08 17:52:58 joel Exp $
  */
 
 #include <tmacros.h>
 #include <rtems/itron.h>
-#include <assert.h>
 
 /* functions */
 

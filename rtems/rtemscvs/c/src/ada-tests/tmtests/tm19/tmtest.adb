@@ -10,23 +10,21 @@
 --
 --  
 --
---  COPYRIGHT (c) 1989-1997.
+--  COPYRIGHT (c) 1989-2009.
 --  On-Line Applications Research Corporation (OAR).
 --
 --  The license and distribution terms for this file may in
 --  the file LICENSE in this distribution or at
 --  http://www.rtems.com/license/LICENSE.
 --
---  $Id: tmtest.adb,v 1.6 2008/09/29 20:44:58 joel Exp $
+--  $Id: tmtest.adb,v 1.7 2009/12/14 21:17:58 joel Exp $
 --
 
-with INTERFACES; use INTERFACES;
-with RTEMS;
 with RTEMS_CALLING_OVERHEAD;
 with TEST_SUPPORT;
 with TEXT_IO;
 with TIME_TEST_SUPPORT;
-with UNSIGNED32_IO;
+with TIMER_DRIVER;
 
 package body TMTEST is
 
@@ -38,6 +36,7 @@ package body TMTEST is
    procedure INIT (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 
@@ -114,6 +113,7 @@ package body TMTEST is
    procedure PROCESS_ASR_FOR_PASS_1 (
       SIGNALS : in     RTEMS.SIGNAL_SET
    ) is
+      pragma Unreferenced(SIGNALS);
    begin
 
       TMTEST.END_TIME := TIMER_DRIVER.READ_TIMER;
@@ -140,6 +140,7 @@ package body TMTEST is
    procedure PROCESS_ASR_FOR_PASS_2 (
       SIGNALS : in     RTEMS.SIGNAL_SET
    ) is
+      pragma Unreferenced(SIGNALS);
       STATUS  : RTEMS.STATUS_CODES;
    begin
 
@@ -160,6 +161,7 @@ package body TMTEST is
    procedure TASK_1 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS  : RTEMS.STATUS_CODES;
    begin
 
@@ -240,6 +242,7 @@ package body TMTEST is
    procedure TASK_2 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS  : RTEMS.STATUS_CODES;
    begin
 
@@ -262,6 +265,7 @@ package body TMTEST is
    procedure TASK_3 (
       ARGUMENT : in     RTEMS.TASK_ARGUMENT
    ) is
+      pragma Unreferenced(ARGUMENT);
       STATUS : RTEMS.STATUS_CODES;
    begin
 

@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: taskgetnote.c,v 1.9 2008/06/16 15:54:21 joel Exp $
+ *  $Id: taskgetnote.c,v 1.11 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -52,7 +52,7 @@
  */
 
 rtems_status_code rtems_task_get_note(
-  Objects_Id  id,
+  rtems_id    id,
   uint32_t    notepad,
   uint32_t   *note
 )
@@ -63,7 +63,7 @@ rtems_status_code rtems_task_get_note(
 
   if ( !rtems_configuration_get_notepads_enabled() )
     return RTEMS_NOT_CONFIGURED;
-    
+
   if ( !note )
     return RTEMS_INVALID_ADDRESS;
 

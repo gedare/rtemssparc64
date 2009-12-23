@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: taskvariabledelete.c,v 1.16 2007/12/12 23:19:57 joel Exp $
+ *  $Id: taskvariabledelete.c,v 1.17 2009/11/30 15:59:56 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -49,7 +49,7 @@ rtems_status_code rtems_task_variable_delete(
         if (tvp->ptr == ptr) {
           if (prev)
             prev->next = tvp->next;
-          else      
+          else
             the_thread->task_variables = (rtems_task_variable_t *)tvp->next;
 
           _RTEMS_Tasks_Invoke_task_variable_dtor( the_thread, tvp );

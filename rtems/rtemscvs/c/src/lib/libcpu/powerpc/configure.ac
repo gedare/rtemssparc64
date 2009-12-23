@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
-# 
-# $Id: configure.ac,v 1.56 2008/07/14 16:15:27 thomas Exp $
+#
+# $Id: configure.ac,v 1.57 2009/11/28 06:28:41 ralf Exp $
 
 ##
 #

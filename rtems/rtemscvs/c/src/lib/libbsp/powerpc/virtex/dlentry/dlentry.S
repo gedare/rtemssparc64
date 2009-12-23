@@ -29,7 +29,7 @@
  *      i-cubed limited makes no representations about the suitability
  *      of this software for any purpose.
  *
- *  $Id: dlentry.S,v 1.3 2009/04/28 06:32:31 ccj Exp $
+ *  $Id: dlentry.S,v 1.4 2009/11/30 04:31:36 ralf Exp $
  *
  *  derived from "helas403/dlentry.S":
  *  Id: dlentry.S,v 1.2 2000/08/02 16:30:57 joel Exp
@@ -41,7 +41,7 @@
 #warning The call is "void boot_card(const char* cmdline);"
 #warning You need to pass a NULL.
 #warning Please check and remove these errors.
-	
+
 /*
  *  The virtex ELF link scripts support three special sections:
  *    .entry    The actual entry point
@@ -116,7 +116,7 @@ text_length:
 	lis	r2,__vectors@h          /* set EVPR exc. vector prefix */
 #else
 	lis	r2,0
-#endif		
+#endif
 	mtspr	evpr,r2
 
         /*-------------------------------------------------------------------

@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iom168.h,v 1.1 2009/08/06 14:52:05 joel Exp $ */
+/* $Id: iom168.h,v 1.2 2009/11/30 16:01:44 ralf Exp $ */
 
 #ifndef _AVR_IOM168_H_
 #define _AVR_IOM168_H_ 1
@@ -79,7 +79,7 @@
 /* Lock Bits */
 #define __LOCK_BITS_EXIST
 #define __BOOT_LOCK_BITS_0_EXIST
-#define __BOOT_LOCK_BITS_1_EXIST 
+#define __BOOT_LOCK_BITS_1_EXIST
 
 
 /* Signature */

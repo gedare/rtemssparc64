@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: msgqident.c,v 1.10 2008/01/23 22:57:43 joel Exp $
+ *  $Id: msgqident.c,v 1.11 2009/12/15 18:26:41 humph Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -53,9 +53,9 @@
  */
 
 rtems_status_code rtems_message_queue_ident(
-  rtems_name    name,
-  uint32_t      node,
-  Objects_Id   *id
+  rtems_name  name,
+  uint32_t    node,
+  rtems_id   *id
 )
 {
   Objects_Name_or_id_lookup_errors  status;

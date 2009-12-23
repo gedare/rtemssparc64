@@ -3,7 +3,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.13 2009/09/28 23:52:46 joel Exp $
+ *  $Id: init.c,v 1.14 2009/11/30 03:33:23 ralf Exp $
  */
 
 #include <stdio.h>
@@ -31,7 +31,7 @@ void *countTaskDeferred(void *ignored)
 {
   int i=0;
   int type,state;
-  
+
   pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &type);
   pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED, &state);
   while (1) {

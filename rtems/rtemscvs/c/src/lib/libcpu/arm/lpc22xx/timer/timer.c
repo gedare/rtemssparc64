@@ -2,7 +2,7 @@
  * RTL22xx board Timer driver
  *
  * This uses Timer1 for timing measurments.
- *  
+ *
  *  By Ray xu<rayx.cn@gmail.com>, modify form Mc9328mxl	RTEMS DSP
  *
  *  The license and distribution terms for this file may be
@@ -16,10 +16,10 @@
  *  benchmark_timer_initialize() and benchmark_timer_read().  benchmark_timer_read() usually returns
  *  the number of microseconds since benchmark_timer_initialize() exitted.
  *
- *  It is important that the timer start/stop overhead be determined 
+ *  It is important that the timer start/stop overhead be determined
  *  when porting or modifying this code.
  *
- *  $Id: timer.c,v 1.8 2008/09/05 11:49:02 ralf Exp $
+ *  $Id: timer.c,v 1.9 2009/11/30 04:59:43 ralf Exp $
 */
 
 #include <rtems.h>
@@ -31,7 +31,7 @@ uint32_t g_freq;
 
 bool benchmark_timer_find_average_overhead;
 
-    
+
 /*
  * Set up Timer 1
  */

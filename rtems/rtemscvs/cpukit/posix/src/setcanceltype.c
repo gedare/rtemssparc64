@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: setcanceltype.c,v 1.10 2009/07/21 14:16:00 joel Exp $
+ *  $Id: setcanceltype.c,v 1.11 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -57,7 +57,7 @@ int pthread_setcanceltype(
     thread_support->cancelability_type = type;
 
     _POSIX_Thread_Evaluate_cancellation_and_enable_dispatch(_Thread_Executing);
- 
+
   /*
    *  _Thread_Enable_dispatch is invoked by above call.
    */

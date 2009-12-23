@@ -1,14 +1,21 @@
 /*
- * MicroMonitor TFS Hookup to RTEMS FS
+ *  tfsDriver.c - MicroMonitor TFS Hookup to RTEMS FS
  *
- * Initial release: Oct 1, 2004   by Ed Sutter
+ *  Initial release: Oct 1, 2004   by Ed Sutter
  *
  *  This code was derived from the tftpDriver.c code written by
  *  W. Eric Norum, which was apparently derived from the IMFS driver.
  *
- *  This code was updated and merged with RTEMS CVS by Joel Sherrill, 2009.
+ *  This code was reformatted by Joel Sherrill from OAR Corporation and
+ *  Fernando Nicodemos <fgnicodemos@terra.com.br> from NCB - Sistemas
+ *  Embarcados Ltda. (Brazil) to be more compliant with RTEMS coding
+ *  standards and to eliminate C++ style comments.
  *
- *  $Id: tfsDriver.c,v 1.2 2009/11/03 07:12:25 ralf Exp $
+ *  The license and distribution terms for this file may be
+ *  found in the file LICENSE in this distribution or at
+ *  http://www.rtems.com/license/LICENSE.
+ *
+ *  $Id: tfsDriver.c,v 1.3 2009/11/30 22:00:47 joel Exp $
  */
 
 #include <stdio.h>

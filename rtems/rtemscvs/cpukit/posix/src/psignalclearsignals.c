@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: psignalclearsignals.c,v 1.9 2009/08/05 19:09:21 joel Exp $
+ *  $Id: psignalclearsignals.c,v 1.10 2009/11/30 15:44:21 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -61,7 +61,7 @@ bool _POSIX_signals_Clear_signals(
   else
     signals_blocked = SIGNAL_ALL_MASK;
 
-  /* XXX is this right for siginfo type signals? */ 
+  /* XXX is this right for siginfo type signals? */
   /* XXX are we sure they can be cleared the same way? */
 
   _ISR_Disable( level );

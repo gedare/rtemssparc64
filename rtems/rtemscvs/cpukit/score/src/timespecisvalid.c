@@ -1,4 +1,4 @@
-/** 
+/**
  *  @file  score/src/timespecisvalid.c
  */
 
@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timespecisvalid.c,v 1.3 2008/12/22 05:52:32 ralf Exp $
+ *  $Id: timespecisvalid.c,v 1.4 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H

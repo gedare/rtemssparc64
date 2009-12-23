@@ -10,7 +10,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp.h,v 1.7 2009/06/02 22:19:44 joel Exp $
+ *  $Id: bsp.h,v 1.8 2009/11/29 14:53:00 ralf Exp $
  */
 #ifndef _BSP_H
 #define _BSP_H
@@ -38,7 +38,7 @@ console_tbl *BSP_get_uart_from_minor(int minor);
 static inline int32_t BSP_get_baud(void) {return 38400;}
 
 #define ST_PIMR_PIV	33	/* 33 ticks of the 32.768Khz clock ~= 1msec */
-  
+
 /*
  * Network driver configuration
  */

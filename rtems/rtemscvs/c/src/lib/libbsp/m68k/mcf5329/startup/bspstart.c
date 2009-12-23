@@ -16,8 +16,8 @@
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
- * 
- *  $Id: bspstart.c,v 1.3 2008/09/16 19:03:30 joel Exp $
+ *
+ *  $Id: bspstart.c,v 1.4 2009/11/29 14:59:41 ralf Exp $
  */
 
 #include <bsp.h>
