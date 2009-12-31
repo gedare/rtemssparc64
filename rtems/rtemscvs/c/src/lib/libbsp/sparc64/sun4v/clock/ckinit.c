@@ -41,10 +41,7 @@ void Clock_driver_support_at_tick(void)
 
 
   bit_mask = SPARC_SOFTINT_TM_BIT;
-//  sparc64_clear_interrupt_bits(SPARC_SOFTINT_TM_BIT);
-//  sparc64_clear_interrupt_tm;
-
-//  asm volatile("wr %%g0, %c0, %%softint_clr": : "i" (0x01) );
+  sparc64_clear_interrupt_bits(bit_mask);
 
   /* TODO: this could be more efficiently implemented as a single assembly 
    * inline */
@@ -53,7 +50,6 @@ void Clock_driver_support_at_tick(void)
   sparc64_write_tick_cmpr(tick_reg);
 }
 
-/* this should be #define, but set_vector is not declared right in shell */
 #define Clock_driver_support_install_isr(_new, _old) \
   do { \
     _old = set_vector( _new, CLOCK_VECTOR, 1 ); \
