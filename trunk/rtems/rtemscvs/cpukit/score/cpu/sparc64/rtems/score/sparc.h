@@ -267,14 +267,8 @@ extern "C" {
   } while ( 0 )
 
 #define sparc64_clear_interrupt_bits( _bit_mask ) \
-  asm volatile( "wr %%g0, %0, %%softint_clr" : "=r" (_bit_mask) \
+  asm volatile( "wr %%g0, %0, %%softint_clear" : "=r" (_bit_mask) \
                                              : "0" (_bit_mask)); \
-
-#define sparc64_clear_interrupt_tm \
-do { \
-  asm volatile( "wr %%g0, $1, %%softint_clr"); \
-} while ( 0 )
-
 
 
 /************* DELETED ****************/
