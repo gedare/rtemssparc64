@@ -329,6 +329,7 @@ void _CPU_Context_Initialize(
     uint64_t     stack_high;  /* highest "stack aligned" address */
     uint32_t     the_size;
     uint64_t     tmp_pstate;
+    uint64_t    tmp_pil;
 
     /*
      *  On CPUs with stacks which grow down (i.e. SPARC), we build the stack
@@ -347,6 +348,7 @@ void _CPU_Context_Initialize(
     the_context->o7    = ((uint64_t) entry_point) - 8;
     the_context->o6_sp = stack_high - CPU_MINIMUM_STACK_FRAME_SIZE - STACK_BIAS;
     the_context->i6_fp = 0;
+
 #ifdef GICADEBUG
 	printk("\n\r"
 			"_CPU_Context_Initialize() "
@@ -376,15 +378,14 @@ void _CPU_Context_Initialize(
 
     sparc64_get_pstate( tmp_pstate );
     tmp_pstate &= ~SPARC_PSTATE_PEF_MASK;      /* disabled by default */
+    tmp_pstate |= SPARC_PSTATE_IE_MASK; /* TODO: enable interrupts? */
 
     /*
-     * interrupt level is currently ignored
+     * Set the processor interrupt level (PIL) to the new_level
+     * The PIL is a 4-bit register specifying the level above which
+     * interrupts are taken.
      */
-/* XXX
-    tmp_psr &= ~SPARC_PSR_PIL_MASK;
-    tmp_psr |= (new_level << 8) & SPARC_PSR_PIL_MASK;
-  */
-
+    tmp_pil = new_level & 0xF;
 
 #if (SPARC_HAS_FPU == 1)
     /*
@@ -397,6 +398,7 @@ void _CPU_Context_Initialize(
       tmp_pstate |= SPARC_PSTATE_PEF_MASK;
 #endif
     the_context->pstate = tmp_pstate;
+    the_context->pil = tmp_pil;
 
   /*
    *  Since THIS thread is being created, there is no way that THIS
