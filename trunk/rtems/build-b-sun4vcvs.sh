@@ -10,3 +10,5 @@ make
 
 sparc64-rtems4.10-objdump -d sparc64-rtems4.10/c/sun4v/testsuites/samples/hello/hello.exe > hello.disasm
 
+sparc64-rtems4.10-objdump -d sparc64-rtems4.10/c/sun4v/testsuites/samples/ticker/ticker.exe > ticker.disasm
+

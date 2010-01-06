@@ -219,6 +219,9 @@ SYM(_CPU_Context_switch):
         stx     %o6, [%o0 + O6_SP_OFFSET]
         stx     %o7, [%o0 + O7_OFFSET]       ! o7 is the PC
 
+        rdpr    %pil, %o2
+        stuw    %o2, [%o0 + PIL_OFFSET] ! save pil
+
         rdpr    %pstate, %o2
         stx     %o2, [%o0 + PSTATE_OFFSET]      ! save status register
 
@@ -232,6 +235,8 @@ SYM(_CPU_Context_switch):
 SYM(_CPU_Context_restore_heir):
 
 	flushw
+
+
 
         ! skip g0
         ldx     [%o1 + G1_OFFSET], %g1        ! restore the global registers
@@ -268,14 +273,22 @@ SYM(_CPU_Context_restore_heir):
         ldx     [%o1 + I6_FP_OFFSET], %i6
         ldx     [%o1 + I7_OFFSET], %i7
 
+        ldx     [%o1 + O0_OFFSET], %o0
         ldx     [%o1 + O2_OFFSET], %o2        ! restore the output registers
         ldx     [%o1 + O3_OFFSET], %o3
         ldx     [%o1 + O4_OFFSET], %o4
         ldx     [%o1 + O5_OFFSET], %o5
         ldx     [%o1 + O6_SP_OFFSET], %o6
         ldx     [%o1 + O7_OFFSET], %o7       ! PC
-        ! do o0/o1 last to avoid destroying heir context pointer
-        ldx     [%o1 + O0_OFFSET], %o0        ! overwrite heir pointer
+        ! do o1 last to avoid destroying heir context pointer
+        ldx     [%o1 + O1_OFFSET], %o1        ! overwrite heir pointer
+
+        ! on a hunch... we should be able to use some of the %o regs
+        lduw    [%o1 + PIL_OFFSET], %o2
+        wrpr    %g0, %o2, %pil
+
+        ldx     [%o1 + PSTATE_OFFSET], %o2
+        wrpr    %g0, %o2, %pstate
 
  	retl
 	nop

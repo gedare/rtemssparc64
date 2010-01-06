@@ -345,7 +345,7 @@ typedef struct {
 
     uint64_t   pstate;
     uint32_t   isr_dispatch_disable;
-    uint32_t	pad0;
+    uint32_t   pil;
 } Context_Control;
 
 #define _CPU_Context_Get_SP( _context ) \
@@ -394,6 +394,7 @@ typedef struct {
 
 #define PSTATE_OFFSET    0xF8
 #define ISR_DISPATCH_DISABLE_STACK_OFFSET 0x100
+#define PIL_OFFSET      0x104
 
 #define CONTEXT_CONTROL_SIZE 0x108
 
