@@ -249,7 +249,7 @@ SYM(_CPU_Context_restore_heir):
 
         ! Load thread specific ISR dispatch prevention flag
         ldx    [%o1 + ISR_DISPATCH_DISABLE_STACK_OFFSET], %o2
-	setuw	SYM(_CPU_ISR_Dispatch_disable), %o3
+	setx	SYM(_CPU_ISR_Dispatch_disable), %o5, %o3
         ! Store it to memory later to use the cycles
 
         ldx     [%o1 + L0_OFFSET], %l0        ! restore the local registers
@@ -262,7 +262,7 @@ SYM(_CPU_Context_restore_heir):
         ldx     [%o1 + L7_OFFSET], %l7
 
         ! Now restore thread specific ISR dispatch prevention flag
-        stx	%o2, [%o3]
+        stuw	%o2, [%o3]
 
         ldx     [%o1 + I0_OFFSET], %i0        ! restore the input registers
         ldx     [%o1 + I1_OFFSET], %i1
@@ -438,10 +438,10 @@ SYM(_ISR_Handler):
 	lduw	[%g6], %g4
 
         add      %g5, 1, %g5
-        stx      %g5, [%g7]
+        stuw     %g5, [%g7]
 
         add      %g4, 1, %g4
-        stx      %g4, [%g6]
+        stuw     %g4, [%g6]
 
         /*
          *  If ISR nest level was zero (now 1), then switch stack.
@@ -562,6 +562,27 @@ dont_fix_pil:
 	sub	%g4, 1, %g4
 	stuw	%g4, [%g6]
 
+        orcc    %g4, %g0, %g0           ! ISRs still nested?
+        bnz     dont_restore_stack      ! Yes then don't restore stack yet
+        nop
+
+        /*
+	 *  This is the outermost interrupt handler. Need to get off the
+	 *  CPU Interrupt Stack and back to the tasks stack.
+	 *
+         *  The following subtract should get us back on the interrupted
+         *  tasks stack and add enough room to invoke the dispatcher.
+         *  When we enable traps, we are mostly back in the context
+         *  of the task and subsequent interrupts can operate normally.
+	 *
+	 *  Now %sp points to the bottom of the ISF.
+	 *  
+         */
+
+        sub      %fp, 	CONTEXT_CONTROL_INTERRUPT_FRAME_SIZE, %sp
+
+dont_restore_stack:
+
         /*
          *  If dispatching is disabled (includes nested interrupt case),
          *  then do a "simple" exit.
@@ -574,7 +595,7 @@ dont_fix_pil:
 
         ! Are we dispatching from a previous ISR in the interrupted thread?
 	setx	SYM(_CPU_ISR_Dispatch_disable), %o5, %g5
-        ld       [%g5], %o5
+        lduw     [%g5], %o5
         orcc     %o5, %g0, %g0   ! Is this thread already doing an ISR?
         bnz      simple_return   ! Yes, then do a "simple" exit
         nop
@@ -616,22 +637,8 @@ SYM(_ISR_Dispatch):
         ! Set ISR dispatch nesting prevention flag
         mov      1, %o1
         setx    SYM(_CPU_ISR_Dispatch_disable), %o5, %o2
-        st       %o1, [%o2]
+        stuw     %o1, [%o2]
 
-        /*
-	 *  This is the outermost interrupt handler. Need to get off the
-	 *  CPU Interrupt Stack and back to the tasks stack.
-	 *
-         *  The following subtract should get us back on the interrupted
-         *  tasks stack and add enough room to invoke the dispatcher.
-         *  When we enable traps, we are mostly back in the context
-         *  of the task and subsequent interrupts can operate normally.
-	 *
-	 *  Now %sp points to the bottom of the ISF.
-	 *  
-         */
-
-        sub      %fp, 	CONTEXT_CONTROL_INTERRUPT_FRAME_SIZE, %sp
 
   	!  **** ENABLE TRAPS ****
 	wrpr	%g0, SPARC_PSTATE_PRIV_MASK | SPARC_PSTATE_PEF_MASK | \
@@ -691,7 +698,7 @@ allow_nest_again:
 
         ! Zero out ISR stack nesting prevention flag
         setx	SYM(_CPU_ISR_Dispatch_disable), %o5, %o1
-        st       %g0,[%o1]
+        stuw    %g0,[%o1]
 
         /*
          *  The CWP in place at this point may be different from
