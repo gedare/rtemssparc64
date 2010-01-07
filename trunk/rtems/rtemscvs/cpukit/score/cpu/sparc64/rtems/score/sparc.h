@@ -167,7 +167,12 @@ extern "C" {
 
 #define SPARC_TSTATE_IE_MASK  0x00000200  /* bit 9 */
 
-#define SPARC_SOFTINT_TM_BIT    1       /* bit 0 */
+#define SPARC_SOFTINT_TM_MASK 0x00000001    /* bit 0 */
+#define SPARC_SOFTINT_SM_MASK 0x00001000    /* bit 16 */
+#define SPARC_SOFTINT_TM_BIT_POSITION    1       /* bit 0 */
+#define SPARC_SOFTINT_SM_BIT_POSITION    17      /* bit 16 */
+
+#define STACK_BIAS (2047)
 
 #ifdef ASM
 

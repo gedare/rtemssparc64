@@ -32,6 +32,7 @@ rtems_isr_entry set_vector(                   /* returns old vector */
   rtems_isr_entry previous_isr;
   uint32_t      real_trap;
   uint32_t      source;
+  int bit_mask;
 
   if ( type )
     rtems_interrupt_catch( handler, vector, &previous_isr );
@@ -46,6 +47,13 @@ rtems_isr_entry set_vector(                   /* returns old vector */
    */
   /* TODO: FIXME*/
   /* Interrupts have real_trap numbers between 0x41 and 0x4F (levels 1 - 15) */
+  if (real_trap >= 0x41 && real_trap <= 0x4F) {
+    source = real_trap - 0x40;
+    bit_mask = 1<<source;
+
+    sparc64_clear_interrupt_bits(bit_mask);
+  }
+
 
   return previous_isr;
 }

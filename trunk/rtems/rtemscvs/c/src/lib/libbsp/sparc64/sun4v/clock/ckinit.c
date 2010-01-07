@@ -40,7 +40,7 @@ void Clock_driver_support_at_tick(void)
   int bit_mask;
 
 
-  bit_mask = SPARC_SOFTINT_TM_BIT;
+  bit_mask = SPARC_SOFTINT_TM_MASK | SPARC_SOFTINT_SM_MASK | (1<<14);
   sparc64_clear_interrupt_bits(bit_mask);
 
   /* TODO: this could be more efficiently implemented as a single assembly 
@@ -58,6 +58,11 @@ void Clock_driver_support_at_tick(void)
 void Clock_driver_support_initialize_hardware(void)
 {
   uint64_t tick_reg;
+  int bit_mask;
+
+
+  bit_mask = SPARC_SOFTINT_TM_MASK | SPARC_SOFTINT_SM_MASK | (1<<14);
+  sparc64_clear_interrupt_bits(bit_mask);
 
   sun4v_cycles_per_tick = rtems_configuration_get_microseconds_per_tick()*(CPU_FREQ/1000000);
 

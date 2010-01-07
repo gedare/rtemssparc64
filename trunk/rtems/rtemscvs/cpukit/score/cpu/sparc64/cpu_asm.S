@@ -280,14 +280,15 @@ SYM(_CPU_Context_restore_heir):
         ldx     [%o1 + O5_OFFSET], %o5
         ldx     [%o1 + O6_SP_OFFSET], %o6
         ldx     [%o1 + O7_OFFSET], %o7       ! PC
-        ! do o1 last to avoid destroying heir context pointer
-        ldx     [%o1 + O1_OFFSET], %o1        ! overwrite heir pointer
 
         ! on a hunch... we should be able to use some of the %o regs
         lduw    [%o1 + PIL_OFFSET], %o2
         wrpr    %g0, %o2, %pil
 
         ldx     [%o1 + PSTATE_OFFSET], %o2
+        
+        ! do o1 last to avoid destroying heir context pointer
+        ldx     [%o1 + O1_OFFSET], %o1        ! overwrite heir pointer
         wrpr    %g0, %o2, %pstate
 
  	retl
@@ -453,6 +454,11 @@ SYM(_ISR_Handler):
 	ldx	[%g1], %sp
 
         /*
+         * Adjust the stack for the stack bias
+         */
+        sub     %sp, STACK_BIAS, %sp
+
+        /*
          *  Make sure we have a place on the stack for the window overflow
          *  trap handler to write into.  At this point it is safe to
          *  enable traps again.
@@ -501,7 +507,7 @@ dont_fix_pil:
 	setx	SYM(_ISR_Vector_table), %o5, %g1
 	ldx	[%g1], %g1
 	and      %g2, 0x1FF, %o5        ! remove synchronous trap indicator
-        sll      %o5, 2, %o5            ! o5 = offset into table
+        sll      %o5, 3, %o5            ! o5 = offset into table
         ldx      [%g1 + %o5], %g1       ! g1 = _ISR_Vector_table[ vector ]
 
 
