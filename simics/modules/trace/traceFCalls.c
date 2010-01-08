@@ -21,6 +21,8 @@ mystack returnAddressStack; 	//this is the main Container stack
 int containerInitialized = 0; 	//local flag to track wheater the containers were initialized
 md_addr_t return_addr;			//monitors the return addresses ( saved before a function call and stored to stack)
 
+
+
 struct regs_t *regs;			//this pointer gives access to the simulated register file
 
 char printBuffer[10000];			// use sprintf to print to this buffer and then use myprint for the final print ( full trace )
@@ -51,12 +53,9 @@ int ld_stack_base;
 int ld_environ_base;
 
 
-int test()
-{
-	printf("test\n");
-	fflush(stdin);
-	return 0;
-}
+conf_object_t *proc; //Simics Sparc current processor
+int o7id; //Simics Sparc registerid for the "i7" register ( %i7 + 8 is the return address)
+
 
 
 void container_initialize( base_trace_t *bt)
@@ -66,6 +65,7 @@ void container_initialize( base_trace_t *bt)
 
 	if(containerInitialized == 0)
 	{
+		ignore_due_to_Exception = 0;
 		containerInitialized = 1;
 		returnAddressStack = stack_create();
 		//containerTable = (container *)malloc(size * sizeof(container));
@@ -75,7 +75,7 @@ void container_initialize( base_trace_t *bt)
 					fscanf(tracefdIn,"%s %d %d",traceLoader[traceLoaderSize].name,&traceLoader[traceLoaderSize].traceLoadedAddressCount,&traceLoader[traceLoaderSize].traceLoadeduniqueChildContainersCalled);
 					traceLoaderSize++;
 				}
-
+				fclose(tracefdIn);
 				while(i<traceLoaderSize){
 						//printf("%s %d %d\n",&traceLoader[i].name,traceLoader[i].traceLoadedAddressCount,traceLoader[i].traceLoadeduniqueChildContainersCalled);
 						i++;
@@ -94,6 +94,10 @@ void container_initialize( base_trace_t *bt)
 				fullTracefd = stdout;
 			}
 		}
+
+		
+		proc =	SIM_current_processor();
+		o7id = SIM_get_register_number(proc,"o7");
 		
 	}
 	else
@@ -101,6 +105,15 @@ void container_initialize( base_trace_t *bt)
 		exit(printf("\n\n Runtime ERROR ('initializeContainers' called twice"));
 	}
 }
+
+void container_close()
+{
+	if(fullTracefd) {
+		fclose(fullTracefd);
+	}
+	containerInitialized = 0;
+}
+
 
 void setFullTraceFile(base_trace_t *bt)
 {
@@ -174,7 +187,7 @@ void container_add(md_addr_t addr, char * name)
 		}
 	}
 	containerTable[containerSize++] = *newContainer;
-	printf("%lld = %llx %s %d %d\n", addr,containerTable[containerSize-1].entryAddress, containerTable[containerSize-1].name, containerTable[containerSize-1].traceLoadedAddressCount, containerTable[containerSize-1].traceLoadeduniqueChildContainersCalled);
+	//printf("%lld = %llx %s %d %d\n", addr,containerTable[containerSize-1].entryAddress, containerTable[containerSize-1].name, containerTable[containerSize-1].traceLoadedAddressCount, containerTable[containerSize-1].traceLoadeduniqueChildContainersCalled);
 	free(newContainer);
 }
 
@@ -199,12 +212,14 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 	if(!stack_empty(returnAddressStack))
 	{
 		//printf("\n GICA check for function return: 0x%llx\n",addr);
+		//fflush(stdin);
 		stackObject t = stack_top(returnAddressStack);
 		UpdateAddressList(&( t.container->addressAccessList), addr, 4);
 		UpdateAddressList(&( t.container->addressAccessListInstance), addr, 4);
 		if( t.returnAddress == addr)
 		{
 			//printf("return from function , popping container\n");
+			//fflush(stdin);
 			stack_pop(returnAddressStack);
 			t.container->totalStackPops ++;
 			//for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
@@ -215,94 +230,100 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 			updateHeapCalls(t.container,t.container->addressAccessListInstance);
 			t.container->addressAccessListPenalty += penaltyAddressList( t.container->addressAccessListInstance);
 			for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
-			myprint("*\n");
+			sprintf(printBuffer,"}\n");
+			myprint(printBuffer);
 
 			//for heap acceses we need to update the parent container with that call as well ( heap memory accesses are passed from parent to child)
-			if(!stack_empty(returnAddressStack))
+			if(!stack_empty(returnAddressStack)){
 				updateHeapCalls(stack_top(returnAddressStack).container,t.container->addressAccessListInstance);
-
+				loadPenalty.containerStaticListSize = stack_top(returnAddressStack).container->traceLoadedAddressCount + stack_top(returnAddressStack).container->traceLoadeduniqueChildContainersCalled + 3; //all static memory + code + stacksize + timeout
+			    loadPenalty.containerDynamicListSize = stack_top(returnAddressStack).container->isCalledWithHeapData;
+			}
 			t.container->addressAccessListInstance = NULL;
-
-		    loadPenalty.containerStaticListSize = stack_top(returnAddressStack).container->traceLoadedAddressCount + stack_top(returnAddressStack).container->traceLoadeduniqueChildContainersCalled + 3; //all static memory + code + stacksize + timeout
-		    loadPenalty.containerDynamicListSize = stack_top(returnAddressStack).container->isCalledWithHeapData;
 			return loadPenalty;
 		}
 
 	}
 	
-    
+    //printf("\n GICA: searching 0x%llx\n",addr);
 	//if it was not a function return , it is either a function call ( push to container stack in this case), a exit function (pop all from container stack), or just a regular memory call ( in this case, add it to the current active container)
 	foundSearch = search(addr);
 	if(foundSearch){
-		//printf("\n GICA: 0x%llx 0x%llx %s\n",addr, foundSearch->entryAddress, foundSearch->name);
-		fflush(stdin);
-		if(!stack_empty(returnAddressStack)){
-
-			int found = 0;
-			stackObject currentContainer = stack_top(returnAddressStack);
-			currentContainer.container->totalChildContainersCalled++;
-	        list l = currentContainer.container->childFunctions;
-			while(l!= NULL)
+		if(ignore_due_to_Exception) {ignore_due_to_Exception = 0;}
+		else
 			{
-				if(l->element.container->entryAddress == addr)
-				{
-					found = 1;
-					break;
+				//printf("\n GICA: found 0x%llx 0x%llx %s\n",addr, foundSearch->entryAddress, foundSearch->name);
+				//fflush(stdin);
+				if(!stack_empty(returnAddressStack)){
+
+					int found = 0;
+					stackObject currentContainer = stack_top(returnAddressStack);
+					currentContainer.container->totalChildContainersCalled++;
+			        list l = currentContainer.container->childFunctions;
+					while(l!= NULL)
+					{
+						if(l->element.container->entryAddress == addr)
+						{
+							found = 1;
+							break;
+						}
+						l = l->next;
+					}
+					if(!found)
+					{
+						currentContainer.container->uniqueChildContainersCalled ++;
+						stackObject t ;
+						t.container = foundSearch;
+						currentContainer.container->childFunctions = cons(t,currentContainer.container->childFunctions);
+					}
 				}
-				l = l->next;
-			}
-			if(!found)
-			{
-				currentContainer.container->uniqueChildContainersCalled ++;
-				stackObject t ;
+				for(j = 0; j< returnAddressStack->size; j++) myprint("|\t");
+		//			sprintf(printBuffer,"%x %s \n",addr,foundSearch->name);
+				//sprintf(printBuffer,"0x%llx %s %d %d\n",foundSearch->entryAddress,foundSearch->name,foundSearch->traceLoadedAddressCount,foundSearch->traceLoadeduniqueChildContainersCalled);
+				sprintf(printBuffer,"0x%llx 0x%llx %s{\n",foundSearch->entryAddress,SIM_read_register(proc,o7id) + 8, foundSearch->name);
+				myprint(printBuffer);
+				//fflush(stdin);
+				//simulate loading the access list
+				int sizeOfAccessList = foundSearch->traceLoadedAddressCount + foundSearch->traceLoadeduniqueChildContainersCalled + 3; //all static memory + code + stacksize + timeout
+				loadPenalty.containerStaticListSize = sizeOfAccessList;
+				if(!stack_empty(returnAddressStack))
+					loadPenalty.containerDynamicListSize = (-1)*stack_top(returnAddressStack).container->isCalledWithHeapData;
+
+
+				stackObject t;
+				foundSearch->totalStackPushes ++;
+				//printf("MemAccess : FP(%d)=%x SP(%d)=%x \n",MD_REG_FP,regs->regs_R[MD_REG_FP],MD_REG_SP,regs->regs_R[MD_REG_SP]);
+				//container_dumpRegisters(*regs);
+
 				t.container = foundSearch;
-				currentContainer.container->childFunctions = cons(t,currentContainer.container->childFunctions);
+				t.returnAddress = SIM_read_register(proc,o7id) + 8;//return_addr;
+				//printf("\n GICA: pushed to stack 0x%llx return :0x%llx %s\n",foundSearch->entryAddress,return_addr,foundSearch->name);
+				//fflush(stdout);
+				stack_push(returnAddressStack, t);
+				UpdateAddressList(&( t.container->addressAccessList), addr, 4);
+				UpdateAddressList(&( t.container->addressAccessListInstance), addr, 4);
+
+				//EXIT function needs to force containers to pop all remaining from stack. Otherwise the Complete access list for main
+				/*
+				if(strcmp(foundSearch->name,"_Exit") == 0)
+				{
+					while(!stack_empty(returnAddressStack))
+					{
+						stackObject t = stack_top(returnAddressStack);
+						stack_pop(returnAddressStack);
+						t.container->totalStackPops ++;
+						for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
+						printDecodedAddressList(printBuffer,t.container->addressAccessListInstance);
+						myprint("*\n");
+						updateGlobalAddressList(t.container);
+						updateHeapCalls(t.container,t.container->addressAccessListInstance);
+						t.container->addressAccessListPenalty += penaltyAddressList( t.container->addressAccessListInstance);
+						for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
+						myprint("*\n");
+					}
+				}
+				*/
 			}
-		}
-		for(j = 0; j< returnAddressStack->size; j++) myprint("|\t");
-//			sprintf(printBuffer,"%x %s \n",addr,foundSearch->name);
-		//sprintf(printBuffer,"0x%llx %s %d %d\n",foundSearch->entryAddress,foundSearch->name,foundSearch->traceLoadedAddressCount,foundSearch->traceLoadeduniqueChildContainersCalled);
-		sprintf(printBuffer,"0x%llx %s\n",foundSearch->entryAddress,foundSearch->name);
-		myprint(printBuffer);
-
-		//simulate loading the access list
-		int sizeOfAccessList = foundSearch->traceLoadedAddressCount + foundSearch->traceLoadeduniqueChildContainersCalled + 3; //all static memory + code + stacksize + timeout
-		//int * uselessBuffer = (int *) malloc (sizeOfAccessList);
-		//mem_access(mem, Read, addr - sizeOfAccessList,uselessBuffer, sizeOfAccessList);
-		loadPenalty.containerStaticListSize = sizeOfAccessList;
-		if(!stack_empty(returnAddressStack))
-			loadPenalty.containerDynamicListSize = (-1)*stack_top(returnAddressStack).container->isCalledWithHeapData;
-		//free(uselessBuffer);
-
-		stackObject t;
-		foundSearch->totalStackPushes ++;
-		//printf("MemAccess : FP(%d)=%x SP(%d)=%x \n",MD_REG_FP,regs->regs_R[MD_REG_FP],MD_REG_SP,regs->regs_R[MD_REG_SP]);
-		//container_dumpRegisters(*regs);
-
-		t.container = foundSearch;
-		t.returnAddress = return_addr;
-		stack_push(returnAddressStack, t);
-		UpdateAddressList(&( t.container->addressAccessList), addr, 4);
-		UpdateAddressList(&( t.container->addressAccessListInstance), addr, 4);
-
-		//EXIT function needs to force containers to pop all remaining from stack. Otherwise the Complete access list for main
-		if(strcmp(foundSearch->name,"_Exit") == 0)
-		{
-			while(!stack_empty(returnAddressStack))
-			{
-				stackObject t = stack_top(returnAddressStack);
-				stack_pop(returnAddressStack);
-				t.container->totalStackPops ++;
-				for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
-				printDecodedAddressList(printBuffer,t.container->addressAccessListInstance);
-				myprint("*\n");
-				updateGlobalAddressList(t.container);
-				updateHeapCalls(t.container,t.container->addressAccessListInstance);
-				t.container->addressAccessListPenalty += penaltyAddressList( t.container->addressAccessListInstance);
-				for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
-				myprint("*\n");
-			}
-		}
 		return loadPenalty;
 	}
 
@@ -644,7 +665,7 @@ void myprint(char * toPrint)
 		fprintf(compilerInfofd,"%s",toPrint);
 	else if(fullTracefd)
 		fprintf(fullTracefd,"%s",toPrint);
-
+	printf("%s",toPrint);
 }
 
 char * funcNameFromAddress(int addr)
@@ -723,6 +744,7 @@ stackObject stack_top(mystack s)
 }
 
 int container_comparison(const void * m1, const void * m2){
+	//printf("GICA: comparing %llx %llx ? %llx\n", ((container *)m1)->entryAddress, ((container *)m2)->entryAddress, ((container *)m1)->entryAddress - ((container *)m2)->entryAddress);
 	return ((container *)m1)->entryAddress - ((container *)m2)->entryAddress;
 }
 

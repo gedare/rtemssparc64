@@ -82,6 +82,11 @@
 #include "traceFCalls.h"
 
 
+extern mystack returnAddressStack; 
+extern int ignore_due_to_Exception;
+
+
+
 static const char *read_or_write_str[] = { "Read ", "Write"};
 
 const char *seg_regs[] = {"es", "cs", "ss", "ds", "fs", "gs", 0};
@@ -1023,6 +1028,9 @@ set_enabled(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
         if (!!bt->trace_enabled == !!val->u.integer)
                 return Sim_Set_Ok; /* value did not change */
 
+		if(!val->u.integer)
+			container_close();
+
         /* Change the enabled state and try to start or stop the data
            tracing. */
         bt->trace_enabled = !!val->u.integer;
@@ -1036,6 +1044,8 @@ set_enabled(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
                 /* Failure, revert the change. */
                 bt->trace_enabled = !bt->trace_enabled;
         }
+
+	     
 
         return ret;
 }
@@ -1436,6 +1446,24 @@ trace_new_instance(parse_object_t *pa)
         return &tmho->obj;
 }
 
+void ExceptionCallBack(lang_void *callback_data,
+	conf_object_t *trigger_obj,
+	integer_t exception_number){
+	conf_object_t *proc;
+	proc =	SIM_current_processor();
+	
+	//printf("HAP HAP : %lld  %s\n",exception_number,SIM_get_exception_name(proc,exception_number));
+	if(!stack_empty(returnAddressStack)){
+		stackObject t = stack_top(returnAddressStack);
+		if(t.container->entryAddress == SIM_get_program_counter(proc)){
+			//stack_pop(returnAddressStack);
+			ignore_due_to_Exception = 1;
+			printf("HAP AND CONTAINERS : %lld  %s\n",exception_number,SIM_get_exception_name(proc,exception_number));
+		}
+	}
+}
+
+
 
 void
 init_local(void)
@@ -1675,4 +1703,12 @@ init_local(void)
 		printf("Trace: init_local\n");
 
 
+
+		SIM_hap_add_callback("Core_Exception",
+							 (obj_hap_func_t)ExceptionCallBack,
+							 NULL);
+		
+
+		
 }
+
