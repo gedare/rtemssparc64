@@ -414,7 +414,7 @@ SYM(_ISR_Handler):
 	
 
 	mov	%o1, %g2	! get the trap #
-	mov	%o5, %g3	! store the interrupted %sp
+	mov	%o5, %g7	! store the interrupted %sp (preserve)
         mov     %sp, %o1        ! 2nd arg to ISR Handler = address of ISF
 
         /*
@@ -422,7 +422,7 @@ SYM(_ISR_Handler):
          *
          *  Register usage for this section: (note, these are used later)
          *
-         *    g7 = _Thread_Dispatch_disable_level pointer
+         *    g3 = _Thread_Dispatch_disable_level pointer
          *    g5 = _Thread_Dispatch_disable_level value (uint32_t)
          *    g6 = _ISR_Nest_level pointer
          *    g4 = _ISR_Nest_level value (uint32_t)
@@ -432,13 +432,13 @@ SYM(_ISR_Handler):
          *        nest and thread dispatch disable levels are unnested.
          */
 
-	setx	SYM(_Thread_Dispatch_disable_level), %o5, %g7
-	lduw	[%g7], %g5
+	setx	SYM(_Thread_Dispatch_disable_level), %o5, %g3
+	lduw	[%g3], %g5
         setx	SYM(_ISR_Nest_level), %o5, %g6
 	lduw	[%g6], %g4
 
         add      %g5, 1, %g5
-        stuw     %g5, [%g7]
+        stuw     %g5, [%g3]
 
         add      %g4, 1, %g4
         stuw     %g4, [%g6]
@@ -542,7 +542,7 @@ dont_fix_pil:
          *
          *  Register usage for this section: (note: as used above)
          *
-         *    g7 = _Thread_Dispatch_disable_level pointer
+         *    g3 = _Thread_Dispatch_disable_level pointer
          *    g5 = _Thread_Dispatch_disable_level value
          *    g6 = _ISR_Nest_level pointer
          *    g4 = _ISR_Nest_level value
@@ -555,10 +555,11 @@ dont_fix_pil:
 	 * window for _ISR_Handler.
 	 */
 
-	lduw	[%g7],%g5
+	setx	SYM(_Thread_Dispatch_disable_level), %o5, %g3
+	lduw	[%g3],%g5
 	lduw	[%g6],%g4
         sub      %g5, 1, %g5
-	stuw	%g5, [%g7]
+	stuw	%g5, [%g3]
 	sub	%g4, 1, %g4
 	stuw	%g4, [%g6]
 
@@ -579,7 +580,7 @@ dont_fix_pil:
 	 *  
          */
 
-        sub      %fp, 	CONTEXT_CONTROL_INTERRUPT_FRAME_SIZE, %sp
+        sub      %g7, 	CONTEXT_CONTROL_INTERRUPT_FRAME_SIZE, %sp
 
 dont_restore_stack:
 
@@ -738,7 +739,7 @@ simple_return:
 	 * TODO: Is this necessary/correct? Why not just re-write 
 	 * tstate.cwp to be equal to the current cwp?
 	 */
-	mov	%sp, %g3
+	mov	%sp, %g1
 	stx	%l0, [%sp + STACK_BIAS + CPU_STACK_FRAME_L0_OFFSET]
 	stx	%l1, [%sp + STACK_BIAS + CPU_STACK_FRAME_L1_OFFSET]
 	stx	%l2, [%sp + STACK_BIAS + CPU_STACK_FRAME_L2_OFFSET]
@@ -756,7 +757,7 @@ simple_return:
 	stx	%i6, [%sp + STACK_BIAS + CPU_STACK_FRAME_I6_FP_OFFSET]
 	stx	%i7, [%sp + STACK_BIAS + CPU_STACK_FRAME_I7_OFFSET]
 	wrpr	%g0, %g6, %cwp
-	mov	%g3, %sp
+	mov	%g1, %sp
 	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_L0_OFFSET], %l0
 	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_L1_OFFSET], %l1
 	ldx	[%sp + STACK_BIAS + CPU_STACK_FRAME_L2_OFFSET], %l2
@@ -804,6 +805,8 @@ good_window:
 	wrpr	%g0, %g3, %pil
 	wrpr	%g0, %g4, %tpc
 	wrpr	%g0, %g5, %tnpc
+
+        wrpr    %g0, %g1, %tstate
 
         ldx     [%sp + STACK_BIAS + ISF_O0_OFFSET], %o0    ! restore o0
         ldx     [%sp + STACK_BIAS + ISF_O1_OFFSET], %o1    ! restore o1
