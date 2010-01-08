@@ -4,8 +4,6 @@
 #define COMPONENTS_H
 
 #define STRINGTABLEID 24
-int test();
-
 
 typedef enum mem_cmd {
   Read,			/* read memory from target (simulated prog) to host */
@@ -120,6 +118,8 @@ extern int stack_empty(mystack s);
 
 
 void container_initialize( base_trace_t *bt);
+void container_close();
+
 
 void container_add(md_addr_t addr, char * name);
 
@@ -148,6 +148,9 @@ void setFullTraceFile(base_trace_t *bt);
 
 //the container list is sorted by address
 container * search(md_addr_t addr);
+
+//this value keep a state that tells the container manager to ignore a duplicate push due to a trap
+int ignore_due_to_Exception; 
 
 
 #endif /* COMPONENTS_H */
