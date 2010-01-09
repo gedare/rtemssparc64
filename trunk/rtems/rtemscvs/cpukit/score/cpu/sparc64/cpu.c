@@ -232,7 +232,7 @@ void _CPU_ISR_install_raw_handler(
 #define LO_BITS_MASK   0x00000000000003FF
 
 
-  slot->mov_vector_g2 |= real_vector;
+  slot->mov_vector_g2 |= vector;
   slot->sethi_of_hh_handler_to_g2 |=
     (u64_handler & HH_BITS_MASK) >> HH_BITS_SHIFT;
   slot->or_g2_hm_handler_to_g2 |=
