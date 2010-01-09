@@ -32,7 +32,7 @@ uint64_t sun4v_cycles_per_tick;
 #endif
 
 /* sun4v: TICK_CMPR triggers soft interrupt 14 */
-#define CLOCK_VECTOR SPARC_ASYNCHRONOUS_TRAP(0x4E)
+#define CLOCK_VECTOR SPARC_SYNCHRONOUS_TRAP(0x4E)
 
 void Clock_driver_support_at_tick(void)
 {
