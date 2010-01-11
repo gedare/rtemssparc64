@@ -18,7 +18,7 @@ TEST=$2
 
 cp $RTEMSTESTSBASE/$1/$TEST/$TEST.exe image.1.boot
 $TOOLCHAIN-objdump -D image.1.boot > debug/rtems/$1/$TEST.disasm
-$TOOLCHAIN-nm image.1.boot | grep " T " > debug/rtems/$1/$TEST.fun.nm
+$TOOLCHAIN-nm --numeric-sort image.1.boot | grep " T " > debug/rtems/$1/$TEST.fun.nm
 $TOOLCHAIN-readelf -a image.1.boot > debug/rtems/$1/$TEST.elf
 rm image.1.boot.gz
 cp image.1.boot debug/rtems/$1/$TEST.exe
