@@ -32,6 +32,8 @@ $console = (create-std-text-console)
 $system.connect com1 $console
 $machine_defined = 1
 
+
+
 instantiate-components
 
 ####
@@ -43,14 +45,39 @@ $system.set-prom-env auto-boot? true
 # it is able to boot from a disk image in ISO9660 format.
 $image = ($system.get-component-object disk_image)
 @image = sim.objects[simenv.image]
-@image.files = [['/home/eugen/work/rtemssparc64/rtems/boot/image.iso', 'ro', 0, 9809920  ]]
+@image.files = [['/home/eugen/work/rtemssparc64/rtems/boot/image.iso', 'ro', 0, 42905600  ]]
  
-new-symtable file = /home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/samples/paranoia.exe
+new-symtable name = gicasymtable
+gicasymtable.load-symbols file = /home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/samples/hello.exe
+gicasymtable.source-path path =  /home/eugen/work/rtemssparc64/
+new-context name = gicacontext
+gicacontext.symtable symtable = gicasymtable 
+cpu0_0.set-context context = gicacontext
+
+#   branch recorder ... I do not know how it should be used
+#new-branch-recorder gicabranchrecorder virtual
+#cpu0_0.attach-branch-recorder gicabranchrecorder
+
+# this is how you instantiate and use sample-memhier
+#@obj = SIM_create_object("sample-memhier", "gicasamplemem0", [])
+#@conf.cpu_mem.timing_model = conf.gicasamplemem0
+
+#  trace module - intantiate and use
+#load-module trace
+new-tracer 
+@conf.trace0.trace_data = 0
+@conf.trace0.trace_exceptions = 0
+#@conf.trace0.trace_instructions = 0
+@conf.trace0.set_ftracesymbol_file = "hello.fun.nm"
+@conf.trace0.set_ftrace_file = "trace2.txt"
+#trace0.start
+
+#  trace module
 
 script-branch {
         local $con = ($console.get-component-object con)
         $con.wait-for-string "boot: "
-        $con.input "paranoia\n"
+        $con.input "hello\n"
         }
 
 #trace-exception -all
@@ -65,9 +92,12 @@ break-exception number = 52  #Mem_Address_Not_Aligned
 
 #break (sym setstack)
 
+#break 0x40d8
+#cycle-break 121786195
 #break (sym ofw_init)
 
 #break (sym bootstrap)
+cycle-break 121501607
 #break (sym boot_card)
 
 #break (sym bsp_get_work_area)
@@ -147,6 +177,19 @@ break-exception number = 52  #Mem_Address_Not_Aligned
 #break (sym gicabreak)
 #break 0x8d9c
 #break -w -r (sym Milestone)
-break 0x8d80
-c
+#break 0x8d80
 
+#cycle-break  121415950
+#break (sym ofw_init)
+#break (sym ofw_write)
+#break (sym ofw)
+#break (sym ofw_call)
+#break (sym ofw_get_property)
+
+#break 0x79e0 #debug trace , in ofw_write, calling ofw_call
+#break (sym puts)
+
+#break (sym strlen)
+
+#break (sym exit)
+c

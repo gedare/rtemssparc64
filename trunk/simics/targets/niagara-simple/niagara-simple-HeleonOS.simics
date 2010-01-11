@@ -44,5 +44,5 @@ $system.set-prom-env auto-boot? true
 # it is able to boot from a disk image in ISO9660 format.
 $image = ($system.get-component-object disk_image)
 @image = sim.objects[simenv.image]
-@image.files = [['helenOS.iso', 'ro', 0, 1290240]]
+@image.files = [['/home/eugen/work/simics/helenOS/HelenOS/image.iso', 'ro', 0, 1290240]]
  
