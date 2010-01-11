@@ -446,7 +446,7 @@ trace_snoop_operate(conf_object_t *obj, conf_object_t *space,
                 if (mop->size > 0 && mop->size <= sizeof(uint64))
                         bt->current_entry.value.data
                                 = SIM_get_mem_op_value_cpu(mop);
-                bt->current_entry.cpu_no = SIM_get_proc_no(mop->ini_ptr);
+                bt->current_entry.cpu_no = SIM_get_processor_number(mop->ini_ptr);
         }
 
         bt->current_entry.size          = mop->size;
@@ -637,7 +637,7 @@ instruction_trace_onoff_update(base_trace_t *bt)
         int i;
 
         for (i = SIM_number_processors() - 1; i >= 0; i--) {
-                cpu = SIM_proc_no_2_ptr(i);
+                cpu = SIM_get_processor(i);
                 if (bt->trace_enabled && bt->trace_instructions)
                         VT_register_exec_tracer(cpu, trace_instr_operate, bt);
                 else
