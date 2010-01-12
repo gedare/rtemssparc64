@@ -34,6 +34,19 @@ uint64_t sun4v_cycles_per_tick;
 /* sun4v: TICK_CMPR triggers soft interrupt 14 */
 #define CLOCK_VECTOR SPARC_SYNCHRONOUS_TRAP(0x4E)
 
+static unsigned int get_Frequency(void)
+{
+	phandle root = ofw_find_device("/");
+	unsigned int freq;
+	if (ofw_get_property(root, "clock-frequency", &freq, sizeof(freq)) <= 0) {
+		printk("Unable to determine frequency, default: 0x%x\n",CPU_FREQ);
+		return CPU_FREQ;
+	}
+
+	return freq;
+} 
+
+
 void Clock_driver_support_at_tick(void)
 {
   uint64_t tick_reg;
@@ -57,19 +70,20 @@ void Clock_driver_support_at_tick(void)
 
 void Clock_driver_support_initialize_hardware(void)
 {
-  uint64_t tick_reg;
+  uint64_t tick_reg; 	
   int bit_mask;
 
 
   bit_mask = SPARC_SOFTINT_TM_MASK | SPARC_SOFTINT_SM_MASK | (1<<14);
   sparc64_clear_interrupt_bits(bit_mask);
 
-  sun4v_cycles_per_tick = rtems_configuration_get_microseconds_per_tick()*(CPU_FREQ/1000000);
+  sun4v_cycles_per_tick = rtems_configuration_get_microseconds_per_tick()*(get_Frequency()/1000000);
 
   sparc64_read_tick(tick_reg);
   tick_reg += sun4v_cycles_per_tick;
   sparc64_write_tick_cmpr(tick_reg);
 }
+
 
 #define Clock_driver_support_shutdown_hardware( ) \
   do { \
