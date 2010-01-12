@@ -653,7 +653,7 @@ catch_exception_hook(lang_void *data, conf_object_t *cpu, integer_t exc)
 
         bt->current_entry.trace_type = TR_Exception;
         bt->current_entry.value.exception = exc;
-        bt->current_entry.cpu_no = SIM_get_proc_no(cpu);
+        bt->current_entry.cpu_no = SIM_get_processor_number(cpu);
         cycles_t t = SIM_cycle_count(cpu);
         bt->current_entry.timestamp = t - bt->last_timestamp;
         bt->last_timestamp = t;
@@ -1307,7 +1307,7 @@ set_data_intervals(void *arg, conf_object_t *obj,
                              as[0].u.integer, as[1].u.integer, stc_block));
         }
 
-        SIM_dump_caches();
+        SIM_flush_all_caches();
         return Sim_Set_Ok;
 }
 
