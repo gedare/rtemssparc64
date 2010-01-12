@@ -528,7 +528,7 @@ trace_instr_operate(lang_void *data, conf_object_t *cpu,
 
         bt->current_entry.arch = trace_arch_from_cpu(cpu);
         bt->current_entry.trace_type = TR_Instruction;
-        bt->current_entry.cpu_no = SIM_get_proc_no(cpu);
+        bt->current_entry.cpu_no = SIM_get_processor_number(cpu);
         bt->current_entry.size = opcode.len;
         bt->current_entry.read_or_write = Sim_RW_Read;
 
@@ -775,7 +775,7 @@ data_trace_onoff_update(base_trace_t *bt)
 
                 /* Invalidate any cached memory translations, so that we see
                    all memory operations. */
-                SIM_dump_caches();
+                SIM_flush_all_caches();
 
                 trace_class = SIM_get_class("trace-mem-hier");
 
@@ -1383,7 +1383,7 @@ cache_cpu_info(base_trace_t *bt)
         num = SIM_number_processors();
         bt->cpu = MM_MALLOC(num, cpu_cache_t);
         for (i = 0; i < num; i++) {
-                bt->cpu[i].cpu = SIM_proc_no_2_ptr(i);
+                bt->cpu[i].cpu = SIM_get_processor(i);
                 r = SIM_get_attribute(bt->cpu[i].cpu, "address-width");
                 /* clocks does not have any address-width */
                 if (r.kind == Sim_Val_List) {
