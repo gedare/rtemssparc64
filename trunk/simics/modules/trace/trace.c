@@ -1377,7 +1377,7 @@ cache_cpu_info(base_trace_t *bt)
 {
         int num, i;
         attr_value_t r;
-        //processor_interface_t *ifc;
+        processor_interface_t *ifc;
 
         /* Cache data for each processor. */
         num = SIM_number_processors();
@@ -1391,8 +1391,8 @@ cache_cpu_info(base_trace_t *bt)
                         bt->cpu[i].va_digits = (r.u.list.vector[1].u.integer + 3) >> 2;
                 }
                 SIM_free_attribute(r);
-                //ifc = SIM_get_interface(bt->cpu[i].cpu, PROCESSOR_INTERFACE);
-                //bt->cpu[i].disassemble_buf = ifc->disassemble_buf;
+                ifc = SIM_get_interface(bt->cpu[i].cpu, PROCESSOR_INTERFACE);
+                bt->cpu[i].disassemble_buf = ifc->disassemble_buf;
                 vtsprintf(bt->cpu[i].name, "CPU %2d ", i);
         }
 
