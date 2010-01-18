@@ -26,7 +26,8 @@ then
 	exit -1
 fi
 
-rm temp.simics
-
 cat $TESTNAME.txt | sed '/^\s*$/d' | sed '/END_TOKEN/d' | sed 's/\x0D$//' > temp.txt
 mv temp.txt $TESTNAME.txt
+diff $TESTNAME.txt results-expected/$TESTNAME.scn -bU 0 --strip-trailing-cr > $TESTNAME.diff
+
+exit 0
