@@ -310,7 +310,7 @@ text_tracer(base_trace_t *bt, trace_entry_t *ent)
         case TR_Instruction:
                 //text_trace_instruction(bt, ent, s);
 				s[0] = 0;
-				container_traceFunctioncall(ent->va,0);
+				container_traceFunctioncall(ent->va,0,bt);
                 break;
         case TR_Reserved:
         default:
@@ -1371,6 +1371,108 @@ get_ftracesymbol_filename(void *arg, conf_object_t *obj, attr_value_t *idx)
 
 
 
+void bp_callback(lang_void *callback_data,
+	conf_object_t *trigger_obj,
+	integer_t exception_number)
+{
+	printf("GICA bp_callback reached, enabling the trace.\n");
+
+	//enable trace
+	TraceStart();
+    
+}
+
+void TraceStart()
+{
+	attr_value_t val = SIM_make_attr_integer(1);
+	set_error_t result_val =
+        SIM_set_attribute(
+			    SIM_get_object("trace0"),
+				"enabled",
+				&val);
+
+    if(result_val != Sim_Set_Ok) printf ("SIM_set_attribute was unsuccessfull trace0.enabled = %lld %d\n",val.u.integer,result_val);
+}
+
+void TraceStop()
+{
+	attr_value_t val = SIM_make_attr_integer(0);
+	set_error_t result_val =
+        SIM_set_attribute(
+			    SIM_get_object("trace0"),
+				"enabled",
+				&val);
+
+    if(result_val != Sim_Set_Ok) printf ("SIM_set_attribute was unsuccessfull trace0.enabled = %lld %d\n",val.u.integer,result_val);
+}
+
+void TraceSuspend(base_trace_t *obj)
+{
+	//base_trace_t *bt = (base_trace_t *)obj;
+
+		attr_value_t val2 = SIM_make_attr_integer(0);
+		//set_error_t result_val2 =
+			  SIM_set_attribute(
+					SIM_get_object("trace0"),
+					"trace_instructions",
+					&val2);
+	
+}
+
+
+static set_error_t
+set_traceaddress(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
+{
+        base_trace_t *bt = (base_trace_t *)obj;
+        bt->traceaddress = val->u.integer;
+
+		//printf("GICA set_traceaddress, before setting breakpoint %llx\n", bt->traceaddress);
+		conf_object_t* ctx = SIM_get_object("gicacontext");
+		if(ctx == NULL){
+			printf("GICA : you need to define a context gicacontext\n");
+		}
+		else{
+			//set breakpoint and callback here.
+			breakpoint_id_t bkpt = SIM_breakpoint(
+				SIM_get_object("gicacontext"),//memory object ?
+				Sim_Break_Virtual,
+				Sim_Access_Execute,
+				bt->traceaddress,
+				4,
+				Sim_Breakpoint_Temporary); //the breakpoint is deleted once it is triggered for the first time
+
+			if(bkpt != -1){
+				//now register a callback when the breakpoint is hit	
+				SIM_hap_add_callback_index(
+                "Core_Breakpoint_Memop",      
+                 (obj_hap_func_t)bp_callback,                 
+                 NULL, bkpt);
+			}
+			else
+			{
+				printf("GICA set_traceaddress, breakpoint is !!NOT!! set on address %llx\n",bt->traceaddress);
+			}
+		}
+		
+
+	
+	
+		//once the breakpoint is reached, it will enable tracing
+        return Sim_Set_Ok;
+}
+
+static attr_value_t
+get_traceaddress(void *arg, conf_object_t *obj, attr_value_t *idx)
+{
+        base_trace_t *bt = (base_trace_t *)obj;
+        attr_value_t ret;
+
+		ret = SIM_make_attr_integer(bt->traceaddress);
+        return ret;
+}
+
+
+
 /* Cache useful information about each processor. */
 static void
 cache_cpu_info(base_trace_t *bt)
@@ -1637,6 +1739,15 @@ init_local(void)
                 "The file name to load the program functions from "
                 " This file can be produced by nm. Filter only functions : nm a.out | grep \" T \"");
 
+
+		SIM_register_typed_attribute(
+                base_class, "traceaddress",
+                get_traceaddress, NULL,
+                set_traceaddress, NULL,
+                Sim_Attr_Session, "i", NULL,
+                "Name of symbol that the trace will monitor."
+                " the trace will break on execute at this address ");
+
 #if defined(TRACE_STATS)
         SIM_register_typed_attribute(base_class, "instruction_records",
                                      get_instruction_records, NULL,
@@ -1708,7 +1819,15 @@ init_local(void)
 							 (obj_hap_func_t)ExceptionCallBack,
 							 NULL);
 		
+//		breakpoint_id_t bkpt = SIM_breakpoint(
+//			SIM_get_object("gicacontext"),//memory object ?
+//			Sim_Break_Virtual,
+//			Sim_Access_Execute,
+//			16384,
+//			4,
+//			Sim_Breakpoint_Temporary); //the breakpoint is deleted once it is triggered for the first time
 
+//		printf("GICA init_local, breakpoint is set %d", bkpt);
 		
 }
 

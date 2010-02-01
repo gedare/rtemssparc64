@@ -123,7 +123,7 @@ void container_close();
 
 void container_add(md_addr_t addr, char * name);
 
-struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem);
+struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem, base_trace_t *obj);
 void container_printStatistics();
 void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes);
 
