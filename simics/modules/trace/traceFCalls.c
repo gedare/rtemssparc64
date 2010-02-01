@@ -192,7 +192,7 @@ void container_add(md_addr_t addr, char * name)
 }
 
 
-struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem)
+struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem, base_trace_t *obj)
 {
 	int i,j=0;
 	container * foundSearch;
@@ -240,9 +240,11 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 			    loadPenalty.containerDynamicListSize = stack_top(returnAddressStack).container->isCalledWithHeapData;
 			}
 			t.container->addressAccessListInstance = NULL;
+
+			if(stack_empty(returnAddressStack)) TraceSuspend(obj);
+			
 			return loadPenalty;
 		}
-
 	}
 	
     //printf("\n GICA: searching 0x%llx\n",addr);

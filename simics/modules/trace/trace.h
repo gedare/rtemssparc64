@@ -185,6 +185,8 @@ typedef struct base_trace {
 		char fullTraceFileName[200];
 		char fTraceSymbolFileName[200];
 
+		uint64 traceaddress;
+
 } base_trace_t;
 
 
@@ -198,4 +200,9 @@ typedef struct trace_mem_hier_object {
         conf_object_t *snoop_device;
         timing_model_interface_t snoop_iface;
 } trace_mem_hier_object_t;
+
+void TraceStop();
+void TraceStart();
+void TraceSuspend(base_trace_t *obj);
+
 

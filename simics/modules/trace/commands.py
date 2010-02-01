@@ -20,7 +20,7 @@
 
 from cli import *
 
-def trace_start_cmd(obj, file, raw, same):
+def trace_start_cmd(obj, file, raw, same, traceaddress):
        if not file and raw:
               print "Raw output can only be written to a file."
               return
@@ -38,7 +38,16 @@ def trace_start_cmd(obj, file, raw, same):
                             obj.raw_mode = 1
                      else:
                             obj.raw_mode = 0
-              obj.enabled = 1
+
+              traceaddress
+              if traceaddress:
+                     obj.traceaddress = traceaddress[1]
+                     obj.enabled = 0
+                     print "enabled = 0"
+              else:				
+                     obj.enabled = 1
+                     print "enabled = 1" 
+                     
               if not SIM_get_quiet():
                      print ("Tracing enabled. Writing %s output to %s."
                             % (["text", "raw"][obj.raw_mode],
@@ -51,7 +60,8 @@ def trace_start_cmd(obj, file, raw, same):
 new_command("start", trace_start_cmd,
             [arg(filename_t(), "file", "?", ""),
              arg(flag_t, "-raw"),
-             arg(flag_t, "-same")],
+             arg(flag_t, "-same"),
+             arg(addr_t, "traceaddress","?","")],
             type = "base-trace-mem-hier commands",
             alias = "trace-start",
             see_also = ['new-tracer'],
@@ -70,6 +80,10 @@ format can only be written to file.
 
 If the <tt>-same</tt> flag is used, you will get the same output file
 and mode as the last time.
+
+If the <tt>traceaddress</tt> flag is used, the trace will break on execute 
+at that address and stop tracing once the function represented at that address "returns"
+
 
 <b>stop</b> switches off the tracer and closes the file. Until you
 have given the <b>stop</b> command, you can not be sure that the
