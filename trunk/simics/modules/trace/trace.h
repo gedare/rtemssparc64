@@ -186,6 +186,7 @@ typedef struct base_trace {
 		char fTraceSymbolFileName[200];
 
 		uint64 traceaddress;
+		char displayLineNumbers;
 
 } base_trace_t;
 

@@ -1471,6 +1471,24 @@ get_traceaddress(void *arg, conf_object_t *obj, attr_value_t *idx)
         return ret;
 }
 
+static attr_value_t
+get_displayLinenumbers(void *arg, conf_object_t *obj, attr_value_t *idx)
+{
+        base_trace_t *bt = (base_trace_t *)obj;
+        attr_value_t ret;
+
+		ret = SIM_make_attr_integer(bt->displayLineNumbers);
+        return ret;
+}
+
+static set_error_t
+set_displayLinenumbers(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
+{
+		base_trace_t *bt = (base_trace_t *)obj;
+        bt->displayLineNumbers = val->u.integer;
+        return Sim_Set_Ok;
+}
+
 
 
 /* Cache useful information about each processor. */
@@ -1527,12 +1545,14 @@ base_trace_new_instance(parse_object_t *pa)
                 VINIT(bt->data_interval[i]);
                 VINIT(bt->data_stc_interval[i]);
         }
+		bt->displayLineNumbers = 0;
 
         cache_cpu_info(bt);
 
         SIM_hap_add_callback("Core_At_Exit", f, bt);
 
     	container_initialize(bt);
+		
 
         return &bt->obj;
 }
@@ -1748,6 +1768,14 @@ init_local(void)
                 "Name of symbol that the trace will monitor."
                 " the trace will break on execute at this address ");
 
+		SIM_register_typed_attribute(
+                base_class, "displayLinenumbers",
+                get_displayLinenumbers, NULL,
+                set_displayLinenumbers, NULL,
+                Sim_Attr_Session, "i", NULL,
+                "If enabled it will display the symbol file and line number in the original source."
+                " By default this option is disabled ");
+
 #if defined(TRACE_STATS)
         SIM_register_typed_attribute(base_class, "instruction_records",
                                      get_instruction_records, NULL,
@@ -1810,6 +1838,7 @@ init_local(void)
                                      "o|n", NULL,
                                      "Snoop device (read-only)");
 
+		
 
 		printf("Trace: init_local\n");
 
