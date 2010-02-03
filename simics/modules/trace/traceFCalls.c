@@ -134,6 +134,7 @@ void loadContainersFromSymtable(char* symFileName)
 	unsigned long long addr;
 	char type[4];
 	char name[200];
+	char linenumber[1000];
 	symfile = fopen(symFileName,"r");
 	if(!symfile)
 	{
@@ -141,13 +142,16 @@ void loadContainersFromSymtable(char* symFileName)
 	}
 	printf("\nSymbol file loaded\n");
 	while(!feof(symfile)){
-		fscanf(symfile,"%llx %s %s",&addr,type,name);
-		container_add(addr,name);
+		fscanf(symfile,"%llx %s %s\t%s",&addr,type,name,linenumber);
+		//printf("%llx %s %s %s\n",addr, type, name,linenumber);
+		container * newcont = container_add(addr,name);
+		strncpy(newcont->linenumber,linenumber,1000);
 	}
+
 	
 }
 
-void container_add(md_addr_t addr, char * name)
+container* container_add(md_addr_t addr, char * name)
 {
 	container* newContainer;
 	newContainer = (container*) malloc(sizeof(container));
@@ -172,6 +176,8 @@ void container_add(md_addr_t addr, char * name)
 	newContainer->staticAddressList = NULL;
 	newContainer->isCalledWithHeapData = 0;
 
+	newContainer->nonFunction = 0;
+
 	strncpy(newContainer->name,name, 100);
 
 	if(tracefdIn)
@@ -181,18 +187,24 @@ void container_add(md_addr_t addr, char * name)
 			if(strcmp(traceLoader[i].name,name) == 0){
 				newContainer->traceLoadedAddressCount = traceLoader[i].traceLoadedAddressCount;
 				newContainer->traceLoadeduniqueChildContainersCalled = traceLoader[i].traceLoadeduniqueChildContainersCalled;
+				
 				break;
 			}
 			i++;
 		}
 	}
+	if(newContainer->name[0] == '*') {
+		newContainer->nonFunction = 1;
+		printf("%s %d\n\n",newContainer->name, newContainer->nonFunction);
+	}
 	containerTable[containerSize++] = *newContainer;
 	//printf("%lld = %llx %s %d %d\n", addr,containerTable[containerSize-1].entryAddress, containerTable[containerSize-1].name, containerTable[containerSize-1].traceLoadedAddressCount, containerTable[containerSize-1].traceLoadeduniqueChildContainersCalled);
 	free(newContainer);
+	return &containerTable[containerSize-1];
 }
 
 
-struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem, base_trace_t *obj)
+struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem, base_trace_t *bt)
 {
 	int i,j=0;
 	container * foundSearch;
@@ -241,7 +253,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 			}
 			t.container->addressAccessListInstance = NULL;
 
-			if(stack_empty(returnAddressStack)) TraceSuspend(obj);
+			if(stack_empty(returnAddressStack)) TraceSuspend(bt);
 			
 			return loadPenalty;
 		}
@@ -280,31 +292,44 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 					}
 				}
 				for(j = 0; j< returnAddressStack->size; j++) myprint("|\t");
-		//			sprintf(printBuffer,"%x %s \n",addr,foundSearch->name);
-				//sprintf(printBuffer,"0x%llx %s %d %d\n",foundSearch->entryAddress,foundSearch->name,foundSearch->traceLoadedAddressCount,foundSearch->traceLoadeduniqueChildContainersCalled);
-				sprintf(printBuffer,"0x%llx 0x%llx %s{\n",foundSearch->entryAddress,SIM_read_register(proc,o7id) + 8, foundSearch->name);
-				myprint(printBuffer);
-				//fflush(stdin);
-				//simulate loading the access list
-				int sizeOfAccessList = foundSearch->traceLoadedAddressCount + foundSearch->traceLoadeduniqueChildContainersCalled + 3; //all static memory + code + stacksize + timeout
-				loadPenalty.containerStaticListSize = sizeOfAccessList;
-				if(!stack_empty(returnAddressStack))
-					loadPenalty.containerDynamicListSize = (-1)*stack_top(returnAddressStack).container->isCalledWithHeapData;
+				if(!foundSearch->nonFunction){
+					//sprintf(printBuffer,"%x %s \n",addr,foundSearch->name);
+					//sprintf(printBuffer,"0x%llx %s %d %d\n",foundSearch->entryAddress,foundSearch->name,foundSearch->traceLoadedAddressCount,foundSearch->traceLoadeduniqueChildContainersCalled);
+					if(bt->displayLineNumbers)
+						//sprintf(printBuffer,"0x%llx 0x%llx %s {%s\n",foundSearch->entryAddress,SIM_read_register(proc,o7id) + 8, foundSearch->name, foundSearch->linenumber);
+						sprintf(printBuffer,"%s {%s\n",foundSearch->name, foundSearch->linenumber);
+					else
+						sprintf(printBuffer,"%s {\n", foundSearch->name);	
+					myprint(printBuffer);
+					//fflush(stdin);
+					//simulate loading the access list
+					int sizeOfAccessList = foundSearch->traceLoadedAddressCount + foundSearch->traceLoadeduniqueChildContainersCalled + 3; //all static memory + code + stacksize + timeout
+					loadPenalty.containerStaticListSize = sizeOfAccessList;
+					if(!stack_empty(returnAddressStack))
+						loadPenalty.containerDynamicListSize = (-1)*stack_top(returnAddressStack).container->isCalledWithHeapData;
 
 
-				stackObject t;
-				foundSearch->totalStackPushes ++;
-				//printf("MemAccess : FP(%d)=%x SP(%d)=%x \n",MD_REG_FP,regs->regs_R[MD_REG_FP],MD_REG_SP,regs->regs_R[MD_REG_SP]);
-				//container_dumpRegisters(*regs);
+					stackObject t;
+					foundSearch->totalStackPushes ++;
+					//printf("MemAccess : FP(%d)=%x SP(%d)=%x \n",MD_REG_FP,regs->regs_R[MD_REG_FP],MD_REG_SP,regs->regs_R[MD_REG_SP]);
+					//container_dumpRegisters(*regs);
 
-				t.container = foundSearch;
-				t.returnAddress = SIM_read_register(proc,o7id) + 8;//return_addr;
-				//printf("\n GICA: pushed to stack 0x%llx return :0x%llx %s\n",foundSearch->entryAddress,return_addr,foundSearch->name);
-				//fflush(stdout);
-				stack_push(returnAddressStack, t);
-				UpdateAddressList(&( t.container->addressAccessList), addr, 4);
-				UpdateAddressList(&( t.container->addressAccessListInstance), addr, 4);
-
+					t.container = foundSearch;
+					t.returnAddress = SIM_read_register(proc,o7id) + 8;//return_addr;
+					//printf("\n GICA: pushed to stack 0x%llx return :0x%llx %s\n",foundSearch->entryAddress,return_addr,foundSearch->name);
+					//fflush(stdout);
+					stack_push(returnAddressStack, t);
+					UpdateAddressList(&( t.container->addressAccessList), addr, 4);
+					UpdateAddressList(&( t.container->addressAccessListInstance), addr, 4);
+				}
+				else
+				{
+					if(bt->displayLineNumbers)
+						sprintf(printBuffer,"%s %s\n", foundSearch->name,foundSearch->linenumber);
+					else
+						sprintf(printBuffer,"%s\n", foundSearch->name);
+					myprint(printBuffer);
+				}
 				//EXIT function needs to force containers to pop all remaining from stack. Otherwise the Complete access list for main
 				/*
 				if(strcmp(foundSearch->name,"_Exit") == 0)

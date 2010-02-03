@@ -41,7 +41,8 @@ struct container_def
 
 	addressList staticAddressList; //the static values will add-up here as the tracing is performed
 
-
+	int nonFunction; //1 or 0. For non-function do not trace this symbol, but it might be sometimes usefull to print it
+	char linenumber[1000]; //if this info is available for symbols, load it and display it in the trace
 };
 
 struct stack_Object_def
@@ -121,7 +122,7 @@ void container_initialize( base_trace_t *bt);
 void container_close();
 
 
-void container_add(md_addr_t addr, char * name);
+container * container_add(md_addr_t addr, char * name);
 
 struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem, base_trace_t *obj);
 void container_printStatistics();
