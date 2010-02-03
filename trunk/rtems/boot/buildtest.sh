@@ -2,6 +2,7 @@
 
 excludes=( \
 _fini \
+sparc_disable_interrupts \
 _CPU_Context_restore \
 _fclose_r \
 _fflush_r \
