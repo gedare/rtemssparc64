@@ -10,7 +10,7 @@
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Victor V. Vengerov <vvv@oktet.ru>
  *
- * @(#) $Id: ramdisk-driver.c,v 1.4 2009/12/18 15:59:30 thomas Exp $
+ * @(#) $Id: ramdisk-driver.c,v 1.5 2010/01/19 09:10:03 thomas Exp $
  */
 
 /* FIXME: How to set this define? */
@@ -65,7 +65,7 @@ ramdisk_read(struct ramdisk *rd, rtems_blkdev_request *req)
 #endif
         memcpy(sg->buffer, from + (sg->block * rd->block_size), sg->length);
     }
-    req->req_done(req->done_arg, RTEMS_SUCCESSFUL, 0);
+    req->req_done(req->done_arg, RTEMS_SUCCESSFUL);
     return 0;
 }
 
@@ -89,7 +89,7 @@ ramdisk_write(struct ramdisk *rd, rtems_blkdev_request *req)
 #endif
         memcpy(to + (sg->block * rd->block_size), sg->buffer, sg->length);
     }
-    req->req_done(req->done_arg, RTEMS_SUCCESSFUL, 0);
+    req->req_done(req->done_arg, RTEMS_SUCCESSFUL);
     return 0;
 }
 

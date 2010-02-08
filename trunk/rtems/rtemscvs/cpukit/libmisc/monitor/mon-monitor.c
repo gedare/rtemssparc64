@@ -19,7 +19,7 @@
  *           floating point config stuff
  *           interrupt config stuff
  *
- *  $Id: mon-monitor.c,v 1.37 2009/01/02 13:01:21 ralf Exp $
+ *  $Id: mon-monitor.c,v 1.38 2010/01/19 23:49:40 joel Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -447,6 +447,7 @@ rtems_monitor_symbols_loadup(void)
     }
 
 done:
+    fclose(fp);
     return;
 }
 

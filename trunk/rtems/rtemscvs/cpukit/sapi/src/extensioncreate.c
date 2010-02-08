@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: extensioncreate.c,v 1.7 2009/11/29 13:51:52 ralf Exp $
+ *  $Id: extensioncreate.c,v 1.8 2010/01/26 15:01:56 thomas Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -28,9 +28,9 @@
 #include <rtems/extension.h>
 
 rtems_status_code rtems_extension_create(
-  rtems_name              name,
-  rtems_extensions_table *extension_table,
-  rtems_id               *id
+  rtems_name                    name,
+  const rtems_extensions_table *extension_table,
+  rtems_id                     *id
 )
 {
   Extension_Control *the_extension;

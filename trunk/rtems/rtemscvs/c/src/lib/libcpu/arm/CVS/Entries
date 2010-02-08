@@ -6,8 +6,8 @@ D/s3c2400////
 D/s3c2410////
 D/s3c24xx////
 D/shared////
-/.cvsignore/1.2/Fri Oct 23 12:51:51 2009//
-/ChangeLog/1.68/Tue Dec 22 15:26:37 2009//
-/Makefile.am/1.17/Tue Dec 22 15:26:37 2009//
-/configure.ac/1.16/Tue Dec 22 15:26:37 2009//
-/preinstall.am/1.13/Tue Dec 22 15:46:06 2009//
+/.cvsignore/1.2/Sat Oct 24 23:20:42 2009//
+/ChangeLog/1.69/Mon Feb  8 16:05:17 2010//
+/Makefile.am/1.18/Mon Feb  8 16:05:17 2010//
+/configure.ac/1.16/Thu Dec 31 16:54:47 2009//
+/preinstall.am/1.14/Mon Feb  8 16:05:17 2010//

@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.17 2009/11/28 06:24:47 ralf Exp $
+## $Id: Makefile.am,v 1.18 2010/01/12 15:03:22 thomas Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../aclocal
@@ -15,6 +15,7 @@ if shared
 include_libcpudir = $(includedir)/libcpu
 
 include_libcpu_HEADERS = shared/include/mmu.h
+include_libcpu_HEADERS += shared/include/arm-cp15.h
 
 ## shared/arm920
 noinst_PROGRAMS += shared/arm920.rel

@@ -5,14 +5,14 @@
  *  with the name given in name.  The node is set to point to the node at
  *  to_loc.
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2009.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: imfs_symlink.c,v 1.11 2009/06/12 01:53:33 ccj Exp $
+ *  $Id: imfs_symlink.c,v 1.14 2010/01/19 19:31:00 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -40,22 +40,26 @@ int IMFS_symlink(
   /*
    * Remove any separators at the end of the string.
    */
-
   IMFS_get_token( node_name, strlen( node_name ), new_name, &i );
 
   /*
    * Duplicate link name
    */
-
-  info.sym_link.name = strdup( link_name);
+  info.sym_link.name = strdup(link_name);
   if (info.sym_link.name == NULL) {
-    rtems_set_errno_and_return_minus_one( ENOMEM);
+    rtems_set_errno_and_return_minus_one(ENOMEM);
   }
 
   /*
    *  Create a new link node.
+   *
+   *  NOTE: Coverity CID 22 notes this as a resource leak.
+   *        While technically not a leak, it indicated that IMFS_create_node
+   *        was ONLY passed a NULL when we created the root node.  We
+   *        added a new IMFS_create_root_node() so this path no longer
+   *        existed.  The result was simpler code which should not have
+   *        this path. 
    */
-
   new_node = IMFS_create_node(
     parent_loc,
     IMFS_SYM_LINK,
@@ -65,8 +69,8 @@ int IMFS_symlink(
   );
 
   if (new_node == NULL) {
-    free( info.sym_link.name);
-    rtems_set_errno_and_return_minus_one( ENOMEM);
+    free(info.sym_link.name);
+    rtems_set_errno_and_return_minus_one(ENOMEM);
   }
 
   return 0;

@@ -7,7 +7,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: nvdisk.c,v 1.13 2009/12/18 15:59:30 thomas Exp $
+ * $Id: nvdisk.c,v 1.14 2010/01/19 09:10:03 thomas Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -595,8 +595,7 @@ rtems_nvdisk_read (rtems_nvdisk* nvd, rtems_blkdev_request* req)
     }
   }
 
-  req->req_done (req->done_arg,
-                 ret ? RTEMS_SUCCESSFUL : RTEMS_IO_ERROR, ret);
+  req->req_done (req->done_arg, ret ? RTEMS_SUCCESSFUL : RTEMS_IO_ERROR);
 
   return ret;
 }
@@ -635,8 +634,7 @@ rtems_nvdisk_write (rtems_nvdisk* nvd, rtems_blkdev_request* req)
     }
   }
 
-  req->req_done (req->done_arg,
-                 ret ? RTEMS_SUCCESSFUL : RTEMS_IO_ERROR, ret);
+  req->req_done (req->done_arg, ret ? RTEMS_SUCCESSFUL : RTEMS_IO_ERROR);
 
   return 0;
 }
