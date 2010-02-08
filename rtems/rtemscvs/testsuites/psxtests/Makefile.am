@@ -1,5 +1,9 @@
 ##
+<<<<<<< Makefile.am
 ## $Id: Makefile.am,v 1.54 2009/10/12 00:00:04 joel Exp $
+=======
+## $Id: Makefile.am,v 1.58 2009/12/28 16:43:10 joel Exp $
+>>>>>>> 1.58
 ##
 
 ACLOCAL_AMFLAGS = -I ../aclocal
@@ -26,11 +30,9 @@ endif
 ## Until sys/uio.h is moved to libcsupport, we have to have networking
 ## enabled to support readv and writev.  Hopefully this is a temporary
 ## situation.
-if HAS_NETWORKING
-if HAS_POSIX
+## if NEWLIB
 SUBDIRS += psxrdwrv
-endif
-endif
+## endif
 
 DIST_SUBDIRS = $(SUBDIRS) psxfatal_support
 EXTRA_DIST = psxfatal_support/init.c psxfatal_support/system.h

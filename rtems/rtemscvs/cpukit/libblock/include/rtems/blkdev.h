@@ -10,7 +10,7 @@
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Victor V. Vengerov <vvv@oktet.ru>
  *
- * @(#) $Id: blkdev.h,v 1.19 2009/11/30 12:39:51 thomas Exp $
+ * @(#) $Id: blkdev.h,v 1.20 2010/01/19 09:10:03 thomas Exp $
  */
 
 #ifndef _RTEMS_BLKDEV_H
@@ -59,16 +59,17 @@ typedef enum rtems_blkdev_request_op {
 #define RTEMS_BLKDEV_CAP_MULTISECTOR_CONT (1 << 0)
 
 /**
- * Type for block device request done callback function.
+ * @brief Block device request done callback function type.
  *
- * @param arg Argument supplied in @ref rtems_blkdev_request.
- * @param status Status code for this operation.
- * @param errno The @c errno value to be passed to the user when status is not
- * equal to @c RTEMS_SUCCESSFUL.
+ * The first parameter @a arg must be the argument provided by the block device
+ * request structure @ref rtems_blkdev_request.
+ *
+ * The second parameter @a status should contain the status of the operation:
+ *  - @c RTEMS_SUCCESSFUL Operation was successful.
+ *  - @c RTEMS_IO_ERROR Some sort of input or output error.
+ *  - @c RTEMS_UNSATISFIED Media no more present.
  */
-typedef void (* rtems_blkdev_request_cb)(void *arg,
-                                         rtems_status_code status,
-                                         int error);
+typedef void (*rtems_blkdev_request_cb)(void *arg, rtems_status_code status);
 
 /**
  * Block device scatter or gather buffer structure.
@@ -126,12 +127,6 @@ typedef struct rtems_blkdev_request {
    * Last IO operation completion status.
    */
   rtems_status_code status;
-
-  /**
-   * If @c status is not equal to @c RTEMS_SUCCESSFUL, this field contains the
-   * error number.
-   */
-  int error;
 
   /**
    * Number of blocks for this request.
