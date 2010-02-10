@@ -63,7 +63,7 @@ char *_print_full_context_mode2txt[0x20]={
 void _print_full_context(uint32_t spsr)
 {
     char *mode;
-    uint32_t prev_sp,prev_lr,cpsr,arm_switch_reg;
+    uint32_t prev_sp,prev_lr,cpsr,tmp;
     int i;
 
     printk("active thread thread 0x%08x\n", _Thread_Executing->Object.id);
@@ -71,16 +71,14 @@ void _print_full_context(uint32_t spsr)
     mode=_print_full_context_mode2txt[spsr&0x1f];
     if(!mode) mode="unknown";
 
-    asm volatile (ARM_SWITCH_TO_ARM
-              "	MRS  %[cpsr], cpsr \n"
-              "	ORR  %[arm_switch_reg], %[spsr], #0xc0 \n"
-              "	MSR  cpsr_c, %[arm_switch_reg] \n"
+    asm volatile ("	MRS  %[cpsr], cpsr \n"
+              "	ORR  %[tmp], %[spsr], #0xc0 \n"
+              "	MSR  cpsr_c, %[tmp] \n"
               "	MOV  %[prev_sp], sp \n"
               "	MOV  %[prev_lr], lr \n"
               "	MSR  cpsr_c, %[cpsr] \n"
-	      ARM_SWITCH_BACK
-              : [arm_switch_reg] "=&r" (arm_switch_reg), [prev_sp] "=&r" (prev_sp), [prev_lr] "=&r" (prev_lr),
-		[cpsr] "=&r" (cpsr)
+              : [prev_sp] "=&r" (prev_sp), [prev_lr] "=&r" (prev_lr),
+		[cpsr] "=&r" (cpsr), [tmp] "=&r" (tmp)
               : [spsr] "r" (spsr)
 	      : "cc");
 

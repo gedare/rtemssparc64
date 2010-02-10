@@ -1,5 +1,5 @@
 ##
-##  $Id: Makefile.am,v 1.71 2010/01/19 09:10:03 thomas Exp $
+##  $Id: Makefile.am,v 1.70 2009/10/21 02:30:21 ralf Exp $
 ##
 ##  build and install "glommed" librtemsbsp.a
 ##
@@ -25,7 +25,6 @@ if HAS_NETWORKING
 SRCS += ../libchip/libnetchip.a
 endif
 SRCS += ../libchip/libi2cio.a
-SRCS += ../libchip/libdisplay.a
 
 if HAS_MP
 SRCS += ../libchip/shmdr.rel

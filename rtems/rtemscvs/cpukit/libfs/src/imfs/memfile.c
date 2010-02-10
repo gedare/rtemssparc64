@@ -7,14 +7,14 @@
  *  at system shutdown unless special arrangements to copy the data to
  *  some type of non-volailte storage are made by the application.
  *
- *  COPYRIGHT (c) 1989-2010.
+ *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: memfile.c,v 1.32 2010/01/19 01:55:28 joel Exp $
+ *  $Id: memfile.c,v 1.31 2009/06/12 01:53:33 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -399,16 +399,14 @@ MEMFILE_STATIC int IMFS_memfile_remove_block(
    unsigned int   block
 )
 {
-  block_p *block_ptr;
+  block_p *block_entry_ptr;
   block_p  ptr;
 
-  block_ptr = IMFS_memfile_get_block_pointer( the_jnode, block, 0 );
-  assert( block_ptr );
-  if ( block_ptr ) {
-    ptr = *block_ptr;
-    *block_ptr = 0;
-    memfile_free_block( ptr );
-  }
+  block_entry_ptr = IMFS_memfile_get_block_pointer( the_jnode, block, 0 );
+  ptr = *block_entry_ptr;
+  *block_entry_ptr = 0;
+
+  memfile_free_block( ptr );
 
   return 1;
 }

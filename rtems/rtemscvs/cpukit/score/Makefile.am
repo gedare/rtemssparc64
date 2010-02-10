@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.80 2010/01/26 15:01:56 thomas Exp $
+## $Id: Makefile.am,v 1.79 2009/11/30 13:05:29 thomas Exp $
 ##
 
 include $(top_srcdir)/automake/multilib.am
@@ -196,7 +196,7 @@ libscore_a_SOURCES += src/watchdog.c src/watchdogadjust.c \
     src/watchdogtickle.c src/watchdogreport.c src/watchdogreportchain.c
 
 ## USEREXT_C_FILES
-libscore_a_SOURCES += src/userextaddset.c \
+libscore_a_SOURCES += src/userextaddset.c src/userextaddapiset.c \
     src/userext.c src/userextremoveset.c src/userextthreadbegin.c \
     src/userextthreadcreate.c src/userextthreaddelete.c \
     src/userextthreadrestart.c src/userextthreadstart.c \

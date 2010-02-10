@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: shell.c,v 1.47 2010/01/20 15:20:29 joel Exp $
+ *  $Id: shell.c,v 1.46 2009/11/30 13:24:59 thomas Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -236,6 +236,10 @@ int rtems_shell_line_editor(
           if (output) {
             fprintf(out,"\r%*c", clen, ' ');
             fprintf(out,"\r%s%s", prompt, line);
+          }
+          else {
+            if (output)
+              fputc('\x7', out);
           }
         }
         break;
@@ -765,7 +769,7 @@ bool rtems_shell_main_loop(
           /* evaluate cmd section */
           c = cmds[cmd];
           while (*c) {
-            if (!isblank((int)*c))
+            if (!isblank(*c))
               break;
             c++;
           }

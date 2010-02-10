@@ -7,7 +7,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: pipe.c,v 1.3 2009/12/28 16:36:08 joel Exp $
+ * $Id: pipe.c,v 1.2 2009/06/12 01:53:33 ccj Exp $
  */
 
 #include <stdio.h>
@@ -28,6 +28,7 @@ int pipe_create(
   rtems_filesystem_location_info_t loc;
   rtems_libio_t *iop;
   int err = 0;
+
   /* Create /tmp if not exists */
   if (rtems_filesystem_evaluate_path("/tmp", 3, RTEMS_LIBIO_PERMS_RWX, &loc, TRUE)
       != 0) {
@@ -46,9 +47,8 @@ int pipe_create(
 
   /* Try creating FIFO file until find an available file name */
   while (mkfifo(fifopath, S_IRUSR|S_IWUSR) != 0) {
-    if (errno != EEXIST){
+    if (errno != EEXIST)
       return -1;
-    }
     /* Just try once... */
     return -1;
     sprintf(fifopath + 10, "%04x", rtems_pipe_no ++);
@@ -58,24 +58,26 @@ int pipe_create(
   filsdes[0] = open(fifopath, O_RDONLY | O_NONBLOCK);
   if (filsdes[0] < 0) {
     err = errno;
-    /* Delete file at errors, or else if pipe is successfully created
-     the file node will be deleted after it is closed by all. */
-    unlink(fifopath);
+    goto out;
   }
-  else {
+
   /* Reset open file to blocking mode */
-    iop = rtems_libio_iop(filsdes[0]);
-    iop->flags &= ~LIBIO_FLAGS_NO_DELAY;
+  iop = rtems_libio_iop(filsdes[0]);
+  iop->flags &= ~LIBIO_FLAGS_NO_DELAY;
 
-    filsdes[1] = open(fifopath, O_WRONLY);
+  filsdes[1] = open(fifopath, O_WRONLY);
 
-    if (filsdes[1] < 0) {
+  if (filsdes[1] < 0) {
     err = errno;
     close(filsdes[0]);
-    }
-  unlink(fifopath);
   }
 
+out:
+  /* Delete file at errors, or else if pipe is successfully created
+     the file node will be deleted after it is closed by all. */
+  unlink(fifopath);
+
+  if (! err)
+    return 0;
   rtems_set_errno_and_return_minus_one(err);
 }
-

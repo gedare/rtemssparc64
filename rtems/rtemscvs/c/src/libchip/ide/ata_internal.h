@@ -11,7 +11,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ata_internal.h,v 1.12 2010/01/19 09:10:03 thomas Exp $
+ * $Id: ata_internal.h,v 1.11 2009/10/08 07:24:22 ccj Exp $
  *
  */
 #ifndef __ATA_INTERNAL_H__
@@ -210,14 +210,14 @@ typedef struct ata_req_s {
                                * processing of the ata request is required
                                */
     rtems_status_code status; /* status of ata request processing */
-    int               info;  /* device info code */
+    int               error;  /* device error code */
 } ata_req_t;
 
 /* call callback provided by block device request if it is defined */
-#define ATA_EXEC_CALLBACK(areq, status) \
+#define ATA_EXEC_CALLBACK(areq, status, error) \
     do {\
         if (((areq)->breq != NULL) && ((areq)->breq->req_done != NULL)) \
-            (areq)->breq->req_done((areq)->breq->done_arg, status); \
+            (areq)->breq->req_done((areq)->breq->done_arg, status, error); \
     } while (0)
 
 /* ATA RTEMS driver events types */

@@ -4,15 +4,29 @@
  *  Copyright (c) 2004 by Cogent Computer Systems
  *  Written by Jay Monkman <jtm@lopingdog.com>
  *
- *  $Id: mmu.c,v 1.5 2010/01/12 15:03:22 thomas Exp $
+ *  $Id: mmu.c,v 1.4 2009/11/30 05:03:56 ralf Exp $
  */
 #include <libcpu/mmu.h>
-#include <libcpu/arm-cp15.h>
 
 typedef uint32_t mmu_lvl1_t;
 
 extern uint32_t _ttbl_base;
 
+static inline uint32_t mmu_get_id(void);
+static inline uint32_t mmu_get_ctrl(void);
+static inline void mmu_set_ctrl(uint32_t val);
+static inline uint32_t mmu_get_trans_tbl(void);
+static inline void mmu_set_trans_tbl(uint32_t val);
+static inline uint32_t mmu_get_domain_ctrl(void);
+static inline void mmu_set_domain_ctrl(uint32_t val);
+static inline uint32_t mmu_get_fault_stat(void);
+static inline void mmu_set_fault_stat(uint32_t val);
+static inline uint32_t mmu_get_fault_addr(void);
+static inline void mmu_set_fault_addr(uint32_t val);
+static inline void mmu_set_cache_inval(void);
+static inline void mmu_set_tlb_inval(void);
+static inline uint32_t mmu_get_proc_id(void);
+static inline void mmu_set_proc_id(uint32_t val);
 static void mmu_set_map_inval(mmu_lvl1_t *base);
 
 #define MMU_CTRL_MMU_EN             (1 << 0)
@@ -40,23 +54,25 @@ static void mmu_set_map_inval(mmu_lvl1_t *base);
 
 #define MMU_SECT_AP_ALL (0x3 << 10)
 
+#define NOP ( { asm volatile ("nop\n" ); } )
+
 void mmu_init(mmu_sect_map_t *map)
 {
     mmu_lvl1_t *lvl1_base;
     int i;
 
     /* flush the cache and TLB */
-    arm_cp15_cache_invalidate();
-    arm_cp15_tlb_invalidate();
+    mmu_set_cache_inval();
+    mmu_set_tlb_inval();
 
     /* set manage mode access for all domains */
-    arm_cp15_set_domain_access_control(0xffffffff);
+    mmu_set_domain_ctrl(0xffffffff);
 
     lvl1_base = (mmu_lvl1_t *)&_ttbl_base;
 
     /* set up the trans table */
     mmu_set_map_inval(lvl1_base);
-    arm_cp15_set_translation_table_base(lvl1_base);
+    mmu_set_trans_tbl((uint32_t) lvl1_base);
 
     /* create a 1:1 mapping of the entire address space */
     i = 0;
@@ -104,18 +120,116 @@ void mmu_init(mmu_sect_map_t *map)
     }
 
     /* flush the cache and TLB */
-    arm_cp15_cache_invalidate();
-    arm_cp15_tlb_invalidate();
+    mmu_set_cache_inval();
+    mmu_set_tlb_inval();
+
+    NOP;
+    NOP;
 
     /*  I & D caches turned on */
-    arm_cp15_set_control(MMU_CTRL_DEFAULT |
-                         MMU_CTRL_D_CACHE_EN |
-                         MMU_CTRL_I_CACHE_EN |
-                         MMU_CTRL_ALIGN_FAULT_EN |
-                         MMU_CTRL_LITTLE_ENDIAN |
-                         MMU_CTRL_MMU_EN);
+    mmu_set_ctrl(MMU_CTRL_DEFAULT |
+                 MMU_CTRL_D_CACHE_EN |
+                 MMU_CTRL_I_CACHE_EN |
+                 MMU_CTRL_ALIGN_FAULT_EN |
+                 MMU_CTRL_LITTLE_ENDIAN |
+                 MMU_CTRL_MMU_EN);
+
+    NOP;
+    NOP;
 
     return;
+}
+
+
+static inline uint32_t mmu_get_id(void)
+{
+    uint32_t val;
+    asm volatile ("msr 15, 0, %0, cr0, cr0\n" : "=r" (val));
+    return val;
+}
+
+static inline uint32_t mmu_get_ctrl(void)
+{
+    uint32_t val;
+    asm volatile ("mrc 15, 0, %0, cr1, cr0\n" : "=r" (val));
+    return val;
+}
+
+static inline void mmu_set_ctrl(uint32_t val)
+{
+    asm volatile ("mcr 15, 0, %0, cr1, cr0, 0\n" : :"r" (val));
+}
+
+static inline uint32_t mmu_get_trans_tbl(void)
+{
+    uint32_t val;
+    asm volatile ("msr 15, 0, %0, cr2, cr0\n" : "=r" (val));
+    return val;
+}
+
+static inline void mmu_set_trans_tbl(uint32_t val)
+{
+    asm volatile ("mcr 15, 0, %0, cr2, cr0, 0\n" : :"r" (val));
+}
+
+static inline uint32_t mmu_get_domain_ctrl(void)
+{
+    uint32_t val;
+    asm volatile ("msr 15, 0, %0, cr3, cr0\n" : "=r" (val));
+    return val;
+}
+
+static inline void mmu_set_domain_ctrl(uint32_t val)
+{
+    asm volatile ("mcr 15, 0, %0, cr3, cr0, 0\n" : :"r" (val));
+}
+
+static inline uint32_t mmu_get_fault_stat(void)
+{
+    uint32_t val;
+    asm volatile ("msr 15, 0, %0, cr5, cr0\n" : "=r" (val));
+    return val;
+}
+
+static inline void mmu_set_fault_stat(uint32_t val)
+{
+    asm volatile ("mcr 15, 0, %0, cr5, cr0, 0\n" : :"r" (val));
+}
+
+static inline uint32_t mmu_get_fault_addr(void)
+{
+    uint32_t val;
+    asm volatile ("msr 15, 0, %0, cr6, cr0\n" : "=r" (val));
+    return val;
+}
+
+static inline void mmu_set_fault_addr(uint32_t val)
+{
+    asm volatile ("mcr 15, 0, %0, cr6, cr0, 0\n" : :"r" (val));
+}
+
+static inline void mmu_set_cache_inval(void)
+{
+    uint32_t val = 0;
+    asm volatile ("mcr 15, 0, %0, cr7, cr7, 0\n" : :"r" (val));
+}
+
+static inline void mmu_set_tlb_inval(void)
+{
+    uint32_t val = 0;
+    asm volatile ("mcr 15, 0, %0, cr8, cr7, 0\n" : :"r" (val));
+}
+
+static inline uint32_t mmu_get_proc_id(void)
+{
+    uint32_t val;
+    asm volatile ("msr 15, 0, %0, cr13, cr0\n" : "=r" (val));
+    return val;
+}
+
+static inline void mmu_set_proc_id(uint32_t val)
+{
+    asm volatile ("mcr 15, 0, %0, cr13, cr0, 0\n" : :"r" (val));
 }
 
 /* set all the level 1 entrys to be invalid descriptors */
@@ -127,10 +241,12 @@ static void mmu_set_map_inval(mmu_lvl1_t *base)
     }
 }
 
+
 void mmu_set_cpu_async_mode(void)
 {
     uint32_t reg;
-    reg = arm_cp15_get_control();
+    reg = mmu_get_ctrl();
     reg |= 0xc0000000;
-    arm_cp15_set_control(reg);
+    mmu_set_ctrl(reg);
 }
+

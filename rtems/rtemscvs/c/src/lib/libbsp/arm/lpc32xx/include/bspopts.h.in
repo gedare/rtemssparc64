@@ -33,9 +33,6 @@
 /* clock mode configuration for UARTs */
 #undef LPC32XX_CONFIG_UART_CLKMODE
 
-/* enable RMII for Ethernet */
-#undef LPC32XX_ETHERNET_RMII
-
 /* AHB bus clock in Hz */
 #undef LPC32XX_HCLK
 

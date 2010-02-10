@@ -5,14 +5,13 @@
 # @brief Makefile of LibBSP for the LPC24XX boards.
 #
 
-# $Id: Makefile.am,v 1.25 2010/01/12 15:03:21 thomas Exp $
+# $Id: Makefile.am,v 1.24 2009/12/15 15:20:46 thomas Exp $
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
 
 include $(top_srcdir)/../../../../automake/compile.am
 
 include_bspdir = $(includedir)/bsp
-include_libcpudir = $(includedir)/libcpu
 
 dist_project_lib_DATA = bsp_specs
 
@@ -45,11 +44,8 @@ include_bsp_HEADERS += include/dma.h
 include_bsp_HEADERS += include/i2c.h
 include_bsp_HEADERS += include/io.h
 include_bsp_HEADERS += include/lpc-clock-config.h
-include_bsp_HEADERS += include/lpc-ethernet-config.h
 
 include_HEADERS += ../../shared/include/tm27.h
-
-include_libcpu_HEADERS = ../../../libcpu/arm/shared/include/cache.h
 
 ###############################################################################
 #                  Data                                                       #
@@ -76,8 +72,6 @@ EXTRA_DIST += startup/linkcmds.lpc2362
 noinst_LIBRARIES += libbsp.a
 
 libbsp_a_SOURCES =
-libbsp_a_CPPFLAGS =
-libbsp_a_LIBADD =
 
 # Shared
 libbsp_a_SOURCES += ../../shared/bootcard.c \
@@ -130,18 +124,12 @@ libbsp_a_SOURCES += ssp/ssp.c
 # I2C
 libbsp_a_SOURCES += i2c/i2c.c
 
-# Cache
-libbsp_a_SOURCES += ../../../libcpu/shared/src/cache_manager.c \
-	../../../libcpu/arm/shared/cache/cache_.h
-libbsp_a_CPPFLAGS += -I$(srcdir)/../../../libcpu/arm/shared/include
-
 # Start hooks (FIXME: This is brittle.)
 libbsp_a_SOURCES += startup/bspstarthooks.c
-libbsp_a-bspstarthooks.o: startup/bspstarthooks.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libbsp_a_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS:-mthumb=) \
-	-MT libbsp_a-bspstarthooks.o -MD -MP -MF $(DEPDIR)/libbsp_a-bspstarthooks.Tpo -c -o libbsp_a-bspstarthooks.o \
+bspstarthooks.o: startup/bspstarthooks.c
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS:-mthumb=) \
+	-MT bspstarthooks.o -MD -MP -MF $(DEPDIR)/bspstarthooks.Tpo -c -o bspstarthooks.o \
 	`test -f 'startup/bspstarthooks.c' || echo '$(srcdir)/'`startup/bspstarthooks.c
-	$(am__mv) $(DEPDIR)/libbsp_a-bspstarthooks.Tpo $(DEPDIR)/libbsp_a-bspstarthooks.Po
 
 ###############################################################################
 #                  Network                                                    #
@@ -151,11 +139,11 @@ if HAS_NETWORKING
 
 noinst_PROGRAMS = network.rel
 
-network_rel_SOURCES = ../shared/lpc/network/lpc-ethernet.c
+network_rel_SOURCES = network/network.c
 network_rel_CPPFLAGS = $(AM_CPPFLAGS) -D__INSIDE_RTEMS_BSD_TCPIP_STACK__ -D__BSD_VISIBLE
 network_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
-libbsp_a_LIBADD += network.rel
+libbsp_a_LIBADD = network.rel
 
 endif
 

@@ -35,7 +35,7 @@
 | *  http://www.rtems.com/license/LICENSE.
 | **************************************************************************
 |
-|  $Id: bsp.h,v 1.46 2009/12/23 17:33:41 joel Exp $
+|  $Id: bsp.h,v 1.45 2009/12/10 18:44:10 joel Exp $
 +--------------------------------------------------------------------------*/
 
 #ifndef _BSP_H
@@ -53,8 +53,6 @@ extern "C" {
 #include <rtems/clockdrv.h>
 #include <libcpu/cpu.h>
 #include <rtems/bspIo.h>
-
-#define BSP_HAS_FRAME_BUFFER 1
 
 /*
  * Network driver configuration

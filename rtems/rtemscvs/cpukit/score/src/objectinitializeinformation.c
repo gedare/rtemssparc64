@@ -1,14 +1,15 @@
 /*
- *  Object Handler Initialization per Object Class
+ *  Object Handler
  *
- *  COPYRIGHT (c) 1989-2010.
+ *
+ *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: objectinitializeinformation.c,v 1.17 2010/01/19 19:33:08 joel Exp $
+ *  $Id: objectinitializeinformation.c,v 1.16 2009/09/11 14:54:29 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -64,60 +65,68 @@ void _Objects_Initialize_information(
   static Objects_Control *null_local_table = NULL;
   uint32_t                minimum_index;
   uint32_t                name_length;
-  uint32_t                maximum_per_allocation;
-  #if defined(RTEMS_MULTIPROCESSING)
-    uint32_t              index;
-  #endif
+#if defined(RTEMS_MULTIPROCESSING)
+  uint32_t                index;
+#endif
 
   information->the_api            = the_api;
   information->the_class          = the_class;
-  information->size               = size;
+#if defined(RTEMS_SCORE_OBJECT_ENABLE_STRING_NAMES)
+  information->is_string          = is_string;
+#endif
+
   information->local_table        = 0;
   information->inactive_per_block = 0;
   information->object_blocks      = 0;
+
   information->inactive           = 0;
-  #if defined(RTEMS_SCORE_OBJECT_ENABLE_STRING_NAMES)
-    information->is_string        = is_string;
-  #endif
 
   /*
-   *  Set the maximum value to 0. It will be updated when objects are
-   *  added to the inactive set from _Objects_Extend_information()
+   *  Set the entry in the object information table.
    */
-  information->maximum = 0;
 
-  /*
-   *  Register this Object Class in the Object Information Table.
-   */
   _Objects_Information_table[ the_api ][ the_class ] = information;
 
   /*
-   *  Are we operating in limited or unlimited (e.g. auto-extend) mode.
+   *  Set the size of the object
    */
+
+  information->size = size;
+
+  /*
+   *  Are we operating in unlimited, or auto-extend mode
+   */
+
   information->auto_extend =
         (maximum & OBJECTS_UNLIMITED_OBJECTS) ? true : false;
-  maximum_per_allocation = maximum & ~OBJECTS_UNLIMITED_OBJECTS;
+  maximum                 &= ~OBJECTS_UNLIMITED_OBJECTS;
 
   /*
    *  The allocation unit is the maximum value
    */
-  information->allocation_size = maximum_per_allocation;
+
+  information->allocation_size = maximum;
 
   /*
    *  Provide a null local table entry for the case of any empty table.
    */
+
   information->local_table = &null_local_table;
 
   /*
    *  Calculate minimum and maximum Id's
    */
-  minimum_index = (maximum_per_allocation == 0) ? 0 : 1;
+
+  if ( maximum == 0 ) minimum_index = 0;
+  else                minimum_index = 1;
+
   information->minimum_id =
     _Objects_Build_id( the_api, the_class, _Objects_Local_node, minimum_index );
 
   /*
    *  Calculate the maximum name length
    */
+
   name_length = maximum_name_length;
 
   if ( name_length & (OBJECTS_NAME_ALIGNMENT-1) )
@@ -131,32 +140,44 @@ void _Objects_Initialize_information(
   /*
    *  Initialize objects .. if there are any
    */
-  if ( maximum_per_allocation ) {
+
+  if ( maximum ) {
+
+    /*
+     *  Reset the maximum value. It will be updated when the information is
+     *  extended.
+     */
+
+    information->maximum = 0;
+
     /*
      *  Always have the maximum size available so the current performance
      *  figures are create are met.  If the user moves past the maximum
      *  number then a performance hit is taken.
      */
+
     _Objects_Extend_information( information );
+
   }
 
   /*
    *  Take care of multiprocessing
    */
-  #if defined(RTEMS_MULTIPROCESSING)
-    information->extract = extract;
 
-    if ( (supports_global == true) && _System_state_Is_multiprocessing ) {
+#if defined(RTEMS_MULTIPROCESSING)
+  information->extract = extract;
 
-      information->global_table =
-	(Chain_Control *) _Workspace_Allocate_or_fatal_error(
-	  (_Objects_Maximum_nodes + 1) * sizeof(Chain_Control)
-	);
+  if ( (supports_global == true) && _System_state_Is_multiprocessing ) {
 
-      for ( index=1; index <= _Objects_Maximum_nodes ; index++ )
-	_Chain_Initialize_empty( &information->global_table[ index ] );
-     }
-     else
-       information->global_table = NULL;
-  #endif
+    information->global_table =
+      (Chain_Control *) _Workspace_Allocate_or_fatal_error(
+        (_Objects_Maximum_nodes + 1) * sizeof(Chain_Control)
+      );
+
+    for ( index=1; index <= _Objects_Maximum_nodes ; index++ )
+      _Chain_Initialize_empty( &information->global_table[ index ] );
+   }
+   else
+     information->global_table = NULL;
+#endif
 }

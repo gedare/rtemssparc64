@@ -1,14 +1,14 @@
-/Makefile.ts_386ex/1.2/Sat Oct 24 23:19:47 2009//
-/README/1.1/Sat Oct 24 23:19:47 2009//
-/i386_ports.adb/1.1/Sat Oct 24 23:19:47 2009//
-/i386_ports.ads/1.2/Sat Oct 24 23:19:47 2009//
-/init.c/1.6/Sat Oct 24 23:19:47 2009//
-/ts1325-button.adb/1.1/Sat Oct 24 23:19:47 2009//
-/ts1325-button.ads/1.1/Sat Oct 24 23:19:47 2009//
-/ts1325-led.adb/1.1/Sat Oct 24 23:19:47 2009//
-/ts1325-led.ads/1.1/Sat Oct 24 23:19:47 2009//
-/ts1325-parallel.adb/1.1/Sat Oct 24 23:19:47 2009//
-/ts1325-parallel.ads/1.1/Sat Oct 24 23:19:47 2009//
-/ts1325.ads/1.1/Sat Oct 24 23:19:47 2009//
-/ts1325_test.adb/1.1/Sat Oct 24 23:19:47 2009//
+/Makefile.ts_386ex/1.2/Fri Oct 23 12:50:58 2009//
+/README/1.1/Fri Oct 23 12:50:58 2009//
+/i386_ports.adb/1.1/Fri Oct 23 12:50:58 2009//
+/i386_ports.ads/1.2/Fri Oct 23 12:50:58 2009//
+/init.c/1.6/Fri Oct 23 12:50:58 2009//
+/ts1325-button.adb/1.1/Fri Oct 23 12:50:58 2009//
+/ts1325-button.ads/1.1/Fri Oct 23 12:50:58 2009//
+/ts1325-led.adb/1.1/Fri Oct 23 12:50:58 2009//
+/ts1325-led.ads/1.1/Fri Oct 23 12:50:58 2009//
+/ts1325-parallel.adb/1.1/Fri Oct 23 12:50:58 2009//
+/ts1325-parallel.ads/1.1/Fri Oct 23 12:50:58 2009//
+/ts1325.ads/1.1/Fri Oct 23 12:50:58 2009//
+/ts1325_test.adb/1.1/Fri Oct 23 12:50:58 2009//
 D
