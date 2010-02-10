@@ -7,8 +7,8 @@ D/mcf5282////
 D/mcf532x////
 D/mcf548x////
 D/shared////
-/.cvsignore/1.4/Sat Oct 24 23:20:58 2009//
-/ChangeLog/1.105/Thu Dec 31 16:54:50 2009//
-/Makefile.am/1.32/Sat Oct 24 23:20:58 2009//
-/configure.ac/1.38/Thu Dec 31 16:54:50 2009//
-/preinstall.am/1.14/Tue Dec  1 21:40:32 2009//
+/.cvsignore/1.4/Fri Oct 23 12:52:06 2009//
+/Makefile.am/1.32/Fri Oct 23 12:52:06 2009//
+/ChangeLog/1.105/Tue Dec 22 15:26:38 2009//
+/configure.ac/1.38/Tue Dec 22 15:26:38 2009//
+/preinstall.am/1.14/Tue Dec 22 15:46:06 2009//

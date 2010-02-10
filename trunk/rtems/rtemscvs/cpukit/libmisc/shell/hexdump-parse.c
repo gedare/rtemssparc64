@@ -217,7 +217,6 @@ rewrite(rtems_shell_hexdump_globals* globals, FS *fs)
 	int nconv, prec;
 	size_t len;
 
-	pr = NULL;
 	nextpr = NULL;
 	prec = 0;
 
@@ -231,10 +230,8 @@ rewrite(rtems_shell_hexdump_globals* globals, FS *fs)
 				err(exit_jump, 1, NULL);
 			if (!fu->nextpr)
 				fu->nextpr = pr;
-			else {
-				if (nextpr)
-					*nextpr = pr;
-			}
+			else
+				*nextpr = pr;
 
 			/* Skip preceding text and up to the next % sign. */
 			for (p1 = fmtp; *p1 && *p1 != '%'; ++p1);
@@ -419,10 +416,6 @@ isint2:					switch(fu->bcnt) {
 		if (!fu->bcnt)
 			for (pr = fu->nextpr; pr; pr = pr->nextpr)
 				fu->bcnt += pr->bcnt;
-	}
-	if (pr) {
-		free(pr);
-		pr = NULL;
 	}
 	/*
 	 * If the format string interprets any data at all, and it's

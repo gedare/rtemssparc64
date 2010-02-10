@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.20 2010/01/20 17:11:01 joel Exp $
+ *  $Id: init.c,v 1.19 2009/12/08 17:52:56 joel Exp $
  */
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__
@@ -86,8 +86,8 @@ void change_name(
   else {
     printf( "(" );
     for (c=newName ; *c ; ) {
-       if (isprint((int)*c)) printf( "%c", *c );
-       else                  printf( "0x%02x", *c );
+       if (isprint(*c)) printf( "%c", *c );
+       else             printf( "0x%02x", *c );
        c++;
        if ( *c )
          printf( "-" );

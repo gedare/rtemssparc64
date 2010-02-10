@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: ide_part_table.c,v 1.18 2010/01/19 23:47:41 joel Exp $
+ * $Id: ide_part_table.c,v 1.15 2009/11/30 12:39:51 thomas Exp $
  *
  *****************************************************************************/
 
@@ -192,7 +192,7 @@ data_to_part_desc(uint8_t *data, rtems_part_desc_t **new_part_desc)
      * - FAT type and non-zero
      */
     if (is_extended(part_desc->sys_type) ||
-       ((is_fat_partition(part_desc->sys_type)) && (part_desc->size != 0))) {
+	((is_fat_partition(part_desc->sys_type)) && (part_desc->size != 0))) {
       *new_part_desc = part_desc;
     }
     else {
@@ -223,7 +223,7 @@ read_extended_partition(uint32_t start, rtems_part_desc_t *ext_part)
 {
     int                  i;
     dev_t                dev;
-    rtems_sector_data_t *sector = NULL;
+    rtems_sector_data_t *sector;
     uint32_t             here;
     uint8_t             *data;
     rtems_part_desc_t   *new_part_desc;
@@ -244,14 +244,11 @@ read_extended_partition(uint32_t start, rtems_part_desc_t *ext_part)
     rc = get_sector(dev, here, &sector);
     if (rc != RTEMS_SUCCESSFUL)
     {
-        if (sector)
-            free(sector);
         return rc;
     }
 
     if (!msdos_signature_check(sector))
     {
-        free(sector);
         return RTEMS_INTERNAL_ERROR;
     }
 
@@ -320,7 +317,7 @@ static rtems_status_code
 read_mbr(rtems_disk_desc_t *disk_desc)
 {
     int                  part_num;
-    rtems_sector_data_t *sector = NULL;
+    rtems_sector_data_t *sector;
     rtems_part_desc_t   *part_desc;
     uint8_t             *data;
     rtems_status_code    rc;
@@ -330,15 +327,12 @@ read_mbr(rtems_disk_desc_t *disk_desc)
     rc = get_sector(dev, 0, &sector);
     if (rc != RTEMS_SUCCESSFUL)
     {
-        if (sector)
-            free(sector);
         return rc;
     }
 
     /* check if the partition table structure is MS-DOS style */
     if (!msdos_signature_check(sector))
     {
-        free(sector);
         return RTEMS_INTERNAL_ERROR;
     }
 

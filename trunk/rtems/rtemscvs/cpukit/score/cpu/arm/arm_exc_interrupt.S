@@ -1,8 +1,6 @@
 /**
  * @file
  *
- * @ingroup arm
- *
  * @brief ARM interrupt exception prologue and epilogue.
  */
 
@@ -25,8 +23,6 @@
  * The exchange area is only accessed if INT is disabled.
  */
 
-#include <rtems/asm.h>
-
 #define EXCHANGE_LR r4
 #define EXCHANGE_SPSR r5
 #define EXCHANGE_CPSR r6
@@ -44,6 +40,22 @@
 .extern _Thread_Dispatch_disable_level
 
 .extern bsp_interrupt_dispatch
+
+.macro SWITCH_FROM_THUMB_TO_ARM
+#ifdef __thumb__
+.align 2
+	bx	pc
+.arm
+#endif /* __thumb__ */
+.endm
+
+.macro SWITCH_FROM_ARM_TO_THUMB REG
+#ifdef __thumb__
+	add	\REG, pc, #1
+	bx	\REG
+.thumb
+#endif /* __thumb__ */
+.endm
 
 .arm
 .globl arm_exc_interrupt

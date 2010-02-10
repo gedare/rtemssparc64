@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: objectextendinformation.c,v 1.21 2010/01/20 17:08:19 joel Exp $
+ *  $Id: objectextendinformation.c,v 1.20 2009/11/29 13:51:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -61,12 +61,12 @@ void _Objects_Extend_information(
    *  Search for a free block of indexes. The block variable ends up set
    *  to block_count + 1 if the table needs to be extended.
    */
+
   minimum_index = _Objects_Get_index( information->minimum_id );
   index_base    = minimum_index;
   block         = 0;
 
-  /* if ( information->maximum < minimum_index ) */
-  if ( information->object_blocks == NULL )
+  if ( information->maximum < minimum_index )
     block_count = 0;
   else {
     block_count = information->maximum / information->allocation_size;
@@ -94,6 +94,7 @@ void _Objects_Extend_information(
    * Allocate the name table, and the objects and if it fails either return or
    * generate a fatal error depending on auto-extending being active.
    */
+
   block_size = information->allocation_size * information->size;
   if ( information->auto_extend ) {
     new_object_block = _Workspace_Allocate( block_size );
@@ -106,6 +107,7 @@ void _Objects_Extend_information(
   /*
    *  If the index_base is the maximum we need to grow the tables.
    */
+
   if (index_base >= information->maximum ) {
     ISR_Level         level;
     void            **object_blocks;
@@ -134,19 +136,17 @@ void _Objects_Extend_information(
     /*
      *  Up the block count and maximum
      */
+
     block_count++;
 
     /*
      *  Allocate the tables and break it up.
      */
-<<<<<<< objectextendinformation.c
 //	printk("\n\rGica test1 block_count = %d\n\r",block_count);
 //	printk("\n\rGica test1 maximum = %d\n\r",maximum);
 //	printk("\n\rGica test1 minimum_index = %d\n\r",minimum_index);
 
 
-=======
->>>>>>> 1.21
     block_size = block_count *
            (sizeof(void *) + sizeof(uint32_t) + sizeof(uint32_t)/* <-this is a GICA quickfix */ + sizeof(Objects_Name *)) +
           ((maximum + minimum_index) * sizeof(Objects_Control *));
@@ -163,11 +163,8 @@ void _Objects_Extend_information(
     /*
      *  Break the block into the various sections.
      */
-<<<<<<< objectextendinformation.c
 //	printk("\n\rGica test2 %x\n\r",object_blocks);
 
-=======
->>>>>>> 1.21
     inactive_per_block = (uint32_t *) _Addresses_Add_offset(
         object_blocks, block_count * sizeof(void*) );
 
@@ -186,6 +183,7 @@ void _Objects_Extend_information(
      *  Take the block count down. Saves all the (block_count - 1)
      *  in the copies.
      */
+
     block_count--;
 
     if ( information->maximum > minimum_index ) {
@@ -204,7 +202,8 @@ void _Objects_Extend_information(
       memcpy( local_table,
               information->local_table,
               (information->maximum + minimum_index) * sizeof(Objects_Control *) );
-    } else {
+    }
+    else {
 
       /*
        *  Deal with the special case of the 0 to minimum_index
@@ -222,6 +221,7 @@ void _Objects_Extend_information(
     /*
      *  Initialise the new entries in the table.
      */
+
     object_blocks[block_count] = NULL;
     inactive_per_block[block_count] = 0;
 
@@ -257,11 +257,13 @@ void _Objects_Extend_information(
   /*
    *  Assign the new object block to the object block table.
    */
+
   information->object_blocks[ block ] = new_object_block;
 
   /*
    *  Initialize objects .. add to a local chain first.
    */
+
   _Chain_Initialize(
     &Inactive,
     information->object_blocks[ block ],
@@ -272,9 +274,10 @@ void _Objects_Extend_information(
   /*
    *  Move from the local chain, initialise, then append to the inactive chain
    */
+
   index = index_base;
 
-  while ((the_object = (Objects_Control *) _Chain_Get( &Inactive )) != NULL ) {
+  while ( (the_object = (Objects_Control *) _Chain_Get( &Inactive ) ) != NULL ) {
 
     the_object->id = _Objects_Build_id(
         information->the_api,

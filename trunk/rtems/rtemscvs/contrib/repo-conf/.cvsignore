@@ -7,7 +7,6 @@ install-sh
 Makefile
 Makefile.in
 missing
-INSTALL
 *.spec
 *.tar.bz2
 *.tar.xz

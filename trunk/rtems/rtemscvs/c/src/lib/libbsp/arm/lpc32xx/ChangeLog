@@ -1,15 +1,3 @@
-2010-02-02	Ralf Corsépius <ralf.corsepius@rtems.org>
-
-	* make/custom/lpc32xx_phycore.cfg: Remove -W* flags.
-
-2010-01-12	Sebastian Huber <sebastian.huber@embedded-brains.de>
-
-	* include/lpc-ethernet-config.h, include/mmu.h: New files.
-	* Makefile.am, configure.ac, preinstall.am, include/bsp.h,
-	include/bspopts.h.in, include/irq.h, include/lpc32xx.h, irq/irq.c,
-	rtc/rtc-config.c, startup/bspstarthooks.c,
-	startup/linkcmds.lpc32xx_phycore: Changes throughout.
-
 2009-12-17	Joel Sherrill <joel.sherrill@oarcorp.com>
 
 	* include/bspopts.h.in: Regenerated.

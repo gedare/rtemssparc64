@@ -1,14 +1,14 @@
 /*
  *  IMFS Initialization
  *
- *  COPYRIGHT (c) 1989-2010.
+ *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: imfs_initsupp.c,v 1.20 2010/01/19 19:31:00 joel Exp $
+ *  $Id: imfs_initsupp.c,v 1.19 2008/10/14 15:06:25 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -43,11 +43,12 @@ static int IMFS_determine_bytes_per_block(
 {
   bool is_valid = false;
   int bit_mask;
-
   /*
    * check, whether requested bytes per block is valid
    */
-  for (bit_mask = 16; !is_valid && (bit_mask <= 512); bit_mask <<= 1) {
+  for (bit_mask = 16;
+       !is_valid && (bit_mask <= 512);
+       bit_mask <<= 1) {
     if (bit_mask == requested_bytes_per_block) {
       is_valid = true;
     }
@@ -56,12 +57,14 @@ static int IMFS_determine_bytes_per_block(
 			   ? requested_bytes_per_block
 			   : default_bytes_per_block);
   return 0;
+
 }
 
 
 /*
  *  IMFS_initialize
  */
+
 int IMFS_initialize_support(
   rtems_filesystem_mount_table_entry_t        *temp_mt_entry,
    const rtems_filesystem_operations_table    *op_table,
@@ -84,7 +87,15 @@ int IMFS_initialize_support(
    *
    *  NOTE: UNIX root is 755 and owned by root/root (0/0).
    */
-  temp_mt_entry->mt_fs_root.node_access      = IMFS_create_root_node();
+
+  temp_mt_entry->mt_fs_root.node_access = IMFS_create_node(
+    NULL,
+    IMFS_DIRECTORY,
+    "",
+    ( S_IFDIR | 0755 ),
+    NULL
+  );
+
   temp_mt_entry->mt_fs_root.handlers         = directory_handlers;
   temp_mt_entry->mt_fs_root.ops              = op_table;
   temp_mt_entry->pathconf_limits_and_options = IMFS_LIMITS_AND_OPTIONS;
@@ -93,7 +104,7 @@ int IMFS_initialize_support(
    * Create custom file system data.
    */
   fs_info = calloc( 1, sizeof( IMFS_fs_info_t ) );
-  if ( !fs_info ) {
+  if ( !fs_info ){
     free(temp_mt_entry->mt_fs_root.node_access);
     rtems_set_errno_and_return_minus_one(ENOMEM);
   }

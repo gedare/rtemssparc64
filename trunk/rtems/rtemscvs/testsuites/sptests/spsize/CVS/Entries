@@ -1,9 +1,9 @@
-/.cvsignore/1.1/Sat Oct 24 23:16:34 2009//
-/Makefile.am/1.26/Mon Nov 30 23:40:24 2009//
-/getint.c/1.9/Sat Oct 24 23:16:34 2009//
-/init.c/1.14/Mon Nov 30 23:40:24 2009//
-/size.c/1.64/Mon Nov 30 23:40:24 2009//
-/spsize.doc/1.1/Thu Dec  3 04:33:39 2009/-kb/
-/spsize.scn/1.1/Sat Oct 24 23:16:34 2009//
-/system.h/1.11/Sat Oct 24 23:16:34 2009//
+/.cvsignore/1.1/Fri Oct 23 12:48:17 2009//
+/Makefile.am/1.26/Wed Nov 25 15:50:15 2009//
+/getint.c/1.9/Fri Oct 23 12:48:17 2009//
+/init.c/1.14/Wed Nov 25 15:50:15 2009//
+/size.c/1.64/Wed Nov 25 15:50:15 2009//
+/spsize.doc/1.1/Mon Nov  9 14:25:28 2009/-kb/
+/spsize.scn/1.1/Fri Oct 23 12:48:17 2009//
+/system.h/1.11/Fri Oct 23 12:48:17 2009//
 D
