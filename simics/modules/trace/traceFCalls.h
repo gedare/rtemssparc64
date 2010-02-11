@@ -144,7 +144,7 @@ int penaltyAddressList( addressList l);
 
 
 
-void loadContainersFromSymtable(char* symFileName);
+void loadContainersFromSymtable(const char* symFileName);
 void setFullTraceFile(base_trace_t *bt);
 
 //the container list is sorted by address
@@ -152,6 +152,29 @@ container * search(md_addr_t addr);
 
 //this value keep a state that tells the container manager to ignore a duplicate push due to a trap
 int ignore_due_to_Exception; 
+
+void toStringRTEMSTaksName_(char * dest, int _name);
+
+
+#define printRTEMSTaksName( _name) \
+{\
+	int32   c0, c1, c2, c3; \
+	\
+	c0 = ((_name) >> 24) & 0xff; \
+	c1 = ((_name) >> 16) & 0xff; \
+	c2 = ((_name) >> 8) & 0xff; \
+	c3 = (_name) & 0xff; \
+	putchar( (char)c0 ); \
+	if ( c1 ) putchar( (char)c1 ); \
+	if ( c2 ) putchar( (char)c2 ); \
+	if ( c3 ) putchar( (char)c3 ); \
+}
+
+
+void itoa(int n, char s[]);
+void reverse(char s[]);
+
+
 
 
 #endif /* COMPONENTS_H */

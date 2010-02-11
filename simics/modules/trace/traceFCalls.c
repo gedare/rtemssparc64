@@ -6,18 +6,19 @@
 #include "trace.h"
 #include "traceFCalls.h"
 
-
+#define CONTAINERMAX 6000
+#define PRINTBUFFMAX 10000
 
 typedef struct traceData_def traceData;
 //External Variables
-container containerTable[6000]; 	//this array contains all containers( functions and is loaded in Loader.c)
+container containerTable[CONTAINERMAX]; 	//this array contains all containers( functions and is loaded in Loader.c)
 int containerSize = 0;				//keps the size of the containerList
 int componentTableSize = 1;
 
 //end External Variables
 
 //local variables
-mystack returnAddressStack; 	//this is the main Container stack
+//mystack returnAddressStack; 	//this is the main Container stack
 int containerInitialized = 0; 	//local flag to track wheater the containers were initialized
 md_addr_t return_addr;			//monitors the return addresses ( saved before a function call and stored to stack)
 
@@ -25,9 +26,9 @@ md_addr_t return_addr;			//monitors the return addresses ( saved before a functi
 
 struct regs_t *regs;			//this pointer gives access to the simulated register file
 
-char printBuffer[10000];			// use sprintf to print to this buffer and then use myprint for the final print ( full trace )
-char printBuffer2[10000];			// use sprintf to print to this buffer and then use myprint for the final print ( second run trace )
-char compilerPrintBuffer[10000];	// use sprintf to print to this buffer and then use myprint for the final print ( compiler trace )
+char printBuffer[PRINTBUFFMAX];			// use sprintf to print to this buffer and then use myprint for the final print ( full trace )
+char printBuffer2[PRINTBUFFMAX];			// use sprintf to print to this buffer and then use myprint for the final print ( second run trace )
+char compilerPrintBuffer[PRINTBUFFMAX];	// use sprintf to print to this buffer and then use myprint for the final print ( compiler trace )
 
 
 struct traceData_def{
@@ -36,10 +37,10 @@ struct traceData_def{
 	int traceLoadeduniqueChildContainersCalled;
 };
 
-traceData traceLoader[6000];
+traceData traceLoader[CONTAINERMAX];
 int traceLoaderSize;
-
-
+ 
+char *fullTracefdFileName = NULL;
 FILE *tracefdIn = NULL; //TODO !!
 FILE *tracefdOut = NULL;
 FILE *compilerInfofd = NULL;
@@ -57,6 +58,86 @@ conf_object_t *proc; //Simics Sparc current processor
 int o7id; //Simics Sparc registerid for the "i7" register ( %i7 + 8 is the return address)
 
 
+//Adding thread awareness to the containers. 
+// We need a list of containers, not only one, one for each threads. 
+// 1. a list of Threads ( circular linked list ), as data : thread id, thread name, container 
+// 2.global Thread_active pointer to the current thread. 
+// 3.Thread_switch(thread id, thread name), an external event that detects the thread switch. 
+
+typedef struct thread_monitor
+{
+	struct thread_monitor* next;
+	int64 thread_id;
+	int64 thread_name;
+	mystack container_runtime_stack;
+	FILE *traceFD;
+	
+} thread_monitor_t;
+
+thread_monitor_t *thread_active;
+
+
+thread_monitor_t* ThreadAdd(int64 id, int64 name)
+{
+	thread_monitor_t* newThread;
+	newThread = (thread_monitor_t*) calloc (sizeof(thread_monitor_t),1);
+	newThread->thread_id = id;
+	newThread->thread_name = name; 
+	
+	newThread->container_runtime_stack = stack_create();
+	//create a name for the thread trace file
+	if(fullTracefdFileName != NULL){
+		char fname[500]; 
+		if(id == 0)
+			strcpy((char *)fname,fullTracefdFileName);
+		else{
+			strcpy(fname,fullTracefdFileName);
+			strcat(fname,"_");
+			char idstr[64];
+			itoa(id,idstr);
+			strcat(fname,idstr);
+			strcat(fname,"_");
+			char taskName[5];
+			toStringRTEMSTaksName_(taskName,name);
+			strcat(fname,taskName);
+		}
+		
+		newThread->traceFD = fopen(fname,"w");
+	}
+	if(thread_active != NULL){
+		newThread->next = thread_active->next;
+		thread_active->next = newThread;
+	}
+	else{
+		newThread->next = newThread;
+	}
+	return newThread;
+}
+
+thread_monitor_t* ThreadFind(int64 id)
+{
+	thread_monitor_t* iterate;
+	if(thread_active->thread_id== id) return thread_active;
+	iterate = thread_active->next;
+	
+	while (iterate != thread_active)
+	{
+		if(iterate->thread_id == id) return iterate;	
+		iterate = iterate->next;
+	}
+	return NULL;
+}
+
+void Thread_switch( int64 id, int64 name)
+{
+	thread_monitor_t* newThread;
+	newThread = ThreadFind(id);
+	if(newThread == thread_active) return;
+	if(!newThread) newThread = ThreadAdd(id,name);
+	thread_active = newThread;
+}
+
+
 
 void container_initialize( base_trace_t *bt)
 {
@@ -67,7 +148,8 @@ void container_initialize( base_trace_t *bt)
 	{
 		ignore_due_to_Exception = 0;
 		containerInitialized = 1;
-		returnAddressStack = stack_create();
+		//returnAddressStack = stack_create();
+		thread_active = ThreadAdd(0,0);
 		//containerTable = (container *)malloc(size * sizeof(container));
 		if(tracefdIn){
 				traceLoaderSize=0;
@@ -119,16 +201,22 @@ void setFullTraceFile(base_trace_t *bt)
 {
 	if(strlen(bt->fullTraceFileName) > 0)
 	{
+		fullTracefdFileName = bt->fullTraceFileName;
 		fullTracefd = fopen(bt->fullTraceFileName,"w");
 		if(!fullTracefd){
 			printf("\n\n Unable to open %s, using stdout \n\n",bt->fullTraceFileName);
 			fullTracefd = stdout;
 		}
+
+		thread_monitor_t* th;
+		th = ThreadFind(0);
+		th->traceFD = fullTracefd;
 	}
+	
 }
 
 //Obtain a list of symbols 
-void loadContainersFromSymtable(char* symFileName)
+void loadContainersFromSymtable(const char* symFileName)
 {
 	FILE* symfile ;
 	unsigned long long addr;
@@ -195,7 +283,7 @@ container* container_add(md_addr_t addr, char * name)
 	}
 	if(newContainer->name[0] == '*') {
 		newContainer->nonFunction = 1;
-		printf("%s %d\n\n",newContainer->name, newContainer->nonFunction);
+		//printf("%s %d\n\n",newContainer->name, newContainer->nonFunction);
 	}
 	containerTable[containerSize++] = *newContainer;
 	//printf("%lld = %llx %s %d %d\n", addr,containerTable[containerSize-1].entryAddress, containerTable[containerSize-1].name, containerTable[containerSize-1].traceLoadedAddressCount, containerTable[containerSize-1].traceLoadeduniqueChildContainersCalled);
@@ -208,6 +296,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 {
 	int i,j=0;
 	container * foundSearch;
+	mystack returnAddressStack = thread_active->container_runtime_stack;
 	struct loadingPenalties loadPenalty;
 	loadPenalty.containerStaticListSize = -1;
 	loadPenalty.containerDynamicListSize = 0;
@@ -363,6 +452,8 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes)
 {
 
+	mystack returnAddressStack = thread_active->container_runtime_stack;
+	
 	if(containerInitialized == 1 && !stack_empty(returnAddressStack))
 	{
 
@@ -402,6 +493,7 @@ void container_printStatistics ()
 	int i;
 	int totalFunctionCalls = 0;
 	int totalFunctionReturns = 0;
+	mystack returnAddressStack = thread_active->container_runtime_stack;
 
 	sprintf(printBuffer,"max-stack-size: %d\n",returnAddressStack->maxsize);
 	myprint(printBuffer);
@@ -690,8 +782,10 @@ void myprint(char * toPrint)
 		fprintf(tracefdOut,"%s",toPrint);
 	else if(toPrint == compilerPrintBuffer && compilerInfofd)
 		fprintf(compilerInfofd,"%s",toPrint);
-	else if(fullTracefd)
-		fprintf(fullTracefd,"%s",toPrint);
+	else if(fullTracefd){
+		
+		fprintf(thread_active->traceFD,"%s",toPrint);
+	}
 	printf("%s",toPrint);
 }
 
@@ -782,3 +876,45 @@ container * search(md_addr_t addr)
 	key.entryAddress = addr;
 	return (container *)bsearch(&key, containerTable, containerSize,sizeof(container),container_comparison);
 }
+
+void toStringRTEMSTaksName_(char * dest, int _name)
+{
+	dest[0] = ((_name) >> 24) & 0xff;
+	dest[1] = ((_name) >> 16) & 0xff; 
+	dest[2] = ((_name) >> 8) & 0xff; 
+	dest[3] = (_name) & 0xff; 
+	dest[4] = 0;
+}
+
+
+/* itoa:  convert n to characters in s */
+void itoa(int n, char s[])
+{
+    int i, sign;
+
+    if ((sign = n) < 0)  /* record sign */
+        n = -n;          /* make n positive */
+    i = 0;
+    do {       /* generate digits in reverse order */
+        s[i++] = n % 10 + '0';   /* get next digit */
+    } while ((n /= 10) > 0);     /* delete it */
+    if (sign < 0)
+        s[i++] = '-';
+    s[i] = '\0';
+    reverse(s);
+} 
+
+/* reverse:  reverse string s in place */
+void reverse(char s[])
+{
+    int i, j;
+    char c;
+
+    for (i = 0, j = strlen(s)-1; i<j; i++, j--) {
+        c = s[i];
+        s[i] = s[j];
+        s[j] = c;
+    }
+}
+
+

@@ -72,6 +72,8 @@
 
   </add> */
 
+#include <simics/api.h>
+
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -1371,14 +1373,18 @@ get_ftracesymbol_filename(void *arg, conf_object_t *obj, attr_value_t *idx)
 
 
 
-void bp_callback(lang_void *callback_data,
-	conf_object_t *trigger_obj,
+void bp_callback(lang_void *userdata,
+	conf_object_t *obj,
 	integer_t exception_number)
 {
-	printf("GICA bp_callback reached, enabling the trace.\n");
-
+	
+   // base_trace_t *bt = (base_trace_t *)obj;
+	base_trace_t* bt = (base_trace_t*) userdata;
 	//enable trace
+	printf("GICA bp_callback reached, enabling the trace 0x%llx.\n",bt->traceaddress);
+	printf("GICA DEBUG bp_callback %s.\n",obj->name);
 	TraceStart();
+	container_traceFunctioncall(bt->traceaddress,0, bt);
     
 }
 
@@ -1426,7 +1432,7 @@ set_traceaddress(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t 
         base_trace_t *bt = (base_trace_t *)obj;
         bt->traceaddress = val->u.integer;
 
-		//printf("GICA set_traceaddress, before setting breakpoint %llx\n", bt->traceaddress);
+		printf("GICA set_traceaddress, before setting breakpoint %llx\n", bt->traceaddress);
 		conf_object_t* ctx = SIM_get_object("gicacontext");
 		if(ctx == NULL){
 			printf("GICA : you need to define a context gicacontext\n");
@@ -1446,7 +1452,7 @@ set_traceaddress(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t 
 				SIM_hap_add_callback_index(
                 "Core_Breakpoint_Memop",      
                  (obj_hap_func_t)bp_callback,                 
-                 NULL, bkpt);
+                 bt, bkpt);
 			}
 			else
 			{
@@ -1585,7 +1591,58 @@ void ExceptionCallBack(lang_void *callback_data,
 	}
 }
 
+void ThreadMonitor_callback(lang_void *userdata,
+	conf_object_t *obj,
+	integer_t exception_number)
+{
+	printf("*** GICA ThreadMonitor_callback*** ");
+		
+	conf_class_t* symtblclass = SIM_get_class("symtable");	
+	void * intrface = SIM_get_class_interface(symtblclass,"symtable");
+	symtable_interface_t * symIntr = (symtable_interface_t *)intrface;
+	conf_object_t *proc;
+	proc =	SIM_current_processor();
+    //we need the top stack frame
+    attr_value_t frames = symIntr->stack_trace(proc,10);
+	attr_list_t frameList = frames.u.list;
 
+	//Find the values we need	
+	attr_value_t evalThreadName = symIntr->eval_sym(proc, "_Thread_Executing->Object->name->name_u32",&(frameList.vector[frameList.size-1]), NULL);
+	attr_value_t evalThreadId = symIntr->eval_sym(proc, "_Thread_Executing->Object->id",&(frameList.vector[frameList.size-1]), NULL);
+	
+	ASSERT(evalThreadName.kind == 4);
+	ASSERT(evalThreadId.kind == 4);
+	
+	printf("%lld ", evalThreadId.u.list.vector[1].u.integer );
+	printRTEMSTaksName(evalThreadName.u.list.vector[1].u.integer);
+	printf("\n");
+	
+}
+
+void ThreadMonitor_register()
+{
+	breakpoint_id_t bkpt = SIM_breakpoint(
+			SIM_get_object("gicacontext"),//memory object ?
+			Sim_Break_Virtual,
+			Sim_Access_Write,
+			0x39b78, // _Thread_Executing
+			4,
+			0);
+	if(bkpt != -1){
+				//now register a callback when the breakpoint is hit	
+				SIM_hap_add_callback_index(
+                "Core_Breakpoint_Memop",      
+                 (obj_hap_func_t)ThreadMonitor_callback,                 
+                 0, bkpt);
+			}
+			else
+			{
+				printf("GICA set_traceaddress, breakpoint is !!NOT!! set\n");
+			}
+
+
+	
+}
 
 void
 init_local(void)
@@ -1847,6 +1904,8 @@ init_local(void)
 		SIM_hap_add_callback("Core_Exception",
 							 (obj_hap_func_t)ExceptionCallBack,
 							 NULL);
+
+		ThreadMonitor_register();
 		
 //		breakpoint_id_t bkpt = SIM_breakpoint(
 //			SIM_get_object("gicacontext"),//memory object ?
