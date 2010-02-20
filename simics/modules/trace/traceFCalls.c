@@ -57,26 +57,6 @@ int ld_environ_base;
 conf_object_t *proc; //Simics Sparc current processor
 int o7id; //Simics Sparc registerid for the "i7" register ( %i7 + 8 is the return address)
 
-
-//Adding thread awareness to the containers. 
-// We need a list of containers, not only one, one for each threads. 
-// 1. a list of Threads ( circular linked list ), as data : thread id, thread name, container 
-// 2.global Thread_active pointer to the current thread. 
-// 3.Thread_switch(thread id, thread name), an external event that detects the thread switch. 
-
-typedef struct thread_monitor
-{
-	struct thread_monitor* next;
-	int64 thread_id;
-	int64 thread_name;
-	mystack container_runtime_stack;
-	FILE *traceFD;
-	
-} thread_monitor_t;
-
-thread_monitor_t *thread_active;
-
-
 thread_monitor_t* ThreadAdd(int64 id, int64 name)
 {
 	thread_monitor_t* newThread;
@@ -88,6 +68,7 @@ thread_monitor_t* ThreadAdd(int64 id, int64 name)
 	//create a name for the thread trace file
 	if(fullTracefdFileName != NULL){
 		char fname[500]; 
+		memset(fname,0,500);
 		if(id == 0)
 			strcpy((char *)fname,fullTracefdFileName);
 		else{
@@ -98,10 +79,9 @@ thread_monitor_t* ThreadAdd(int64 id, int64 name)
 			strcat(fname,idstr);
 			strcat(fname,"_");
 			char taskName[5];
-			toStringRTEMSTaksName_(taskName,name);
+			toStringRTEMSTaksName(taskName,name);
 			strcat(fname,taskName);
 		}
-		
 		newThread->traceFD = fopen(fname,"w");
 	}
 	if(thread_active != NULL){
@@ -228,7 +208,7 @@ void loadContainersFromSymtable(const char* symFileName)
 	{
 		exit(printf("\n\n Runtime ERROR : unable to open symbol file %s",symFileName));
 	}
-	printf("\nSymbol file loaded\n");
+	//printf("\nSymbol file loaded\n");
 	while(!feof(symfile)){
 		fscanf(symfile,"%llx %s %s\t%s",&addr,type,name,linenumber);
 		//printf("%llx %s %s %s\n",addr, type, name,linenumber);
@@ -236,7 +216,43 @@ void loadContainersFromSymtable(const char* symFileName)
 		strncpy(newcont->linenumber,linenumber,1000);
 	}
 
-	
+
+	//get function list from gicasymtable
+	//The end address is non in the NM file, but can be found in the simics symtable.functions list
+	attr_value_t functions = SIM_get_attribute(SIM_get_object("gicasymtable"),"functions");
+	//printf("functions attr type %d\n", functions.kind);
+	//printf("functions list lenght %lld\n", functions.u.list.size);
+	//FILE * functionsoutFD;
+	//functionsoutFD = fopen("listafunctiidinSymtable.txt","w");
+	//functionsoutFD = stdout;
+	for (int i = 0; i< functions.u.list.size; i++ )
+	{
+		//printf("functions %d attr type %d\n",i, functions.u.list.vector[i].kind);
+		//printf("functions %d list lenght %lld\n",i, functions.u.list.vector[i].u.list.size);
+		uint64 startaddr = 0;
+		uint64 endaddr = 0 ;
+		for(int j=0;j< functions.u.list.vector[i].u.list.size; j++)
+		{
+			attr_value_t detail = functions.u.list.vector[i].u.list.vector[j];
+			//printf("functions %d %d attr type %d\n",i ,j , detail.kind);
+			if(detail.kind == 1)
+			;
+			//	fprintf(functionsoutFD,"%s ",detail.u.string);
+			else if(detail.kind == 2){
+			//	fprintf(functionsoutFD,"0x%llx ",detail.u.integer);
+				if( j == 2)
+					startaddr = detail.u.integer;
+				else if (j==3)
+					endaddr = detail.u.integer;
+			}
+		}
+		//fprintf(functionsoutFD,"\n");
+		container * foundSearch = search(startaddr);
+		if(foundSearch)
+			foundSearch->endAddress = endaddr;
+	}
+	//fclose(functionsoutFD);
+
 }
 
 container* container_add(md_addr_t addr, char * name)
@@ -244,6 +260,7 @@ container* container_add(md_addr_t addr, char * name)
 	container* newContainer;
 	newContainer = (container*) malloc(sizeof(container));
 	newContainer->entryAddress = addr;
+	newContainer->endAddress = 0;
 	newContainer->totalChildContainersCalled = 0;
 	newContainer->totalNumberOfReads = 0;
 	newContainer->totalNumberOfBytesRead = 0;
@@ -301,6 +318,8 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 	loadPenalty.containerStaticListSize = -1;
 	loadPenalty.containerDynamicListSize = 0;
 
+	cycles_t cycles =  SIM_cycle_count(SIM_current_processor());
+
 	//printf("\n GICA: 0x%llx\n",addr);
 	//first verify if the containers were initialized . report exception and quit if not
 	if(containerInitialized == 0 || containerSize == 0)
@@ -317,7 +336,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 		stackObject t = stack_top(returnAddressStack);
 		UpdateAddressList(&( t.container->addressAccessList), addr, 4);
 		UpdateAddressList(&( t.container->addressAccessListInstance), addr, 4);
-		if( t.returnAddress == addr)
+		if( t.returnAddress == addr || t.container->endAddress == addr)
 		{
 			//printf("return from function , popping container\n");
 			//fflush(stdin);
@@ -330,6 +349,8 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 			updateGlobalAddressList(t.container);
 			updateHeapCalls(t.container,t.container->addressAccessListInstance);
 			t.container->addressAccessListPenalty += penaltyAddressList( t.container->addressAccessListInstance);
+			sprintf(printBuffer,"%lld\t",cycles);
+			myprint(printBuffer);
 			for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
 			sprintf(printBuffer,"}\n");
 			myprint(printBuffer);
@@ -342,7 +363,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 			}
 			t.container->addressAccessListInstance = NULL;
 
-			if(stack_empty(returnAddressStack)) TraceSuspend(bt);
+			//if(stack_empty(returnAddressStack)) TraceSuspend(bt);
 			
 			return loadPenalty;
 		}
@@ -380,6 +401,8 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 						currentContainer.container->childFunctions = cons(t,currentContainer.container->childFunctions);
 					}
 				}
+				sprintf(printBuffer,"%lld\t",cycles);
+				myprint(printBuffer);
 				for(j = 0; j< returnAddressStack->size; j++) myprint("|\t");
 				if(!foundSearch->nonFunction){
 					//sprintf(printBuffer,"%x %s \n",addr,foundSearch->name);
@@ -493,22 +516,23 @@ void container_printStatistics ()
 	int i;
 	int totalFunctionCalls = 0;
 	int totalFunctionReturns = 0;
-	mystack returnAddressStack = thread_active->container_runtime_stack;
+	//mystack returnAddressStack = thread_active->container_runtime_stack;
 
-	sprintf(printBuffer,"max-stack-size: %d\n",returnAddressStack->maxsize);
-	myprint(printBuffer);
-	sprintf(printBuffer,"container-table-size: %d\n",containerSize);
-	myprint(printBuffer);
+	//sprintf(printBuffer,"max-stack-size: %d\n",returnAddressStack->maxsize);
+	//myprint(printBuffer);
+	//sprintf(printBuffer,"container-table-size: %d\n",containerSize);
+	//myprint(printBuffer);
 
-	sprintf(printBuffer,"Container statistics :\n");
-	myprint(printBuffer);
+	//sprintf(printBuffer,"Container statistics :\n");
+	//myprint(printBuffer);
 	sprintf(printBuffer,"Address \t Name \t Reads \t BytesRead \t Writes \t BytesWritten \t totalChildContainersCalled \t totalStackPushes \t totalStackPops \t uniqueChildContainersCalled \t SizeOfAccessList\n");
 	myprint(printBuffer);
 	for ( i=0 ; i < containerSize; i++)
 	{
 
-		sprintf(printBuffer,"%llx \t %s \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \n",
+		sprintf(printBuffer,"%llx %llx \t %s \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \n",
 				containerTable[i].entryAddress,
+				containerTable[i].endAddress,
 				(containerTable[i].name),
 				containerTable[i].totalNumberOfReads,
 				containerTable[i].totalNumberOfBytesRead,
@@ -524,14 +548,14 @@ void container_printStatistics ()
 		totalFunctionCalls += containerTable[i].totalStackPushes;
 		totalFunctionReturns += containerTable[i].totalStackPops;
 	}
-	sprintf(printBuffer,"totalFunctionCalls: %d\n",totalFunctionCalls);
-	myprint(printBuffer);
-	sprintf(printBuffer,"totalFunctionReturns: %d\n",totalFunctionReturns);
-	myprint(printBuffer);
+	//sprintf(printBuffer,"totalFunctionCalls: %d\n",totalFunctionCalls);
+	//myprint(printBuffer);
+	//sprintf(printBuffer,"totalFunctionReturns: %d\n",totalFunctionReturns);
+	//myprint(printBuffer);
 
-	sprintf(printBuffer,"Static Data Access List address name heap staticlist:\n");
-	myprint(printBuffer);
-
+	//sprintf(printBuffer,"Static Data Access List address name heap staticlist:\n");
+	//myprint(printBuffer);
+	/*
 	for ( i=0 ; i < containerSize; i++)
 	{
 
@@ -568,6 +592,7 @@ void container_printStatistics ()
 			myprint(printBuffer2);
 		}
 	}
+	*/
 
 }
 
@@ -786,7 +811,7 @@ void myprint(char * toPrint)
 		
 		fprintf(thread_active->traceFD,"%s",toPrint);
 	}
-	printf("%s",toPrint);
+	//printf("%s",toPrint);
 }
 
 char * funcNameFromAddress(int addr)
@@ -877,13 +902,25 @@ container * search(md_addr_t addr)
 	return (container *)bsearch(&key, containerTable, containerSize,sizeof(container),container_comparison);
 }
 
-void toStringRTEMSTaksName_(char * dest, int _name)
+int checkAlphaNumeric(char x)
+{
+	if( (x >= 'A' && x <='Z' ) || (x >= 'a' && x <= 'z' ) || (x >= '0' && x <= '9' ))
+		return 1;
+	return 0;
+}
+
+void toStringRTEMSTaksName(char * dest, int _name)
 {
 	dest[0] = ((_name) >> 24) & 0xff;
 	dest[1] = ((_name) >> 16) & 0xff; 
 	dest[2] = ((_name) >> 8) & 0xff; 
 	dest[3] = (_name) & 0xff; 
 	dest[4] = 0;
+
+	if(!checkAlphaNumeric(dest[0])) dest[0] = 0;
+	if(!checkAlphaNumeric(dest[1])) dest[1] = 0;
+	if(!checkAlphaNumeric(dest[2])) dest[2] = 0;
+	if(!checkAlphaNumeric(dest[3])) dest[3] = 0;
 }
 
 
