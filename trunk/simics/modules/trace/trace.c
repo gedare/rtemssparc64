@@ -84,7 +84,6 @@
 #include "traceFCalls.h"
 
 
-extern mystack returnAddressStack; 
 extern int ignore_due_to_Exception;
 
 
@@ -1030,8 +1029,8 @@ set_enabled(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
         if (!!bt->trace_enabled == !!val->u.integer)
                 return Sim_Set_Ok; /* value did not change */
 
-		if(!val->u.integer)
-			container_close();
+		//if(!val->u.integer)
+		//	container_close();
 
         /* Change the enabled state and try to start or stop the data
            tracing. */
@@ -1353,6 +1352,26 @@ get_ftrace_filename(void *arg, conf_object_t *obj, attr_value_t *idx)
 }
 
 static set_error_t
+set_threadSkip(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
+{
+        base_trace_t *bt = (base_trace_t *)obj;
+        strncpy(bt->threadSkip, val->u.string,200);
+        return Sim_Set_Ok;
+}
+
+
+static attr_value_t
+get_threadSkip(void *arg, conf_object_t *obj, attr_value_t *idx)
+{
+        base_trace_t *bt = (base_trace_t *)obj;
+        attr_value_t ret;
+
+		ret = SIM_make_attr_string(bt->threadSkip);
+        return ret;
+}
+
+
+static set_error_t
 set_ftracesymbol_file(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
 {
         base_trace_t *bt = (base_trace_t *)obj;
@@ -1381,11 +1400,18 @@ void bp_callback(lang_void *userdata,
    // base_trace_t *bt = (base_trace_t *)obj;
 	base_trace_t* bt = (base_trace_t*) userdata;
 	//enable trace
-	printf("GICA bp_callback reached, enabling the trace 0x%llx.\n",bt->traceaddress);
-	printf("GICA DEBUG bp_callback %s.\n",obj->name);
+	//printf("GICA bp_callback reached, enabling the trace 0x%llx.\n",bt->traceaddress);
+	//printf("GICA DEBUG bp_callback %s.\n",obj->name);
 	TraceStart();
 	container_traceFunctioncall(bt->traceaddress,0, bt);
     
+}
+
+int TraceIsRunning()
+{
+	attr_value_t enabled = SIM_get_attribute(SIM_get_object("trace0"),"enabled");
+	printf("TraceIsRunning %lld\n",enabled.u.integer);
+	return enabled.u.integer ;
 }
 
 void TraceStart()
@@ -1412,30 +1438,16 @@ void TraceStop()
     if(result_val != Sim_Set_Ok) printf ("SIM_set_attribute was unsuccessfull trace0.enabled = %lld %d\n",val.u.integer,result_val);
 }
 
-void TraceSuspend(base_trace_t *obj)
-{
-	//base_trace_t *bt = (base_trace_t *)obj;
-
-		attr_value_t val2 = SIM_make_attr_integer(0);
-		//set_error_t result_val2 =
-			  SIM_set_attribute(
-					SIM_get_object("trace0"),
-					"trace_instructions",
-					&val2);
-	
-}
-
-
 static set_error_t
 set_traceaddress(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
 {
         base_trace_t *bt = (base_trace_t *)obj;
         bt->traceaddress = val->u.integer;
 
-		printf("GICA set_traceaddress, before setting breakpoint %llx\n", bt->traceaddress);
+		//printf("GICA set_traceaddress, before setting breakpoint %llx\n", bt->traceaddress);
 		conf_object_t* ctx = SIM_get_object("gicacontext");
 		if(ctx == NULL){
-			printf("GICA : you need to define a context gicacontext\n");
+			printf("GICA : you need to define a context \"gicacontext\"\n");
 		}
 		else{
 			//set breakpoint and callback here.
@@ -1558,7 +1570,6 @@ base_trace_new_instance(parse_object_t *pa)
         SIM_hap_add_callback("Core_At_Exit", f, bt);
 
     	container_initialize(bt);
-		
 
         return &bt->obj;
 }
@@ -1581,22 +1592,19 @@ void ExceptionCallBack(lang_void *callback_data,
 	proc =	SIM_current_processor();
 	
 	//printf("HAP HAP : %lld  %s\n",exception_number,SIM_get_exception_name(proc,exception_number));
-	if(!stack_empty(returnAddressStack)){
-		stackObject t = stack_top(returnAddressStack);
+	if(!stack_empty(thread_active->container_runtime_stack)){
+		
+		stackObject t = stack_top(thread_active->container_runtime_stack);
 		if(t.container->entryAddress == SIM_get_program_counter(proc)){
 			//stack_pop(returnAddressStack);
 			ignore_due_to_Exception = 1;
-			printf("HAP AND CONTAINERS : %lld  %s\n",exception_number,SIM_get_exception_name(proc,exception_number));
+			//printf("HAP AND CONTAINERS : %lld  %s\n",exception_number,SIM_get_exception_name(proc,exception_number));
 		}
 	}
 }
 
-void ThreadMonitor_callback(lang_void *userdata,
-	conf_object_t *obj,
-	integer_t exception_number)
+attr_value_t myeval(char * evalExpr)
 {
-	printf("*** GICA ThreadMonitor_callback*** ");
-		
 	conf_class_t* symtblclass = SIM_get_class("symtable");	
 	void * intrface = SIM_get_class_interface(symtblclass,"symtable");
 	symtable_interface_t * symIntr = (symtable_interface_t *)intrface;
@@ -1606,26 +1614,129 @@ void ThreadMonitor_callback(lang_void *userdata,
     attr_value_t frames = symIntr->stack_trace(proc,10);
 	attr_list_t frameList = frames.u.list;
 
+	return symIntr->eval_sym(proc, evalExpr ,&(frameList.vector[frameList.size-1]), NULL);
+}
+
+//lenght in bytes
+uint64 myMemoryRead(generic_address_t vaddr, int lenght)
+{
+	SIM_clear_exception();
+	uint64 tt = 0;
+	conf_object_t * cpu_mem;
+
+	physical_address_t physaddr = SIM_logical_to_physical(SIM_current_processor(),Sim_DI_Data, vaddr);		
+	cpu_mem = SIM_get_object("cpu_mem");
+	for ( generic_address_t addrt = physaddr; addrt < physaddr + lenght; addrt++){
+   		uint32 whatdidread =  SIM_read_byte(cpu_mem, addrt);
+		tt <<= 8;
+		tt |= 0x000000FF & whatdidread;
+	}
+	return tt;
+}
+
+void ThreadMonitor_callback(lang_void *userdata,
+	conf_object_t *obj,
+	integer_t exception_number,
+	generic_transaction_t *memop)
+{
+//	printf("*** GICA ThreadMonitor_callback*** ");
+
 	//Find the values we need	
-	attr_value_t evalThreadName = symIntr->eval_sym(proc, "_Thread_Executing->Object->name->name_u32",&(frameList.vector[frameList.size-1]), NULL);
-	attr_value_t evalThreadId = symIntr->eval_sym(proc, "_Thread_Executing->Object->id",&(frameList.vector[frameList.size-1]), NULL);
+	int64 threadNameOld = 0;
+	int64 threadIdOld = 0;
+	int64 threadNameNew = 0;
+	int64 threadIdNew = 0;
+	uinteger_t memTranVal = SIM_get_mem_op_value_cpu(memop);
+	if(memTranVal != 0){
+//		char _Thread_Executing_identifier[100];
+//		char _Thread_ExecutingObject_name_name_u32_identifier[100];
+//		char _Thread_ExecutingObject_id_identifier[100];
+//		memset(_Thread_Executing_identifier, 0, 100);
+//		memset(_Thread_ExecutingObject_name_name_u32_identifier, 0, 100);
+//		memset(_Thread_ExecutingObject_id_identifier, 0, 100);
+		
+//		sprintf(_Thread_Executing_identifier,"(Thread_Control *)0x%llx",memTranVal);
+//		sprintf(_Thread_ExecutingObject_name_name_u32_identifier, "((Thread_Control *)0x%llx)->Object->name->name_u32",memTranVal);
+//		sprintf(_Thread_ExecutingObject_id_identifier, "((Thread_Control *)0x%llx)->Object->id",memTranVal);
+
+//		puts(_Thread_Executing_identifier);
+//		puts(_Thread_ExecutingObject_name_name_u32_identifier);
+//		puts(_Thread_ExecutingObject_id_identifier);
+		
+		attr_value_t evalThreadPtr = myeval("_Thread_Executing");
+		attr_value_t evalThreadName = myeval("_Thread_Executing->Object->name->name_u32" );
+		attr_value_t evalThreadId = myeval("_Thread_Executing->Object->id");
+		
+		attr_value_t evalNameOffset = myeval("&(_Thread_Executing->Object->name->name_u32)");
+		attr_value_t evalIdOffset = myeval("&(_Thread_Executing->Object->id)");
+
+
+//		printf("\n  NameOffset = 0x%llx \n", evalNameOffset.u.list.vector[1].u.integer - evalThreadPtr.u.list.vector[1].u.integer  );
+//		printf("\n  evalIdOffset = 0x%llx \n", evalIdOffset.u.list.vector[1].u.integer);
+//		printf("\n  _Thread_Executing = 0x%llx \n", evalThreadPtr.u.list.vector[1].u.integer );
+//    	printf("\n  SIM_get_mem_op_value_cpu = v:0x%llx = 0x%llx \n", memTranVal, myMemoryRead(memTranVal,8) );
 	
-	ASSERT(evalThreadName.kind == 4);
-	ASSERT(evalThreadId.kind == 4);
+		
+		ASSERT(evalThreadName.kind == 4);
+		ASSERT(evalThreadId.kind == 4);
+		threadIdOld = evalThreadId.u.list.vector[1].u.integer;
+		threadNameOld = evalThreadName.u.list.vector[1].u.integer;
+
+		threadNameNew = myMemoryRead(memTranVal + evalNameOffset.u.list.vector[1].u.integer - evalThreadPtr.u.list.vector[1].u.integer,4);
+//		printf("\n  memTranVal evalIdOffset+  0x%llx", memTranVal + evalIdOffset.u.list.vector[1].u.integer - evalThreadPtr.u.list.vector[1].u.integer);
+		threadIdNew = myMemoryRead(memTranVal + evalIdOffset.u.list.vector[1].u.integer - evalThreadPtr.u.list.vector[1].u.integer, 4);
 	
-	printf("%lld ", evalThreadId.u.list.vector[1].u.integer );
-	printRTEMSTaksName(evalThreadName.u.list.vector[1].u.integer);
+	}
+
+	 
+	base_trace_t * bt = (base_trace_t *)SIM_get_object("trace0");
+	//printf("threadskip %s\n",bt->threadSkip);
+	char threadNameString[20];
+	toStringRTEMSTaksName(threadNameString, threadNameNew);
+	int suspend = 0;
+	char * pch;
+	char threadSkip[200];
+	strcpy(threadSkip, bt->threadSkip);
+	pch = strtok (threadSkip," ");
+	while (pch != NULL)
+	{
+	    //printf ("tok %s\n",pch);
+		if(memTranVal == 0 && strcmp(pch,"0")==0) {suspend = 1; break;}
+		if(strcmp(pch,threadNameString)==0) {suspend = 1; break;}
+	    pch = strtok (NULL, " ");
+	}
+		
+	if(suspend) TraceStop();
+	else
+	{
+		if(memTranVal!=0 && !TraceIsRunning()){
+			printf("re-enabling the trace\n");
+			TraceStart();
+		}
+	}
+	
+	printf("\nOLD 0x%llx", threadIdOld );
+	printRTEMSTaksName(threadNameOld);
 	printf("\n");
+
+	printf("NEW 0x%llx 0x%llx", threadIdNew, threadNameNew );
+	printRTEMSTaksName(threadNameNew);
+	printf("\n");
+	
+	Thread_switch(threadIdNew,threadNameNew);
 	
 }
 
 void ThreadMonitor_register()
 {
+	attr_value_t evalThreadAddress = myeval("&_Thread_Executing");
+	ASSERT(evalThreadAddress.kind == 4);
+	
 	breakpoint_id_t bkpt = SIM_breakpoint(
 			SIM_get_object("gicacontext"),//memory object ?
 			Sim_Break_Virtual,
 			Sim_Access_Write,
-			0x39b78, // _Thread_Executing
+			evalThreadAddress.u.list.vector[1].u.integer,
 			4,
 			0);
 	if(bkpt != -1){
@@ -1633,15 +1744,13 @@ void ThreadMonitor_register()
 				SIM_hap_add_callback_index(
                 "Core_Breakpoint_Memop",      
                  (obj_hap_func_t)ThreadMonitor_callback,                 
-                 0, bkpt);
+                 SIM_get_object("trace0"), bkpt);
 			}
 			else
 			{
-				printf("GICA set_traceaddress, breakpoint is !!NOT!! set\n");
+				printf("GICA ThreadMonitor_register, breakpoint is !!NOT!! set\n");
 			}
 
-
-	
 }
 
 void
@@ -1833,6 +1942,14 @@ init_local(void)
                 "If enabled it will display the symbol file and line number in the original source."
                 " By default this option is disabled ");
 
+		
+		SIM_register_typed_attribute(
+                base_class, "threadSkip",
+                get_threadSkip, NULL,
+                set_threadSkip, NULL,
+                Sim_Attr_Session, "s", NULL,
+                "List the name of the RTEMS threads to be skipped by the trace ");
+
 #if defined(TRACE_STATS)
         SIM_register_typed_attribute(base_class, "instruction_records",
                                      get_instruction_records, NULL,
@@ -1897,7 +2014,7 @@ init_local(void)
 
 		
 
-		printf("Trace: init_local\n");
+		//printf("Trace: init_local\n");
 
 
 
@@ -1907,15 +2024,7 @@ init_local(void)
 
 		ThreadMonitor_register();
 		
-//		breakpoint_id_t bkpt = SIM_breakpoint(
-//			SIM_get_object("gicacontext"),//memory object ?
-//			Sim_Break_Virtual,
-//			Sim_Access_Execute,
-//			16384,
-//			4,
-//			Sim_Breakpoint_Temporary); //the breakpoint is deleted once it is triggered for the first time
 
-//		printf("GICA init_local, breakpoint is set %d", bkpt);
 		
 }
 

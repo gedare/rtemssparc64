@@ -20,6 +20,7 @@ typedef struct addressCell *addressList; //address access list
 struct container_def
 {
 	md_addr_t entryAddress; // the entry address in the container
+	md_addr_t endAddress; // the end address (using this as a default return for non-function symbols)
 	char name[100];			 //name of the function
 	int totalStackPushes;
 	int totalStackPops;
@@ -153,7 +154,7 @@ container * search(md_addr_t addr);
 //this value keep a state that tells the container manager to ignore a duplicate push due to a trap
 int ignore_due_to_Exception; 
 
-void toStringRTEMSTaksName_(char * dest, int _name);
+void toStringRTEMSTaksName(char * dest, int _name);
 
 
 #define printRTEMSTaksName( _name) \
@@ -173,6 +174,31 @@ void toStringRTEMSTaksName_(char * dest, int _name);
 
 void itoa(int n, char s[]);
 void reverse(char s[]);
+
+
+
+//Adding thread awareness to the containers. 
+// We need a list of containers, not only one, one for each threads. 
+// 1. a list of Threads ( circular linked list ), as data : thread id, thread name, container 
+// 2.global Thread_active pointer to the current thread. 
+// 3.Thread_switch(thread id, thread name), an external event that detects the thread switch. 
+
+typedef struct thread_monitor
+{
+	struct thread_monitor* next;
+	int64 thread_id;
+	int64 thread_name;
+	mystack container_runtime_stack;
+	FILE *traceFD;
+	
+} thread_monitor_t;
+
+thread_monitor_t *thread_active;
+thread_monitor_t* ThreadAdd(int64 id, int64 name);
+thread_monitor_t* ThreadFind(int64 id);
+void Thread_switch( int64 id, int64 name);
+
+
 
 
 

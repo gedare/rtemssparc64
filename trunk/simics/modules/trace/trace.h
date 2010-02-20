@@ -188,6 +188,8 @@ typedef struct base_trace {
 		uint64 traceaddress;
 		char displayLineNumbers;
 
+		char threadSkip[200];
+
 } base_trace_t;
 
 

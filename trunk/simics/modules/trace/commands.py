@@ -43,10 +43,10 @@ def trace_start_cmd(obj, file, raw, same, traceaddress):
               if traceaddress:
                      obj.traceaddress = traceaddress[1]
                      obj.enabled = 0
-                     print "enabled = 0"
+##                     print "enabled = 0"
               else:				
                      obj.enabled = 1
-                     print "enabled = 1" 
+##                     print "enabled = 1" 
                      
               if not SIM_get_quiet():
                      print ("Tracing enabled. Writing %s output to %s."
