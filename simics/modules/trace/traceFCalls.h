@@ -198,6 +198,7 @@ thread_monitor_t* ThreadAdd(int64 id, int64 name);
 thread_monitor_t* ThreadFind(int64 id);
 void Thread_switch( int64 id, int64 name);
 
+void printCurrentContainerStack( );
 
 
 

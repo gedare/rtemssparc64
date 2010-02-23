@@ -1753,6 +1753,21 @@ void ThreadMonitor_register()
 
 }
 
+static attr_value_t
+get_trace_print_stack(void *arg, conf_object_t *obj, attr_value_t *idx){
+	printCurrentContainerStack();
+	printf("GICA get_trace_print_stack\n");
+	return SIM_make_attr_integer(1);
+}
+
+static set_error_t
+set_trace_print_stack(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
+{
+	printCurrentContainerStack();
+	printf("GICA get_trace_print_stack\n");
+	return Sim_Set_Ok;
+}
+
 void
 init_local(void)
 {
@@ -1949,6 +1964,13 @@ init_local(void)
                 set_threadSkip, NULL,
                 Sim_Attr_Session, "s", NULL,
                 "List the name of the RTEMS threads to be skipped by the trace ");
+
+		SIM_register_typed_attribute
+			(base_class,"trace_print_stack",
+			get_trace_print_stack,	NULL,
+			set_trace_print_stack,	NULL,
+			Sim_Attr_Optional,"i",NULL,
+			"does not do anything, it prints the trace");
 
 #if defined(TRACE_STATS)
         SIM_register_typed_attribute(base_class, "instruction_records",
