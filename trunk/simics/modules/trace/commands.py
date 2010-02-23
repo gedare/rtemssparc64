@@ -101,3 +101,15 @@ new_command("stop", trace_stop_cmd,
             namespace = "base-trace-mem-hier",
             short = "stop default tracer",
             doc_with = "<base-trace-mem-hier>.start")
+
+def trace_print_stack(obj):
+		obj.trace_print_stack = 1
+		
+new_command("printstack", trace_print_stack,
+            [],
+            type = "base-trace-mem-hier commands",
+            alias = "trace-printstack",
+            namespace = "base-trace-mem-hier",
+            short = "prints the trace of the current thread",
+            doc_with = "<base-trace-mem-hier>.start")
+            

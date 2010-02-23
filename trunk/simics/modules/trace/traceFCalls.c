@@ -114,6 +114,7 @@ void Thread_switch( int64 id, int64 name)
 	newThread = ThreadFind(id);
 	if(newThread == thread_active) return;
 	if(!newThread) newThread = ThreadAdd(id,name);
+	fflush(thread_active->traceFD);
 	thread_active = newThread;
 }
 
@@ -336,9 +337,11 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 		stackObject t = stack_top(returnAddressStack);
 		UpdateAddressList(&( t.container->addressAccessList), addr, 4);
 		UpdateAddressList(&( t.container->addressAccessListInstance), addr, 4);
-		if( t.returnAddress == addr || t.container->endAddress == addr)
+
+		int returned = 0;
+		while(t.returnAddress == addr || t.container->endAddress == addr)
 		{
-			//printf("return from function , popping container\n");
+			//printf("return from function , popping container %s\n", t.container->name);
 			//fflush(stdin);
 			stack_pop(returnAddressStack);
 			t.container->totalStackPops ++;
@@ -364,9 +367,11 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 			t.container->addressAccessListInstance = NULL;
 
 			//if(stack_empty(returnAddressStack)) TraceSuspend(bt);
-			
-			return loadPenalty;
+			returned = 1;
+			if(!stack_empty(returnAddressStack)) t = stack_top(returnAddressStack);
+			else break;
 		}
+		if(returned) return loadPenalty;
 	}
 	
     //printf("\n GICA: searching 0x%llx\n",addr);
@@ -700,6 +705,25 @@ void printAddressList(char * printbuff,addressList l){
 
 }
 
+void printCurrentContainerStack( )
+{
+	mystack returnAddressStack = thread_active->container_runtime_stack;
+	if(!stack_empty(thread_active->container_runtime_stack)){
+		//list start = returnAddressStack->elements;
+		list next = returnAddressStack->elements;
+		for(int i=0;i<returnAddressStack->size && next != NULL ;i++)
+		{
+			printf("%d 0x %llx %s ret = 0x%lld \n",
+				i,
+				next->element.container->entryAddress, 
+				next->element.container->name, 
+				next->element.returnAddress);
+			next = next->next;
+		}
+	}
+	
+}
+
 void printDecodedAddressList(char * printbuff,addressList l)
 {
 	char type = 'c';
@@ -810,7 +834,9 @@ void myprint(char * toPrint)
 	else if(fullTracefd){
 		
 		fprintf(thread_active->traceFD,"%s",toPrint);
+		fflush(thread_active->traceFD);
 	}
+	
 	//printf("%s",toPrint);
 }
 
@@ -866,9 +892,11 @@ mystack stack_create(void)
 
 void stack_push(mystack s,stackObject element)
 {
+  fflush(stdin);
   s -> elements = cons(element, s -> elements);
   s->size++;
   if(s->size > s->maxsize) s->maxsize = s->size;
+  //printf("stack push %s\n",s->elements->element.container->name);
 }
 
 int stack_empty(mystack s)
