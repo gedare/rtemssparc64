@@ -103,10 +103,6 @@ $(PROJECT_INCLUDE)/rtems/score/priority.h: include/rtems/score/priority.h $(PROJ
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/score/priority.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/rtems/score/priority.h
 
-$(PROJECT_INCLUDE)/rtems/score/rbtree.h: include/rtems/score/rbtree.h $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/score/rbtree.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/rtems/score/rbtree.h
-
 $(PROJECT_INCLUDE)/rtems/score/stack.h: include/rtems/score/stack.h $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/score/stack.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/rtems/score/stack.h
@@ -236,10 +232,6 @@ PREINSTALL_FILES += $(PROJECT_INCLUDE)/rtems/score/priority.inl
 $(PROJECT_INCLUDE)/rtems/score/stack.inl: inline/rtems/score/stack.inl $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/score/stack.inl
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/rtems/score/stack.inl
-
-$(PROJECT_INCLUDE)/rtems/score/rbtree.inl: inline/rtems/score/rbtree.inl $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/score/rbtree.inl
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/rtems/score/rbtree.inl
 
 $(PROJECT_INCLUDE)/rtems/score/states.inl: inline/rtems/score/states.inl $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/score/states.inl

@@ -366,7 +366,18 @@ SYM(_ISR_Handler):
          *
          */
 
-	/* first store the sp of the interrupted task temporarily in g1 */
+  /* this is for debugging purposes, make sure that TL = 1, otherwise 
+   * things might get dicey */
+   rdpr %tl, %g1
+   cmp %g1, 1
+   be 1f
+   nop
+
+0: ba 0b
+   nop
+
+1:
+  /* first store the sp of the interrupted task temporarily in g1 */
 	mov 	%sp, %g1
 
         sub     %sp, CONTEXT_CONTROL_INTERRUPT_FRAME_SIZE, %sp
@@ -532,9 +543,9 @@ dont_fix_pil:
 	 *	%o registers: unknown (user's handler may have destroyed)
 	 *	%g1,g4,g5: scratch
 	 *	%g2: unknown: was trap vector
-	 *	%g3: uknown: was interrupted task's sp
+	 *	%g3: uknown: was _Thread_Dispatch_Disable_level pointer
 	 *	%g6: _ISR_Nest_level
-	 *	%g7: _Thread_Dispatch_disable_level
+	 *	%g7: interrupted task's sp
 	 */
 
         /*
@@ -653,8 +664,7 @@ isr_dispatch:
 	 *  task.  In order to safely be able to tinker with the register
 	 *  windows and get the task back to its pre-interrupt state, 
 	 *  we need to disable interrupts disabled so we can safely tinker
-	 *  with the register windowing.  In particular, the CWP in the PSR
-	 *  is fragile during this period. (See PR578.)
+	 *  with the register windowing. 
 	 */
 	mov	2,%g4				! syscall (disable interrupts)
 	ta	0				! syscall (disable interrupts)

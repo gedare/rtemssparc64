@@ -39,6 +39,7 @@ rtems_task Task_2(
 #define CONFIGURE_EXTRA_TASK_STACKS         (1 * RTEMS_MINIMUM_STACK_SIZE)
 #define CONFIGURE_MAXIMUM_TASKS             3
 
+#define CONFIGURE_STACK_CHECKER_ENABLED
 
 #include <rtems/confdefs.h>
 
