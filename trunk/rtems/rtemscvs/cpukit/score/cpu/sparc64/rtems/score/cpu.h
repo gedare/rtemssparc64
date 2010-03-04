@@ -693,7 +693,7 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  *  stack frame.
  */
 
-#define CPU_STACK_MINIMUM_SIZE  (1024*4)
+#define CPU_STACK_MINIMUM_SIZE  (1024*8)
 
 /*
  *  CPU's worst alignment requirement for data types on a byte boundary.  This
