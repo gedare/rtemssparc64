@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.3 2009/09/15 14:44:16 ralf Exp $
+## $Id$
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-sparc64-sun4v],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])

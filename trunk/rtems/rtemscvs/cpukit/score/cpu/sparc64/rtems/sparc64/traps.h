@@ -2,6 +2,9 @@
  * @file rtems/traps.h
  *
  * This include file defines macros and code for the sparc64 trap table.
+ * This file is not currently used.
+ *
+ * $Id$
  */
 
 

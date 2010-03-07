@@ -26,6 +26,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ * $Id$
+ */
+
 #ifndef BOOT_sparc64_MAIN_H_
 #define BOOT_sparc64_MAIN_H_
 

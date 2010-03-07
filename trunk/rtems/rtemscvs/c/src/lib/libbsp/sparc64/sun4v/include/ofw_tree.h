@@ -26,6 +26,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ * $Id$
+ */
+
 #ifndef BOOT_OFW_TREE_H_
 #define BOOT_OFW_TREE_H_
 

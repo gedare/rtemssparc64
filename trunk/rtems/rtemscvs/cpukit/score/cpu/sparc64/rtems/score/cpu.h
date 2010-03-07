@@ -4,16 +4,20 @@
 
 /*
  *  This include file contains information pertaining to the port of 
- *  the executive to the SPARC processor.
+ *  the executive to the SPARC64 processor.
  *
  *  COPYRIGHT (c) 1989-2006.
  *  On-Line Applications Research Corporation (OAR).
+ *
+ *  This file is based on the SPARC cpu.h file. Modifications are made 
+ *  to support the SPARC64 processor.
+ *    COPYRIGHT (c) 2010. Gedare Bloom.
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.h,v 1.34 2009/02/12 15:55:54 joel Exp $
+ *  $Id$
  */
 
 #ifndef _RTEMS_SCORE_CPU_H
@@ -591,7 +595,7 @@ SCORE_EXTERN volatile uint32_t _CPU_ISR_Dispatch_disable;
  *        long jump.  The other instructions load one register with the
  *        trap type (a.k.a. vector) and another with the psr.
  */
-/* GAB: For SPARC V9, we must use 6 of these instructions to perform a long 
+/* For SPARC V9, we must use 6 of these instructions to perform a long 
  * jump, because the _handler value is now 64-bits. We also need to store 
  * temporary values in the global register set at this trap level. Because 
  * the handler runs at TL > 0 with GL > 0, it should be OK to use g2 and g3
@@ -797,7 +801,7 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  */
 
 #define _CPU_ISR_Set_level( _newlevel ) \
-   sparc_enable_interrupts( _newlevel << 8)
+   sparc_enable_interrupts( _newlevel)
 
 uint32_t   _CPU_ISR_Get_level( void );
  
