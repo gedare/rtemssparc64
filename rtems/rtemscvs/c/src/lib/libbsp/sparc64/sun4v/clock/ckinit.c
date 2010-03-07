@@ -7,11 +7,13 @@
  *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
  *
+ *  Modifications Copyright (c) 2010 Gedare Bloom.
+ *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ckinit.c,v 1.17 2008/09/16 19:09:53 joel Exp $
+ *  $Id$
  */
 
 #include <stdlib.h>
@@ -21,7 +23,9 @@
 #include <bspopts.h>
 #include <asm.h>
 
-/* this is probably wrong, and not the right way to do things */
+/* this is default frequency for simics simulator of niagara. Use the 
+ * get_Frequency function to determine the CPU clock frequency at runtime.
+ */
 #define CPU_FREQ (5000000)
 
 uint64_t sun4v_cycles_per_tick;

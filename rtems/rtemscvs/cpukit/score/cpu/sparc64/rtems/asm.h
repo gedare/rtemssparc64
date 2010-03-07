@@ -96,33 +96,4 @@
 #define PUBLIC(sym) .globl SYM (sym)
 #define EXTERN(sym) .globl SYM (sym)
 
-#define STACK_BIAS 2047
-
-/*
- *  Entry for traps which jump to a programmer-specified trap handler.
- */
-
-#define TRAP(_vector, _handler)  \
-	  rdpr   %pstate, %l0 ; \
-	  sethi  %hh(_handler), %l3 ; \
-	  or     %l3, %hm(_handler), %l3 ; \
-	  sllx   %l3, 32, %l3 ; \
-	  sethi  %hi(_handler), %l4 ; \
-	  or     %l4, %l3, %l4 ; \
-	  jmp   %l4+%lo(_handler); \
-	  mov   _vector, %l3 ; 
-
-
-/*
- *  Used for the reset trap to avoid a supervisor instruction
- */
-/* GAB: TODO: FIXME */
-#define RTRAP(_vector, _handler)  \
-  mov   %g0, %l0 ; \
-  sethi %hi(_handler), %l4 ; \
-  jmp   %l4+%lo(_handler); \
-  mov   _vector, %l3
-
-
-
 #endif

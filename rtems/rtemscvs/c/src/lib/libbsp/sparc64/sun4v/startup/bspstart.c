@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.29 2008/09/14 22:03:54 joel Exp $
+ *  $Id$
  */
 
 #include <string.h>

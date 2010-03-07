@@ -9,11 +9,15 @@
  *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
  *
+ *  This file is based on the SPARC sparc.h file. Modifications are made 
+ *  to support the SPARC64 processor.
+ *    COPYRIGHT (c) 2010. Gedare Bloom.
+ *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: sparc.h,v 1.13 2008/08/04 20:35:18 joel Exp $
+ *  $Id$
  */
 
 #ifndef _RTEMS_SCORE_SPARC_H
@@ -94,7 +98,7 @@ extern "C" {
  *  Miscellaneous constants
  */
 
-	/* GAB: TODO: FIXME: These need to be updated */
+	/* TODO: FIXME: These need to be updated */
 
 /* 
  * The PSR is deprecated and deleted.
@@ -108,43 +112,10 @@ extern "C" {
  */
 
 /*
- *  PSR masks and starting bit positions
+ *  PSTATE masks and starting bit positions
  *
  *  NOTE: Reserved bits are ignored.
  */
-
-#if (SPARC_NUMBER_OF_REGISTER_WINDOWS == 8)
-#define SPARC_PSR_CWP_MASK               0x07   /* bits  0 -  4 */
-#elif (SPARC_NUMBER_OF_REGISTER_WINDOWS == 16)
-#define SPARC_PSR_CWP_MASK               0x0F   /* bits  0 -  4 */
-#elif (SPARC_NUMBER_OF_REGISTER_WINDOWS == 32)
-#define SPARC_PSR_CWP_MASK               0x1F   /* bits  0 -  4 */
-#else
-#error "Unsupported number of register windows for this cpu"
-#endif
-
-#define SPARC_PSR_ET_MASK   0x00000020   /* bit   5 */
-#define SPARC_PSR_PS_MASK   0x00000040   /* bit   6 */
-#define SPARC_PSR_S_MASK    0x00000080   /* bit   7 */
-#define SPARC_PSR_PIL_MASK  0x00000F00   /* bits  8 - 11 */
-#define SPARC_PSR_EF_MASK   0x00001000   /* bit  12 */
-#define SPARC_PSR_EC_MASK   0x00002000   /* bit  13 */
-#define SPARC_PSR_ICC_MASK  0x00F00000   /* bits 20 - 23 */
-#define SPARC_PSR_VER_MASK  0x0F000000   /* bits 24 - 27 */
-#define SPARC_PSR_IMPL_MASK 0xF0000000   /* bits 28 - 31 */
-
-#define SPARC_PSR_CWP_BIT_POSITION   0   /* bits  0 -  4 */
-#define SPARC_PSR_ET_BIT_POSITION    5   /* bit   5 */
-#define SPARC_PSR_PS_BIT_POSITION    6   /* bit   6 */
-#define SPARC_PSR_S_BIT_POSITION     7   /* bit   7 */
-#define SPARC_PSR_PIL_BIT_POSITION   8   /* bits  8 - 11 */
-#define SPARC_PSR_EF_BIT_POSITION   12   /* bit  12 */
-#define SPARC_PSR_EC_BIT_POSITION   13   /* bit  13 */
-#define SPARC_PSR_ICC_BIT_POSITION  20   /* bits 20 - 23 */
-#define SPARC_PSR_VER_BIT_POSITION  24   /* bits 24 - 27 */
-#define SPARC_PSR_IMPL_BIT_POSITION 28   /* bits 28 - 31 */
-
-
 
 #define SPARC_PSTATE_IE_MASK   0x00000002   /* bit  1 */
 #define SPARC_PSTATE_PRIV_MASK 0x00000004   /* bit  2 */
@@ -187,9 +158,6 @@ extern "C" {
 	rd %fprs, rtmp1; \
 	or rtmp1, SPARC_FPRS_FEF_MASK, rtmp1; \
 	wr %g0, rtmp1, %fprs
-
-
-
 
 
 #endif
@@ -275,29 +243,8 @@ extern "C" {
   asm volatile( "wr %%g0, %0, %%softint_clear" : "=r" (_bit_mask) \
                                              : "0" (_bit_mask)); \
 
-
-/************* DELETED ****************/
-/*
- *  Get and set the WIM
- */
-
-#define sparc_get_wim( _wim ) \
-  do { \
-    asm volatile( "rd %%wim, %0" :  "=r" (_wim) : "0" (_wim) ); \
-  } while ( 0 )
-
-#define sparc_set_wim( _wim ) \
-  do { \
-    asm volatile( "wr %0, %%wim" :  "=r" (_wim) : "0" (_wim) ); \
-    nop(); \
-    nop(); \
-    nop(); \
-  } while ( 0 )
-
-/************* /DELETED ****************/
-
 /************* DEPRECATED ****************/
-
+/* Note: Although the y register is deprecated, gcc still uses it */
 /*
  *  Get and set the Y
  */
@@ -329,13 +276,10 @@ void sparc_enable_interrupts(uint32_t);
     _ignored = sparc_disable_interrupts(); \
   } while ( 0 )
 
-#define sparc_get_interrupt_level( _level ) \
+#define sparc64_get_interrupt_level( _level ) \
   do { \
-    register uint32_t   _psr_level = 0; \
-    \
-    sparc_get_psr( _psr_level ); \
-    (_level) = \
-      (_psr_level & SPARC_PSR_PIL_MASK) >> SPARC_PSR_PIL_BIT_POSITION; \
+    _level = 0; \
+    sparc64_get_pil( _level ); \
   } while ( 0 )
 
 #endif /* !ASM */

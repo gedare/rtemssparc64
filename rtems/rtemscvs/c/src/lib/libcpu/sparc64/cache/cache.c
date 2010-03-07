@@ -1,7 +1,7 @@
 /*
- *  Cache Management Support Routines for the SPARC
+ *  Cache Management Support Routines for the SPARC 64
  *
- *  $Id: cache.c,v 1.2 2000/11/27 17:02:39 joel Exp $
+ *  $Id$
  */
 
 #include <rtems.h>

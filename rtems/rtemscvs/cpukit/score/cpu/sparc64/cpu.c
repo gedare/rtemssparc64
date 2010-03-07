@@ -1,14 +1,18 @@
 /*
- *  SPARC Dependent Source
+ *  SPARC-v9 Dependent Source
  *
  *  COPYRIGHT (c) 1989-2007.
  *  On-Line Applications Research Corporation (OAR).
+ *
+ *  This file is based on the SPARC cpu.c file. Modifications are made to 
+ *  provide support for the SPARC-v9.
+ *    COPYRIGHT (c) 2010. Gedare Bloom.
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.28 2009/02/11 21:45:03 joel Exp $
+ *  $Id$
  */
 
 #include <rtems/system.h>
@@ -26,11 +30,11 @@
  *  must be filled in when the handler is installed.
  */
 
-/* GAB: 64-bit registers complicated this. Also, in sparc v9,
+/*  64-bit registers complicate this. Also, in sparc v9,
  *	each trap level gets its own set of global registers, but
  *	does not get its own dedicated register window. so we avoid
  *	using the local registers in the trap handler.
- * */
+ */
 const CPU_Trap_table_entry _CPU_Trap_slot_template = {
   0x89508000,	/* rdpr   %tstate, %g4       */
   0x05000000,	/* sethi %hh(_handler), %g2  */
@@ -38,8 +42,8 @@ const CPU_Trap_table_entry _CPU_Trap_slot_template = {
   0x8528b020,	/* sllx   %g2, 32, %g2 */
   0x07000000,	/* sethi  %hi(_handler), %g3 */
   0x8610c002,	/* or     %g3, %g2, %g3 */
-  0x81c0e000,   /* jmp   %g3 + %lo(_handler) */
-  0x84102000    /* mov   _vector, %g2        */
+  0x81c0e000, /* jmp   %g3 + %lo(_handler) */
+  0x84102000  /* mov   _vector, %g2        */
 };
 
 
@@ -96,17 +100,11 @@ void _CPU_Initialize(void)
 
 uint32_t   _CPU_ISR_Get_level( void )
 {
-  /* GAB: sparc_get_interrupt_level not linking properly */
-  /* TODO: FIXME */
-  #if 0
   uint32_t   level;
 
-  sparc_get_interrupt_level( level );
+  sparc64_get_interrupt_level( level );
 
   return level;
-  #else
-  return 0;
-  #endif
 }
 
 /*PAGE
@@ -174,11 +172,11 @@ void _CPU_ISR_install_raw_handler(
   sparc64_get_tba( u64_tba );
 
 /*  u32_tbr &= 0xfffff000; */
-  u64_tba &= 0xffffffffffff8000;  /* GAB: keep only trap base address */
+  u64_tba &= 0xffffffffffff8000;  /* keep only trap base address */
 
   tba = (CPU_Trap_table_entry *) u64_tba;
 
-  /* GAB: use array indexing to fill in lower bits -- require
+  /* use array indexing to fill in lower bits -- require
    * CPU_Trap_table_entry to be full-sized. */
   slot = &tba[ real_vector ];
 
@@ -369,7 +367,7 @@ void _CPU_Context_Initialize(
 #endif
     /*
      *  Build the pstate for the task.  Most everything can be 0 and the
-     *  CWP is corrected during the context switch. TODO: Verify.
+     *  CWP is corrected during the context switch if necessary. 
      *
      *  The PEF bit determines if the floating point unit is available.
      *  The FPU is ONLY enabled if the context is associated with an FP task
@@ -377,8 +375,8 @@ void _CPU_Context_Initialize(
      */
 
     sparc64_get_pstate( tmp_pstate );
-    tmp_pstate &= ~SPARC_PSTATE_PEF_MASK;      /* disabled by default */
-    tmp_pstate |= SPARC_PSTATE_IE_MASK; /* TODO: enable interrupts? */
+    tmp_pstate &= ~SPARC_PSTATE_PEF_MASK;  /* disable FPU by default */
+    tmp_pstate |= SPARC_PSTATE_IE_MASK;    /* enable interrupts */
 
     /*
      * Set the processor interrupt level (PIL) to the new_level

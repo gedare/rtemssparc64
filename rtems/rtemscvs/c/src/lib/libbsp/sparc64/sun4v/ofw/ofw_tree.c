@@ -26,6 +26,11 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ * $Id$
+ */
+
+
 #include <ofw_tree.h>
 #include <ofw.h>
 #include <types.h>

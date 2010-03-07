@@ -1,10 +1,6 @@
-
-/* GAB: Eugen had put in the ld script from HelenOS */
-/* RTEMS expects a lot more layout information */
-
-/* This is from the avr linkcmds */
-/*
- *  $Id: linkcmds,v 1.2 2009/05/08 13:02:08 joel Exp $
+/*  linkcmds
+ * 
+ *  $Id$
  */
 
 /*
@@ -125,7 +121,6 @@ SECTIONS
     etext = ALIGN(2);
     _etext = . ;
 
-    /* GAB */
     *(.init)
     *(.fini)
     *(.jcr)
@@ -169,7 +164,7 @@ SECTIONS
     _end = .;
     __end = .;
   
-    . = ALIGN (16); /* GAB: made arbitrary alignment */
+    . = ALIGN (16); /* arbitrary alignment */
     PROVIDE (WorkAreaBase = .);
     . += HeapSize;
     PROVIDE (HeapBase = .);

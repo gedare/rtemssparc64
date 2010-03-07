@@ -19,6 +19,8 @@
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
+ *
+ *  $Id$
  */
 
 #include <bsp.h>
@@ -43,9 +45,7 @@ rtems_isr_entry set_vector(                   /* returns old vector */
 
   /* check if this is an interrupt, if so, clear and unmask interrupts for
    * this level
-   *
    */
-  /* TODO: FIXME*/
   /* Interrupts have real_trap numbers between 0x41 and 0x4F (levels 1 - 15) */
   if (real_trap >= 0x41 && real_trap <= 0x4F) {
     source = real_trap - 0x40;

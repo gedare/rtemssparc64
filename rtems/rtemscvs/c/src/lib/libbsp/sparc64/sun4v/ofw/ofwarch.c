@@ -27,6 +27,10 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+/*
+ * $Id$
+ */
+
 /**
  * @file
  * @brief	Architecture dependent parts of OpenFirmware interface.

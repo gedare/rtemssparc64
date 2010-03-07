@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspgetworkarea.c,v 1.6 2009/05/08 13:24:27 joel Exp $
+ *  $Id$
  */
 
 #include <bsp.h>

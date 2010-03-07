@@ -8,6 +8,12 @@
  *    + Window Overflow (spill)
  *    + Window Underflow (fill)
  *    + Window Clean (clean)
+ *
+ *  Note: This file is currently unused, as we rely on the hypervisor handler.
+ *  
+ *  Copyright (c) 2010 Gedare Bloom
+ *
+ *  $Id$
  */
 
 #include <rtems/asm.h>

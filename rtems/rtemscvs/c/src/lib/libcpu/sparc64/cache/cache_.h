@@ -1,5 +1,5 @@
 /*
- *  SPARC Cache Manager Support
+ *  SPARC64 Cache Manager Support
  */
 
 #ifndef __SPARC_CACHE_h

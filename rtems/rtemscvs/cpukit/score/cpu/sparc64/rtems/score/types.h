@@ -4,7 +4,7 @@
 
 /*
  *  This include file contains type definitions pertaining to the 
- *  SPARC processor family.
+ *  SPARC-v9 processor family.
  *
  *  COPYRIGHT (c) 1989-1999.
  *  On-Line Applications Research Corporation (OAR).
@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: types.h,v 1.15 2008/12/11 00:45:34 ralf Exp $
+ *  $Id$
  */
 
 #ifndef _RTEMS_SCORE_TYPES_H

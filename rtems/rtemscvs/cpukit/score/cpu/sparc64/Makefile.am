@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.39 2006/01/12 09:57:43 ralf Exp $
+## $Id$
 ##
 
 include $(top_srcdir)/automake/compile.am
