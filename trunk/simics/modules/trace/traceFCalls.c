@@ -999,15 +999,15 @@ uint64 getSP()
 	uint64 sp = SIM_read_register(proc,o6id);
 	if(sp < thread_active->minStack){
 		thread_active->minStack = sp;
-		char name[] = "\0\0\0\0\0";
-		toStringRTEMSTaksName(name,thread_active->thread_name);
-		printf("%s : spmin=0x%llx\n",name,sp);
+		//char name[] = "\0\0\0\0\0";
+		//toStringRTEMSTaksName(name,thread_active->thread_name);
+		//printf("%s : spmin=0x%llx\n",name,sp);
 	}
 	if(sp > thread_active->maxStack){
 		thread_active->maxStack = sp;
-		char name[] = "\0\0\0\0\0";
-		toStringRTEMSTaksName(name,thread_active->thread_name);
-		printf("%s : spmax=0x%llx\n",name,sp);
+		//char name[] = "\0\0\0\0\0";
+		//toStringRTEMSTaksName(name,thread_active->thread_name);
+		//printf("%s : spmax=0x%llx\n",name,sp);
 	}
 	
 	
@@ -1019,15 +1019,15 @@ uint64 getFP()
 	uint64 fp = SIM_read_register(proc,i6id);
 	if(fp < thread_active->minFP){
 		thread_active->minFP = fp;
-		char name[] = "\0\0\0\0\0";
-		toStringRTEMSTaksName(name,thread_active->thread_name);
-		printf("%s : fpmin=0x%llx\n",name,fp);
+		//char name[] = "\0\0\0\0\0";
+		//toStringRTEMSTaksName(name,thread_active->thread_name);
+		//printf("%s : fpmin=0x%llx\n",name,fp);
 	}
 	if(fp > thread_active->maxFP){
 		thread_active->maxFP = fp;
-		char name[] = "\0\0\0\0\0";
-		toStringRTEMSTaksName(name,thread_active->thread_name);
-		printf("%s : fpmax=0x%llx\n",name,fp);
+		//char name[] = "\0\0\0\0\0";
+		//toStringRTEMSTaksName(name,thread_active->thread_name);
+		//printf("%s : fpmax=0x%llx\n",name,fp);
 	}
 	return	fp;
 }
