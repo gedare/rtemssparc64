@@ -190,6 +190,10 @@ typedef struct thread_monitor
 	int64 thread_name;
 	mystack container_runtime_stack;
 	FILE *traceFD;
+	uint64 minStack;
+	uint64 maxStack;
+	uint64 minFP;
+	uint64 maxFP;
 	
 } thread_monitor_t;
 
@@ -200,6 +204,10 @@ void Thread_switch( int64 id, int64 name);
 
 void printCurrentContainerStack( );
 
+uint64 getSP();
+uint64 getFP();
+uint64 getRet();
+void printThreads();
 
 
 

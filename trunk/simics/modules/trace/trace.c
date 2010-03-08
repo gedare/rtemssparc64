@@ -1410,7 +1410,6 @@ void bp_callback(lang_void *userdata,
 int TraceIsRunning()
 {
 	attr_value_t enabled = SIM_get_attribute(SIM_get_object("trace0"),"enabled");
-	printf("TraceIsRunning %lld\n",enabled.u.integer);
 	return enabled.u.integer ;
 }
 
@@ -1710,18 +1709,15 @@ void ThreadMonitor_callback(lang_void *userdata,
 	else
 	{
 		if(memTranVal!=0 && !TraceIsRunning()){
-			printf("re-enabling the trace\n");
+			//printf("re-enabling the trace\n");
 			TraceStart();
 		}
 	}
-	
-	printf("\nOLD 0x%llx", threadIdOld );
-	printRTEMSTaksName(threadNameOld);
-	printf("\n");
 
-	printf("NEW 0x%llx 0x%llx", threadIdNew, threadNameNew );
+	printf("THREAD SWITCH: ");
 	printRTEMSTaksName(threadNameNew);
 	printf("\n");
+	fflush(stdin);
 	
 	Thread_switch(threadIdNew,threadNameNew);
 	
@@ -1756,7 +1752,6 @@ void ThreadMonitor_register()
 static attr_value_t
 get_trace_print_stack(void *arg, conf_object_t *obj, attr_value_t *idx){
 	printCurrentContainerStack();
-	printf("GICA get_trace_print_stack\n");
 	return SIM_make_attr_integer(1);
 }
 
@@ -1764,9 +1759,24 @@ static set_error_t
 set_trace_print_stack(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
 {
 	printCurrentContainerStack();
-	printf("GICA get_trace_print_stack\n");
 	return Sim_Set_Ok;
 }
+
+static attr_value_t
+get_trace_print_threads(void *arg, conf_object_t *obj, attr_value_t *idx){
+	printThreads();
+	printf("GICA get_trace_print_threads\n");
+	return SIM_make_attr_integer(1);
+}
+
+static set_error_t
+set_trace_print_threads(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
+{
+	printThreads();
+	printf("GICA get_trace_print_threads\n");
+	return Sim_Set_Ok;
+}
+
 
 void
 init_local(void)
@@ -1970,7 +1980,14 @@ init_local(void)
 			get_trace_print_stack,	NULL,
 			set_trace_print_stack,	NULL,
 			Sim_Attr_Optional,"i",NULL,
-			"does not do anything, it prints the trace");
+			"does not set anything, it prints the trace");
+
+		SIM_register_typed_attribute
+			(base_class,"trace_print_threads",
+			get_trace_print_threads,	NULL,
+			set_trace_print_threads,	NULL,
+			Sim_Attr_Optional,"i",NULL,
+			"does not set anything, it prints the thread and some info about them");
 
 #if defined(TRACE_STATS)
         SIM_register_typed_attribute(base_class, "instruction_records",
