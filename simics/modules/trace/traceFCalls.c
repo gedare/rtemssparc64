@@ -54,8 +54,11 @@ int ld_stack_base;
 int ld_environ_base;
 
 
-conf_object_t *proc; //Simics Sparc current processor
+conf_object_t *proc = NULL; //Simics Sparc current processor
 int o7id; //Simics Sparc registerid for the "i7" register ( %i7 + 8 is the return address)
+int o6id;  //sp
+int i6id;  //fp
+
 
 thread_monitor_t* ThreadAdd(int64 id, int64 name)
 {
@@ -63,6 +66,10 @@ thread_monitor_t* ThreadAdd(int64 id, int64 name)
 	newThread = (thread_monitor_t*) calloc (sizeof(thread_monitor_t),1);
 	newThread->thread_id = id;
 	newThread->thread_name = name; 
+	newThread->maxStack = 0;
+	newThread->minStack = ULLONG_MAX ;
+	newThread->maxFP = 0;
+	newThread->minFP = ULLONG_MAX ;
 	
 	newThread->container_runtime_stack = stack_create();
 	//create a name for the thread trace file
@@ -161,6 +168,9 @@ void container_initialize( base_trace_t *bt)
 		
 		proc =	SIM_current_processor();
 		o7id = SIM_get_register_number(proc,"o7");
+
+		o6id = SIM_get_register_number(proc,"o6");
+		i6id = SIM_get_register_number(proc,"i6");
 		
 	}
 	else
@@ -320,6 +330,8 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 	loadPenalty.containerDynamicListSize = 0;
 
 	cycles_t cycles =  SIM_cycle_count(SIM_current_processor());
+	getSP();
+	getFP();
 
 	//printf("\n GICA: 0x%llx\n",addr);
 	//first verify if the containers were initialized . report exception and quit if not
@@ -413,8 +425,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 					//sprintf(printBuffer,"%x %s \n",addr,foundSearch->name);
 					//sprintf(printBuffer,"0x%llx %s %d %d\n",foundSearch->entryAddress,foundSearch->name,foundSearch->traceLoadedAddressCount,foundSearch->traceLoadeduniqueChildContainersCalled);
 					if(bt->displayLineNumbers)
-						//sprintf(printBuffer,"0x%llx 0x%llx %s {%s\n",foundSearch->entryAddress,SIM_read_register(proc,o7id) + 8, foundSearch->name, foundSearch->linenumber);
-						sprintf(printBuffer,"%s {%s\n",foundSearch->name, foundSearch->linenumber);
+						sprintf(printBuffer,"%s {%s \n",foundSearch->name, foundSearch->linenumber);
 					else
 						sprintf(printBuffer,"%s {\n", foundSearch->name);	
 					myprint(printBuffer);
@@ -432,7 +443,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 					//container_dumpRegisters(*regs);
 
 					t.container = foundSearch;
-					t.returnAddress = SIM_read_register(proc,o7id) + 8;//return_addr;
+					t.returnAddress = getRet();//return_addr;
 					//printf("\n GICA: pushed to stack 0x%llx return :0x%llx %s\n",foundSearch->entryAddress,return_addr,foundSearch->name);
 					//fflush(stdout);
 					stack_push(returnAddressStack, t);
@@ -981,5 +992,74 @@ void reverse(char s[])
         s[j] = c;
     }
 }
+
+uint64 getSP()
+{
+	
+	uint64 sp = SIM_read_register(proc,o6id);
+	if(sp < thread_active->minStack){
+		thread_active->minStack = sp;
+		char name[] = "\0\0\0\0\0";
+		toStringRTEMSTaksName(name,thread_active->thread_name);
+		printf("%s : spmin=0x%llx\n",name,sp);
+	}
+	if(sp > thread_active->maxStack){
+		thread_active->maxStack = sp;
+		char name[] = "\0\0\0\0\0";
+		toStringRTEMSTaksName(name,thread_active->thread_name);
+		printf("%s : spmax=0x%llx\n",name,sp);
+	}
+	
+	
+	return	sp;
+}
+
+uint64 getFP()
+{
+	uint64 fp = SIM_read_register(proc,i6id);
+	if(fp < thread_active->minFP){
+		thread_active->minFP = fp;
+		char name[] = "\0\0\0\0\0";
+		toStringRTEMSTaksName(name,thread_active->thread_name);
+		printf("%s : fpmin=0x%llx\n",name,fp);
+	}
+	if(fp > thread_active->maxFP){
+		thread_active->maxFP = fp;
+		char name[] = "\0\0\0\0\0";
+		toStringRTEMSTaksName(name,thread_active->thread_name);
+		printf("%s : fpmax=0x%llx\n",name,fp);
+	}
+	return	fp;
+}
+
+uint64 getRet()
+{
+	return	SIM_read_register(proc,o7id) + 8;
+}
+
+
+void printThreads()
+{
+	if(thread_active == NULL ) printf("NO THREAD ADDED\n");
+	thread_monitor_t* iterate;
+	iterate = thread_active;
+	
+	do
+	{
+		char name[4];
+		toStringRTEMSTaksName(name,iterate->thread_name);
+		printf("Thread: %s id:%lld spmin:0x%llx spmax:0x%llx fpmin:0x%llx fpmax:0x%llx\n",
+			name,
+			iterate->thread_id,
+			iterate->minStack,
+			iterate->maxStack,
+			iterate->minFP,
+			iterate->maxFP
+			);	
+		iterate = iterate->next;
+	}
+	while (iterate != thread_active);
+}
+
 
 
