@@ -226,7 +226,7 @@ void bootstrap(void)
 	unsigned int top = 0;
 	int i, j;
 
-	printk("RTEMS System starting");
+	//printk("RTEMS System starting");
 
 	detect_architecture();
 
@@ -262,9 +262,9 @@ void bootstrap(void)
 		}
 	}
 
-	printk("\n\rSystem info\n\r");
-	printk(" memory: %dM starting at %x\n\r",
-	    bootinfo.memmap.total >> 20, bootinfo.physmem_start);
+	//printk("\n\rSystem info\n\r");
+	//printk(" memory: %dM starting at %x\n\r",
+	//    bootinfo.memmap.total >> 20, bootinfo.physmem_start);
 
 }
 
