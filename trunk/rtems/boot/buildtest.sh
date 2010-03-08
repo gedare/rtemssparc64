@@ -3,6 +3,7 @@
 excludes=( \
 _fini \
 sparc_disable_interrupts \
+sparc_enable_interrupts \
 _CPU_Context_restore \
 _fclose_r \
 _fflush_r \
@@ -16,6 +17,9 @@ __smakebuf_r \
 syscall \
 _isatty \
 _exit \
+_ISR_Handler \
+_vfiprintf_r  \
+__sinit \
 )
 
 removes=( \
@@ -34,6 +38,15 @@ removes=( \
 'T __sfp_lock_release' \
 'T __sinit_lock_acquire' \
 'T __sinit_lock_release' \
+'T __mcmp' \
+'T _Bfree' \
+'T _localeconv_r' \
+'t dont_switch_stacks' \
+'t dont_fix_pil' \
+'t dont_restore_stack' \
+'t simple_return' \
+'t good_window' \
+'t good_window' \
 )
 
 INCLUDE1=../../HeleonOS/HelenOS/boot/arch/sparc64/loader
