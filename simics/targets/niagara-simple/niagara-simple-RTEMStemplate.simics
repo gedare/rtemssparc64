@@ -72,8 +72,8 @@ script-branch {
 	quit 0
 }
 
-#c
-run-seconds 300
-output-file-start REPLACEDBYSED534TESTNAME.txt -append
-echo "TIMING OUT"
-quit 0
+c
+#run-seconds 300
+#output-file-start REPLACEDBYSED534TESTNAME.txt -append
+#echo "TIMING OUT"
+#quit 0
