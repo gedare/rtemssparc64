@@ -1714,10 +1714,10 @@ void ThreadMonitor_callback(lang_void *userdata,
 		}
 	}
 
-	printf("THREAD SWITCH: ");
-	printRTEMSTaksName(threadNameNew);
-	printf("\n");
-	fflush(stdin);
+	//printf("THREAD SWITCH: ");
+	//printRTEMSTaksName(threadNameNew);
+	//printf("\n");
+	//fflush(stdin);
 	
 	Thread_switch(threadIdNew,threadNameNew);
 	
