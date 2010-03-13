@@ -3,6 +3,9 @@
 TMP=../../rtems/boot/isofiles
 BASE=../../rtems/boot
 
+./buildtest.sh mibench sha_small
+./buildtest.sh mibench sha_large
+
 #./buildtest.sh samples base_mp
 ./buildtest.sh samples base_sp
 ./buildtest.sh samples capture
