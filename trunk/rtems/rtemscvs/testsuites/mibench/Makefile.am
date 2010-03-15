@@ -4,7 +4,7 @@
 
 ACLOCAL_AMFLAGS = -I ../aclocal
 
-SUBDIRS = sha_small sha_large 
+SUBDIRS = sha_small sha_large crc
 
 if MPTESTS
 endif

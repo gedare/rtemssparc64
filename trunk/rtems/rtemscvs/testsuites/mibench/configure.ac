@@ -62,5 +62,6 @@ AM_CONDITIONAL(LIBCHIP,[test "$RTEMS_BSP_FAMILY" != "posix"])
 AC_CONFIG_FILES([Makefile
 sha_small/Makefile
 sha_large/Makefile
+crc/Makefile
 ])
 AC_OUTPUT
