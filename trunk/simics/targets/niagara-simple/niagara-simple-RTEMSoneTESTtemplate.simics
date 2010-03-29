@@ -84,8 +84,8 @@ script-branch {
 
 break-exception number = 52  #Mem_Address_Not_Aligned
 #trace-exception -all
-#break (sym Init)
+break (sym Init)
 #break (sym fwrite)
 #break (sym __errno)
-break (sym crc32file)
+#break (sym crc32file)
 c
