@@ -303,7 +303,9 @@ text_tracer(base_trace_t *bt, trace_entry_t *ent)
 
         switch (ent->trace_type) {
         case TR_Data:
-                text_trace_data(bt, ent, s);
+                //text_trace_data(bt, ent, s);
+				s[0] = 0;
+				container_MemoryCall(ent->read_or_write,ent->va,ent->size);
                 break;
         case TR_Exception:
                 text_trace_exception(bt, ent, s);
@@ -1764,18 +1766,34 @@ set_trace_print_stack(void *arg, conf_object_t *obj, attr_value_t *val, attr_val
 
 static attr_value_t
 get_trace_print_threads(void *arg, conf_object_t *obj, attr_value_t *idx){
-	printThreads();
 	printf("GICA get_trace_print_threads\n");
+	printThreads();
 	return SIM_make_attr_integer(1);
 }
 
 static set_error_t
 set_trace_print_threads(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
 {
-	printThreads();
 	printf("GICA get_trace_print_threads\n");
+	printThreads();
 	return Sim_Set_Ok;
 }
+
+static attr_value_t
+get_trace_containerstatistics(void *arg, conf_object_t *obj, attr_value_t *idx){
+	printf("GICA get_trace_containerstatistics\n");
+	container_printStatistics();
+	return SIM_make_attr_integer(1);
+}
+
+static set_error_t
+set_trace_containerstatistics(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
+{
+	printf("GICA get_trace_containerstatistics\n");
+	container_printStatistics();
+	return Sim_Set_Ok;
+}
+
 
 
 void
@@ -1988,6 +2006,15 @@ init_local(void)
 			set_trace_print_threads,	NULL,
 			Sim_Attr_Optional,"i",NULL,
 			"does not set anything, it prints the thread and some info about them");
+
+		
+		SIM_register_typed_attribute
+			(base_class,"trace_print_containerstatistics",
+			get_trace_containerstatistics,	NULL,
+			set_trace_containerstatistics,	NULL,
+			Sim_Attr_Optional,"i",NULL,
+			"does not set anything, it prints container statistics");
+
 
 #if defined(TRACE_STATS)
         SIM_register_typed_attribute(base_class, "instruction_records",

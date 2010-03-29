@@ -64,8 +64,8 @@ extern int containerSize ;
 
 struct addressCell
 {
-  int startAddress;
-  int endAddress;
+  md_addr_t startAddress;
+  md_addr_t endAddress;
   addressList next;
 };
 
