@@ -45,10 +45,10 @@ $system.set-prom-env auto-boot? true
 # it is able to boot from a disk image in ISO9660 format.
 $image = ($system.get-component-object disk_image)
 @image = sim.objects[simenv.image]
-@image.files = [['/home/eugen/work/rtemssparc64/rtems/boot/image.iso', 'ro', 0, 40284160  ]]
+@image.files = [['/home/eugen/work/rtemssparc64/rtems/boot/image.iso', 'ro', 0, 60272640  ]]
  
 new-symtable name = gicasymtable
-gicasymtable.load-symbols file = /home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/sptests/sp03.exe
+gicasymtable.load-symbols file = /home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/samples/fileio.exe
 gicasymtable.source-path path =  /home/eugen/work/rtemssparc64/
 new-context name = gicacontext
 gicacontext.symtable symtable = gicasymtable 
@@ -64,27 +64,27 @@ cpu0_0.set-context context = gicacontext
 
 #  trace module - intantiate and use
 #load-module trace
-new-tracer 
-@conf.trace0.trace_data = 0
-@conf.trace0.trace_exceptions = 0
-@conf.trace0.trace_instructions = 0
-@conf.trace0.displayLinenumbers = 1
-@conf.trace0.set_ftracesymbol_file = "/home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/sptests/sp03.fun.nm"
-@conf.trace0.set_ftrace_file = "/home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/sptests/sp03.trace.c"
+#new-tracer 
+#@conf.trace0.trace_data = 0
+#@conf.trace0.trace_exceptions = 0
+#@conf.trace0.trace_instructions = 0
+#@conf.trace0.displayLinenumbers = 1
+#@conf.trace0.set_ftracesymbol_file = "/home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/samples/fileio.fun.nm"
+#@conf.trace0.set_ftrace_file = "/home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/samples/fileio.trace.c"
 
-@conf.trace0.threadSkip = "0 UI1 IDLE"
-trace0.start traceaddress (sym boot_card)
-#trace0.start traceaddress 100
-#trace0.start
-#@conf.trace0.trace_print_stack = 1
-#@conf.trace0.trace_print_threads = 1
+#@conf.trace0.threadSkip = "0 UI1 IDLE"
+#trace0.start traceaddress (sym boot_card)
+##trace0.start traceaddress 100
+##trace0.start
+##@conf.trace0.trace_print_stack = 1
+##@conf.trace0.trace_print_threads = 1
 
 #  trace module
 
 script-branch {
         local $con = ($console.get-component-object con)
         $con.wait-for-string "boot: "
-        $con.input "sp03\n"
+        $con.input "fileio\n"
         }
 
 #trace-exception -all
@@ -213,11 +213,14 @@ break-exception number = 52  #Mem_Address_Not_Aligned
 
 #phys_mem.break p:0x4000
 #break (sym _CPU_Context_switch)
-break -w address = (sym "&_Thread_Executing")
+#break -w address = (sym "&_Thread_Executing")
 
 #cycle-break 131551525
 #cycle-break 145293393
-break (sym Task_2)
-break (sym Task_1)
+#break (sym Task_2)
+#break (sym Task_1)
+
+
+break (sym Init)
 c
 
