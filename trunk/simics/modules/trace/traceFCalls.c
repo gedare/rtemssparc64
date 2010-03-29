@@ -29,7 +29,7 @@ struct regs_t *regs;			//this pointer gives access to the simulated register fil
 char printBuffer[PRINTBUFFMAX];			// use sprintf to print to this buffer and then use myprint for the final print ( full trace )
 char printBuffer2[PRINTBUFFMAX];			// use sprintf to print to this buffer and then use myprint for the final print ( second run trace )
 char compilerPrintBuffer[PRINTBUFFMAX];	// use sprintf to print to this buffer and then use myprint for the final print ( compiler trace )
-
+char stdoutPrintBuffer[PRINTBUFFMAX];
 
 struct traceData_def{
 	char name[100];
@@ -123,6 +123,8 @@ void Thread_switch( int64 id, int64 name)
 	if(!newThread) newThread = ThreadAdd(id,name);
 	fflush(thread_active->traceFD);
 	thread_active = newThread;
+
+	printf("Thread_switch 0x%llx\n",thread_active->thread_id);
 }
 
 
@@ -345,7 +347,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 	if(!stack_empty(returnAddressStack))
 	{
 		//printf("\n GICA check for function return: 0x%llx\n",addr);
-		//fflush(stdin);
+		fflush(stdin);
 		stackObject t = stack_top(returnAddressStack);
 		UpdateAddressList(&( t.container->addressAccessList), addr, 4);
 		UpdateAddressList(&( t.container->addressAccessListInstance), addr, 4);
@@ -709,7 +711,7 @@ void joinAddress(addressList future, addressList present)
 void printAddressList(char * printbuff,addressList l){
 	while(l!=NULL)
 	{
-		sprintf(printbuff,"[%x,%x) ",l->startAddress, l->endAddress);
+		sprintf(printbuff,"[%llx,%llx) ",l->startAddress, l->endAddress);
 		myprint(printbuff);
 		l = l->next;
 	}
@@ -719,6 +721,12 @@ void printAddressList(char * printbuff,addressList l){
 void printCurrentContainerStack( )
 {
 	mystack returnAddressStack = thread_active->container_runtime_stack;
+	char name[4];
+	toStringRTEMSTaksName(name,thread_active->thread_name);
+	printf("Thread: %s id:0x%llx\n",
+		name,
+		thread_active->thread_id
+		);	
 	if(!stack_empty(thread_active->container_runtime_stack)){
 		//list start = returnAddressStack->elements;
 		list next = returnAddressStack->elements;
@@ -729,6 +737,7 @@ void printCurrentContainerStack( )
 				next->element.container->entryAddress, 
 				next->element.container->name, 
 				next->element.returnAddress);
+			printAddressList(stdoutPrintBuffer,next->element.container->addressAccessListInstance);
 			next = next->next;
 		}
 	}
@@ -755,7 +764,7 @@ void printDecodedAddressList(char * printbuff,addressList l)
 		else {
 			type = 'h'; //heap
 		}
-		sprintf(printbuff,"%c[%x,%x) ",type,l->startAddress, l->endAddress);
+		sprintf(printbuff,"%c[%llx,%llx) ",type,l->startAddress, l->endAddress);
 		myprint(printbuff);
 		l = l->next;
 	}
@@ -843,9 +852,15 @@ void myprint(char * toPrint)
 	else if(toPrint == compilerPrintBuffer && compilerInfofd)
 		fprintf(compilerInfofd,"%s",toPrint);
 	else if(fullTracefd){
-		
 		fprintf(thread_active->traceFD,"%s",toPrint);
 		fflush(thread_active->traceFD);
+		fprintf(stdout,"%s",toPrint);
+		fflush(stdout);
+	}
+	else
+	{
+		//fprintf(stdout,"%s",toPrint);
+		//fflush(stdout);
 	}
 	
 	//printf("%s",toPrint);
