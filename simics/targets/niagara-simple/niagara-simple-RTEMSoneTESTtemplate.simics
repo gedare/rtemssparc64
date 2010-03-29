@@ -2,7 +2,7 @@
 #distributed
 # with Simics. Boots from an ISO9660 image.
 
-if not defined num_cpus {$num_cpus  = 2}
+if not defined num_cpus {$num_cpus  = 1}
 if not defined freq_mhz {$freq_mhz  = 5}
 if not defined rtc_time {$rtc_time  = "2006-04-04 12:00:00 UTC"}
 
@@ -45,6 +45,36 @@ $system.set-prom-env auto-boot? true
 $image = ($system.get-component-object disk_image)
 @image = sim.objects[simenv.image]
 @image.files = [['REPLACEDBYSED534ISOPATH', 'ro', 0, REPLACEDBYSED534ISOSIZE  ]]
+
+
+new-symtable name = gicasymtable
+gicasymtable.load-symbols file = /home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/REPLACEDBYSED534TESTGROUP/REPLACEDBYSED534TESTNAME.exe
+gicasymtable.source-path path =  /home/eugen/work/rtemssparc64/
+new-context name = gicacontext
+gicacontext.symtable symtable = gicasymtable 
+cpu0_0.set-context context = gicacontext
+
+
+#  trace module - intantiate and use
+#load-module trace
+new-tracer 
+@conf.trace0.trace_exceptions = 0
+@conf.trace0.trace_data = 0
+@conf.trace0.trace_instructions = 0
+@conf.trace0.displayLinenumbers = 1
+@conf.trace0.set_ftracesymbol_file = "/home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/REPLACEDBYSED534TESTGROUP/REPLACEDBYSED534TESTNAME.fun.nm"
+@conf.trace0.set_ftrace_file = "/home/eugen/work/rtemssparc64/rtems/boot/debug/rtems/REPLACEDBYSED534TESTGROUP/REPLACEDBYSED534TESTNAME.trace.c"
+
+#@conf.trace0.threadSkip = "0 UI1 IDLE"
+@conf.trace0.threadSkip = "0 IDLE"
+#trace0.start traceaddress (sym boot_card)
+##trace0.start traceaddress 100
+trace0.start
+##@conf.trace0.trace_print_stack = 1
+##@conf.trace0.trace_print_threads = 1
+##@conf.trace0.trace_print_containerstatistics = 1
+
+
  
 script-branch {
         local $con = ($console.get-component-object con)
@@ -52,25 +82,10 @@ script-branch {
         $con.input "REPLACEDBYSED534TESTNAME\n"
         }
 
-script-branch {
-	local $con = ($console.get-component-object con)
-	$con.wait-for-string "START_TOKEN"
-	$con.capture-start REPLACEDBYSED534TESTNAME.txt
-}
-
-script-branch {
-	local $con = ($console.get-component-object con)
-	$con.wait-for-string "END_TOKEN"
-	$con.capture-stop
-	quit 0
-}
-
-script-branch {
-	local $con = ($console.get-component-object con)
-	$con.wait-for-string "Exception handlers interrupted"
-	$con.capture-stop
-	quit 0
-}
-
-break (sym Init)
+break-exception number = 52  #Mem_Address_Not_Aligned
+#trace-exception -all
+#break (sym Init)
+#break (sym fwrite)
+#break (sym __errno)
+break (sym crc32file)
 c
