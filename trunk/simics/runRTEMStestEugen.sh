@@ -20,15 +20,15 @@ ISOPATH=`echo $ISOPATH | sed 's/\//\\//g'`
 #cat targets/niagara-simple/niagara-simple-RTEMSoneTESTtemplate.simics | sed s/REPLACEDBYSED534ISOSIZE/$ISOSIZE/ | sed s/REPLACEDBYSED534TESTNAME/$TESTNAME/ | sed "s;REPLACEDBYSED534ISOPATH;$ISOPATH;"
 cat targets/niagara-simple/niagara-simple-RTEMSoneTESTtemplate.simics | sed s/REPLACEDBYSED534ISOSIZE/$ISOSIZE/ | sed s/REPLACEDBYSED534TESTGROUP/$TESTGROUP/ | sed s/REPLACEDBYSED534TESTNAME/$TESTNAME/ | sed "s;REPLACEDBYSED534ISOPATH;$ISOPATH;" > temp.simics
 
-./simics -stall temp.simics
-#if [[ $? -ne 0 ]]
-#then
-#	echo "***** Exiting with -1 *****"
-#	exit -1
-#fi
-#
-#cat $TESTNAME.txt | sed '/^\s*$/d' | sed '/END_TOKEN/d' | sed 's/\x0D$//' > temp.txt
-#mv temp.txt $TESTNAME.txt
-#diff $TESTNAME.txt results-expected/$TESTNAME.scn -bU 0 --strip-trailing-cr > $TESTNAME.diff
+./simics -no-win -stall temp.simics
+if [[ $? -ne 0 ]]
+then
+	echo "***** Exiting with -1 *****"
+	exit -1
+fi
 
-#exit 0
+cat $TESTNAME.txt | sed '/^\s*$/d' | sed '/END_TOKEN/d' | sed 's/\x0D$//' > temp.txt
+mv temp.txt $TESTNAME.txt
+diff $TESTNAME.txt results-expected/$TESTNAME.scn -bU 0 --strip-trailing-cr > $TESTNAME.diff
+
+exit 0
