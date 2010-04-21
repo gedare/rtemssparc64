@@ -26,7 +26,13 @@ rm ${OUTDIR}/$TESTNAME.txt
 #cat targets/niagara-simple/niagara-simple-RTEMS-rubyTESTtemplate.simics | sed s/REPLACEDBYSED534ISOSIZE/$ISOSIZE/ | sed s/REPLACEDBYSED534TESTNAME/$TESTNAME/ | sed "s;REPLACEDBYSED534ISOPATH;$ISOPATH;"
 cat targets/niagara-simple/niagara-simple-RTEMS-rubyTESTtemplate.simics | sed s/REPLACEDBYSED534ISOSIZE/$ISOSIZE/ | sed s/REPLACEDBYSED534TESTGROUP/$TESTGROUP/ | sed s/REPLACEDBYSED534TESTNAME/$TESTNAME/ | sed "s;REPLACEDBYSED534ISOPATH;$ISOPATH;" | sed "s;REPLACEDBYSED534SOURCEPATH;$SOURCEPATH;" | sed "s;REPLACEDBYSED534SYMBOLS;$SYMBOLS;" > temp.simics
 
-./simics -no-win -stall temp.simics
+./simics -no-win -stall temp.simics &
+PID1=$!
+
+./check-live.sh $PID1 $TESTNAME &
+PID2=$!
+
+wait ${PID1} ${PID2}
 if [[ $? -ne 0 ]]
 then
 	echo "***** Exiting with -1 *****"
