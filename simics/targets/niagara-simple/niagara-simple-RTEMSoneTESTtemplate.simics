@@ -75,17 +75,72 @@ trace0.start
 ##@conf.trace0.trace_print_containerstatistics = 1
 
 
- 
+## GEMS Ruby Configuration
+#instruction-fetch-mode instruction-fetch-trace
+#istc-disable
+#dstc-disable
+#cpu-switch-time 1
+
+#load-module ruby
+#ruby0.setparam g_NUM_PROCESSORS 1
+#ruby0.setparam g_MEMORY_SIZE_BYTES 4294967296
+#ruby0.init
+
+
 script-branch {
         local $con = ($console.get-component-object con)
         $con.wait-for-string "boot: "
         $con.input "REPLACEDBYSED534TESTNAME\n"
         }
 
+script-branch {
+	local $con = ($console.get-component-object con)
+	$con.wait-for-string "START_TOKEN"
+	cpu0_0.cycle-break 1
+	instruction-fetch-mode instruction-fetch-trace
+	istc-disable
+	dstc-disable
+	cpu-switch-time 1
+	load-module ruby
+}   
+
+#@conf.con0.break_string = "START_TOKEN"
+
+#script-branch {
+#	local $con = ($console.get-component-object con)
+#	$con.wait-for-string "END_TOKEN"
+#}
+
+@def ctrl_ConsoleHAP(user_arg, trigger_obj, break_string):
+    if break_string == "START_TOKEN":
+        print "%s" % (break_string)
+        SIM_break_simulation("broken")
+        run_command("instruction-fetch-mode instruction-fetch-trace")
+        run_command("istc-disable")
+        run_command("dstc-disable")
+        run_command("cpu-switch-time 1")
+        run_command("cpu0_0.cycle-break 1")
+        run_command("load-module ruby")
+        #conf.ruby0.setparam.g_NUM_PROCESSORS = 1
+	#conf.ruby0.setparam.g_MEMORY_SIZE_BYTES = 4294967296
+	#conf.ruby0.init
+	#SIM_continue(0)
+    elif break_string == "END_TOKEN":
+    	print "%s" % (break_string)
+        SIM_break_simulation("broken")
+#@SIM_hap_add_callback("Xterm_Break_String",
+#                            ctrl_ConsoleHAP, None)
+
+        
+
+
 break-exception number = 52  #Mem_Address_Not_Aligned
 #trace-exception -all
-break (sym Init)
+
+#break 0x4000
+#break (sym Init)
 #break (sym fwrite)
 #break (sym __errno)
 #break (sym crc32file)
+#break (sym halted)
 c
