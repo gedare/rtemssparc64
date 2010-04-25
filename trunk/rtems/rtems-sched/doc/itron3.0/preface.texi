@@ -1,0 +1,14 @@
+@c
+@c  COPYRIGHT (c) 1988-2002.
+@c  On-Line Applications Research Corporation (OAR).
+@c  All rights reserved.
+@c
+@c  $Id: preface.texi,v 1.2 2002/01/17 21:47:45 joel Exp $
+@c
+
+@ifinfo
+@node Preface, , Top, Top
+@end ifinfo
+@unnumbered Preface
+
+There needs to be a preface to this manual.

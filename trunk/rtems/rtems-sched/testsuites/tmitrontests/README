@@ -1,0 +1,6 @@
+#
+#  $Id: README,v 1.1 1999/11/09 22:07:23 joel Exp $
+#
+
+This directory contains the functionality tests for the ITRON 3.0 API 
+implementation.

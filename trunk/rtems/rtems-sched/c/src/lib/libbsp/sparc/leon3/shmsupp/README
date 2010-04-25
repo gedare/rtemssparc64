@@ -1,0 +1,8 @@
+#
+# $Id: README,v 1.1 2006/07/12 18:24:44 joel Exp $
+#
+
+This should describe how to use SHM in a multiprocessor LEON3
+configuration.
+
+Especially useful would be how to test this on tsim-leon3.

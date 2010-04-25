@@ -1,0 +1,5 @@
+## $Id: local.am,v 1.10 2005/11/13 09:11:32 ralf Exp $
+
+preinstall-am: $(PREINSTALL_FILES)
+preinstall: preinstall-am
+.PHONY: preinstall preinstall-am

@@ -1,0 +1,26 @@
+#
+# $Id: configure.ac,v 1.18 2006/12/02 06:06:23 ralf Exp $
+#
+
+AC_PREREQ(2.60)
+AC_INIT([rtems-tools-build],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
+AC_CONFIG_SRCDIR([install-if-change.in])
+RTEMS_TOP(../..)
+
+AC_CANONICAL_HOST
+
+AM_INIT_AUTOMAKE([no-define foreign 1.10])
+AM_MAINTAINER_MODE
+
+AC_PROG_CC
+AC_CHECK_HEADERS([getopt.h])
+AC_CHECK_FUNCS(strerror strtol)
+
+RTEMS_PATH_KSH
+
+AC_CONFIG_HEADERS([config.h])
+
+# Explicitly list all Makefiles here
+AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([install-if-change],[chmod +x install-if-change])
+AC_OUTPUT

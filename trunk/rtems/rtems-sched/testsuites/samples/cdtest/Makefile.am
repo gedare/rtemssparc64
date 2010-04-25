@@ -1,0 +1,29 @@
+##
+##  $Id: Makefile.am,v 1.27 2009/04/03 12:42:12 ralf Exp $
+##
+
+MANAGERS = all
+
+rtems_tests_PROGRAMS = cdtest
+cdtest_SOURCES = init.c main.cc system.h
+
+dist_rtems_tests_DATA = cdtest.scn
+
+include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
+include $(top_srcdir)/../automake/compile.am
+include $(top_srcdir)/../automake/leaf.am
+
+cdtest_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
+
+# AM_CPPFLAGS += -DRTEMS_TEST_IO_STREAM
+
+AM_CPPFLAGS += -I$(top_srcdir)/../support/include
+
+LINK_OBJS = $(cdtest_OBJECTS) $(cdtest_LDADD)
+LINK_LIBS = $(cdtest_LDLIBS)
+
+cdtest$(EXEEXT): $(cdtest_OBJECTS) $(cdtest_DEPENDENCIES)
+	@rm -f cdtest$(EXEEXT)
+	$(make-cxx-exe)
+
+include $(top_srcdir)/../automake/local.am
