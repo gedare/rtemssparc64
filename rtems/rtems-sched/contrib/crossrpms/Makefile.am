@@ -1,0 +1,28 @@
+##
+## $Id: Makefile.am,v 1.31 2009/11/30 10:48:02 ralf Exp $
+##
+
+EXTRA_DIST =
+
+SUBDIRS = @HOST_SUBDIRS@ @TARGET_SUBDIRS@
+
+DIST_SUBDIRS  = cygwin
+DIST_SUBDIRS += freebsd6.4
+DIST_SUBDIRS += freebsd7.2
+DIST_SUBDIRS += freebsd8.0
+DIST_SUBDIRS += mingw32
+DIST_SUBDIRS += netbsd5.0.1
+DIST_SUBDIRS += solaris2.7
+DIST_SUBDIRS += rtems4.10
+
+DIST_SUBDIRS += autotools
+
+EXTRA_DIST += specstrip
+EXTRA_DIST += $(srcdir)/patches/*.diff
+
+install-patches:
+	@rpmsourcedir=`rpm --eval '%_sourcedir'`; \
+	for f in $(srcdir)/patches/*.diff; do \
+	  echo "$(INSTALL_DATA) $$f $$rpmsourcedir"; \
+	  $(INSTALL_DATA) $$f $$rpmsourcedir; \
+	done

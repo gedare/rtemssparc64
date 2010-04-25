@@ -1,0 +1,10 @@
+## $Id: host.am,v 1.4 2009/11/28 06:24:46 ralf Exp $
+
+## NOTE: This is a temporary work-around to keep
+## RTEMS's non automake standard make targets working.
+## Once automake is fully integrated these make targets
+## and this file will probably be removed
+
+preinstall-am: $(PREINSTALL_FILES)
+preinstall: preinstall-am
+.PHONY: preinstall preinstall-am

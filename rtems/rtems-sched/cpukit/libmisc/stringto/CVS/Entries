@@ -1,0 +1,13 @@
+/stringtodouble.c/1.1/Fri Oct 23 12:52:29 2009//
+/stringtofloat.c/1.1/Fri Oct 23 12:52:29 2009//
+/stringtoint.c/1.1/Fri Oct 23 12:52:29 2009//
+/stringtolong.c/1.1/Fri Oct 23 12:52:29 2009//
+/stringtolonglong.c/1.1/Fri Oct 23 12:52:29 2009//
+/stringtopointer.c/1.1/Fri Oct 23 12:52:29 2009//
+/stringtounsignedchar.c/1.1/Fri Oct 23 12:52:29 2009//
+/stringtounsignedint.c/1.1/Fri Oct 23 12:52:29 2009//
+/stringtounsignedlong.c/1.1/Fri Oct 23 12:52:29 2009//
+/stringtounsignedlonglong.c/1.1/Fri Oct 23 12:52:29 2009//
+/stringto.h/1.3/Tue Dec 22 15:27:07 2009//
+/stringto_template.h/1.5/Tue Dec 22 15:27:07 2009//
+D
