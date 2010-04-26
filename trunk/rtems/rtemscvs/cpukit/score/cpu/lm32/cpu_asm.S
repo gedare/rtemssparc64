@@ -1,5 +1,5 @@
 /*
- *  $Id: cpu_asm.S,v 1.5 2009/12/04 04:27:21 ralf Exp $
+ *  $Id: cpu_asm.S,v 1.6 2010/03/27 15:01:51 joel Exp $
  *
  *  This file contains all assembly code for the
  *  LM32 implementation of RTEMS.
@@ -16,6 +16,10 @@
  *
  *  Michael Walle <michael@walle.cc>, 2009
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/asm.h>
 #include <rtems/score/cpu_asm.h>

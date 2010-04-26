@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu_asm.c,v 1.4 2009/11/29 13:51:53 ralf Exp $
+ *  $Id: cpu_asm.c,v 1.5 2010/03/27 15:01:57 joel Exp $
  */
 
 /*
@@ -24,6 +24,10 @@
  *  and cpu.h should not be included in a "real" cpu_asm file.  An
  *  implementation in assembly should include "cpu_asm.h>
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/system.h>
 #include <rtems/score/cpu.h>

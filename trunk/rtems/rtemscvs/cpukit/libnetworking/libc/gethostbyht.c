@@ -65,6 +65,9 @@
 #include <ctype.h>
 #include <errno.h>
 #include <string.h>
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 #include <arpa/nameser.h>	/* XXX */
 #include <resolv.h>		/* XXX */
 #include <sys/fcntl.h>
@@ -252,7 +255,7 @@ again:
   if (*cur=='#' || *cur=='\n') goto parseerror;
   /* first, the ip number */
   pe->h_name=cur;
-  while (cur<last && !isspace(*cur)) cur++;
+  while (cur<last && !isspace((unsigned char)*cur)) cur++;
   if (cur>=last) return 0;
   if (*cur=='\n') goto parseerror;
   {
@@ -278,9 +281,9 @@ again:
   ++cur;
   /* now the aliases */
   for (aliasidx=0;aliasidx<9;++aliasidx) {
-    while (cur<last && isblank(*cur)) ++cur;
+    while (cur<last && isblank((unsigned char)*cur)) ++cur;
     pe->h_aliases[aliasidx]=cur;
-    while (cur<last && !isspace(*cur)) ++cur;
+    while (cur<last && !isspace((unsigned char)*cur)) ++cur;
     {
       char *from=pe->h_aliases[aliasidx];
       int len=cur-from;
@@ -291,7 +294,7 @@ again:
       *dest=0; ++dest;
     }
     if (*cur=='\n') { ++cur; ++aliasidx; break; }
-    if (cur>=last || !isblank(*cur)) break;
+    if (cur>=last || !isblank((unsigned char)*cur)) break;
     cur++;
   }
   pe->h_aliases[aliasidx]=0;

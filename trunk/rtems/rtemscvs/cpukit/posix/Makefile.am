@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.79 2009/12/10 07:18:03 ralf Exp $
+## $Id: Makefile.am,v 1.80 2010/04/03 05:58:06 ralf Exp $
 ##
 
 include $(top_srcdir)/automake/multilib.am
@@ -26,7 +26,7 @@ include_rtems_posix_HEADERS = include/rtems/posix/sigset.h
 if HAS_PTHREADS
 # include
 
-include_HEADERS = include/sched.h include/aio.h include/mqueue.h \
+include_HEADERS = include/aio.h include/mqueue.h \
     include/semaphore.h include/devctl.h
 
 # include/rtems/posix

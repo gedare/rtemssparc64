@@ -1,4 +1,4 @@
-/* $Id: xdr_mbuf.c,v 1.5 2009/11/29 13:18:56 ralf Exp $ */
+/* $Id: xdr_mbuf.c,v 1.6 2010/03/27 04:04:39 ccj Exp $ */
 
 /* xdr_mbuf is derived from xdr_mem */
 
@@ -51,6 +51,10 @@ static char *rcsid = "$FreeBSD: src/lib/libc/xdr/xdr_mem.c,v 1.8 1999/08/28 00:0
  * The MBUF stream is useful for BSDNET kernel (or RTEMS for that matter)
  * use.
  */
+
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <string.h>
 #include <rpc/types.h>

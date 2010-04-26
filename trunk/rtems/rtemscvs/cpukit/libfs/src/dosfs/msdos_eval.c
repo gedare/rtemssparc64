@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  @(#) $Id: msdos_eval.c,v 1.10 2009/06/12 01:53:33 ccj Exp $
+ *  @(#) $Id: msdos_eval.c,v 1.11 2010/03/04 06:36:51 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -108,7 +108,7 @@ msdos_eval_path(
     while ((type != MSDOS_NO_MORE_PATH) && (type != MSDOS_INVALID_TOKEN))
     {
         type = msdos_get_token(&pathname[i], pathnamelen, &token, &token_len);
-        pathnamelen += token_len;
+        pathnamelen -= token_len;
         i += token_len;
 
         fat_fd = pathloc->node_access;
@@ -152,7 +152,7 @@ msdos_eval_path(
 
                         rtems_semaphore_release(fs_info->vol_sema);
                         return (*pathloc->ops->evalpath_h)(&(pathname[i-token_len]),
-                                                           pathnamelen - token_len,
+                                                           pathnamelen + token_len,
                                                            flags, pathloc);
                     }
                 }

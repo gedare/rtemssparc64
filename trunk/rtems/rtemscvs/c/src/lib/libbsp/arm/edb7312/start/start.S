@@ -11,13 +11,8 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: start.S,v 1.8 2009/11/29 14:53:00 ralf Exp $
+ *  $Id: start.S,v 1.9 2010/04/07 21:49:45 joel Exp $
 */
-
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning You need to pass a NULL.
-#warning Please check and remove these warnings.
 
 /* Some standard definitions...*/
 
@@ -163,7 +158,8 @@ init2 :
 
 /* --- Now we enter the C code */
 
-    bl	boot_card
+	mov     r0, #0
+	bl	boot_card
 
 	ldmia	sp!, {r4-r12, lr}
 	mov	sp, r12

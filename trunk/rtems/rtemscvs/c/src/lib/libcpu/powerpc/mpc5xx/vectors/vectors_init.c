@@ -16,7 +16,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: vectors_init.c,v 1.2 2009/11/30 05:07:54 ralf Exp $
+ *  $Id: vectors_init.c,v 1.3 2010/04/07 06:45:59 thomas Exp $
  */
 #include <rtems/bspIo.h>
 #include <libcpu/vectors.h>
@@ -96,7 +96,7 @@ int except_always_enabled(const rtems_raw_except_connect_data* ptr)
   return 1;
 }
 
-void initialize_exceptions()
+void initialize_exceptions(void)
 {
   int i;
 

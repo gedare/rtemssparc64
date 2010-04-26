@@ -10,8 +10,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu_asm.S,v 1.10 2009/11/10 06:55:28 strauman Exp $
+ *  $Id: cpu_asm.S,v 1.11 2010/03/27 15:01:47 joel Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/asm.h>
 #include <rtems/score/cpu.h>

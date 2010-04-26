@@ -1,3 +1,887 @@
+2010-04-25	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* libfs/src/rfs/rtems-rfs-bitmaps-ut.c: Fix warning.
+
+2010-04-25	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* libmisc/stringto/stringto_template.h: Remove warning.
+
+2010-04-25	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* posix/src/pthread.c: Make default pthread_attr_t match the
+	conditionals in the version in newlib. This way it will always be
+	right.
+
+2010-04-25	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libcsupport/src/readv.c: Check for < 0 on iov_len, not <= 0. A
+	readv() with all iov_len equal to 0 should have no effect.
+
+2010-04-14	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/sys/mbuf.h: Use uintptr_t instead of u_long
+	for 16bit target compliance.
+	* libnetworking/libc/gethostbydns.c: Use uintptr_t instead of u_long
+	for 16bit target compliance.
+	* libnetworking/sys/sysctl.h: Change sysctl_oid->arg2 into int32_t
+	for 16bit target compliance.
+
+2010-04-13	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/shell/fts.c (fts_pow2): Rebase fts_pow2 on
+	SIZEOF_SIZE_T * CHAR_BIT.
+
+2010-04-13	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* aclocal/gcc-sanity.m4: Add RTEMS_CHECK_GCC_PRINTF_LD_OFF_T, 
+	RTEMS_CHECK_GCC_PRINTF_LLD_OFF_T.
+
+2010-04-13	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* shttpd/io_dir.c: Cast consts to size_t (Avoid overflows on implicit 
+	const casts on 16bit targets).
+
+2010-04-12	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* score/include/rtems/system.h: Let RTEMS_offsetof return uintptr_t
+	instead of uint32_t (16bit target compatibility).
+
+2010-04-12	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/monitor/mon-part.c, libmisc/monitor/mon-region.c:
+	Use rtems_monitor_dump_addr instead of rtems_monitor_dump_hex
+	to print addresses.
+
+2010-04-12	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/monitor/mon-prmisc.c, libmisc/monitor/monitor.h:
+	Add rtems_monitor_dump_addr().
+	* libmisc/monitor/mon-symbols.c: 16bit target fixes.
+
+2010-04-12	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/lib/ftpfs.c: 16bit target fixes:
+	Use ioctl_command_t as arg to rtems_ftpfs_do_ioctl.
+	Explicitly cast to uint32_t in char[] to uint32_t
+	conversion.
+
+2010-04-12	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Check for sched.h.
+	* configure.ac: Check for WORD_BIT, LONG_BIT.
+	* configure.ac: Check for flockfile, funlockfile, ftrylockfile.
+
+2010-04-12	Chris Johns <chrisj@rtems.org>
+
+	libfs/src/rfs/rtems-rfs-buffer-bdbuf.c,
+	libfs/src/rfs/rtems-rfs-buffer.c, libfs/src/rfs/rtems-rfs-data.h,
+	libfs/src/rfs/rtems-rfs-dir.c,
+	libfs/src/rfs/rtems-rfs-file-system.c,
+	libfs/src/rfs/rtems-rfs-format.c, libfs/src/rfs/rtems-rfs-inode.h,
+	libfs/src/rfs/rtems-rfs-rtems.c, libfs/src/rfs/rtems-rfs-rtems.h,
+	libfs/src/rfs/rtems-rfs-shell.c: Fix for PR1502. Clean up problems
+	on 16bit targets.
+
+2010-04-10	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/stackchk/check.c: Remove bogus casts.
+	Use PRIxPTR to printk pointers.
+
+2010-04-09	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/src/blkdev.c: Fixed disk delete.
+	* libblock/src/diskdevs.c: Obtain/release disk during open/close.
+	This avoids unprotected usage of private disk variables.
+
+2010-04-08	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* score/include/rtems/score/object.h: Documentation.
+
+2010-04-07	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* score/src/wkspace.c: Remove duplicate include.
+
+2010-04-07	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libmisc/monitor/mon-monitor.c, libmisc/monitor/monitor.h: Add const
+	to fix warning. Spacing.
+
+2010-04-07	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* score/include/rtems/system.h: Fix warnings about TRUE/FALSE not
+	defined on ARM target. This file need to be clean from .S files.
+
+2010-04-05	Thomas Znidar <t.znidar@embed-it.com>
+
+	* libmisc/monitor/mon-monitor.c, libmisc/monitor/monitor.h: Add reset
+	command.
+
+2010-04-04	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/lib/rtems_bspnet_ntp.c: #include <unistd.h>.
+
+2010-04-03	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* posix/include/sched.h: Remove.
+	* posix/Makefile.am: Remove include/sched.h.
+
+2010-04-03	Joel Sherrill <joel.sherrill@oarcorp.org>
+
+	* posix/src/psxtransschedparam.c, posix/src/pthread.c,
+	posix/src/pthreadcreate.c: Reflect POSIX sched_parm changes.
+
+2010-04-03	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* shttpd/auth.c, shttpd/config.c, shttpd/io_cgi.c,
+	shttpd/io_file.c, shttpd/io_socket.c, shttpd/shttpd.c:
+	#include <unistd.h>.
+
+2010-04-02	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/sys/select.h: #include <sys/time.h>.
+
+2010-04-02	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libcsupport/src/isatty_r.c, libcsupport/src/malloc_sbrk_helpers.c:
+	#include <unistd.h>.
+	* posix/src/sched_rr_get_interval.c: #include <unistd.h>.
+
+2010-03-30	Chris Johns <chrisj@rtems.org>
+
+	* libfs/src/dosfs/msdos_misc.c: Fix PR1491.
+	
+2010-03-28	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* score/src/isrthreaddispatch.c: Add include of config.h
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/stringto/stringto_template.h: Reorder includes.
+	* libmisc/stringto/stringtodouble.c,
+	libmisc/stringto/stringtofloat.c,
+	libmisc/stringto/stringtoint.c,
+	libmisc/stringto/stringtolong.c,
+	libmisc/stringto/stringtolonglong.c, 
+	libmisc/stringto/stringtopointer.c
+	libmisc/stringto/stringtounsignedchar.c
+	libmisc/stringto/stringtounsignedint.c
+	libmisc/stringto/stringtounsignedlong.c
+	libmisc/stringto/stringtounsignedlonglong.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/libc/getnetnamadr.c,
+	librpc/src/rpc/svc.c:
+	Add HAVE_STRINGS_H for better POSIX compliance.
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/net/if.c, libnetworking/net/if_ethersubr.c,
+	libnetworking/net/if_loop.c, libnetworking/net/if_ppp.c,
+	libnetworking/net/ppp_tty.c, libnetworking/net/radix.c,
+	libnetworking/net/raw_cb.c, libnetworking/net/raw_usrreq.c,
+	libnetworking/net/route.c, libnetworking/net/rtsock.c,
+	libnetworking/net/slcompress.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/netinet/if_ether.c, libnetworking/netinet/igmp.c,
+	libnetworking/netinet/in.c, libnetworking/netinet/in_cksum.c,
+	libnetworking/netinet/in_pcb.c, libnetworking/netinet/in_proto.c,
+	libnetworking/netinet/in_rmx.c, libnetworking/netinet/ip_divert.c,
+	libnetworking/netinet/ip_fw.c, libnetworking/netinet/ip_icmp.c,
+	libnetworking/netinet/ip_input.c, libnetworking/netinet/ip_mroute.c,
+	libnetworking/netinet/ip_output.c, libnetworking/netinet/raw_ip.c,
+	libnetworking/netinet/tcp_debug.c, libnetworking/netinet/tcp_input.c,
+	libnetworking/netinet/tcp_output.c, libnetworking/netinet/tcp_subr.c,
+	libnetworking/netinet/tcp_timer.c, libnetworking/netinet/tcp_usrreq.c,
+	libnetworking/netinet/udp_usrreq.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/lib/ftpfs.c, libnetworking/lib/getprotoby.c,
+	libnetworking/lib/rtems_bsdnet_ntp.c, libnetworking/lib/syslog.c,
+	libnetworking/lib/tftpDriver.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/libc/getifaddrs.c,
+	* libnetworking/libc/if_indextoname.c,
+	libnetworking/libc/if_nameindex.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmd/md4.c, libmd/md5.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/Makefile.am: Add stringto/stringto_template.h to
+	libstringto_a_SOURCES.
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libfs/src/pipe/pipe.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libblock/src/bdpart.c, libblock/src/ramdisk-config.c,
+	libblock/src/ramdisk-driver.c, libblock/src/ramdisk-init.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* librpc/src/xdr/xdr.c, librpc/src/xdr/xdr_array.c,
+	librpc/src/xdr/xdr_float.c, librpc/src/xdr/xdr_mem.c,
+	librpc/src/xdr/xdr_rec.c, librpc/src/xdr/xdr_reference.c,
+	librpc/src/xdr/xdr_sizeof.c, librpc/src/xdr/xdr_stdio.c
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* librpc/src/rpc/auth_none.c, librpc/src/rpc/auth_unix.c,
+	librpc/src/rpc/authunix_prot.c, librpc/src/rpc/bindresvport.c,
+	librpc/src/rpc/clnt_generic.c, librpc/src/rpc/clnt_perror.c,
+	librpc/src/rpc/clnt_raw.c, librpc/src/rpc/clnt_simple.c,
+	librpc/src/rpc/clnt_tcp.c, librpc/src/rpc/clnt_udp.c,
+	librpc/src/rpc/get_myaddress.c, librpc/src/rpc/getrpcent.c,
+	librpc/src/rpc/getrpcport.c, librpc/src/rpc/netname.c,
+	librpc/src/rpc/netnamer.c, librpc/src/rpc/pmap_clnt.c,
+	librpc/src/rpc/pmap_getmaps.c, librpc/src/rpc/pmap_getport.c,
+	librpc/src/rpc/pmap_prot.c, librpc/src/rpc/pmap_prot2.c,
+	librpc/src/rpc/pmap_rmt.c, librpc/src/rpc/rpc_callmsg.c,
+	librpc/src/rpc/rpc_commondata.c, librpc/src/rpc/rpc_dtablesize.c,
+	librpc/src/rpc/rpc_prot.c, librpc/src/rpc/rpcdname.c,
+	librpc/src/rpc/rtems_portmapper.c, librpc/src/rpc/rtems_rpc.c,
+	librpc/src/rpc/rtime.c, librpc/src/rpc/svc.c,
+	librpc/src/rpc/svc_auth.c, librpc/src/rpc/svc_auth_unix.c,
+	librpc/src/rpc/svc_raw.c, librpc/src/rpc/svc_run.c,
+	librpc/src/rpc/svc_simple.c, librpc/src/rpc/svc_tcp.c,
+	librpc/src/rpc/svc_udp.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-27	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libgnat/ada_intrsupp.c, telnetd/check_passwd.c, telnetd/des.c,
+	telnetd/genpw.c: Add include of config.h
+
+2010-03-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libcsupport/src/termios_baud2index.c,
+	libcsupport/src/termios_baud2num.c, libcsupport/src/termios_num2baud.c
+	libcsupport/src/termios_setinitialbaud.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/bspcmdline/bspcmdline.h: Minimize includes.
+	* libmisc/bspcmdline/bspcmdline_get.c,
+	libmisc/bspcmdline/bspcmdline_getparam.c,
+	libmisc/bspcmdline/bspcmdline_getparamraw.c,
+	libmisc/bspcmdline/bspcmdline_getparamrhs.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/uuid/clear.c, libmisc/uuid/compare.c,
+	libmisc/uuid/copy.c, libmisc/uuid/isnull.c,
+	libmisc/uuid/pack.c, libmisc/uuid/parse.c,
+	libmisc/uuid/unpack.c, libmisc/uuid/unparse.c,
+	libmisc/uuid/uuid_time.c:
+	Add HAVE_CONFIG_H guards around #include "config.h".
+
+2010-03-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/monitor/mon-symbols.c:
+	Add HAVE_STRINGS_H for better POSIX compliance.
+
+2010-03-27	Chris Johns <chrisj@rtems.org>
+
+	libfs/src/nfsclient/src/cexphelp.c,
+	libfs/src/nfsclient/src/dirutils.c,
+	libfs/src/nfsclient/src/nfs.modini.c,
+	libfs/src/nfsclient/src/nfsTest.c,
+	libfs/src/nfsclient/src/rpcio.c,
+	libfs/src/nfsclient/src/rpcio.modini.c,
+	libfs/src/nfsclient/src/sock_mbuf.c,
+	libfs/src/nfsclient/src/xdr_mbuf.c,
+	libfs/src/rfs/rtems-rfs-bitmaps-ut.c,
+	libfs/src/rfs/rtems-rfs-bitmaps.c,
+	libfs/src/rfs/rtems-rfs-block.c,
+	libfs/src/rfs/rtems-rfs-buffer-bdbuf.c,
+	libfs/src/rfs/rtems-rfs-buffer-devio.c,
+	libfs/src/rfs/rtems-rfs-buffer.c,
+	libfs/src/rfs/rtems-rfs-dir-hash.c, libfs/src/rfs/rtems-rfs-dir.c,
+	libfs/src/rfs/rtems-rfs-file-system.c,
+	libfs/src/rfs/rtems-rfs-file.c, libfs/src/rfs/rtems-rfs-format.c,
+	libfs/src/rfs/rtems-rfs-group.c, libfs/src/rfs/rtems-rfs-inode.c,
+	libfs/src/rfs/rtems-rfs-link.c, libfs/src/rfs/rtems-rfs-mutex.c,
+	libfs/src/rfs/rtems-rfs-rtems-dev.c,
+	libfs/src/rfs/rtems-rfs-rtems-dir.c,
+	libfs/src/rfs/rtems-rfs-rtems-file.c,
+	libfs/src/rfs/rtems-rfs-rtems-utils.c,
+	libfs/src/rfs/rtems-rfs-rtems.c, libfs/src/rfs/rtems-rfs-shell.c,
+	libfs/src/rfs/rtems-rfs-trace.c: Add HAVE_CONFIG_H support to let
+	files receive configure defines.
+
+2010-03-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/libc/gethostbydns.c, libnetworking/libc/gethostbyht.c,
+	libnetworking/libc/gethostnamadr.c, libnetworking/libc/getnetbyht.c,
+	libnetworking/libc/linkaddr.c, libnetworking/libc/ns_print.c,
+	libnetworking/libc/res_debug.c, libnetworking/libc/res_query.c,
+	libnetworking/libc/res_send.c, libnetworking/libc/res_update.c:
+	Add HAVE_STRINGS_H for better POSIX compliance.
+
+2010-03-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/monitor/mon-command.c: 
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/shell/hexdump-display.c, libmisc/shell/hexdump-parse.c,
+	libmisc/shell/hexsyntax.c, libmisc/shell/main_hexdump.c,
+	libmisc/shell/main_rm.c: 
+	Add HAVE_STRINGS_H for better POSIX compliance.
+
+2010-03-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* shttpd/auth.c, shttpd/io_emb.c, shttpd/mime_type.c,
+	shttpd/shttpd.c: Add HAVE_STRINGS_H for better POSIX compliance.
+
+2010-03-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/shell/dd-args.c, libmisc/shell/dd-conv.c,
+	libmisc/shell/dd-conv_tab.c, libmisc/shell/dd-misc.c,
+	libmisc/shell/dd-position.c, libmisc/shell/fdisk.c,
+	libmisc/shell/fts.c, libmisc/shell/hexdump-conv.c,
+	libmisc/shell/hexdump-display.c, libmisc/shell/hexdump-odsyntax.c,
+	libmisc/shell/hexdump-parse.c, libmisc/shell/hexsyntax.c,
+	libmisc/shell/login_check.c, libmisc/shell/login_prompt.c,
+	libmisc/shell/main_dd.c, libmisc/shell/main_hexdump.c,
+	libmisc/shell/main_ln.c, libmisc/shell/main_mknod.c,
+	libmisc/shell/main_rtc.c, libmisc/shell/mknod-pack_dev.c:
+	Add HAVE_CONFIG_H support to let files receive configure defines.
+
+2010-03-26	Chris Johns <chrisj@rtems.org>
+
+	* libfs/src/dosfs/msdos_misc.c: Part fix to PR1491.
+
+2010-03-22	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libfs/src/rfs/rtems-rfs-bitmaps-ut.c,
+	libfs/src/rfs/rtems-rfs-block.c, libfs/src/rfs/rtems-rfs-buffer.c,
+	libfs/src/rfs/rtems-rfs-dir.c, libfs/src/rfs/rtems-rfs-file.c,
+	libfs/src/rfs/rtems-rfs-format.c, libfs/src/rfs/rtems-rfs-group.c,
+	libfs/src/rfs/rtems-rfs-rtems-file.c,
+	libfs/src/rfs/rtems-rfs-shell.c: Fix printf format warning. Primarily
+	for size_t.
+
+2010-03-22	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libcsupport/src/sleep_noposix.c: Fix warning and bug.
+
+2010-03-16	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libmisc/shell/shell_makeargs.c: Fix bugs introduced by patch
+	attempting to add quoted arguments.
+
+2010-03-12	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libblock/src/ide_part_table.c: Functionality of
+	rtems_ide_part_table_get() and rtems_ide_part_table_free() was needed
+	internally but those routines are deprecated from the public API. So
+	move their contents to private static routines. Using the private
+	routines in this file avoids deprecation warnings and leaves
+	functional, although deprecated, versions for potential use by
+	applications.
+
+2010-03-12	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* ftpd/ftpd.c, httpd/asp.c, httpd/ejparse.c, httpd/emfdb.c,
+	httpd/misc.c, httpd/um.c, httpd/webs.c, httpd/websuemf.c,
+	libfs/src/dosfs/msdos_dir.c, libfs/src/dosfs/msdos_format.c,
+	libfs/src/dosfs/msdos_misc.c, libfs/src/nfsclient/src/nfs.c,
+	libmisc/capture/capture-cli.c, libmisc/monitor/mon-network.c,
+	libmisc/shell/hexdump-odsyntax.c, libmisc/shell/main_ifconfig.c,
+	libmisc/shell/shell.c, libmisc/shell/shell_makeargs.c,
+	libmisc/uuid/parse.c, libnetworking/libc/gethostbydns.c,
+	libnetworking/libc/gethostbyht.c, libnetworking/libc/gethostnamadr.c,
+	libnetworking/libc/getnetnamadr.c, libnetworking/libc/inet_addr.c,
+	libnetworking/libc/inet_network.c, libnetworking/libc/res_debug.c,
+	libnetworking/libc/res_init.c, libnetworking/libc/res_query.c,
+	libnetworking/rtems/rtems_mii_ioctl.c,
+	score/src/objectgetnameasstring.c: Readdress use of ctype methods per
+	recommendation from D.J. Delorie on the newlib mailing list. We
+	should pass an unsigned char into these methods.
+
+2010-03-11	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libfs/src/dosfs/msdos_misc.c: Do not overwrite errno in case
+	fat_file_write() returns with an error status.
+
+2010-03-11	Ken Peters <kptrs@yahoo.com>
+
+	PR 1456/cpukit
+	* libcsupport/src/ttyname.c: ttyname_r() when called directly (not via
+	ttyname()) does not prefix the caller provided buffer with the
+	predefined _PATH_DEV string (/dev/). Thus the directory search fails
+	and no tty name is returned to the caller.
+
+2010-03-11	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* ftpd/ftpd.c, httpd/uemf.c, httpd/um.c, httpd/webs.c,
+	httpd/websuemf.c, libblock/src/diskdevs.c,
+	libmisc/capture/capture-cli.c, libmisc/monitor/mon-network.c,
+	libmisc/shell/hexdump-odsyntax.c, libmisc/shell/main_ifconfig.c,
+	libmisc/uuid/parse.c, libnetworking/lib/ftpfs.c,
+	libnetworking/libc/gethostbyht.c, libnetworking/libc/getnetnamadr.c,
+	libnetworking/libc/inet_network.c,
+	libnetworking/rtems/rtems_mii_ioctl.c,
+	score/src/objectgetnameasstring.c: Fix warnings for ctype methods.
+
+2010-03-11	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libmisc/shell/shell_makeargs.c: Fix warnings.
+
+2010-03-11	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	PR 1458/cpukit
+	* rtems/inline/rtems/rtems/asr.inl: Do not enable signals by default.
+	Wait for a signal handler to be installed.
+
+2010-03-11	Andrei Mozzhuhin <nopscmn@gmail.com>
+
+	PR 1496/shell
+	* libmisc/shell/shell_makeargs.c: Add support for quoted arguments.
+
+2010-03-10	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* score/include/rtems/score/interr.h,
+	score/src/objectinitializeinformation.c: Add new fatal error for
+	configuring unlimited and maximum of 0.
+
+2010-03-09	Joel Sherrill <joel.sherrilL@oarcorp.com>
+
+	* libmisc/Makefile.am: Remove duplicate file from list.
+
+2010-03-04	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libblock/src/ramdisk-config.c: Revert accidental commit.
+
+2010-03-04	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libblock/src/ramdisk-config.c, sapi/include/confdefs.h:
+	CONFIGURE_DISABLE_CLASSIC_NOTEPADS is typo of
+	CONFIGURE_DISABLE_CLASSIC_API_NOTEPADS. Fix it.
+
+2010-03-04	Chris Johns <chrisj@rtems.org>
+
+	* libcsupport/include/rtems/libio.h, libcsupport/src/_rename_r.c:
+	Add a rename file op and have rename use it.
+
+	* libfs/Makefile.am, libfs/src/dosfs/msdos_rename.c,
+	libfs/src/imfs/imfs_rename.c: New files to support the rename file
+	op.
+
+	* libfs/src/imfs/imfs.h: Add rename interface.
+
+	* libfs/src/imfs/imfs_init.c: Add rename handler.
+
+	* libfs/src/imfs/miniimfs_init.c: Fix up ops struct.
+	
+	* libfs/src/dosfs/msdos.h: Add msdos_rename and remove
+	msdos_file_link.
+
+	* libfs/src/dosfs/msdos_create.c: Remove the link call.
+	
+	* libfs/src/dosfs/msdos_eval.c: Fix a path parsing bug.
+
+	* libfs/src/dosfs/msdos_init.c: Add rename handler and clean up
+	the struct naming.
+
+	* libfs/src/rfs/rtems-rfs-link.c, libfs/src/rfs/rtems-rfs-link.h:
+	Change the link call to allow linking of directories if told to
+	and change the unlink to handle unlink directories that are not
+	empty so rename can be supported.
+
+	* libfs/src/rfs/rtems-rfs-rtems-dir.c: Fix the link/unlink calls.
+
+	* libfs/src/rfs/rtems-rfs-rtems.c: Add a rename handler. Fix the
+	link/unlink calls.
+	
+	* libfs/src/dosfs/msdos_dir.c, libfs/src/dosfs/msdos_format.c,
+	libfs/src/dosfs/msdos_misc.c, httpd/asp.c,
+	libfs/src/nfsclient/src/nfs.c: Work around a newlib warning when
+	using the is*() family of calls.
+
+2010-03-01	Chris Johns <chrisj@rtems.org>
+
+	* libfs/src/rfs/rtems-rfs-buffer.h: Add `rtems_rfs_buffer_handle_reset'.
+
+2010-02-28	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libmisc/shell/shell_script.c: Fix typo.
+
+2010-02-26	Chris Johns <chrisj@rtems.org>
+
+	* libfs/src/rfs/rtems-rfs-block.c: Reset a buffer handle after
+	moving down an indirection level.
+
+	* libfs/src/rfs/rtems-rfs-dir.c: Move directory entry validation
+	into a macro and use the macro. Fix the range check on the ino so
+	all inodes can be used.
+
+	* libfs/src/rfs/rtems-rfs-file-system.c,
+	libfs/src/rfs/rtems-rfs-file-system.h:: Add a version number to
+	the superblock. Use RTEMS_RFS_INODE_SIZE.
+
+	* libfs/src/rfs/rtems-rfs-file.c: Fix the size offset on partial
+	block lengths. Set the size in the file handle on a truncate to
+	0.
+
+	* libfs/src/rfs/rtems-rfs-format.c:  Add a version number to
+	the superblock. Use RTEMS_RFS_INODE_SIZE. A better set of defaults
+	for small disks.
+
+	* libfs/src/rfs/rtems-rfs-inode.c: Use RTEMS_RFS_INODE_SIZE. Free
+	the allocated inode if it cannot be opened.
+
+	* libfs/src/rfs/rtems-rfs-inode.h: Add RTEMS_RFS_INODE_SIZE.
+
+	* libfs/src/rfs/rtems-rfs-rtems-file.c: Move some of the iop
+	acceses inside the fs lock.
+
+	* libfs/src/rfs/rtems-rfs-shell.c: Use RTEMS_RFS_INODE_SIZE.
+
+2010-02-24	Chris Johns <chrisj@rtems.org>
+
+	* libmisc/shell/main_msdosfmt.c, libmisc/shell/shellconfig.h: Fix
+	the alias as I did understand how it worked.
+
+	* libfs/src/dosfs/msdos_format.c: Test for a block device.
+
+2010-02-23	Chris Johns <chrisj@rtems.org>
+
+	* libfs/src/rfs/rtems-rfs-dir.c: Fix printf format warning for a
+	64bit off_t.
+	
+	* libfs/src/rfs/rtems-rfs-file-system.h: Add a macro to get the
+	file system flags.
+	
+	* libfs/src/rfs/rtems-rfs-group.c,
+	libfs/src/rfs/rtems-rfs-group.h: Add rtems_rfs_group_usage.
+	
+	* libfs/src/rfs/rtems-rfs-rtems.c: Fill in all the fields in the
+	statvfs struct.
+	
+	* libfs/src/rfs/rtems-rfs-shell.c: Use rtems_rfs_group_usage.
+
+2010-02-20	Chris Johns <chrisj@rtems.org>
+
+	* libfs/src/dosfs/fat.c, libfs/src/rfs/rtems-rfs-buffer.c: Block
+	devices are now block device nodes and not character device
+	nodes.
+
+2010-02-19	Chris Johns <chrisj@rtems.org>
+
+	* libblock/src/diskdevs.c: Create the devices as block devices.
+
+	* libmisc/shell/main_debugrfs.c, libmisc/shell/main_mkrfs.c,
+	libmisc/shell/main_mount_rfs.c: New.
+
+	* libmisc/shell/main_msdosfmt.c: Change the command to mkdos and
+	alias the old name.
+
+	* libmisc/shell/shellconfig.h, libmisc/Makefile.am: Add RFS
+	support.
+
+	* libfs/src/rfs/rtems-rfs-shell.c,
+	libfs/src/rfs/rtems-rfs-shell.h: Move the format command code into
+	the shell file.
+	
+2010-02-18	Chris Johns <chrisj@rtems.org>
+
+	* libfs/src/rfs/rtems-rfs-bitmaps.c,
+	libfs/src/rfs/rtems-rfs-bitmaps.h,
+	libfs/src/rfs/rtems-rfs-bitmaps-ut.c,
+	libfs/src/rfs/rtems-rfs-block.c, libfs/src/rfs/rtems-rfs-block.h,
+	libfs/src/rfs/rtems-rfs-block-pos.h,
+	libfs/src/rfs/rtems-rfs-buffer-bdbuf.c,
+	libfs/src/rfs/rtems-rfs-buffer.c,
+	libfs/src/rfs/rtems-rfs-buffer-devio.c,
+	libfs/src/rfs/rtems-rfs-buffer.h, libfs/src/rfs/rtems-rfs-data.h,
+	libfs/src/rfs/rtems-rfs-dir.c, libfs/src/rfs/rtems-rfs-dir.h,
+	libfs/src/rfs/rtems-rfs-dir-hash.c,
+	libfs/src/rfs/rtems-rfs-dir-hash.h,
+	libfs/src/rfs/rtems-rfs-file.c, libfs/src/rfs/rtems-rfs-file.h,
+	libfs/src/rfs/rtems-rfs-file-system.c,
+	libfs/src/rfs/rtems-rfs-file-system-fwd.h,
+	libfs/src/rfs/rtems-rfs-file-system.h,
+	libfs/src/rfs/rtems-rfs-format.c,
+	libfs/src/rfs/rtems-rfs-format.h, libfs/src/rfs/rtems-rfs-group.c,
+	libfs/src/rfs/rtems-rfs-group.h, libfs/src/rfs/rtems-rfs.h,
+	libfs/src/rfs/rtems-rfs-inode.c, libfs/src/rfs/rtems-rfs-inode.h,
+	libfs/src/rfs/rtems-rfs-link.c, libfs/src/rfs/rtems-rfs-link.h,
+	libfs/src/rfs/rtems-rfs-mutex.c, libfs/src/rfs/rtems-rfs-mutex.h,
+	libfs/src/rfs/rtems-rfs-rtems.c,
+	libfs/src/rfs/rtems-rfs-rtems-dev.c,
+	libfs/src/rfs/rtems-rfs-rtems-dir.c,
+	libfs/src/rfs/rtems-rfs-rtems-file.c,
+	libfs/src/rfs/rtems-rfs-rtems.h,
+	libfs/src/rfs/rtems-rfs-rtems-utils.c,
+	libfs/src/rfs/rtems-rfs-shell.c, libfs/src/rfs/rtems-rfs-shell.h,
+	libfs/src/rfs/rtems-rfs-trace.c, libfs/src/rfs/rtems-rfs-trace.h:
+	New.
+
+	* Makefile.am, preinstall.am, libfs/Makefile.am,
+	wrapup/Makefile.am: Updated with the RFS support.
+
+	* libfs/README: Updated after 10 years.
+
+	* libblock/src/flashdisk.c, libblock/src/nvdisk.c,
+	libblock/src/ramdisk-driver.c: Updated to the new error reporting
+	in libblock.
+	
+	* libmisc/shell/main_ls.c, libmisc/shell/print-ls.c: Fix printing
+	the size in long mode.
+
+	* libnetworking/nfs/bootp_subr.c,
+	libnetworking/rtems/rtems_bootp.c,
+	libnetworking/rtems/rtems_bsdnet_internal.h: Return the BOOTP/DHCP
+	to the forever behaviour of 4.9 with the ability to call BOOTP and
+	control the process if required.
+	
+2010-02-16	Chris Johns <chrisj@rtems.org>
+
+	* libcsupport/src/open.c: Tighten the open handler check.
+
+2010-02-16	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libcsupport/src/rmdir.c, libcsupport/src/unlink.c: Free the
+	allocated pathloc.
+	
+2010-02-01	Chris Johns <chrisj@rtems.org>
+
+	* libmisc/shell/fts.c: Updated to the latest NetBSD version to
+	resolve heap allocation bugs.
+	* libmisc/shell/main_ls.c, libmisc/shell/print-ls.c: Fix printing
+	size bugs.
+	* libnetworking/rtems/mkrootfs.c: Fix byte order bug when creating
+	the loopback interface address.
+	
+2010-01-28	Sebastian Huber <sebastian.huber@embedded-brains.de>
+	* libblock/src/bdbuf.c: Fixed invalid chain extract.
+
+2010-01-26	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/include/rtems/bdbuf.h: Documentation.  New states
+	RTEMS_BDBUF_STATE_ACCESS_PURGED and RTEMS_BDBUF_STATE_TRANSFER_PURGED.
+	Declare rtems_bdbuf_purge_dev() and rtems_bdbuf_purge_major().
+	* libblock/src/bdbuf.c: Implemented ability to purge buffers from the
+	cache depending on the device identifier or major number.  See test
+	"libtests/block10".
+
+2010-01-26	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* score/src/userextaddapiset.c: Removed file.
+	* score/Makefile.am: Update for removed file.
+	* sapi/include/rtems/extension.h, sapi/src/extensioncreate.c,
+	score/include/rtems/score/userext.h: The function
+	_User_extensions_Add_API_set is now inline.  Added const qualifier to
+	extension table parameter in extension create and set functions.
+
+2010-01-20	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 30
+	* libmisc/shell/hexdump-parse.c:
+
+2010-01-20	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 1
+	* libmisc/shell/fts.c:
+
+2010-01-20	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 7
+	Coverity Id 8
+	* libblock/src/bdpart.c: Verify libblock is really set after
+	rtems_bdbuf_read() before using it.
+
+2010-01-20	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 5
+	* score/src/objectextendinformation.c: Check object_blocks for NULL to
+	determine when to allocate object block table.
+
+2010-01-20	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 27
+	* libmisc/fsmount/fsmount.c: Ensure calloc() returns memory and then we
+	do not have to check null when freeing it. Coverity noted it was used
+	before being checked for NULL.
+
+2010-01-20	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 3
+	* libmisc/shell/shell.c: Remove dead code path and fix warning.
+
+2010-01-20	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libmisc/shell/hexdump-parse.c: Fix uninitialized warning.
+
+2010-01-20	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 30
+	* libmisc/shell/hexdump-parse.c: Add free(pr) before returning.
+
+2010-01-20	Chris Johns <chrisj@rtems.org>
+
+	Coverity Id 6
+	* libmisc/shell/hexdump-parse.c: Modify conditional to avoid NULL
+	dereference.
+
+2010-01-20	Chris Johns <chrisj@rtems.org>
+
+	Coverity Id 9
+	* libmisc/shell/main_ls.c: Modify conditional to avoid NULL
+	dereference.
+
+2010-01-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 10
+	* libblock/src/bdbuf.c: Rework loop conditional to avoid potential use
+	of NULL pointer.
+
+2010-01-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 23
+	* libmisc/monitor/mon-monitor.c: Add fclose() of file.
+
+2010-01-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libblock/src/ide_part_table.c: Another error path without a
+	free(sector).
+
+2010-01-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 28
+	* libcsupport/src/termios.c: Set then unconditionally to avoid
+	potential paths where it might be used uninitialized. Recommended by
+	Eric Norum.
+
+2010-01-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 18
+	* libmisc/shell/fts.c: Add free(parent) to correct leak.
+
+2010-01-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 24
+	* libblock/src/ide_part_table.c: Initialize sector to NULL and add
+	free(sector) on error return path from get_sector() to fix potential
+	leak.
+
+2010-01-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 25
+	* libblock/src/ide_part_table.c: Add free(sector) on error return path
+	to fix leak.
+
+2010-01-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 5
+	* score/src/objectinitializeinformation.c: Do not modify maximum
+	parameter. Clean up and simplify code. This should help the Coverity
+	path analysis to avoid reporting issues.
+
+2010-01-19	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libfs/src/imfs/imfs.h, libfs/src/imfs/imfs_creat.c,
+	libfs/src/imfs/imfs_initsupp.c, libfs/src/imfs/imfs_link.c,
+	libfs/src/imfs/imfs_load_tar.c, libfs/src/imfs/imfs_mknod.c,
+	libfs/src/imfs/imfs_symlink.c: Create special helper method for
+	creating the j-node for the root directory. This lets us assume that
+	every j-node created otherwise has a parent node.
+
+2010-01-18	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/include/rtems/bdbuf.h: Documentation.  Renamed
+	RTEMS_BDBUF_STATE_EMPTY in RTEMS_BDBUF_STATE_FREE.  Renamed
+	RTEMS_BDBUF_STATE_FRESH in RTEMS_BDBUF_STATE_EMPTY.  Renamed
+	RTEMS_BDBUF_STATE_ACCESS in RTEMS_BDBUF_STATE_ACCESS_CACHED.  New
+	state RTEMS_BDBUF_STATE_ACCESS_EMPTY.  Removed error field from
+	rtems_bdbuf_buffer.
+	* libblock/include/rtems/blkdev.h:  Documentation.  Removed error
+	field from block device IO control.
+	* libblock/src/bdbuf.c: Update for block device API change.  New block
+	device driver error policies.  A transfer error or a write to a
+	deleted disk will invalidate the block data now.  See test
+	"libtests/block09".  A get and release sequence will no longer trigger
+	a disk write.
+	* libblock/src/flashdisk.c, libblock/src/nvdisk.c,
+	libblock/src/ramdisk-driver.c: Update for block device API change.
+
+2010-01-18	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 27
+	* libblock/src/ramdisk-config.c: Coverity notes that the
+	calloc() is a resource leak.  This is allocating memory for
+	a RAM disk which will persist for the life of the system. RTEMS
+	has no "de-initialize" driver call so there is no corresponding
+	free(r).  Coverity is correct that it is never freed but this is
+	not a problem.
+
+2010-01-18	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libmisc/stackchk/check.c: Fix warning.
+
+2010-01-18	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 12
+	* libfs/src/imfs/memfile.c: Check for NULL return value.
+
+2010-01-18	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 19
+	Coverity Id 20
+	Coverity Id 21
+	* libfs/src/imfs/imfs_link.c, libfs/src/imfs/imfs_load_tar.c,
+	libfs/src/imfs/imfs_mknod.c: Add comment to explain allocation is
+	for life of file, not scope of method.
+
+2010-01-18	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 12
+	Coverity Id 13
+	Coverity Id 14
+	Coverity Id 15
+	* libmisc/stackchk/check.c: Rewrote loop to avoid possible buffer
+	overruns when the pattern area size is not a multiple of 16.  There
+	were no current ports impacted by this but better to be safe.
+
+2010-01-18	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	Coverity Id 22
+	* libfs/src/imfs/imfs_symlink.c: Add comment to explain why this
+	is not a resource leak.
+
+2010-01-18	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libfs/src/imfs/imfs_symlink.c: Spacing.
+
+2009-12-28	Shrikant Gaikwad <n3oo3n@gmail.com>
+
+	* cpukit/libfs/src/pipe/pipe.c Restructured code to remove the
+	goto statements.
+
 2009-12-21	Joel Sherrill <joel.sherrill@oarcorp.com>
 
 	* libnetworking/lib/ftpfs.c: Use EINVAL not EBADRQC.

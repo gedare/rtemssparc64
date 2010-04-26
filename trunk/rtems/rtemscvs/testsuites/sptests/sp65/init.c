@@ -6,10 +6,11 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.7 2009/11/30 03:33:25 ralf Exp $
+ *  $Id: init.c,v 1.8 2010/04/03 06:04:25 ralf Exp $
  */
 
 #include <tmacros.h>
+#include <unistd.h>
 
 #if defined(INHERIT_CEILING)
   #define TEST_NAME                "66"

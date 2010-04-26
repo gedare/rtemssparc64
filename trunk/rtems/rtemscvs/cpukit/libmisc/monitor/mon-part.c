@@ -1,7 +1,7 @@
 /*
  * RTEMS Monitor partition support
  *
- *  $Id: mon-part.c,v 1.6 2009/11/29 12:12:39 ralf Exp $
+ *  $Id: mon-part.c,v 1.7 2010/04/12 15:25:43 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -60,7 +60,7 @@ rtems_monitor_part_dump(
     length += rtems_monitor_pad(18, length);
     length += rtems_monitor_dump_attributes(monitor_part->attribute);
     length += rtems_monitor_pad(30, length);
-    length += rtems_monitor_dump_hex((uint32_t)monitor_part->start_addr);
+    length += rtems_monitor_dump_addr(monitor_part->start_addr);
     length += rtems_monitor_pad(40, length);
     length += rtems_monitor_dump_hex(monitor_part->length);
     length += rtems_monitor_pad(50, length);

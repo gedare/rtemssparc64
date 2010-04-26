@@ -12,7 +12,7 @@
  * and disclaimer, appears in all copies. Radstone Technology will provide
  * no support for this code.
  *
- *  $Id: ns16550_p.h,v 1.14 2009/07/17 13:53:24 thomas Exp $
+ *  $Id: ns16550_p.h,v 1.15 2010/04/09 22:44:05 thomas Exp $
  */
 
 #ifndef _NS16550_P_H_
@@ -171,16 +171,16 @@ NS16550_STATIC int ns16550_negate_DTR(
 
 NS16550_STATIC void ns16550_initialize_interrupts(int minor);
 
-NS16550_STATIC int ns16550_write_support_int(
+NS16550_STATIC ssize_t ns16550_write_support_int(
   int   minor,
   const char *buf,
-  int   len
+  size_t len
 );
 
-NS16550_STATIC int ns16550_write_support_polled(
+NS16550_STATIC ssize_t ns16550_write_support_polled(
   int   minor,
   const char *buf,
-  int   len
+  size_t len
   );
 
 NS16550_STATIC int ns16550_inbyte_nonblocking_polled(

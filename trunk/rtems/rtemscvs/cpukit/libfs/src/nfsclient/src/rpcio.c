@@ -1,4 +1,4 @@
-/* $Id: rpcio.c,v 1.8 2009/11/29 13:18:56 ralf Exp $ */
+/* $Id: rpcio.c,v 1.9 2010/03/27 04:04:39 ccj Exp $ */
 
 /* RPC multiplexor for a multitasking environment */
 
@@ -60,6 +60,10 @@
  *
  * ------------------ SLAC Software Notices, Set 4 OTT.002a, 2004 FEB 03
  */
+
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems.h>
 #include <rtems/error.h>

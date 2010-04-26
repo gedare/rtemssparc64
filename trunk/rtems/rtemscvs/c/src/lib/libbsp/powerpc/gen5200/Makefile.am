@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.39 2009/11/04 04:20:45 ralf Exp $
+## $Id: Makefile.am,v 1.40 2010/03/22 16:21:00 thomas Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -61,7 +61,8 @@ libbsp_a_SOURCES += bestcomm/include/ppctypes.h \
     bestcomm/task_api/tasksetup_general.h
 
 # clock
-libbsp_a_SOURCES += clock/clock.c ../../../shared/clockdrv_shell.h
+# clock
+libbsp_a_SOURCES += ../shared/clock/clock.c
 # console
 libbsp_a_SOURCES += console/console.c
 # i2c

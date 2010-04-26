@@ -1,3 +1,52 @@
+2010-04-25	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* ppc403/clock/clock.c, ppc403/console/console405.c,
+	ppc403/tty_drv/tty_drv.c: Remove warnings and simple vectored
+	interrupt support.
+
+2010-04-07      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* shared/include/cpuIdent.c, shared/include/cpuIdent.h: skip
+	version nibble when detecting e200 processor version
+	* mpc55xx/edma/edma.c, mpc55xx/include/irq.h,
+	mpc55xx/include/reg-defs.h, mpc55xx/include/regs.h,
+	mpc55xx/misc/copy.S, mpc55xx/misc/fmpll.S:
+	renamed MPC55XX_CHIP_DERIVATE to MPC55XX_CHIP_TYPE
+
+2010-04-07      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* mpc55xx/edma/edma.c, mpc55xx/esci/esci.c, mpc55xx/include/irq.h,
+	mpc55xx/include/reg-defs.h, mpc55xx/include/regs.h,
+	mpc55xx/misc/copy.S, mpc55xx/misc/fmpll.S, mpc5xx/irq/irq_init.c,
+	mpc5xx/vectors/vectors_init.c,
+	new-exceptions/bspsupport/ppc_exc_address.c,
+	new-exceptions/bspsupport/ppc_exc_categories.c,
+	new-exceptions/bspsupport/ppc_exc_initialize.c,
+	shared/include/cpuIdent.c, shared/include/cpuIdent.h: adapted for
+	GW_LCFM support
+
+2010-03-27      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* ppc403/clock/clock.c, ppc403/clock/clock_4xx.c: code changes to
+	remove warnings
+
+2010-03-27      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* mpc83xx/gtm/gtm.c, mpc5xx/timer/timer.c,
+	mpc5xx/vectors/vector_init.c: code changes to remove warnings
+
+2010-03-25      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* Makefile.am, mpc55xx/include/siu.h, mpc55xx/siu/siu.c:
+	add generic SIU support
+	add timer support, on timebase
+	* mpc55xx/edma/edma.c: fix init call to be prototype
+	* mpc55xx/esci/esci.c: adapted to new prototype for *_write function
+	* mpc55xx/include/reg-defs.h, mpc55xx/include/regs.h,
+	mpc55xx/misc/fmpll.S:
+	add support for mpc551x registers
+	* mpc6xx/timer/timer.c: fix typo
+
 2009-12-17      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
 
 	* mpc5xx/irq/irq.c: removed warning

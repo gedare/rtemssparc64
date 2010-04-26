@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: objectgetnameasstring.c,v 1.10 2009/09/11 14:54:29 joel Exp $
+ *  $Id: objectgetnameasstring.c,v 1.12 2010/03/12 16:26:16 joel Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -84,7 +84,7 @@ char *_Objects_Get_name_as_string(
       d = name;
       if ( s ) {
         for ( i=0 ; i<(length-1) && *s ; i++, s++, d++ ) {
-          *d = (isprint(*s)) ? *s : '*';
+          *d = (isprint((unsigned char)*s)) ? *s : '*';
         }
       }
       *d = '\0';

@@ -27,8 +27,12 @@
  * SUCH DAMAGE.
  *
  *	@(#)in_cksum.c	8.1 (Berkeley) 6/10/93
- * $Id: in_cksum.c,v 1.17 2009/11/30 15:56:27 ralf Exp $
+ * $Id: in_cksum.c,v 1.18 2010/03/28 05:47:48 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <sys/param.h>
 #include <sys/mbuf.h>

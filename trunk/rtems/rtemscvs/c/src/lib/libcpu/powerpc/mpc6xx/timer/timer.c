@@ -1,6 +1,6 @@
 /*  timer.c
  *
- *  This file implements a benchmark timer using the General Purpose Timer.
+ *  This file implements a benchmark timer using the PPC Timebase
  *
  *  Notes: NONE
  *
@@ -11,7 +11,7 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.c,v 1.14 2009/11/30 05:07:54 ralf Exp $
+ *  $Id: timer.c,v 1.15 2010/03/25 20:26:51 thomas Exp $
  */
 
 #include <rtems/system.h>

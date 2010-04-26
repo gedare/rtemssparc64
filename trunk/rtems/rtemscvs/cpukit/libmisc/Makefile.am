@@ -1,5 +1,5 @@
 ##
-##  $Id: Makefile.am,v 1.81 2009/11/18 00:09:21 ccj Exp $
+##  $Id: Makefile.am,v 1.84 2010/03/28 03:25:06 ralf Exp $
 ##
 
 include $(top_srcdir)/automake/compile.am
@@ -95,8 +95,9 @@ libshell_a_SOURCES = shell/cat_file.c shell/cmds.c shell/internal.h \
     shell/dd-misc.c shell/dd-position.c \
     shell/main_hexdump.c shell/hexdump-conv.c shell/hexdump-display.c \
     shell/hexdump-odsyntax.c shell/hexdump-parse.c shell/hexsyntax.c \
-    shell/main_time.c shell/main_mknod.c \
-    shell/main_setenv.c shell/main_getenv.c shell/main_unsetenv.c
+    shell/main_time.c shell/main_mknod.c  shell/main_mount_rfs.c \
+    shell/main_setenv.c shell/main_getenv.c shell/main_unsetenv.c \
+    shell/main_mkrfs.c shell/main_debugrfs.c
 
 if LIBNETWORKING
 libshell_a_SOURCES += shell/main_mount_ftp.c shell/main_mount_tftp.c \
@@ -137,10 +138,8 @@ libstringto_a_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/stringto
 libstringto_a_SOURCES = stringto/stringtodouble.c stringto/stringtofloat.c \
     stringto/stringtoint.c stringto/stringtolong.c stringto/stringtolonglong.c \
     stringto/stringtopointer.c stringto/stringtounsignedint.c \
-    stringto/stringtounsignedchar.c stringto/stringtounsignedint.c \
-    stringto/stringtounsignedlong.c stringto/stringtounsignedlonglong.c
-
-EXTRA_DIST += stringto/stringto_template.h
+    stringto/stringtounsignedchar.c stringto/stringtounsignedlong.c \
+    stringto/stringtounsignedlonglong.c stringto/stringto_template.h
 
 ## fsmount
 noinst_LIBRARIES += libfsmount.a

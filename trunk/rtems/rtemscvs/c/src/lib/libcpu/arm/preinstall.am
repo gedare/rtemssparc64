@@ -27,6 +27,10 @@ PREINSTALL_DIRS += $(PROJECT_INCLUDE)/libcpu/$(dirstamp)
 $(PROJECT_INCLUDE)/libcpu/mmu.h: shared/include/mmu.h $(PROJECT_INCLUDE)/libcpu/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/libcpu/mmu.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/libcpu/mmu.h
+
+$(PROJECT_INCLUDE)/libcpu/arm-cp15.h: shared/include/arm-cp15.h $(PROJECT_INCLUDE)/libcpu/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/libcpu/arm-cp15.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/libcpu/arm-cp15.h
 endif
 if pxa255
 $(PROJECT_INCLUDE)/pxa255.h: pxa255/include/pxa255.h $(PROJECT_INCLUDE)/$(dirstamp)
@@ -87,29 +91,20 @@ $(PROJECT_INCLUDE)/irq.h: mc9328mxl/irq/irq.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/irq.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/irq.h
 endif
-if s3c2400
+if s3c24xx
 $(PROJECT_INCLUDE)/s3c24xx.h: s3c24xx/include/s3c24xx.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/s3c24xx.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/s3c24xx.h
 
-$(PROJECT_INCLUDE)/s3c2400.h: s3c2400/include/s3c2400.h $(PROJECT_INCLUDE)/$(dirstamp)
+$(PROJECT_INCLUDE)/s3c2400.h: s3c24xx/include/s3c2400.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/s3c2400.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/s3c2400.h
 
-$(PROJECT_INCLUDE)/irq.h: s3c2400/irq/irq.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/irq.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/irq.h
-endif
-if s3c2410
-$(PROJECT_INCLUDE)/s3c24xx.h: s3c24xx/include/s3c24xx.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/s3c24xx.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/s3c24xx.h
-
-$(PROJECT_INCLUDE)/s3c2410.h: s3c2410/include/s3c2410.h $(PROJECT_INCLUDE)/$(dirstamp)
+$(PROJECT_INCLUDE)/s3c2410.h: s3c24xx/include/s3c2410.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/s3c2410.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/s3c2410.h
 
-$(PROJECT_INCLUDE)/irq.h: s3c2410/irq/irq.h $(PROJECT_INCLUDE)/$(dirstamp)
+$(PROJECT_INCLUDE)/irq.h: s3c24xx/irq/irq.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/irq.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/irq.h
 endif

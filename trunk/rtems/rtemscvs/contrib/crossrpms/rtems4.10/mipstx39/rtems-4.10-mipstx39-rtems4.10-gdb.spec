@@ -45,14 +45,14 @@
 %define _host_rpmprefix %{nil}
 %endif
 
-%define gdb_version 7.0.1
-%define gdb_rpmvers %{expand:%(echo 7.0.1 | tr - _)} 
+%define gdb_version 7.1
+%define gdb_rpmvers %{expand:%(echo 7.1 | tr - _)} 
 
 Name:		rtems-4.10-mipstx39-rtems4.10-gdb
 Summary:	Gdb for target mipstx39-rtems4.10
 Group:		Development/Tools
 Version:	%{gdb_rpmvers}
-Release:	1%{?dist}
+Release:	3%{?dist}
 License:	GPL/LGPL
 URL: 		http://sources.redhat.com/gdb
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -60,32 +60,10 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  %{_host_rpmprefix}gcc
 
 %define build_sim --enable-sim
-%if "%{_build}" != "%{_host}"
-# psim doesn't support Cdn-X
-%if "mipstx39-rtems4.10" == "powerpc-rtems4.10"
-%define build_sim --disable-sim
-%endif
-%endif
 
 %ifos mingw mingw32
-# Mingw lacks functions required by the simulator
-%if "mipstx39-rtems4.10" == "sparc-rtems4.10"
+# Mingw lacks functions required by the mipstx39 simulator
 %define build_sim --disable-sim
-%endif
-%if "mipstx39-rtems4.10" == "h8300-rtems4.10"
-%define build_sim --disable-sim
-%endif
-%if "%{gdb_version}" >= "6.8.50"
-%if "mipstx39-rtems4.10" == "m32c-rtems4.10"
-%define build_sim --disable-sim
-%endif
-%endif
-%if "mipstx39-rtems4.10" == "lm32-rtems4.10"
-%define build_sim --disable-sim
-%endif
-%if "mipstx39-rtems4.10" == "mipstx39-rtems4.10"
-%define build_sim --disable-sim
-%endif
 %endif
 
 %if "%{gdb_version}" >= "6.6"
@@ -126,8 +104,15 @@ BuildRequires:	texinfo >= 4.2
 
 Requires:	rtems-4.10-gdb-common
 
+%if "%{gdb_version}" == "7.1"
+Source0: ftp://ftp.gnu.org/gnu/gdb/gdb-7.1.tar.bz2
+Patch0: ftp://ftp.rtems.org/pub/rtems/SOURCES/4.10/gdb-7.1-rtems4.10-20100319.diff
+%endif
+
+%if "%{gdb_version}" == "7.0.1"
 Source0: ftp://ftp.gnu.org/gnu/gdb/gdb-%{gdb_version}.tar.bz2
 Patch0: ftp://ftp.rtems.org/pub/rtems/SOURCES/4.10/gdb-%{gdb_version}-rtems4.10-20091222.diff
+%endif
 
 %description
 GDB for target mipstx39-rtems4.10

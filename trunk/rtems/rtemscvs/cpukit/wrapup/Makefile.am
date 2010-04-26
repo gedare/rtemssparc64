@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.70 2009/12/04 06:05:05 ralf Exp $
+## $Id: Makefile.am,v 1.71 2010/02/18 00:24:25 ccj Exp $
 ##
 
 include $(top_srcdir)/automake/multilib.am
@@ -32,6 +32,7 @@ if LIBDOSFS
 TMP_LIBS += ../libfs/libdosfs.a
 endif
 TMP_LIBS += ../libfs/libimfs.a
+TMP_LIBS += ../libfs/librfs.a
 
 TMP_LIBS += ../libmisc/libmonitor.a
 TMP_LIBS += ../libmisc/libuntar.a

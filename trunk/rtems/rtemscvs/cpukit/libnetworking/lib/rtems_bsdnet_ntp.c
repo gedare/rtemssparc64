@@ -12,9 +12,14 @@
  * Saskatoon, Saskatchewan, CANADA
  * eric@cls.usask.ca
  *
- *  $Id: rtems_bsdnet_ntp.c,v 1.15 2009/12/17 20:26:09 joel Exp $
+ *  $Id: rtems_bsdnet_ntp.c,v 1.17 2010/04/04 11:03:43 ralf Exp $
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#include <unistd.h> /* close */
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>

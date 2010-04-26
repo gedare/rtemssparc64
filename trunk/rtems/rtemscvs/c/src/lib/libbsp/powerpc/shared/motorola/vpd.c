@@ -1,4 +1,4 @@
-/* $Id: vpd.c,v 1.2 2009/11/30 04:29:20 ralf Exp $ */
+/* $Id: vpd.c,v 1.3 2010/04/08 22:20:33 ericn Exp $ */
 
 /* MotLoad VPD format */
 
@@ -53,6 +53,7 @@ field = type, length, { data }
  * ------------------ SLAC Software Notices, Set 4 OTT.002a, 2004 FEB 03
  */
 
+#include <unistd.h>
 #include <rtems.h>
 #include <string.h>
 #include <sys/fcntl.h>

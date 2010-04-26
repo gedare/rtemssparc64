@@ -6,7 +6,7 @@
  * This file should *never* be included by any application program *
  *******************************************************************
  *
- *  $Id: rtems_bsdnet_internal.h,v 1.36 2009/02/19 19:27:58 joel Exp $
+ *  $Id: rtems_bsdnet_internal.h,v 1.37 2010/02/18 00:24:25 ccj Exp $
  */
 
 #ifndef _RTEMS_RTEMS_BSDNET_INTERNAL_H
@@ -179,7 +179,7 @@ void domaininit (void *);
 void ifinit (void *);
 void ipintr (void);
 void arpintr (void);
-void bootpc_init(int );
+bool bootpc_init(bool, bool);
 int socket (int, int, int);
 int ioctl (int, ioctl_command_t, ...);
 

@@ -1,5 +1,7 @@
+#include <bsp.h>
+#if !BSP_SMALL_MEMORY
 /*
- *  $Id: paranoia.c,v 1.8 2008/11/24 16:39:04 ralf Exp $
+ *  $Id: paranoia.c,v 1.9 2010/03/29 11:30:49 thomas Exp $
  *
  *      A C version of Kahan's Floating Point Test "Paranoia"
  *
@@ -343,12 +345,6 @@ int x;
 #define main paranoia
 int paranoia(int, char**);
 #endif
-
-int gicabreak(int n)
-{
-	printf("\nGICA BREAK %d",n);
-	return n;
-}
 
 int
 main (argc, argv)
@@ -1017,16 +1013,13 @@ or  1/3  and  3/9  and  9/27 may disagree");
         BadCond (Defect, "X * Y == Y * X trial fails.\n");
     else
         printf ("     No failures found in %d integer pairs.\n", NoTrials);
-	Milestone = gicabreak(Milestone);
-	/*=============================================*/
+    /*=============================================*/
     Milestone = 70;
     /*=============================================*/
-	Milestone = gicabreak(Milestone);
-	printf ("\nRunning test of square root(x).\n");
-	TstCond (Failure, (Zero == SQRT (Zero))
+    printf ("\nRunning test of square root(x).\n");
+    TstCond (Failure, (Zero == SQRT (Zero))
         && (-Zero == SQRT (-Zero))
         && (One == SQRT (One)), "Square root of 0.0, -0.0 or 1.0 wrong");
-       
     MinSqEr = Zero;
     MaxSqEr = Zero;
     J = Zero;
@@ -2313,3 +2306,4 @@ History ()
 
     msglist (hist);
 }
+#endif /* BSP_SMALL_MEMORY */

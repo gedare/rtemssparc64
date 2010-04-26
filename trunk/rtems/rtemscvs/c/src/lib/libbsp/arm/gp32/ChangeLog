@@ -1,3 +1,24 @@
+2010-04-25	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* console/uart.c: Fix warnings.
+
+2010-04-09	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* Makefile.am, startup/bspstart.c: make irq data types consistent,
+	use common code for s3c24xx
+
+2010-04-07	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* start/start.S: Verify boot_card() is passed a NULL.
+
+2010-02-26	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* smc/smc.c: Replace EBADRQC with EINVAL.
+
+2010-01-18	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* smc/smc.c: Update for block device API change.
+
 2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* make/custom/gp32.cfg: Remove RTEMS_BSP_FAMILY.

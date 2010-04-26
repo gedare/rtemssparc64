@@ -31,6 +31,10 @@
  * SUCH DAMAGE.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)hexsyntax.c	8.2 (Berkeley) 5/4/95";
@@ -45,6 +49,9 @@ __FBSDID("$FreeBSD: src/usr.bin/hexdump/hexsyntax.c,v 1.12 2002/09/04 23:29:01 d
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 #include <unistd.h>
 
 #include "hexdump.h"

@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ##
-## $Id: configure.ac,v 1.16 2009/11/28 06:28:41 ralf Exp $
+## $Id: configure.ac,v 1.17 2010/04/09 20:24:55 thomas Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libcpu-arm],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -29,10 +29,10 @@ AM_CONDITIONAL(shared, test "$RTEMS_CPU_MODEL" = "at91rm9200" || \
 
 AM_CONDITIONAL(at91rm9200, test "$RTEMS_CPU_MODEL" = "at91rm9200")
 AM_CONDITIONAL(mc9328mxl, test "$RTEMS_CPU_MODEL" = "mc9328mxl")
-AM_CONDITIONAL(s3c2400, test "$RTEMS_CPU_MODEL" = "s3c2400")
-AM_CONDITIONAL(s3c2410, test "$RTEMS_CPU_MODEL" = "s3c2410")
 AM_CONDITIONAL(lpc22xx, test "$RTEMS_CPU_MODEL" = "lpc22xx")
 AM_CONDITIONAL(pxa255, test "$RTEMS_CPU_MODEL" = "pxa255")
+AM_CONDITIONAL(s3c24xx, test "$RTEMS_CPU_MODEL" = "s3c2400" ||\
+                        test "$RTEMS_CPU_MODEL" = "s3c2410")
 
 RTEMS_AMPOLISH3
 

@@ -7,7 +7,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.14 2008/09/22 21:49:27 joel Exp $
+ *  $Id: bspstart.c,v 1.15 2010/04/09 20:24:57 thomas Exp $
  */
 
 #include <bsp.h>
@@ -17,6 +17,7 @@
  * Function prototypes
  */
 extern void rtems_irq_mngt_init(void);
+extern void rtems_exception_init_mngt(void);
 extern void  UART0_Ini(void);
 extern void printi(unsigned long);
 

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: shell_makeargs.c,v 1.5 2009/11/29 12:12:39 ralf Exp $
+ *  $Id: shell_makeargs.c,v 1.9 2010/03/16 14:05:55 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -16,6 +16,7 @@
 #endif
 
 #include <string.h>
+#include <ctype.h>
 
 int rtems_shell_make_args(
   char  *commandLine,
@@ -25,22 +26,40 @@ int rtems_shell_make_args(
 )
 {
   int   argc;
-  char *command;
+  char *ch;
   int   status = 0;
-
+ 
   argc = 0;
-  command = commandLine;
+  ch = commandLine;
 
-  while ( 1 ) {
-    command = strtok( command, " \t\r\n" );
-    if ( command == NULL )
+  while ( *ch ) {
+
+    while ( isspace((unsigned char)*ch) ) ch++;
+
+    if ( *ch == '\0' )
       break;
-    argv_p[ argc++ ] = command;
-    command = '\0';
-    if ( argc == (max_args-1) ) {
-      status = -1;
-      break;
+
+    if ( *ch == '"' ) {
+      argv_p[ argc ] = ++ch;
+      while ( ( *ch != '\0' ) && ( *ch != '"' ) ) ch++;
+    } else {
+      argv_p[ argc ] = ch;
+      while ( ( *ch != '\0' ) && ( !isspace((unsigned char)*ch) ) ) ch++;
     }
+
+    argc++;
+
+    if ( *ch == '\0' )
+      break;
+
+    *ch++ = '\0';
+
+    if ( argc == (max_args-1) ) {
+        status = -1;
+        break;
+    }
+
+
   }
   argv_p[ argc ] = NULL;
   *argc_p = argc;

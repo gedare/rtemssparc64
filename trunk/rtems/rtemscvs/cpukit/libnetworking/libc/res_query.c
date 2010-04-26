@@ -84,6 +84,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 
 #include "res_config.h"
 
@@ -384,17 +387,17 @@ hostalias(const char *name)
 	setbuf(fp, NULL);
 	buf[sizeof(buf) - 1] = '\0';
 	while (fgets(buf, sizeof(buf), fp)) {
-		for (cp1 = buf; *cp1 && !isspace((int)*cp1); ++cp1)
+		for (cp1 = buf; *cp1 && !isspace((unsigned char)*cp1); ++cp1)
 			;
 		if (!*cp1)
 			break;
 		*cp1 = '\0';
 		if (!strcasecmp(buf, name)) {
-			while (isspace((int)*++cp1))
+			while (isspace((unsigned char)*++cp1))
 				;
 			if (!*cp1)
 				break;
-			for (cp2 = cp1 + 1; *cp2 && !isspace((int)*cp2); ++cp2)
+			for (cp2 = cp1 + 1; *cp2 && !isspace((unsigned char)*cp2); ++cp2)
 				;
 			abuf[sizeof(abuf) - 1] = *cp2 = '\0';
 			strncpy(abuf, cp1, sizeof(abuf) - 1);

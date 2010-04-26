@@ -18,7 +18,7 @@
 +-----------------------------------------------------------------+
 | This file declares the 5x7 bit font used in disp_hcms29xx       |
 +-----------------------------------------------------------------+
-|  $Id: font_hcms29xx.h,v 1.2 2008/07/17 14:39:34 thomas Exp $
+|  $Id: font_hcms29xx.h,v 1.3 2010/01/19 09:11:34 thomas Exp $
 \*===============================================================*/
 
 #ifndef FONT_HCMS29XX_H
@@ -30,8 +30,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-extern disp_font_t font_hcms29xx;
 
 extern struct disp_font_base font_hcms29xx_base;
 

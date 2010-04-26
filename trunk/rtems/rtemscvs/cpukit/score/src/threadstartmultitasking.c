@@ -87,19 +87,5 @@ void _Thread_Start_multitasking( void )
      _Context_Restore_fp( &_Thread_Heir->fp_context );
 #endif
 
-#ifdef GICADEBUG
-   printk("\n\r_Thread_Start_multitasking "
-		  //"_Thread_BSP_context.esp = %x"
-		  "_Thread_Heir.Start.Initial_stack.area = %x"
-		  " _Thread_Heir->Start.Initial_stack.size = %x"
-		  "_Thread_Heir.Start.stack = %x"
-		  "_Thread_Heir->Registers.o6_sp = %x"
-		  "\n\r",
-   		 // &_Thread_BSP_context->esp,
-   		  _Thread_Heir->Start.Initial_stack.area,
-   		  _Thread_Heir->Start.Initial_stack.size,
-   		  _Thread_Heir->Start.stack,
-   		  _Thread_Heir->Registers.o6_sp);
-#endif
   _Context_Switch( &_Thread_BSP_context, &_Thread_Heir->Registers );
 }

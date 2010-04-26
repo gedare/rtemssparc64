@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.17 2009/11/28 06:24:47 ralf Exp $
+## $Id: Makefile.am,v 1.19 2010/04/09 20:24:55 thomas Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../aclocal
@@ -15,6 +15,7 @@ if shared
 include_libcpudir = $(includedir)/libcpu
 
 include_libcpu_HEADERS = shared/include/mmu.h
+include_libcpu_HEADERS += shared/include/arm-cp15.h
 
 ## shared/arm920
 noinst_PROGRAMS += shared/arm920.rel
@@ -133,56 +134,30 @@ mc9328mxl_irq_rel_CPPFLAGS = $(AM_CPPFLAGS)
 mc9328mxl_irq_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 endif
 
-if s3c2400
-include_HEADERS = s3c24xx/include/s3c24xx.h s3c2400/include/s3c2400.h
+if s3c24xx
+include_HEADERS = s3c24xx/include/s3c24xx.h s3c24xx/include/s3c2400.h s3c24xx/include/s3c2410.h
 
-## s3c2400/clock
-noinst_PROGRAMS += s3c2400/clock.rel
-s3c2400_clock_rel_SOURCES = s3c2400/clock/clockdrv.c s3c2400/clock/support.c
-s3c2400_clock_rel_CPPFLAGS = $(AM_CPPFLAGS)
-s3c2400_clock_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+## s3c24xx/clock
+noinst_PROGRAMS += s3c24xx/clock.rel
+s3c24xx_clock_rel_SOURCES = s3c24xx/clock/clockdrv.c s3c24xx/clock/support.c
+s3c24xx_clock_rel_CPPFLAGS = $(AM_CPPFLAGS)
+s3c24xx_clock_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
-## s3c2400/timer
-noinst_PROGRAMS += s3c2400/timer.rel
-s3c2400_timer_rel_SOURCES = s3c2400/timer/timer.c
-s3c2400_timer_rel_CPPFLAGS = $(AM_CPPFLAGS)
-s3c2400_timer_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+## s3c24xx/timer
+noinst_PROGRAMS += s3c24xx/timer.rel
+s3c24xx_timer_rel_SOURCES = s3c24xx/timer/timer.c
+s3c24xx_timer_rel_CPPFLAGS = $(AM_CPPFLAGS)
+s3c24xx_timer_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
-## s3c2400/interrupt
-include_HEADERS += s3c2400/irq/irq.h
+## s3c24xx/interrupt
+include_HEADERS += s3c24xx/irq/irq.h
 
-noinst_PROGRAMS += s3c2400/irq.rel
-s3c2400_irq_rel_SOURCES = s3c24xx/irq/irq.c s3c24xx/irq/bsp_irq_init.c \
-    ../../libbsp/arm/shared/irq/irq_init.c s3c2400/irq/bsp_irq_asm.S \
-    s3c2400/irq/irq.h
-s3c2400_irq_rel_CPPFLAGS = $(AM_CPPFLAGS)
-s3c2400_irq_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
-endif
-
-if s3c2410
-include_HEADERS = s3c24xx/include/s3c24xx.h s3c2410/include/s3c2410.h
-
-## s3c2410/clock
-noinst_PROGRAMS += s3c2410/clock.rel
-s3c2410_clock_rel_SOURCES = s3c24xx/clock/clockdrv.c s3c24xx/clock/support.c
-s3c2410_clock_rel_CPPFLAGS = $(AM_CPPFLAGS)
-s3c2410_clock_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
-
-## s3c2410/timer
-noinst_PROGRAMS += s3c2410/timer.rel
-s3c2410_timer_rel_SOURCES = s3c24xx/timer/timer.c
-s3c2410_timer_rel_CPPFLAGS = $(AM_CPPFLAGS)
-s3c2410_timer_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
-
-## s3c2410/interrupt
-include_HEADERS += s3c2410/irq/irq.h
-
-noinst_PROGRAMS += s3c2410/irq.rel
-s3c2410_irq_rel_SOURCES = s3c24xx/irq/irq.c s3c24xx/irq/bsp_irq_init.c \
-    ../../libbsp/arm/shared/irq/irq_init.c s3c2410/irq/bsp_irq_asm.S \
-    s3c2410/irq/irq.h
-s3c2410_irq_rel_CPPFLAGS = $(AM_CPPFLAGS)
-s3c2410_irq_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+noinst_PROGRAMS += s3c24xx/irq.rel
+s3c24xx_irq_rel_SOURCES = s3c24xx/irq/irq.c s3c24xx/irq/bsp_irq_init.c \
+    ../../libbsp/arm/shared/irq/irq_init.c s3c24xx/irq/bsp_irq_asm.S \
+    s3c24xx/irq/irq.h
+s3c24xx_irq_rel_CPPFLAGS = $(AM_CPPFLAGS)
+s3c24xx_irq_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 endif
 
 if lpc22xx

@@ -25,7 +25,7 @@
  * found in found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ppc_exc_address.c,v 1.1 2009/10/23 09:51:03 thomas Exp $
+ * $Id: ppc_exc_address.c,v 1.2 2010/04/07 06:45:59 thomas Exp $
  */
 
 #include <rtems.h>
@@ -66,6 +66,10 @@ void *ppc_exc_vector_address(unsigned vector)
   }
 
   if (ppc_cpu_has_ivpr_and_ivor()) {
+    /*
+     * XXX: this directly matches the vector offsets in a e200z1, 
+     * which has hardwired IVORs (IVOR0=0,IVOR1=0x10,IVOR2=0x20...) 
+     */
     vector_offset >>= 4;
   }
 

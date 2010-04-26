@@ -6,19 +6,19 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp_irq_init.c,v 1.4 2009/11/30 05:02:23 ralf Exp $
+ *  $Id: bsp_irq_init.c,v 1.5 2010/04/09 20:24:56 thomas Exp $
  */
 
 #include <irq.h>
 #include <bsp.h>
 #include <pxa255.h>
 
-void dummy_handler(uint32_t vector)
+void dummy_handler(rtems_irq_hdl_param unused)
 {
   printk("I am dummy handler\n");
 }
 
-void (*IRQ_table[PRIMARY_IRQS])(uint32_t vector);
+void (*IRQ_table[PRIMARY_IRQS])(rtems_irq_hdl_param param);
 
 /*
  * Interrupt system initialization. Disable interrupts, clear

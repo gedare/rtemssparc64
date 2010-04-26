@@ -1,5 +1,13 @@
+/**
+ * @file
+ *
+ * @ingroup ScoreCPU
+ *
+ * @brief ARM architecture support implementation.
+ */
+
 /*
- *  $Id: cpu_asm.S,v 1.11 2009/12/04 05:22:05 ralf Exp $
+ *  $Id: cpu_asm.S,v 1.13 2010/04/08 10:13:46 thomas Exp $
  *
  *  This file contains all assembly code for the ARM implementation
  *  of RTEMS.
@@ -18,6 +26,10 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/asm.h>
 #include <rtems/score/cpu_asm.h>

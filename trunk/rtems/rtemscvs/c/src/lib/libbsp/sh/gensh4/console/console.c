@@ -12,7 +12,7 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console.c,v 1.7 2008/04/23 21:51:25 joel Exp $
+ *  $Id: console.c,v 1.8 2010/04/20 08:13:58 ralf Exp $
  */
 
 #include <bsp.h>
@@ -65,8 +65,8 @@ console_poll_read(int minor)
  * RETURNS:
  *     result code
  */
-static int
-console_interrupt_write(int minor, const char *buf, int len)
+static ssize_t
+console_interrupt_write(int minor, const char *buf, size_t len)
 {
         return sh4uart_interrupt_write(&sh4_uarts[minor], buf, len);
 }
@@ -82,8 +82,8 @@ console_interrupt_write(int minor, const char *buf, int len)
  * RETURNS:
  *     result code
  */
-static int
-console_poll_write(int minor, const char *buf, int len)
+static ssize_t
+console_poll_write(int minor, const char *buf, size_t len)
 {
         return sh4uart_poll_write(&sh4_uarts[minor], buf, len);
 }

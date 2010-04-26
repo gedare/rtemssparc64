@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: imfs_init.c,v 1.15 2009/10/08 07:07:36 ccj Exp $
+ *  $Id: imfs_init.c,v 1.16 2010/03/04 06:36:51 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -50,6 +50,7 @@ const rtems_filesystem_operations_table  IMFS_ops = {
   IMFS_evaluate_link,
   IMFS_symlink,
   IMFS_readlink,
+  IMFS_rename,
   NULL
 };
 

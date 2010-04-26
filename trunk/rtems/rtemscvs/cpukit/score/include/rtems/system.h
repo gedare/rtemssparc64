@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.61 2009/11/29 13:51:52 ralf Exp $
+ *  $Id: system.h,v 1.63 2010/04/12 15:28:03 ralf Exp $
  */
 
 #ifndef _RTEMS_SYSTEM_H
@@ -149,6 +149,7 @@ extern "C" {
   #define RTEMS_COMPILER_DEPRECATED_ATTRIBUTE
 #endif
 
+#ifndef ASM
 #ifdef RTEMS_POSIX_API
 /** The following is used by the POSIX implementation to catch bad paths.  */
 int POSIX_NOT_IMPLEMENTED( void );
@@ -164,6 +165,7 @@ int POSIX_NOT_IMPLEMENTED( void );
 typedef void * proc_ptr;
 
 #include <stddef.h>
+#endif
 
 #if !defined( TRUE ) || (TRUE != 1)
 /**  Boolean constant TRUE */
@@ -177,14 +179,17 @@ typedef void * proc_ptr;
 #define FALSE     (0)
 #endif
 
+#ifndef ASM
 #include <stdint.h>
+#endif
 #include <rtems/score/cpu.h>        /* processor specific information */
 
+#ifndef ASM
 /**
  *  This macro is used to obtain the offset of a field in a structure.
  */
 #define RTEMS_offsetof(type, field) \
-       ((uint32_t) &(((type *) 0)->field))
+       ((uintptr_t) &(((type *) 0)->field))
 
 /**
  *  The following is the extern for the RTEMS version string.
@@ -200,6 +205,7 @@ extern const char _Copyright_Notice[];
 
 /** This macro defines the maximum length of a Classic API name. */
 #define RTEMS_MAXIMUM_NAME_LENGTH sizeof(rtems_name)
+#endif
 
 #ifdef __cplusplus
 }

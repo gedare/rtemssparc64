@@ -28,6 +28,9 @@
 #include <rtems/console.h>
 #include <rtems/clockdrv.h>
 
+#include <bsp/lpc32xx.h>
+#include <bsp/lpc-timer.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -51,7 +54,7 @@ struct rtems_bsdnet_ifconfig;
 /**
  * @brief Network driver attach and detach function.
  */
-int lpc32xx_eth_attach_detach(
+int lpc_eth_attach_detach(
   struct rtems_bsdnet_ifconfig *config,
   int attaching
 );
@@ -59,7 +62,7 @@ int lpc32xx_eth_attach_detach(
 /**
  * @brief Standard network driver attach and detach function.
  */
-#define RTEMS_BSP_NETWORK_DRIVER_ATTACH	lpc32xx_eth_attach_detach
+#define RTEMS_BSP_NETWORK_DRIVER_ATTACH lpc_eth_attach_detach
 
 /**
  * @brief Standard network driver name.
@@ -88,7 +91,24 @@ int lpc32xx_eth_attach_detach(
  */
 void *lpc32xx_idle(uintptr_t ignored);
 
+#define LPC32XX_STANDARD_TIMER ((volatile lpc_timer *) LPC32XX_BASE_TIMER_1)
+
+static inline unsigned lpc32xx_timer(void)
+{
+  volatile lpc_timer *timer = LPC32XX_STANDARD_TIMER;
+
+  return timer->tc;
+}
+
 /** @} */
+
+/**
+ * @defgroup lpc LPC Support
+ *
+ * @ingroup lpc32xx
+ *
+ * @brief LPC support package.
+ */
 
 #endif /* ASM */
 

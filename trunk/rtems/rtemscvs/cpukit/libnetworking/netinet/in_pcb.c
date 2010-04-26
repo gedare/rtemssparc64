@@ -31,8 +31,12 @@
  */
  
 /*
- *	$Id: in_pcb.c,v 1.8 2008/12/22 07:47:28 ralf Exp $
+ *	$Id: in_pcb.c,v 1.9 2010/03/28 05:47:48 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <sys/param.h>
 #include <rtems/bsd/sys/queue.h>

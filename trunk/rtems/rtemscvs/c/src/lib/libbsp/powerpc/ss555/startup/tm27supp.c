@@ -1,20 +1,20 @@
 /*
  *  Support routines for TM27
  *
- *  $Id: tm27supp.c,v 1.2 2009/11/30 04:31:36 ralf Exp $
+ *  $Id: tm27supp.c,v 1.3 2010/03/27 21:09:29 thomas Exp $
  */
 
 #include <bsp.h>
 
-void tm27On()
+void tm27On(void)
 {
 }
 
-void tm27Off()
+void tm27Off(void)
 {
 }
 
-int tm27IsOn()
+int tm27IsOn(void)
 {
   return 1;
 }

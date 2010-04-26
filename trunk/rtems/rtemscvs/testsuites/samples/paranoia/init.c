@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.13 2003/09/04 18:53:41 joel Exp $
+ *  $Id: init.c,v 1.14 2010/03/29 11:30:48 thomas Exp $
  */
 
 #define CONFIGURE_INIT
@@ -38,6 +38,10 @@ rtems_task Init(
    *  is required by this CPU.
    */
 
+#if BSP_SMALL_MEMORY
+  printf("NO Paranoia Test. MEMORY TOO SMALL");
+#else
+
 #if (defined (m68040))
   M68KFPSPInstallExceptionHandlers ();
 #endif
@@ -45,5 +49,6 @@ rtems_task Init(
   printf( "\n\n*** PARANOIA TEST ***\n" );
   paranoia(1, args);
   printf( "*** END OF PARANOIA TEST ***\n" );
+#endif /* BSP_SMALL_MEMORY */
   exit( 0 );
 }

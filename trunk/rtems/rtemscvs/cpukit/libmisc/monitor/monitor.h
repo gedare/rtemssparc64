@@ -5,13 +5,13 @@
  */
 
 /*
- *  $Id: monitor.h,v 1.39 2009/11/29 11:57:23 ralf Exp $
+ *  $Id: monitor.h,v 1.42 2010/04/12 15:23:41 ralf Exp $
  */
 
 #ifndef __MONITOR_H
 #define __MONITOR_H
 
-#include <rtems/error.h>		/* rtems_error() */
+#include <rtems/error.h>  /* rtems_error() */
 #include <rtems/config.h>
 
 #ifdef __cplusplus
@@ -375,6 +375,7 @@ void    rtems_monitor_pause_cmd(int, char **, const rtems_monitor_command_arg_t*
 void    rtems_monitor_fatal_cmd(int, char **, const rtems_monitor_command_arg_t*, bool);
 void    rtems_monitor_continue_cmd(int, char **, const rtems_monitor_command_arg_t*, bool);
 void    rtems_monitor_debugger_cmd(int, char **, const rtems_monitor_command_arg_t*, bool);
+void    rtems_monitor_reset_cmd(int, char **, const rtems_monitor_command_arg_t*, bool);
 void    rtems_monitor_node_cmd(int, char **, const rtems_monitor_command_arg_t*, bool);
 void    rtems_monitor_symbols_loadup(void);
 int     rtems_monitor_insert_cmd(rtems_monitor_command_entry_t *);
@@ -405,6 +406,7 @@ void       rtems_monitor_separator(void);
 uint32_t   rtems_monitor_pad(uint32_t   dest_col, uint32_t   curr_col);
 int        rtems_monitor_dump_decimal(uint32_t   num);
 int        rtems_monitor_dump_hex(uint32_t   num);
+int        rtems_monitor_dump_addr(void *addr);
 int        rtems_monitor_dump_id(rtems_id id);
 int        rtems_monitor_dump_name(rtems_id id);
 int        rtems_monitor_dump_priority(rtems_task_priority priority);

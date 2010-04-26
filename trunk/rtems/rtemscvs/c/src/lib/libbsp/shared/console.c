@@ -63,6 +63,7 @@ rtems_device_driver console_open(
   /*
    * Open the port as a termios console driver.
    */
+
   cptr = &Console_Port_Tbl[minor];
   Callbacks.firstOpen            = cptr->pDeviceFns->deviceFirstOpen;
   Callbacks.lastClose            = cptr->pDeviceFns->deviceLastClose;
@@ -72,6 +73,7 @@ rtems_device_driver console_open(
   Callbacks.stopRemoteTx         = cptr->pDeviceFlow->deviceStopRemoteTx;
   Callbacks.startRemoteTx        = cptr->pDeviceFlow->deviceStartRemoteTx;
   Callbacks.outputUsesInterrupts = cptr->pDeviceFns->deviceOutputUsesInterrupts;
+
   /* XXX what about
    *        Console_Port_Tbl[minor].ulMargin,
    *        Console_Port_Tbl[minor].ulHysteresis);
@@ -237,7 +239,6 @@ rtems_device_driver console_initialize(
       break;
     }
   }
-  
   if ( minor == Console_Port_Count ) {
     /*
      * Failed to find a working device
@@ -254,7 +255,6 @@ rtems_device_driver console_initialize(
   if (status != RTEMS_SUCCESSFUL) {
     rtems_fatal_error_occurred(status);
   }
-
   Console_Port_Tbl[minor].pDeviceFns->deviceInitialize(Console_Port_Minor);
 
   for (minor++;minor<Console_Port_Count;minor++) {

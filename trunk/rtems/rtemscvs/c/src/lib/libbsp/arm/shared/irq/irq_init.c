@@ -10,14 +10,14 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_init.c,v 1.13 2009/07/17 13:53:04 thomas Exp $
+ *  $Id: irq_init.c,v 1.14 2010/04/09 20:24:57 thomas Exp $
  */
 
 #include <irq.h>
 #include <bsp.h>
 #include <rtems/bspIo.h>
 
-void default_int_handler(void)
+void default_int_handler(rtems_irq_hdl_param unused)
 {
   printk("raw_idt_notify has been called \n");
 }

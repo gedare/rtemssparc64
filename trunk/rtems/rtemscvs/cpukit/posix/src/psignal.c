@@ -202,18 +202,6 @@ void _POSIX_signals_Manager_Initialization(void)
   for ( signo=1 ; signo<= SIGRTMAX ; signo++ )
     _Chain_Initialize_empty( &_POSIX_signals_Siginfo[ signo ] );
 
-  #if defined(RTEMS_DEBUG)
-  	printk("\n\r_POSIX_signals_Manager_Initialization" 
-  	"maximum_queued_signals = %d" 
-  	"sizeof( POSIX_signals_Siginfo_node ) = %d "
-  	" Configuration_POSIX_API.maximum_queued_signals = %d "
-  	"\n\r",
-  	maximum_queued_signals,
-  	sizeof( POSIX_signals_Siginfo_node ),
-  	Configuration_POSIX_API.maximum_queued_signals
-  	);
-  #endif
-
   if ( maximum_queued_signals ) {
     _Chain_Initialize(
       &_POSIX_signals_Inactive_siginfo,

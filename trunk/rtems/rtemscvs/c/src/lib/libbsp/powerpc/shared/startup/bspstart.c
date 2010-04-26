@@ -14,7 +14,7 @@
  *  Modified to support the MCP750.
  *  Modifications Copyright (C) 1999 Eric Valette. valette@crf.canon.fr
  *
- *  $Id: bspstart.c,v 1.53 2009/11/30 04:29:47 ralf Exp $
+ *  $Id: bspstart.c,v 1.54 2010/03/27 20:47:39 thomas Exp $
  */
 
 #warning The interrupt disable mask is now stored in SPRG0, please verify that this is compatible to this BSP (see also bootcard.c).
@@ -41,7 +41,7 @@ extern unsigned long __rtems_end[];
 extern void L1_caches_enables(void);
 extern unsigned get_L2CR(void);
 extern void set_L2CR(unsigned);
-extern Triv121PgTbl BSP_pgtbl_setup(unsigned long);
+extern Triv121PgTbl BSP_pgtbl_setup(unsigned int *);
 extern void			BSP_pgtbl_activate(Triv121PgTbl);
 extern void			BSP_vme_config(void);
 

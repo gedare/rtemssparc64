@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.38 2009/10/14 14:57:04 ralf Exp $
+## $Id: Makefile.am,v 1.40 2010/03/04 06:36:50 ccj Exp $
 ##
 
 include $(top_srcdir)/automake/multilib.am
@@ -31,7 +31,7 @@ libimfs_a_SOURCES += src/imfs/imfs_chown.c src/imfs/imfs_config.c \
     src/imfs/imfs_debug.c src/imfs/imfs_rmnod.c src/imfs/imfs_symlink.c \
     src/imfs/imfs_readlink.c src/imfs/imfs_fdatasync.c src/imfs/imfs_fcntl.c \
     src/imfs/ioman.c src/imfs/miniimfs_init.c src/imfs/imfs_load_tar.c \
-    src/imfs/imfs.h \
+    src/imfs/imfs_rename.c src/imfs/imfs.h \
     src/imfs/deviceerrno.c \
     src/devfs/devfs_init.c src/devfs/devfs_eval.c src/devfs/devfs_mknod.c \
     src/devfs/devfs_show.c src/devfs/devfs_node_type.c \
@@ -59,8 +59,23 @@ libdosfs_a_SOURCES += src/dosfs/msdos_create.c src/dosfs/msdos_dir.c \
     src/dosfs/msdos_initsupp.c src/dosfs/msdos_misc.c \
     src/dosfs/msdos_mknod.c src/dosfs/msdos_node_type.c \
     src/dosfs/msdos_conv.c src/dosfs/msdos.h src/dosfs/msdos_format.c \
-    src/dosfs/dosfs.h
+    src/dosfs/dosfs.h src/dosfs/msdos_rename.c
 endif
+
+# RFS
+noinst_LIBRARIES += librfs.a
+librfs_a_SOURCES = \
+    src/rfs/rtems-rfs-bitmaps.c src/rfs/rtems-rfs-block.c \
+    src/rfs/rtems-rfs-buffer-bdbuf.c src/rfs/rtems-rfs-buffer.c \
+    src/rfs/rtems-rfs-dir-hash.c src/rfs/rtems-rfs-file.c \
+    src/rfs/rtems-rfs-group.c src/rfs/rtems-rfs-inode.c \
+    src/rfs/rtems-rfs-rtems-dev.c src/rfs/rtems-rfs-rtems-utils.c \
+    src/rfs/rtems-rfs-rtems.c src/rfs/rtems-rfs-shell.c \
+    src/rfs/rtems-rfs-bitmaps-ut.c src/rfs/rtems-rfs-dir.c \
+    src/rfs/rtems-rfs-file-system.c src/rfs/rtems-rfs-format.c \
+    src/rfs/rtems-rfs-link.c src/rfs/rtems-rfs-mutex.c \
+    src/rfs/rtems-rfs-rtems-dir.c src/rfs/rtems-rfs-rtems-file.c \
+    src/rfs/rtems-rfs-trace.c
 
 # ---
 include $(srcdir)/preinstall.am

@@ -9,7 +9,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: clockdrv.c,v 1.11 2009/08/06 22:24:36 joel Exp $
+ *  $Id: clockdrv.c,v 1.12 2010/04/09 20:24:56 thomas Exp $
 */
 #include <rtems.h>
 #include <ep7312.h>
@@ -27,11 +27,10 @@ static int clock_isr_is_on(const rtems_irq_connect_data *irq);
 
 rtems_irq_connect_data clock_isr_data = {BSP_TC1OI,
                                          (rtems_irq_hdl)Clock_isr,
+					 NULL,
                                          clock_isr_on,
                                          clock_isr_off,
-                                         clock_isr_is_on,
-                                         3,
-                                         0 };
+                                         clock_isr_is_on};
 
 #define CLOCK_VECTOR 0
 

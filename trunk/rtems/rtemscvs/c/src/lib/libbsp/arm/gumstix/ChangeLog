@@ -1,3 +1,11 @@
+2010-04-09	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* rtl8019/rtl8019.c: make irq data types consistent
+
+2010-04-07	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* start/start.S: Verify boot_card() is passed a NULL.
+
 2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* make/custom/gumstix.cfg: Remove RTEMS_BSP_FAMILY.

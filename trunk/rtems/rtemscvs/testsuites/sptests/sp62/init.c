@@ -6,10 +6,11 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.6 2009/11/30 03:33:25 ralf Exp $
+ *  $Id: init.c,v 1.7 2010/04/03 06:04:25 ralf Exp $
  */
 
 #include <tmacros.h>
+#include <unistd.h>
 
 rtems_id      Region;
 uint32_t      Region_Memory[256] CPU_STRUCTURE_ALIGNMENT;

@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: serial.h,v 1.16 2008/09/22 11:46:15 thomas Exp $
+ *  $Id: serial.h,v 1.19 2010/04/26 00:58:39 joel Exp $
  */
 
 #ifndef __LIBCHIP_SERIAL_h
@@ -20,22 +20,25 @@
 #include <stdbool.h>
 #include <termios.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  *  Types for get and set register routines
  */
 
-typedef uint8_t   (*getRegister_f)(uint32_t   port, uint8_t   register);
-typedef void      (*setRegister_f)(
-                            uint32_t   port, uint8_t   reg, uint8_t   value);
-typedef uint8_t   (*getData_f)(uint32_t   port);
-typedef void      (*setData_f)(uint32_t   port, uint8_t   value);
+typedef uint8_t   (*getRegister_f)(uintptr_t port, uint8_t reg);
+typedef void      (*setRegister_f)(uintptr_t port, uint8_t reg, uint8_t  value);
+typedef uint8_t   (*getData_f)(uintptr_t port);
+typedef void      (*setData_f)(uintptr_t port, uint8_t value);
 
 typedef struct _console_fns {
   bool    (*deviceProbe)(int minor);
   int     (*deviceFirstOpen)(int major, int minor, void *arg);
   int     (*deviceLastClose)(int major, int minor, void *arg);
   int     (*deviceRead)(int minor);
-  int     (*deviceWrite)(int minor, const char *buf, int len);
+  ssize_t (*deviceWrite)(int minor, const char *buf, size_t len);
   void    (*deviceInitialize)(int minor);
   void    (*deviceWritePolled)(int minor, char cChar);
   int     (*deviceSetAttributes)(int minor, const struct termios *t);
@@ -149,5 +152,8 @@ extern console_tbl  Console_Port_Tbl[];
 extern console_data Console_Port_Data[];
 extern unsigned long  Console_Port_Count;
 
+#ifdef __cplusplus
+}
 #endif
-/* end of include file */
+
+#endif

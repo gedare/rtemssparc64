@@ -6,12 +6,16 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspcmdline_getparamraw.c,v 1.3 2009/11/29 12:12:38 ralf Exp $
+ *  $Id: bspcmdline_getparamraw.c,v 1.4 2010/03/27 05:01:30 ralf Exp $
  */
 
-#include <rtems/bspcmdline.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
-#include <stdio.h>
+#include <string.h>
+
+#include <rtems/bspcmdline.h>
 
 extern const char *bsp_boot_cmdline;
 

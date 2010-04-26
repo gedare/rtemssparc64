@@ -16,7 +16,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_init.c,v 1.2 2007/09/12 15:15:31 joel Exp $
+ *  $Id: irq_init.c,v 1.3 2010/04/09 20:24:56 thomas Exp $
  */
 #include <stdint.h>
 #include <bsp.h>
@@ -35,7 +35,7 @@ extern  void _irq_max_vector;
  *  @param  None
  *  @return None
  */
-void default_int_handler(void)
+void default_int_handler(rtems_irq_hdl_param unused)
 {
     printk("raw_idt_notify has been called \n");
 }

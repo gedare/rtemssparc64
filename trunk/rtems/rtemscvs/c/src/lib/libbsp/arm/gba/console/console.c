@@ -12,7 +12,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console.c,v 1.4 2009/12/07 16:21:07 ralf Exp $
+ *  $Id: console.c,v 1.5 2010/04/09 20:24:56 thomas Exp $
  */
 
 #include <stdio.h>
@@ -49,7 +49,7 @@ static int gba_pollRead(int minor)
  *  @return character code
  *
  */
-static int gba_write(int minor, const char *buf, int len)
+static ssize_t gba_write(int minor, const char *buf, size_t len)
 {
   int i;
 

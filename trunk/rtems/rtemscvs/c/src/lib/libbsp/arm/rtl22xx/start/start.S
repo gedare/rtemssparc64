@@ -9,13 +9,8 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: start.S,v 1.6 2009/11/29 14:53:02 ralf Exp $
+ *  $Id: start.S,v 1.7 2010/04/07 21:49:20 joel Exp $
 */
-
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning You need to pass a NULL.
-#warning Please check and remove these warnings.
 
 /* Some standard definitions...*/
 
@@ -104,8 +99,9 @@ _bss_init:
         blo     _bss_init        /* loop while r0 < r1 */
 
 
-#ifdef __thumb__
         /* Now we are prepared to start the BSP's C code */
+        mov     r0, #0
+#ifdef __thumb__
 	ldr	r3, =boot_card
         bx      r3
 #else

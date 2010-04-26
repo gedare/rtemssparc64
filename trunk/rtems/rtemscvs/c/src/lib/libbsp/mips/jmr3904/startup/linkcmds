@@ -1,5 +1,5 @@
 /*
- *  $Id: linkcmds,v 1.15 2008/09/16 20:58:50 joel Exp $
+ *  $Id: linkcmds,v 1.16 2010/04/25 16:11:03 joel Exp $
  *
  *  Based on jmr3904app-dram.ld from newlib 1.8.2
  */
@@ -130,7 +130,8 @@ SECTIONS
     *(.sbss*)
     *(.scommon)
   }
-  .bss : {
+
+  .bss (NOLOAD): {
     _bss_start = . ;
     *(.bss*)
     *(COMMON)

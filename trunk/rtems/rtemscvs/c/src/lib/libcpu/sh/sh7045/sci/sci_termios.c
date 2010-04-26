@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: sci_termios.c,v 1.6 2005/05/03 18:48:32 joel Exp $
+ * $Id: sci_termios.c,v 1.7 2010/04/15 08:39:26 ralf Exp $
  *
  */
 
@@ -355,10 +355,10 @@ int sh_sci_last_close(
 /*
  * Interrupt aware write routine
  */
-int sh_sci_write_support_int(
+ssize_t sh_sci_write_support_int(
   int            minor,
   const char    *buf,
-  int            len
+  size_t         len
 )
 {
     if (!len)
@@ -379,10 +379,10 @@ int sh_sci_write_support_int(
 /*
  * Polled write method
  */
-int sh_sci_write_support_polled(
+ssize_t sh_sci_write_support_polled(
   int            minor,
   const char    *buf,
-  int            len
+  size_t         len
 )
 {
     int count = 0;

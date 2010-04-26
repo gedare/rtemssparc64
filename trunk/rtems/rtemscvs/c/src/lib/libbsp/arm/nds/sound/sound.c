@@ -8,7 +8,7 @@
  *
  * http://www.rtems.com/license/LICENSE
  *
- * $Id: sound.c,v 1.2 2008/08/20 16:31:41 joel Exp $
+ * $Id: sound.c,v 1.3 2010/04/09 20:24:57 thomas Exp $
  */
 
 #include <stdlib.h>
@@ -17,7 +17,7 @@
 #include <sys/types.h>
 
 #include <bsp.h>
-#include "../irq/irq.h"
+#include <rtems/irq.h>
 #include <rtems/libio.h>
 #include <nds.h>
 

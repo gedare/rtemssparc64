@@ -31,11 +31,13 @@
  * SUCH DAMAGE.
  *
  *	@(#)select.h	8.2 (Berkeley) 1/4/94
- * $Id: select.h,v 1.6 2007/03/29 08:06:14 ralf Exp $
+ * $Id: select.h,v 1.7 2010/04/02 07:39:34 ralf Exp $
  */
 
 #ifndef _SYS_SELECT_H_
 #define	_SYS_SELECT_H_
+
+#include <sys/time.h> /* struct timeval */
 
 #ifdef __cplusplus
 extern "C" {

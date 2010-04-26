@@ -26,14 +26,14 @@
  */
 
 /*
- *  COPYRIGHT (c) 1989-2009.
+ *  COPYRIGHT (c) 1989-2010.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: confdefs.h,v 1.130 2009/11/29 13:51:51 ralf Exp $
+ *  $Id: confdefs.h,v 1.131 2010/03/04 14:40:51 joel Exp $
  */
 
 #ifndef __CONFIGURATION_TEMPLATE_h
@@ -875,7 +875,7 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
     #define CONFIGURE_NOTEPADS_ENABLED           FALSE
   #endif
 
-  #ifndef CONFIGURE_DISABLE_CLASSIC_NOTEPADS
+  #ifndef CONFIGURE_DISABLE_CLASSIC_API_NOTEPADS
     #define CONFIGURE_MEMORY_PER_TASK_FOR_CLASSIC_API \
       _Configure_From_workspace( sizeof(RTEMS_API_Control) )
   #else

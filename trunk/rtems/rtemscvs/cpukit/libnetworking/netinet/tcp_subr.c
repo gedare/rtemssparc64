@@ -31,8 +31,12 @@
  */
  
 /*
- *	$Id: tcp_subr.c,v 1.12 2008/12/22 07:47:28 ralf Exp $
+ *	$Id: tcp_subr.c,v 1.13 2010/03/28 05:47:49 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include "opt_tcpdebug.h"
 

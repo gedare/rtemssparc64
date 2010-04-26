@@ -9,7 +9,7 @@
  *
  * http://www.rtems.com/license/LICENSE
  *
- * $Id: wifi.c,v 1.1 2008/04/16 18:37:33 joel Exp $
+ * $Id: wifi.c,v 1.2 2010/04/09 20:24:57 thomas Exp $
  */
 
 #include <bsp.h>
@@ -31,7 +31,7 @@
 #include <netinet/in.h>
 #include <netinet/if_ether.h>
 
-#include <irq.h>
+#include <rtems/irq.h>
 
 #include <nds.h>
 #include <dswifi9.h>

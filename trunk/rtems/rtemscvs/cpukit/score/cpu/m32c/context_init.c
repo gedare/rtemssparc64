@@ -6,8 +6,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: context_init.c,v 1.3 2009/11/29 13:51:53 ralf Exp $
+ *  $Id: context_init.c,v 1.5 2010/04/25 22:17:35 joel Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdint.h>
 #include <rtems/system.h>
@@ -59,11 +63,11 @@ void _CPU_Context_Initialize(
   frame->a1 =0xa1a2a3a4;
   frame->r0r2 = 0;
   frame->r1r3 = 0;
-  frame->frameLow = ((uint32_t)frame)  & 0xffff;
-  frame->frameHigh = ((uint32_t)frame >> 16) & 0xffff;
-  frame->startLow = ((uint32_t)entry_point) & 0xffff;
-  frame->startHigh = ((uint32_t)entry_point >> 16) & 0xffff;
+  frame->frameLow  = (uint16_t) (((uint32_t)frame)  & 0xffff);
+  frame->frameHigh = (uint16_t) (((uint32_t)frame >> 16) & 0xffff);
+  frame->startLow  = (uint16_t) (((uint32_t)entry_point) & 0xffff);
+  frame->startHigh = (uint16_t) (((uint32_t)entry_point >> 16) & 0xffff);
 
-  the_context->sp = (uint32_t)frame;
-  the_context->fb = (uint32_t)&frame->frameLow;
+  the_context->sp = (uintptr_t)frame;
+  the_context->fb = (uintptr_t)&frame->frameLow;
 }

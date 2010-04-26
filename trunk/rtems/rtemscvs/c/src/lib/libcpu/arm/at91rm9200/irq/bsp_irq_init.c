@@ -9,13 +9,11 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp_irq_init.c,v 1.5 2009/11/30 04:58:24 ralf Exp $
+ *  $Id: bsp_irq_init.c,v 1.6 2010/04/09 20:24:55 thomas Exp $
  */
 #include <irq.h>
 #include <bsp.h>
 #include <at91rm9200.h>
-
-extern void default_int_handler(void);
 
 /*
  * Interrupt system initialization. Disable interrupts, clear

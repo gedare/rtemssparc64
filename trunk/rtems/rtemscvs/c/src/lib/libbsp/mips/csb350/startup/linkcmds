@@ -1,7 +1,7 @@
 /*
  *  Linker script for CSB350 AU1100 based board
  *
- *  $Id: linkcmds,v 1.6 2009/02/11 19:49:34 joel Exp $
+ *  $Id: linkcmds,v 1.7 2010/04/25 16:11:00 joel Exp $
  */
 
 /*    . = 0x80020000; */
@@ -18,7 +18,6 @@ RamBase = _sdram_base;
 RamSize = _sdram_size;
 HeapSize = DEFINED(HeapSize) ? HeapSize : 0x0;
 _StackSize = DEFINED(_StackSize) ? _StackSize : 0x4000;
-
 
 MEMORY
 {
@@ -158,8 +157,7 @@ SECTIONS
     *(.scommon)
   } >ram   
 
-
-  .bss : 
+  .bss (NOLOAD): 
   {
     _bss_start = . ;
     *(.bss .bss.* .gnu.linkonce.b.*)

@@ -1,6 +1,6 @@
 #ifndef DS1375_I2C_RTC_H
 #define DS1375_I2C_RTC_H
-/* $Id: ds1375-rtc.h,v 1.5 2009/11/30 03:42:53 ralf Exp $ */
+/* $Id: ds1375-rtc.h,v 1.6 2010/04/25 21:18:05 joel Exp $ */
 
 /* Driver for the Maxim 1375 i2c RTC (TOD only; very simple...) */
 
@@ -64,10 +64,10 @@ bool
 rtc_ds1375_device_probe( int minor );
 
 uint32_t
-rtc_ds1375_get_register( uint32_t port, uint8_t reg );
+rtc_ds1375_get_register( uintptr_t port, uint8_t reg );
 
 void
-rtc_ds1375_set_register( uint32_t port, uint8_t reg, uint32_t value );
+rtc_ds1375_set_register( uintptr_t port, uint8_t reg, uint32_t value );
 
 /*
  * BSP must supply string constant argument 'i2cname' which matches
@@ -84,11 +84,11 @@ rtc_ds1375_set_register( uint32_t port, uint8_t reg, uint32_t value );
 #define DS1375_RTC_TBL_ENTRY(i2cname) \
 {                                              	      \
 	sDeviceName:	"/dev/rtc",                       \
-	deviceType:		RTC_CUSTOM,                       \
-	pDeviceFns:		&rtc_ds1375_fns,                  \
+	deviceType:	RTC_CUSTOM,                       \
+	pDeviceFns:	&rtc_ds1375_fns,                  \
 	deviceProbe:	rtc_ds1375_device_probe,          \
-	ulCtrlPort1:	(uint32_t)(i2cname),              \
-	ulDataPort:		0,                                \
+	ulCtrlPort1:	(uintptr_t)(i2cname),             \
+	ulDataPort:	0,                                \
 	getRegister:	rtc_ds1375_get_register,          \
 	setRegister:	rtc_ds1375_set_register,          \
 }

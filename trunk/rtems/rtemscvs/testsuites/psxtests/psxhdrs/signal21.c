@@ -9,10 +9,10 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: signal21.c,v 1.9 2009/05/10 20:15:56 joel Exp $
+ *  $Id: signal21.c,v 1.10 2010/04/02 07:28:41 ralf Exp $
  */
 
-#include <signal.h>
+#include <unistd.h>
 
 void test( void );
 

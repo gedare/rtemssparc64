@@ -4,7 +4,7 @@
  *
  * TODO:
  *
- *  $Id: mon-prmisc.c,v 1.24 2009/11/29 12:12:39 ralf Exp $
+ *  $Id: mon-prmisc.c,v 1.25 2010/04/12 15:23:41 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -46,6 +46,12 @@ int
 rtems_monitor_dump_decimal(uint32_t   num)
 {
     return fprintf(stdout,"%4" PRId32, num);
+}
+
+int
+rtems_monitor_dump_addr(void *addr)
+{
+    return fprintf(stdout,"0x%p", addr);
 }
 
 int

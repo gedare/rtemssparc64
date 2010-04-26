@@ -1,6 +1,6 @@
 /*
   ------------------------------------------------------------------------
-  $Id: capture-cli.c,v 1.23 2009/11/29 12:12:39 ralf Exp $
+  $Id: capture-cli.c,v 1.25 2010/03/12 16:26:14 joel Exp $
   ------------------------------------------------------------------------
 
   Copyright Objective Design Systems Pty Ltd, 2002
@@ -642,7 +642,7 @@ rtems_capture_cli_get_name_id (char*          arg,
   l = strlen (arg);
 
   for (i = 0; i < l; i++)
-    if (!isxdigit (arg[i]))
+    if (!isxdigit ((unsigned char)arg[i]))
       break;
 
   if (i == l)
@@ -1324,7 +1324,7 @@ rtems_capture_cli_trace_records (int                          argc,
       l = strlen (argv[arg]);
 
       for (i = 0; i < l; i++)
-        if (!isdigit (argv[arg][i]))
+        if (!isdigit ((unsigned char)argv[arg][i]))
         {
           fprintf (stdout, "error: not a number\n");
           return;

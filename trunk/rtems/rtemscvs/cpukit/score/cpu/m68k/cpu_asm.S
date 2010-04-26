@@ -10,9 +10,13 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu_asm.S,v 1.16 2009/05/15 07:20:38 thomas Exp $
+ *  $Id: cpu_asm.S,v 1.18 2010/04/08 16:37:34 joel Exp $
  */
 
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/asm.h>
 
@@ -57,10 +61,23 @@ cacr_set: movew    sr,d1                        | get content of sr in d1
           movec    d0,cacr                      | enable FPU in cacr
 #endif
 
+
 restore:  movml    a0@,d1-d7/a2-a7       | restore context
           movw     d1,sr                 | restore status register
           rts
 
+        .global SYM (_CPU_Context_Restart_self)
+.set    CONTEXT_ARG, 4                   | context arg
+
+#if defined( __mcoldfire__ ) && ( M68K_HAS_FPU == 1 )
+/* XXX _CPU_Context_switch maintains FPU context -- do we have to restore
+ *     that, too??
+ */
+#warning "_CPU_Context_Restart_self restoring FPU context not implemented"
+#endif
+SYM(_CPU_Context_Restart_self):
+         moval    a7@(CONTEXT_ARG),a0
+         bra      restore
 /*
  * Floating point context save and restore.
  *
