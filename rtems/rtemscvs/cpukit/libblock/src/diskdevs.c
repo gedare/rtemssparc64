@@ -12,7 +12,7 @@
  *
  * Copyright (c) 2009 embedded brains GmbH.
  *
- * @(#) $Id: diskdevs.c,v 1.20 2009/11/29 13:35:32 ralf Exp $
+ * @(#) $Id: diskdevs.c,v 1.23 2010/04/09 12:28:24 thomas Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -89,7 +89,7 @@ disk_unlock(void)
 }
 
 static rtems_disk_device *
-get_disk_entry(dev_t dev)
+get_disk_entry(dev_t dev, bool lookup_only)
 {
   rtems_device_major_number major = 0;
   rtems_device_minor_number minor = 0;
@@ -102,11 +102,15 @@ get_disk_entry(dev_t dev)
     if (minor < dtab->size && dtab->minor != NULL) {
       rtems_disk_device *dd = dtab->minor [minor];
 
-      if (dd != NULL && !dd->deleted) {
-        ++dd->uses;
-
-        return dd;
+      if (dd != NULL && !lookup_only) {
+        if (!dd->deleted) {
+          ++dd->uses;
+        } else {
+          dd = NULL;
+        }
       }
+
+      return dd;
     }
   }
 
@@ -170,7 +174,6 @@ create_disk_table_entry(dev_t dev)
 static rtems_status_code
 create_disk(dev_t dev, const char *name, rtems_disk_device **dd_ptr)
 {
-  rtems_status_code sc = RTEMS_SUCCESSFUL;
   rtems_disk_device **dd_entry = create_disk_table_entry(dev);
   rtems_disk_device *dd = NULL;
   char *alloc_name = NULL;
@@ -199,16 +202,9 @@ create_disk(dev_t dev, const char *name, rtems_disk_device **dd_ptr)
   }
 
   if (name != NULL) {
-    rtems_device_major_number major = 0;
-    rtems_device_minor_number minor = 0;
-
-    rtems_filesystem_split_dev_t(dev, major, minor);
-
-    sc = rtems_io_register_name(name, major, minor);
-    if (sc != RTEMS_SUCCESSFUL) {
+    if (mknod(alloc_name, 0777 | S_IFBLK, dev) < 0) {
       free(alloc_name);
       free(dd);
-
       return RTEMS_UNSATISFIED;
     }
   }
@@ -296,11 +292,8 @@ rtems_status_code rtems_disk_create_log(
     return sc;
   }
 
-  physical_disk = get_disk_entry(phys);
+  physical_disk = get_disk_entry(phys, true);
   if (physical_disk == NULL || !is_physical_disk(physical_disk)) {
-    if (physical_disk != NULL) {
-      --physical_disk->uses;
-    }
     disk_unlock();
 
     return RTEMS_INVALID_ID;
@@ -311,7 +304,6 @@ rtems_status_code rtems_disk_create_log(
       || end_block <= begin_block
       || end_block > physical_disk->size
   ) {
-    --physical_disk->uses;
     disk_unlock();
 
     return RTEMS_INVALID_NUMBER;
@@ -319,7 +311,6 @@ rtems_status_code rtems_disk_create_log(
 
   sc = create_disk(dev, name, &dd);
   if (sc != RTEMS_SUCCESSFUL) {
-    --physical_disk->uses;
     disk_unlock();
 
     return sc;
@@ -331,6 +322,8 @@ rtems_status_code rtems_disk_create_log(
   dd->block_size = dd->media_block_size = physical_disk->block_size;
   dd->ioctl = physical_disk->ioctl;
   dd->driver_data = physical_disk->driver_data;
+
+  ++physical_disk->uses;
 
   disk_unlock();
 
@@ -406,14 +399,13 @@ rtems_disk_delete(dev_t dev)
     return sc;
   }
 
-  dd = get_disk_entry(dev);
+  dd = get_disk_entry(dev, true);
   if (dd == NULL) {
     disk_unlock();
 
     return RTEMS_INVALID_ID;
   }
 
-  --dd->uses;
   dd->deleted = true;
   rtems_disk_cleanup(dd);
 
@@ -432,14 +424,14 @@ rtems_disk_obtain(dev_t dev)
   rtems_interrupt_disable(level);
   if (!diskdevs_protected) {
     /* Frequent and quickest case */
-    dd = get_disk_entry(dev);
+    dd = get_disk_entry(dev, false);
     rtems_interrupt_enable(level);
   } else {
     rtems_interrupt_enable(level);
 
     sc = disk_lock();
     if (sc == RTEMS_SUCCESSFUL) {
-      dd = get_disk_entry(dev);
+      dd = get_disk_entry(dev, false);
       disk_unlock();
     }
   }

@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mc68681_reg.c,v 1.6 2004/04/20 10:43:39 ralf Exp $
+ *  $Id: mc68681_reg.c,v 1.7 2010/04/26 00:58:39 joel Exp $
  */
 
 #include <rtems.h>
@@ -31,7 +31,7 @@
  */
 
 uint8_t   _MC68681_NAME(mc68681_get_register)(
-  uint32_t    ulCtrlPort,
+  uintptr_t   ulCtrlPort,
   uint8_t     ucRegNum
 )
 {
@@ -47,7 +47,7 @@ uint8_t   _MC68681_NAME(mc68681_get_register)(
  */
 
 void  _MC68681_NAME(mc68681_set_register)(
-  uint32_t    ulCtrlPort,
+  uintptr_t   ulCtrlPort,
   uint8_t     ucRegNum,
   uint8_t     ucData
 )

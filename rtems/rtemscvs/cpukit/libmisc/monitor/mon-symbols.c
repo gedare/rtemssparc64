@@ -8,7 +8,7 @@
  *
  *  TODO:
  *
- *  $Id: mon-symbols.c,v 1.31 2009/01/02 13:01:21 ralf Exp $
+ *  $Id: mon-symbols.c,v 1.33 2010/04/12 15:21:42 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -16,6 +16,9 @@
 #endif
 
 #include <string.h>
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__
 #include <rtems.h>
@@ -362,7 +365,7 @@ rtems_monitor_symbol_canonical_by_value(
     void                   *value_void_p
 )
 {
-    uint32_t   value = (uint32_t) value_void_p;
+    uintptr_t   value = (uintptr_t) value_void_p;
     rtems_symbol_t *sp;
 
     sp = rtems_symbol_value_lookup(0, value);

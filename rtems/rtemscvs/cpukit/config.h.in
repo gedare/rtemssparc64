@@ -16,9 +16,29 @@
    don't. */
 #undef HAVE_DECL_CHAR_BIT
 
+/* Define to 1 if you have the declaration of `flockfile', and to 0 if you
+   don't. */
+#undef HAVE_DECL_FLOCKFILE
+
+/* Define to 1 if you have the declaration of `ftrylockfile', and to 0 if you
+   don't. */
+#undef HAVE_DECL_FTRYLOCKFILE
+
+/* Define to 1 if you have the declaration of `funlockfile', and to 0 if you
+   don't. */
+#undef HAVE_DECL_FUNLOCKFILE
+
+/* Define to 1 if you have the declaration of `LONG_BIT', and to 0 if you
+   don't. */
+#undef HAVE_DECL_LONG_BIT
+
 /* Define to 1 if you have the declaration of `sbrk', and to 0 if you don't.
    */
 #undef HAVE_DECL_SBRK
+
+/* Define to 1 if you have the declaration of `WORD_BIT', and to 0 if you
+   don't. */
+#undef HAVE_DECL_WORD_BIT
 
 /* Define to 1 if you have the declaration of `_POSIX_LOGIN_NAME_MAX', and to
    0 if you don't. */
@@ -47,6 +67,15 @@
 
 /* Define to 1 if you have the `fileno' function. */
 #undef HAVE_FILENO
+
+/* Define to 1 if you have the `flockfile' function. */
+#undef HAVE_FLOCKFILE
+
+/* Define to 1 if you have the `ftrylockfile' function. */
+#undef HAVE_FTRYLOCKFILE
+
+/* Define to 1 if you have the `funlockfile' function. */
+#undef HAVE_FUNLOCKFILE
 
 /* Define to 1 if you have the `getcwd' function. */
 #undef HAVE_GETCWD
@@ -116,6 +145,9 @@
 
 /* Define to 1 if you have the `scandir' function. */
 #undef HAVE_SCANDIR
+
+/* Define to 1 if you have the <sched.h> header file. */
+#undef HAVE_SCHED_H
 
 /* Define to 1 if you have the `seekdir' function. */
 #undef HAVE_SEEKDIR

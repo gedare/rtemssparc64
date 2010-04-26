@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ##
-## $Id: configure.ac,v 1.7 2009/11/28 06:28:40 ralf Exp $
+## $Id: configure.ac,v 1.8 2010/04/05 17:07:17 joel Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libbsp-m68k-mcf52235],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -15,6 +15,7 @@ RTEMS_PROG_CC_FOR_TARGET
 RTEMS_CANONICALIZE_TOOLS
 RTEMS_PROG_CCAS
 
+RTEMS_BSP_BOOTCARD_HANDLES_RAM_ALLOCATION
 RTEMS_BSP_CLEANUP_OPTIONS(0, 1)
 
 # Explicitly list all Makefiles here

@@ -17,7 +17,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: uart.c,v 1.5 2009/11/29 14:53:00 ralf Exp $
+ *  $Id: uart.c,v 1.6 2010/04/26 02:33:57 joel Exp $
 */
 #include <bsp.h>                /* Must be before libio.h */
 #include <rtems/libio.h>
@@ -40,7 +40,7 @@ int dbg_dly;
 static int     uart_first_open(int major, int minor, void *arg);
 static int     uart_last_close(int major, int minor, void *arg);
 static int     uart_read(int minor);
-static int     uart_write(int minor, const char *buf, int len);
+static ssize_t uart_write(int minor, const char *buf, size_t len);
 static void    uart_init(int minor);
 static void    uart_write_polled(int minor, char c);
 static int     uart_set_attributes(int minor, const struct termios *t);
@@ -153,7 +153,7 @@ static int uart_read(int minor)
  *
  * return 1 on success, -1 on error
  */
-static int uart_write(int minor, const char *buf, int len)
+static ssize_t uart_write(int minor, const char *buf, size_t len)
 {
     int i;
 

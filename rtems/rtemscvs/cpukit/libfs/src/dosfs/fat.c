@@ -6,7 +6,7 @@
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Eugeny S. Mints <Eugeny.Mints@oktet.ru>
  *
- * @(#) $Id: fat.c,v 1.18 2009/11/29 13:18:56 ralf Exp $
+ * @(#) $Id: fat.c,v 1.19 2010/02/20 02:27:58 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -367,14 +367,14 @@ fat_init_volume_info(rtems_filesystem_mount_table_entry_t *mt_entry)
     if (rc == -1)
         return rc;
 
-    /* rtmes feature: no block devices, all are character devices */
-    if (!S_ISCHR(stat_buf.st_mode))
+    /* Must be a block device. */
+    if (!S_ISBLK(stat_buf.st_mode))
         rtems_set_errno_and_return_minus_one(ENOTTY);
 
     /* check that device is registred as block device and lock it */
     vol->dd = rtems_disk_obtain(stat_buf.st_rdev);
     if (vol->dd == NULL)
-        rtems_set_errno_and_return_minus_one(ENOTTY);
+        rtems_set_errno_and_return_minus_one(EIO);
 
     vol->dev = stat_buf.st_rdev;
 

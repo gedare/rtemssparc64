@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspreset.c,v 1.2 2009/11/29 15:27:07 ralf Exp $
+ *  $Id: bspreset.c,v 1.3 2010/03/10 16:39:13 joel Exp $
  */
 
 #include <rtems.h>
@@ -25,8 +25,8 @@ void bsp_reset( void )
   /*
    * Now reset the CPU
    */
-  _ISR_Set_level( 0 );
-
   mpc5200.gpt[0].count_in = 0xf;
   mpc5200.gpt[0].emsel = 0x9004;
+
+  while(1) ;
 }

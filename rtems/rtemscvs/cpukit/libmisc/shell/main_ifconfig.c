@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: main_ifconfig.c,v 1.3 2009/11/29 12:12:39 ralf Exp $
+ *  $Id: main_ifconfig.c,v 1.5 2010/03/12 16:26:15 joel Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -73,7 +73,7 @@ int rtems_shell_main_ifconfig(
     cur_idx += 1;
   } else {
     iface = argv[1];
-    if (isdigit(*argv[2])) {
+    if (isdigit((unsigned char)*argv[2])) {
       if (inet_pton(AF_INET, argv[2], &ipaddr.sin_addr) < 0) {
         printf("bad ip address: %s\n", argv[2]);
         return 0;

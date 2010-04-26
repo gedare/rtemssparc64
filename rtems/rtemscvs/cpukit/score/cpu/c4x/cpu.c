@@ -9,13 +9,16 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.13 2009/11/29 13:51:52 ralf Exp $
+ *  $Id: cpu.c,v 1.14 2010/03/27 15:01:31 joel Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/system.h>
 #include <rtems/score/isr.h>
 #include <rtems/score/wkspace.h>
-
 
 /*  _CPU_Initialize
  *

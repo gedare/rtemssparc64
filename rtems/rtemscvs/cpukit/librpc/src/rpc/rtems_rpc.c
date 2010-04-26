@@ -1,8 +1,12 @@
 /*
  * RTEMS multi-tasking support
  *
- * $Id: rtems_rpc.c,v 1.5 2008/12/23 05:00:57 ralf Exp $
+ * $Id: rtems_rpc.c,v 1.6 2010/03/28 02:35:23 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rpc/rpc.h>
 #include <rtems.h>

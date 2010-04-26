@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.5 2009/12/08 17:52:49 joel Exp $
+ *  $Id: init.c,v 1.7 2010/04/25 19:12:22 joel Exp $
  */
 
 #include <tmacros.h>
@@ -47,6 +47,11 @@ void test_errors(void)
     "rtems_bsp_cmdline_get_param_raw - bsp_boot_cmdline=NULL - returns NULL" );
   p = rtems_bsp_cmdline_get_param_raw( "name" );
   rtems_test_assert( p == NULL );
+  
+  bsp_boot_cmdline = "edit";
+  puts ( "rtems_bsp_cmdline_get_param - bsp_boot_cmdline = edit name = edit -no error" );
+  p = rtems_bsp_cmdline_get_param("edit", result, 5);
+  rtems_test_assert( p != NULL );
 }
 
 void test_search(

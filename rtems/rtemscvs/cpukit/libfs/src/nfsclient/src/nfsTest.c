@@ -1,4 +1,4 @@
-/* $Id: nfsTest.c,v 1.3 2009/11/29 13:18:56 ralf Exp $ */
+/* $Id: nfsTest.c,v 1.4 2010/03/27 04:04:39 ccj Exp $ */
 
 /* Test program for evaluating NFS read throughput */
 
@@ -94,6 +94,10 @@
  *
  * ------------------ SLAC Software Notices, Set 4 OTT.002a, 2004 FEB 03
  */
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <rtems.h>
 #include <rtems/error.h>
 

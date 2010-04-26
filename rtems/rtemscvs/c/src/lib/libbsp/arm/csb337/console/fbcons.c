@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: fbcons.c,v 1.3 2009/11/30 22:00:35 joel Exp $
+ *  $Id: fbcons.c,v 1.4 2010/04/26 02:24:36 joel Exp $
  */
 
 #include <bsp.h>
@@ -27,7 +27,7 @@
 static int     fbcons_first_open(int major, int minor, void *arg);
 static int     fbcons_last_close(int major, int minor, void *arg);
 static int     fbcons_read(int minor);
-static int     fbcons_write(int minor, const char *buf, int len);
+static ssize_t fbcons_write(int minor, const char *buf, size_t len);
 static void    fbcons_init(int minor);
 static void    fbcons_write_polled(int minor, char c);
 static int     fbcons_set_attributes(int minor, const struct termios *t);
@@ -91,7 +91,7 @@ static int fbcons_read(int minor)
  *
  * return 1 on success, -1 on error
  */
-static int fbcons_write(int minor, const char *buf, int len)
+static ssize_t fbcons_write(int minor, const char *buf, size_t len)
 {
   int i;
 

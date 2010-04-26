@@ -11,7 +11,7 @@
  *   found in found in the file LICENSE in this distribution or at
  *   http://www.rtems.com/license/LICENSE.
  *
- * $Id: bspstart.c,v 1.18 2009/11/29 14:53:00 ralf Exp $
+ * $Id: bspstart.c,v 1.19 2010/04/09 20:24:56 thomas Exp $
  */
 
 #include <bsp.h>
@@ -22,6 +22,7 @@
  * External Prototypes
  */
 extern void rtems_irq_mngt_init(void);
+extern void rtems_exception_init_mngt(void);
 
 /*
  *  BSP specific Idle task

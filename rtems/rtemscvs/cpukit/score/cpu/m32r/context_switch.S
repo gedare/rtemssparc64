@@ -8,8 +8,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: context_switch.S,v 1.1 2008/10/28 20:03:19 joel Exp $
+ *  $Id: context_switch.S,v 1.2 2010/03/27 15:02:02 joel Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #define ARG_EXECUTING 8
 #define ARG_HEIR      12

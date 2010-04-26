@@ -1,3 +1,73 @@
+2010-04-25	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* libchip/serial/mc68681.c, libchip/serial/mc68681_reg.c,
+	libchip/serial/ns16550.c, libchip/serial/serial.h,
+	libchip/serial/z85c30.c, libchip/serial/z85c30_reg.c: Use uintptr_t
+	or intptr_t instead of uint32_t or int32_t.
+
+2010-04-25	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* libchip/rtc/ds1375-rtc.h, libchip/rtc/ds1375.c,
+	libchip/rtc/icm7170.c, libchip/rtc/icm7170_reg.c,
+	libchip/rtc/m48t08_reg.c, libchip/rtc/rtc.h: Use uintptr_t instead of
+	uint32_t.
+
+2010-04-10	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libchip/serial/serial.h: Add extern "C".
+
+2010-04-10	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* libchip/serial/serial.h, serial/mc68681.c, serial/mc68681_p.h,
+	serial/ns16550.c, serial/ns16550_p.h, serial/serial.h,
+	serial/z85c30.c, serial/z85c30_p.h: adapt _write_ functions to new
+	prototype
+
+2010-04-08	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* libchip/ide/ata.c: Change missed use of ATA_USE_OLD_EXCEPTIONS to
+	CPU_SIMPLE_VECTORED_INTERRUPTS.
+
+2010-04-07	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libchip/ide/ata.c: Use correct macro from RTEMS to determine whether
+	simple or PIC interrupt model.
+
+2010-04-02	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libchip/rtc/ds1375.c: #include <unistd.h>.
+
+2010-03-12	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libchip/network/i82586.c: Readdress use of ctype methods per
+	recommendation from D.J. Delorie on the newlib mailing list. We
+	should pass an unsigned char into these methods.
+
+2010-03-11	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libchip/ide/ide_controller.c: Fix warnings for uninitialized
+	variable.
+
+2010-03-11	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libchip/network/i82586.c: Fix warnings for ctype methods.
+
+2010-02-19	Chris Johns <chrisj@rtems.org>
+
+	* libchip/ide/ide_controller.c: Create the devices as block
+	devices.
+
+2010-01-18	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libchip/ide/ata_internal.h, libchip/ide/ata.c
+	libchip/i2c/spi-sd-card.c: Update for block device API change.
+
+2010-01-18	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* libchip/display/disp_hcms29xx.c,
+	libchip/display/disp_hcms29xx.h, libchip/display/font_hcms29xx.c,
+	libchip/display/font_hcms29xx.h: various fixes
+
 2009-12-18	Sebastian Huber <sebastian.huber@embedded-brains.de>
 
 	PR 1474

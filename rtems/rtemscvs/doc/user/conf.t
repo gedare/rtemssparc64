@@ -2,7 +2,7 @@
 @c  On-Line Applications Research Corporation (OAR).
 @c  All rights reserved.
 @c
-@c  $Id: conf.t,v 1.63 2009/09/26 15:51:31 joel Exp $
+@c  $Id: conf.t,v 1.64 2010/03/04 14:40:06 joel Exp $
 @c
 
 @c The following macros from confdefs.h have not been discussed in this
@@ -555,8 +555,8 @@ system configuration parameters supported by @code{rtems/confdefs.h}.
 Classic API tasks that can be concurrently active. 
 The default for this field is 0.
 
-@findex CONFIGURE_DISABLE_CLASSIC_NOTEPADS
-@item @code{CONFIGURE_DISABLE_CLASSIC_NOTEPADS} should be defined
+@findex CONFIGURE_DISABLE_CLASSIC_API_NOTEPADS
+@item @code{CONFIGURE_DISABLE_CLASSIC_API_NOTEPADS} should be defined
 if the user does not want to have support for Classic API Notepads
 in their application.  By default, this is not defined and Classic API
 Notepads are supported.

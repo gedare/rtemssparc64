@@ -9,11 +9,15 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.5 2009/12/04 04:27:21 ralf Exp $
+ *  $Id: cpu.c,v 1.7 2010/03/27 15:01:51 joel Exp $
  *
  *  Jukka Pietarinen <jukka.pietarinen@mrf.fi>, 2008,
  *  Micro-Research Finland Oy
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/system.h>
 #include <rtems/score/isr.h>
@@ -161,7 +165,10 @@ void _CPU_Install_interrupt_stack( void )
 
 void *_CPU_Thread_Idle_body( uintptr_t ignored )
 {
-
-  for( ; ; )
-    /* insert your "halt" instruction here */ ;
+  for( ; ; ) {
+    /* The LM32 softcore itself hasn't any HLT instruction. But the
+     * LM32 qemu target interprets this nop instruction as HLT.
+     */
+    asm volatile("and r0, r0, r0");
+ }
 }

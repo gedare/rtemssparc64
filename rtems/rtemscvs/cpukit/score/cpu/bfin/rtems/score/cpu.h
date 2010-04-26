@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.h,v 1.18 2009/12/04 04:25:29 ralf Exp $
+ *  $Id: cpu.h,v 1.19 2010/04/17 19:24:16 joel Exp $
  */
 
 #ifndef _RTEMS_SCORE_CPU_H
@@ -480,11 +480,6 @@ typedef struct {
     uint32_t   register_p5;
     uint32_t   register_fp;
     uint32_t   register_sp;
-
-    uint32_t   register_l0;
-    uint32_t   register_l1;
-    uint32_t   register_l2;
-    uint32_t   register_l3;
 
     uint32_t   register_rets;
 

@@ -31,8 +31,12 @@
  */
  
 /*
- * $Id: if_ethersubr.c,v 1.17 2008/12/22 07:47:27 ralf Exp $
+ * $Id: if_ethersubr.c,v 1.18 2010/03/28 05:50:28 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include "opt_atalk.h"
 #include "opt_inet.h"

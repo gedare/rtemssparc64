@@ -26,7 +26,7 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- * $Id: in_rmx.c,v 1.4 2007/05/10 05:12:54 ralf Exp $
+ * $Id: in_rmx.c,v 1.5 2010/03/28 05:47:48 ralf Exp $
  */
 
 /*
@@ -41,6 +41,10 @@
  *     a large quantity of stale routing data is not kept in kernel memory
  *     indefinitely.  See in_rtqtimo() below for the exact mechanism.
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <sys/param.h>
 #include <sys/systm.h>

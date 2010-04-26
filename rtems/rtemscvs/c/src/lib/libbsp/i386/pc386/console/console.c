@@ -27,7 +27,7 @@
 | *  http://www.rtems.com/license/LICENSE.
 | **************************************************************************
 |
-|  $Id: console.c,v 1.47 2009/11/30 04:52:27 ralf Exp $
+|  $Id: console.c,v 1.48 2010/04/12 16:32:54 ralf Exp $
 +--------------------------------------------------------------------------*/
 
 #include <stdio.h>
@@ -116,17 +116,17 @@ isr_is_on(const rtems_irq_connect_data *irq)
 
 extern int  rtems_kbpoll( void );
 
-static int
-ibmpc_console_write(int minor, const char *buf, int len)
+static ssize_t
+ibmpc_console_write(int minor, const char *buf, size_t len)
 {
-  int count;
+  size_t count;
   for (count = 0; count < len; count++)
   {
     _IBMPC_outch( buf[ count ] );
     if( buf[ count ] == '\n')
       _IBMPC_outch( '\r' );            /* LF = LF + CR */
   }
-  return 0;
+  return count;
 }
 
 int kbd_poll_read( int minor )

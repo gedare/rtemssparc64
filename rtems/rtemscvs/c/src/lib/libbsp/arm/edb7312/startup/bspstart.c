@@ -7,7 +7,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.14 2008/09/16 18:59:02 joel Exp $
+ *  $Id: bspstart.c,v 1.15 2010/04/09 20:24:56 thomas Exp $
  */
 
 #include <bsp.h>
@@ -18,6 +18,7 @@
  * Function prototypes
  */
 extern void rtems_irq_mngt_init(void);
+extern void rtems_exception_init_mngt(void);
 
 /*
  * NAME: bsp_start_default - BSP initialization function

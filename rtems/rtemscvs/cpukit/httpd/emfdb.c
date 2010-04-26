@@ -5,7 +5,7 @@
  *
  * See the file "license.txt" for usage and redistribution license requirements
  *
- * $Id: emfdb.c,v 1.6 2009/11/29 13:20:52 ralf Exp $
+ * $Id: emfdb.c,v 1.7 2010/03/12 16:26:14 joel Exp $
  */
 
 /******************************** Description *********************************/
@@ -980,7 +980,7 @@ char_t *dbGetTableName(int did, int tid)
 
 static char_t *trim(char_t *str)
 {
-	while (isspace((int)*str)) {
+	while (isspace((unsigned char)*str)) {
 		str++;
 	}
 	return str;

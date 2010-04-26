@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 # (Works with both perl 4 and perl 5)
 #
-#  $Id: texi2www,v 1.14 2006/01/20 17:00:04 ralf Exp $
+#  $Id: texi2www,v 1.15 2010/04/23 21:05:48 joel Exp $
 #
 
 $version = 'Jan 2 1996';
@@ -1130,6 +1130,7 @@ sub initialize_tables
     # expansion). 
     %atxy_2_zyz= (
         'b',         'STRONG',
+	'caption',   "<STRONG>,CENTER,</STRONG>",
 	'cite',      'CITE',
 	'code',      "CODE",
 	'dfn',       'EM',
@@ -1174,6 +1175,7 @@ sub initialize_tables
 	'pxref',    'Xsee ',
 	'href',     'X',
 	'uref',     'X',
+	'url',      'X',
 	'email',    'X',
 	'inforef',  'XSee ',
     );

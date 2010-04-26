@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.16 2009/12/07 09:37:00 ralf Exp $
+## $Id: Makefile.am,v 1.17 2010/04/09 20:24:56 thomas Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -87,8 +87,6 @@ noinst_PROGRAMS += block.rel
 block_rel_SOURCES = block/block.c
 block_rel_CPPFLAGS = $(AM_CPPFLAGS) -DARM9 -I$(srcdir)/libnds/include -DNDS -I$(srcdir)/libfat/source/disc_io
 block_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
-
-include_HEADERS += irq/irq.h
 
 noinst_PROGRAMS += irq.rel
 irq_rel_SOURCES = irq/irq.c

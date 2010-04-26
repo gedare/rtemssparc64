@@ -7,7 +7,7 @@
  *  usage:  eolstrip  [ -v ] [ arg ... ] files...
  *           -v          -- verbose
  *
- * $Id: eolstrip.c,v 1.10 1998/03/03 16:20:52 joel Exp $
+ * $Id: eolstrip.c,v 1.11 2010/03/12 16:27:00 joel Exp $
  */
 
 #define GETOPTARGS "vt"
@@ -197,7 +197,7 @@ process(char *arg)
     if ( buffer[ length ] != '\n' )
       error(ERR_ERRNO|ERR_FATAL, "Line %d too long in %s\n", line_number, arg);
 
-    while ( isspace( (int) buffer[ length ] ) )
+    while ( isspace( (unsigned char) buffer[ length ] ) )
       buffer[ length-- ] = '\0';
 
     if ( test_only ) {

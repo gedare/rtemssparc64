@@ -27,8 +27,12 @@
  * SUCH DAMAGE.
  *
  *	@(#)tcp_debug.c	8.1 (Berkeley) 6/10/93
- * $Id: tcp_debug.c,v 1.7 2008/12/22 07:47:28 ralf Exp $
+ * $Id: tcp_debug.c,v 1.8 2010/03/28 05:47:49 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include "opt_tcpdebug.h"
 

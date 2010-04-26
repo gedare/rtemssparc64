@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: framebuffer.h,v 1.2 2009/11/29 11:57:22 ralf Exp $
+ *  $Id: framebuffer.h,v 1.3 2009/12/28 16:36:08 joel Exp $
  */
 
 #ifndef __RTEMS_FRAMEBUFFER_h__
@@ -32,7 +32,7 @@ extern "C" {
  *  This macro defines the standard device driver table entry for
  *  a frame buffer device driver.
  */
-#define FRAMEBUFFER_DRIVER_TABLE_ENTRY \
+#define FRAME_BUFFER_DRIVER_TABLE_ENTRY \
   { frame_buffer_initialize, frame_buffer_open, frame_buffer_close, \
     frame_buffer_read, frame_buffer_write, frame_buffer_control }
 

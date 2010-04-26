@@ -31,8 +31,12 @@
  */
 
 /*
- * $Id: ip_icmp.c,v 1.13 2008/12/23 05:00:57 ralf Exp $
+ * $Id: ip_icmp.c,v 1.14 2010/03/28 05:47:49 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <sys/param.h>
 #include <sys/systm.h>

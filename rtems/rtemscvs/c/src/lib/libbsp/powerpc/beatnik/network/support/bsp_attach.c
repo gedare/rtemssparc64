@@ -1,4 +1,4 @@
-/* $Id: bsp_attach.c,v 1.1.1.1 2009/12/03 16:56:26 strauman Exp $ */
+/* $Id: bsp_attach.c,v 1.2 2010/04/14 08:51:46 ralf Exp $ */
 
 /* BSP specific wrapper for rtems_bsdnet_attach(). This wrapper
  * dispatches to the correct driver attach routine depending on
@@ -52,6 +52,8 @@
  * 
  * ------------------ SLAC Software Notices, Set 4 OTT.002a, 2004 FEB 03
  */ 
+
+#include <unistd.h>
 
 #include <rtems.h>
 #include <rtems/rtems_bsdnet.h>

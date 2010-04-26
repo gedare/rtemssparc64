@@ -1,4 +1,4 @@
-/* $Id: nfs.c,v 1.15 2009/12/17 20:26:08 joel Exp $ */
+/* $Id: nfs.c,v 1.17 2010/03/12 16:26:14 joel Exp $ */
 
 /* NFS client implementation for RTEMS; hooks into the RTEMS filesystem */
 
@@ -3262,7 +3262,7 @@ char									*dev =  0;
 		host++;
 	}
 
-	if (isdigit(*host)) {
+	if (isdigit((unsigned char)*host)) {
 		/* avoid using gethostbyname */
 		sprintf(dev,"%s:%s",uidhost,path);
 	} else {

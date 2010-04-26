@@ -28,8 +28,12 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ftpfs.c,v 1.23 2009/12/21 15:13:24 joel Exp $
+ * $Id: ftpfs.c,v 1.26 2010/04/12 12:50:25 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <ctype.h>
 #include <errno.h>
@@ -155,7 +159,7 @@ rtems_status_code rtems_ftpfs_mount( const char *mount_point)
 
 static rtems_status_code rtems_ftpfs_do_ioctl(
   const char *mount_point,
-  int req,
+  ioctl_command_t req,
   ...
 )
 {
@@ -277,8 +281,8 @@ static rtems_ftpfs_reply rtems_ftpfs_get_reply(
 )
 {
   rtems_ftpfs_reply_state state = RTEMS_FTPFS_REPLY_START;
-  char reply_first [RTEMS_FTPFS_REPLY_SIZE] = { 'a', 'a', 'a' };
-  char reply_last [RTEMS_FTPFS_REPLY_SIZE] = { 'b', 'b', 'b' };
+  unsigned char reply_first [RTEMS_FTPFS_REPLY_SIZE] = { 'a', 'a', 'a' };
+  unsigned char reply_last [RTEMS_FTPFS_REPLY_SIZE] = { 'b', 'b', 'b' };
   size_t reply_first_index = 0;
   size_t reply_last_index = 0;
   char buf [128];
@@ -856,7 +860,7 @@ static void rtems_ftpfs_pasv_parser(
   size_t i = 0;
 
   for (i = 0; i < len; ++i) {
-    char c = buf [i];
+    int c = buf [i];
 
     switch (e->state) {
       case RTEMS_FTPFS_PASV_START:
@@ -922,8 +926,8 @@ static int rtems_ftpfs_open_data_connection_passive(
   if (reply != RTEMS_FTPFS_REPLY_2) {
     return ENOTSUP;
   }
-  data_address = (uint32_t) ((pe.data [0] << 24) + (pe.data [1] << 16)
-    + (pe.data [2] << 8) + pe.data [3]);
+  data_address = ((uint32_t)(pe.data [0]) << 24) + ((uint32_t)(pe.data [1]) << 16)
+    + ((uint32_t)(pe.data [2]) << 8) + ((uint32_t)(pe.data [3]));
   data_port = (uint16_t) ((pe.data [4] << 8) + pe.data [5]);
   rtems_ftpfs_create_address( &sa, htonl( data_address), htons( data_port));
   DEBUG_PRINTF(

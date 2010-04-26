@@ -21,7 +21,7 @@
  *  Also, the settings of L1, L2, and L3 caches is not necessary here.
  *  (C) by Brookhaven National Lab., S. Kate Feng <feng1@bnl.gov>, 2003-2009
  *
- *  $Id: bspstart.c,v 1.33 2009/11/30 04:24:26 ralf Exp $
+ *  $Id: bspstart.c,v 1.34 2010/03/27 21:09:08 thomas Exp $
  */
 
 #include <string.h>
@@ -63,7 +63,7 @@ BSP_output_char_function_type BSP_output_char = BSP_output_char_via_serial;
 extern void _return_to_ppcbug(void);
 extern unsigned long __rtems_end[];
 extern unsigned get_L1CR(void), get_L2CR(void), get_L3CR(void);
-extern Triv121PgTbl BSP_pgtbl_setup(unsigned long);
+extern Triv121PgTbl BSP_pgtbl_setup(unsigned int *);
 extern void BSP_pgtbl_activate(Triv121PgTbl);
 extern int I2Cread_eeprom(unsigned char I2cBusAddr, uint32_t devA2A1A0, uint32_t AddrBytes, unsigned char *pBuff, uint32_t numBytes);
 extern void BSP_vme_config(void);

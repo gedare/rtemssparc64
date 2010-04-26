@@ -86,7 +86,7 @@
  *        AF_INET, use snprintf() instead of sprintf() everywhere for safety,
  *        etc.
  *
- *  $Id: ftpd.c,v 1.20 2009/02/05 05:19:16 ralf Exp $
+ *  $Id: ftpd.c,v 1.22 2010/03/12 16:26:14 joel Exp $
  */
 
 /*************************************************************************
@@ -1568,18 +1568,18 @@ skip_options(char **p)
   char* buf = *p;
   char* last = NULL;
   while(1) {
-    while(isspace(*buf))
+    while(isspace((unsigned char)*buf))
       ++buf;
     if(*buf == '-') {
       if(*++buf == '-') { /* `--' should terminate options */
-        if(isspace(*++buf)) {
+        if(isspace((unsigned char)*++buf)) {
           last = buf;
           do ++buf;
-          while(isspace(*buf));
+          while(isspace((unsigned char)*buf));
           break;
         }
       }
-      while(*buf && !isspace(*buf))
+      while(*buf && !isspace((unsigned char)*buf))
         ++buf;
       last = buf;
     }
@@ -1612,18 +1612,18 @@ split_command(char *buf, char **cmd, char **opts, char **args)
 {
   char* eoc;
   char* p = buf;
-  while(isspace(*p))
+  while(isspace((unsigned char)*p))
     ++p;
   *cmd = p;
-  while(*p && !isspace(*p))
+  while(*p && !isspace((unsigned char)*p))
   {
-    *p = toupper(*p);
+    *p = toupper((unsigned char)*p);
     ++p;
   }
   eoc = p;
   if(*p)
     *p++ = '\0';
-  while(isspace(*p))
+  while(isspace((unsigned char)*p))
     ++p;
   *opts = p;
   skip_options(&p);

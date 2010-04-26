@@ -39,15 +39,16 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.33 2009/12/04 05:24:40 ralf Exp $
+ *  $Id: cpu.c,v 1.35 2010/04/25 21:37:46 joel Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/system.h>
 #include <rtems/score/isr.h>
 #include <rtems/score/wkspace.h>
-
-
-
 
 /*
 ** Exception stack frame pointer used in cpu_asm to pass the exception stack frame
@@ -249,6 +250,49 @@ void _CPU_Install_interrupt_stack( void )
 {
 /* we don't support this yet */
 }
+
+/*
+ *  _CPU_Context_Initialize
+ *
+ *  This kernel routine initializes the basic non-FP context area associated
+ *  with each thread.
+ *
+ *  Input parameters:
+ *    the_context  - pointer to the context area
+ *    stack_base   - address of memory for the SPARC
+ *    size         - size in bytes of the stack area
+ *    new_level    - interrupt level for this context area
+ *    entry_point  - the starting execution point for this this context
+ *    is_fp        - TRUE if this context is associated with an FP thread
+ *
+ *  Output parameters: NONE
+ */
+void _CPU_Context_Initialize(
+  Context_Control  *the_context,
+  uintptr_t        *stack_base,
+  uint32_t          size,
+  uint32_t          new_level,
+  void             *entry_point,
+  bool              is_fp
+)
+{
+  uintptr_t             stack_tmp;
+  __MIPS_REGISTER_TYPE  intlvl = new_level & 0xff;
+
+  stack_tmp  = (uintptr_t)stack_base;
+  stack_tmp += ((size) - CPU_STACK_ALIGNMENT);
+  stack_tmp &= (__MIPS_REGISTER_TYPE) ~(CPU_STACK_ALIGNMENT - 1);
+
+  the_context->sp = (__MIPS_REGISTER_TYPE) stack_tmp;
+  the_context->fp = (__MIPS_REGISTER_TYPE) stack_tmp;
+  the_context->ra = (__MIPS_REGISTER_TYPE) (uintptr_t)entry_point;
+  the_context->c0_sr =
+    ((intlvl==0)? (mips_interrupt_mask() | 0x300 | _INTON):
+      ( ((intlvl<<9) & mips_interrupt_mask()) | 0x300 |
+      ((intlvl & 1)?_INTON:0)) ) |
+      SR_CU0 | ((is_fp)?SR_CU1:0) | _EXTRABITS;
+}
+
 
 /*PAGE
  *

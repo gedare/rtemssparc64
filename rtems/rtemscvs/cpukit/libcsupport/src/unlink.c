@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: unlink.c,v 1.18 2009/11/29 13:35:32 ralf Exp $
+ *  $Id: unlink.c,v 1.19 2010/02/16 01:47:46 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -30,6 +30,7 @@ int unlink(
   rtems_filesystem_location_info_t  loc;
   int                               i;
   int                               result;
+  bool                              free_parentloc = false;
 
   /*
    * Get the node to be unlinked. Find the parent path first.
@@ -46,6 +47,8 @@ int unlink(
                                              false );
     if ( result != 0 )
       return -1;
+
+    free_parentloc = true;
   }
 
   /*
@@ -59,32 +62,37 @@ int unlink(
   result = rtems_filesystem_evaluate_relative_path( name , strlen( name ),
                                                     0, &loc, false );
   if ( result != 0 ) {
-    rtems_filesystem_freenode( &parentloc );
+    if ( free_parentloc )
+      rtems_filesystem_freenode( &parentloc );
     return -1;
   }
 
   if ( !loc.ops->node_type_h ) {
     rtems_filesystem_freenode( &loc );
-    rtems_filesystem_freenode( &parentloc );
+    if ( free_parentloc )
+      rtems_filesystem_freenode( &parentloc );
     rtems_set_errno_and_return_minus_one( ENOTSUP );
   }
 
   if (  (*loc.ops->node_type_h)( &loc ) == RTEMS_FILESYSTEM_DIRECTORY ) {
     rtems_filesystem_freenode( &loc );
-    rtems_filesystem_freenode( &parentloc );
+    if ( free_parentloc )
+      rtems_filesystem_freenode( &parentloc );
     rtems_set_errno_and_return_minus_one( EISDIR );
   }
 
   if ( !loc.ops->unlink_h ) {
     rtems_filesystem_freenode( &loc );
-    rtems_filesystem_freenode( &parentloc );
+    if ( free_parentloc )
+      rtems_filesystem_freenode( &parentloc );
     rtems_set_errno_and_return_minus_one( ENOTSUP );
   }
 
   result = (*loc.ops->unlink_h)( &parentloc, &loc );
 
   rtems_filesystem_freenode( &loc );
-  rtems_filesystem_freenode( &parentloc );
+  if ( free_parentloc )
+    rtems_filesystem_freenode( &parentloc );
 
   return result;
 }

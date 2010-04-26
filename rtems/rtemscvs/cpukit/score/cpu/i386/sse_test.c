@@ -1,4 +1,4 @@
-/* $Id: sse_test.c,v 1.2 2009/12/04 04:26:31 ralf Exp $ */
+/* $Id: sse_test.c,v 1.3 2010/03/27 15:01:47 joel Exp $ */
 
 /*
  * Authorship
@@ -92,13 +92,16 @@
  *  c) IRQ (software IRQ via 'INT xx' instruction)
  *
  */
-#ifdef __rtems__
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#ifdef __rtems__
 #include <rtems.h>
 #include <rtems/score/cpu.h>
 #include <rtems/irq.h>
 #include <rtems/error.h>
-
 #endif
 
 #include <inttypes.h>

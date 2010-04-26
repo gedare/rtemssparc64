@@ -1,6 +1,6 @@
 /*
   ------------------------------------------------------------------------
-  $Id: mkrootfs.c,v 1.10 2008/08/01 05:07:41 ralf Exp $
+  $Id: mkrootfs.c,v 1.11 2010/02/01 00:03:01 ccj Exp $
   ------------------------------------------------------------------------
 
   Copyright Cybertec Pty Ltd, 2000
@@ -328,7 +328,7 @@ rtems_create_root_fs (void)
    * Create a `/etc/hosts' file.
    */
 
-  if (rtems_rootfs_append_host_rec (0x7f000001, "localhost", "localdomain"))
+  if (rtems_rootfs_append_host_rec (htonl (0x7f000001), "localhost", "localdomain"))
     return -1;
 
   return 0;

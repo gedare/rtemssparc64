@@ -1,32 +1,26 @@
-# $Id: Makefile.am,v 1.94 2009/12/19 05:51:44 ralf Exp $
+# $Id: Makefile.am,v 1.108 2010/04/26 07:44:57 ralf Exp $
 
 TARGET = bfin-rtems4.10
 
 include $(top_srcdir)/mkspec.am
 
-BINUTILS_VERS = 2.20
+BINUTILS_VERS = 2.20.1
 BINUTILS_PKGVERS = $(BINUTILS_VERS)
-BINUTILS_RPMREL = 1
+BINUTILS_RPMREL = 2
 include ../binutils.am
 BINUTILS_OPTS +=
 
-GCC_VERS = 4.4.2
+GCC_VERS = 4.4.3
 GCC_PKGVERS = $(GCC_VERS)
-GCC_RPMREL = 9
+GCC_RPMREL = 10
 NEWLIB_VERS = 1.18.0
 NEWLIB_PKGVERS = $(NEWLIB_VERS)
-NEWLIB_RPMREL = `expr $(GCC_RPMREL) - 8`
+NEWLIB_RPMREL = `expr $(GCC_RPMREL) + 1`
 include ../gcc.am
 GCC_OPTS += --languages=cxx
 
 GDB_VERS = 6.5
 GDB_PKGVERS = $(GDB_VERS)
-GDB_RPMREL = 11
+GDB_RPMREL = 12
 include ../gdb.am
 GDB_OPTS += --disable-infos
-
-CPUKIT_VERS = 4.9.99.0
-CPUKIT_PKGVERS = $(CPUKIT_VERS)-20090206-2
-CPUKIT_RPMREL = 1
-include ../cpukit.am
-CPUKIT_OPTS +=

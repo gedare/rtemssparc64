@@ -29,18 +29,13 @@
  *      i-cubed limited makes no representations about the suitability
  *      of this software for any purpose.
  *
- *  $Id: dlentry.S,v 1.4 2009/11/30 04:31:36 ralf Exp $
+ *  $Id: dlentry.S,v 1.5 2010/03/27 21:05:15 thomas Exp $
  *
  *  derived from "helas403/dlentry.S":
  *  Id: dlentry.S,v 1.2 2000/08/02 16:30:57 joel Exp
  */
 
 #include <rtems/asm.h>
-
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning You need to pass a NULL.
-#warning Please check and remove these errors.
 
 /*
  *  The virtex ELF link scripts support three special sections:

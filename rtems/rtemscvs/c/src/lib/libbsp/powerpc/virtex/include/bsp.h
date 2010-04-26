@@ -36,7 +36,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.8 2008/09/18 17:41:30 joel Exp $
+ *  $Id: bsp.h,v 1.9 2010/03/27 20:44:18 thomas Exp $
  *
  */
 
@@ -63,6 +63,7 @@ extern "C" {
 #include <bsp/vectors.h>
 
 /* miscellaneous stuff assumed to exist */
+extern bool bsp_timer_internal_clock;   /* TRUE, when timer runs with CPU clk */
 
 /* Network Defines */
 #if 1 /* EB/doe changes */

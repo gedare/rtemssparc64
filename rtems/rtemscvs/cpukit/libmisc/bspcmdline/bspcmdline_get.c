@@ -6,8 +6,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspcmdline_get.c,v 1.2 2009/08/06 15:21:14 joel Exp $
+ *  $Id: bspcmdline_get.c,v 1.3 2010/03/27 05:01:30 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/bspcmdline.h>
 

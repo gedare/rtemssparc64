@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: wkspace.c,v 1.32 2009/09/14 14:48:38 joel Exp $
+ *  $Id: wkspace.c,v 1.33 2010/04/07 17:05:29 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -19,7 +19,6 @@
 #include <rtems/config.h>
 #include <rtems/score/wkspace.h>
 #include <rtems/score/interr.h>
-#include <rtems/config.h>
 
 #include <string.h>  /* for memset */
 
@@ -39,18 +38,7 @@ void _Workspace_Handler_initialization(void)
 
   if ( Configuration.do_zero_of_workspace )
    memset( starting_address, 0, size );
-#ifdef GICADEBUG
-  printk(
-	  "\n\r_Workspace_Handler_initialization\n\r"
-	  "starting_address = 0x%p\n\r"
-	  "size = 0x%p\n\r"
-	  "alignment = 0x%d\n\r"
-	  ,
-	  starting_address,
-	  size,
-	  CPU_HEAP_ALIGNMENT
-  );
-#endif
+
   memory_available = _Heap_Initialize(
     &_Workspace_Area,
     starting_address,

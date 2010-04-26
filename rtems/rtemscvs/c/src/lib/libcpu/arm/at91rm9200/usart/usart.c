@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: usart.c,v 1.2 2009/11/30 04:58:24 ralf Exp $
+ *  $Id: usart.c,v 1.3 2010/04/09 20:24:55 thomas Exp $
 */
 
 #include <bsp.h>
@@ -257,6 +257,7 @@ static int usart_set_attributes(int minor, const struct termios *t)
 
   usart->mr = mode;
   usart->brgr = brgr;
+  return 0;
 }
 
 /*

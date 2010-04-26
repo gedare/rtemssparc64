@@ -2,14 +2,14 @@
  *
  *  This include file contains all console driver definations
  *
- *  COPYRIGHT (c) 1989-2009.
+ *  COPYRIGHT (c) 1989-2010.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: consolebsp.h,v 1.11 2009/05/05 16:24:04 jennifer Exp $
+ *  $Id: consolebsp.h,v 1.12 2010/04/25 15:27:55 joel Exp $
  */
 
 #ifndef __CONSOLEBSP_H
@@ -35,7 +35,6 @@ extern "C" {
  */
 
 #if (HAS_PMC_PSC8)
-#warning "HAS_PMC_PSC8 is Defined"
 #define NUM_Z85C30_CHIPS_ON_MEZZANINE  4
 #else
 #define NUM_Z85C30_CHIPS_ON_MEZZANINE  0

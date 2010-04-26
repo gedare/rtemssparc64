@@ -33,7 +33,6 @@ void test_case_one(void)
   rtems_test_assert( heap_size );
 
   puts( "Init - _Heap_Allocate - too large size (overflow)- not OK");
-#define UINTPTR_MAX 64
   ptr1 = _Heap_Allocate( &Heap, UINTPTR_MAX );
   rtems_test_assert( !ptr1 );
 

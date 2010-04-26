@@ -1,3 +1,23 @@
+2010-04-22	Alin Rus <alin.codejunkie@gmail.com>
+
+	* user/chain.t: Fixed the example from PR 1504.
+
+2010-03-04	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* user/conf.t: CONFIGURE_DISABLE_CLASSIC_NOTEPADS is typo of
+	CONFIGURE_DISABLE_CLASSIC_API_NOTEPADS. Fix it.
+
+2010-02-18	Chris Johns <chrisj@rtems.org>
+
+	* networking/networkapp.t: Updated the BOOTP/DHCP to document the
+	default behaviour of looping forever.
+
+2010-01-11	Marc Pignat <marc.pignat@hevs.ch>
+
+	PR 1490/doc
+	* user/clock.t: Fix typo. rtems_clock_get_ticks_per_second not
+	rtems_clock_get_ticks_per_seconds.
+
 2009-12-17	Joel Sherrill <joel.sherrill@oarcorp.com>
 
 	* user/clock.t: Eliminate unused type rtems_clock_time_value.

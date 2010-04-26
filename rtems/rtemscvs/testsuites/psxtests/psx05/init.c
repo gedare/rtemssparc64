@@ -302,7 +302,7 @@ void *POSIX_Init(
   rtems_test_assert(  !status );
 
   puts( "Init: pthread_mutex_init - EINVAL (invalid type)" );
- /* attr.type = -1;*/
+  attr.type = -1;
   status = pthread_mutex_init( &Mutex_id, &attr );
   rtems_test_assert(  status == EINVAL );
 

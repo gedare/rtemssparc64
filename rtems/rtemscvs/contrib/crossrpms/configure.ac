@@ -1,4 +1,4 @@
-## $Id: configure.ac,v 1.66 2009/11/30 10:48:48 ralf Exp $
+## $Id: configure.ac,v 1.72 2010/04/19 16:58:15 ralf Exp $
 
 m4_define([RTEMS_API],[4.10])
 
@@ -160,14 +160,15 @@ AC_CONFIG_FILES([solaris2.7/sparc/Makefile])
 AC_CONFIG_FILES([freebsd6.4/Makefile])
 AC_CONFIG_FILES([freebsd6.4/i586/Makefile])
 
-AC_CONFIG_FILES([freebsd7.2/Makefile])
-AC_CONFIG_FILES([freebsd7.2/i586/Makefile])
+AC_CONFIG_FILES([freebsd7.3/Makefile])
+AC_CONFIG_FILES([freebsd7.3/i586/Makefile])
 
 AC_CONFIG_FILES([freebsd8.0/Makefile])
 AC_CONFIG_FILES([freebsd8.0/i586/Makefile])
 
-AC_CONFIG_FILES([netbsd5.0.1/Makefile])
-AC_CONFIG_FILES([netbsd5.0.1/i386/Makefile])
+AC_CONFIG_FILES([netbsd5.0.2/Makefile])
+AC_CONFIG_FILES([netbsd5.0.2/i386/Makefile])
+AC_CONFIG_FILES([netbsd5.0.2/amd64/Makefile])
 
 AC_CONFIG_FILES([rtems4.10/Makefile])
 AC_CONFIG_FILES([rtems4.10/arm/Makefile])
@@ -184,6 +185,22 @@ AC_CONFIG_FILES([rtems4.10/mipstx39/Makefile])
 AC_CONFIG_FILES([rtems4.10/powerpc/Makefile])
 AC_CONFIG_FILES([rtems4.10/sh/Makefile])
 AC_CONFIG_FILES([rtems4.10/sparc/Makefile])
+
+AC_CONFIG_FILES([rtems4.11/Makefile])
+AC_CONFIG_FILES([rtems4.11/arm/Makefile])
+AC_CONFIG_FILES([rtems4.11/avr/Makefile])
+AC_CONFIG_FILES([rtems4.11/bfin/Makefile])
+AC_CONFIG_FILES([rtems4.11/h8300/Makefile])
+AC_CONFIG_FILES([rtems4.11/i386/Makefile])
+AC_CONFIG_FILES([rtems4.11/lm32/Makefile])
+AC_CONFIG_FILES([rtems4.11/m32c/Makefile])
+AC_CONFIG_FILES([rtems4.11/m32r/Makefile])
+AC_CONFIG_FILES([rtems4.11/m68k/Makefile])
+AC_CONFIG_FILES([rtems4.11/mips/Makefile])
+AC_CONFIG_FILES([rtems4.11/mipstx39/Makefile])
+AC_CONFIG_FILES([rtems4.11/powerpc/Makefile])
+AC_CONFIG_FILES([rtems4.11/sh/Makefile])
+AC_CONFIG_FILES([rtems4.11/sparc/Makefile])
 
 AC_CONFIG_FILES([autotools/Makefile])
 

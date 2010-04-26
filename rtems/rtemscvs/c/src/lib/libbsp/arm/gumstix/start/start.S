@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: start.S,v 1.3 2009/11/29 14:53:00 ralf Exp $
+ *  $Id: start.S,v 1.4 2010/04/07 21:49:53 joel Exp $
  */
 
 
@@ -103,6 +103,7 @@ _bss_init:
 
 
         /* Now we are prepared to start the BSP's C code */
+        mov     r0, #0
         bl      boot_card
 
         /*

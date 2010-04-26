@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.22 2008/10/02 21:37:37 joel Exp $
+## $Id: Makefile.am,v 1.23 2010/04/09 20:24:56 thomas Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -44,9 +44,9 @@ libbsp_a_SOURCES += ../shared/abort/abort.c
 libbsp_a_SOURCES += smc/smc.c smc/smc.h
 
 libbsp_a_LIBADD = ../../../libcpu/@RTEMS_CPU@/shared/arm920.rel \
-    ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/clock.rel \
-    ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/timer.rel \
-    ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/irq.rel
+    ../../../libcpu/@RTEMS_CPU@/s3c24xx/clock.rel \
+    ../../../libcpu/@RTEMS_CPU@/s3c24xx/timer.rel \
+    ../../../libcpu/@RTEMS_CPU@/s3c24xx/irq.rel
 
 include $(srcdir)/preinstall.am
 include $(top_srcdir)/../../../../automake/local.am

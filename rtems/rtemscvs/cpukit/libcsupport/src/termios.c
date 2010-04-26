@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: termios.c,v 1.60 2009/12/17 20:26:08 joel Exp $
+ *  $Id: termios.c,v 1.61 2010/01/19 23:03:24 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -975,8 +975,7 @@ fillBufferPoll (struct rtems_termios_tty *tty)
 	}
 	else {
 		rtems_interval then, now;
-		if (!tty->termios.c_cc[VMIN] && tty->termios.c_cc[VTIME])
-			then = rtems_clock_get_ticks_since_boot();
+		then = rtems_clock_get_ticks_since_boot();
 		for (;;) {
 			n = (*tty->device.pollRead)(tty->minor);
 			if (n < 0) {

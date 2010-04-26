@@ -31,6 +31,10 @@
  * SUCH DAMAGE.
  */
 
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #ifndef lint
 static const char copyright[] =
 "@(#) Copyright (c) 1989, 1993\n\
@@ -54,6 +58,9 @@ __FBSDID("$FreeBSD: src/usr.bin/hexdump/hexdump.c,v 1.7 2002/09/04 23:29:01 dwma
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 #include "hexdump.h"
 
 #if RTEMS_REMOVED

@@ -10,8 +10,12 @@
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Victor V. Vengerov <vvv@oktet.ru>
  *
- * @(#) $Id: ramdisk-driver.c,v 1.4 2009/12/18 15:59:30 thomas Exp $
+ * @(#) $Id: ramdisk-driver.c,v 1.7 2010/03/28 03:11:05 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /* FIXME: How to set this define? */
 #if !defined(RTEMS_RAMDISK_TRACE)
@@ -65,7 +69,8 @@ ramdisk_read(struct ramdisk *rd, rtems_blkdev_request *req)
 #endif
         memcpy(sg->buffer, from + (sg->block * rd->block_size), sg->length);
     }
-    req->req_done(req->done_arg, RTEMS_SUCCESSFUL, 0);
+    req->status = RTEMS_SUCCESSFUL;
+    req->req_done(req->done_arg, RTEMS_SUCCESSFUL);
     return 0;
 }
 
@@ -89,7 +94,8 @@ ramdisk_write(struct ramdisk *rd, rtems_blkdev_request *req)
 #endif
         memcpy(to + (sg->block * rd->block_size), sg->buffer, sg->length);
     }
-    req->req_done(req->done_arg, RTEMS_SUCCESSFUL, 0);
+    req->status = RTEMS_SUCCESSFUL;
+    req->req_done(req->done_arg, RTEMS_SUCCESSFUL);
     return 0;
 }
 

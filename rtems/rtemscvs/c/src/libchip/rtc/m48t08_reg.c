@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: m48t08_reg.c,v 1.6 2004/04/20 10:43:39 ralf Exp $
+ *  $Id: m48t08_reg.c,v 1.7 2010/04/25 21:18:06 joel Exp $
  */
 
 #include <rtems.h>
@@ -31,7 +31,7 @@
  */
 
 uint32_t   _M48T08_NAME(m48t08_get_register)(
-  uint32_t    ulCtrlPort,
+  uintptr_t   ulCtrlPort,
   uint8_t     ucRegNum
 )
 {
@@ -47,7 +47,7 @@ uint32_t   _M48T08_NAME(m48t08_get_register)(
  */
 
 void  _M48T08_NAME(m48t08_set_register)(
-  uint32_t    ulCtrlPort,
+  uintptr_t   ulCtrlPort,
   uint8_t     ucRegNum,
   uint32_t    ucData
 )

@@ -30,7 +30,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- *  $Id: linkaddr.c,v 1.8 2008/09/01 06:59:32 ralf Exp $
+ *  $Id: linkaddr.c,v 1.9 2010/03/27 04:00:52 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -41,6 +41,9 @@
 #include <sys/socket.h>
 #include <net/if_dl.h>
 #include <string.h>
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 
 /* States*/
 #define NAMING	0

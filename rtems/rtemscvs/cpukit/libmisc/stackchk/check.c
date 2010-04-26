@@ -6,14 +6,14 @@
  *         CPU grows up or down and installs the correct
  *         extension routines for that direction.
  *
- *  COPYRIGHT (c) 1989-2007.
+ *  COPYRIGHT (c) 1989-2010.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: check.c,v 1.63 2009/11/29 12:12:39 ralf Exp $
+ *  $Id: check.c,v 1.66 2010/04/10 07:32:13 ralf Exp $
  *
  */
 
@@ -135,7 +135,12 @@ Stack_Control Stack_check_Interrupt_stack;
  */
 void Stack_check_Initialize( void )
 {
+  int       i;
   uint32_t *p;
+  static    uint32_t pattern[ 4 ] = {
+    0xFEEDF00D, 0x0BAD0D06,  /* FEED FOOD to  BAD DOG */
+    0xDEADF00D, 0x600D0D06   /* DEAD FOOD but GOOD DOG */
+  };
 
   if (Stack_check_Initialized)
     return;
@@ -143,15 +148,9 @@ void Stack_check_Initialize( void )
   /*
    * Dope the pattern and fill areas
    */
-
-  for ( p = Stack_check_Pattern.pattern;
-        p < &Stack_check_Pattern.pattern[PATTERN_SIZE_WORDS];
-        p += 4
-      ) {
-      p[0] = 0xFEEDF00D;          /* FEED FOOD to BAD DOG */
-      p[1] = 0x0BAD0D06;
-      p[2] = 0xDEADF00D;          /* DEAD FOOD GOOD DOG */
-      p[3] = 0x600D0D06;
+  p = Stack_check_Pattern.pattern;
+  for ( i = 0; i < PATTERN_SIZE_WORDS; i++ ) {
+      p[i] = pattern[ i%4 ];
   }
 
   /*
@@ -219,36 +218,35 @@ void Stack_check_report_blown_task(Thread_Control *running, bool pattern_ok)
   char name [32];
 
   printk("BLOWN STACK!!!\n");
-  printk("task control block: 0x%08lx\n", (unsigned long) running);
+  printk("task control block: 0x%08" PRIxPTR "\n", running);
   printk("task ID: 0x%08lx\n", (unsigned long) running->Object.id);
   printk(
-    "task name: 0x%08lx\n",
-    (unsigned long) running->Object.name.name_u32
+    "task name: 0x%08" PRIx32 "\n",
+    running->Object.name.name_u32
   );
   printk(
     "task name string: %s\n",
     rtems_object_get_name(running->Object.id, sizeof(name), name)
   );
   printk(
-    "task stack area (%lu Bytes): 0x%08lx .. 0x%08lx\n",
+    "task stack area (%lu Bytes): 0x%08" PRIxPTR " .. 0x%08" PRIxPTR "\n",
     (unsigned long) stack->size,
-    (unsigned long) stack->area,
-    (unsigned long) ((char *) stack->area + stack->size)
+    stack->area,
+    ((char *) stack->area + stack->size)
   );
   if (!pattern_ok) {
     printk(
-      "damaged pattern area (%lu Bytes): 0x%08lx .. 0x%08lx\n",
+      "damaged pattern area (%lu Bytes): 0x%08" PRIxPTR " .. 0x%08" PRIxPTR "\n",
       (unsigned long) PATTERN_SIZE_BYTES,
-      (unsigned long) pattern_area,
-      (unsigned long) (pattern_area + PATTERN_SIZE_BYTES)
+      pattern_area,
+      (pattern_area + PATTERN_SIZE_BYTES)
     );
   }
 
   #if defined(RTEMS_MULTIPROCESSING)
     if (rtems_configuration_get_user_multiprocessing_table()) {
       printk(
-        "node: 0x%08lx\n",
-	(unsigned long)
+        "node: 0x%08" PRIxPTR "\n",
           rtems_configuration_get_user_multiprocessing_table()->node
       );
     }

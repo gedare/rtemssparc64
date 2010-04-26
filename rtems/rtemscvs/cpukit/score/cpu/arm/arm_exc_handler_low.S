@@ -1,11 +1,13 @@
 /**
  * @file
  *
- * ARM exception support code.
+ * @ingroup ScoreCPU
+ *
+ * @brief ARM exception support implementation.
  */
 
 /*
- *  $Id: arm_exc_handler_low.S,v 1.3 2009/12/04 05:22:04 ralf Exp $
+ *  $Id: arm_exc_handler_low.S,v 1.5 2010/04/08 10:13:46 thomas Exp $
  *
  *  Copyright (c) 2007 by Ray Xu, <Rayx.cn@gmail.com>
  *          Thumb support added.
@@ -23,6 +25,10 @@
  *  Moved from file 'cpukit/score/cpu/arm/cpu_asm.S'.
  *
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/asm.h>
 #include <rtems/score/cpu_asm.h>

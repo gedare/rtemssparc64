@@ -11,13 +11,11 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp_irq_init.c,v 1.6 2008/08/18 21:07:48 ralf Exp $
+ *  $Id: bsp_irq_init.c,v 1.7 2010/04/09 20:24:56 thomas Exp $
 */
 #include <irq.h>
 #include <bsp.h>
 #include <ep7312.h>
-
-extern void default_int_handler(void);
 
 void BSP_rtems_irq_mngt_init(void)
 {
