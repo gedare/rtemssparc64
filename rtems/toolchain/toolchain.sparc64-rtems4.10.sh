@@ -15,11 +15,16 @@ check_error() {
     fi
 }
 
-BINUTILS_VERSION="2.19"
-GCC_VERSION="4.4.1"
-NEWLIBVERSION="1.17.0"
+OPTIONDOWNLOAD=1
+OPTIONUNPACK=1
+OPTIONPATCH=1
 
-CROSS_PREFIX=/home/eugen/work/simics/rtems/compilers/sparc64-newlib-rtems4.10-${GCC_VERSION}.gcc.full
+BINUTILS_VERSION="2.20"
+GCC_VERSION="4.4.2"
+NEWLIB_VERSION="1.18.0"
+
+
+CROSS_PREFIX=/home/eugen/work/rtemssparc64/rtems/compilers/rtems10-sparc64-newlib${NEWLIB_VERSION}-binutils${BINUTILS_VERSION}-gcc-${GCC_VERSION}
 
 if [ -z "${CROSS_PREFIX}" ] ; then
     CROSS_PREFIX="/usr/local"
@@ -30,7 +35,7 @@ BINUTILS="binutils-${BINUTILS_VERSION}.tar.gz"
 GCC_CORE="gcc-core-${GCC_VERSION}.tar.bz2"
 GCC_OBJC="gcc-objc-${GCC_VERSION}.tar.bz2"
 GCC_CPP="gcc-g++-${GCC_VERSION}.tar.bz2"
-NEWLIB="newlib-${NEWLIBVERSION}.tar.gz"
+NEWLIB="newlib-${NEWLIB_VERSION}.tar.gz"
 
 BINUTILS_SOURCE="ftp://ftp.gnu.org/gnu/binutils/"
 GCC_SOURCE="ftp://ftp.gnu.org/gnu/gcc/gcc-${GCC_VERSION}/"
@@ -43,38 +48,40 @@ TARGET="${PLATFORM}-rtems4.10"
 PREFIX="${CROSS_PREFIX}/${PLATFORM}"
 PROGRAMPREFIX="sparc-rtems4.10"
 BINUTILSDIR="${WORKDIR}/binutils-${BINUTILS_VERSION}"
-GCCDIR="${WORKDIR}/gcc-${GCC_VERSION}-rtems"
+GCCDIR="${WORKDIR}/gcc-${GCC_VERSION}"
 OBJDIR="${WORKDIR}/b-gcc"
 BINBUILDDIR="${WORKDIR}/b-binutils"
 
-*rm ${BINUTILSDIR} -rf 
-*rm newlib-${NEWLIBVERSION} -rf 
-*rm ${GCCDIR} -rf
 rm ${OBJDIR} -rf
 rm ${BINBUILDDIR} -rf
 
 echo ">>> Downloading tarballs"
 
-if [ ! -f "${BINUTILS}" ]; then
-    wget -c "${BINUTILS_SOURCE}${BINUTILS}"
-    check_error $? "Error downloading binutils."
-fi
-if [ ! -f "${GCC_CORE}" ]; then
-    wget -c "${GCC_SOURCE}${GCC_CORE}"
-    check_error $? "Error downloading GCC Core."
-fi
-if [ ! -f "${GCC_OBJC}" ]; then
-    wget -c "${GCC_SOURCE}${GCC_OBJC}"
-    check_error $? "Error downloading GCC Objective C."
-fi
-if [ ! -f "${GCC_CPP}" ]; then
-    wget -c "${GCC_SOURCE}${GCC_CPP}"
-    check_error $? "Error downloading GCC C++."
-fi
+if [ ${OPTIONDOWNLOAD} = '0' ]
+then
+	echo ">>>>>> Skipping download"
+else
+	if [ ! -f "${BINUTILS}" ]; then
+	    wget -c "${BINUTILS_SOURCE}${BINUTILS}"
+	    check_error $? "Error downloading binutils."
+	fi
+	if [ ! -f "${GCC_CORE}" ]; then
+	    wget -c "${GCC_SOURCE}${GCC_CORE}"
+	    check_error $? "Error downloading GCC Core."
+	fi
+	if [ ! -f "${GCC_OBJC}" ]; then
+	    wget -c "${GCC_SOURCE}${GCC_OBJC}"
+	    check_error $? "Error downloading GCC Objective C."
+	fi
+	if [ ! -f "${GCC_CPP}" ]; then
+	    wget -c "${GCC_SOURCE}${GCC_CPP}"
+	    check_error $? "Error downloading GCC C++."
+	fi
 
-if [ ! -f "${NEWLIB}" ]; then
-    wget -c "${NEWLIB_SOURCE}${NEWLIB}"
-    check_error $? "Error downloading newlib."
+	if [ ! -f "${NEWLIB}" ]; then
+	    wget -c "${NEWLIB_SOURCE}${NEWLIB}"
+	    check_error $? "Error downloading newlib."
+	fi
 fi
 
 echo ">>> Creating destionation directory"
@@ -99,22 +106,39 @@ if [ ! -d "${BINBUILDDIR}" ]; then
 fi
 
 echo ">>> Unpacking tarballs"
-#tar -xvzf "${BINUTILS}"
-#check_error $? "Error unpacking binutils."
-#tar -xvjf "${GCC_CORE}"
-#check_error $? "Error unpacking GCC Core."
-#tar -xvjf "${GCC_OBJC}"
-#check_error $? "Error unpacking GCC Objective C."
-#tar -xvjf "${GCC_CPP}"
-#check_error $? "Error unpacking GCC C++."
-#tar -xvzf "${NEWLIB}"
-#check_error $? "Error unpacking newlib."
+if [ "${OPTIONUNPACK}" = "0" ]
+then
+	echo ">>>>>> Skipping Unpacking tarballs"
+else
+	rm ${BINUTILSDIR} -rf 
+	tar -xvzf "${BINUTILS}"
+	check_error $? "Error unpacking binutils."
+	rm ${GCCDIR} -rf
+	tar -xvjf "${GCC_CORE}"
+	check_error $? "Error unpacking GCC Core."
+	tar -xvjf "${GCC_OBJC}"
+	check_error $? "Error unpacking GCC Objective C."
+	tar -xvjf "${GCC_CPP}"
+	check_error $? "Error unpacking GCC C++."
+	rm newlib-${NEWLIB_VERSION} -rf 
+	tar -xvzf "${NEWLIB}"
+	check_error $? "Error unpacking newlib."
+fi
 
 echo ">>> Applying patches"
-#cd ${GCCDIR}
-#cat ../rtemspatches/gcc-core-4.4.1-rtems4.10-20090820.diff | patch -p1
-#cd newlib-${NEWLIBVERSION}
-#cat ../rtemspatches/newlib-1.17.0-rtems4.10-20090922.diff | patch -p1
+if [ "${OPTIONPATCH}" = "0" ]
+then
+	echo ">>>>>> Skipping Applying patches"
+else
+	cd ${BINUTILSDIR}
+	cat ../rtemspatches/binutils-${BINUTILS_VERSION}-sparc64patch.diff | patch -p1
+	cd ${GCCDIR}
+	#cat ../rtemspatches/gcc-core-${GCC_VERSION}-rtems4.10-20091015.diff | patch -p1
+	cat ../rtemspatches/gcc-core-${GCC_VERSION}-rtems4.10-20091104.diff | patch -p1
+	cat ../rtemspatches/gcc-core-${GCC_VERSION}-rtems4.10-sparc64-applyafterRTEMSpatches.diff | patch -p1
+	cd ../newlib-${NEWLIB_VERSION}
+	cat ../rtemspatches/newlib-${NEWLIB_VERSION}-rtems4.10-20091218.diff | patch -p1
+fi
 
 echo ">>> Compiling and installing binutils"
 cd "${BINBUILDDIR}" 
@@ -128,7 +152,7 @@ check_error $? "Error compiling/installing binutils."
 
 echo ">>> Compiling and installing GCC"
 cd ${GCCDIR}
-ln -s ../newlib-${NEWLIBVERSION}/newlib .
+ln -s ../newlib-${NEWLIB_VERSION}/newlib .
 cd "${OBJDIR}"
 check_error $? "Change directory failed."
 #"${GCCDIR}/configure" "--target=${TARGET}" "--prefix=${PREFIX}" --with-gnu-as --with-gnu-ld --with-newlib --disable-nls --disable-threads --enable-languages=c,c++ --disable-multilib --disable-libgcj --without-headers --disable-shared 
