@@ -1,0 +1,12 @@
+#
+# $Id$
+#
+
+This BSP is designed to operate on the UltraSPARC T1 (Niagara) SPARC64 
+and similar processors.
+
+It has been run on the Simics simulator with the niagara target.
+
+Simics:
+A commercially available simulator licensed by Virtutech.
+https://www.simics.net/

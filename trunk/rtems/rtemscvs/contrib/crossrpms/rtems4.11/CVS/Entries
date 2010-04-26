@@ -1,0 +1,22 @@
+/.cvsignore/1.1/Wed Mar 17 05:07:25 2010//
+/Makefile.am/1.1/Wed Mar 17 05:06:20 2010//
+/binutils.am/1.1/Wed Mar 17 05:06:21 2010//
+/cpukit-prep.add/1.1/Wed Mar 17 05:06:21 2010//
+/cpukit.am/1.1/Wed Mar 17 05:06:21 2010//
+/gcc-prep.add/1.1/Wed Mar 17 05:06:21 2010//
+/gcc.am/1.1/Wed Mar 17 05:06:21 2010//
+/gdb.am/1.1/Wed Mar 17 05:06:21 2010//
+D/arm////
+D/avr////
+D/bfin////
+D/h8300////
+D/i386////
+D/lm32////
+D/m32c////
+D/m32r////
+D/m68k////
+D/mips////
+D/mipstx39////
+D/powerpc////
+D/sh////
+D/sparc////
