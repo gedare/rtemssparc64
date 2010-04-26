@@ -24,7 +24,7 @@ GCC_VERSION="4.4.2"
 NEWLIB_VERSION="1.18.0"
 
 
-CROSS_PREFIX=/home/eugen/work/rtemssparc64/rtems/compilers/rtems10-sparc64-newlib${NEWLIB_VERSION}-binutils${BINUTILS_VERSION}-gcc-${GCC_VERSION}
+CROSS_PREFIX=/home/gedare/work/rtems/rtemssparc64/rtems/compilers/rtems10-sparc64-newlib${NEWLIB_VERSION}-binutils${BINUTILS_VERSION}-gcc-${GCC_VERSION}
 
 if [ -z "${CROSS_PREFIX}" ] ; then
     CROSS_PREFIX="/usr/local"
@@ -137,7 +137,8 @@ else
 	cat ../rtemspatches/gcc-core-${GCC_VERSION}-rtems4.10-20091104.diff | patch -p1
 	cat ../rtemspatches/gcc-core-${GCC_VERSION}-rtems4.10-sparc64-applyafterRTEMSpatches.diff | patch -p1
 	cd ../newlib-${NEWLIB_VERSION}
-	cat ../rtemspatches/newlib-${NEWLIB_VERSION}-rtems4.10-20091218.diff | patch -p1
+	#cat ../rtemspatches/newlib-${NEWLIB_VERSION}-rtems4.10-20091218.diff | patch -p1
+	cat ../rtemspatches/newlib-${NEWLIB_VERSION}-rtems4.10-20100426.diff | patch -p1
 fi
 
 echo ">>> Compiling and installing binutils"
