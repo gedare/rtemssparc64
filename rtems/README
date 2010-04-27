@@ -1,0 +1,41 @@
+This directory is the top-level of all RTEMS-specific code, tools, and 
+documentation related to the SPARC-64 port.  Each of the relevant directories
+and files in the repository are briefly described here.
+
+b-leon2
+Obsolete. Build directory for leon 2 BSP. Included for historical reasons.
+
+boot
+
+b-sparc64
+Build directory for rtems-sparc64.
+
+b-sun4vcvs
+Build directory for rtemscvs.
+
+build-b-leon2.sh
+Obsolete. Build script for leon 2 BSP. Included for historical reasons.
+
+build-b-sparc64.sh
+Build script for sun4v BSP using sources from rtems-sparc64.
+
+build-b-sun4vcvs.sh
+Build script for sun4v BSP using sources from rtemscvs.
+
+compilers
+An empty directory under which the sparc64-rtems gcc tools can be placed.
+
+results-expected
+The expected output of running the rtems testsuites. Not always up-to-date.
+
+rtemscvs
+Sources for development of SPARC-v9 port of RTEMS. Contains the RTEMS 
+CVS, with modifications.
+
+rtems-sparc64
+Sources for preparing submission of SPARC-v9 port of RTEMS. Contains the RTEMS 
+CVS, with modifications.
+
+toolchain
+Scripts and patches to generate compiler tools for sparc-rtems gcc.
+
