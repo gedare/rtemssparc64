@@ -98,8 +98,6 @@ extern "C" {
  *  Miscellaneous constants
  */
 
-	/* TODO: FIXME: These need to be updated */
-
 /* 
  * The PSR is deprecated and deleted.
  *
