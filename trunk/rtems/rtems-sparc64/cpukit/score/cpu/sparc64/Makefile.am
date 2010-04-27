@@ -8,7 +8,7 @@ include_rtemsdir = $(includedir)/rtems
 include_rtems_HEADERS = rtems/asm.h
 
 include_rtems_scoredir = $(includedir)/rtems/score
-include_rtems_score_HEADERS = rtems/score/sparc.h rtems/score/cpu.h \
+include_rtems_score_HEADERS = rtems/score/sparc64.h rtems/score/cpu.h \
     rtems/score/types.h
 
 noinst_LIBRARIES = libscorecpu.a

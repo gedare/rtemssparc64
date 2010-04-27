@@ -27,9 +27,9 @@ $(PROJECT_INCLUDE)/rtems/score/$(dirstamp):
 	@: > $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
 PREINSTALL_DIRS += $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
 
-$(PROJECT_INCLUDE)/rtems/score/sparc.h: rtems/score/sparc.h $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/score/sparc.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/rtems/score/sparc.h
+$(PROJECT_INCLUDE)/rtems/score/sparc64.h: rtems/score/sparc64.h $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/score/sparc64.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/rtems/score/sparc64.h
 
 $(PROJECT_INCLUDE)/rtems/score/cpu.h: rtems/score/cpu.h $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/score/cpu.h

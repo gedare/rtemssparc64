@@ -15,7 +15,7 @@
 #include <rtems.h>
 #include <rtems/asm.h>
 #include <rtems/sparc64/traps.h>
-#include <rtems/score/sparc.h>
+#include <rtems/score/sparc64.h>
 #include <rtems/bspIo.h>
 
 extern int syscall(int tstate); /* 
