@@ -1,0 +1,26 @@
+##
+##  $Id: Makefile.am,v 1.26 2009/04/03 12:42:12 ralf Exp $
+##
+
+MANAGERS = all
+
+rtems_tests_PROGRAMS = ticker
+ticker_SOURCES = init.c tasks.c system.h
+
+dist_rtems_tests_DATA = ticker.scn
+dist_rtems_tests_DATA += ticker.doc
+
+include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
+include $(top_srcdir)/../automake/compile.am
+include $(top_srcdir)/../automake/leaf.am
+
+ticker_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
+
+LINK_OBJS = $(ticker_OBJECTS) $(ticker_LDADD)
+LINK_LIBS = $(ticker_LDLIBS)
+
+ticker$(EXEEXT): $(ticker_OBJECTS) $(ticker_DEPENDENCIES)
+	@rm -f ticker$(EXEEXT)
+	$(make-exe)
+
+include $(top_srcdir)/../automake/local.am

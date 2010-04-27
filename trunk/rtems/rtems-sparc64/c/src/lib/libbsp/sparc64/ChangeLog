@@ -1,0 +1,4 @@
+2009-10-19	Eugen Leontie <eugen@gwu.edu>
+
+	* ChangeLog, Makefile.am, acinclude.m4, configure.ac: New files.
+

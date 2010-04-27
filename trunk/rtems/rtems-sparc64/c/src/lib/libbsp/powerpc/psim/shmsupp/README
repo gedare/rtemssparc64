@@ -1,0 +1,7 @@
+#
+#  $Id: README,v 1.2 1998/04/15 15:12:54 joel Exp $
+#
+
+This shared memory driver support code works with a modified version
+of the PowerPC Simulator.  The modifications are not yet merged
+into the mainsteam distribution.
