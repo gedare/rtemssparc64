@@ -233,6 +233,9 @@ PUBLIC(_CPU_Context_switch)
        *  This is entered from _CPU_Context_restore with:
        *    o1 = context to restore
        *    o2 = pstate
+       *
+       *  NOTE: Flushing the register windows is necessary, but it adds 
+       *  an unpredictable (but bounded) overhead to context switching.
        */
 
 PUBLIC(_CPU_Context_restore_heir)
@@ -307,7 +310,7 @@ PUBLIC(_CPU_Context_restore_heir)
      *
      *  NOTE: It is unnecessary to reload some registers.
      */
-    /* GAB: if _CPU_Context_restore_heir does not flushw, then do it here */
+    /* if _CPU_Context_restore_heir does not flushw, then do it here */
   .align 4
 PUBLIC(_CPU_Context_restore)
   SYM(_CPU_Context_restore):
