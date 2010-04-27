@@ -1,0 +1,6 @@
+#
+#  $Id: README,v 1.1 2009/06/04 16:23:11 joel Exp $
+#
+
+This is the BSP for GUMSTIX which has a PXA255 CPU.
+

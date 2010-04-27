@@ -1,0 +1,9 @@
+#
+#  $Id: tmitronsem01.doc,v 1.2 2003/09/04 18:53:51 joel Exp $
+#
+#  The license and distribution terms for this file may be
+#  found in the file LICENSE in this distribution or at
+#  http://www.rtems.com/license/LICENSE.
+#
+
+Time some basic ITRON semaphore operations
