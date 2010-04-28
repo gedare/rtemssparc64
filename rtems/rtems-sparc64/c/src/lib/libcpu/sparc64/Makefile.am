@@ -11,11 +11,6 @@ noinst_PROGRAMS =
 include_libcpudir = $(includedir)/libcpu
 include_libcpu_HEADERS = ../shared/include/cache.h
 
-noinst_PROGRAMS += interrupts.rel
-interrupts_rel_SOURCES = interrupts/installisrentries.c
-interrupts_rel_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/interrupts
-interrupts_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
-
 noinst_PROGRAMS += cache.rel
 cache_rel_SOURCES = cache/cache.c cache/cache_.h \
     ../shared/src/cache_aligned_malloc.c ../shared/src/cache_manager.c
