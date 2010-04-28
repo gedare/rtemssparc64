@@ -38,6 +38,8 @@
  *   COPYRIGHT (c) 2010 Gedare Bloom.
  *   COPYRIGHT (c) 2010 Eugen Leontie.
  *
+ * Same licensing as above.
+ *
  * $Id$
  */
 

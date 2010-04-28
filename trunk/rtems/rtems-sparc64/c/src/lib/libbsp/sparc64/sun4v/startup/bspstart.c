@@ -18,8 +18,6 @@
 
 #include <bsp.h>
 
-extern void sparc64_install_isr_entries(void);
-
 /*
  *  bsp_start
  *
@@ -29,5 +27,4 @@ extern void sparc64_install_isr_entries(void);
 void bsp_start( void )
 {
 	bootstrap();
-	sparc64_install_isr_entries();
 }
