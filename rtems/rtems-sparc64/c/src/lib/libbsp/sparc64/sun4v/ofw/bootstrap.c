@@ -29,6 +29,8 @@
 
 /*
  * $Id$
+ *
+ * This is ${HelenOS}/boot/arch/sparc64/loader/main.c
  */
 
 #include "main.h"
