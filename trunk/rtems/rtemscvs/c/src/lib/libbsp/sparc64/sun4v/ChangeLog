@@ -1,3 +1,7 @@
+2010-05-02  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* Makefile.am: Uses model specific libcpu/syscall
+
 2009-10-19	Eugen Leontie
 
 	* ChangeLog: New file.

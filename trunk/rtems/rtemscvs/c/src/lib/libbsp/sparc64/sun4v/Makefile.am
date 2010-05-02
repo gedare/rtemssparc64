@@ -66,7 +66,7 @@ libbsp_a_SOURCES = ofw/asm.S $(startup_SOURCES) $(clock_SOURCES) $(console_SOURC
 
 libbsp_a_LIBADD = ../../../libcpu/@RTEMS_CPU@/cache.rel \
 		  ../../../libcpu/@RTEMS_CPU@/interrupts.rel \
-		  ../../../libcpu/@RTEMS_CPU@/syscall.rel
+		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/syscall.rel
 
 EXTRA_DIST += times
 
