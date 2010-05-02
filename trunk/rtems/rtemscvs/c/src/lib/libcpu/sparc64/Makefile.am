@@ -33,5 +33,14 @@ sun4v_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
 sun4v_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 endif
 
+if m5sim
+noinst_PROGRAMS += m5sim/syscall.rel
+m5sim_syscall_rel_SOURCES = m5sim/syscall/syscall.S m5sim/syscall/syscall.h
+m5sim_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
+m5sim_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+endif
+
+
+
 include $(srcdir)/preinstall.am
 include $(top_srcdir)/../../../automake/local.am
