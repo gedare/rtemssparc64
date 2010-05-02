@@ -1,0 +1,20 @@
+#
+#  $Id$
+#
+
+Simple BSP for the m5 SPARC_SE Simulator, which simulates an UltraSparc T1
+with system call emulation.
+
+Simulator Invocation
+====================
+
+Status
+======
+
+* Due to limitations of the simulator you will only be able to run
+applications which do not try using any priviliged registers or instructions.
+
+Currently, this excludes all applications, which apply timers and serial 
+devices, i.e. almost any real world application.
+
+
