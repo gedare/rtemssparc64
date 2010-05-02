@@ -26,10 +26,12 @@ cache_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 #cache_rel_CPPFLAGS += -DHAS_INSTRUCTION_CACHE
 #endif
 
-noinst_PROGRAMS += syscall.rel
-syscall_rel_SOURCES = syscall/syscall.S syscall/syscall.h
-syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
-syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+if sun4v
+noinst_PROGRAMS += sun4v/syscall.rel
+sun4v_syscall_rel_SOURCES = sun4v/syscall/syscall.S sun4v/syscall/syscall.h
+sun4v_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
+sun4v_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+endif
 
 include $(srcdir)/preinstall.am
 include $(top_srcdir)/../../../automake/local.am
