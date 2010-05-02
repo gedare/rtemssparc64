@@ -4,7 +4,7 @@
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libcpu-sparc64],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
-AC_CONFIG_SRCDIR([syscall])
+AC_CONFIG_SRCDIR([sun4v])
 RTEMS_TOP([../../../../..],[../../..])
 
 RTEMS_CANONICAL_TARGET_CPU
@@ -20,6 +20,9 @@ RTEMS_PROG_CC_FOR_TARGET
 AM_PROG_CC_C_O
 RTEMS_CANONICALIZE_TOOLS
 RTEMS_PROG_CCAS
+
+AM_CONDITIONAL([sun4v],[test x"$RTEMS_CPU_MODEL" = x"sun4v"])
+AM_CONDITIONAL([m5sim],[test x"$RTEMS_CPU_MODEL" = x"m5sim"])
 
 
 RTEMS_AMPOLISH3
