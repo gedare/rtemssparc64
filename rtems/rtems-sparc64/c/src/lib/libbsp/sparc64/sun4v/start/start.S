@@ -59,12 +59,6 @@
 .register %g6, #scratch
 .register %g7, #scratch
 
-.section 	.data
-	.align 8
-_end_token_string:
-	.asciz "END_TOKEN\n"
-
-
 .section BOOTSTRAP, "ax"
 
 PUBLIC(start)
@@ -138,11 +132,6 @@ setstack:
 	sub	%sp, 0x60, %sp		! make room on stack (necessary?)
 
   /* execution returns here when RTEMS terminates */
-	sethi %hi(_end_token_string), %g1
-	add %g1, %lo(_end_token_string), %o0
-	call SYM(printk)
-	nop
-
 halted:	nop
 	    b SYM(halted)
 
