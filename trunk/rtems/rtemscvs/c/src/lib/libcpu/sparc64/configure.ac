@@ -21,6 +21,9 @@ AM_PROG_CC_C_O
 RTEMS_CANONICALIZE_TOOLS
 RTEMS_PROG_CCAS
 
+AM_CONDITIONAL(shared, test x"$RTEMS_CPU_MODEL" = x"sun4v" || \
+                       test x"$RTEMS_CPU_MODEL" = x"m5sim") 
+
 AM_CONDITIONAL([sun4v],[test x"$RTEMS_CPU_MODEL" = x"sun4v"])
 AM_CONDITIONAL([m5sim],[test x"$RTEMS_CPU_MODEL" = x"m5sim"])
 
