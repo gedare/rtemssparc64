@@ -8,20 +8,18 @@ include $(top_srcdir)/../../../automake/compile.am
 
 noinst_PROGRAMS =
 
-include_bspdir = $(includedir)/bsp
-include_libcpudir = $(includedir)/libcpu
-
-include_libcpu_HEADERS = 
 
 if shared
-include_libcpu_HEADERS += ../shared/include/cache.h
+include_libcpudir = $(includedir)/libcpu
+
+include_libcpu_HEADERS = ../shared/include/cache.h
 
 noinst_PROGRAMS += shared/interrupts.rel
 shared_interrupts_rel_SOURCES = shared/interrupts/installisrentries.c
 shared_interrupts_rel_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/shared/interrupts
 shared_interrupts_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
-noinst_PROGRAMS += cache.rel
+noinst_PROGRAMS += shared/cache.rel
 shared_cache_rel_SOURCES = shared/cache/cache.c shared/cache/cache_.h \
     ../shared/src/cache_aligned_malloc.c ../shared/src/cache_manager.c
 shared_cache_rel_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/shared/cache
