@@ -46,6 +46,26 @@ const CPU_Trap_table_entry _CPU_Trap_slot_template = {
   0x84102000  /* mov   _vector, %g2        */
 };
 
+
+/*PAGE
+ *
+ *  _CPU_ISR_Get_level
+ *
+ *  Input Parameters: NONE
+ *
+ *  Output Parameters:
+ *    returns the current interrupt level (PIL field of the PSR)
+ */
+
+uint32_t   _CPU_ISR_Get_level( void )
+{
+  uint32_t   level;
+
+  sparc64_get_interrupt_level( level );
+
+  return level;
+}
+
 /*PAGE
  *
  *  _CPU_ISR_install_raw_handler

@@ -1,7 +1,0 @@
-2010-05-02  Gedare Bloom <gedare@gwmail.gwu.edu>
-
-	* m5sim m5sim/score m5sim/syscall: new subdirs
-
-2010-05-02  Gedare Bloom <gedare@gwmail.gwu.edu>
-
-	* syscall/ syscall.h syscall.S: New files.

@@ -347,9 +347,8 @@ typedef struct {
     uint64_t   o6_sp;
     uint64_t   o7;
 
-    uint64_t   pstate;
     uint32_t   isr_dispatch_disable;
-    uint32_t   pil;
+    uint32_t   pad;
 } Context_Control;
 
 #define _CPU_Context_Get_SP( _context ) \
@@ -396,11 +395,10 @@ typedef struct {
 #define O6_SP_OFFSET    0xE8
 #define O7_OFFSET 0xF0
 
-#define PSTATE_OFFSET    0xF8
-#define ISR_DISPATCH_DISABLE_STACK_OFFSET 0x100
-#define PIL_OFFSET      0x104
+#define ISR_DISPATCH_DISABLE_STACK_OFFSET 0xF8
+#define ISR_PAD_OFFSET 0xFC
 
-#define CONTEXT_CONTROL_SIZE 0x108
+#define CONTEXT_CONTROL_SIZE 0x100
 
 /*
  *  The floating point context area.
