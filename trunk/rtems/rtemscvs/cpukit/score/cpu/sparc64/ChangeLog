@@ -1,3 +1,7 @@
+2010-05-02  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* cpu_asm.S: Remove interrupt handling code.
+
 2009-10-19	Eugen Leontie <eugen@gwu.edu>
 
 	Added sparc64 architecture
