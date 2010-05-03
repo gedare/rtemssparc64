@@ -223,16 +223,16 @@ PUBLIC(_CPU_Context_switch)
       stx     %o6, [%o0 + O6_SP_OFFSET]
       stx     %o7, [%o0 + O7_OFFSET]       ! o7 is the PC
 
-      rdpr    %pil, %o2
-      stuw    %o2, [%o0 + PIL_OFFSET] ! save pil
+!      rdpr    %pil, %o2
+!      stuw    %o2, [%o0 + PIL_OFFSET] ! save pil
 
-      rdpr    %pstate, %o2
-      stx     %o2, [%o0 + PSTATE_OFFSET]      ! save status register
+!      rdpr    %pstate, %o2
+!      stx     %o2, [%o0 + PSTATE_OFFSET]      ! save status register
 
       /*
        *  This is entered from _CPU_Context_restore with:
        *    o1 = context to restore
-       *    o2 = pstate
+!       *    o2 = pstate
        *
        *  NOTE: Flushing the register windows is necessary, but it adds 
        *  an unpredictable (but bounded) overhead to context switching.
@@ -289,14 +289,14 @@ PUBLIC(_CPU_Context_restore_heir)
     ldx     [%o1 + O7_OFFSET], %o7       ! PC
 
     ! on a hunch... we should be able to use some of the %o regs
-    lduw    [%o1 + PIL_OFFSET], %o2
-    wrpr    %g0, %o2, %pil
+!    lduw    [%o1 + PIL_OFFSET], %o2
+!    wrpr    %g0, %o2, %pil
 
-    ldx     [%o1 + PSTATE_OFFSET], %o2
+!    ldx     [%o1 + PSTATE_OFFSET], %o2
 
     ! do o1 last to avoid destroying heir context pointer
     ldx     [%o1 + O1_OFFSET], %o1        ! overwrite heir pointer
-    wrpr    %g0, %o2, %pstate
+!    wrpr    %g0, %o2, %pstate
 
     retl
     nop
@@ -315,7 +315,7 @@ PUBLIC(_CPU_Context_restore_heir)
 PUBLIC(_CPU_Context_restore)
   SYM(_CPU_Context_restore):
     save    %sp, -CPU_MINIMUM_STACK_FRAME_SIZE, %sp
-  rdpr    %pstate, %o2
+!    rdpr    %pstate, %o2
     ba      SYM(_CPU_Context_restore_heir)
     mov     %i0, %o1                      ! in the delay slot
 

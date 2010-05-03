@@ -60,25 +60,6 @@ void _CPU_Initialize(void)
 
 /*PAGE
  *
- *  _CPU_ISR_Get_level
- *
- *  Input Parameters: NONE
- *
- *  Output Parameters:
- *    returns the current interrupt level (PIL field of the PSR)
- */
-
-uint32_t   _CPU_ISR_Get_level( void )
-{
-  uint32_t   level;
-
-  sparc64_get_interrupt_level( level );
-
-  return level;
-}
-
-/*PAGE
- *
  *  _CPU_Context_Initialize
  *
  *  This kernel routine initializes the basic non-FP context area associated
@@ -106,8 +87,6 @@ void _CPU_Context_Initialize(
 {
     uint64_t     stack_high;  /* highest "stack aligned" address */
     uint32_t     the_size;
-    uint64_t     tmp_pstate;
-    uint64_t    tmp_pil;
 
     /*
      *  On CPUs with stacks which grow down (i.e. SPARC), we build the stack
@@ -127,56 +106,7 @@ void _CPU_Context_Initialize(
     the_context->o6_sp = stack_high - CPU_MINIMUM_STACK_FRAME_SIZE - STACK_BIAS;
     the_context->i6_fp = 0;
 
-#ifdef GICADEBUG
-	printk("\n\r"
-			"_CPU_Context_Initialize() "
-			"stack_base = %x "
-			"size = %x "
-			"CPU_STACK_ALIGNMENT = %d "
-			"stack_high = %x "
-			"the_context->o6_sp = %x"
-			"CPU_MINIMUM_STACK_FRAME_SIZE = %d"
-		"\n\r",
-		stack_base,
-		size,
-		CPU_STACK_ALIGNMENT,
-		stack_high,
-		the_context->o6_sp,
-		CPU_MINIMUM_STACK_FRAME_SIZE
-		);
-#endif
-    /*
-     *  Build the pstate for the task.  Most everything can be 0 and the
-     *  CWP is corrected during the context switch if necessary. 
-     *
-     *  The PEF bit determines if the floating point unit is available.
-     *  The FPU is ONLY enabled if the context is associated with an FP task
-     *  and this SPARC model has an FPU.
-     */
-
-    sparc64_get_pstate( tmp_pstate );
-    tmp_pstate &= ~SPARC_PSTATE_PEF_MASK;  /* disable FPU by default */
-    tmp_pstate |= SPARC_PSTATE_IE_MASK;    /* enable interrupts */
-
-    /*
-     * Set the processor interrupt level (PIL) to the new_level
-     * The PIL is a 4-bit register specifying the level above which
-     * interrupts are taken.
-     */
-    tmp_pil = new_level & 0xF;
-
-#if (SPARC_HAS_FPU == 1)
-    /*
-     *  If this bit is not set, then a task gets a fault when it accesses
-     *  a floating point register.  This is a nice way to detect floating
-     *  point tasks which are not currently declared as such.
-     */
-
-    if ( is_fp )
-      tmp_pstate |= SPARC_PSTATE_PEF_MASK;
-#endif
-    the_context->pstate = tmp_pstate;
-    the_context->pil = tmp_pil;
+    /* PSTATE used to be built here, but is no longer included in context */
 
   /*
    *  Since THIS thread is being created, there is no way that THIS

@@ -45,34 +45,39 @@ PUBLIC(syscall)
 
   SYM(syscall):
 
-    mov  %g0, %g4  ! clear %g4 at this GL
+    mov   %g0, %g4  ! clear %g4 at this GL
     rdpr  %gl, %g1
-    dec  %g1
-    wrpr  %g0, %g1, %gl    ! go back to GL = GL - 1
-    subcc   %g4, 2, %g0    ! syscall 2, disable interrupts
+    dec   %g1
+    wrpr  %g0, %g1, %gl                     ! go back to GL = GL - 1
+    subcc %g4, 2, %g0                     
     bne   3f
-    rdpr  %tstate, %g5    ! re-read tstate
-    rdpr    %pil, %g1
-    and  %g5, SPARC_TSTATE_IE_MASK, %o0
-    or  %o0, %g1, %o0    ! return TSTATE_IE | PIL
-    wrpr     %g0, 0xf, %pil    ! set PIL to 15
-    andn    %g5, SPARC_TSTATE_IE_MASK, %g1
-    wrpr    %g0, %g1, %tstate  ! disable interrupts in trap state
+    rdpr  %tstate, %g5                      ! re-read tstate, use delay slot
+
+    ! syscall 2, disable interrupts
+    rdpr  %pil, %g1
+    and   %g5, SPARC_TSTATE_IE_MASK, %o0
+    or    %o0, %g1, %o0                     ! return TSTATE_IE | PIL
+    wrpr  %g0, 0xf, %pil                    ! set PIL to 15
+    andn  %g5, SPARC_TSTATE_IE_MASK, %g1
+    wrpr  %g0, %g1, %tstate                 ! disable interrupts in trap state
     ba,a  9f
-    3:
-    subcc   %g4, 3, %g0    ! syscall 3, enable interrupts
+
+    3:  ! syscall 3, enable interrupts
+    subcc %g4, 3, %g0                     
     bne   1f
-    and     %o0, 0xf, %g1
-    wrpr  %g0, %g1, %pil    ! restore PIL
-    and  %o0, SPARC_TSTATE_IE_MASK, %g1
-    or  %g5, %g1, %g1
-    wrpr    %g0, %g1, %tstate  ! restore IE to stored value
+    and   %o0, 0xf, %g1
+    wrpr  %g0, %g1, %pil                    ! restore PIL
+!    and   %o0, SPARC_TSTATE_IE_MASK, %g1
+!    or    %g5, %g1, %g1                     ! restore saved IE
+    or    %g5, SPARC_TSTATE_IE_MASK, %g1    ! restore IE (safe?)
+    wrpr  %g0, %g1, %tstate     
     ba,a  9f
 
     1:          
-    ba,a  1b      ! spin. taking a trap here -> htrap
-    9:        ! leave
-    mov  0, %g4      ! clear %g4
+    ba,a  1b                                ! spin. taking a trap here -> htrap
+
+    9:                                      ! leave
+    mov  0, %g4                             ! clear %g4
     DONE
 
 PUBLIC(sparc_disable_interrupts)
