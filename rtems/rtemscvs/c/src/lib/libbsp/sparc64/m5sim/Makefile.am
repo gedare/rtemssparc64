@@ -44,14 +44,11 @@ libbsp_a_SOURCES += ../../shared/console-polled.c console/console-io.c
 # timer
 libbsp_a_SOURCES += ../../shared/timerstub.c
 
-# TODO: Might need this if need to separate multiple cpu-dependent score impl.
-#libbsp_a_LIBADD = \
-#    ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/score.rel
-
-libbsp_a_LIBADD = ../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
+libbsp_a_LIBADD = \
+			../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
 		  ../../../libcpu/@RTEMS_CPU@/shared/interrupts.rel \
-		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/syscall.rel
-
+		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/syscall.rel \
+			../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/score.rel
 
 include $(srcdir)/preinstall.am
 include $(top_srcdir)/../../../../automake/local.am

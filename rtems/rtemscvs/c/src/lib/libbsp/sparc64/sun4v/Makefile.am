@@ -64,9 +64,11 @@ noinst_LIBRARIES = libbsp.a
 libbsp_a_SOURCES = ofw/asm.S $(startup_SOURCES) $(clock_SOURCES) $(console_SOURCES) \
     $(timer_SOURCES)
 
-libbsp_a_LIBADD = ../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
+libbsp_a_LIBADD = \
+			../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
 		  ../../../libcpu/@RTEMS_CPU@/shared/interrupts.rel \
-		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/syscall.rel
+		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/syscall.rel \
+			../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/score.rel
 
 EXTRA_DIST += times
 

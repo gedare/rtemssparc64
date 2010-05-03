@@ -1,3 +1,7 @@
+2010-05-03  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* Makefile.am: Add score.rel to libadd.
+
 2010-05-02  Gedare Bloom <gedare@gwmail.gwu.edu>
 
 	* Makefile.am: Uses model specific libcpu/syscall

@@ -33,8 +33,8 @@ endif
 if sun4v
 # NOTE: Unlike other CPUs, we install into a subdirectory to avoid
 #       file name conflicts
-#include_sparc64dir = $(includedir)/sparc64
-#include_rtems_scoredir = $(includedir)/rtems/score
+include_sparc64dir = $(includedir)/sparc64
+include_rtems_scoredir = $(includedir)/rtems/score
 
 #include_sparc64_HEADERS =  include/traps.h
 #include_rtems_score_HEADERS = $(include_rtems_scoredir)/sparc64.h \
@@ -42,6 +42,12 @@ if sun4v
 #															$(include_rtems_scoredir)/types.h
 
 ## sun4v/score
+noinst_PROGRAMS += sun4v/score.rel
+sun4v_score_rel_SOURCES = sun4v/score/interrupt.S sun4v/score/cpu.c
+sun4v_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
+sun4v_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+
+
 noinst_PROGRAMS += sun4v/syscall.rel
 sun4v_syscall_rel_SOURCES = sun4v/syscall/syscall.S sun4v/syscall/syscall.h
 sun4v_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
