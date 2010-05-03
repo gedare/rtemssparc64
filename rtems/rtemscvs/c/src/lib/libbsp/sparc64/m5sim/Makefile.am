@@ -47,7 +47,7 @@ libbsp_a_SOURCES += ../../shared/timerstub.c
 libbsp_a_LIBADD = \
 			../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
 		  ../../../libcpu/@RTEMS_CPU@/shared/interrupts.rel \
-		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/syscall.rel \
+		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/sparc-syscall.rel \
 			../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/score.rel
 
 include $(srcdir)/preinstall.am

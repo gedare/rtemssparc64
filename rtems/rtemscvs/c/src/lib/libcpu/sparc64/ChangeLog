@@ -1,5 +1,10 @@
 2010-05-03  Gedare Bloom <gedare@gwmail.gwu.edu>
 
+	* m5sim/syscall/sparc-syscall.h m5sim/syscall/sparc-syscall.S: 
+		Renamed files from syscall.h and syscall.S
+
+2010-05-03  Gedare Bloom <gedare@gwmail.gwu.edu>
+
 	* sun4v/syscall/syscall.S: Explicitly enable IE bit when using SYS_irqset.
 	* m5sim/score/cpu.c: install raw handler and isr get level are nops
 
