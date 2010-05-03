@@ -52,7 +52,7 @@ if m5sim
 
 ## m5sim/score
 noinst_PROGRAMS += m5sim/score.rel
-m5sim_score_rel_SOURCES = m5sim/score/cpu_asm.S m5sim/score/cpu.c
+m5sim_score_rel_SOURCES = m5sim/score/cpu_asm.c m5sim/score/cpu.c
 m5sim_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
 m5sim_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
