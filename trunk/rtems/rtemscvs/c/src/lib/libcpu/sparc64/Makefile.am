@@ -32,7 +32,7 @@ endif
 
 if sun4v
 # NOTE: Unlike other CPUs, we install into a subdirectory to avoid
-#       file name conflicts
+#       file name conflicts (See sh CPU for similar approach)
 include_sparc64dir = $(includedir)/sparc64
 include_rtems_scoredir = $(includedir)/rtems/score
 
@@ -48,10 +48,11 @@ sun4v_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
 sun4v_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
 
-noinst_PROGRAMS += sun4v/syscall.rel
-sun4v_syscall_rel_SOURCES = sun4v/syscall/syscall.S sun4v/syscall/syscall.h
-sun4v_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
-sun4v_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+noinst_PROGRAMS += sun4v/sparc-syscall.rel
+sun4v_sparc_syscall_rel_SOURCES = sun4v/syscall/sparc-syscall.S \
+																	sun4v/syscall/sparc-syscall.h
+sun4v_sparc_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
+sun4v_sparc_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 endif
 
 if m5sim
@@ -62,10 +63,11 @@ m5sim_score_rel_SOURCES = m5sim/score/cpu_asm.c m5sim/score/cpu.c
 m5sim_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
 m5sim_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
-noinst_PROGRAMS += m5sim/syscall.rel
-m5sim_syscall_rel_SOURCES = m5sim/syscall/syscall.S m5sim/syscall/syscall.h
-m5sim_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
-m5sim_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+noinst_PROGRAMS += m5sim/sparc-syscall.rel
+m5sim_sparc_syscall_rel_SOURCES = m5sim/syscall/sparc-syscall.S \
+																	m5sim/syscall/sparc-syscall.h
+m5sim_sparc_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
+m5sim_sparc_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 endif
 
 
