@@ -1,5 +1,9 @@
 2010-05-02  Gedare Bloom <gedare@gwmail.gwu.edu>
 
+	* sun4v/score/cpu_asm.S: Remove context switch code.
+
+2010-05-02  Gedare Bloom <gedare@gwmail.gwu.edu>
+
 	* shared/ shared/cache shared/interrupts:
 		Moved cache and interrupts into shared folder.
 
