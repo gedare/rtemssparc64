@@ -1,4 +1,4 @@
-/*  cpu_asm.s
+/*  context.S
  *
  *  This file contains the basic algorithms for all assembly code used
  *  in an specific CPU port of RTEMS.  These algorithms must be implemented

@@ -15,7 +15,7 @@ include_rtems_score_HEADERS = rtems/score/sparc64.h rtems/score/cpu.h \
     rtems/score/types.h
 
 noinst_LIBRARIES = libscorecpu.a
-libscorecpu_a_SOURCES = context.S interrupt.S cpu.c
+libscorecpu_a_SOURCES = context.S cpu.c
 libscorecpu_a_CPPFLAGS = $(AM_CPPFLAGS)
 
 include $(srcdir)/preinstall.am

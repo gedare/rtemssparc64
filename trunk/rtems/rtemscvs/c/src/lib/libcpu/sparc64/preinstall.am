@@ -23,3 +23,14 @@ $(PROJECT_INCLUDE)/libcpu/cache.h: ../shared/include/cache.h $(PROJECT_INCLUDE)/
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/libcpu/cache.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/libcpu/cache.h
 endif
+if sun4v
+$(PROJECT_INCLUDE)/sparc64/$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/sparc64
+	@: > $(PROJECT_INCLUDE)/sparc64/$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/sparc64/$(dirstamp)
+
+$(PROJECT_INCLUDE)/rtems/score/$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/rtems/score
+	@: > $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/rtems/score/$(dirstamp)
+endif
