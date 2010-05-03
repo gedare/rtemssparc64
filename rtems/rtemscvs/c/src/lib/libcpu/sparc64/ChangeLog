@@ -1,3 +1,13 @@
 2010-05-02  Gedare Bloom <gedare@gwmail.gwu.edu>
 
+	* shared/ shared/cache shared/interrupts:
+		Moved cache and interrupts into shared folder.
+
+2010-05-02  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* sun4v sun4v/score/cpu_asm.S sun4v/score/cpu.c: 
+		Copied from score/cpu/sparc64
+
+2010-05-02  Gedare Bloom <gedare@gwmail.gwu.edu>
+
 	* ChangeLog: New file.
