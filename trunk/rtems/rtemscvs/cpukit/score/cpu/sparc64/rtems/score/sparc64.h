@@ -1,5 +1,5 @@
 /**
- * @file rtems/score/sparc.h
+ * @file rtems/score/sparc64.h
  */
 
 /*
