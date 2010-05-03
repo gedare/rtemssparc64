@@ -27,7 +27,7 @@
 extern "C" {
 #endif
 
-#include <rtems/score/sparc.h>               /* pick up machine definitions */
+#include <rtems/score/sparc64.h>               /* pick up machine definitions */
 #ifndef ASM
 #include <rtems/score/types.h>
 #endif
