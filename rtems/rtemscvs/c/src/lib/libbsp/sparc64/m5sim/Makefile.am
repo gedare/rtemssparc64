@@ -11,7 +11,6 @@ include_bspdir = $(includedir)/bsp
 dist_project_lib_DATA = bsp_specs
 
 include_HEADERS = include/bsp.h
-include_HEADERS += include/syscall.h
 include_HEADERS += ../../shared/include/tm27.h
 
 nodist_include_HEADERS = include/bspopts.h
@@ -39,7 +38,7 @@ libbsp_a_SOURCES += ../../shared/bsplibc.c ../../shared/bsppost.c \
 libbsp_a_SOURCES += ../../shared/clock_driver_simidle.c
 
 # console
-libbsp_a_SOURCES += ../../shared/console-polled.c console/console-io.c 
+libbsp_a_SOURCES += ../../shared/console-polled.c console/console-io.c console/console-support.S
 
 # timer
 libbsp_a_SOURCES += ../../shared/timerstub.c
