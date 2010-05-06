@@ -218,6 +218,27 @@ extern "C" {
   } while ( 0 )
 
 /*
+ * read the stick register
+ */
+#define sparc64_read_stick( _stick ) \
+  do { \
+    (_stick) = 0; \
+    asm volatile( "rd %%stick, %0" : "=r" (_stick) : "0" (_stick) ); \
+  } while ( 0 )
+
+/*
+ * write the stick_cmpr register
+ * 
+ * TODO: sun4v only?
+ */
+#define sparc64_write_stick_cmpr( _stick_cmpr ) \
+  do { \
+    asm volatile( "wr %%g0, %0, %%stick_cmpr" :  "=r" (_stick_cmpr)  \
+                                              :  "0" (_stick_cmpr) ); \
+  } while ( 0 )
+
+
+/*
  * read the Tick register
  */
 #define sparc64_read_tick( _tick ) \
