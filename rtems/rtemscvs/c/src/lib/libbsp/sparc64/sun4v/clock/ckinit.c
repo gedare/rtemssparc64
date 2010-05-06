@@ -62,9 +62,9 @@ void Clock_driver_support_at_tick(void)
 
   /* TODO: this could be more efficiently implemented as a single assembly 
    * inline */
-  sparc64_read_tick(tick_reg);
+  sparc64_read_stick(tick_reg);
   tick_reg += sun4v_cycles_per_tick;
-  sparc64_write_tick_cmpr(tick_reg);
+  sparc64_write_stick_cmpr(tick_reg);
 }
 
 #define Clock_driver_support_install_isr(_new, _old) \
@@ -83,9 +83,9 @@ void Clock_driver_support_initialize_hardware(void)
 
   sun4v_cycles_per_tick = rtems_configuration_get_microseconds_per_tick()*(get_Frequency()/1000000);
 
-  sparc64_read_tick(tick_reg);
+  sparc64_read_stick(tick_reg);
   tick_reg += sun4v_cycles_per_tick;
-  sparc64_write_tick_cmpr(tick_reg);
+  sparc64_write_stick_cmpr(tick_reg);
 }
 
 
