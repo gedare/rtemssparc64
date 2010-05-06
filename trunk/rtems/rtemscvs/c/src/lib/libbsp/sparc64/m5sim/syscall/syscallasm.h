@@ -14,7 +14,7 @@
  * C files should include syscall.h.
  */
 
-#include <sys/syscall.h>
+#include "syscall.h"
 
 /* Some macros for writing assember syscall stubs.  */
 

@@ -8,7 +8,7 @@
  */
 
 #include <rtems/asm.h>
-#include "syscall.h"
+#include "sparc-syscall.h"
 
 .seg    "text"
 /*

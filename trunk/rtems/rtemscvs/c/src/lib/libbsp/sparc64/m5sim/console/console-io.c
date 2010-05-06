@@ -34,13 +34,13 @@ void console_initialize_hardware(void)
  *
  *  This routine transmits a character using polling.
  */
-ssize_t _sys_write(int fd, const void *buf, size_t count);
+ssize_t _m5bsp_write(int fd, const void *buf, size_t count);
 void console_outbyte_polled(
   int  port,
   char ch
 )
 {
-/*  _sys_write( 1, &ch, 1 ); */
+  _m5bsp_write( 1, &ch, 1 ); 
 }
 
 /*
@@ -58,7 +58,7 @@ int console_inbyte_nonblocking(
 
 #include <rtems/bspIo.h>
 
-void H8simBSP_output_char(char c) { console_outbyte_polled( 0, c ); }
+void m5simBSP_output_char(char c) { console_outbyte_polled( 0, c ); }
 
-BSP_output_char_function_type           BSP_output_char = H8simBSP_output_char;
+BSP_output_char_function_type           BSP_output_char = m5simBSP_output_char;
 BSP_polling_getchar_function_type       BSP_poll_char = NULL;
