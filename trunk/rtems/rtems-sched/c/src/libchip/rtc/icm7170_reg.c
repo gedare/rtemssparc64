@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: icm7170_reg.c,v 1.6 2004/04/20 10:43:39 ralf Exp $
+ *  $Id: icm7170_reg.c,v 1.7 2010/04/25 21:18:06 joel Exp $
  */
 
 #include <rtems.h>
@@ -31,7 +31,7 @@
  */
 
 uint32_t   _ICM7170_NAME(icm7170_get_register)(
-  uint32_t    ulCtrlPort,
+  uintptr_t   ulCtrlPort,
   uint8_t     ucRegNum
 )
 {
@@ -47,7 +47,7 @@ uint32_t   _ICM7170_NAME(icm7170_get_register)(
  */
 
 void  _ICM7170_NAME(icm7170_set_register)(
-  uint32_t    ulCtrlPort,
+  uintptr_t   ulCtrlPort,
   uint8_t     ucRegNum,
   uint32_t    ucData
 )

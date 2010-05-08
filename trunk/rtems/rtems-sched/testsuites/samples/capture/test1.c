@@ -14,7 +14,7 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test1.c,v 1.8 2009/11/30 03:33:23 ralf Exp $
+ *  $Id: test1.c,v 1.9 2010/03/29 11:30:48 thomas Exp $
  */
 
 #include "system.h"
@@ -24,6 +24,7 @@
 #include <rtems.h>
 #include <rtems/monitor.h>
 
+#if !BSP_SMALL_MEMORY
 static volatile int capture_CT1a_deleted;
 static volatile int capture_CT1b_deleted;
 static volatile int capture_CT1c_deleted;
@@ -268,3 +269,4 @@ void setup_tasks_to_watch (void)
        cmd++)
       rtems_monitor_insert_cmd (&capture_cmds[cmd]);
 }
+#endif /* BSP_SMALL_MEMORY */

@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: pthreadcreate.c,v 1.19 2009/11/30 15:44:21 ralf Exp $
+ *  $Id: pthreadcreate.c,v 1.20 2010/04/03 05:55:59 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -226,7 +226,7 @@ int pthread_create(
   if ( schedpolicy == SCHED_SPORADIC ) {
     _Watchdog_Insert_ticks(
       &api->Sporadic_timer,
-      _Timespec_To_ticks( &api->schedparam.ss_replenish_period )
+      _Timespec_To_ticks( &api->schedparam.sched_ss_repl_period )
     );
   }
 

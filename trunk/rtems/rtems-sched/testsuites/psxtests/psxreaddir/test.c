@@ -22,7 +22,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test.c,v 1.17 2009/12/08 17:52:53 joel Exp $
+ *  $Id: test.c,v 1.18 2010/04/25 19:17:52 joel Exp $
  */
 
 #include <stdio.h>
@@ -409,9 +409,11 @@ int main(
   rewinddir( directory );
   printdir(directory);
 
-/* Don't know how to check this one automatically. */
+#if 0
+  /* Newlib's implementation does not check for NULL */
   printf( "Send rewinddir a NULL pointer\n");
   rewinddir( NULL );
+#endif
 
   printf( "\nSeek directory\n" );
   printf( "telldir() should report only sizeof(struct dirent) increments \n" );

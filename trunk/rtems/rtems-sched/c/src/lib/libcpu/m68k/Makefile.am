@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.32 2009/10/15 13:55:46 thomas Exp $
+## $Id: Makefile.am,v 1.33 2010/04/05 17:11:47 joel Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../aclocal
@@ -114,6 +114,16 @@ noinst_PROGRAMS += mcf5223x/cachepd.rel
 mcf5223x_cachepd_rel_SOURCES = mcf5223x/cache/cachepd.c
 mcf5223x_cachepd_rel_CPPFLAGS = $(AM_CPPFLAGS)
 mcf5223x_cachepd_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+endif
+
+if mcf5225x
+## mcf5225x/include
+include_mcf5225xdir = $(includedir)/mcf5225x
+include_mcf5225x_HEADERS = mcf5225x/include/mcf5225x.h
+# Network
+if HAS_NETWORKING
+include_mcf5225x_HEADERS += mcf5225x/include/fec.h
+endif ## HAS_NETWORKING
 endif
 
 if mcf5235

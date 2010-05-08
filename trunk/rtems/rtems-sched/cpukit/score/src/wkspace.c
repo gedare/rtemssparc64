@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: wkspace.c,v 1.32 2009/09/14 14:48:38 joel Exp $
+ *  $Id: wkspace.c,v 1.33 2010/04/07 17:05:29 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -19,7 +19,6 @@
 #include <rtems/config.h>
 #include <rtems/score/wkspace.h>
 #include <rtems/score/interr.h>
-#include <rtems/config.h>
 
 #include <string.h>  /* for memset */
 

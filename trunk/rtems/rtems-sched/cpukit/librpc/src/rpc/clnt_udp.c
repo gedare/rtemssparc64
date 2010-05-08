@@ -39,6 +39,10 @@ static char *rcsid = "$FreeBSD: src/lib/libc/rpc/clnt_udp.c,v 1.15 2000/01/27 23
  * Copyright (C) 1984, Sun Microsystems, Inc.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -119,10 +123,10 @@ clntudp_bufcreate(
 	register struct cu_data *cu = NULL;
 	struct timeval now;
 	struct rpc_msg call_msg;
-	static u_int32_t disrupt;
+	static uintptr_t disrupt;
 
 	if (disrupt == 0)
-		disrupt = (u_int32_t)(long)raddr;
+		disrupt = (uintptr_t)raddr;
 
 	cl = (CLIENT *)mem_alloc(sizeof(CLIENT));
 	if (cl == NULL) {

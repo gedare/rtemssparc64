@@ -1,9 +1,9 @@
-/.cvsignore/1.1/Fri Oct 23 12:47:47 2009//
-/Makefile.am/1.25/Fri Oct 23 12:47:47 2009//
-/psx08.scn/1.4/Fri Oct 23 12:47:47 2009//
-/system.h/1.9/Fri Oct 23 12:47:47 2009//
-/task1.c/1.4/Fri Oct 23 12:47:47 2009//
-/init.c/1.12/Tue Dec 22 15:27:22 2009//
-/task2.c/1.9/Tue Dec 22 15:27:22 2009//
-/task3.c/1.6/Tue Dec 22 15:27:22 2009//
+/.cvsignore/1.1/Tue Apr 27 14:44:47 2010//
+/Makefile.am/1.25/Tue Apr 27 14:44:47 2010//
+/init.c/1.12/Tue Apr 27 14:44:47 2010//
+/psx08.scn/1.4/Tue Apr 27 14:44:47 2010//
+/system.h/1.9/Tue Apr 27 14:44:47 2010//
+/task1.c/1.4/Tue Apr 27 14:44:47 2010//
+/task2.c/1.9/Tue Apr 27 14:44:47 2010//
+/task3.c/1.6/Tue Apr 27 14:44:47 2010//
 D

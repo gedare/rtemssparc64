@@ -9,7 +9,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp.h,v 1.9 2009/11/29 14:53:01 ralf Exp $
+ *  $Id: bsp.h,v 1.12 2010/04/30 16:44:40 joel Exp $
 */
 #ifndef _BSP_H
 #define _BSP_H
@@ -20,11 +20,14 @@ extern "C" {
 
 #include <bspopts.h>
 
+#define BSP_SMALL_MEMORY 1
+
 #include <rtems.h>
 #include <rtems/iosupp.h>
 #include <rtems/console.h>
 #include <rtems/clockdrv.h>
 
+#define BSP_FEATURE_IRQ_EXTENSION
 
 #define CONFIG_ARM_CLK 60000000L
 /* cclk=cco/(2*P) */
@@ -85,7 +88,11 @@ extern "C" {
 #define Fcclk   (Fosc << 2)       //system freq 2^n time of  Fosc(1~32) <=60MHZ
 #define Fcco    (Fcclk <<2)       //CCO freq 2,4,8,16 time of Fcclk 156MHz~320MHz
 #define Fpclk   (Fcclk >>2) * 1   //VPB freq only(Fcclk / 4) 1~4
-#define M       Fcclk / Fosc
+/* This was M.  That is a BAD BAD public constant.  I renamed it to
+ * JOEL_M so it wouldn't conflict with user code.  If you can find
+ * a better name, fix this.  But nothing I found uses it.
+ */
+#define JOEL_M       Fcclk / Fosc
 #define P_min   Fcco_MIN / (2*Fcclk) + 1;
 #define P_max   Fcco_MAX / (2*Fcclk);
 

@@ -3,7 +3,7 @@
  *  These routines return control to 167Bug after a normal exit from the
  *  application.
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2010.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
@@ -13,12 +13,15 @@
  *  Modifications of respective RTEMS files:
  *  Copyright (c) 1998, National Research Council of Canada
  *
- *  $Id: bspclean.c,v 1.6 2004/04/21 10:42:53 ralf Exp $
+ *  $Id: bspclean.c,v 1.7 2010/04/28 13:23:11 joel Exp $
  */
 
 #include <rtems.h>
 #include <bsp.h>
 #include <page_table.h>
+
+extern void start( void );
+extern void page_table_teardown( void );
 
 /*
  *  bsp_return_to_monitor_trap
@@ -34,9 +37,6 @@
  */
 static void bsp_return_to_monitor_trap( void )
 {
-  extern void start( void );
-  extern void page_table_teardown( void );
-
   register volatile void *start_addr;
 
   page_table_teardown();

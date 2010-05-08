@@ -1,12 +1,14 @@
 ##
-## $Id: Makefile.am,v 1.30 2007/12/06 15:19:08 joel Exp $
+## $Id: Makefile.am,v 1.31 2010/04/29 05:17:12 ralf Exp $
 ##
+
+## DEPRECATED, don't use.
 
 include $(top_srcdir)/automake/compile.am
 
 AM_CPPFLAGS += -DWEBS -DUEMF
 
-if LIBNETWORKING
+if LIBHTTPD
 ## Always install this header file.  Both webservers use it.
 include_HEADERS = rtems_webserver.h
 

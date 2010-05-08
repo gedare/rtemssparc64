@@ -31,7 +31,7 @@
  * SUCH DAMAGE.
  *
  *	@(#)igmp.c	8.1 (Berkeley) 7/19/93
- * $Id: igmp.c,v 1.4 2008/09/01 06:36:17 ralf Exp $
+ * $Id: igmp.c,v 1.5 2010/03/28 05:47:48 ralf Exp $
  */
 
 /*
@@ -44,6 +44,10 @@
  *
  * MULTICAST Revision: 3.5.1.4
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <sys/param.h>
 #include <sys/systm.h>

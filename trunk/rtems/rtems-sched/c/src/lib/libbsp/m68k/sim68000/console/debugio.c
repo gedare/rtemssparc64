@@ -11,8 +11,10 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: debugio.c,v 1.1 2008/09/16 19:03:46 joel Exp $
+ *  $Id: debugio.c,v 1.2 2010/04/11 16:34:42 ralf Exp $
  */
+
+#include <unistd.h> /* write */
 
 #include <bsp.h>
 #include <rtems/bspIo.h>

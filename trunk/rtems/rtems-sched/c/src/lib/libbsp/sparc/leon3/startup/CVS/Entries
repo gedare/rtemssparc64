@@ -1,6 +1,6 @@
-/linkcmds/1.10/Fri Oct 23 12:51:26 2009//
-/bspidle.S/1.2/Tue Dec 22 15:26:37 2009//
-/bspstart.c/1.17/Tue Dec 22 15:26:37 2009//
-/setvec.c/1.4/Tue Dec 22 15:26:37 2009//
-/spurious.c/1.7/Tue Dec 22 15:26:37 2009//
+/bspidle.S/1.2/Tue Apr 27 14:46:30 2010//
+/bspstart.c/1.17/Tue Apr 27 14:46:30 2010//
+/linkcmds/1.10/Tue Apr 27 14:46:30 2010//
+/setvec.c/1.4/Tue Apr 27 14:46:30 2010//
+/spurious.c/1.7/Tue Apr 27 14:46:30 2010//
 D

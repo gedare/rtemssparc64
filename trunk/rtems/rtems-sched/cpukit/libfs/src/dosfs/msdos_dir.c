@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  @(#) $Id: msdos_dir.c,v 1.16 2009/11/29 13:18:56 ralf Exp $
+ *  @(#) $Id: msdos_dir.c,v 1.18 2010/03/12 16:26:14 joel Exp $
  */
 #if HAVE_CONFIG_H
 #include "config.h"
@@ -146,7 +146,7 @@ msdos_format_dirent_with_dot(char *dst,const char *src)
   src_tmp = src;
   len = i;
   while (i-- > 0) {
-    *dst++ = tolower(*src_tmp++);
+    *dst++ = tolower((unsigned char)(*src_tmp++));
   }
   /*
    * find last non-blank character of extension
@@ -165,7 +165,7 @@ msdos_format_dirent_with_dot(char *dst,const char *src)
     len += i + 1; /* extension + dot */
     src_tmp = src + MSDOS_SHORT_BASE_LEN;
     while (i-- > 0) {
-      *dst++ = tolower(*src_tmp++);
+      *dst++ = tolower((unsigned char)(*src_tmp++));
       len++;
     }
   }

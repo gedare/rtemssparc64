@@ -1,4 +1,4 @@
-/* $Id: rtems_mii_ioctl.c,v 1.5 2009/11/30 15:57:51 ralf Exp $ */
+/* $Id: rtems_mii_ioctl.c,v 1.7 2010/03/12 16:26:16 joel Exp $ */
 
 /* Simple (default) implementation for SIOCGIFMEDIA/SIOCSIFMEDIA
  * to be used by ethernet drivers [from their ioctl].
@@ -158,9 +158,9 @@ rtems_str2ifmedia (const char *str, int phy)
         return 0;
       if (!strncmp (chpt, "ase", 3))
         chpt += 3;
-      if (toupper (*chpt++) != 'T')
+      if (toupper ((unsigned char)*chpt++) != 'T')
         return 0;
-      if (IFM_100_TX == sub && toupper (*chpt++) != 'X')
+      if (IFM_100_TX == sub && toupper ((unsigned char)*chpt++) != 'X')
         return 0;
     }
   }

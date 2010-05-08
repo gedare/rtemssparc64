@@ -27,9 +27,13 @@
  * SUCH DAMAGE.
  *
  *	@(#)ip_input.c	8.2 (Berkeley) 1/4/94
- * $Id: ip_input.c,v 1.11 2008/12/23 05:00:57 ralf Exp $
+ * $Id: ip_input.c,v 1.12 2010/03/28 05:47:49 ralf Exp $
  *	$ANA: ip_input.c,v 1.5 1996/09/18 14:34:59 wollman Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #define	_IP_VHL
 

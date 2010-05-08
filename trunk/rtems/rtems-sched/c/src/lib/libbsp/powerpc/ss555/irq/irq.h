@@ -21,7 +21,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq.h,v 1.2 2004/04/21 10:43:03 ralf Exp $
+ *  $Id: irq.h,v 1.3 2010/04/28 17:17:47 joel Exp $
  */
 
 #ifndef LIBBSP_POWERPC_SS555_IRQ_IRQ_H
@@ -34,6 +34,18 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/*
+ *  These are no longer prototyped anywhere else. This appears to be
+ *  remnants of the IRQ code upgrade.
+ *
+ *  --joel 28 April 2010
+ */
+int CPU_install_rtems_irq_handler(const rtems_irq_connect_data* irq);
+int CPU_get_current_rtems_irq_handler(rtems_irq_connect_data* irq);
+int CPU_remove_rtems_irq_handler(const rtems_irq_connect_data* irq);
+int CPU_rtems_irq_mngt_set(rtems_irq_global_settings* config);
+int CPU_rtems_irq_mngt_get(rtems_irq_global_settings** config);
 
 /*
  * The SS555 has no external interrupt controller chip, so use the standard

@@ -36,7 +36,7 @@
  *
  * Further modifications for PPC405GP/EX by Michael Hamel
  *
- *  $Id: clock_4xx.c,v 1.4 2009/11/30 05:07:54 ralf Exp $
+ *  $Id: clock_4xx.c,v 1.5 2010/03/27 20:44:18 thomas Exp $
  */
 
 #include <rtems.h>
@@ -71,7 +71,6 @@ rtems_isr_entry set_vector(                    /* returns old vector */
 
 /* Defined in bspstart.c */
 extern uint32_t bsp_clicks_per_usec;
-extern bool bsp_timer_internal_clock;
 
 /*
  * These are set by clock driver during its init

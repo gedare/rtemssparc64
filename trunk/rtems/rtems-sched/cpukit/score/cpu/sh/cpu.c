@@ -19,8 +19,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.19 2009/12/04 05:25:30 ralf Exp $
+ *  $Id: cpu.c,v 1.20 2010/03/27 15:02:35 joel Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/system.h>
 #include <rtems/score/isr.h>

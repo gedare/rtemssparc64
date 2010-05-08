@@ -7,13 +7,16 @@
  * Saskatoon, Saskatchewan, CANADA
  * eric@skatter.usask.ca
  *
- *  $Id: init68360.c,v 1.27 2009/11/29 14:59:40 ralf Exp $
+ *  $Id: init68360.c,v 1.28 2010/04/28 19:16:22 joel Exp $
  */
 
 #include <rtems.h>
 #include <bsp.h>
 #include <rtems/m68k/m68360.h>
 
+extern void _CopyDataClearBSSAndStart (unsigned long ramSize);
+extern void *RamBase;
+extern void *_RomBase;	/* From linkcmds */
 
 /*
  * Declare the m360 structure here for the benefit of the debugger
@@ -44,9 +47,6 @@ void _Init68360 (void)
 	int i;
 	m68k_isr_entry *vbr;
 	unsigned long ramSize;
-	extern void _CopyDataClearBSSAndStart (unsigned long ramSize);
-	extern void *RamBase;
-	extern void *_RomBase;	/* From linkcmds */
 
 #if (defined (__mc68040__))
 	/*

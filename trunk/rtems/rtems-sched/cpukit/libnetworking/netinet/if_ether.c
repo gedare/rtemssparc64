@@ -31,7 +31,7 @@
  */
  
 /*
- * $Id: if_ether.c,v 1.8 2008/12/22 17:46:18 ralf Exp $
+ * $Id: if_ether.c,v 1.9 2010/03/28 05:47:48 ralf Exp $
  */
 
 /*
@@ -39,6 +39,10 @@
  * TODO:
  *	add "inuse/lock" bit (or ref. count) along with valid bit
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include "opt_inet.h"
 

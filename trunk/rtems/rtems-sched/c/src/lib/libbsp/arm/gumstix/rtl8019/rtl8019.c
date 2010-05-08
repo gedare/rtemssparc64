@@ -7,11 +7,11 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtl8019.c,v 1.2 2009/11/29 14:53:00 ralf Exp $
+ *  $Id: rtl8019.c,v 1.5 2010/05/03 14:49:57 sh Exp $
  */
 
 #include <bsp.h>
-#include <irq.h>
+#include <bsp/irq.h>
 #include "wd80x3.h"
 
 #include <stdio.h>
@@ -191,7 +191,7 @@ struct ne_ring
 
 /* Forward declarations to avoid warnings */
 
-static void ne_init_irq_handler (int irno);
+static void ne_init_irq_handler (struct ne_softc *sc);
 static void ne_stop (struct ne_softc *sc);
 static void ne_stop_hardware (struct ne_softc *sc);
 static void ne_init (void *arg);
@@ -201,24 +201,6 @@ static void ne_reset(struct ne_softc *sc);
 #ifdef DEBUG_NE
 static void ne_dump(struct ne_softc *sc);
 #endif
-
-/* Find the NE2000 device which is attached at a particular interrupt
-   vector.  */
-
-static struct ne_softc *
-ne_device_for_irno (int irno)
-{
-  int i;
-
-  for (i = 0; i < NNEDRIVER; ++i)
-    {
-      if (ne_softc[i].irno == irno
-          && ne_softc[i].arpcom.ac_if.if_softc != NULL)
-        return &ne_softc[i];
-    }
-
-  return NULL;
-}
 
 /* Read data from an NE2000 device.  Read LEN bytes at ADDR, storing
    them into P.  */
@@ -352,12 +334,10 @@ ne_check_status (struct ne_softc *sc, int from_irq_handler)
 /* Handle an NE2000 interrupt.  */
 
 static void
-ne_interrupt_handler (uint32_t cdata)
+ne_interrupt_handler (rtems_irq_hdl_param handle)
 {
-  rtems_vector_number v = (rtems_vector_number) cdata;
-  struct ne_softc *sc;
+  struct ne_softc *sc = handle;
 
-  sc = ne_device_for_irno (v);
   if (sc == NULL)
     return;
 
@@ -374,12 +354,11 @@ ne_interrupt_handler (uint32_t cdata)
 static void
 ne_interrupt_on (const rtems_irq_connect_data *irq)
 {
-  struct ne_softc *sc;
+  struct ne_softc *sc = irq->handle;
 
 #ifdef DEBUG_NE
   printk ("ne_interrupt_on()\n");
 #endif
-  sc = ne_device_for_irno (irq->name);
   if (sc != NULL)
     outport_byte (sc->port + IMR, NE_INTERRUPTS);
 }
@@ -389,12 +368,11 @@ ne_interrupt_on (const rtems_irq_connect_data *irq)
 static void
 ne_interrupt_off (const rtems_irq_connect_data *irq)
 {
-  struct ne_softc *sc;
+  struct ne_softc *sc = irq->handle;
 
 #ifdef DEBUG_NE
   printk ("ne_interrupt_off()\n");
 #endif
-  sc = ne_device_for_irno (irq->name);
   if (sc != NULL)
     outport_byte (sc->port + IMR, 0);
 }
@@ -406,12 +384,11 @@ ne_interrupt_off (const rtems_irq_connect_data *irq)
 static int
 ne_interrupt_is_on (const rtems_irq_connect_data *irq)
 {
-  struct ne_softc *sc;
+  struct ne_softc *sc = irq->handle;
   unsigned char imr;
 #ifdef DEBUG_NE
   printk("ne_interrupt_is_on()\n");
 #endif
-  sc = ne_device_for_irno(irq->name);
   if(sc != NULL){
     /*Read IMR in Page2*/
     outport_byte (sc->port + CMDR, MSK_PG2 | MSK_RD2 | MSK_STP);
@@ -502,15 +479,16 @@ ne_init_hardware (struct ne_softc *sc)
 /* Set up interrupts.
 */
 static void
-ne_init_irq_handler(int irno)
+ne_init_irq_handler(struct ne_softc *sc)
 {
   rtems_irq_connect_data irq;
 
 #ifdef DEBUG_NE
-  printk("ne_init_irq_handler(%d)\n", irno);
+  printk("ne_init_irq_handler(%d)\n", sc->irno);
 #endif
-  irq.name = irno;
+  irq.name = sc->irno;
   irq.hdl = ne_interrupt_handler;
+  irq.handle = sc;
   irq.on = ne_interrupt_on;
   irq.off = ne_interrupt_off;
   irq.isOn = ne_interrupt_is_on;
@@ -976,7 +954,7 @@ ne_init (void *arg)
     sc->rx_daemon_tid = rtems_bsdnet_newproc ("SCrx", 4096, ne_rx_daemon, sc);
 
     /* install rtems irq handler */
-    ne_init_irq_handler(sc->irno);
+    ne_init_irq_handler(sc);
   }
 
   ifp->if_flags |= IFF_RUNNING;

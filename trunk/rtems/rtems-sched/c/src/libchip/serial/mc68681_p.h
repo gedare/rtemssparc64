@@ -7,7 +7,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mc68681_p.h,v 1.13 2008/09/07 03:44:14 ralf Exp $
+ *  $Id: mc68681_p.h,v 1.14 2010/04/09 22:44:05 thomas Exp $
  */
 
 #ifndef _MC68681_P_H_
@@ -279,16 +279,16 @@ MC68681_STATIC void mc68681_write_polled(
 
 MC68681_STATIC void mc68681_initialize_interrupts(int minor);
 
-MC68681_STATIC int mc68681_write_support_int(
+MC68681_STATIC ssize_t mc68681_write_support_int(
   int   minor,
   const char *buf,
-  int   len
+  size_t len
 );
 
-MC68681_STATIC int mc68681_write_support_polled(
+MC68681_STATIC ssize_t mc68681_write_support_polled(
   int   minor,
   const char *buf,
-  int   len
+  size_t   len
   );
 
 MC68681_STATIC int mc68681_inbyte_nonblocking_polled(

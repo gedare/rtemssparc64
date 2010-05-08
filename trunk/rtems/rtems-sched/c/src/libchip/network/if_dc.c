@@ -1,4 +1,4 @@
-/* $Id: if_dc.c,v 1.17 2009/12/11 07:57:26 ralf Exp $
+/* $Id: if_dc.c,v 1.18 2010/04/28 13:23:41 joel Exp $
  *
  * Ported from FreeBSD --> RTEMS, december 03.
  * 	Daron Chabot <daron@nucleus.usask.ca>
@@ -110,7 +110,6 @@
 
 #if defined(__PPC__)
   	#define DRIVER_SUPPORTED
-	#warning The if_dc driver is untested on the PPC platform !!!
 #endif
 
 #include <bsp.h>

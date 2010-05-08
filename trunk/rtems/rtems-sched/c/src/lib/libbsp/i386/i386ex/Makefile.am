@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.44 2009/07/03 15:07:54 joel Exp $
+## $Id: Makefile.am,v 1.45 2010/04/30 11:42:41 sh Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -23,7 +23,6 @@ include_HEADERS += include/coverhd.h
 
 include_bsp_HEADERS = ../../i386/shared/irq/irq.h \
     ../../i386/shared/irq/irq_asm.h \
-    ../../i386/shared/irq/irq-config.h \
     ../../shared/include/irq-generic.h \
     ../../shared/include/irq-info.h
 

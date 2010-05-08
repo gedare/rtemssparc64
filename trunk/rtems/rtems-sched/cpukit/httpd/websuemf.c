@@ -5,7 +5,7 @@
  *
  * See the file "license.txt" for usage and redistribution license requirements
  *
- * $Id: websuemf.c,v 1.6 2009/11/29 13:20:53 ralf Exp $
+ * $Id: websuemf.c,v 1.8 2010/03/12 16:26:14 joel Exp $
  */
 
 /********************************** Description *******************************/
@@ -84,7 +84,7 @@ int strcmpci(char_t *s1, char_t *s2)
 	}
 
 	do {
-		rc = gtolower(*s1) - gtolower(*s2);
+		rc = gtolower((unsigned char)*s1) - gtolower((unsigned char)*s2);
 		if (*s1 == '\0') {
 			break;
 		}

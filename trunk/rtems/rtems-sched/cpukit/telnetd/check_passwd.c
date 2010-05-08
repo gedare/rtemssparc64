@@ -1,4 +1,4 @@
-/* $Id: check_passwd.c,v 1.4 2009/04/14 08:50:03 thomas Exp $ */
+/* $Id: check_passwd.c,v 1.5 2010/03/27 15:08:04 joel Exp $ */
 
 /*
  * Authorship
@@ -56,6 +56,10 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <termios.h>
 #include <errno.h>

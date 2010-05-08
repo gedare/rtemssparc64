@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: sleep_noposix.c,v 1.1 2009/12/01 14:22:58 joel Exp $
+ *  $Id: sleep_noposix.c,v 1.2 2010/03/22 13:38:04 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -25,7 +25,7 @@
 /*
  *  3.4.3 Delay Process Execution, P1003.1b-1993, p. 81
  *
- *  $Id: sleep_noposix.c,v 1.1 2009/12/01 14:22:58 joel Exp $
+ *  $Id: sleep_noposix.c,v 1.2 2010/03/22 13:38:04 joel Exp $
  */
 
 #include <time.h>
@@ -40,11 +40,10 @@ unsigned int sleep(
 {
   rtems_status_code status;
   rtems_interval    ticks_per_second;
-  rtems_interval    ticks;
 
   ticks_per_second = rtems_clock_get_ticks_per_second() * seconds;
 
-  status = rtems_task_wake_after( ticks );
+  status = rtems_task_wake_after( ticks_per_second );
 
   /*
    *  Returns the "unslept" amount of time.  In RTEMS signals are not

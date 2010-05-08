@@ -31,8 +31,12 @@
  */
 
 /*
- * $Id: if.c,v 1.8 2008/12/22 07:47:27 ralf Exp $
+ * $Id: if.c,v 1.9 2010/03/28 05:50:28 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <sys/param.h>
 #include <rtems/bsd/sys/queue.h>

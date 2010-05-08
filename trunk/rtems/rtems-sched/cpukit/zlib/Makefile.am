@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.am,v 1.3 2006/01/12 09:57:43 ralf Exp $
+# $Id: Makefile.am,v 1.4 2010/03/22 18:42:49 joel Exp $
 #
 
 include $(top_srcdir)/automake/compile.am
@@ -10,7 +10,7 @@ libz_a_SOURCES = adler32.c
 libz_a_SOURCES += compress.c
 libz_a_SOURCES += crc32.c crc32.h
 libz_a_SOURCES += deflate.c deflate.h
-libz_a_SOURCES += gzio.c
+libz_a_SOURCES += gzclose.c gzguts.h gzlib.c gzread.c gzwrite.c
 libz_a_SOURCES += infback.c
 libz_a_SOURCES += inffast.c inffast.h
 libz_a_SOURCES += inffixed.h

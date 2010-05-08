@@ -5,7 +5,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: init.c,v 1.4 2009/12/21 14:49:55 joel Exp $
+ * $Id: init.c,v 1.6 2010/05/03 09:14:27 sh Exp $
  */
 
 /**
@@ -501,7 +501,7 @@ bdbuf_disk_ioctl (rtems_disk_device *dd, uint32_t req, void* argp)
                 remains -= length;
               }
 
-              r->req_done (r->done_arg, RTEMS_SUCCESSFUL, 0);
+              r->req_done (r->done_arg, RTEMS_SUCCESSFUL);
             }
             bdbuf_disk_ioctl_leave (bdd, r->bufnum);
             break;
@@ -509,7 +509,7 @@ bdbuf_disk_ioctl (rtems_disk_device *dd, uint32_t req, void* argp)
           case RTEMS_BLKDEV_REQ_WRITE:
             if (!bdbuf_disk_ioctl_process (bdd, r))
               errno = EIO;
-            r->req_done (r->done_arg, RTEMS_SUCCESSFUL, 0);
+            r->req_done (r->done_arg, RTEMS_SUCCESSFUL);
             bdbuf_disk_ioctl_leave (bdd, r->bufnum);
             break;
 
@@ -1845,7 +1845,7 @@ static rtems_task Init(rtems_task_argument argument)
 
 #define CONFIGURE_MAXIMUM_TASKS 8
 #define CONFIGURE_MAXIMUM_DRIVERS 3
-#define CONFIGURE_MAXIMUM_SEMAPHORES 7
+#define CONFIGURE_MAXIMUM_SEMAPHORES 2
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 

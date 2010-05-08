@@ -15,8 +15,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: context.c,v 1.1 2008/09/25 19:32:41 joel Exp $
+ *  $Id: context.c,v 1.2 2010/03/27 15:02:35 joel Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/system.h>
 #include <rtems/score/cpu.h>

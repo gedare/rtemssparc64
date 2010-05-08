@@ -1,8 +1,12 @@
 /*
  * RTEMS version of syslog and associated routines
  *
- * $Id: syslog.c,v 1.5 2009/05/06 16:36:46 joel Exp $
+ * $Id: syslog.c,v 1.6 2010/03/28 05:44:42 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems.h>
 #include <stdio.h>

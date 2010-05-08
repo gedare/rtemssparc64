@@ -1,3 +1,28 @@
+2010-04-08	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* arm_exc_abort.S, arm_exc_handler_high.c, arm_exc_handler_low.S,
+	arm_exc_interrupt.S, cpu.c, cpu_asm.S, rtems/asm.h, rtems/score/arm.h,
+	rtems/score/cpu.h, rtems/score/cpu_asm.h, rtems/score/types.h:
+	Documentation.
+
+2010-04-07	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* arm_exc_abort.S: Fix warnings about TRUE/FALSE not defined.
+
+2010-03-27	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* arm_exc_abort.S, arm_exc_handler_high.c, arm_exc_handler_low.S,
+	arm_exc_interrupt.S, cpu.c, cpu_asm.S: Add include of config.h
+
+2010-01-12	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* arm_exc_abort.S: New file.
+	* Makefile.am: Update for new file.
+	* arm_exc_interrupt.S, cpu.c, rtems/asm.h, rtems/score/cpu.h: Changed
+	macros which switch from and to THUMB mode.  Added a default prefetch
+	and data abort handler which reports the complete processor context.
+	Added PSR defines.
+
 2009-12-15	Sebastian Huber <sebastian.huber@embedded-brains.de>
 
 	* rtems/score/arm.h: Recognize ARMv5TEJ.

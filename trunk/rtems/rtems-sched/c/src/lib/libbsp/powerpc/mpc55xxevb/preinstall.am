@@ -49,13 +49,17 @@ $(PROJECT_LIB)/rtems_crti.$(OBJEXT): rtems_crti.$(OBJEXT) $(PROJECT_LIB)/$(dirst
 	$(INSTALL_DATA) $< $(PROJECT_LIB)/rtems_crti.$(OBJEXT)
 TMPINSTALL_FILES += $(PROJECT_LIB)/rtems_crti.$(OBJEXT)
 
-$(PROJECT_LIB)/linkcmds: startup/linkcmds $(PROJECT_LIB)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_LIB)/linkcmds
-PREINSTALL_FILES += $(PROJECT_LIB)/linkcmds
+$(PROJECT_LIB)/linkcmds.gwlcfm: startup/linkcmds.gwlcfm $(PROJECT_LIB)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_LIB)/linkcmds.gwlcfm
+PREINSTALL_FILES += $(PROJECT_LIB)/linkcmds.gwlcfm
 
-$(PROJECT_LIB)/linkcmds.memory: startup/linkcmds.memory $(PROJECT_LIB)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_LIB)/linkcmds.memory
-PREINSTALL_FILES += $(PROJECT_LIB)/linkcmds.memory
+$(PROJECT_LIB)/linkcmds.mpc5566evb: startup/linkcmds.mpc5566evb $(PROJECT_LIB)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_LIB)/linkcmds.mpc5566evb
+PREINSTALL_FILES += $(PROJECT_LIB)/linkcmds.mpc5566evb
+
+$(PROJECT_LIB)/linkcmds.base: startup/linkcmds.base $(PROJECT_LIB)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_LIB)/linkcmds.base
+PREINSTALL_FILES += $(PROJECT_LIB)/linkcmds.base
 
 $(PROJECT_INCLUDE)/bsp.h: include/bsp.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp.h
@@ -80,10 +84,6 @@ PREINSTALL_FILES += $(PROJECT_INCLUDE)/coverhd.h
 $(PROJECT_INCLUDE)/bsp/mpc55xxevb.h: include/mpc55xxevb.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/mpc55xxevb.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/mpc55xxevb.h
-
-$(PROJECT_INCLUDE)/bsp/irq-config.h: include/irq-config.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/irq-config.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/irq-config.h
 
 $(PROJECT_INCLUDE)/bsp/smsc9218i.h: include/smsc9218i.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/smsc9218i.h

@@ -1,9 +1,13 @@
 /**
- * @file rtems/score/arm.h
+ * @file
+ *
+ * @ingroup ScoreCPU
+ *
+ * @brief ARM assembler support API.
  */
 
 /*
- *  $Id: arm.h,v 1.17 2009/12/15 15:14:12 thomas Exp $
+ *  $Id: arm.h,v 1.18 2010/04/08 10:13:46 thomas Exp $
  *
  *  COPYRIGHT (c) 2000 Canon Research Centre France SA.
  *  Emmanuel Raguet, mailto:raguet@crf.canon.fr
@@ -23,6 +27,12 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/**
+ * @addtogroup ScoreCPU
+ *
+ * @{
+ */
 
 /*
  *  This file contains the information required to build
@@ -78,6 +88,8 @@ extern "C" {
  */
 
 #define CPU_NAME "ARM"
+
+/** @} */
 
 #ifdef __cplusplus
 }

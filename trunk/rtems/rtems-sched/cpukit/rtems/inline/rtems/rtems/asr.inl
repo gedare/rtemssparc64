@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: asr.inl,v 1.17 2008/09/04 17:43:17 ralf Exp $
+ *  $Id: asr.inl,v 1.18 2010/03/11 15:40:29 joel Exp $
  */
 
 #ifndef _RTEMS_RTEMS_ASR_H
@@ -38,7 +38,7 @@ RTEMS_INLINE_ROUTINE void _ASR_Initialize (
   ASR_Information *information
 )
 {
-  information->is_enabled      = true;
+  information->is_enabled      = false;
   information->handler         = NULL;
   information->mode_set        = RTEMS_DEFAULT_MODES;
   information->signals_posted  = 0;

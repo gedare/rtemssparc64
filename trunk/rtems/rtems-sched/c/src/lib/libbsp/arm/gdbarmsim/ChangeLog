@@ -1,3 +1,11 @@
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* make/custom/arm920.cfg: Use VFP floating point model.
+
+2010-04-07	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* start/start.S: Verify boot_card() is passed a NULL.
+
 2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* make/custom/arm1136jfs.cfg: Remove RTEMS_BSP_FAMILY.

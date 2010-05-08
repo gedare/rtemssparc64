@@ -8,11 +8,11 @@
  *
  * http://www.rtems.com/license/LICENSE
  *
- * $Id: irq.c,v 1.1 2008/04/16 18:37:31 joel Exp $
+ * $Id: irq.c,v 1.2 2010/04/09 20:24:57 thomas Exp $
  */
 
 #include <bsp.h>
-#include "irq.h"
+#include <rtems/irq.h>
 #include <nds.h>
 
 /*
@@ -55,7 +55,10 @@ BSP_install_rtems_irq_handler (const rtems_irq_connect_data * irq)
 
   rtems_interrupt_disable (level);
 
-  irqSet (irq->name, irq->hdl);
+  /*
+   * FIXME: irq_hdl will probably not be called with its parameter
+   */
+  irqSet (irq->name, (VoidFunctionPointer)irq->hdl);
 
   if (irq->on != NULL)
     irq->on (irq);

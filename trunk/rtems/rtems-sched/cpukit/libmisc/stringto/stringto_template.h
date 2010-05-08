@@ -6,15 +6,15 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: stringto_template.h,v 1.5 2009/12/01 22:16:10 joel Exp $
+ *  $Id: stringto_template.h,v 1.7 2010/04/26 00:50:15 joel Exp $
  */
-
-#include <rtems/stringto.h>
 
 #include <errno.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <stdbool.h>
+
+#include <rtems/stringto.h>
 
 /*
  *  If we are doing floating point conversion, then we need math.h
@@ -127,7 +127,11 @@ rtems_status_code STRING_TO_NAME (
       return RTEMS_INVALID_NUMBER;
   #endif
 
-  *n = (STRING_TO_TYPE) result;
+  #if defined(STRING_TO_POINTER)
+    *n = (STRING_TO_TYPE) (uintptr_t)result;
+  #else
+    *n = (STRING_TO_TYPE) result;
+  #endif
   return RTEMS_SUCCESSFUL;
 }
 

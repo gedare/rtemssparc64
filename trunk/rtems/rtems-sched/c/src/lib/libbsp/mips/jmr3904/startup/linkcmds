@@ -1,5 +1,5 @@
 /*
- *  $Id: linkcmds,v 1.15 2008/09/16 20:58:50 joel Exp $
+ *  $Id: linkcmds,v 1.17 2010/04/27 17:11:03 joel Exp $
  *
  *  Based on jmr3904app-dram.ld from newlib 1.8.2
  */

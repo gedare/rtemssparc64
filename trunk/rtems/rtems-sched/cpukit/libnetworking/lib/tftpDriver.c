@@ -9,9 +9,13 @@
  * Saskatoon, Saskatchewan, CANADA
  * eric@skatter.usask.ca
  *
- *  $Id: tftpDriver.c,v 1.35 2009/12/17 20:26:09 joel Exp $
+ *  $Id: tftpDriver.c,v 1.36 2010/03/28 05:44:42 ralf Exp $
  *
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>

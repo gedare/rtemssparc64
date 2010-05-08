@@ -9,10 +9,11 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: proc11.c,v 1.10 2009/05/10 20:15:55 joel Exp $
+ *  $Id: proc11.c,v 1.11 2010/04/02 07:28:41 ralf Exp $
  */
 
 #include <sys/types.h>
+#include <unistd.h>
 #include <limits.h>   /* for LOGIN_NAME_MAX */
 
 void test( void );

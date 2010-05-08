@@ -31,8 +31,12 @@
  */
 
 /*
- * $Id: rtsock.c,v 1.12 2009/10/20 14:13:24 strauman Exp $
+ * $Id: rtsock.c,v 1.13 2010/03/28 05:50:29 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
  
 #include <sys/param.h>
 #include <rtems/bsd/sys/queue.h>

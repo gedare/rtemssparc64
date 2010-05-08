@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: sci_termios.h,v 1.3 2004/04/16 21:29:43 ralf Exp $
+ * $Id: sci_termios.h,v 1.4 2010/04/15 08:39:26 ralf Exp $
  *
  */
 
@@ -27,16 +27,16 @@ void sh_sci_initialize_interrupts(int minor);
 
 void sh_sci_init(int minor);
 
-int sh_sci_write_support_int(
+ssize_t sh_sci_write_support_int(
     int         minor,
     const char *buf,
-    int         len
+    size_t      len
 );
 
-int sh_sci_write_support_polled(
+ssize_t sh_sci_write_support_polled(
   int         minor,
   const char *buf,
-  int         len
+  size_t      len
 );
 
 void sh_sci_write_polled(

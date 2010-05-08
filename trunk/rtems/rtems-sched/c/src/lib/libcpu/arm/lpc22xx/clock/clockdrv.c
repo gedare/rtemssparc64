@@ -12,11 +12,11 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: clockdrv.c,v 1.8 2009/11/30 04:59:43 ralf Exp $
+ *  $Id: clockdrv.c,v 1.10 2010/04/30 13:15:49 sh Exp $
 */
 #include <rtems.h>
 #include <bsp.h>
-#include <irq.h>
+#include <bsp/irq.h>
 #include <lpc22xx.h>
 #include <rtems/bspIo.h>  /* for printk */
 
@@ -29,11 +29,10 @@ static int clock_isr_is_on(const rtems_irq_connect_data *irq);
 /* Replace the first value with the clock's interrupt name. */
 rtems_irq_connect_data clock_isr_data = {LPC22xx_INTERRUPT_TIMER0,
                                          (rtems_irq_hdl)Clock_isr,
+					 NULL,
                                          clock_isr_on,
                                          clock_isr_off,
-                                         clock_isr_is_on,
-                                         3,     /* unused for ARM cpus */
-                                         0 };   /* unused for ARM cpus */
+                                         clock_isr_is_on};
 
 /* If you follow the code, this is never used, so any value
  * should work

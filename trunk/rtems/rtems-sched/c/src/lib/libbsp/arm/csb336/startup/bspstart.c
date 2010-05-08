@@ -8,14 +8,16 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.15 2008/09/22 21:49:11 joel Exp $
+ *  $Id: bspstart.c,v 1.17 2010/04/30 14:40:17 sh Exp $
  */
 
 #include <bsp.h>
+#include <bsp/irq-generic.h>
 #include <rtems/bspIo.h>
 #include <mc9328mxl.h>
 
-extern void rtems_irq_mngt_init(void);
+extern void rtems_exception_init_mngt(void);
+
 extern void mmu_set_cpu_async_mode(void);
 
 /*
@@ -63,7 +65,9 @@ void bsp_start_default( void )
   /*
    * Init rtems interrupt management
    */
-  rtems_irq_mngt_init();
+  if (bsp_interrupt_initialize() != RTEMS_SUCCESSFUL) {
+    _CPU_Fatal_halt(0xe);
+  }
 } /* bsp_start */
 
 /* Calcuate the frequency for perclk1 */

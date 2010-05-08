@@ -18,8 +18,12 @@
  *  ERC32 modifications of respective RTEMS file: COPYRIGHT (c) 1995.
  *  European Space Agency.
  *
- *  $Id: cpu_asm.S,v 1.16 2009/12/02 09:46:15 ralf Exp $
+ *  $Id: cpu_asm.S,v 1.17 2010/03/27 15:03:09 joel Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/asm.h>
 

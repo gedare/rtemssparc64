@@ -1,4 +1,4 @@
-/* $Id: flash.c,v 1.5 2009/11/30 04:29:20 ralf Exp $         */
+/* $Id: flash.c,v 1.6 2010/04/14 08:53:48 ralf Exp $         */
 
 /* Trivial Flash Programmer                                  */
 
@@ -81,6 +81,7 @@
 #include "flashPgmPvt.h"
 #endif
 
+#include <unistd.h>
 #include <stdio.h>
 #include <inttypes.h>
 #include <ctype.h>

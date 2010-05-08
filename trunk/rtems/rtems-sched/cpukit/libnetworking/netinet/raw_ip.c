@@ -31,8 +31,12 @@
  */
 
 /*
- *	$Id: raw_ip.c,v 1.7 2008/12/23 05:00:57 ralf Exp $
+ *	$Id: raw_ip.c,v 1.8 2010/03/28 05:47:49 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
  
 #include "opt_inet6.h"
 #include "opt_ipsec.h"

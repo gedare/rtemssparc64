@@ -7,7 +7,7 @@
  * Saskatoon, Saskatchewan, CANADA
  * eric@skatter.usask.ca
  *
- *  $Id: network.c,v 1.19 2006/12/15 05:59:19 ralf Exp $
+ *  $Id: network.c,v 1.20 2010/04/26 01:30:51 joel Exp $
  */
 #include <bsp.h>
 #include <rtems/m68k/m68360.h>
@@ -105,6 +105,8 @@ struct scc_softc {
 	unsigned long	txRetry;
 };
 static struct scc_softc scc_softc[NSCCDRIVER];
+
+extern void *_RomBase;	/* From linkcmds */
 
 /*
  * SCC1 interrupt handler
@@ -998,7 +1000,6 @@ rtems_scc1_driver_attach (struct rtems_bsdnet_ifconfig *config, int attaching)
 		 *
 		 * See start360/start360.s.
 		 */
-		extern void *_RomBase;	/* From linkcmds */
 		const unsigned long *ExceptionVectors;
 		const unsigned char *entryPoint;
 

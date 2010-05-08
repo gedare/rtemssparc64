@@ -15,7 +15,7 @@
  *  Modifications for MBX860:
  *  Copyright (c) 1999, National Research Council of Canada
  *
- *  $Id: bspstart.c,v 1.30 2009/10/23 07:32:44 thomas Exp $
+ *  $Id: bspstart.c,v 1.31 2010/04/25 22:36:25 joel Exp $
  */
 
 #include <bsp.h>
@@ -26,6 +26,8 @@
 #include <rtems/powerpc/powerpc.h>
 
 SPR_RW(SPRG1)
+
+int bsp_interrupt_initialize(void);
 
 /*
  *  Driver configuration parameters

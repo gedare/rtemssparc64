@@ -8,7 +8,7 @@
  *
  * http://www.rtems.com/license/LICENSE
  *
- * $Id: fb.c,v 1.8 2009/11/29 14:53:01 ralf Exp $
+ * $Id: fb.c,v 1.9 2010/04/09 20:24:57 thomas Exp $
  */
 
 #include <stdlib.h>
@@ -17,7 +17,7 @@
 #include <sys/types.h>
 
 #include <bsp.h>
-#include "../irq/irq.h"
+#include <rtems/irq.h>
 #include <rtems/libio.h>
 #include <nds.h>
 

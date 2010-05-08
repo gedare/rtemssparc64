@@ -18,7 +18,7 @@
 +-----------------------------------------------------------------+
 | This file defines the 5x7 bit font used in disp_hcms29xx        |
 +-----------------------------------------------------------------+
-|  $Id: font_hcms29xx.c,v 1.3 2009/11/30 03:42:52 ralf Exp $
+|  $Id: font_hcms29xx.c,v 1.4 2010/01/19 09:11:34 thomas Exp $
 \*===============================================================*/
 
 #include <stddef.h>
@@ -1560,7 +1560,7 @@ struct disp_font_glyph glyph_hp_fixed_5_7_127 = {
   5, 0, bitmap_hp_fixed_5_7_127,
 };
 
-const struct disp_font_base font_base_hp_fixed_5_7 = {
+const struct disp_font_base font_hcms29xx_base = {
   1,               /* trans */
   {5, 7, 0, -1},  /* fbb w, h, x, y */
   7, 0,            /* ascent, descent */

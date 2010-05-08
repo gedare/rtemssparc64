@@ -20,7 +20,7 @@ two paragraphs in the transferred software.
 COPYRIGHT IDT CORPORATION 1996
 LICENSED MATERIAL - PROGRAM PROPERTY OF IDT
 
-  $Id: start.S,v 1.3 2009/11/29 15:27:06 ralf Exp $
+  $Id: start.S,v 1.4 2010/04/24 21:45:38 joel Exp $
 */
 
 /*************************************************************************
@@ -34,10 +34,6 @@ LICENSED MATERIAL - PROGRAM PROPERTY OF IDT
 #include <rtems/mips/iregdef.h>
 #include <rtems/mips/idtcpu.h>
 #include <rtems/asm.h>
-
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning Please check and remove these warnings.
 
 	.extern	mon_flush_cache
 

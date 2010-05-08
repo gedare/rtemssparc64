@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.13 2009/12/07 16:24:17 ralf Exp $
+## $Id: Makefile.am,v 1.14 2010/04/30 13:21:08 sh Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../aclocal
@@ -14,9 +14,6 @@ EXTRA_DIST =
 # comm
 EXTRA_DIST += shared/comm/uart.h
 EXTRA_DIST += shared/comm/uart.c
-
-# irq
-EXTRA_DIST += shared/irq/irq_init.c
 
 # abort
 EXTRA_DIST += shared/abort/simple_abort.c

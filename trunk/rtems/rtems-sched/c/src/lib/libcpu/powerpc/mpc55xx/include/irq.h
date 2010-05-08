@@ -7,7 +7,7 @@
  */
 
 /*
- * Copyright (c) 2008
+ * Copyright (c) 2008, 2010
  * Embedded Brains GmbH
  * Obere Lagerstr. 30
  * D-82178 Puchheim
@@ -35,6 +35,8 @@ extern "C" {
 /* Basics */
 #define MPC55XX_IRQ_MIN 0U
 #define MPC55XX_IRQ_MAX 328U
+#define MPC55XX_IRQ_MIN 0U
+#define MPC55XX_IRQ_MAX 328U
 #define MPC55XX_IRQ_BASE MPC55XX_IRQ_MIN
 #define MPC55XX_IRQ_NUMBER (MPC55XX_IRQ_MAX + 1U)
 
@@ -45,15 +47,56 @@ extern "C" {
 #define MPC55XX_IRQ_SOFTWARE_GET_REQUEST( i) (i)
 #define MPC55XX_IRQ_SOFTWARE_NUMBER (MPC55XX_IRQ_SOFTWARE_MAX + 1U)
 
+#if ((MPC55XX_CHIP_TYPE >= 5510) && (MPC55XX_CHIP_TYPE <= 5517))
+#else  /*((MPC55XX_CHIP_TYPE >= 5510) && (MPC55XX_CHIP_TYPE <= 5517))*/
+#endif /*((MPC55XX_CHIP_TYPE >= 5510) && (MPC55XX_CHIP_TYPE <= 5517))*/
+
+#if ((MPC55XX_CHIP_TYPE >= 5510) && (MPC55XX_CHIP_TYPE <= 5517))
+
 /* eDMA interrupts */
 #define MPC55XX_IRQ_EDMA_ERROR_LOW 10U
-#define MPC55XX_IRQ_EDMA_ERROR_HIGH 210U
+#define MPC55XX_IRQ_EDMA_REQUEST_LOW_MIN 11U
+#define MPC55XX_IRQ_EDMA_REQUEST_LOW_MAX 26U
+
+#define MPC55XX_IRQ_EDMA_GET_CHANNEL( v) \
+  ((v) - MPC55XX_IRQ_EDMA_REQUEST_LOW_MIN)
+#define MPC55XX_IRQ_EDMA_GET_REQUEST( c) \
+  ((c) + MPC55XX_IRQ_EDMA_REQUEST_LOW_MIN)
+
+/* SIU external interrupts */
+#define MPC55XX_IRQ_SIU_EXTERNAL_0 53U
+#define MPC55XX_IRQ_SIU_EXTERNAL_1 54U
+#define MPC55XX_IRQ_SIU_EXTERNAL_2 55U
+#define MPC55XX_IRQ_SIU_EXTERNAL_3 56U
+#define MPC55XX_IRQ_SIU_EXTERNAL_4_15 57U
+
+/* eMIOS interrupts */
+#define MPC55XX_IRQ_EMIOS_REQUEST_LOW_MIN 58U
+#define MPC55XX_IRQ_EMIOS_REQUEST_LOW_MAX 81U
+#define MPC55XX_IRQ_EMIOS_GET_CHANNEL( v) \
+  ((v) - MPC55XX_IRQ_EMIOS_REQUEST_LOW_MIN)
+#define MPC55XX_IRQ_EMIOS_GET_REQUEST( c) \
+  ((c) + MPC55XX_IRQ_EMIOS_REQUEST_LOW_MIN)
+
+#else  /*((MPC55XX_CHIP_TYPE >= 5510) && (MPC55XX_CHIP_TYPE <= 5517))*/
+
+/* eDMA interrupts */
+#define MPC55XX_IRQ_EDMA_ERROR_LOW 10U
 #define MPC55XX_IRQ_EDMA_REQUEST_LOW_MIN 11U
 #define MPC55XX_IRQ_EDMA_REQUEST_LOW_MAX 42U
+
+#define MPC55XX_IRQ_EDMA_ERROR_HIGH 210U
 #define MPC55XX_IRQ_EDMA_REQUEST_HIGH_MIN 211U
 #define MPC55XX_IRQ_EDMA_REQUEST_HIGH_MAX 242U
-#define MPC55XX_IRQ_EDMA_GET_CHANNEL( v) (((v) > MPC55XX_IRQ_EDMA_REQUEST_LOW_MAX) ? ((v) + 32U - MPC55XX_IRQ_EDMA_REQUEST_HIGH_MIN) : ((v) - MPC55XX_IRQ_EDMA_REQUEST_LOW_MIN))
-#define MPC55XX_IRQ_EDMA_GET_REQUEST( c) (((c) >= 32U) ? ((c) - 32U + MPC55XX_IRQ_EDMA_REQUEST_HIGH_MIN) : ((c) + MPC55XX_IRQ_EDMA_REQUEST_LOW_MIN))
+
+#define MPC55XX_IRQ_EDMA_GET_CHANNEL( v) \
+  (((v) > MPC55XX_IRQ_EDMA_REQUEST_LOW_MAX)		\
+   ? ((v) + 32U - MPC55XX_IRQ_EDMA_REQUEST_HIGH_MIN)	\
+   : ((v) - MPC55XX_IRQ_EDMA_REQUEST_LOW_MIN))
+#define MPC55XX_IRQ_EDMA_GET_REQUEST( c) \
+  (((c) >= 32U)					     \
+   ? ((c) - 32U + MPC55XX_IRQ_EDMA_REQUEST_HIGH_MIN) \
+   : ((c) + MPC55XX_IRQ_EDMA_REQUEST_LOW_MIN))
 
 /* SIU external interrupts */
 #define MPC55XX_IRQ_SIU_EXTERNAL_0 46U
@@ -67,12 +110,26 @@ extern "C" {
 #define MPC55XX_IRQ_EMIOS_REQUEST_LOW_MAX 66U
 #define MPC55XX_IRQ_EMIOS_REQUEST_HIGH_MIN 202U
 #define MPC55XX_IRQ_EMIOS_REQUEST_HIGH_MAX 209U
-#define MPC55XX_IRQ_EMIOS_GET_CHANNEL( v) (((v) > MPC55XX_IRQ_EMIOS_REQUEST_LOW_MAX) ? ((v) + 16U - MPC55XX_IRQ_EMIOS_REQUEST_HIGH_MIN) : ((v) - MPC55XX_IRQ_EMIOS_REQUEST_LOW_MIN))
-#define MPC55XX_IRQ_EMIOS_GET_REQUEST( c) (((c) >= 16U) ? ((c) - 16U + MPC55XX_IRQ_EMIOS_REQUEST_HIGH_MIN) : ((c) + MPC55XX_IRQ_EMIOS_REQUEST_LOW_MIN))
+
+#define MPC55XX_IRQ_EMIOS_GET_CHANNEL( v)	      \
+  (((v) > MPC55XX_IRQ_EMIOS_REQUEST_LOW_MAX)	      \
+   ? ((v) + 16U - MPC55XX_IRQ_EMIOS_REQUEST_HIGH_MIN) \
+   : ((v) - MPC55XX_IRQ_EMIOS_REQUEST_LOW_MIN))
+
+#define MPC55XX_IRQ_EMIOS_GET_REQUEST( c)	      \
+  (((c) >= 16U)					      \
+   ? ((c) - 16U + MPC55XX_IRQ_EMIOS_REQUEST_HIGH_MIN) \
+   : ((c) + MPC55XX_IRQ_EMIOS_REQUEST_LOW_MIN))
+
+#endif /*((MPC55XX_CHIP_TYPE >= 5510) && (MPC55XX_CHIP_TYPE <= 5517))*/
 
 /* Checks */
-#define MPC55XX_IRQ_IS_VALID(v) ((v) >= MPC55XX_IRQ_MIN && (v) <= MPC55XX_IRQ_MAX)
-#define MPC55XX_IRQ_IS_SOFTWARE(v) ((v) >= MPC55XX_IRQ_SOFTWARE_MIN && (v) <= MPC55XX_IRQ_SOFTWARE_MAX)
+#define MPC55XX_IRQ_IS_VALID(v) \
+  ((v) >= MPC55XX_IRQ_MIN &&	\
+   (v) <= MPC55XX_IRQ_MAX)
+#define MPC55XX_IRQ_IS_SOFTWARE(v) \
+  ((v) >= MPC55XX_IRQ_SOFTWARE_MIN && \
+   (v) <= MPC55XX_IRQ_SOFTWARE_MAX)
 
 /*
  * Interrupt controller
@@ -101,6 +158,27 @@ rtems_status_code mpc55xx_intc_set_priority( rtems_vector_number vector, unsigne
 rtems_status_code mpc55xx_intc_raise_software_irq( rtems_vector_number vector);
 
 rtems_status_code mpc55xx_intc_clear_software_irq( rtems_vector_number vector);
+
+/**
+ * @addtogroup bsp_interrupt
+ *
+ * @{
+ */
+
+#define BSP_INTERRUPT_VECTOR_MIN 0
+
+#define BSP_INTERRUPT_VECTOR_MAX 328
+
+#define BSP_INTERRUPT_USE_INDEX_TABLE
+
+#define BSP_INTERRUPT_NO_HEAP_USAGE
+
+#ifdef BSP_INTERRUPT_USE_INDEX_TABLE
+  #define BSP_INTERRUPT_HANDLER_TABLE_SIZE 63
+  typedef uint8_t bsp_interrupt_handler_index_type;
+#endif
+
+/** @} */
 
 #ifdef __cplusplus
 };

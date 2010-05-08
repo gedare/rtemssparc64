@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: shell_script.c,v 1.12 2009/11/29 12:12:39 ralf Exp $
+ *  $Id: shell_script.c,v 1.13 2010/02/28 20:14:10 joel Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -320,7 +320,7 @@ int rtems_shell_script_file(
    */
 
   /*
-   * Check for arguments in fist line of the script.  This changes
+   * Check for arguments in the first line of the script.  This changes
    * how the shell task is run.
    */
 

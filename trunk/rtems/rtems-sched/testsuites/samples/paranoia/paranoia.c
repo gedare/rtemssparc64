@@ -1,5 +1,7 @@
+#include <bsp.h>
+#if !BSP_SMALL_MEMORY
 /*
- *  $Id: paranoia.c,v 1.8 2008/11/24 16:39:04 ralf Exp $
+ *  $Id: paranoia.c,v 1.9 2010/03/29 11:30:49 thomas Exp $
  *
  *      A C version of Kahan's Floating Point Test "Paranoia"
  *
@@ -2313,3 +2315,4 @@ History ()
 
     msglist (hist);
 }
+#endif /* BSP_SMALL_MEMORY */

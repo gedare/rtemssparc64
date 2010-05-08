@@ -1,13 +1,13 @@
 /*  Blackfin SPI Registers
  *
- *  Copyright (c) 2008 Kallisti Labs, Los Gatos, CA, USA
+ *  Copyright (c) 2010 Kallisti Labs, Los Gatos, CA, USA
  *             written by Allan Hessenflow <allanh@kallisti.com>
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: spiRegs.h,v 1.1 2008/08/15 20:18:41 joel Exp $
+ *  $Id: spiRegs.h,v 1.2 2010/01/11 16:14:47 joel Exp $
  */
 
 #ifndef _spiRegs_h_
@@ -22,7 +22,7 @@
 #define SPI_TDBR_OFFSET                               0x000c
 #define SPI_RDBR_OFFSET                               0x0010
 #define SPI_BAUD_OFFSET                               0x0014
-#define SPI_SHADOW                                    0x0018
+#define SPI_SHADOW_OFFSET                             0x0018
 
 
 /* register fields */

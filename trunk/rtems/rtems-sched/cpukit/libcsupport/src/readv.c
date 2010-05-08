@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: readv.c,v 1.3 2009/11/29 13:35:32 ralf Exp $
+ *  $Id: readv.c,v 1.4 2010/04/25 19:50:05 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -74,7 +74,7 @@ ssize_t readv(
     if ( !iov[v].iov_base )
       rtems_set_errno_and_return_minus_one( EINVAL );
 
-    if ( iov[v].iov_len <= 0 )
+    if ( iov[v].iov_len < 0 )
       rtems_set_errno_and_return_minus_one( EINVAL );
 
     /* check for wrap */

@@ -45,15 +45,15 @@
 %define _host_rpmprefix %{nil}
 %endif
 
-%define binutils_pkgvers 2.20
-%define binutils_version 2.20
-%define binutils_rpmvers %{expand:%(echo "2.20" | tr - _ )}
+%define binutils_pkgvers 2.20.1
+%define binutils_version 2.20.1
+%define binutils_rpmvers %{expand:%(echo "2.20.1" | tr - _ )}
 
 Name:		rtems-4.10-i386-rtems4.10-binutils
 Summary:	Binutils for target i386-rtems4.10
 Group:		Development/Tools
 Version:	%{binutils_rpmvers}
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	GPL/LGPL
 URL: 		http://sources.redhat.com/binutils
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -74,7 +74,7 @@ BuildRequires:	bison
 Requires:	rtems-4.10-binutils-common
 
 Source0: ftp://ftp.gnu.org/gnu/binutils/binutils-%{binutils_pkgvers}.tar.bz2
-# Patch0:  ftp://ftp.rtems.org/pub/rtems/SOURCES/4.10/binutils-%{binutils_pkgvers}-rtems4.10-20090911.diff
+Patch0:  ftp://ftp.rtems.org/pub/rtems/SOURCES/4.10/binutils-2.20.1-rtems4.10-20100310.diff
 
 %description
 Cross binutils for target i386-rtems4.10
@@ -88,10 +88,6 @@ cd ..
 
 %build
   export PATH="%{_bindir}:${PATH}"
-%if "i386-rtems4.10" == "i686-pc-cygwin"
-# The cygwin sources are leaking memory
-  RPM_OPT_FLAGS="$(echo "$RPM_OPT_FLAGS"|sed -e 's; -Wp,-D_FORTIFY_SOURCE=2;;')"
-%endif
   mkdir -p build
   cd build
 %if "%{_build}" != "%{_host}"

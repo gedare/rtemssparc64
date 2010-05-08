@@ -31,6 +31,10 @@
  * SUCH DAMAGE.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #ifndef lint
 #if 0
 static char sccsid[] = "@(#)parse.c	8.1 (Berkeley) 6/6/93";
@@ -47,6 +51,10 @@ __FBSDID("$FreeBSD: src/usr.bin/hexdump/parse.c,v 1.14 2006/08/09 19:12:10 maxim
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
+
 #include "hexdump.h"
 
 #if RTEMS_REMOVED
@@ -217,6 +225,7 @@ rewrite(rtems_shell_hexdump_globals* globals, FS *fs)
 	int nconv, prec;
 	size_t len;
 
+	pr = NULL;
 	nextpr = NULL;
 	prec = 0;
 
@@ -230,8 +239,10 @@ rewrite(rtems_shell_hexdump_globals* globals, FS *fs)
 				err(exit_jump, 1, NULL);
 			if (!fu->nextpr)
 				fu->nextpr = pr;
-			else
-				*nextpr = pr;
+			else {
+				if (nextpr)
+					*nextpr = pr;
+			}
 
 			/* Skip preceding text and up to the next % sign. */
 			for (p1 = fmtp; *p1 && *p1 != '%'; ++p1);
@@ -416,6 +427,10 @@ isint2:					switch(fu->bcnt) {
 		if (!fu->bcnt)
 			for (pr = fu->nextpr; pr; pr = pr->nextpr)
 				fu->bcnt += pr->bcnt;
+	}
+	if (pr) {
+		free(pr);
+		pr = NULL;
 	}
 	/*
 	 * If the format string interprets any data at all, and it's

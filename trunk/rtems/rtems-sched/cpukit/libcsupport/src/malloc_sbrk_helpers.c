@@ -8,12 +8,14 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: malloc_sbrk_helpers.c,v 1.3 2008/09/17 18:37:55 joel Exp $
+ *  $Id: malloc_sbrk_helpers.c,v 1.4 2010/04/02 07:05:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
 #include "config.h"
 #endif
+
+#include <unistd.h> /* sbrk */
 
 #include <rtems.h>
 #include <rtems/malloc.h>

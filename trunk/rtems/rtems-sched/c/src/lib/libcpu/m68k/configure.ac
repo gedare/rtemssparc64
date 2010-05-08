@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ##
-## $Id: configure.ac,v 1.38 2009/11/28 06:28:41 ralf Exp $
+## $Id: configure.ac,v 1.39 2010/04/05 17:11:47 joel Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-lib-libcpu-m68k],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -46,10 +46,13 @@ AM_CONDITIONAL(mcf5272, test "$RTEMS_CPU_MODEL" = "mcf5272" )
 AM_CONDITIONAL(mcf5282, test "$RTEMS_CPU_MODEL" = "mcf5282" )
 AM_CONDITIONAL(mcf5235, test "$RTEMS_CPU_MODEL" = "mcf5235" )
 AM_CONDITIONAL(mcf5223x, test "$RTEMS_CPU_MODEL" = "mcf5223x" )
+AM_CONDITIONAL(mcf5225x, test "$RTEMS_CPU_MODEL" = "mcf52258" )
 AM_CONDITIONAL(mcf532x, test "$RTEMS_CPU_MODEL" = "mcf532x" )
 AM_CONDITIONAL(mcf548x, test "$RTEMS_CPU_MODEL" = "mcf548x" )
 
-RTEMS_AMPOLISH3
+RTEMS_CHECK_NETWORKING
+AM_CONDITIONAL(HAS_NETWORKING,test "$HAS_NETWORKING" = "yes")
+
 
 # Explicitly list all Makefiles here
 AC_CONFIG_FILES([Makefile

@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.h,v 1.38 2009/12/04 05:22:48 ralf Exp $
+ *  $Id: cpu.h,v 1.39 2010/04/25 15:06:32 joel Exp $
  */
 
 #ifndef _RTEMS_SCORE_CPU_H
@@ -762,12 +762,12 @@ uint32_t   _CPU_ISR_Get_level( void );
                                    _isr, _entry_point, _is_fp ) \
   /* Locate Me */ \
   do { \
-    uint32_t   _stack; \
+    uintptr_t   _stack; \
     \
     if ( (_isr) ) (_the_context)->ccr = CPU_CCR_INTERRUPTS_OFF; \
     else          (_the_context)->ccr = CPU_CCR_INTERRUPTS_ON; \
     \
-    _stack = ((uint32_t)(_stack_base)) + (_size) - 4; \
+    _stack = ((uintptr_t)(_stack_base)) + (_size) - 4; \
     *((proc_ptr *)(_stack)) = (_entry_point); \
      (_the_context)->er7     = (void *) _stack; \
      (_the_context)->er6     = (void *) _stack; \

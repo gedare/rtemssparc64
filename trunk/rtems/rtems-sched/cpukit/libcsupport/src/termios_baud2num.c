@@ -6,8 +6,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: termios_baud2num.c,v 1.3 2009/09/30 02:54:01 ralf Exp $
+ *  $Id: termios_baud2num.c,v 1.4 2010/03/27 05:36:47 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <sys/termios.h>
 #include <rtems/termiostypes.h>

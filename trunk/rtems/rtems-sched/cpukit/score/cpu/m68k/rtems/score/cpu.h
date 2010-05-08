@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.h,v 1.41 2009/12/04 05:25:26 ralf Exp $
+ *  $Id: cpu.h,v 1.42 2010/04/08 16:37:34 joel Exp $
  */
 
 #ifndef _RTEMS_SCORE_CPU_H
@@ -472,14 +472,6 @@ uint32_t   _CPU_ISR_Get_level( void );
    } while ( 0 )
 #endif
 
-#define _CPU_Context_Restart_self( _the_context ) \
-  { asm volatile( "movew %0,%%sr ; " \
-                  "moval %1,%%a7 ; " \
-                  "rts"  \
-        : "=d" ((_the_context)->sr), "=d" ((_the_context)->a7_msp) \
-        : "0" ((_the_context)->sr), "1" ((_the_context)->a7_msp) ); \
-  }
-
 /* end of Context handler macros */
 
 /*
@@ -698,6 +690,10 @@ void _CPU_Install_interrupt_stack( void );
 void _CPU_Context_switch(
   Context_Control  *run,
   Context_Control  *heir
+);
+
+void _CPU_Context_Restart_self(
+  Context_Control  *the_context
 );
 
 /*

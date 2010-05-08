@@ -103,7 +103,7 @@
  * Host:                  Reply:
  * $m0,10#2a               +$00010203040506070809101112131415#42
  *
- *  $Id: m68k-stub.c,v 1.10 2009/11/29 14:59:41 ralf Exp $
+ *  $Id: m68k-stub.c,v 1.11 2010/04/28 19:43:37 joel Exp $
  *
  ****************************************************************************/
 
@@ -1030,13 +1030,13 @@ void initializeRemcomErrorFrame()
     lastFrame->previous = lastFrame;
 }
 
+extern void _debug_level7(void);
+extern void remcomHandler(void);
+
 /* this function is used to set up exception handlers for tracing and
    breakpoints */
 void set_debug_traps()
 {
-  extern void _debug_level7(void);
-  extern void remcomHandler(void);
-
   int exception;
 
   initializeRemcomErrorFrame();

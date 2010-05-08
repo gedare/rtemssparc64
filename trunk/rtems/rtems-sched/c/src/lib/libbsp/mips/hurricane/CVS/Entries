@@ -5,11 +5,11 @@ D/liblnk////
 D/make////
 D/start////
 D/startup////
-/.cvsignore/1.2/Fri Oct 23 12:51:13 2009//
-/ChangeLog/1.47/Wed Nov 25 15:49:37 2009//
-/Makefile.am/1.15/Fri Oct 23 12:51:13 2009//
-/README/1.1/Fri Oct 23 12:51:13 2009//
-/bsp_specs/1.5/Fri Oct 23 12:51:13 2009//
-/times/1.2/Fri Oct 23 12:51:13 2009//
-/configure.ac/1.9/Tue Dec 22 15:26:18 2009//
-/preinstall.am/1.4/Tue Dec 22 15:46:06 2009//
+/.cvsignore/1.2/Tue Apr 27 14:46:34 2010//
+/ChangeLog/1.49/Sat May  8 18:49:13 2010//
+/Makefile.am/1.15/Tue Apr 27 14:46:34 2010//
+/README/1.1/Tue Apr 27 14:46:34 2010//
+/bsp_specs/1.5/Tue Apr 27 14:46:34 2010//
+/configure.ac/1.9/Tue Apr 27 14:46:34 2010//
+/preinstall.am/1.4/Tue Apr 27 14:46:34 2010//
+/times/1.2/Tue Apr 27 14:46:34 2010//

@@ -9,18 +9,19 @@
  *
  * e-mail: g_montel@yahoo.com
  *
- *  $Id: init68340.c,v 1.2 2004/04/21 10:42:47 ralf Exp $
+ *  $Id: init68340.c,v 1.3 2010/04/28 19:33:25 joel Exp $
  */
 
 #include <rtems.h>
 #include <bsp.h>
+
+extern void _CopyDataClearBSSAndStart (void);
 
 /*
  * Initialize MC68340
  */
 void _Init68340 (void)
 {
-	extern void _CopyDataClearBSSAndStart (void);
 	m68k_isr_entry *vbr;
 	int i;
 

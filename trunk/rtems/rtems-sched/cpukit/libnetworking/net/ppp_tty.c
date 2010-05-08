@@ -74,7 +74,11 @@
 /* from if_sl.c,v 1.11 84/10/04 12:54:47 rick Exp */
 /* from NetBSD: if_ppp.c,v 1.15.2.2 1994/07/28 05:17:58 cgd Exp */
 
-/* $Id: ppp_tty.c,v 1.13 2009/09/30 02:58:25 ralf Exp $ */
+/* $Id: ppp_tty.c,v 1.14 2010/03/28 05:50:29 ralf Exp $ */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include "opt_ppp.h"		/* XXX for ppp_defs.h */
 

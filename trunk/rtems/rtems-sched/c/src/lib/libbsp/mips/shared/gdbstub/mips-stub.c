@@ -11,7 +11,7 @@
     REGARD TO THIS SOFTWARE INCLUDING BUT NOT LIMITED TO THE WARRANTIES
     OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
-    $Id: mips-stub.c,v 1.16 2009/11/29 15:27:07 ralf Exp $
+    $Id: mips-stub.c,v 1.17 2010/04/28 18:59:49 joel Exp $
 
 ********************************************************************************
 *
@@ -931,6 +931,7 @@ CPU_Interrupt_frame current_thread_registers;
  * reacts to gdb's requests.
  */
 
+extern void clear_cache(void);
 void handle_exception (rtems_vector_number vector, CPU_Interrupt_frame *frame)
 {
    int          host_has_detached = 0;
@@ -1439,12 +1440,7 @@ void handle_exception (rtems_vector_number vector, CPU_Interrupt_frame *frame)
     *  but not necessarily the I-cache.
     */
 
-   {
-      extern void clear_cache(void);
-      clear_cache();
-   }
-
-   return;
+   clear_cache();
 }
 
 static int numsegs;

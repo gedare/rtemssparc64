@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: alarm.c,v 1.15 2009/10/11 22:37:38 joel Exp $
+ *  $Id: alarm.c,v 1.16 2010/04/30 08:37:26 sh Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -21,8 +21,6 @@
 #include <rtems/system.h>
 #include <rtems/posix/pthread.h>
 #include <rtems/posix/psignal.h>
-
-Watchdog_Control _POSIX_signals_Alarm_timer;
 
 /*PAGE
  *

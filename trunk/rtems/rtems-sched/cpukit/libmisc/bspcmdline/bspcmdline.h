@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspcmdline.h,v 1.2 2009/08/06 15:21:14 joel Exp $
+ *  $Id: bspcmdline.h,v 1.3 2010/03/27 05:01:03 ralf Exp $
  */
 
 #ifndef __BSP_COMMAND_LINE_h
@@ -31,11 +31,12 @@
  */
 /**@{*/
 
+#include <stddef.h> /* for size_t */
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include <string.h>
 
 /**
  *  @brief Obtain Pointer to BSP Boot Command String

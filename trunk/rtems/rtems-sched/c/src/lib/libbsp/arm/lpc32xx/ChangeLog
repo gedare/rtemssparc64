@@ -1,3 +1,38 @@
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/irq-config.h: Removed file.
+	* Makefile.am, preinstall.am: Reflect change above.
+	* irq/irq.c: Removed superfluous parameter checks.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* make/custom/lpc32xx_phycore.cfg: Use VFP floating point model.
+
+2010-04-09	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* console/hsu.c: New file.
+	* Makefile.am, configure.ac, preinstall.am, console/console-config.c,
+	include/bsp.h, include/bspopts.h.in, include/lpc-clock-config.h,
+	include/lpc-ethernet-config.h, include/lpc32xx.h, include/mmu.h,
+	startup/bspstart.c, startup/bspstarthooks.c: Changes throughout.
+
+2010-03-03	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* README, include/lpc32xx.h, irq/irq.c, startup/bspstarthooks.c:
+	Changes throughout.
+
+2010-02-02	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* make/custom/lpc32xx_phycore.cfg: Remove -W* flags.
+
+2010-01-12	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/lpc-ethernet-config.h, include/mmu.h: New files.
+	* Makefile.am, configure.ac, preinstall.am, include/bsp.h,
+	include/bspopts.h.in, include/irq.h, include/lpc32xx.h, irq/irq.c,
+	rtc/rtc-config.c, startup/bspstarthooks.c,
+	startup/linkcmds.lpc32xx_phycore: Changes throughout.
+
 2009-12-17	Joel Sherrill <joel.sherrill@oarcorp.com>
 
 	* include/bspopts.h.in: Regenerated.

@@ -1,3 +1,30 @@
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* irq/bsp_irq_init.c: Removed file.
+	* Makefile.am, preinstall.am: Reflect change above.  Added generic
+	interrupt support modules.
+	* include/bsp.h: Define BSP_FEATURE_IRQ_EXTENSION.
+	* startup/bspstart.c, irq/bsp_irq_asm.S, clock/clockdrv.c,
+	network/network.c: Interrupt support changes.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* make/custom/edb7312.cfg: Use VFP floating point model.
+
+2010-04-10	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* console/uart.c: Reflect termios API changes.
+
+2010-04-09	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* clock/clockdrv.c, irq/bsp_irq_init.c, irq/irq.h
+	startup/bspstart.c, network/network.c: make irq data types
+	consistent
+
+2010-04-07	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* start/start.S: Verify boot_card() is passed a NULL.
+
 2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* make/custom/edb7312.cfg: Remove RTEMS_BSP_FAMILY.

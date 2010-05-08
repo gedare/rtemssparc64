@@ -9,7 +9,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp.h,v 1.12 2009/08/21 17:58:26 joel Exp $
+ *  $Id: bsp.h,v 1.13 2010/04/30 14:48:52 sh Exp $
 */
 #ifndef _BSP_H
 #define _BSP_H
@@ -24,6 +24,8 @@ extern "C" {
 #include <rtems/iosupp.h>
 #include <rtems/console.h>
 #include <rtems/clockdrv.h>
+
+#define BSP_FEATURE_IRQ_EXTENSION
 
 /*
  *  Define the interrupt mechanism for Time Test 27
