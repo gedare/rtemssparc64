@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: usart.c,v 1.2 2009/11/30 04:58:24 ralf Exp $
+ *  $Id: usart.c,v 1.4 2010/04/30 14:59:51 sh Exp $
 */
 
 #include <bsp.h>
@@ -32,7 +32,7 @@
 static int     usart_first_open(int major, int minor, void *arg);
 static int     usart_last_close(int major, int minor, void *arg);
 static int     usart_read_polled(int minor);
-static int     usart_write_polled_support(int minor, const char *buf, int len);
+static ssize_t usart_write_polled_support(int minor, const char *buf, size_t len);
 static void    usart_init(int minor);
 static void    usart_write_polled(int minor, char c);
 static int     usart_set_attributes(int minor, const struct termios *t);
@@ -152,7 +152,7 @@ static void usart_write_polled(int minor, char c)
  *
  * return 1 on success, -1 on error
  */
-static int usart_write_polled_support(int minor, const char *buf, int len)
+static ssize_t usart_write_polled_support(int minor, const char *buf, size_t len)
 {
   at91rm9200_usart_regs_t *usart;
   int nwrite=0;
@@ -257,6 +257,7 @@ static int usart_set_attributes(int minor, const struct termios *t)
 
   usart->mr = mode;
   usart->brgr = brgr;
+  return 0;
 }
 
 /*

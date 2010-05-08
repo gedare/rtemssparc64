@@ -10,14 +10,14 @@
  *    /dev
  *    /dev/XXX   [where XXX includes at least console]
  *
- *  COPYRIGHT (c) 1989-2009.
+ *  COPYRIGHT (c) 1989-2010.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test.c,v 1.20 2009/12/08 17:52:53 joel Exp $
+ *  $Id: test.c,v 1.21 2010/04/28 15:01:51 joel Exp $
  */
 
 #include <stdio.h>
@@ -220,6 +220,7 @@ int main(
   /* test rtems_filesystem_evaluate_path by sending NULL path */
   status = chdir( NULL );
   rtems_test_assert( status == -1 );
+  rtems_test_assert( errno == EFAULT );
 
   /*
    *  Now switch gears and exercise rmdir().

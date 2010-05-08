@@ -25,7 +25,7 @@
  * found in found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ppc_exc_categories.c,v 1.2 2009/11/17 11:42:53 strauman Exp $
+ * $Id: ppc_exc_categories.c,v 1.3 2010/04/07 06:45:59 thomas Exp $
  */
 
 #include <bsp/vectors.h>
@@ -275,6 +275,8 @@ const ppc_exc_categories *ppc_exc_categories_for_cpu(ppc_cpu_id_t cpu)
       return &psim_category_table;
     case PPC_8540:
       return &e500_category_table;
+    case PPC_e200z0:
+    case PPC_e200z1:
     case PPC_e200z6:
       return &e200_category_table;
     case PPC_5XX:

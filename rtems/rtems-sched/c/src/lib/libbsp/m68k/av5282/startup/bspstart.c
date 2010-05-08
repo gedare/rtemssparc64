@@ -18,7 +18,7 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.13 2009/11/29 14:59:40 ralf Exp $
+ *  $Id: bspstart.c,v 1.14 2010/04/27 17:33:53 joel Exp $
  */
 
 #include <bsp.h>
@@ -35,7 +35,6 @@
 /*
  * CPU-space access
  */
-#define m68k_set_cacr(_cacr) asm volatile ("movec %0,%%cacr\n\tnop" : : "d" (_cacr))
 #define m68k_set_acr0(_acr0) asm volatile ("movec %0,%%acr0" : : "d" (_acr0))
 #define m68k_set_acr1(_acr1) asm volatile ("movec %0,%%acr1" : : "d" (_acr1))
 

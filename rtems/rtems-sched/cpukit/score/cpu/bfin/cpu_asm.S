@@ -10,16 +10,19 @@
  *  Based on earlier version:
  *
  *  Copyright (c) 2006 by Atos Automacao Industrial Ltda.
- *			 written by Alain Schaefer <alain.schaefer@easc.ch>
- *					and Antonio Giovanini <antonio@atos.com.br>
+ *             written by Alain Schaefer <alain.schaefer@easc.ch>
+ *                     and Antonio Giovanini <antonio@atos.com.br>
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu_asm.S,v 1.6 2009/03/12 14:16:41 joel Exp $
+ *  $Id: cpu_asm.S,v 1.9 2010/04/20 13:27:48 joel Exp $
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/asm.h>
 #include <rtems/score/cpu_asm.h>
@@ -252,16 +255,6 @@ __CPU_Context_switch:
 	[p0++] = fp;
 	[p0++] = sp;
 
-	/* save length registers */
-	r0 = l0;
-	[p0++] = r0;
-	r0 = l1;
-	[p0++] = r0;
-	r0 = l2;
-	[p0++] = r0;
-	r0 = l3;
-	[p0++] = r0;
-
 	/* save rets */
 	r0 = rets;
 	[p0++] = r0;
@@ -286,16 +279,6 @@ restore:
 	p5 = [p0++];
 	fp = [p0++];
 	sp = [p0++];
-
-	/* restore length registers */
-	r0 = [p0++];
-	l0 = r0;
-	r0 = [p0++];
-	l1 = r0;
-	r0 = [p0++];
-	l2 = r0;
-	r0 = [p0++];
-	l3 = r0;
 
 	/* restore rets */
 	r0 = [p0++];
@@ -400,10 +383,10 @@ vectorIDLoop:
 	[--sp] = r3;
 	[--sp] = p3;
 	[--sp] = p2;
-	[--sp] = lt1;
-	[--sp] = lt0;
 	[--sp] = lc1;
 	[--sp] = lc0;
+	[--sp] = lt1;
+	[--sp] = lt0;
 	[--sp] = lb1;
 	[--sp] = lb0;
 	[--sp] = i3;
@@ -423,8 +406,13 @@ vectorIDLoop:
 	[--sp] = b1;
 	[--sp] = b0;
 	[--sp] = rets;
-	r1 = fp; /* is this really what should be passed here? */
 	/* call user isr; r0 = vector number, r1 = frame pointer */
+	r1 = fp; /* is this really what should be passed here? */
+	r2 = 0;
+	l0 = r2;
+	l1 = r2;
+	l2 = r2;
+	l3 = r2;
 	sp += -12; /* bizarre abi... */
 	call (p0);
 	sp += 12;
@@ -447,10 +435,10 @@ vectorIDLoop:
 	i3 = [sp++];
 	lb0 = [sp++];
 	lb1 = [sp++];
-	lc0 = [sp++];
-	lc1 = [sp++];
 	lt0 = [sp++];
 	lt1 = [sp++];
+	lc0 = [sp++];
+	lc1 = [sp++];
 	p2 = [sp++];
 	p3 = [sp++];
 	r3 = [sp++];
@@ -532,10 +520,10 @@ __ISR15_Handler:
 	[--sp] = p2;
 	[--sp] = p1;
 	[--sp] = p0;
-	[--sp] = lt1;
-	[--sp] = lt0;
 	[--sp] = lc1;
 	[--sp] = lc0;
+	[--sp] = lt1;
+	[--sp] = lt0;
 	[--sp] = lb1;
 	[--sp] = lb0;
 	[--sp] = i3;
@@ -554,6 +542,11 @@ __ISR15_Handler:
 	[--sp] = b2;
 	[--sp] = b1;
 	[--sp] = b0;
+	r2 = 0;
+	l0 = r2;
+	l1 = r2;
+	l2 = r2;
+	l3 = r2;
 	sp += -12; /* bizarre abi... */
 	call __Thread_Dispatch;
 	sp += 12;
@@ -575,10 +568,10 @@ __ISR15_Handler:
 	i3 = [sp++];
 	lb0 = [sp++];
 	lb1 = [sp++];
-	lc0 = [sp++];
-	lc1 = [sp++];
 	lt0 = [sp++];
 	lt1 = [sp++];
+	lc0 = [sp++];
+	lc1 = [sp++];
 	p0 = [sp++];
 	p1 = [sp++];
 	p2 = [sp++];

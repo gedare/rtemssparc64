@@ -20,21 +20,15 @@
 
 #include <libcpu/powerpc-utility.h>
 #include <mpc55xx/reg-defs.h>
-
+#include <bspopts.h>
+	
 .section ".text"
 
 /* Timeout for delay in clocks */
 .equ FMPLL_TIMEOUT, 6000
 
-/* Reference clock */
-.equ FMPLL_REF_CLOCK, 8000000
-
-/* Settings for FMPLL from 12 MHz up to 128 MHz with 8 MHz reference frequency */
-.equ FMPLL_128_8_SYNCR_SETTING_0, (FMPLL_SYNCR_PREDIV_0 | FMPLL_SYNCR_MFD_12 | FMPLL_SYNCR_RFD_2 | FMPLL_SYNCR_LOCEN)
-.equ FMPLL_128_8_SYNCR_SETTING_1, (FMPLL_SYNCR_PREDIV_0 | FMPLL_SYNCR_MFD_12 | FMPLL_SYNCR_RFD_0 | FMPLL_SYNCR_LOCEN)
-
 .macro DO_SETTING setting
-	LWI r5, FMPLL_128_8_SYNCR_SETTING_\setting
+	lwz r5, \setting
 	stw r5, 0(r4)
 	msync
 	bl mpc55xx_fmpll_wait_for_lock
@@ -48,12 +42,49 @@
  */
 GLOBAL_FUNCTION mpc55xx_fmpll_reset_config
 	/* Save link register */
-	mflr r3
+	mflr r9
+
+#if ((MPC55XX_CHIP_TYPE >= 5510) && (MPC55XX_CHIP_TYPE <= 5517))
+	/*
+	 * for MPC5510: pass in ptr to array with:
+	 * off 0:  temp setting for ESYNCR2
+	 * off 4: final setting for ESYNCR2
+	 * off 8: final setting for ESYNCR1
+	 */
+	LA r4, FMPLL_ESYNCR2
+
+	lwz r5, 0(r3)
+	stw r5, 0(r4)
+	msync
+
+	lwz r5, 8(r3)
+	stw r5, (FMPLL_ESYNCR1-FMPLL_ESYNCR2)(r4)	
+	msync
+	bl mpc55xx_fmpll_wait_for_lock
+
+	DO_SETTING 4(r3)
+
+	/*
+	 * switch to PLL clock in SIU
+	 */
+	LA r4, SIU_SYSCLK
+	lwz r5, 0(r4)
+	LWI r6, ~SIU_SYSCLK_SYSCLKSEL_MASK
+	and r5, r5, r6
+	LWI r6, SIU_SYSCLK_SYSCLKSEL_PLL
+	or  r5, r5, r6
+	stw r5, 0(r4)
+#else
+	/*
+	 * for MPC5566: pass in ptr to array with:
+	 * off 0:  temp setting for SYNCR
+	 * off 4: final setting for SYNCR
+	 */
 
 	LA r4, FMPLL_SYNCR
 
-	DO_SETTING 0
-	DO_SETTING 1
+	DO_SETTING 0(r3)
+	DO_SETTING 4(r3)
 
 	/* Enable loss-of-clock and loss-of-lock IRQs */
 	lwz r5, 0(r4)
@@ -64,9 +95,10 @@ GLOBAL_FUNCTION mpc55xx_fmpll_reset_config
 	LWI r6, ~FMPLL_SYNCR_LOCRE & ~FMPLL_SYNCR_LOLRE
 	and r5, r5, r6
 	stw r5, 0(r4)
+#endif
 
 	/* Restore link register and return */
-	mtlr r3
+	mtlr r9
 	blr
 
 /**
@@ -88,8 +120,8 @@ fmpll_not_locked:
 
 	b mpc55xx_system_reset
 fmpll_continue:
-	lwz r8, 0(r6)
-	and. r8, r8, r7
+	lwz r5, 0(r6)
+	and. r5, r5, r7
 	beq fmpll_not_locked
 
 	blr
@@ -99,6 +131,29 @@ fmpll_continue:
  * @brief Returns the system clock.
  */
 GLOBAL_FUNCTION mpc55xx_get_system_clock
+#if ((MPC55XX_CHIP_TYPE >= 5510) && (MPC55XX_CHIP_TYPE <= 5517))
+	LA r4, FMPLL_ESYNCR1
+	lwz r3, 0(r4)
+	/* EPREDIV */
+	rlwinm r5, r3,16, 28, 31
+
+	/* MFD */
+	rlwinm r6, r3,0, 24, 31
+
+	LA r4, FMPLL_ESYNCR2
+	lwz r3, 0(r4)
+	/* ERFD */
+	rlwinm r7, r3,0, 26, 31
+
+	LWI r8, MPC55XX_FMPLL_REF_CLOCK
+	addi r5, r5, 1
+	addi r6, r6,16
+	addi r7, r7, 1
+	divw r3, r8, r5  /* REF_CLOCK/PREDIV */
+	mullw r3, r6, r3 /* REF_CLOCK/PREDIV*MFD */
+	divw r3, r3, r7  /* REF_CLOCK/PREDIV*MFD/RFD */
+	
+#else
 	LA r4, FMPLL_SYNCR
 	lwz r3, 0(r4)
 
@@ -110,14 +165,14 @@ GLOBAL_FUNCTION mpc55xx_get_system_clock
 
 	/* RFD */
 	rlwinm r7, r3, 13, 29, 31
-
 	/* Calculate system clock (Table 11-10 [MPC5567 Microcontroller Reference Manual]) */
-	LWI r8, FMPLL_REF_CLOCK
+	LWI r8, MPC55XX_FMPLL_REF_CLOCK
 	addi r5, r5, 1
 	addi r6, r6, 4
 	mullw r6, r6, r8
 	sraw r6, r6, r7
 	divw r3, r6, r5
+#endif
 
 	blr
 

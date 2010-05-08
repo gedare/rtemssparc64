@@ -8,13 +8,14 @@
  *
  * http://www.rtems.com/license/LICENSE
  *
- * $Id: bspstart.c,v 1.2 2009/07/17 13:53:04 thomas Exp $
+ * $Id: bspstart.c,v 1.4 2010/04/26 01:30:08 joel Exp $
  */
 
 #include <bsp.h>
 #include <bsp/bootcard.h>
 #include <nds.h>
 
+extern void BSP_rtems_irq_mngt_init (void);
 /*
  * start the platform.
  */
@@ -49,11 +50,12 @@ void bsp_start (void)
  * reset bss area.
  */
 
+extern uint8_t __bss_start;
+extern uint8_t __bss_end;
+
 void
 bss_reset (void)
 {
-  extern uint8_t __bss_start;
-  extern uint8_t __bss_end;
 
   memset (&__bss_start, 0, (uint32_t) & __bss_end - (uint32_t) & __bss_start);
 }

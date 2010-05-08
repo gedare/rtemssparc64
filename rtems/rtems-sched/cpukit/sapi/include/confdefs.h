@@ -26,14 +26,14 @@
  */
 
 /*
- *  COPYRIGHT (c) 1989-2009.
+ *  COPYRIGHT (c) 1989-2010.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: confdefs.h,v 1.130 2009/11/29 13:51:51 ralf Exp $
+ *  $Id: confdefs.h,v 1.132 2010/05/03 09:13:36 sh Exp $
  */
 
 #ifndef __CONFIGURATION_TEMPLATE_h
@@ -784,11 +784,25 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
       CONFIGURE_BDBUF_BUFFER_MAX_SIZE
     };
   #endif
+
+  /*
+   *  Semaphores:
+   *    o disk lock
+   *    o bdbuf lock
+   *    o bdbuf sync lock
+   *    o bdbuf access condition
+   *    o bdbuf transfer condition
+   *    o bdbuf buffer condition
+   */
+  #define CONFIGURE_LIBBLOCK_SEMAPHORES 6
+
   #if defined(CONFIGURE_HAS_OWN_BDBUF_TABLE) || \
       defined(CONFIGURE_BDBUF_BUFFER_SIZE) || \
       defined(CONFIGURE_BDBUF_BUFFER_COUNT)
     #error BDBUF Cache does not use a buffer configuration table. Please remove.
   #endif
+#else
+  #define CONFIGURE_LIBBLOCK_SEMAPHORES 0
 #endif /* CONFIGURE_APPLICATION_NEEDS_LIBBLOCK */
 
 #if defined(RTEMS_MULTIPROCESSING)
@@ -875,7 +889,7 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
     #define CONFIGURE_NOTEPADS_ENABLED           FALSE
   #endif
 
-  #ifndef CONFIGURE_DISABLE_CLASSIC_NOTEPADS
+  #ifndef CONFIGURE_DISABLE_CLASSIC_API_NOTEPADS
     #define CONFIGURE_MEMORY_PER_TASK_FOR_CLASSIC_API \
       _Configure_From_workspace( sizeof(RTEMS_API_Control) )
   #else
@@ -909,16 +923,17 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
 
   #ifndef CONFIGURE_MAXIMUM_SEMAPHORES
     #define CONFIGURE_MAXIMUM_SEMAPHORES                 0
-  #else
   #endif
+
+  #define CONFIGURE_SEMAPHORES \
+    (CONFIGURE_MAXIMUM_SEMAPHORES + CONFIGURE_LIBIO_SEMAPHORES + \
+      CONFIGURE_TERMIOS_SEMAPHORES + CONFIGURE_LIBBLOCK_SEMAPHORES)
 
   /*
    * If there are no user or support semaphores defined, then we can assume
    * that no memory need be allocated at all for semaphores.
    */
-  #if  ((CONFIGURE_MAXIMUM_SEMAPHORES == 0) && \
-        (CONFIGURE_LIBIO_SEMAPHORES == 0) && \
-        (CONFIGURE_TERMIOS_SEMAPHORES == 0))
+  #if CONFIGURE_SEMAPHORES == 0
     #define CONFIGURE_MEMORY_FOR_SEMAPHORES(_semaphores) 0
   #else
     #define CONFIGURE_MEMORY_FOR_SEMAPHORES(_semaphores) \
@@ -1686,8 +1701,7 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
   (CONFIGURE_MEMORY_FOR_TASK_VARIABLES(CONFIGURE_MAXIMUM_TASK_VARIABLES) + \
    CONFIGURE_MEMORY_FOR_TIMERS(CONFIGURE_MAXIMUM_TIMERS + \
     CONFIGURE_TIMER_FOR_SHARED_MEMORY_DRIVER ) + \
-   CONFIGURE_MEMORY_FOR_SEMAPHORES(CONFIGURE_MAXIMUM_SEMAPHORES + \
-     CONFIGURE_LIBIO_SEMAPHORES + CONFIGURE_TERMIOS_SEMAPHORES) + \
+   CONFIGURE_MEMORY_FOR_SEMAPHORES(CONFIGURE_SEMAPHORES) + \
    CONFIGURE_MEMORY_FOR_MESSAGE_QUEUES(CONFIGURE_MAXIMUM_MESSAGE_QUEUES) + \
    CONFIGURE_MEMORY_FOR_PARTITIONS(CONFIGURE_MAXIMUM_PARTITIONS) + \
    CONFIGURE_MEMORY_FOR_REGIONS( CONFIGURE_MAXIMUM_REGIONS ) + \
@@ -1780,8 +1794,7 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
     CONFIGURE_MEMORY_FOR_TASKS(CONFIGURE_MAXIMUM_TASKS, 0),
     CONFIGURE_MEMORY_FOR_TASK_VARIABLES(CONFIGURE_MAXIMUM_TASK_VARIABLES),
     CONFIGURE_MEMORY_FOR_TIMERS(CONFIGURE_MAXIMUM_TIMERS),
-    CONFIGURE_MEMORY_FOR_SEMAPHORES(CONFIGURE_MAXIMUM_SEMAPHORES +
-       CONFIGURE_LIBIO_SEMAPHORES + CONFIGURE_TERMIOS_SEMAPHORES),
+    CONFIGURE_MEMORY_FOR_SEMAPHORES(CONFIGURE_SEMAPHORES),
     CONFIGURE_MEMORY_FOR_MESSAGE_QUEUES(CONFIGURE_MAXIMUM_MESSAGE_QUEUES),
     CONFIGURE_MEMORY_FOR_PARTITIONS(CONFIGURE_MAXIMUM_PARTITIONS),
     CONFIGURE_MEMORY_FOR_REGIONS( CONFIGURE_MAXIMUM_REGIONS ),
@@ -1853,8 +1866,7 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
     CONFIGURE_MAXIMUM_TASKS,
     CONFIGURE_NOTEPADS_ENABLED,
     CONFIGURE_MAXIMUM_TIMERS + CONFIGURE_TIMER_FOR_SHARED_MEMORY_DRIVER,
-    CONFIGURE_MAXIMUM_SEMAPHORES + CONFIGURE_LIBIO_SEMAPHORES +
-      CONFIGURE_TERMIOS_SEMAPHORES,
+    CONFIGURE_SEMAPHORES,
     CONFIGURE_MAXIMUM_MESSAGE_QUEUES,
     CONFIGURE_MAXIMUM_PARTITIONS,
     CONFIGURE_MAXIMUM_REGIONS,

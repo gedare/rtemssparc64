@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsppredriverhook.c,v 1.1 2008/09/16 19:03:46 joel Exp $
+ *  $Id: bsppredriverhook.c,v 1.2 2010/04/28 19:43:39 joel Exp $
  */
 
 #include <bsp.h>
@@ -16,9 +16,7 @@ extern void bsp_spurious_initialize(void);
 
 void bsp_predriver_hook(void)
 {
-  #if defined(mcpu32)
-    #warning "do something about vectors!!!"
-  #endif
+  /* on CPU32: do something about vectors!!! */
 
   bsp_spurious_initialize();
 }

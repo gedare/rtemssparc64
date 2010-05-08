@@ -21,11 +21,12 @@
 #include <stdio.h>
 
 #include <rtems/irq.h>
-
 #include <mpc55xx/regs.h>
 #include <mpc55xx/mpc55xx.h>
 #include <mpc55xx/dspi.h>
 #include <mpc55xx/edma.h>
+
+#include <bsp/irq-generic.h>
 
 #include <libchip/spi-sd-card.h>
 
@@ -38,6 +39,9 @@
 
 #include <rtems/status-checks.h>
 
+#undef USE_DSPI_READER_WRITER
+
+#if defined(USE_DSPI_READER_WRITER)
 static rtems_driver_address_table test_mpc55xx_drv_ops = {
 	initialization_entry : NULL,
 	open_entry : NULL,
@@ -51,6 +55,7 @@ static rtems_libi2c_drv_t test_mpc55xx_dspi_drv = {
 	ops : &test_mpc55xx_drv_ops,
 	size : sizeof( rtems_libi2c_drv_t)
 };
+#endif /* defined(USE_DSPI_READER_WRITER) */
 
 #define MPC55XX_TEST_DSPI_ADDRESS 0
 
@@ -68,6 +73,7 @@ static rtems_id test_mpc55xx_dspi_ping;
 
 static rtems_id test_mpc55xx_dspi_pong;
 
+#if defined(USE_DSPI_READER_WRITER)
 static unsigned char test_mpc55xx_dspi_writer_outbuf [2] [MPC55XX_TEST_DSPI_BUFSIZE_CACHE_PROOF] __attribute__ ((aligned (32)));
 
 static unsigned char test_mpc55xx_dspi_writer_inbuf [MPC55XX_TEST_DSPI_BUFSIZE_CACHE_PROOF] __attribute__ ((aligned (32)));
@@ -200,6 +206,7 @@ static rtems_task test_mpc55xx_dspi_reader( rtems_task_argument arg)
 	sc = rtems_task_delete( RTEMS_SELF);
 	RTEMS_CHECK_SC_TASK( sc, "rtems_task_delete");
 }
+#endif /* defined(USE_DSPI_READER_WRITER) */
 
 rtems_task test_sd_card( rtems_task_argument arg);
 
@@ -284,7 +291,7 @@ rtems_status_code mpc55xx_dspi_register(void)
 	);
 	RTEMS_CHECK_SC( sc, "rtems_semaphore_create");
 
-	#if 0
+#if defined(USE_DSPI_READER_WRITER)
 	rtems_id writer_task_id;
 	rtems_id reader_task_id;
 
@@ -311,7 +318,7 @@ rtems_status_code mpc55xx_dspi_register(void)
 	RTEMS_CHECK_SC( sc, "rtems_task_start");
 	sc = rtems_task_start( reader_task_id, test_mpc55xx_dspi_reader, 0);
 	RTEMS_CHECK_SC( sc, "rtems_task_start");
-	#endif
+#endif
 
 	rtems_id sd_card_task_id;
 	sc = rtems_task_create(
@@ -549,6 +556,7 @@ rtems_task test_sd_card( rtems_task_argument arg)
 static char inbuf [BUFSIZE];
 static char outbuf [BUFSIZE];
 
+#if 0
 static void test_mpc55xx_edma_done( mpc55xx_edma_channel_entry *e, uint32_t error_status)
 {
 	rtems_semaphore_release( e->id);
@@ -618,6 +626,7 @@ static rtems_status_code test_mpc55xx_edma(void)
 
 	return RTEMS_SUCCESSFUL;
 }
+#endif /* 0 */
 
 #include <stdlib.h>
 

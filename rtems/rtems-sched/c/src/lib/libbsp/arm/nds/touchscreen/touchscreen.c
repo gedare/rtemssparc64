@@ -8,7 +8,7 @@
  *
  * http://www.rtems.com/license/LICENSE
  *
- * $Id: touchscreen.c,v 1.1 2008/04/16 18:37:33 joel Exp $
+ * $Id: touchscreen.c,v 1.2 2010/04/09 20:24:57 thomas Exp $
  */
 
 #include <stdlib.h>
@@ -17,7 +17,7 @@
 #include <sys/types.h>
 
 #include <bsp.h>
-#include "../irq/irq.h"
+#include <rtems/irq.h>
 #include <rtems/libio.h>
 #include <nds.h>
 

@@ -36,7 +36,7 @@
  *  developmental purposes without any warranty nor representation
  *  by the authors or by TGA Technologies.
  *
- *  $Id: sci.c,v 1.15 2008/09/02 12:26:54 ralf Exp $
+ *  $Id: sci.c,v 1.16 2010/04/15 08:39:26 ralf Exp $
  */
 
 #include <rtems.h>
@@ -541,9 +541,9 @@ static int _sh_sci_poll_read(int minor)
 /*
  * Termios polled write
  */
-static int _sh_sci_poll_write(int minor, const uint8_t *buf, int len)
+static ssize_t _sh_sci_poll_write(int minor, const char *buf, size_t len)
 {
-    int count;
+    size_t count;
 
     for (count = 0; count < len; count++)
         outbyte( minor, buf[count] );

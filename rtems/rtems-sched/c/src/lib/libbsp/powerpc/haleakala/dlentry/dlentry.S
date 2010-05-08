@@ -29,7 +29,7 @@
  *      i-cubed limited makes no representations about the suitability
  *      of this software for any purpose.
  *
- *  $Id: dlentry.S,v 1.3 2009/11/30 04:27:24 ralf Exp $
+ *  $Id: dlentry.S,v 1.4 2010/03/27 20:41:04 thomas Exp $
  *
  *  derived from "helas403/dlentry.S":
  *
@@ -39,11 +39,6 @@
  *
  *  Id: dlentry.S,v 1.2 2000/08/02 16:30:57 joel Exp
  */
-
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning You need to pass a NULL.
-#warning Please check and remove these warnings.
 
 #include <rtems/asm.h>
 

@@ -33,16 +33,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: start.S,v 1.8 2009/11/30 04:56:28 ralf Exp $
+ *  $Id: start.S,v 1.9 2010/04/24 21:45:57 joel Exp $
  */
 
 #include <rtems/asm.h>
 #include "rtems/score/sh4_regs.h"
 #include "rtems/score/sh7750_regs.h"
-
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning Please check and remove these warnings.
 
         BEGIN_CODE
         PUBLIC(start)

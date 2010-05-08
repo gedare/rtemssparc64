@@ -19,6 +19,10 @@
  * http://www.rtems.com/license/LICENSE.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -271,6 +275,11 @@ static rtems_status_code rtems_bdpart_read_record(
     return sc;
   }
 
+  /* just in case block did not get filled in */
+  if ( *block == NULL ) {
+    return RTEMS_INVALID_ADDRESS;
+  }
+
   /* Check MBR signature */
   if (!rtems_bdpart_is_valid_record( (*block)->buffer)) {
     return RTEMS_IO_ERROR;
@@ -299,6 +308,11 @@ static rtems_status_code rtems_bdpart_new_record(
   sc = rtems_bdbuf_read( disk, index, block);
   if (sc != RTEMS_SUCCESSFUL) {
     return sc;
+  }
+
+  /* just in case block did not get filled in */
+  if ( *block == NULL ) {
+    return RTEMS_INVALID_ADDRESS;
   }
 
   /* Clear record */

@@ -9,7 +9,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: rtc.h,v 1.11 2008/09/22 11:45:25 thomas Exp $
+ *  $Id: rtc.h,v 1.12 2010/04/25 21:18:06 joel Exp $
  */
 
 #ifndef __LIBCHIP_RTC_h
@@ -24,9 +24,8 @@
  *  Types for get and set register routines
  */
 
-typedef uint32_t   (*getRegister_f)(uint32_t   port, uint8_t   register);
-typedef void       (*setRegister_f)(
-                            uint32_t   port, uint8_t   reg, uint32_t   value);
+typedef uint32_t (*getRegister_f)(uintptr_t  port, uint8_t reg);
+typedef void     (*setRegister_f)(uintptr_t  port, uint8_t reg, uint32_t value);
 
 typedef struct _rtc_fns {
   void    (*deviceInitialize)(int minor);
@@ -68,8 +67,8 @@ typedef struct _rtc_tbl {
   const rtc_fns *pDeviceFns;
   bool           (*deviceProbe)(int minor);
   void          *pDeviceParams;
-  uint32_t       ulCtrlPort1;
-  uint32_t       ulDataPort;
+  uintptr_t      ulCtrlPort1;
+  uintptr_t      ulDataPort;
   getRegister_f  getRegister;
   setRegister_f  setRegister;
 } rtc_tbl;

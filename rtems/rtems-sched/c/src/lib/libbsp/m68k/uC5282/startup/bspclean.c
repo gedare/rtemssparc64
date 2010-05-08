@@ -12,12 +12,14 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspclean.c,v 1.5 2007/03/12 11:18:23 joel Exp $
+ *  $Id: bspclean.c,v 1.6 2010/04/27 17:23:22 joel Exp $
  */
 
 #include <rtems.h>
 #include <bsp.h>
 #include <rtems/bspIo.h>
+
+extern void bsp_reset(int);
 
 void bsp_cleanup( void )
 {

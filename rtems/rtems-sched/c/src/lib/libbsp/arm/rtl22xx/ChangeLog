@@ -1,3 +1,30 @@
+2010-04-30	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* include/bsp.h: Add BSP_SMALL_MEMORY.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* Makefile.am, preinstall.am: Added generic interrupt support modules.
+	* include/bsp.h: Define BSP_FEATURE_IRQ_EXTENSION.
+	* startup/bspstart.c, network/network.c: Interrupt support changes.
+	* console/uart.c: Fixed warnings.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* make/custom/rtl22xx.cfg: Use VFP floating point model.
+
+2010-04-09	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* network/network.c, startup/bspstart.c: make
+	irq data types consistent
+
+2010-04-07	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* include/bsp.h: Rename poorly named define "M" to "JOEL_M" since
+	I can't find it used anywhere.  When code breaks, someone will
+	suggest a better name.  But "M" conflicted with user code.
+	* start/start.S: Verify boot_card() is passed a NULL.
+
 2009-10-21	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* make/custom/rtl22xx.cfg: Remove RTEMS_BSP_FAMILY.

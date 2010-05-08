@@ -13,10 +13,11 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.18 2009/11/30 22:00:35 joel Exp $
+ *  $Id: bspstart.c,v 1.20 2010/04/30 14:44:17 sh Exp $
  */
 
 #include <bsp.h>
+#include <bsp/irq-generic.h>
 #include <at91rm9200.h>
 #include <at91rm9200_pmc.h>
 #include <at91rm9200_emac.h>
@@ -24,7 +25,7 @@
 #include <at91rm9200_usart.h>
 
 /* Function prototypes */
-extern void rtems_irq_mngt_init(void);
+extern void rtems_exception_init_mngt(void);
 void bsp_libc_init( void *, uint32_t, int );
 static void fix_mac_addr(void);
 void bsp_usart_init(void);
@@ -64,7 +65,9 @@ void bsp_start_default( void )
   /*
    * Init rtems interrupt management
    */
-  rtems_irq_mngt_init();
+  if (bsp_interrupt_initialize() != RTEMS_SUCCESSFUL) {
+    _CPU_Fatal_halt(0xe);
+  }
 
 } /* bsp_start */
 

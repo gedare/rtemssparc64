@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.175 2009/12/04 06:05:00 ralf Exp $
+## $Id: configure.ac,v 1.180 2010/05/01 16:43:58 ralf Exp $
 
 AC_PREREQ(2.61)
 AC_INIT([rtems-cpukit],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -18,6 +18,8 @@ RTEMS_ENABLE_POSIX
 RTEMS_ENABLE_ITRON
 RTEMS_ENABLE_RTEMS_DEBUG
 RTEMS_ENABLE_NETWORKING
+RTEMS_ENABLE_HTTPD
+RTEMS_ENABLE_SHTTPD
 
 RTEMS_ENV_RTEMSCPU
 RTEMS_CHECK_RTEMS_DEBUG
@@ -56,13 +58,17 @@ AC_CHECK_FUNCS([creat])
 AC_CHECK_FUNCS([__assert])
 AC_CHECK_FUNCS([execl execlp execle execv execvp execve])
 AC_CHECK_FUNCS([regcomp regexec regerror regfree])
+# Mandated by POSIX but not present in newlib
+AC_CHECK_DECLS([flockfile],[AC_CHECK_FUNCS([flockfile])],,[#include <stdio.h>])
+AC_CHECK_DECLS([funlockfile],[AC_CHECK_FUNCS([funlockfile])],,[#include <stdio.h>])
+AC_CHECK_DECLS([ftrylockfile],[AC_CHECK_FUNCS([ftrylockfile])],,[#include <stdio.h>])
 
 # Newlib's unix/ directory
 AC_CHECK_FUNCS([ttyname getcwd])
 # </FIXME>
 
 ## Check if the installed toolchain has these headers
-AC_CHECK_HEADERS([tar.h errno.h])
+AC_CHECK_HEADERS([tar.h errno.h sched.h])
 
 ## error out if libc doesn't provide stdint.h
 AS_IF([test x"${ac_cv_header_stdint_h}" != xyes],
@@ -75,6 +81,10 @@ AS_IF([test x"${ac_cv_header_inttypes_h}" != xyes],
 ## error out if libc doesn't provide errno.h
 AS_IF([test x"${ac_cv_header_errno_h}" != xyes],
 [AC_MSG_ERROR([Required header errno.h not found])])
+
+## error out if libc doesn't provide sched.h
+AS_IF([test x"${ac_cv_header_sched_h}" != xyes],
+[AC_MSG_ERROR([Required header sched.h not found])])
 
 AC_HEADER_STDBOOL
 AS_IF([test x"${ac_cv_header_stdbool_h}" != xyes],
@@ -238,6 +248,10 @@ AC_CHECK_HEADERS([sys/queue.h],[NEED_SYS_QUEUE_H=no],[NEED_SYS_QUEUE_H=yes])
 # configuration-time diagnostics and are not really used.
 AC_CHECK_DECLS([_POSIX_LOGIN_NAME_MAX],,,[#include <limits.h>])
 AC_CHECK_DECLS([CHAR_BIT],,,[#include <limits.h>])
+# FIXME: Mandatory in SUSv4, optional in SUSv3. 
+#   Not implemented in GCC/newlib, so far.
+AC_CHECK_DECLS([WORD_BIT],,,[#include <limits.h>])
+AC_CHECK_DECLS([LONG_BIT],,,[#include <limits.h>])
 
 ## BSD-ism, excluded from POSIX, but available on most platforms
 AC_CHECK_DECLS([sbrk],,,[#include <unistd.h>])
@@ -255,6 +269,10 @@ AM_CONDITIONAL(HAS_MP,test x"$enable_multiprocessing" = x"yes" )
 AM_CONDITIONAL(HAS_PTHREADS,test x"$rtems_cv_HAS_POSIX_API" = x"yes")
 AM_CONDITIONAL(LIBITRON,test x"$rtems_cv_HAS_ITRON_API" = x"yes")
 AM_CONDITIONAL(LIBNETWORKING,test x"$rtems_cv_HAS_NETWORKING" = x"yes")
+AM_CONDITIONAL([LIBHTTPD],[test x"$rtems_cv_HAS_NETWORKING" = xyes \
+&& test x"$enable_httpd" = xyes])
+AM_CONDITIONAL([LIBSHTTPD],[test x"$rtems_cv_HAS_NETWORKING" = xyes \
+&& test x"$enable_shttpd" = xyes])
 
 AM_CONDITIONAL([NEED_SYS_CDEFS_H],[test x"$NEED_SYS_CDEFS_H" = x"yes"])
 AM_CONDITIONAL([NEED_SYS_QUEUE_H],[test x"$NEED_SYS_QUEUE_H" = x"yes"])

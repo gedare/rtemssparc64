@@ -1,6 +1,6 @@
-/.cvsignore/1.1/Fri Oct 23 12:52:56 2009//
-/Makefile.am/1.28/Fri Oct 23 12:52:56 2009//
-/ftpd.c/1.20/Fri Oct 23 12:52:56 2009//
-/ftpd.h/1.9/Fri Oct 23 12:52:56 2009//
-/preinstall.am/1.9/Tue Dec 22 15:46:08 2009//
+/.cvsignore/1.1/Tue Apr 27 14:47:24 2010//
+/Makefile.am/1.28/Tue Apr 27 14:47:24 2010//
+/ftpd.c/1.23/Sat May  8 18:49:26 2010//
+/ftpd.h/1.9/Tue Apr 27 14:47:24 2010//
+/preinstall.am/1.9/Tue Apr 27 14:47:24 2010//
 D

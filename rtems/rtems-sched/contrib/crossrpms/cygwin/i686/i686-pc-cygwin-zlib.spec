@@ -30,11 +30,11 @@
 %define _host_rpmprefix %{nil}
 %endif
 
-%define zlib_version 1.2.3-3
-%define zlib_rpmvers %{expand:%(echo 1.2.3-3 | tr - _)} 
+%define zlib_version 1.2.3-10
+%define zlib_rpmvers %{expand:%(echo 1.2.3-10 | tr - _)} 
 
 Name:         i686-pc-cygwin-zlib
-Release:      0.20090827.0%{?dist}
+Release:      0.20100319.0%{?dist}
 License:      GPL
 Group:        Development/Tools
 
@@ -50,6 +50,8 @@ Source2:	ftp://cygwin.com/pub/cygwin/release/zlib/zlib0/zlib0-%{zlib_version}.ta
 %{?_without_sources:NoSource:	0}
 %{?_without_sources:NoSource:	1}
 %{?_without_sources:NoSource:	2}
+
+Provides:       i686-pc-cygwin-zlib-devel = %{version}-%{release}
 
 %description
 Cygwin zlib libraries.

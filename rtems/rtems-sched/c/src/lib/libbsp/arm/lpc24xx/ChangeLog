@@ -1,3 +1,38 @@
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/irq-config.h: Removed file.
+	* Makefile.am, preinstall.am: Reflect change above.
+	* irq/irq.c: Removed superfluous parameter checks.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* make/custom/lpc24xx.inc: Use VFP floating point model.
+
+2010-04-09	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* make/custom/lpc24xx.inc: removed over-paranoid warning switches
+
+2010-04-09	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* Makefile.am, configure.ac, include/lpc24xx.h, irq/irq.c,
+	make/custom/lpc24xx.inc, misc/io.c, startup/bspstart.c,
+	startup/bspstarthooks.c, startup/linkcmds.lpc2362: Changes throughout.
+
+2010-03-29	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* configure.ac: make the lpc2362 a SMALL MEMORY BSP
+
+2010-03-03	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/lpc-ethernet-config.h: Fixed IO configurations.
+
+2010-01-12	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/lpc-ethernet-config.h: New file.
+	* network/network.c: Removed file.
+	* Makefile.am, configure.ac, preinstall.am, include/bsp.h,
+	include/lpc24xx.h: Changes throughout.
+
 2009-12-15	Sebastian Huber <sebastian.huber@embedded-brains.de>
 
 	* clock/clock-config.c: Removed file.

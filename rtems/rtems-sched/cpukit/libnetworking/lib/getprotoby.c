@@ -1,6 +1,10 @@
 /*
- *  $Id: getprotoby.c,v 1.4 2000/07/14 18:52:54 joel Exp $
+ *  $Id: getprotoby.c,v 1.5 2010/03/28 05:44:42 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <netdb.h>
 #include <string.h>

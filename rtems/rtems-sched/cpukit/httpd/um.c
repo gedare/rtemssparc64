@@ -5,7 +5,7 @@
  *
  *	See the file "license.txt" for usage and redistribution license requirements
  *
- *	$Id: um.c,v 1.4 2009/11/29 13:20:52 ralf Exp $
+ *	$Id: um.c,v 1.6 2010/03/12 16:26:14 joel Exp $
  */
 
 /******************************** Description *********************************/
@@ -255,7 +255,7 @@ int umRestore(char_t *filename)
 static int umEncryptString(char_t *textString)
 {
 	char_t	*enMask;
-	char_t	enChar;
+	unsigned char	enChar;
 	int		numChars;
 
 	a_assert(textString);
@@ -1419,7 +1419,7 @@ static bool_t umCheckName(char_t *name)
 
 	if (name && *name) {
 		while (*name) {
-			if (gisspace(*name)) {
+			if (gisspace((unsigned char)*name)) {
 				return FALSE;
 			}
 

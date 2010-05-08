@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: isatty_r.c,v 1.3 2009/09/30 08:20:25 ralf Exp $
+ *  $Id: isatty_r.c,v 1.4 2010/04/02 07:05:32 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -21,6 +21,7 @@
 
 #if defined(RTEMS_NEWLIB) && !defined(HAVE__ISATTY_R)
 
+#include <unistd.h>
 #include <reent.h>
 #include <sys/stat.h>
 

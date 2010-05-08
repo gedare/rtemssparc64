@@ -9,13 +9,8 @@
  * http://www.rtems.com/license/LICENSE.
  *
  *
- * $Id: start.S,v 1.5 2009/11/29 14:53:00 ralf Exp $
+ * $Id: start.S,v 1.6 2010/04/07 21:48:14 joel Exp $
  */
-
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning You need to pass a NULL.
-#warning Please check and remove these warnings.
 
 /* Some standard definitions...*/
 .equ PSR_MODE_USR,       0x10
@@ -112,6 +107,7 @@ _bss_init:
         stmia   r0!, {r2-r9}
 
         /* Now we are prepared to start the BSP's C code */
+        mov     r0, #0
         bl      boot_card
 
         /*

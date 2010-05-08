@@ -1,14 +1,14 @@
 /*
  *  Header file for the In-Memory File System
  *
- *  COPYRIGHT (c) 1989-2007.
+ *  COPYRIGHT (c) 1989-2010.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: imfs.h,v 1.36 2009/06/12 01:53:33 ccj Exp $
+ *  $Id: imfs.h,v 1.38 2010/03/04 06:36:51 ccj Exp $
  */
 
 #ifndef _RTEMS_IMFS_H
@@ -322,7 +322,6 @@ extern int IMFS_eval_path(
   rtems_filesystem_location_info_t  *pathloc       /* IN/OUT */
 );
 
-
 extern int IMFS_link(
   rtems_filesystem_location_info_t  *to_loc,      /* IN */
   rtems_filesystem_location_info_t  *parent_loc,  /* IN */
@@ -351,6 +350,14 @@ extern int IMFS_mknod(
   rtems_filesystem_location_info_t  *pathloc       /* IN/OUT */
 );
 
+extern IMFS_jnode_t *IMFS_allocate_node(
+  IMFS_jnode_types_t                type,         /* IN  */
+  const char                       *name,         /* IN  */
+  mode_t                            mode          /* IN  */
+);
+
+extern IMFS_jnode_t *IMFS_create_root_node(void);
+
 extern IMFS_jnode_t *IMFS_create_node(
   rtems_filesystem_location_info_t *parent_loc,   /* IN  */
   IMFS_jnode_types_t                type,         /* IN  */
@@ -360,9 +367,9 @@ extern IMFS_jnode_t *IMFS_create_node(
 );
 
 extern int IMFS_evaluate_for_make(
-  const char                         *path,        /* IN     */
-  rtems_filesystem_location_info_t   *pathloc,     /* IN/OUT */
-  const char                        **name         /* OUT    */
+  const char                         *path,       /* IN     */
+  rtems_filesystem_location_info_t   *pathloc,    /* IN/OUT */
+  const char                        **name        /* OUT    */
 );
 
 extern int IMFS_mount(
@@ -520,6 +527,13 @@ extern int IMFS_readlink(
  rtems_filesystem_location_info_t   *loc,         /* IN */
  char                               *buf,         /* OUT */
  size_t                             bufsize
+);
+
+extern int IMFS_rename(
+  rtems_filesystem_location_info_t  *old_loc,         /* IN */
+  rtems_filesystem_location_info_t  *old_parent_loc,  /* IN */
+  rtems_filesystem_location_info_t  *new_parent_loc,  /* IN */
+  const char                        *new_name         /* IN */
 );
 
 extern int IMFS_fdatasync(

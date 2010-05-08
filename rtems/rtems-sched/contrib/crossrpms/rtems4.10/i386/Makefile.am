@@ -1,32 +1,26 @@
-# $Id: Makefile.am,v 1.104 2009/12/22 16:30:21 ralf Exp $
+# $Id: Makefile.am,v 1.122 2010/04/29 12:18:28 ralf Exp $
 
 TARGET = i386-rtems4.10
 
 include $(top_srcdir)/mkspec.am
 
-BINUTILS_VERS = 2.20
+BINUTILS_VERS = 2.20.1
 BINUTILS_PKGVERS = $(BINUTILS_VERS)
-BINUTILS_RPMREL = 1
+BINUTILS_RPMREL = 2
 include ../binutils.am
 BINUTILS_OPTS +=
 
-GCC_VERS = 4.4.2
+GCC_VERS = 4.4.4
 GCC_PKGVERS = $(GCC_VERS)
-GCC_RPMREL = 9
+GCC_RPMREL = 1
 NEWLIB_VERS = 1.18.0
 NEWLIB_PKGVERS = $(NEWLIB_VERS)
-NEWLIB_RPMREL = `expr $(GCC_RPMREL) - 8`
+NEWLIB_RPMREL = `expr $(GCC_RPMREL) + 11`
 include ../gcc.am
 GCC_OPTS += --languages=cxx
 
-GDB_VERS = 7.0.1
+GDB_VERS = 7.1
 GDB_PKGVERS = $(GDB_VERS)
-GDB_RPMREL = 1
+GDB_RPMREL = 2
 include ../gdb.am
 GDB_OPTS +=
-
-CPUKIT_VERS = 4.9.99.0
-CPUKIT_PKGVERS = $(CPUKIT_VERS)-20090206-2
-CPUKIT_RPMREL = 1
-include ../cpukit.am
-CPUKIT_OPTS +=

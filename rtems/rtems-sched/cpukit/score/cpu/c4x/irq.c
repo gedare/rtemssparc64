@@ -9,8 +9,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq.c,v 1.7 2008/09/10 15:41:37 joel Exp $
+ *  $Id: irq.c,v 1.8 2010/03/27 15:01:31 joel Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/system.h>
 #include <rtems/score/cpu.h>

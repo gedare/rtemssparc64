@@ -6,8 +6,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: stringtopointer.c,v 1.1 2009/07/23 14:32:34 joel Exp $
+ *  $Id: stringtopointer.c,v 1.2 2010/03/28 15:20:32 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /*
  *  Instantiate an error checking wrapper for strtoul which is

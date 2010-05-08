@@ -1,5 +1,5 @@
 /*
- *  $Id: rtems_bootp.c,v 1.5 2005/02/02 03:06:41 ralf Exp $
+ *  $Id: rtems_bootp.c,v 1.6 2010/02/18 00:24:25 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -18,9 +18,12 @@
 void
 rtems_bsdnet_do_bootp (void)
 {
+  bool ok;
 	rtems_bsdnet_semaphore_obtain ();
-	bootpc_init (FALSE);
+	ok = bootpc_init (false, true);
 	rtems_bsdnet_semaphore_release ();
+  if (!ok)
+    panic ("rtems_bsdnet_do_bootp: bootp failed");
 }
 
 /*
@@ -30,7 +33,10 @@ rtems_bsdnet_do_bootp (void)
 void
 rtems_bsdnet_do_bootp_and_rootfs (void)
 {
+  bool ok;
 	rtems_bsdnet_semaphore_obtain ();
-	bootpc_init (TRUE);
+	ok = bootpc_init (true, true);
 	rtems_bsdnet_semaphore_release ();
+  if (!ok)
+    panic ("rtems_bsdnet_do_bootp_and_rootfs: bootp failed");
 }

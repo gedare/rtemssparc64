@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.49 2009/11/23 20:08:25 joel Exp $
+## $Id: Makefile.am,v 1.50 2010/05/07 12:12:32 joel Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -43,7 +43,7 @@ libbsp_a_SOURCES += ../../shared/bspclean.c ../../shared/bsplibc.c \
 # gnatsupp
 libbsp_a_SOURCES += gnatsupp/gnatsupp.c ../../sparc/shared/gnatcommon.c
 # console
-libbsp_a_SOURCES += console/console.c
+libbsp_a_SOURCES += console/erc32_console.c ../../shared/console.c
 # debugio
 libbsp_a_SOURCES += console/debugputs.c
 # clock

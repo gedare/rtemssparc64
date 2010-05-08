@@ -7,14 +7,12 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp_irq_init.c,v 1.8 2009/11/30 04:59:43 ralf Exp $
+ *  $Id: bsp_irq_init.c,v 1.9 2010/04/09 20:24:55 thomas Exp $
  */
 #include <irq.h>
 #include <bsp.h>
 #include <lpc22xx.h>
 
-
-extern void default_int_handler(void);
 
 /*
  * Interrupt system initialization. Disable interrupts, clear

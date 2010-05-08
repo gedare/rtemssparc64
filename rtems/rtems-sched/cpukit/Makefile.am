@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.93 2009/11/22 07:04:54 ralf Exp $
+## $Id: Makefile.am,v 1.94 2010/02/18 00:24:24 ccj Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I aclocal
@@ -94,6 +94,29 @@ include_rtems_HEADERS += libfs/src/devfs/devfs.h
 if LIBDOSFS
 include_rtems_HEADERS += libfs/src/dosfs/dosfs.h
 endif
+
+# RFS
+include_rtems_HEADERS += \
+   libfs/src/rfs/rtems-rfs.h \
+   libfs/src/rfs/rtems-rfs-format.h \
+   libfs/src/rfs/rtems-rfs-shell.h
+include_rtems_rfsdir = $(include_rtemsdir)/rfs
+include_rtems_rfs_HEADERS = \
+   libfs/src/rfs/rtems-rfs-bitmaps.h \
+   libfs/src/rfs/rtems-rfs-block-pos.h \
+   libfs/src/rfs/rtems-rfs-block.h \
+   libfs/src/rfs/rtems-rfs-buffer.h \
+   libfs/src/rfs/rtems-rfs-data.h \
+   libfs/src/rfs/rtems-rfs-dir.h \
+   libfs/src/rfs/rtems-rfs-dir-hash.h \
+   libfs/src/rfs/rtems-rfs-file.h \
+   libfs/src/rfs/rtems-rfs-file-system-fwd.h \
+   libfs/src/rfs/rtems-rfs-file-system.h \
+   libfs/src/rfs/rtems-rfs-group.h \
+   libfs/src/rfs/rtems-rfs-inode.h \
+   libfs/src/rfs/rtems-rfs-link.h \
+   libfs/src/rfs/rtems-rfs-mutex.h \
+   libfs/src/rfs/rtems-rfs-trace.h
 
 ## libblock
 include_rtems_HEADERS += libblock/include/rtems/bdbuf.h \

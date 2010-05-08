@@ -1,7 +1,9 @@
 /**
  * @file
  *
- * ARM exception support code.
+ * @ingroup ScoreCPU
+ *
+ * @brief ARM exception support implementation.
  */
 
 /*
@@ -19,8 +21,12 @@
  *
  *  Moved from file 'cpukit/score/cpu/arm/cpu.c'.
  *
- *  $Id: arm_exc_handler_high.c,v 1.2 2009/12/04 05:22:04 ralf Exp $
+ *  $Id: arm_exc_handler_high.c,v 1.4 2010/04/08 10:13:46 thomas Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/system.h>
 #include <rtems.h>

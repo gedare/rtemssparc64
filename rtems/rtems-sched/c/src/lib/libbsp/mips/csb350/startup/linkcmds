@@ -1,7 +1,7 @@
 /*
  *  Linker script for CSB350 AU1100 based board
  *
- *  $Id: linkcmds,v 1.6 2009/02/11 19:49:34 joel Exp $
+ *  $Id: linkcmds,v 1.9 2010/04/29 17:29:27 joel Exp $
  */
 
 /*    . = 0x80020000; */
@@ -37,6 +37,7 @@ SECTIONS
       *(.gnu.linkonce.t*)
       *(.mips16.fn.*)
       *(.mips16.call.*)
+      *(.reginfo*)
       PROVIDE (__runtime_reloc_start = .);
       *(.rel.sdata)
       *(.rel.dyn)
@@ -163,7 +164,6 @@ SECTIONS
   {
     _bss_start = . ;
     *(.bss .bss.* .gnu.linkonce.b.*)
-    *(.reginfo)
     *(COMMON)
     . = ALIGN (64);
     _stack_limit = .;

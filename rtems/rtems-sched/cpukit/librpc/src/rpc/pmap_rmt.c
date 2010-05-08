@@ -41,6 +41,10 @@ static char *rcsid = "$FreeBSD: src/lib/libc/rpc/pmap_rmt.c,v 1.15 2000/01/27 23
  * Copyright (C) 1984, Sun Microsystems, Inc.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 
@@ -277,10 +281,10 @@ clnt_broadcast(
 	struct rpc_msg msg;
 	struct timeval t, tv;
 	char outbuf[MAX_BROADCAST_SIZE], inbuf[UDPMSGSIZE];
-	static u_int32_t disrupt;
+	static uintptr_t disrupt;
 
 	if (disrupt == 0)
-		disrupt = (u_int32_t)(long)resultsp;
+		disrupt = (uintptr_t) resultsp;
 
 	/*
 	 * initialization: create a socket, a broadcast address, and

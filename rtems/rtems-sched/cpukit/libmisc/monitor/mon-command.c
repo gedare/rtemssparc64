@@ -5,7 +5,7 @@
  */
 
 /*
- * $Id: mon-command.c,v 1.26 2009/01/02 13:01:21 ralf Exp $
+ * $Id: mon-command.c,v 1.27 2010/03/27 03:58:06 ralf Exp $
  *
  * 2001-01-30 KJO (vac4050@cae597.rsc.raytheon.com):
  *  Fixed rtems_monitor_command_lookup() to accept partial
@@ -17,6 +17,10 @@
  * editing. This code is donated from My Right Boot and not
  * covered by GPL, only the RTEMS license.
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <string.h>
 #include <stdio.h>

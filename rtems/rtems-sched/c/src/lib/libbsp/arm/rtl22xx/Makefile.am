@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.17 2009/11/28 06:24:46 ralf Exp $
+## $Id: Makefile.am,v 1.18 2010/04/30 14:24:03 sh Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -12,6 +12,8 @@ dist_project_lib_DATA = bsp_specs
 
 include_HEADERS = include/bsp.h
 include_HEADERS += ../../shared/include/tm27.h
+
+include_bsp_HEADERS =
 
 nodist_include_HEADERS = include/bspopts.h
 nodist_include_bsp_HEADERS = ../../shared/include/bootcard.h
@@ -40,6 +42,14 @@ libbsp_a_SOURCES += ../../shared/bsplibc.c ../../shared/bsppost.c \
     ../../shared/gnatinstallhandler.c
 # console
 libbsp_a_SOURCES += ../../shared/console.c
+# IRQ
+include_bsp_HEADERS += ../../shared/include/irq-generic.h \
+	../../shared/include/irq-info.h
+libbsp_a_SOURCES += ../../shared/src/irq-generic.c \
+	../../shared/src/irq-legacy.c \
+	../../shared/src/irq-info.c \
+	../../shared/src/irq-shell.c \
+	../../shared/src/irq-server.c
 # simple_abort
 libbsp_a_SOURCES += ../shared/abort/simple_abort.c
 # debugio

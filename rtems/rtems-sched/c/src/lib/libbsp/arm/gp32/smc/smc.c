@@ -544,7 +544,7 @@ int sm_ECCEncode(const uint8_t * p_buf, uint8_t * p_ecc)
 */
 static int smc_write(rtems_blkdev_request *req)
 {
-	req->req_done(req->done_arg, RTEMS_SUCCESSFUL, 0);
+	req->req_done(req->done_arg, RTEMS_SUCCESSFUL);
 	return 0;
 }
 
@@ -573,7 +573,7 @@ smc_read(rtems_blkdev_request *req)
 	smc_read_page(sg->block,sg->buffer);
         remains -= count;
     }
-    req->req_done(req->done_arg, RTEMS_SUCCESSFUL, 0);
+    req->req_done(req->done_arg, RTEMS_SUCCESSFUL);
     return 0;
 }
 
@@ -603,14 +603,14 @@ smc_ioctl(rtems_disk_device *dd, uint32_t req, void *argp)
                 case RTEMS_BLKDEV_REQ_WRITE:
 		    return smc_write(r);
                 default:
-                    errno = EBADRQC;
+                    errno = EINVAL;
                     return -1;
             }
             break;
         }
 
         default:
-            errno = EBADRQC;
+            errno = EINVAL;
             return -1;
     }
 }

@@ -10,8 +10,10 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: conscfg.c,v 1.8 2004/04/21 16:01:36 ralf Exp $
+ *  $Id: conscfg.c,v 1.9 2010/04/14 08:59:02 ralf Exp $
  */
+
+#include <unistd.h> /* write */
 
 #include <bsp.h>
 

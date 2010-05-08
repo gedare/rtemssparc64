@@ -368,7 +368,7 @@ static int disk_ioctl(rtems_disk_device *dd, uint32_t req, void *argp)
     switch (r->req) {
       case RTEMS_BLKDEV_REQ_READ:
       case RTEMS_BLKDEV_REQ_WRITE:
-        r->req_done(r->done_arg, RTEMS_SUCCESSFUL, 0);
+        r->req_done(r->done_arg, RTEMS_SUCCESSFUL);
         return 0;
       default:
         errno = EINVAL;
@@ -510,7 +510,6 @@ static rtems_task Init(rtems_task_argument argument)
 
 #define CONFIGURE_MAXIMUM_TASKS 6
 #define CONFIGURE_MAXIMUM_DRIVERS 4
-#define CONFIGURE_MAXIMUM_SEMAPHORES 5
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 

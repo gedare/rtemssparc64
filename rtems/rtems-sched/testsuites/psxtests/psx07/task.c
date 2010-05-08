@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: task.c,v 1.9 2009/11/30 03:33:23 ralf Exp $
+ *  $Id: task.c,v 1.10 2010/04/25 19:40:12 joel Exp $
  */
 
 #include "system.h"
@@ -38,6 +38,11 @@ void *Task_2(
 {
   int i = 0;
   time_t now, start;
+
+  /*
+   * sleep long enough to let the init thread join with us.
+   */
+  usleep(10000);
 
   /*
    *  Change our priority so we are running at a logically higher

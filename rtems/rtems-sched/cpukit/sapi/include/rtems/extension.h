@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: extension.h,v 1.22 2009/11/29 13:51:51 ralf Exp $
+ *  $Id: extension.h,v 1.23 2010/01/26 15:01:55 thomas Exp $
  */
 
 #ifndef _RTEMS_EXTENSION_H
@@ -147,9 +147,9 @@ typedef User_extensions_routine
  * the following system events, the extensions are invoked in forward order:
  *
  * - Task creation
- * - Task initiation
- * - Task reinitiation
- * - Task deletion
+ * - Task start
+ * - Task restart
+ * - Task exit
  * - Task context switch
  * - Post task context switch
  * - Task begins to execute
@@ -204,9 +204,9 @@ typedef User_extensions_Table                     rtems_extensions_table;
  * @retval RTEMS_TOO_MANY Too many extension sets created.
  */
 rtems_status_code rtems_extension_create(
-  rtems_name              name,
-  rtems_extensions_table *extension_table,
-  rtems_id               *id
+  rtems_name                    name,
+  const rtems_extensions_table *extension_table,
+  rtems_id                     *id
 );
 
 /**

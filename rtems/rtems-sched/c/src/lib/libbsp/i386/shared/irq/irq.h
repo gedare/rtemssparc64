@@ -15,7 +15,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq.h,v 1.14 2009/07/03 15:08:54 joel Exp $
+ *  $Id: irq.h,v 1.15 2010/04/30 11:36:16 sh Exp $
  */
 
 #ifndef _IRQ_H_
@@ -56,6 +56,9 @@ extern "C" {
 #define BSP_UART_COM1_IRQ	4
 #define BSP_RT_TIMER1	      	8
 #define BSP_RT_TIMER3		10
+
+#define BSP_INTERRUPT_VECTOR_MIN BSP_LOWEST_OFFSET
+#define BSP_INTERRUPT_VECTOR_MAX BSP_MAX_OFFSET
 
 /*
  * Type definition for RTEMS managed interrupts

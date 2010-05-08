@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: psignal.c,v 1.66 2009/10/04 22:08:43 joel Exp $
+ *  $Id: psignal.c,v 1.67 2010/04/30 08:37:26 sh Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -88,6 +88,9 @@ Thread_queue_Control _POSIX_signals_Wait_queue;
 
 Chain_Control _POSIX_signals_Inactive_siginfo;
 Chain_Control _POSIX_signals_Siginfo[ SIG_ARRAY_MAX ];
+
+Watchdog_Control _POSIX_signals_Alarm_timer;
+Watchdog_Control _POSIX_signals_Ualarm_timer;
 
 /*PAGE
  *

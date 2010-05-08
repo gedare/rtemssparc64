@@ -6,8 +6,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: stringtodouble.c,v 1.1 2009/07/22 14:26:25 joel Exp $
+ *  $Id: stringtodouble.c,v 1.2 2010/03/28 15:20:32 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 /*
  *  Instantiate an error checking wrapper for strtod (double)

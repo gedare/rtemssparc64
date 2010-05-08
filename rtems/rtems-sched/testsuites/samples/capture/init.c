@@ -17,7 +17,7 @@
  *  the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.4 2009/11/30 03:33:23 ralf Exp $
+ *  $Id: init.c,v 1.6 2010/04/04 09:41:05 ralf Exp $
  */
 
 #define CONFIGURE_INIT
@@ -36,9 +36,11 @@ rtems_task Init(
   rtems_task_argument ignored
 )
 {
+#if BSP_SMALL_MEMORY
+  printf("NO Capture Engine. MEMORY TOO SMALL");
+#else
   rtems_task_priority old_priority;
   rtems_mode          old_mode;
-  rtems_event_set     out;
 
   /* lower the task priority to allow created tasks to execute */
 
@@ -59,13 +61,5 @@ rtems_task Init(
   setup_tasks_to_watch ();
 
   rtems_task_delete (RTEMS_SELF);
-
-  printf( "\nblocking main\n" );
-
-  rtems_event_receive (RTEMS_EVENT_1, RTEMS_WAIT | RTEMS_EVENT_ANY,
-                       0, &out);
-
-  printf( "\n*** END OF UNLIMITED TASK TEST ***\n" );
-  exit( 0 );
+#endif
 }
-

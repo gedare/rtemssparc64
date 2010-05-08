@@ -9,7 +9,7 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: network.c,v 1.6 2009/11/29 14:53:00 ralf Exp $
+ *  $Id: network.c,v 1.8 2010/04/30 14:40:17 sh Exp $
  */
 #include <rtems.h>
 #include <rtems/rtems_bsdnet.h>
@@ -33,7 +33,7 @@
 #include <netinet/in.h>
 #include <netinet/if_ether.h>
 
-#include <irq.h>
+#include <bsp/irq.h>
 
 /*  RTEMS event used by interrupt handler to start receive daemon. */
 #define START_RECEIVE_EVENT  RTEMS_EVENT_1
@@ -49,7 +49,7 @@ static int enet_isr_is_on(const rtems_irq_connect_data *irq);
 /* Replace the first value with the clock's interrupt name. */
 rtems_irq_connect_data mc9328mxl_enet_isr_data = {
     .name    = BSP_INT_GPIO_PORTA,
-    .hdl     = (rtems_irq_hdl)enet_isr,
+    .hdl     = enet_isr,
     .handle  = (void *)BSP_INT_GPIO_PORTA,
     .on      = enet_isr_on,
     .off     = enet_isr_off,

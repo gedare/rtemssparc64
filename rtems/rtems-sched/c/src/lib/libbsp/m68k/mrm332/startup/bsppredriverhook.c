@@ -11,11 +11,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsppredriverhook.c,v 1.1 2008/09/16 19:03:32 joel Exp $
+ *  $Id: bsppredriverhook.c,v 1.2 2010/04/28 19:43:27 joel Exp $
  */
 
 #include <bsp.h>
 
+extern void Spurious_Initialize(void);
 
 /*
  *  Call Spurious_Initialize in bsp_predriver_hook because
@@ -23,6 +24,5 @@
  */
 void bsp_predriver_hook(void)
 {
-  extern void Spurious_Initialize(void);
   Spurious_Initialize();
 }

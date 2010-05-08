@@ -1,5 +1,5 @@
 /*
- *  $Id: sock_mbuf.c,v 1.3 2009/11/29 13:18:56 ralf Exp $
+ *  $Id: sock_mbuf.c,v 1.4 2010/03/27 04:04:39 ccj Exp $
  *
  *  NOTE:
  *    This is derived from libnetworking/rtems/rtems_syscall.c
@@ -75,6 +75,9 @@ SOFTWARE.
 =============================================================================
 */
 
+#if HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <string.h>
 #include <stdarg.h>

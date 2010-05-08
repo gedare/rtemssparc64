@@ -1,12 +1,12 @@
 /*
- *  COPYRIGHT (c) 1989-2009.
+ *  COPYRIGHT (c) 1989-2010.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: pthread.c,v 1.78 2009/09/26 16:17:00 joel Exp $
+ *  $Id: pthread.c,v 1.80 2010/04/25 19:51:12 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -48,12 +48,17 @@ const pthread_attr_t _POSIX_Threads_Default_attributes = {
   SCHED_FIFO,                 /* schedpolicy */
   {                           /* schedparam */
     2,                        /* sched_priority */
-    0,                        /* ss_low_priority */
-    { 0L, 0 },                /* ss_replenish_period */
-    { 0L, 0 }                 /* ss_initial_budget */
+    #if defined(_POSIX_SPORADIC_SERVER) || \
+        defined(_POSIX_THREAD_SPORADIC_SERVER)
+      0,                        /* sched_ss_low_priority */
+      { 0L, 0 },                /* sched_ss_repl_period */
+      { 0L, 0 }                 /* sched_ss_init_budget */
+    #endif
   },
+  #if defined(_POSIX_THREAD_CPUTIME)
+    1,                        /* cputime_clock_allowed */
+  #endif
   PTHREAD_CREATE_JOINABLE,    /* detachstate */
-  1                           /* cputime_clock_allowed */
 };
 
 /*
@@ -74,11 +79,11 @@ void _POSIX_Threads_Sporadic_budget_TSR(
   api = the_thread->API_Extensions[ THREAD_API_POSIX ];
 
   /* ticks is guaranteed to be at least one */
-  ticks = _Timespec_To_ticks( &api->schedparam.ss_initial_budget );
+  ticks = _Timespec_To_ticks( &api->schedparam.sched_ss_init_budget );
 
   the_thread->cpu_time_budget = ticks;
 
-  new_priority = _POSIX_Priority_To_core( api->ss_high_priority );
+  new_priority = _POSIX_Priority_To_core( api->schedparam.sched_priority );
   the_thread->real_priority = new_priority;
 
   /*
@@ -101,7 +106,7 @@ void _POSIX_Threads_Sporadic_budget_TSR(
   }
 
   /* ticks is guaranteed to be at least one */
-  ticks = _Timespec_To_ticks( &api->schedparam.ss_replenish_period );
+  ticks = _Timespec_To_ticks( &api->schedparam.sched_ss_repl_period );
 
   _Watchdog_Insert_ticks( &api->Sporadic_timer, ticks );
 }
@@ -124,7 +129,7 @@ void _POSIX_Threads_Sporadic_budget_callout(
    */
   the_thread->cpu_time_budget = 0xFFFFFFFF; /* XXX should be based on MAX_U32 */
 
-  new_priority = _POSIX_Priority_To_core( api->schedparam.ss_low_priority );
+  new_priority = _POSIX_Priority_To_core(api->schedparam.sched_ss_low_priority);
   the_thread->real_priority = new_priority;
 
   /*
@@ -137,7 +142,7 @@ void _POSIX_Threads_Sporadic_budget_callout(
   if ( the_thread->resource_count == 0 ) {
     /*
      *  Make sure we are actually lowering it. If they have lowered it
-     *  to logically lower than ss_low_priority, then we do not want to
+     *  to logically lower than sched_ss_low_priority, then we do not want to
      *  change it.
      */
     if ( the_thread->current_priority < new_priority ) {

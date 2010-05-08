@@ -1,5 +1,5 @@
 ##
-##  $Id: Makefile.am,v 1.116 2009/12/01 14:22:58 joel Exp $
+##  $Id: Makefile.am,v 1.117 2010/05/01 04:19:00 ralf Exp $
 ##
 
 include $(top_srcdir)/automake/multilib.am
@@ -117,6 +117,8 @@ libcsupport_a_SOURCES += $(LIBC_GLUE_C_FILES) $(PASSWORD_GROUP_C_FILES) \
     $(TERMINAL_IDENTIFICATION_C_FILES) $(SYSTEM_CALL_C_FILES) \
     $(DIRECTORY_SCAN_C_FILES) $(ID_C_FILES) src/envlock.c \
     $(TERMIOS_C_FILES) src/getpagesize.c src/getrusage.c
+
+libcsupport_a_SOURCES += src/flockfile.c src/funlockfile.c src/ftrylockfile.c
 
 EXTRA_DIST = src/TODO src/CASES src/README
 

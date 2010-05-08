@@ -18,8 +18,12 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ramdisk-init.c,v 1.2 2009/10/29 12:47:04 thomas Exp $
+ * $Id: ramdisk-init.c,v 1.3 2010/03/28 03:11:05 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <stdlib.h>
 

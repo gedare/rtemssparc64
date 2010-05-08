@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.31 2009/12/08 17:52:53 joel Exp $
+ *  $Id: init.c,v 1.33 2010/04/25 19:40:12 joel Exp $
  */
 
 #include <pthread.h>
@@ -41,13 +41,14 @@ void print_schedparam(
 {
   printf( "%ssched priority      = %d\n", prefix, schedparam->sched_priority );
 #if defined(_POSIX_SPORADIC_SERVER)
-  printf( "%sss_low_priority     = %d\n", prefix, schedparam->ss_low_priority );
-  printf( "%sss_replenish_period = (%ld, %ld)\n", prefix,
-     schedparam->ss_replenish_period.tv_sec,
-     schedparam->ss_replenish_period.tv_nsec );
-  printf( "%sss_initial_budget = (%ld, %ld)\n", prefix,
-     schedparam->ss_initial_budget.tv_sec,
-     schedparam->ss_initial_budget.tv_nsec );
+  printf( "%ssched_ss_low_priority     = %d\n",
+     prefix, schedparam->sched_ss_low_priority );
+  printf( "%ssched_ss_replenish_period = (%ld, %ld)\n", prefix,
+     schedparam->sched_ss_repl_period.tv_sec,
+     schedparam->sched_ss_repl_period.tv_nsec );
+  printf( "%ssched_sched_ss_initial_budget = (%ld, %ld)\n", prefix,
+     schedparam->sched_ss_init_budget.tv_sec,
+     schedparam->sched_ss_init_budget.tv_nsec );
 #else
   printf( "%s_POSIX_SPORADIC_SERVER is not defined\n" );
 #endif
@@ -533,38 +534,38 @@ void *POSIX_Init(
 
   /* now get sporadic server errors */
 
-  schedparam.ss_replenish_period.tv_sec = 0;
-  schedparam.ss_replenish_period.tv_nsec = 0;
-  schedparam.ss_initial_budget.tv_sec = 1;
-  schedparam.ss_initial_budget.tv_nsec = 1;
+  schedparam.sched_ss_repl_period.tv_sec = 0;
+  schedparam.sched_ss_repl_period.tv_nsec = 0;
+  schedparam.sched_ss_init_budget.tv_sec = 1;
+  schedparam.sched_ss_init_budget.tv_nsec = 1;
 
   puts( "Init - pthread_setschedparam - EINVAL (replenish == 0)" );
   status = pthread_setschedparam( pthread_self(), SCHED_SPORADIC, &schedparam );
   fatal_directive_check_status_only( status, EINVAL, "replenish == 0" );
 
-  schedparam.ss_replenish_period.tv_sec = 1;
-  schedparam.ss_replenish_period.tv_nsec = 1;
-  schedparam.ss_initial_budget.tv_sec = 0;
-  schedparam.ss_initial_budget.tv_nsec = 0;
+  schedparam.sched_ss_repl_period.tv_sec = 1;
+  schedparam.sched_ss_repl_period.tv_nsec = 1;
+  schedparam.sched_ss_init_budget.tv_sec = 0;
+  schedparam.sched_ss_init_budget.tv_nsec = 0;
 
   puts( "Init - pthread_setschedparam - EINVAL (budget == 0)" );
   status = pthread_setschedparam( pthread_self(), SCHED_SPORADIC, &schedparam );
   fatal_directive_check_status_only( status, EINVAL, "budget == 0" );
 
-  schedparam.ss_replenish_period.tv_sec = 1;
-  schedparam.ss_replenish_period.tv_nsec = 0;
-  schedparam.ss_initial_budget.tv_sec = 1;
-  schedparam.ss_initial_budget.tv_nsec = 1;
+  schedparam.sched_ss_repl_period.tv_sec = 1;
+  schedparam.sched_ss_repl_period.tv_nsec = 0;
+  schedparam.sched_ss_init_budget.tv_sec = 1;
+  schedparam.sched_ss_init_budget.tv_nsec = 1;
 
   puts( "Init - pthread_setschedparam - EINVAL (replenish < budget)" );
   status = pthread_setschedparam( pthread_self(), SCHED_SPORADIC, &schedparam );
   fatal_directive_check_status_only( status, EINVAL, "replenish < budget" );
 
-  schedparam.ss_replenish_period.tv_sec = 2;
-  schedparam.ss_replenish_period.tv_nsec = 0;
-  schedparam.ss_initial_budget.tv_sec = 1;
-  schedparam.ss_initial_budget.tv_nsec = 0;
-  schedparam.ss_low_priority = -1;
+  schedparam.sched_ss_repl_period.tv_sec = 2;
+  schedparam.sched_ss_repl_period.tv_nsec = 0;
+  schedparam.sched_ss_init_budget.tv_sec = 1;
+  schedparam.sched_ss_init_budget.tv_nsec = 0;
+  schedparam.sched_ss_low_priority = -1;
 
   puts( "Init - pthread_setschedparam - EINVAL (invalid priority)" );
   status = pthread_setschedparam( pthread_self(), SCHED_SPORADIC, &schedparam );
@@ -582,14 +583,14 @@ void *POSIX_Init(
 
   puts( "Init - pthread_attr_setinheritsched - EXPLICIT - SUCCESSFUL" );
   status = pthread_attr_setinheritsched( &attr, PTHREAD_EXPLICIT_SCHED );
-  rtems_test_assert(  !status );
+  rtems_test_assert( !status );
 
-  schedparam.ss_replenish_period.tv_sec = 3;
-  schedparam.ss_replenish_period.tv_nsec = 3;
-  schedparam.ss_initial_budget.tv_sec = 1;
-  schedparam.ss_initial_budget.tv_nsec = 1;
+  schedparam.sched_ss_repl_period.tv_sec = 3;
+  schedparam.sched_ss_repl_period.tv_nsec = 3;
+  schedparam.sched_ss_init_budget.tv_sec = 1;
+  schedparam.sched_ss_init_budget.tv_nsec = 1;
   schedparam.sched_priority = sched_get_priority_max( SCHED_FIFO );
-  schedparam.ss_low_priority = sched_get_priority_max( SCHED_FIFO ) - 6;
+  schedparam.sched_ss_low_priority = sched_get_priority_max( SCHED_FIFO ) - 6;
 
   puts( "Init - pthread_attr_setschedpolicy - SUCCESSFUL" );
   status = pthread_attr_setschedpolicy( &attr, SCHED_SPORADIC );

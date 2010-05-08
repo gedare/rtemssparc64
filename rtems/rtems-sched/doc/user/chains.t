@@ -3,7 +3,7 @@
 @c  On-Line Applications Research Corporation (OAR).
 @c  All rights reserved.
 @c
-@c  $Id: chains.t,v 1.5 2008/11/20 21:13:03 joel Exp $
+@c  $Id: chains.t,v 1.7 2010/05/05 20:44:15 joel Exp $
 @c
 
 @chapter Chains
@@ -146,7 +146,7 @@ Add nodes with the following code:
 for (i = 0; i < count; i++)
 @{
   foo* bar = malloc (sizeof (foo));
-  if (!foo)
+  if (!bar)
     return -1;
   bar->data = malloc (size);
   @value{DIRPREFIX}chain_append (&chain, &bar->node);
@@ -180,14 +180,15 @@ void foobar (const char*          match,
   while (!@value{DIRPREFIX}chain_is_tail (chain, node))
   @{
     bar = (foo*) node;
+    rtems_chain_node* next_node = node->next;
 
     if (strcmp (match, bar->data) == 0)
     @{
-      @value{DIRPREFIX}chain_node* next_node = node->next;
       @value{DIRPREFIX}chain_extract (node);
       @value{DIRPREFIX}chain_append (out, node);
-      node = next_node; 
     @}
+
+    node = next_node; 
   @}
 @}
 @end example

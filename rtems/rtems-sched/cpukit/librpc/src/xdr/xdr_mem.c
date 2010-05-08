@@ -44,6 +44,10 @@ static char *rcsid = "$FreeBSD: src/lib/libc/xdr/xdr_mem.c,v 1.8 1999/08/28 00:0
  *
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <string.h>
 #include <rpc/types.h>
 #include <rpc/xdr.h>
@@ -198,7 +202,7 @@ xdrmem_getpos(
 {
 
 	/* XXX w/64-bit pointers, u_int not enough! */
-	return ((u_long)xdrs->x_private - (u_long)xdrs->x_base);
+	return ((uintptr_t)xdrs->x_private - (uintptr_t)xdrs->x_base);
 }
 
 static bool_t
@@ -209,10 +213,10 @@ xdrmem_setpos(
 	register caddr_t newaddr = xdrs->x_base + pos;
 	register caddr_t lastaddr = xdrs->x_private + xdrs->x_handy;
 
-	if ((long)newaddr > (long)lastaddr)
+	if ((intptr_t)newaddr > (intptr_t)lastaddr)
 		return (FALSE);
 	xdrs->x_private = newaddr;
-	xdrs->x_handy = (long)lastaddr - (long)newaddr;
+	xdrs->x_handy = (intptr_t)lastaddr - (intptr_t)newaddr;
 	return (TRUE);
 }
 

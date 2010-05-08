@@ -2,7 +2,7 @@
  *  Copied from libgloss 1 Oct 2009.
  *  Minor modifications to work with RTEMS.
  *
- *  $Id: start.S,v 1.2 2009/11/29 14:53:00 ralf Exp $
+ *  $Id: start.S,v 1.3 2010/04/07 21:49:49 joel Exp $
  */
 
 #include <newlib.h>
@@ -309,6 +309,7 @@ __change_mode:
 #endif
 #endif
 
+        mov     r0, #0
 	bl	FUNCTION (boot_card)
 
 	bl	FUNCTION (bsp_cleanup)		/* Should not return.  */

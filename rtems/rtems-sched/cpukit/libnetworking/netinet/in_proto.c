@@ -27,8 +27,12 @@
  * SUCH DAMAGE.
  *
  *	@(#)in_proto.c	8.2 (Berkeley) 2/9/95
- *	$Id: in_proto.c,v 1.5 2008/12/22 12:56:06 ralf Exp $
+ *	$Id: in_proto.c,v 1.6 2010/03/28 05:47:48 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include "opt_tcpdebug.h"
 

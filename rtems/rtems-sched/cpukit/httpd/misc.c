@@ -5,7 +5,7 @@
  *
  * See the file "license.txt" for usage and redistribution license requirements
  *
- * $Id: misc.c,v 1.7 2009/11/29 13:20:52 ralf Exp $
+ * $Id: misc.c,v 1.8 2010/03/12 16:26:14 joel Exp $
  */
 
 /********************************* Includes ***********************************/
@@ -281,7 +281,7 @@ static int dsnprintf(char_t **s, int size, char_t *fmt, va_list arg, int msize)
 				}
 				c = *fmt++;
 			} else {
-				for ( ; gisdigit((int)c); c = *fmt++) {
+				for ( ; gisdigit((unsigned char)c); c = *fmt++) {
 					width = width * 10 + (c - '0');
 				}
 			}
@@ -292,7 +292,7 @@ static int dsnprintf(char_t **s, int size, char_t *fmt, va_list arg, int msize)
 					prec = va_arg(arg, int);
 					c = *fmt++;
 				} else {
-					for (prec = 0; gisdigit((int)c); c = *fmt++) {
+					for (prec = 0; gisdigit((unsigned char)c); c = *fmt++) {
 						prec = prec * 10 + (c - '0');
 					}
 				}

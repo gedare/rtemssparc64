@@ -1,3 +1,37 @@
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/irq-config.h: Removed file.
+	* Makefile.am, preinstall.am: Reflect change above.  Added interrupt
+	support modules.
+	* include/irq.h: Moved defines from 'include/irq-config.h'.
+	* include/mpc5200.h: Added GPIO PIN defines.
+
+2010-04-07	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* start/start.S: fix sdram timing for MPC5200B chips
+
+2010-03-27	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* bestcomm/task_api/tasksetup_general.h,
+	gen5200/include/mscan-base.h, gen5200/mscan/mscan-base.c,
+	gen5200/irq/irq.c, startup/uboot_support.c: Removed warnings
+
+2010-03-25      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* configure.ac, include/bsp.h, console/console.c, start/start.S:
+	move more configuration constants to configure.ac
+
+2010-03-16      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* clock/*, startup/bspstart.c, Makefile.am: switch this BSP to use
+	decrementer as system clock source
+
+2010-03-10	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	PR 1497/bsps
+	* startup/bspreset.c: Do not enable interrupts while waiting for board
+	to reset.
+
 2009-12-16      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
 
 	* console/console.c: adapted to new prototype for *_write

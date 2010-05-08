@@ -1,5 +1,5 @@
 /*
- *  $Id: cpu_asm.S,v 1.5 2009/12/02 09:48:25 ralf Exp $
+ *  $Id: cpu_asm.S,v 1.6 2010/03/27 15:02:21 joel Exp $
  *
  *  This file contains all assembly code for the
  *  NIOS2 implementation of RTEMS.
@@ -14,6 +14,10 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/asm.h>
 #include <rtems/score/cpu_asm.h>

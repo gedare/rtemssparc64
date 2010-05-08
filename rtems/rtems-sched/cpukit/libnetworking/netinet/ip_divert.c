@@ -30,8 +30,12 @@
  */
 
 /*
- *	$Id: ip_divert.c,v 1.9 2008/12/23 05:32:27 ralf Exp $
+ *	$Id: ip_divert.c,v 1.10 2010/03/28 05:47:48 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <sys/param.h>
 #include <rtems/bsd/sys/queue.h>

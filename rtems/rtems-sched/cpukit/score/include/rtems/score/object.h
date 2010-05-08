@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: object.h,v 1.76 2009/11/28 05:58:54 ralf Exp $
+ *  $Id: object.h,v 1.77 2010/04/08 10:13:46 thomas Exp $
  */
 
 #ifndef _RTEMS_SCORE_OBJECT_H
@@ -37,6 +37,14 @@ extern "C" {
  * @defgroup Score SuperCore
  *
  * @brief Provides services for all APIs.
+ */
+
+/**
+ * @defgroup ScoreCPU CPU Architecture Support
+ *
+ * @ingroup Score
+ *
+ * @brief Provides CPU architecture dependent services.
  */
 
 /**

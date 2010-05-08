@@ -16,15 +16,10 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: start.S,v 1.9 2009/11/30 04:56:10 ralf Exp $
+ *  $Id: start.S,v 1.10 2010/04/07 21:50:11 joel Exp $
  */
 
 #include <rtems/asm.h>
-
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning You need to pass a NULL.
-#warning Please check and remove these warnings.
 
 	BEGIN_CODE
 	PUBLIC(start)

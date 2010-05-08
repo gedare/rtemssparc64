@@ -12,12 +12,16 @@
  *
  * This software is provided ``AS IS'' without any warranties of any kind.
  *
- *	$Id: ip_fw.c,v 1.4 2007/05/10 05:12:54 ralf Exp $
+ *	$Id: ip_fw.c,v 1.5 2010/03/28 05:47:49 ralf Exp $
  */
 
 /*
  * Implement IP packet firewall
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #ifndef IPFIREWALL_MODULE
 #include "opt_ipfw.h"

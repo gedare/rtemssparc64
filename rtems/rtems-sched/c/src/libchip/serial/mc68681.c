@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: mc68681.c,v 1.37 2009/09/30 04:02:40 ralf Exp $
+ *  $Id: mc68681.c,v 1.39 2010/04/26 00:58:39 joel Exp $
  */
 
 #include <rtems.h>
@@ -448,10 +448,10 @@ MC68681_STATIC void mc68681_initialize_interrupts(int minor)
  *  Console Termios output entry point when using interrupt driven output.
  */
 
-MC68681_STATIC int mc68681_write_support_int(
+MC68681_STATIC ssize_t mc68681_write_support_int(
   int         minor,
   const char *buf,
-  int         len
+  size_t      len
 )
 {
   uint32_t        Irql;
@@ -481,7 +481,7 @@ MC68681_STATIC int mc68681_write_support_int(
     (*setReg)(pMC68681_port, MC68681_TX_BUFFER, *buf);
   rtems_interrupt_enable(Irql);
 
-  return 1;
+  return 0;
 }
 
 /*
@@ -491,10 +491,10 @@ MC68681_STATIC int mc68681_write_support_int(
  *
  */
 
-MC68681_STATIC int mc68681_write_support_polled(
+MC68681_STATIC ssize_t mc68681_write_support_polled(
   int         minor,
   const char *buf,
-  int         len
+  size_t      len
 )
 {
   int nwrite = 0;
@@ -592,7 +592,8 @@ MC68681_STATIC int mc68681_baud_rate(
 
   baud_requested = rtems_termios_baud_to_index( baud_requested );
 
-  baud_tbl = (mc68681_baud_table_t *) Console_Port_Tbl[minor].ulClock;
+  baud_tbl = (mc68681_baud_table_t *)
+     ((uintptr_t)Console_Port_Tbl[minor].ulClock);
   if (!baud_tbl)
     rtems_fatal_error_occurred(RTEMS_INVALID_ADDRESS);
 

@@ -27,8 +27,12 @@
  * SUCH DAMAGE.
  *
  *	@(#)route.c	8.2 (Berkeley) 11/15/93
- *	$Id: route.c,v 1.8 2008/09/01 04:56:33 ralf Exp $
+ *	$Id: route.c,v 1.9 2010/03/28 05:50:29 ralf Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include "opt_mrouting.h"
 

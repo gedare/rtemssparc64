@@ -3,7 +3,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: main_msdosfmt.c,v 1.8 2009/11/29 12:12:39 ralf Exp $
+ *  $Id: main_msdosfmt.c,v 1.10 2010/02/24 09:30:40 ccj Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -166,10 +166,19 @@ int rtems_shell_main_msdos_format(
 #define OPTIONS "[-v label] [-r size] [-t any/12/16/32]"
 
 rtems_shell_cmd_t rtems_shell_MSDOSFMT_Command = {
-  "msdosfmt",                                /* name */
-  "msdosfmt " OPTIONS " path # format disk", /* usage */
+  "mkdos",                                   /* name */
+  "mkdos " OPTIONS " path # format disk",    /* usage */
   "files",                                   /* topic */
   rtems_shell_main_msdos_format,             /* command */
   NULL,                                      /* alias */
+  NULL                                       /* next */
+};
+
+rtems_shell_cmd_t rtems_shell_MSDOSFMT_Alias = {
+  "msdosfmt",                                /* name */
+  NULL,                                      /* usage */
+  "files",                                   /* topic */
+  NULL,                                      /* command */
+  &rtems_shell_MSDOSFMT_Command,             /* alias */
   NULL                                       /* next */
 };

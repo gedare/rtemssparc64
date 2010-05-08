@@ -31,7 +31,7 @@
  */
 
 /*
- * $Id: mbuf.h,v 1.14 2007/03/14 11:46:48 ralf Exp $
+ * $Id: mbuf.h,v 1.15 2010/04/14 12:43:21 ralf Exp $
  */
  
 #ifndef _SYS_MBUF_H_
@@ -63,7 +63,7 @@
  */
 #define	mtod(m, t)	((t)((m)->m_data))
 #define	dtom(x)		((struct mbuf *)((intptr_t)(x) & ~(MSIZE-1)))
-#define	mtocl(x)	(((u_long)(x) - (u_long)mbutl) >> MCLSHIFT)
+#define	mtocl(x)	(((uintptr_t)(x) - (uintptr_t)mbutl) >> MCLSHIFT)
 #define	cltom(x)	((caddr_t)((u_long)mbutl + ((u_long)(x) << MCLSHIFT)))
 
 /*

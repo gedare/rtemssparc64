@@ -8,7 +8,7 @@
  * found in the file LICENSE in this distribution or at
  *    http://www.rtems.com/license
  *
- * $Id: uart.c,v 1.7 2009/12/10 13:03:35 ralf Exp $
+ * $Id: uart.c,v 1.9 2010/04/30 14:40:16 sh Exp $
  */
 #include <bsp.h>
 #include <rtems/libio.h>
@@ -17,7 +17,7 @@
 #include <rtems/bspIo.h>
 #include <termios.h>
 #include <rtems/irq.h>
-#include <irq.h>
+#include <bsp/irq.h>
 #include <mc9328mxl.h>
 
 
@@ -35,7 +35,7 @@ static int imx_uart_poll_read(int);
 static int imx_uart_set_attrs(int, const struct termios *);
 static void imx_uart_init(int minor);
 static void imx_uart_set_baud(int, int);
-static int imx_uart_poll_write(int, const char *, int);
+static ssize_t imx_uart_poll_write(int, const char *, size_t);
 
 #if defined(USE_INTERRUPTS)
 static void imx_uart_tx_isr(rtems_irq_hdl_param);
@@ -43,7 +43,7 @@ static void imx_uart_rx_isr(rtems_irq_hdl_param);
 static void imx_uart_isr_on(const rtems_irq_connect_data *irq);
 static void imx_uart_isr_off(const rtems_irq_connect_data *irq);
 static int imx_uart_isr_is_on(const rtems_irq_connect_data *irq);
-static int imx_uart_intr_write(int, const char *, int);
+static ssize_t imx_uart_intr_write(int, const char *, size_t);
 #endif
 
 
@@ -278,7 +278,7 @@ static int imx_uart_poll_read(int minor)
 }
 
 
-static int imx_uart_poll_write(int minor, const char *buf, int len)
+static ssize_t imx_uart_poll_write(int minor, const char *buf, size_t len)
 {
     int i;
     for (i = 0; i < len; i++) {
@@ -294,7 +294,7 @@ static int imx_uart_poll_write(int minor, const char *buf, int len)
 }
 
 #if defined(USE_INTERRUPTS)
-static int imx_uart_intr_write(int minor, const char *buf, int len)
+static ssize_t imx_uart_intr_write(int minor, const char *buf, size_t len)
 {
     imx_uart_data[minor].buf = buf;
     imx_uart_data[minor].len = len;

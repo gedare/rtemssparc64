@@ -68,18 +68,14 @@ void bsp_interrupt_dispatch(void)
 
 rtems_status_code bsp_interrupt_vector_enable(rtems_vector_number vector)
 {
-  if (lpc24xx_irq_is_valid(vector)) {
-    VICIntEnable = 1U << vector;
-  }
+  VICIntEnable = 1U << vector;
 
   return RTEMS_SUCCESSFUL;
 }
 
 rtems_status_code bsp_interrupt_vector_disable(rtems_vector_number vector)
 {
-  if (lpc24xx_irq_is_valid(vector)) {
-    VICIntEnClear = 1U << vector;
-  }
+  VICIntEnClear = 1U << vector;
 
   return RTEMS_SUCCESSFUL;
 }
@@ -110,8 +106,10 @@ rtems_status_code bsp_interrupt_facility_initialize(void)
   /* Reset priority mask register */
   VICSWPrioMask = 0xffff;
 
-  /* Acknowledge interrupt */
-  VICVectAddr = 0;
+  /* Acknowledge interrupts for all priorities */
+  for (i = LPC24XX_IRQ_PRIORITY_VALUE_MIN; i <= LPC24XX_IRQ_PRIORITY_VALUE_MAX; ++i) {
+    VICVectAddr = 0;
+  }
 
   /* Install the IRQ exception handler */
   _CPU_ISR_install_vector(ARM_EXCEPTION_IRQ, arm_exc_interrupt, NULL);

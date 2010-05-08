@@ -11,14 +11,14 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: ide_controller.c,v 1.12 2009/11/30 03:42:53 ralf Exp $
+ * $Id: ide_controller.c,v 1.14 2010/03/11 19:17:39 joel Exp $
  *
  */
 
 #define IDE_CONTROLLER_TRACE 0
 
 #include <rtems/chain.h>
-#include <assert.h>
+#include <errno.h>
 #include <rtems/blkdev.h>
 
 #include <libchip/ide_ctrl_cfg.h>
@@ -48,7 +48,6 @@ ide_controller_initialize(rtems_device_major_number  major,
                           void                      *args)
 {
     unsigned long       minor;
-    rtems_status_code   status;
 
     /* FIXME: may be it should be done on compilation phase */
     if (IDE_Controller_Count > IDE_CTRL_MAX_MINOR_NUMBER)
@@ -61,15 +60,14 @@ ide_controller_initialize(rtems_device_major_number  major,
         if ((IDE_Controller_Table[minor].probe == NULL ||
              IDE_Controller_Table[minor].probe(minor)) &&
             (IDE_Controller_Table[minor].fns->ctrl_probe == NULL ||
-	     IDE_Controller_Table[minor].fns->ctrl_probe(minor)))
+             IDE_Controller_Table[minor].fns->ctrl_probe(minor)))
         {
-            status = rtems_io_register_name(IDE_Controller_Table[minor].name,
-                                            major, minor);
-            if (status != RTEMS_SUCCESSFUL)
-                rtems_fatal_error_occurred(status);
-
+            dev_t  dev;
+            dev = rtems_filesystem_make_dev_t( major, minor );
+            if (mknod(IDE_Controller_Table[minor].name,
+                      0777 | S_IFBLK, dev ) < 0)
+                rtems_fatal_error_occurred(errno);
             IDE_Controller_Table[minor].fns->ctrl_initialize(minor);
-
             IDE_Controller_Table[minor].status = IDE_CTRL_INITIALIZED;
         }
     }

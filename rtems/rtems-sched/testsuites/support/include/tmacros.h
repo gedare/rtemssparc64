@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: tmacros.h,v 1.52 2009/12/08 21:39:21 humph Exp $
+ *  $Id: tmacros.h,v 1.53 2010/04/28 16:37:20 joel Exp $
  */
 
 #ifndef __TMACROS_h
@@ -47,7 +47,10 @@ extern "C" {
  */
 #define check_dispatch_disable_level( _expect ) \
   do { \
-    if ( (_expect) != -1 && _Thread_Dispatch_disable_level != (_expect) ) { \
+    if ( (_expect) != -1 \
+           && ((_Thread_Dispatch_disable_level == 0 && (_expect) != 0) \
+             || (_Thread_Dispatch_disable_level != 0 && (_expect) == 0)) \
+    ) { \
       printk( \
         "\n_Thread_Dispatch_disable_level is (%" PRId32 \
            ") not %d detected at %s:%d\n", \

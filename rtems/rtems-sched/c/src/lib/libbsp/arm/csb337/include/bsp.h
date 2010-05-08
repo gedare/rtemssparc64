@@ -10,7 +10,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp.h,v 1.8 2009/11/29 14:53:00 ralf Exp $
+ *  $Id: bsp.h,v 1.9 2010/04/30 14:44:17 sh Exp $
  */
 #ifndef _BSP_H
 #define _BSP_H
@@ -26,6 +26,7 @@ extern "C" {
 #include <rtems/clockdrv.h>
 #include <libchip/serial.h>
 
+#define BSP_FEATURE_IRQ_EXTENSION
 
 /* What is the input clock freq in hertz? */
 #define BSP_MAIN_FREQ 3686400      /* 3.6864 MHz */

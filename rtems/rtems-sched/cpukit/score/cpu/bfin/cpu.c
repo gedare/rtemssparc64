@@ -8,8 +8,12 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu.c,v 1.12 2009/02/12 15:55:32 joel Exp $
+ *  $Id: cpu.c,v 1.15 2010/04/17 19:24:16 joel Exp $
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 
 #include <rtems/system.h>
 #include <rtems/score/isr.h>
@@ -188,7 +192,8 @@ void _CPU_Context_Initialize(
     uint32_t     stack_high;  /* highest "stack aligned" address */
     stack_high = ((uint32_t)(stack_base) + size);
 
-    the_context->register_sp = stack_high;
+    /* blackfin abi requires caller to reserve 12 bytes on stack */
+    the_context->register_sp = stack_high - 12;
     the_context->register_rets = (uint32_t) entry_point;
     the_context->imask = new_level ? 0 : 0xffff;
 }

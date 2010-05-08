@@ -1,4 +1,4 @@
-/* $Id: ds1375.c,v 1.7 2009/11/30 03:42:53 ralf Exp $ */
+/* $Id: ds1375.c,v 1.9 2010/04/25 21:18:06 joel Exp $ */
 
 /* Driver for the Maxim 1375 i2c RTC (TOD only; very simple...) */
 
@@ -49,6 +49,8 @@
  */
 
 /* This driver uses the file-system interface to the i2c bus */
+
+#include <unistd.h> /* write, read, close */
 
 #include <rtems.h>
 #include <rtems/rtc.h>
@@ -395,7 +397,7 @@ rtems_time_of_day rt;
 
 
 uint32_t
-rtc_ds1375_get_register( uint32_t port, uint8_t reg )
+rtc_ds1375_get_register( uintptr_t port, uint8_t reg )
 {
 int      fd;
 uint8_t  v;
@@ -413,7 +415,7 @@ uint32_t rval = -1;
 }
 
 void
-rtc_ds1375_set_register( uint32_t port, uint8_t reg, uint32_t value )
+rtc_ds1375_set_register( uintptr_t port, uint8_t reg, uint32_t value )
 {
 int     fd;
 uint8_t v = value;
@@ -452,7 +454,7 @@ bool rtc_ds1375_device_probe(
 }
 
 rtc_fns rtc_ds1375_fns = {
-  deviceInitialize:  ds1375_initialize,
+  deviceInitialize: ds1375_initialize,
   deviceGetTime:    ds1375_get_time,
   deviceSetTime:    ds1375_set_time,
 };

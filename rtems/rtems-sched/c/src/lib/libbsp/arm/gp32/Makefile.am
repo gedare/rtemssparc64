@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.22 2008/10/02 21:37:37 joel Exp $
+## $Id: Makefile.am,v 1.24 2010/04/30 14:30:09 sh Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -13,6 +13,8 @@ dist_project_lib_DATA = bsp_specs
 include_HEADERS = include/bsp.h
 include_HEADERS += smc/smc.h
 include_HEADERS += ../../shared/include/tm27.h
+
+include_bsp_HEADERS =
 
 nodist_include_HEADERS = include/bspopts.h
 nodist_include_bsp_HEADERS = ../../shared/include/bootcard.h
@@ -38,15 +40,23 @@ libbsp_a_SOURCES += ../../shared/bsplibc.c ../../shared/bsppost.c \
     ../../shared/gnatinstallhandler.c
 # console
 libbsp_a_SOURCES += console/uart.c ../../shared/console.c
+# IRQ
+include_bsp_HEADERS += ../../shared/include/irq-generic.h \
+	../../shared/include/irq-info.h
+libbsp_a_SOURCES += ../../shared/src/irq-generic.c \
+	../../shared/src/irq-legacy.c \
+	../../shared/src/irq-info.c \
+	../../shared/src/irq-shell.c \
+	../../shared/src/irq-server.c
 # abort
 libbsp_a_SOURCES += ../shared/abort/abort.c
 # smc
 libbsp_a_SOURCES += smc/smc.c smc/smc.h
 
 libbsp_a_LIBADD = ../../../libcpu/@RTEMS_CPU@/shared/arm920.rel \
-    ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/clock.rel \
-    ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/timer.rel \
-    ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/irq.rel
+    ../../../libcpu/@RTEMS_CPU@/s3c24xx/clock.rel \
+    ../../../libcpu/@RTEMS_CPU@/s3c24xx/timer.rel \
+    ../../../libcpu/@RTEMS_CPU@/s3c24xx/irq.rel
 
 include $(srcdir)/preinstall.am
 include $(top_srcdir)/../../../../automake/local.am

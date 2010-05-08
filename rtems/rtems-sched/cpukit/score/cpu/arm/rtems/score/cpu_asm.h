@@ -1,9 +1,13 @@
 /**
- * @file rtems/score/cpu_asm.h
+ * @file
+ *
+ * @ingroup ScoreCPU
+ *
+ * @brief ARM assembler support API.
  */
 
 /*
- *  $Id: cpu_asm.h,v 1.7 2007/12/17 16:12:34 joel Exp $
+ *  $Id: cpu_asm.h,v 1.8 2010/04/08 10:13:46 thomas Exp $
  *
  *  COPYRIGHT (c) 2002 by Advent Networks, Inc.
  *          Jay Monkman <jmonkman@adventnetworks.com>

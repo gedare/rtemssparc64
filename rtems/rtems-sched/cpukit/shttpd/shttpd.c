@@ -10,10 +10,15 @@
 
 /*
  * Small and portable HTTP server, http://shttpd.sourceforge.net
- * $Id: shttpd.c,v 1.2 2009/12/02 11:00:38 ralf Exp $
+ * $Id: shttpd.c,v 1.4 2010/04/03 05:52:56 ralf Exp $
  */
 
 #include "defs.h"
+
+#include <unistd.h>
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 
 time_t		current_time;	/* Current UTC time		*/
 int		tz_offset;	/* Time zone offset from UTC	*/

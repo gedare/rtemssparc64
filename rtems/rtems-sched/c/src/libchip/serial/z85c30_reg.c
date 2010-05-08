@@ -11,7 +11,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: z85c30_reg.c,v 1.7 2004/04/20 10:43:39 ralf Exp $
+ *  $Id: z85c30_reg.c,v 1.8 2010/04/26 00:58:39 joel Exp $
  */
 
 #include <rtems.h>
@@ -27,7 +27,7 @@
  */
 
 uint8_t   _Z85C30_NAME(z85c30_get_register)(
-  uint32_t    ulCtrlPort,
+  uintptr_t   ulCtrlPort,
   uint8_t     ucRegNum
 )
 {
@@ -53,7 +53,7 @@ uint8_t   _Z85C30_NAME(z85c30_get_register)(
  */
 
 void _Z85C30_NAME(z85c30_set_register)(
-  uint32_t    ulCtrlPort,
+  uintptr_t   ulCtrlPort,
   uint8_t     ucRegNum,
   uint8_t     ucData
 )

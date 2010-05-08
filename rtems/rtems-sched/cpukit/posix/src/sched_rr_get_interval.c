@@ -8,13 +8,14 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: sched_rr_get_interval.c,v 1.2 2007/12/13 16:56:37 joel Exp $
+ *  $Id: sched_rr_get_interval.c,v 1.3 2010/04/02 06:38:02 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
 #include "config.h"
 #endif
 
+#include <unistd.h> /* getpid */
 #include <sched.h>
 #include <errno.h>
 

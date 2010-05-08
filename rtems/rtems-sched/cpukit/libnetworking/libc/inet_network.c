@@ -30,7 +30,7 @@
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  *
- *  $Id: inet_network.c,v 1.5 2008/09/01 06:59:32 ralf Exp $
+ *  $Id: inet_network.c,v 1.7 2010/03/12 16:26:16 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -62,13 +62,13 @@ again:
 	if (*cp == 'x' || *cp == 'X')
 		base = 16, cp++;
 	while ((c = *cp) != 0) {
-		if (isdigit(c)) {
+		if (isdigit((unsigned char)c)) {
 			val = (val * base) + (c - '0');
 			cp++;
 			continue;
 		}
-		if (base == 16 && isxdigit(c)) {
-			val = (val << 4) + (c + 10 - (islower(c) ? 'a' : 'A'));
+		if (base == 16 && isxdigit((unsigned char)c)) {
+			val = (val << 4) + (c + 10 - (islower((unsigned char)c) ? 'a' : 'A'));
 			cp++;
 			continue;
 		}
@@ -80,7 +80,7 @@ again:
 		*pp++ = val, cp++;
 		goto again;
 	}
-	if (*cp && !isspace(*cp))
+	if (*cp && !isspace((unsigned char)*cp))
 		return (INADDR_NONE);
 	*pp++ = val;
 	n = pp - parts;

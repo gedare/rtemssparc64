@@ -81,6 +81,7 @@ msdos_format_printf (const msdos_format_request_param_t *rqdata,
     vfprintf (stdout, format, args);
     fflush (stdout);
   }
+  va_end (args);
 }
 
 /*=========================================================================*\
@@ -648,7 +649,7 @@ static int msdos_format_determine_fmt_params
     for (cnt = 0;
 	 cnt < (sizeof(fmt_params->OEMName)-1);
 	 cnt++) {
-      if (isprint(*from)) {
+      if (isprint((unsigned char)*from)) {
 	*to++ = *from++;
       }
       else {
@@ -679,7 +680,7 @@ static int msdos_format_determine_fmt_params
     for (cnt = 0;
 	 cnt < (sizeof(fmt_params->VolLabel)-1);
 	 cnt++) {
-      if (isprint(*from)) {
+      if (isprint((unsigned char)*from)) {
 	*to++ = *from++;
       }
       else {
@@ -910,7 +911,7 @@ int msdos_format
 
   /* rtems feature: no block devices, all are character devices */
   if ((ret_val == 0) &&
-      (!S_ISCHR(stat_buf.st_mode))) {
+      (!S_ISBLK(stat_buf.st_mode))) {
     errno = ENOTTY;
     ret_val = -1;
   }

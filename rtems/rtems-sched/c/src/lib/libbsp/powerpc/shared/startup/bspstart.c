@@ -14,10 +14,8 @@
  *  Modified to support the MCP750.
  *  Modifications Copyright (C) 1999 Eric Valette. valette@crf.canon.fr
  *
- *  $Id: bspstart.c,v 1.53 2009/11/30 04:29:47 ralf Exp $
+ *  $Id: bspstart.c,v 1.55 2010/04/28 18:51:58 joel Exp $
  */
-
-#warning The interrupt disable mask is now stored in SPRG0, please verify that this is compatible to this BSP (see also bootcard.c).
 
 #include <string.h>
 
@@ -41,7 +39,7 @@ extern unsigned long __rtems_end[];
 extern void L1_caches_enables(void);
 extern unsigned get_L2CR(void);
 extern void set_L2CR(unsigned);
-extern Triv121PgTbl BSP_pgtbl_setup(unsigned long);
+extern Triv121PgTbl BSP_pgtbl_setup(unsigned int *);
 extern void			BSP_pgtbl_activate(Triv121PgTbl);
 extern void			BSP_vme_config(void);
 
@@ -127,8 +125,8 @@ unsigned int EUMBBAR;
  * Processor Address Map B (CHRP).
  */
 unsigned int get_eumbbar(void) {
-  out_le32( (uint32_t*)0xfec00000, 0x80000078 );
-  return in_le32( (uint32_t*)0xfee00000 );
+  out_le32( (volatile unsigned *)0xfec00000, 0x80000078 );
+  return in_le32( (volatile unsigned *)0xfee00000 );
 }
 #endif
 
@@ -309,7 +307,6 @@ void bsp_start( void )
 #endif
 
 /* See above */
-#warning The interrupt disable mask is now stored in SPRG0, please verify that this is compatible to this BSP (see also bootcard.c).
 
   BSP_mem_size            = residualCopy.TotalMemory;
   BSP_bus_frequency       = residualCopy.VitalProductData.ProcessorBusHz;
