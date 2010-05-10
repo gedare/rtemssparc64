@@ -1,6 +1,7 @@
 2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
 
-	* make/custom/sun4u.cfg: New file. Copied from sun4v.cfg.
+	* configure.ac Makefile.am bsp_specs include/bsp.h make/custom/sun4u.cfg: 
+		New files. Copied from sun4v.cfg.
 
 2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
 
