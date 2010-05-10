@@ -46,9 +46,9 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/bsppredriverhook.c ../../shared/bsppretaskinghook.c \
     ../../shared/bsppost.c \
     ../../shared/bootcard.c ../../shared/sbrk.c \
-    startup/bspgetworkarea.c \
-    startup/bspstart.c \
-    startup/setvec.c \
+    ../shared/startup/bspgetworkarea.c \
+    ../shared/startup/bspstart.c \
+    ../shared/startup/setvec.c \
     ../../shared/gnatinstallhandler.c  \
     ofw/ofw.c ofw/string.c ofw/balloc.c ofw/bootstrap.c ofw/ofwarch.c ofw/ofw_tree.c ofw/asm.S 
 ##   ofw/printf.c \
@@ -67,6 +67,7 @@ libbsp_a_SOURCES = ofw/asm.S $(startup_SOURCES) $(clock_SOURCES) $(console_SOURC
 libbsp_a_LIBADD = \
 			../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
 		  ../../../libcpu/@RTEMS_CPU@/shared/interrupts.rel \
+		  ../../../libcpu/@RTEMS_CPU@/shared/score.rel \
 		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/sparc-syscall.rel \
 			../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/score.rel
 
