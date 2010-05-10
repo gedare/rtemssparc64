@@ -1,3 +1,7 @@
+2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* README: Explain separation of score between here and libcpu.
+
 2010-05-03  Gedare Bloom <gedare@gwmail.gwu.edu>
 
 	* rtems/score/cpu.h	context.S cpu.c: Remove privileged registers from context.
