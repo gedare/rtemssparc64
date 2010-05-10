@@ -30,9 +30,11 @@
 /*
  * start.S
  *
- * Start code for UltraSPARC T1 Niagara
+ * Start code for Sparc64 RTEMS
  *
- * This is based on the boot.S file of the HelenOS sparc64 architecture. 
+ * This is based on the boot.S file of the HelenOS sparc64 architecture.
+ * http://www.helenos.org/
+ * ${helenos}/boot/arch/sparc64/loader/boot.S
  *
  * Modifications for the RTEMS executive are 
  *   COPYRIGHT (c) 2010 Gedare Bloom.
@@ -47,16 +49,16 @@
 #define INITIAL_STACK_SIZE  8192
 #define STACK_WINDOW_SAVE_AREA_SIZE (16*8)
 
-#define PSTATE_IE   	2
-#define PSTATE_PRIV	4
-#define PSTATE_AM   	8
-
+#define PSTATE_PRIV_BIT	4
 
 .register %g2, #scratch
 .register %g3, #scratch
 .register %g6, #scratch
 .register %g7, #scratch
 
+/*
+ * This is for debug and script support to identify RTEMS app termination
+ */
 .section 	.data
 	.align 8
 _end_token_string:
@@ -65,9 +67,9 @@ _end_token_string:
 
 .section BOOTSTRAP, "ax"
 
-PUBLIC(start)
-  .global start
-  SYM(start):
+PUBLIC(_start)
+  .global _start
+  SYM(_start):
     start:
     b 1f
     nop
@@ -94,18 +96,19 @@ PUBLIC(start)
     /*
      * Disable interrupts and disable address masking.
      */
-    wrpr %g0, PSTATE_PRIV, %pstate
+    wrpr %g0, PSTATE_PRIV_BIT, %pstate
 
     wrpr %g0, SPARC_NUMBER_OF_REGISTER_WINDOWS - 2, %cansave	! set maximum saveable windows
     wrpr %g0, 0, %canrestore		! get rid of windows we will never need again
     wrpr %g0, 0, %otherwin			! make sure the window state is consistent
     wrpr %g0, SPARC_NUMBER_OF_REGISTER_WINDOWS - 1, %cleanwin	! prevent needless clean_window traps for kernel
 
-    mov %g0, %g4
+  /* g4 needs to be cleared for gcc */
+  mov %g0, %g4
 
   /* Clear the bss */
 	setx	SYM(bss_start), %l0, %g2	! g2 = start of bss
-	setx	SYM(_end), %l0, %g3		! g3 = end of bss
+	setx	SYM(_end), %l0, %g3		    ! g3 = end of bss
 zerobss:
 	stx	%g0, [%g2]
 	add	%g2, 8, %g2
@@ -113,10 +116,12 @@ zerobss:
 	bleu,a	zerobss
 	nop
 
+  /* Install stack */
 setstack:
 	set SYM(StackStart), %sp
 	add %sp, -STACK_BIAS, %sp
 
+  /* Set up ISR handler for interrupt enable/disable */
 	setx SYM(syscall), %l0, %o1
 	setx param_space, %l0, %o2
 	call SYM(_CPU_ISR_install_raw_handler)

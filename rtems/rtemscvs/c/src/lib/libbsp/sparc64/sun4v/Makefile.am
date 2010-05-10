@@ -33,8 +33,8 @@ noinst_PROGRAMS =
 nodist_include_HEADERS += ../../shared/include/coverhd.h
 
 
-EXTRA_DIST = start/start.S 
-start.$(OBJEXT): start/start.S
+EXTRA_DIST = ../shared/start/start.S 
+start.$(OBJEXT): ../shared/start/start.S
 	$(CPPASCOMPILE) -o $@ -c $<
 asm.$(OBJEXT): ofw/asm.S
 	$(CPPASCOMPILE) -Iofw -o $@ -c $<	
