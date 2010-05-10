@@ -40,7 +40,7 @@ asm.$(OBJEXT): ofw/asm.S
 	$(CPPASCOMPILE) -Iofw -o $@ -c $<	
 project_lib_DATA = start.$(OBJEXT)
 
-dist_project_lib_DATA += startup/linkcmds
+dist_project_lib_DATA += ../shared/startup/linkcmds
 
 startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/bsppredriverhook.c ../../shared/bsppretaskinghook.c \
