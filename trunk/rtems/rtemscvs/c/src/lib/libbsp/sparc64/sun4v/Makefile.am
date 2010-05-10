@@ -65,7 +65,7 @@ libbsp_a_SOURCES = ofw/asm.S $(startup_SOURCES) $(clock_SOURCES) $(console_SOURC
     $(timer_SOURCES)
 
 libbsp_a_LIBADD = \
-			../../../libcpu/@RTEMS_CPU@/shared/score.rel \
+			../../../libcpu/@RTEMS_CPU@/shared/shared-score.rel \
 			../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
 		  ../../../libcpu/@RTEMS_CPU@/shared/interrupts.rel \
 		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/sparc-syscall.rel \
