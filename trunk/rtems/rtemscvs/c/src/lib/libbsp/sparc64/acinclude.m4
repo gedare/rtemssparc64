@@ -6,6 +6,8 @@ AC_DEFUN([RTEMS_CHECK_BSPDIR],
     AC_CONFIG_SUBDIRS([m5sim]);;
   sun4v )
     AC_CONFIG_SUBDIRS([sun4v]);;
+  sun4u )
+    AC_CONFIG_SUBDIRS([sun4u]);;
   *)
     AC_MSG_ERROR([Invalid BSP]);;
   esac
