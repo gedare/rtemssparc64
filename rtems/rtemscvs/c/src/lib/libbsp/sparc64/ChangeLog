@@ -1,5 +1,9 @@
 2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
 
+	* acinclude.m4: Add sun4u bsp.
+
+2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
+
 	* shared/start/start.S: cleaned up. should bootstrap any sparc64 target.
 
 2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
