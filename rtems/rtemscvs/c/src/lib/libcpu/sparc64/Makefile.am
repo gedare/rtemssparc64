@@ -8,11 +8,17 @@ include $(top_srcdir)/../../../automake/compile.am
 
 noinst_PROGRAMS =
 
-
+# NOTE: shared only applies to targets meant to run with supervisor privilege,
+# i.e. sun4u or sun4v.
 if shared
 include_libcpudir = $(includedir)/libcpu
 
 include_libcpu_HEADERS = ../shared/include/cache.h
+
+noinst_PROGRAMS += shared/score.rel
+shared_score_rel_SOURCES = shared/score/cpu.c
+shared_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
+shared_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
 noinst_PROGRAMS += shared/interrupts.rel
 shared_interrupts_rel_SOURCES = shared/interrupts/installisrentries.c
@@ -30,6 +36,31 @@ endif
 #cache_rel_CPPFLAGS += -DHAS_INSTRUCTION_CACHE
 #endif
 
+if sun4u
+# NOTE: Unlike other CPUs, we install into a subdirectory to avoid
+#       file name conflicts (See sh CPU for similar approach)
+include_sparc64dir = $(includedir)/sparc64
+include_rtems_scoredir = $(includedir)/rtems/score
+
+#include_sparc64_HEADERS =  include/traps.h
+#include_rtems_score_HEADERS = $(include_rtems_scoredir)/sparc64.h \
+#															$(include_rtems_scoredir)/cpu.h \
+#															$(include_rtems_scoredir)/types.h
+
+## sun4u/score
+noinst_PROGRAMS += sun4u/score.rel
+sun4u_score_rel_SOURCES = sun4u/score/interrupt.S 
+sun4u_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
+sun4u_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+
+
+noinst_PROGRAMS += sun4u/sparc-syscall.rel
+sun4u_sparc_syscall_rel_SOURCES = sun4u/syscall/sparc-syscall.S \
+																	sun4u/syscall/sparc-syscall.h
+sun4u_sparc_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
+sun4u_sparc_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+endif
+
 if sun4v
 # NOTE: Unlike other CPUs, we install into a subdirectory to avoid
 #       file name conflicts (See sh CPU for similar approach)
@@ -43,7 +74,7 @@ include_rtems_scoredir = $(includedir)/rtems/score
 
 ## sun4v/score
 noinst_PROGRAMS += sun4v/score.rel
-sun4v_score_rel_SOURCES = sun4v/score/interrupt.S sun4v/score/cpu.c
+sun4v_score_rel_SOURCES = sun4v/score/interrupt.S
 sun4v_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
 sun4v_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
@@ -56,7 +87,6 @@ sun4v_sparc_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 endif
 
 if m5sim
-
 ## m5sim/score
 noinst_PROGRAMS += m5sim/score.rel
 m5sim_score_rel_SOURCES = m5sim/score/cpu_asm.c m5sim/score/cpu.c
