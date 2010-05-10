@@ -1,5 +1,9 @@
 2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
 
+	* shared/ofw/: Move sun4v/ofw to shared/ofw.
+
+2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
+
 	* shared/startup/ sun4v/startup: Move sun4v/startup to shared/startup.
 
 2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
