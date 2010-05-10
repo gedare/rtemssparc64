@@ -1,3 +1,7 @@
+2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* sun4u/: New BSP directory
+
 2010-05-02  Gedare Bloom <gedare@gwmail.gwu.edu>
 
 	* sparc64/sun4v/Makefile.am sparc64/m5sim/Makefile.am:
