@@ -1,5 +1,5 @@
 /*
- *  SPARC-v9 Dependent Source -- sun4v specific
+ *  SPARC-v9 Dependent Source
  *
  *  COPYRIGHT (c) 1989-2007.
  *  On-Line Applications Research Corporation (OAR).
@@ -84,7 +84,7 @@ uint32_t   _CPU_ISR_Get_level( void )
  *
  *  NOTE:
  *
- *  On the SPARC v8, there are really only 512 vectors.  However, the executive
+ *  On the SPARC v9, there are really only 512 vectors.  However, the executive
  *  has no easy, fast, reliable way to determine which traps are synchronous
  *  and which are asynchronous.  By default, traps return to the
  *  instruction which caused the interrupt.  So if you install a software
