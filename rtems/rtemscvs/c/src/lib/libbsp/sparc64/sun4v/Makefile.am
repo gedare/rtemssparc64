@@ -50,8 +50,14 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../shared/startup/bspstart.c \
     ../shared/startup/setvec.c \
     ../../shared/gnatinstallhandler.c  \
-    ofw/ofw.c ofw/string.c ofw/balloc.c ofw/bootstrap.c ofw/ofwarch.c ofw/ofw_tree.c ofw/asm.S 
-##   ofw/printf.c \
+    ../shared/ofw/ofw.c \
+		../shared/ofw/string.c \
+		../shared/ofw/balloc.c \
+		../shared/ofw/bootstrap.c \
+		../shared/ofw/ofwarch.c \
+		../shared/ofw/ofw_tree.c \
+		../shared/ofw/asm.S 
+##   ../shared/ofw/printf.c \
 
 #clock_SOURCES = ../../shared/clock_driver_simidle.c
 clock_SOURCES = clock/ckinit.c
@@ -61,7 +67,7 @@ console_SOURCES = ../../shared/console.c  console/conscfg.c
 timer_SOURCES = ../../shared/timerstub.c
 
 noinst_LIBRARIES = libbsp.a
-libbsp_a_SOURCES = ofw/asm.S $(startup_SOURCES) $(clock_SOURCES) $(console_SOURCES) \
+libbsp_a_SOURCES = ../shared/ofw/asm.S $(startup_SOURCES) $(clock_SOURCES) $(console_SOURCES) \
     $(timer_SOURCES)
 
 libbsp_a_LIBADD = \
