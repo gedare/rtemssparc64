@@ -36,7 +36,7 @@ nodist_include_HEADERS += ../../shared/include/coverhd.h
 EXTRA_DIST = ../shared/start/start.S 
 start.$(OBJEXT): ../shared/start/start.S
 	$(CPPASCOMPILE) -o $@ -c $<
-asm.$(OBJEXT): ofw/asm.S
+asm.$(OBJEXT): ../shared/ofw/asm.S
 	$(CPPASCOMPILE) -Iofw -o $@ -c $<	
 project_lib_DATA = start.$(OBJEXT)
 
