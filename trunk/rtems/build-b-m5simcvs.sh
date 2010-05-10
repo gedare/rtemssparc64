@@ -1,7 +1,8 @@
 #!/bin/bash
 
 BSP=m5sim
-TARGET=sparc64-rtems4.10
+#TARGET=sparc64-rtems4.10 
+TARGET=sparc64-linux-gnu
 EXTENSION=
 
 cd b-m5simcvs
@@ -15,7 +16,8 @@ time make -j 4 2> make.error
 
 echo ""
 
-sparc64-rtems4.10-objdump -d sparc64-rtems4.10/c/m5sim/testsuites/samples/hello/hello.exe > hello.disasm
+sparc64-linux-gnu-objdump -d sparc64-linux-gnu/c/m5sim/testsuites/samples/hello/hello.exe > hello.disasm
+#sparc64-rtems4.10-objdump -d sparc64-rtems4.10/c/m5sim/testsuites/samples/hello/hello.exe > hello.disasm
 
-sparc64-rtems4.10-objdump -d sparc64-rtems4.10/c/m5sim/testsuites/samples/ticker/ticker.exe > ticker.disasm
+#sparc64-rtems4.10-objdump -d sparc64-rtems4.10/c/m5sim/testsuites/samples/ticker/ticker.exe > ticker.disasm
 
