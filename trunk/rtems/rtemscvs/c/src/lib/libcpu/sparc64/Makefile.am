@@ -15,10 +15,10 @@ include_libcpudir = $(includedir)/libcpu
 
 include_libcpu_HEADERS = ../shared/include/cache.h
 
-noinst_PROGRAMS += shared/score.rel
-shared_score_rel_SOURCES = shared/score/cpu.c
-shared_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
-shared_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+noinst_PROGRAMS += shared/shared-score.rel
+shared_shared_score_rel_SOURCES = shared/score/cpu.c
+shared_shared_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
+shared_shared_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
 noinst_PROGRAMS += shared/interrupts.rel
 shared_interrupts_rel_SOURCES = shared/interrupts/installisrentries.c
@@ -43,9 +43,9 @@ include_sparc64dir = $(includedir)/sparc64
 include_rtems_scoredir = $(includedir)/rtems/score
 
 #include_sparc64_HEADERS =  include/traps.h
-#include_rtems_score_HEADERS = $(include_rtems_scoredir)/sparc64.h \
-#															$(include_rtems_scoredir)/cpu.h \
-#															$(include_rtems_scoredir)/types.h
+#include_rtems_score_HEADERS = sun4u/include/sparc64.h \
+#															sun4u/include/cpu.h \
+# 															sun4u/include/types.h
 
 ## sun4u/score
 noinst_PROGRAMS += sun4u/score.rel
