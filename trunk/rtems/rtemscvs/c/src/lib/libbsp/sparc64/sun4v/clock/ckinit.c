@@ -21,7 +21,7 @@
 #include <rtems.h>
 #include <bsp.h>
 #include <bspopts.h>
-#include <asm.h>
+#include <ofw.h>
 
 /* this is default frequency for simics simulator of niagara. Use the 
  * get_Frequency function to determine the CPU clock frequency at runtime.
@@ -29,11 +29,6 @@
 #define CPU_FREQ (5000000)
 
 uint64_t sun4v_cycles_per_tick;
-
-/* CLOCK_DRIVER_USE_FAST_IDLE ? */
-#if SIMSPARC_FAST_IDLE==1
-#define CLOCK_DRIVER_USE_FAST_IDLE
-#endif
 
 /* sun4v: TICK_CMPR triggers soft interrupt 14 */
 #define CLOCK_VECTOR SPARC_SYNCHRONOUS_TRAP(0x4E)

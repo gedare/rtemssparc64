@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006 Jakub Jermar
+ * Copyright (c) 2005 Martin Decky
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,36 +26,50 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*
- * $Id$
- */
+#ifndef BOOT_sparc64_MAIN_H_
+#define BOOT_sparc64_MAIN_H_
 
+#include <ofw.h>
+#include <ofw_tree.h>
 #include <balloc.h>
 #include <types.h>
-#include <align.h>
 
-static ballocs_t *ballocs;
+#define KERNEL_VIRTUAL_ADDRESS  0x400000
 
-void balloc_init(ballocs_t *b, uintptr_t base)
-{
-	ballocs = b;
-	ballocs->base = base;
-	ballocs->size = 0;
-}
+#define TASKMAP_MAX_RECORDS  32
 
-void *balloc(size_t size, size_t alignment)
-{
-	uintptr_t addr;
+/** Size of buffer for storing task name in task_t. */
+#define BOOTINFO_TASK_NAME_BUFLEN  32
 
-	/* Enforce minimal alignment. */
-	alignment = ALIGN_UP(alignment, 4);
-	
-	addr = ballocs->base + ALIGN_UP(ballocs->size, alignment);
+#define BSP_PROCESSOR  1
+#define AP_PROCESSOR   0
 
-	if (ALIGN_UP(ballocs->size, alignment) + size > BALLOC_MAX_SIZE)
-		return NULL;
-		
-	ballocs->size = ALIGN_UP(ballocs->size, alignment) + size;
-	
-	return (void *) addr;
-}
+#define SUBARCH_US   1
+#define SUBARCH_US3  3
+
+typedef struct {
+	void *addr;
+	uint32_t size;
+	char name[BOOTINFO_TASK_NAME_BUFLEN];
+} task_t;
+
+typedef struct {
+	uint32_t count;
+	task_t tasks[TASKMAP_MAX_RECORDS];
+} taskmap_t;
+
+typedef struct {
+	uintptr_t physmem_start;
+	taskmap_t taskmap;
+	memmap_t memmap;
+	ballocs_t ballocs;
+	ofw_tree_node_t *ofw_root;
+} bootinfo_t;
+
+extern uint32_t silo_ramdisk_image;
+extern uint32_t silo_ramdisk_size;
+
+extern void start(void);
+extern void bootstrap(void);
+
+#endif

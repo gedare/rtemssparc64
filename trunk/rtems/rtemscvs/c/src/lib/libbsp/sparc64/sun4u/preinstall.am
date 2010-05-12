@@ -41,6 +41,54 @@ $(PROJECT_INCLUDE)/bsp.h: include/bsp.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp.h
 
+$(PROJECT_INCLUDE)/tm27.h: include/tm27.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/tm27.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/tm27.h
+
+$(PROJECT_INCLUDE)/asm.h: ../shared/include/asm.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/asm.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/asm.h
+
+$(PROJECT_INCLUDE)/align.h: ../helenos/include/align.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/align.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/align.h
+
+$(PROJECT_INCLUDE)/balloc.h: ../helenos/include/balloc.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/balloc.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/balloc.h
+
+$(PROJECT_INCLUDE)/gentypes.h: ../helenos/include/gentypes.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/gentypes.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/gentypes.h
+
+$(PROJECT_INCLUDE)/main.h: ../helenos/include/main.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/main.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/main.h
+
+$(PROJECT_INCLUDE)/ofwarch.h: ../helenos/include/ofwarch.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/ofwarch.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/ofwarch.h
+
+$(PROJECT_INCLUDE)/ofw.h: ../helenos/include/ofw.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/ofw.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/ofw.h
+
+$(PROJECT_INCLUDE)/ofw_tree.h: ../helenos/include/ofw_tree.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/ofw_tree.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/ofw_tree.h
+
+$(PROJECT_INCLUDE)/register.h: ../helenos/include/register.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/register.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/register.h
+
+$(PROJECT_INCLUDE)/stack.h: ../helenos/include/stack.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/stack.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/stack.h
+
+$(PROJECT_INCLUDE)/types.h: ../helenos/include/types.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/types.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/types.h
+
 $(PROJECT_INCLUDE)/bspopts.h: include/bspopts.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bspopts.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/bspopts.h

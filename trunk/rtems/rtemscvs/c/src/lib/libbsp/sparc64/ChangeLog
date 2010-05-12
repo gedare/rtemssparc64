@@ -1,3 +1,7 @@
+2010-05-12  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* helenos/: New subdir to encapsulate sources taken from HelenOS.
+
 2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
 
 	* shared/ofw/: Move sun4v/ofw to shared/ofw.
