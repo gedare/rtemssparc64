@@ -29,58 +29,81 @@
 
 /*
  * $Id$
+ *
+ * Modifications are made to switch to using printk rather than printf,
+ * and to remove portions of the HelenOS bootstrap process that are 
+ * unnecessary on RTEMS.  The removed code is elided with #if 0 ... #endif
+ * blocks.
+ *
+ * Removes some header files. Adds back some missing defines.
  */
 
-#include "main.h"
-#include "asm.h"
+#include <main.h>
 #include <balloc.h>
 #include <ofw.h>
 #include <ofw_tree.h>
-#include "ofwarch.h"
+#include <ofwarch.h>
 #include <align.h>
 
+#if 0
+#include "asm.h"
+#include <printf.h>
+#include "_components.h"
+#include <macros.h>
+#include <string.h>
+#include <memstr.h>
+#endif
 
-bootinfo_t bootinfo;
+#include <asm.h>
 
-char *release = "0.0.0.1";
+#define PAGE_WIDTH  14
+#define PAGE_SIZE   (1 << PAGE_WIDTH)
+
+static bootinfo_t bootinfo;
+#if 0
+static component_t components[COMPONENTS];
+static char *release = STRING(RELEASE);
 
 #ifdef REVISION
-	char *revision = ", revision " REVISION;
+	static char *revision = ", revision " STRING(REVISION);
 #else
-	char *revision = "";
+	static char *revision = "";
 #endif
 
 #ifdef TIMESTAMP
-	char *timestamp = "\nBuilt on " TIMESTAMP;
+	static char *timestamp = "\nBuilt on " STRING(TIMESTAMP);
 #else
-	char *timestamp = "";
+	static char *timestamp = "";
+#endif
 #endif
 
 /** UltraSPARC subarchitecture - 1 for US, 3 for US3, 0 for other */
-uint8_t subarchitecture = 0;
+static uint8_t subarchitecture = 0;
 
 /**
  * mask of the MID field inside the ICBUS_CONFIG register shifted by
  * MID_SHIFT bits to the right
  */
-uint16_t mid_mask;
+static uint16_t mid_mask;
 
 /** Print version information. */
 static void version_print(void)
 {
+#if 0
 	printk("HelenOS SPARC64 Bootloader\nRelease %s%s%s\n"
 	    "Copyright (c) 2006 HelenOS project\n",
 	    release, revision, timestamp);
+#endif
 }
 
 /* the lowest ID (read from the VER register) of some US3 CPU model */
-#define FIRST_US3_CPU 	0x14
+#define FIRST_US3_CPU  0x14
 
 /* the greatest ID (read from the VER register) of some US3 CPU model */
-#define LAST_US3_CPU 	0x19
+#define LAST_US3_CPU   0x19
 
 /* UltraSPARC IIIi processor implementation code */
-#define US_IIIi_CODE	0x15
+#define US_IIIi_CODE   0x15
 
 /* max. length of the "compatible" property of the root node */
 #define COMPATIBLE_PROP_MAXLEN	64
@@ -115,14 +138,15 @@ static void detect_architecture(void)
 		architecture = COMPATIBLE_SUN4V;
 	} else {
 		/*
-		 * As not all sun4u machines have "sun4u" in their "compatible"
-		 * OBP property (e.g. Serengeti's OBP "compatible" property is
-		 * "SUNW,Serengeti"), we will by default fallback to sun4u if
-		 * an unknown value of the "compatible" property is encountered.
-		 */
+	 	 * As not all sun4u machines have "sun4u" in their "compatible"
+ 	 	 * OBP property (e.g. Serengeti's OBP "compatible" property is
+ 	 	 * "SUNW,Serengeti"), we will by default fallback to sun4u if
+	 	 * an unknown value of the "compatible" property is encountered.
+ 		 */
 		architecture = COMPATIBLE_SUN4U;
 	}
 }
+
 
 /**
  * Detects the subarchitecture (US, US3) of the sun4u
@@ -131,9 +155,12 @@ static void detect_architecture(void)
  */
 static void detect_subarchitecture(void)
 {
-/*	uint64_t v;
-	asm volatile ("rdpr %%ver, %0\n" : "=r" (v));
-
+	uint64_t v;
+	asm volatile (
+		"rdpr %%ver, %0\n"
+		: "=r" (v)
+	);
+	
 	v = (v << 16) >> 48;
 	if ((v >= FIRST_US3_CPU) && (v <= LAST_US3_CPU)) {
 		subarchitecture = SUBARCH_US3;
@@ -144,10 +171,8 @@ static void detect_subarchitecture(void)
 	} else if (v < FIRST_US3_CPU) {
 		subarchitecture = SUBARCH_US;
 		mid_mask = (1 << 5) - 1;
-	} else {
+	} else
 		printk("\nThis CPU is not supported by HelenOS.");
-	}
-*/
 }
 
 /**
@@ -161,37 +186,43 @@ static void detect_subarchitecture(void)
 static void bootstrap_sun4u(void *base, unsigned int top)
 {
 	void *balloc_base;
-
 	/*
-	 * Claim and map the physical memory for the boot allocator.
-	 * Initialize the boot allocator.
-	 */
+  	 * Claim and map the physical memory for the boot allocator.
+  	 * Initialize the boot allocator.
+  	 */
 	balloc_base = base + ALIGN_UP(top, PAGE_SIZE);
 	(void) ofw_claim_phys(bootinfo.physmem_start + balloc_base,
 	    BALLOC_MAX_SIZE);
-	(void) ofw_map(balloc_base, balloc_base, BALLOC_MAX_SIZE, -1);
-	balloc_init(&bootinfo.ballocs, (uintptr_t)balloc_base);
-
-	printk("\nCanonizing OpenFirmware device tree...");
-	bootinfo.ofw_root = ofw_tree_build();
-	printk("done.\n");
-
-	detect_subarchitecture();
-
-#ifdef CONFIG_SMP
-	printk("\nChecking for secondary processors...");
-	if (!ofw_cpu())
-		printk("Error: unable to get CPU properties\n");
-	printk("done.\n");
+	(void) ofw_map(bootinfo.physmem_start + balloc_base, balloc_base,
+	    BALLOC_MAX_SIZE, -1);
+	balloc_init(&bootinfo.ballocs, (uintptr_t) balloc_base,
+	    (uintptr_t) balloc_base);
+#if 0	
+	printf("Setting up screens...");
+	ofw_setup_screens();
+	printf("done.\n");
 #endif
-
-	setup_palette();
+#if 0
+	printf("Canonizing OpenFirmware device tree...");
+#endif
+	bootinfo.ofw_root = ofw_tree_build();
+#if 0
+	printf("done.\n");
+#endif
+#if 0
+#ifdef CONFIG_AP
+	printf("Checking for secondary processors...");
+	if (!ofw_cpu(mid_mask, bootinfo.physmem_start))
+		printf("Error: unable to get CPU properties\n");
+	printf("done.\n");
+#endif
+#endif
 }
 
 /**
- * Performs sun4v-specific initialization. The components are expected
- * to be already copied and boot allocator initialized.
- */
+ *  * Performs sun4v-specific initialization. The components are expected
+ *   * to be already copied and boot allocator initialized.
+ *    */
 static void bootstrap_sun4v(void)
 {
 	/*
@@ -218,33 +249,39 @@ static void bootstrap_sun4v(void)
 	bootinfo.physmem_start += 0x400000;
 	bootinfo.memmap.zones[0].start += 0x400000;
 	bootinfo.memmap.zones[0].size -= 0x400000;
+#if 0
+	printf("The sun4v init finished.");
+#endif
 }
+
 
 void bootstrap(void)
 {
 	void *base = (void *) KERNEL_VIRTUAL_ADDRESS;
 	unsigned int top = 0;
-	int i, j;
-
-	//printk("RTEMS System starting");
-
+	unsigned int i;
+	unsigned int j;
+	
 	detect_architecture();
-
+#if 0
+	init_components(components);
+#endif
+	
 	if (!ofw_get_physmem_start(&bootinfo.physmem_start)) {
 		printk("Error: unable to get start of physical memory.\n");
 		halt();
 	}
-
+	
 	if (!ofw_memmap(&bootinfo.memmap)) {
 		printk("Error: unable to get memory map, halting.\n");
 		halt();
 	}
-
+	
 	if (bootinfo.memmap.total == 0) {
 		printk("Error: no memory detected, halting.\n");
 		halt();
 	}
-
+	
 	/*
 	 * SILO for some reason adds 0x400000 and subtracts
 	 * bootinfo.physmem_start to/from silo_ramdisk_image.
@@ -253,18 +290,136 @@ void bootstrap(void)
 	if (silo_ramdisk_image) {
 		silo_ramdisk_image += bootinfo.physmem_start;
 		silo_ramdisk_image -= 0x400000;
-		/* Install 1:1 mapping for the ramdisk. */
-		if (ofw_map((void *)((uintptr_t)silo_ramdisk_image),
-		    (void *)((uintptr_t)silo_ramdisk_image),
+		
+		/* Install 1:1 mapping for the RAM disk. */
+		if (ofw_map((void *) ((uintptr_t) silo_ramdisk_image),
+		    (void *) ((uintptr_t) silo_ramdisk_image),
 		    silo_ramdisk_size, -1) != 0) {
-			printk("Failed to map ramdisk.\n");
+			printk("Failed to map RAM disk.\n");
 			halt();
 		}
 	}
+#if 0
+	printf("\nMemory statistics (total %d MB, starting at %P)\n",
+	    bootinfo.memmap.total >> 20, bootinfo.physmem_start);
+	printf(" %P: kernel entry point\n", KERNEL_VIRTUAL_ADDRESS);
+	printf(" %P: boot info structure\n", &bootinfo);
+#endif
+	
+#if 0
+	/*
+	 * Figure out destination address for each component.
+	 * In this phase, we don't copy the components yet because we want to
+	 * to be careful not to overwrite anything, especially the components
+	 * which haven't been copied yet.
+	 */
+	bootinfo.taskmap.count = 0;
+	for (i = 0; i < COMPONENTS; i++) {
+		printf(" %P: %s image (size %d bytes)\n", components[i].start,
+		    components[i].name, components[i].size);
+		top = ALIGN_UP(top, PAGE_SIZE);
+		if (i > 0) {
+			if (bootinfo.taskmap.count == TASKMAP_MAX_RECORDS) {
+				printf("Skipping superfluous components.\n");
+				break;
+			}
+			
+			bootinfo.taskmap.tasks[bootinfo.taskmap.count].addr =
+			    base + top;
+			bootinfo.taskmap.tasks[bootinfo.taskmap.count].size =
+			    components[i].size;
+			strncpy(bootinfo.taskmap.tasks[
+			    bootinfo.taskmap.count].name, components[i].name,
+			    BOOTINFO_TASK_NAME_BUFLEN);
+			bootinfo.taskmap.count++;
+		}
+		top += components[i].size;
+	}
+	
+	printf("\n");
 
-	//printk("\n\rSystem info\n\r");
-	//printk(" memory: %dM starting at %x\n\r",
-	//    bootinfo.memmap.total >> 20, bootinfo.physmem_start);
-
+	/* Do not consider RAM disk */
+	j = bootinfo.taskmap.count - 1;
+	
+	if (silo_ramdisk_image) {
+		/* Treat the RAM disk as the last bootinfo task. */
+		if (bootinfo.taskmap.count == TASKMAP_MAX_RECORDS) {
+			printf("Skipping RAM disk.\n");
+			goto skip_ramdisk;
+		}
+		
+		top = ALIGN_UP(top, PAGE_SIZE);
+		bootinfo.taskmap.tasks[bootinfo.taskmap.count].addr = 
+		    base + top;
+		bootinfo.taskmap.tasks[bootinfo.taskmap.count].size =
+		    silo_ramdisk_size;
+		bootinfo.taskmap.count++;
+		printf("Copying RAM disk...");
+		
+		/*
+		 * Claim and map the whole ramdisk as it may exceed the area
+		 * given to us by SILO.
+		 */
+		(void) ofw_claim_phys(base + top, silo_ramdisk_size);
+		(void) ofw_map(bootinfo.physmem_start + base + top, base + top,
+		    silo_ramdisk_size, -1);
+		memmove(base + top, (void *) ((uintptr_t) silo_ramdisk_image),
+		    silo_ramdisk_size);
+		
+		printf("done.\n");
+		top += silo_ramdisk_size;
+	}
+skip_ramdisk:
+	
+	/*
+	 * Now we can proceed to copy the components. We do it in reverse order
+	 * so that we don't overwrite anything even if the components overlap
+	 * with base.
+	 */
+	printf("Copying tasks...");
+	for (i = COMPONENTS - 1; i > 0; i--, j--) {
+		printf("%s ", components[i].name);
+		
+		/*
+		 * At this point, we claim the physical memory that we are
+		 * going to use. We should be safe in case of the virtual
+		 * address space because the OpenFirmware, according to its
+		 * SPARC binding, should restrict its use of virtual memory
+		 * to addresses from [0xffd00000; 0xffefffff] and
+		 * [0xfe000000; 0xfeffffff].
+		 *
+		 * XXX We don't map this piece of memory. We simply rely on
+		 *     SILO to have it done for us already in this case.
+		 */
+		(void) ofw_claim_phys(bootinfo.physmem_start +
+		    bootinfo.taskmap.tasks[j].addr,
+		    ALIGN_UP(components[i].size, PAGE_SIZE));
+		
+		memcpy((void *) bootinfo.taskmap.tasks[j].addr,
+		    components[i].start, components[i].size);
+		
+	}
+	printf(".\n");
+	
+	printf("Copying kernel...");
+	(void) ofw_claim_phys(bootinfo.physmem_start + base,
+	    ALIGN_UP(components[0].size, PAGE_SIZE));
+	memcpy(base, components[0].start, components[0].size);
+	printf("done.\n");
+	
+	/* perform architecture-specific initialization */
+	if (architecture == COMPATIBLE_SUN4U) {
+		bootstrap_sun4u(base, top);
+	} else if (architecture == COMPATIBLE_SUN4V) {
+		bootstrap_sun4v();
+	} else {
+		printf("Unknown architecture.\n");
+		halt();
+	}
+	
+	printf("Booting the kernel...\n");
+	jump_to_kernel((void *) KERNEL_VIRTUAL_ADDRESS,
+	    bootinfo.physmem_start | BSP_PROCESSOR, &bootinfo,
+	    sizeof(bootinfo), subarchitecture);
+#endif
 }
-

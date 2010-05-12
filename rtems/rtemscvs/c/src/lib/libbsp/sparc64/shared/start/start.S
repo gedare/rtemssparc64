@@ -146,6 +146,9 @@ setstack:
 	call SYM(printk)
 	nop
 
+  call SYM(halt)
+  nop
+
 halted:	nop
 	    b SYM(halted)
 

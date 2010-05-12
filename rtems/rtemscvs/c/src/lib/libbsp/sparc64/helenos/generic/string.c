@@ -26,13 +26,17 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*
- * $Id$
- */
-
-/** @addtogroup generic
+/** @addtogroup generic	
  * @{
  */
+
+/*
+ * $Id$
+ *
+ * Modifications are made to compile for RTEMS. Remove strncpy() and atoi() 
+ *
+ */
+
 
 #include <string.h>
 
@@ -50,10 +54,10 @@
 size_t strlen(const char *str)
 {
 	int i;
-
+	
 	for (i = 0; str[i]; i++)
 		;
-
+	
 	return i;
 }
 
@@ -104,7 +108,7 @@ int strcmp(const char *src, const char *dst)
 int strncmp(const char *src, const char *dst, size_t len)
 {
 	int i;
-
+	
 	for (i = 0; *src && *dst && i < len; src++, dst++, i++) {
 		if (*src < *dst)
 			return -1;
@@ -117,7 +121,7 @@ int strncmp(const char *src, const char *dst, size_t len)
 		return -1;
 	return 1;
 }
-
+#if 0
 /** Copy NULL terminated string.
  *
  * Copy at most 'len' characters from string 'src' to 'dest'.
@@ -128,7 +132,7 @@ int strncmp(const char *src, const char *dst, size_t len)
  * @param dest		Destination buffer.
  * @param len		Size of destination buffer.
  */
-/*void strncpy(char *dest, const char *src, size_t len)
+void strncpy(char *dest, const char *src, size_t len)
 {
 	int i;
 	for (i = 0; i < len; i++) {
@@ -136,7 +140,7 @@ int strncmp(const char *src, const char *dst, size_t len)
 			return;
 	}
 	dest[i-1] = '\0';
-}*/
+}
 
 /** Convert ascii representation to unative_t.
  *
@@ -146,7 +150,6 @@ int strncmp(const char *src, const char *dst, size_t len)
  * @param text		Textual representation of number.
  * @return		Converted number or 0 if no valid number found.
  */
- /*
 unative_t atoi(const char *text)
 {
 	int base = 10;
@@ -181,8 +184,8 @@ unative_t atoi(const char *text)
 	}
 
 	return result;
-}*/
-
+}
+#endif
 /** Move piece of memory to another, possibly overlapping, location.
  *
  * @param dst		Destination address.
@@ -202,7 +205,7 @@ void *memmove(void *dst, const void *src, size_t len)
 		while (len--)
 			*d++ = *s++;
 	}
-
+	
 	return dst;
 }
 
