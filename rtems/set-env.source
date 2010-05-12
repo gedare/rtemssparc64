@@ -1,0 +1,10 @@
+
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+export PATH=`pwd`/compilers/rtems10-sparc64-newlib1.18.0-binutils2.20-gcc-4.4.2/sparc64/bin:$PATH
+
+export CSCOPE_DB=`pwd`/cscope.out
+
+export R=`pwd`
+export r=${R}/rtemscvs
+export b=${r}/c/src/lib/libbsp
+export c=${r}/c/src/lib/libcpu
