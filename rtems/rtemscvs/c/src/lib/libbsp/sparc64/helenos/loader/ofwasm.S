@@ -55,7 +55,9 @@ ofw:
 	
 	jmpl %l0, %o7
 	mov %i0, %o0
-	
+
+  clr %g4     ! correction for gcc's ABI change
+
 	wrpr %l1, 0, %pstate
 	
 	ret
