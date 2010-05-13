@@ -1,3 +1,7 @@
+2010-05-13  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* start/bspinit.S: New file.
+
 2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
 
 	* configure.ac Makefile.am bsp_specs include/bsp.h make/custom/sun4u.cfg: 

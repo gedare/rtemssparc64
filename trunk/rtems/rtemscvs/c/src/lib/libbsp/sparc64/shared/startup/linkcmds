@@ -176,9 +176,9 @@ SECTIONS
   */
    . = ALIGN (16);
   .dynamic	  : { *(.dynamic) 	} >ram
-  .jcr          : { *(.jcr)     } > ram
-  .shbss         : { *(.shbss)  } > ram
-  .bss  SIZEOF(.data) + ADDR(.data) :
+  .jcr        : { *(.jcr)     } > ram
+  .shbss      : { *(.shbss)  } > ram
+  .bss        :
   {
     FILL(0x00000000);
     . = ALIGN(16);

@@ -1,131 +1,22 @@
+/*
+ * trap_table.S
+ *
+ * trap code for Sparc64 RTEMS.
+ *
+ *  COPYRIGHT (c) 2010 Gedare Bloom.
+ *
+ *  The license and distribution terms for this file may be
+ *  found in the file LICENSE in this distribution or at
+ *  http://www.rtems.com/license/LICENSE.
+ * 
+ *  This code defines the space for the trap table used by sun4u.
+ *
+ * $Id$
+ */
 
 
-/** GAB: begin trap code **/
-#define L0_OFFSET 0
-#define L1_OFFSET 8
-#define L2_OFFSET 16
-#define L3_OFFSET 24
-#define L4_OFFSET 32
-#define L5_OFFSET 40
-#define L6_OFFSET 48
-#define L7_OFFSET 56
-#define I0_OFFSET 64
-#define I1_OFFSET 72
-#define I2_OFFSET 80
-#define I3_OFFSET 88
-#define I4_OFFSET 96
-#define I5_OFFSET 104
-#define I6_OFFSET 112
-#define I7_OFFSET 120
-
-  .macro SPILL_NORMAL_HANDLER
-  stx %l0, [%sp + STACK_BIAS + L0_OFFSET]
-  stx %l1, [%sp + STACK_BIAS + L1_OFFSET]
-  stx %l2, [%sp + STACK_BIAS + L2_OFFSET]
-  stx %l3, [%sp + STACK_BIAS + L3_OFFSET]
-  stx %l4, [%sp + STACK_BIAS + L4_OFFSET]
-  stx %l5, [%sp + STACK_BIAS + L5_OFFSET]
-  stx %l6, [%sp + STACK_BIAS + L6_OFFSET]
-  stx %l7, [%sp + STACK_BIAS + L7_OFFSET]
-  stx %i0, [%sp + STACK_BIAS + I0_OFFSET]
-  stx %i1, [%sp + STACK_BIAS + I1_OFFSET]
-  stx %i2, [%sp + STACK_BIAS + I2_OFFSET]
-  stx %i3, [%sp + STACK_BIAS + I3_OFFSET]
-  stx %i4, [%sp + STACK_BIAS + I4_OFFSET]
-  stx %i5, [%sp + STACK_BIAS + I5_OFFSET]
-  stx %i6, [%sp + STACK_BIAS + I6_OFFSET]
-  stx %i7, [%sp + STACK_BIAS + I7_OFFSET]
-  saved
-  retry
-  nop
-  nop  /* 20 */
-  nop
-  nop
-  nop
-  nop
-  nop  /* 25 */
-  nop
-  nop
-  nop
-  nop
-  nop  /* 30 */
-  nop
-  nop
-  .endm
-
-  .macro FILL_NORMAL_HANDLER
-  ldx [%sp + STACK_BIAS + L0_OFFSET], %l0
-  ldx [%sp + STACK_BIAS + L1_OFFSET], %l1
-  ldx [%sp + STACK_BIAS + L2_OFFSET], %l2
-  ldx [%sp + STACK_BIAS + L3_OFFSET], %l3
-  ldx [%sp + STACK_BIAS + L4_OFFSET], %l4
-  ldx [%sp + STACK_BIAS + L5_OFFSET], %l5
-  ldx [%sp + STACK_BIAS + L6_OFFSET], %l6
-  ldx [%sp + STACK_BIAS + L7_OFFSET], %l7
-  ldx [%sp + STACK_BIAS + I0_OFFSET], %i0
-  ldx [%sp + STACK_BIAS + I1_OFFSET], %i1
-  ldx [%sp + STACK_BIAS + I2_OFFSET], %i2
-  ldx [%sp + STACK_BIAS + I3_OFFSET], %i3
-  ldx [%sp + STACK_BIAS + I4_OFFSET], %i4
-  ldx [%sp + STACK_BIAS + I5_OFFSET], %i5
-  ldx [%sp + STACK_BIAS + I6_OFFSET], %i6
-  ldx [%sp + STACK_BIAS + I7_OFFSET], %i7
-  restored
-  retry
-  nop
-  nop  /* 20 */
-  nop
-  nop
-  nop
-  nop
-  nop  /* 25 */
-  nop
-  nop
-  nop
-  nop
-  nop  /* 30 */
-  nop
-  nop
-.endm
-
-
-  .macro CLEAN_WINDOW_HANDLER
-  rdpr %cleanwin, %l0
-  add %l0, 1, %l0
-  wrpr %l0, 0, %cleanwin
-  mov %r0, %l0
-  mov %r0, %l1  /* 5 */
-  mov %r0, %l2
-  mov %r0, %l3
-  mov %r0, %l4
-  mov %r0, %l5
-  mov %r0, %l6  /* 10 */
-  mov %r0, %l7
-  mov %r0, %o0
-  mov %r0, %o1
-  mov %r0, %o2
-  mov %r0, %o3  /* 15 */
-  mov %r0, %o4
-  mov %r0, %o5
-  mov %r0, %o6
-  mov %r0, %o7
-  retry  /* 20 */
-  nop
-  nop
-  nop
-  nop
-  nop /* 25 */
-  nop
-  nop
-  nop
-  nop
-  nop /* 30 */
-  nop
-  nop
-  .endm
-
-
-
+#include <rtems/asm.h>
+#include <rtems/score/cpu.h>
 
 #define BAD_TRAP \
     ta  0; \
@@ -140,9 +31,13 @@
 #define TABLE_SIZE (1024*32)
 
 .text 
-  .align TABLE_SIZE
+  .align (4*32)
 PUBLIC(trap_table)
   SYM(trap_table):
+  .space TABLE_SIZE
+
+/* These are just bogus traps that aren't used ever
+
 .org trap_table + 8*32
     BAD_TRAP;                                     ! 8 IAE
 .org trap_table + 9*32
@@ -184,7 +79,7 @@ PUBLIC(trap_table)
     BAD_TRAP;                                     ! 23 tag_overflow
 
 .org trap_table + 36*32
-    CLEAN_WINDOW_HANDLER;                         ! 24-27 clean_window
+    BAD_TRAP;                         ! 24-27 clean_window
 
 
 .org trap_table + 40*32
@@ -251,7 +146,7 @@ PUBLIC(trap_table)
     BAD_TRAP;                                     ! 7D dev mondo
 
 .org trap_table + 128*32
-    SPILL_NORMAL_HANDLER;                         ! 80-83 spill_0_normal
+    BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! 80-83 spill_0_normal
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! 84-87 spill_1_normal
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! 88-8B spill_2_normal
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! 8C-8F spill_3_normal
@@ -269,7 +164,7 @@ PUBLIC(trap_table)
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! B8-BB spill_6_other
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! BC-BF spill_7_other
 
-    FILL_NORMAL_HANDLER;                          ! C0-C3 fill_0_normal
+    BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! C0-C3 fill_0_normal
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! C4-C7 fill_1_normal
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! C8-CB fill_2_normal
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! CC-CF fill_3_normal
@@ -286,8 +181,6 @@ PUBLIC(trap_table)
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! F4-F7 fill_5_other
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! F8-FB fill_6_other
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;          ! FC-FF fill_7_other
-
-    /* 100-17F are the software trap handlers */
 
     BAD_TRAP;BAD_TRAP;BAD_TRAP;                   ! 100-17F trap instruction
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;                                    
@@ -306,5 +199,5 @@ PUBLIC(trap_table)
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;
     BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;BAD_TRAP;
-
+*/
 

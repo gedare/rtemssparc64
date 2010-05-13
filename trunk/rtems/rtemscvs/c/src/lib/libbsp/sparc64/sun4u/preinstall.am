@@ -105,6 +105,10 @@ $(PROJECT_LIB)/start.$(OBJEXT): start.$(OBJEXT) $(PROJECT_LIB)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_LIB)/start.$(OBJEXT)
 TMPINSTALL_FILES += $(PROJECT_LIB)/start.$(OBJEXT)
 
+$(PROJECT_LIB)/trap_table.$(OBJEXT): trap_table.$(OBJEXT) $(PROJECT_LIB)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_LIB)/trap_table.$(OBJEXT)
+TMPINSTALL_FILES += $(PROJECT_LIB)/trap_table.$(OBJEXT)
+
 $(PROJECT_LIB)/linkcmds: ../shared/startup/linkcmds $(PROJECT_LIB)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_LIB)/linkcmds
 PREINSTALL_FILES += $(PROJECT_LIB)/linkcmds
