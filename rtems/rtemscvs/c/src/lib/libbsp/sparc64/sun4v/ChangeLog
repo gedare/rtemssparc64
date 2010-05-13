@@ -1,3 +1,7 @@
+2010-05-13  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* start/bspinit.S: New file.
+
 2010-05-03  Gedare Bloom <gedare@gwmail.gwu.edu>
 
 	* Makefile.am: Add shared-score.rel to libadd.

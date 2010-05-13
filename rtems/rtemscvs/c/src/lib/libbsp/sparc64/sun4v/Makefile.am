@@ -38,7 +38,9 @@ start.$(OBJEXT): ../shared/start/start.S
 	$(CPPASCOMPILE) -o $@ -c $<
 asm.$(OBJEXT): ../shared/asm/asm.S
 	$(CPPASCOMPILE) -o $@ -c $<
-project_lib_DATA = start.$(OBJEXT) asm.$(OBJEXT) 
+bspinit.$(OBJEXT): start/bspinit.S
+	$(CPPASCOMPILE) -o $@ -c $<
+project_lib_DATA = start.$(OBJEXT) asm.$(OBJEXT) bspinit.$(OBJEXT)
 
 dist_project_lib_DATA += ../shared/startup/linkcmds
 
@@ -57,7 +59,8 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
 		../helenos/loader/ofwarch.c \
 		../helenos/loader/main.c \
 		../helenos/loader/ofwasm.S \
-		../shared/asm/asm.S
+		../shared/asm/asm.S \
+	  start/bspinit.S
 ##   ../shared/ofw/printf.c \
 
 #clock_SOURCES = ../../shared/clock_driver_simidle.c
