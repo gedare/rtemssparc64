@@ -130,11 +130,11 @@ setstack:
   nop
 
   /* Set up ISR handler for interrupt enable/disable */
-	setx SYM(syscall), %l0, %o1
+/*	setx SYM(syscall), %l0, %o1
 	setx param_space, %l0, %o2
 	call SYM(_CPU_ISR_install_raw_handler)
 	mov 0x100, %o0
-
+*/
   /* Do we need to do anything with the MMU? */
 
   /* Don't need to copy initialized data to RAM--link puts all in RAM already */

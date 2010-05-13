@@ -44,7 +44,7 @@
 PUBLIC(syscall)
 
   SYM(syscall):
-
+/*
     mov   %g0, %g4  ! clear %g4 at this GL
     rdpr  %gl, %g1
     dec   %g1
@@ -79,22 +79,25 @@ PUBLIC(syscall)
     9:                                      ! leave
     mov  0, %g4                             ! clear %g4
     DONE
+*/
 
 PUBLIC(sparc_disable_interrupts)
 
   SYM(sparc_disable_interrupts):
-
+/*
     mov  SYS_irqdis, %g4
     ta  0
+*/
     retl  
     nop
 
 PUBLIC(sparc_enable_interrupts)
 
   SYM(sparc_enable_interrupts):
-
+/*
     mov  SYS_irqen, %g4
     ta  0
+*/
     retl  
     nop
 
