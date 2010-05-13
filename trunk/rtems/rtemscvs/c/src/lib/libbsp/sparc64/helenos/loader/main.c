@@ -262,7 +262,7 @@ void bootstrap(void)
 	unsigned int i;
 	unsigned int j;
 	
-	detect_architecture();
+  detect_architecture();
 #if 0
 	init_components(components);
 #endif
@@ -299,12 +299,11 @@ void bootstrap(void)
 			halt();
 		}
 	}
-#if 0
-	printf("\nMemory statistics (total %d MB, starting at %P)\n",
+	
+  printk("\nMemory statistics (total %d MB, starting at %P)\n",
 	    bootinfo.memmap.total >> 20, bootinfo.physmem_start);
-	printf(" %P: kernel entry point\n", KERNEL_VIRTUAL_ADDRESS);
-	printf(" %P: boot info structure\n", &bootinfo);
-#endif
+	printk(" %P: kernel entry point\n", KERNEL_VIRTUAL_ADDRESS);
+	printk(" %P: boot info structure\n", &bootinfo);
 	
 #if 0
 	/*

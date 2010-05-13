@@ -1,3 +1,8 @@
+2010-05-13  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* shared/startup/linkcmds: Some alignment changes, added some sections.
+	* helenos/loader/ofwasm.S: clear g4 register after calling ofw_cif. 
+
 2010-05-12  Gedare Bloom <gedare@gwmail.gwu.edu>
 
 	* helenos/: New subdir to encapsulate sources taken from HelenOS.

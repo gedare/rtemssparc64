@@ -121,16 +121,19 @@ setstack:
 	set SYM(StackStart), %sp
 	add %sp, -STACK_BIAS, %sp
 
+	setx ofw_cif, %l0, %l1
+ 
+	call ofw_init		! initialize OpenFirmware
+	stx %o4, [%l1]
+
+  call bootstrap
+  nop
+
   /* Set up ISR handler for interrupt enable/disable */
 	setx SYM(syscall), %l0, %o1
 	setx param_space, %l0, %o2
 	call SYM(_CPU_ISR_install_raw_handler)
 	mov 0x100, %o0
-
-	setx ofw_cif, %l0, %l1
- 
-	call ofw_init		! initialize OpenFirmware
-	stx %o4, [%l1]
 
   /* Do we need to do anything with the MMU? */
 
