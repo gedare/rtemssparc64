@@ -18,6 +18,10 @@
 #include <rtems/asm.h>
 #include <rtems/score/cpu.h>
 
+
+#define STACK_WINDOW_SAVE_AREA_SIZE (16*8)
+#define TABLE_SIZE (1024*32)
+
 .section .text
 
 .align (4*32)
@@ -29,9 +33,15 @@ PUBLIC(_BSP_init)
 .global _BSP_init
   SYM(_BSP_init):
 
-  /* copy firmware trap table so that RTEMS can install ISR handlers */
+  save %sp, -STACK_WINDOW_SAVE_AREA_SIZE, %sp  
 
-  retl
+  /* copy firmware trap table so that RTEMS can install ISR handlers */
+  setx  SYM(trap_table), %l0, %o0
+  rdpr  %tba, %o1
+  set TABLE_SIZE, %o2
+  call memcpy
   nop
 
+  ret
+  restore
 
