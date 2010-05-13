@@ -33,14 +33,12 @@ noinst_PROGRAMS =
 nodist_include_HEADERS += ../../shared/include/coverhd.h
 
 
-EXTRA_DIST = ../shared/start/start.S ../shared/start/trap_table.S
+EXTRA_DIST = ../shared/start/start.S 
 start.$(OBJEXT): ../shared/start/start.S
 	$(CPPASCOMPILE) -o $@ -c $<
 asm.$(OBJEXT): ../shared/asm/asm.S
 	$(CPPASCOMPILE) -Iofw -o $@ -c $<	
-trap_table.$(OBJEXT): ../shared/start/trap_table.S
-	$(CPPASCOMPILE) -Iofw -o $@ -c $<	
-project_lib_DATA = start.$(OBJEXT) trap_table.$(OBJEXT) 
+project_lib_DATA = start.$(OBJEXT)
 
 dist_project_lib_DATA += ../shared/startup/linkcmds
 

@@ -20,10 +20,18 @@
 
 .section .text
 
+.align (4*32)
+PUBLIC(trap_table)
+  SYM(trap_table):
+  .space TABLE_SIZE
+
 PUBLIC(_BSP_init)
 .global _BSP_init
   SYM(_BSP_init):
-  
+
+  /* copy firmware trap table so that RTEMS can install ISR handlers */
 
   retl
   nop
+
+
