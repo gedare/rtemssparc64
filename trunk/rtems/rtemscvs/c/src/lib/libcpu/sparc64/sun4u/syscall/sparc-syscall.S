@@ -35,7 +35,8 @@
  *      We need to back to GL-1, so we won't use g2-g4. So the 
  *      syscall code needs to re-read tstate
  *   on sun4u:
- *    TODO: has an alternative set based on the type of trap
+ *    We cannot easily load the trap table entry 0 with syscall. So instead
+ *    just enable/disable interrupts directly.
  *    
  *    First thing is to return to the previous set of globals, so 
  *    that the system call id can be read.
@@ -88,6 +89,13 @@ PUBLIC(sparc_disable_interrupts)
     mov  SYS_irqdis, %g4
     ta  0
 */
+    rdpr  %pstate, %g5
+    rdpr  %pil, %g1
+    and   %g5, SPARC_PSTATE_IE_MASK, %o0
+    or    %o0, %g1, %o0                     ! return PSTATE_IE | PIL
+    wrpr  %g0, 0xf, %pil                    ! set PIL to 15
+    andn  %g5, SPARC_PSTATE_IE_MASK, %g1
+    wrpr  %g0, %g1, %pstate                 ! disable interrupts
     retl  
     nop
 
@@ -98,6 +106,14 @@ PUBLIC(sparc_enable_interrupts)
     mov  SYS_irqen, %g4
     ta  0
 */
+    rdpr  %pstate, %g5
+    and   %o0, 0xf, %g1
+    wrpr  %g0, %g1, %pil                    ! restore PIL
+    and   %o0, SPARC_PSTATE_IE_MASK, %g1
+    or    %g5, %g1, %g1                     ! restore saved IE
+!    or    %g5, SPARC_PSTATE_IE_MASK, %g1    ! set IE regardless of old (safe?)
+    wrpr  %g0, %g1, %pstate
+
     retl  
     nop
 

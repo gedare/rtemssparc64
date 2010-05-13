@@ -30,7 +30,7 @@
 
 #define TABLE_SIZE (1024*32)
 
-.text 
+.section .data
   .align (4*32)
 PUBLIC(trap_table)
   SYM(trap_table):
