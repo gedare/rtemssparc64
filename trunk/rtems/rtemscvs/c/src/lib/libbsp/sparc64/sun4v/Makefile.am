@@ -14,16 +14,16 @@ dist_project_lib_DATA = bsp_specs
 include_HEADERS = include/bsp.h 
 include_HEADERS += include/tm27.h
 include_HEADERS += ../shared/include/asm.h
-include_HEADERS += ../helenos/include/align.h
-include_HEADERS += ../helenos/include/balloc.h
-include_HEADERS += ../helenos/include/gentypes.h   
-include_HEADERS += ../helenos/include/main.h 
-include_HEADERS += ../helenos/include/ofwarch.h
-include_HEADERS += ../helenos/include/ofw.h
-include_HEADERS += ../helenos/include/ofw_tree.h
-include_HEADERS += ../helenos/include/register.h
-include_HEADERS += ../helenos/include/stack.h
-include_HEADERS += ../helenos/include/types.h
+include_HEADERS += ../helenos/boot/include/align.h
+include_HEADERS += ../helenos/boot/include/balloc.h
+include_HEADERS += ../helenos/boot/include/gentypes.h   
+include_HEADERS += ../helenos/boot/include/main.h 
+include_HEADERS += ../helenos/boot/include/ofwarch.h
+include_HEADERS += ../helenos/boot/include/ofw.h
+include_HEADERS += ../helenos/boot/include/ofw_tree.h
+include_HEADERS += ../helenos/boot/include/register.h
+include_HEADERS += ../helenos/boot/include/stack.h
+include_HEADERS += ../helenos/boot/include/types.h
 
 nodist_include_HEADERS = include/bspopts.h    
 nodist_include_bsp_HEADERS = ../../shared/include/bootcard.h 
@@ -52,13 +52,13 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../shared/startup/bspstart.c \
     ../shared/startup/setvec.c \
     ../../shared/gnatinstallhandler.c  \
-		../helenos/genarch/balloc.c \
-    ../helenos/genarch/ofw.c \
-		../helenos/genarch/ofw_tree.c \
-		../helenos/generic/string.c \
-		../helenos/loader/ofwarch.c \
-		../helenos/loader/main.c \
-		../helenos/loader/ofwasm.S \
+		../helenos/boot/genarch/balloc.c \
+    ../helenos/boot/genarch/ofw.c \
+		../helenos/boot/genarch/ofw_tree.c \
+		../helenos/boot/generic/string.c \
+		../helenos/boot/sparc64/loader/ofwarch.c \
+		../helenos/boot/sparc64/loader/main.c \
+		../helenos/boot/sparc64/loader/ofwasm.S \
 		../shared/asm/asm.S \
 	  start/bspinit.S
 ##   ../shared/ofw/printf.c \

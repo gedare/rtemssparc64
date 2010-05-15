@@ -1,3 +1,7 @@
+2010-05-15  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* Makefile.am: Update to new ../helenos directory layout.
+
 2010-05-13  Gedare Bloom <gedare@gwmail.gwu.edu>
 
 	* start/bspinit.S: New file.
