@@ -218,6 +218,22 @@ extern "C" {
   } while ( 0 )
 
 /*
+ *  Get and set the TL (trap level)
+ */
+
+#define sparc64_get_tl( _tl ) \
+  do { \
+     (_tl) = 0; /* to avoid unitialized warnings */ \
+     asm volatile( "rdpr %%tl, %0" :  "=r" (_tl) : "0" (_tl) ); \
+  } while ( 0 )
+
+#define sparc64_set_tl( _tl ) \
+  do { \
+     asm volatile( "wrpr %%g0, %0, %%tl" :  "=r" (_tl) : "0" (_tl) ); \
+  } while ( 0 )
+
+
+/*
  * read the stick register
  */
 #define sparc64_read_stick( _stick ) \

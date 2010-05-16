@@ -22,16 +22,9 @@
 #define LSU_CR_DM_MASK  (0x0008)  /* bit 3 */
 
 #define STACK_WINDOW_SAVE_AREA_SIZE (16*8)
-#define TABLE_SIZE (1024*32)
 
 .register %g2, #scratch
 .register %g3, #scratch
-
-.section .ttable
-.align (TABLE_SIZE)
-PUBLIC(trap_table)
-  SYM(trap_table):
-  .space TABLE_SIZE
 
 .section .text
 
@@ -41,15 +34,22 @@ PUBLIC(_BSP_init)
 
   save %sp, -STACK_WINDOW_SAVE_AREA_SIZE, %sp  
 
+#if 0
   /* copy firmware trap table so that RTEMS can install ISR handlers */
   setx  SYM(trap_table), %l0, %o0
   rdpr  %tba, %o1
   set TABLE_SIZE, %o2
   call memcpy
   nop
+#endif
+
+  /* map firmware trap table so that RTEMS can install ISR handlers */
+
+
+
 
   /* turn off the I-MMU and D-MMU */
-  /* this approach fails -- because the RTEMS application is not entirely 
+  /* this approach fails -- apparently the RTEMS application is not entirely 
      resident in physical memory... */
 #if 0
   ! LSU Control Register ASI is 0x45, with VA 0x00
