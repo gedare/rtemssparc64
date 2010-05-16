@@ -59,6 +59,9 @@
 #define PAGE_WIDTH  14
 #define PAGE_SIZE   (1 << PAGE_WIDTH)
 
+/* RTEMS */
+uint64_t _physmem_start;
+
 static bootinfo_t bootinfo;
 #if 0
 static component_t components[COMPONENTS];
@@ -300,10 +303,15 @@ void bootstrap(void)
 		}
 	}
 	
-  printk("\nMemory statistics (total %d MB, starting at %P)\n",
+  printk("\nMemory statistics (total %d MB, starting at %x)\n",
 	    bootinfo.memmap.total >> 20, bootinfo.physmem_start);
-	printk(" %P: kernel entry point\n", KERNEL_VIRTUAL_ADDRESS);
-	printk(" %P: boot info structure\n", &bootinfo);
+	printk(" %x: kernel entry point\n", KERNEL_VIRTUAL_ADDRESS);
+	printk(" %x: boot info structure\n", &bootinfo);
+
+#if 0
+  /* RTEMS */
+  _physmem_start = bootinfo.physmem_start;
+#endif
 	
 #if 0
 	/*

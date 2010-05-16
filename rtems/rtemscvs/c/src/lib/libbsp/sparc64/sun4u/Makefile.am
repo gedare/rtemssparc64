@@ -14,6 +14,7 @@ dist_project_lib_DATA = bsp_specs
 include_HEADERS = include/bsp.h 
 include_HEADERS += include/tm27.h
 include_HEADERS += ../shared/include/asm.h 
+include_HEADERS += ../shared/include/traptable.h 
 include_HEADERS += ../helenos/boot/include/align.h
 include_HEADERS += ../helenos/boot/include/balloc.h
 include_HEADERS += ../helenos/boot/include/gentypes.h   
@@ -59,7 +60,7 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
 		../helenos/boot/sparc64/loader/ofwasm.S \
 		../shared/asm/asm.S \
 		../shared/start/trap_table.S \
-		start/bspinit.S
+		start/bspinit.c
 ##   ../shared/ofw/printf.c \
 
 clock_SOURCES = ../../shared/clock_driver_simidle.c

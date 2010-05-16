@@ -17,6 +17,7 @@
 
 #include <rtems/asm.h>
 #include <rtems/score/cpu.h>
+#include <traptable.h>
 
 #define BAD_TRAP \
     ta  0; \
@@ -28,10 +29,8 @@
   nop; \
   nop;
 
-#define TABLE_SIZE (1024*32)
-
-.section .data
-  .align (4*32)
+.section .ttable
+  .align (TABLE_SIZE)
 PUBLIC(trap_table)
   SYM(trap_table):
   .space TABLE_SIZE

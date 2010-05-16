@@ -49,6 +49,10 @@ $(PROJECT_INCLUDE)/asm.h: ../shared/include/asm.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/asm.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/asm.h
 
+$(PROJECT_INCLUDE)/traptable.h: ../shared/include/traptable.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/traptable.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/traptable.h
+
 $(PROJECT_INCLUDE)/align.h: ../helenos/boot/include/align.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/align.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/align.h
