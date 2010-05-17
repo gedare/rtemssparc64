@@ -26,12 +26,13 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef BOOT_OFW_TREE_H_
-#define BOOT_OFW_TREE_H_
+#ifndef KERN_OFW_TREE_H_
+#define KERN_OFW_TREE_H_
 
-#include <boot/types.h>
-#include <boot/ofw.h>
+#include <arch/types.h>
+#include <typedefs.h>
 
+#define OFW_TREE_PROPERTY_MAX_NAMELEN  32
 
 /** Memory representation of OpenFirmware device tree node property. */
 typedef struct {
@@ -53,9 +54,35 @@ typedef struct ofw_tree_node {
 	unsigned int properties;        /**< Number of properties. */
 	ofw_tree_property_t *property;
 	
-	void *device;                   /**< Member used solely by the kernel. */
+	/**
+	 * Pointer to a structure representing respective device.
+	 * Its semantics is device dependent.
+	 */
+	void *device;
 } ofw_tree_node_t;
 
-extern ofw_tree_node_t *ofw_tree_build(void);
+/* Walker for visiting OpenFirmware device tree nodes. */
+typedef bool (* ofw_tree_walker_t)(ofw_tree_node_t *, void *);
+
+extern void ofw_tree_init(ofw_tree_node_t *);
+extern void ofw_tree_print(void);
+
+extern const char *ofw_tree_node_name(const ofw_tree_node_t *);
+extern ofw_tree_node_t *ofw_tree_lookup(const char *);
+extern ofw_tree_property_t *ofw_tree_getprop(const ofw_tree_node_t *,
+    const char *);
+extern void ofw_tree_walk_by_device_type(const char *, ofw_tree_walker_t,
+    void *);
+
+extern ofw_tree_node_t *ofw_tree_find_child(ofw_tree_node_t *, const char *);
+extern ofw_tree_node_t *ofw_tree_find_child_by_device_type(ofw_tree_node_t *,
+    const char *);
+
+extern ofw_tree_node_t *ofw_tree_find_peer_by_device_type(ofw_tree_node_t *,
+    const char *);
+extern ofw_tree_node_t *ofw_tree_find_peer_by_name(ofw_tree_node_t *,
+    const char *);
+extern ofw_tree_node_t *ofw_tree_find_node_by_handle(ofw_tree_node_t *,
+    uint32_t);
 
 #endif

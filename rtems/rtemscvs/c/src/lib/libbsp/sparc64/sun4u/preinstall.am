@@ -53,45 +53,113 @@ $(PROJECT_INCLUDE)/traptable.h: ../shared/include/traptable.h $(PROJECT_INCLUDE)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/traptable.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/traptable.h
 
-$(PROJECT_INCLUDE)/align.h: ../helenos/boot/include/align.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/align.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/align.h
+$(PROJECT_INCLUDE)/boot/$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/boot
+	@: > $(PROJECT_INCLUDE)/boot/$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/boot/$(dirstamp)
 
-$(PROJECT_INCLUDE)/balloc.h: ../helenos/boot/include/balloc.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/balloc.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/balloc.h
+$(PROJECT_INCLUDE)/boot/align.h: ../helenos/boot/include/align.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/align.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/align.h
 
-$(PROJECT_INCLUDE)/gentypes.h: ../helenos/boot/include/gentypes.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/gentypes.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/gentypes.h
+$(PROJECT_INCLUDE)/boot/balloc.h: ../helenos/boot/include/balloc.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/balloc.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/balloc.h
 
-$(PROJECT_INCLUDE)/main.h: ../helenos/boot/include/main.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/main.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/main.h
+$(PROJECT_INCLUDE)/boot/gentypes.h: ../helenos/boot/include/gentypes.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/gentypes.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/gentypes.h
 
-$(PROJECT_INCLUDE)/ofwarch.h: ../helenos/boot/include/ofwarch.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/ofwarch.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/ofwarch.h
+$(PROJECT_INCLUDE)/boot/main.h: ../helenos/boot/include/main.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/main.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/main.h
 
-$(PROJECT_INCLUDE)/ofw.h: ../helenos/boot/include/ofw.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/ofw.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/ofw.h
+$(PROJECT_INCLUDE)/boot/ofwarch.h: ../helenos/boot/include/ofwarch.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/ofwarch.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/ofwarch.h
 
-$(PROJECT_INCLUDE)/ofw_tree.h: ../helenos/boot/include/ofw_tree.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/ofw_tree.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/ofw_tree.h
+$(PROJECT_INCLUDE)/boot/ofw.h: ../helenos/boot/include/ofw.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/ofw.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/ofw.h
 
-$(PROJECT_INCLUDE)/register.h: ../helenos/boot/include/register.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/register.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/register.h
+$(PROJECT_INCLUDE)/boot/ofw_tree.h: ../helenos/boot/include/ofw_tree.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/ofw_tree.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/ofw_tree.h
 
-$(PROJECT_INCLUDE)/stack.h: ../helenos/boot/include/stack.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/stack.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/stack.h
+$(PROJECT_INCLUDE)/boot/register.h: ../helenos/boot/include/register.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/register.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/register.h
 
-$(PROJECT_INCLUDE)/types.h: ../helenos/boot/include/types.h $(PROJECT_INCLUDE)/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/types.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/types.h
+$(PROJECT_INCLUDE)/boot/stack.h: ../helenos/boot/include/stack.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/stack.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/stack.h
+
+$(PROJECT_INCLUDE)/boot/types.h: ../helenos/boot/include/types.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/types.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/types.h
+
+$(PROJECT_INCLUDE)/arch/$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/arch
+	@: > $(PROJECT_INCLUDE)/arch/$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/arch/$(dirstamp)
+
+$(PROJECT_INCLUDE)/arch/boot.h: ../helenos/kernel/sparc64/include/boot.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/boot.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/boot.h
+
+$(PROJECT_INCLUDE)/arch/barrier.h: ../helenos/kernel/sparc64/include/barrier.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/barrier.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/barrier.h
+
+$(PROJECT_INCLUDE)/arch/regdef.h: ../helenos/kernel/sparc64/include/regdef.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/regdef.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/regdef.h
+
+$(PROJECT_INCLUDE)/arch/register.h: ../helenos/kernel/sparc64/include/register.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/register.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/register.h
+
+$(PROJECT_INCLUDE)/arch/stack.h: ../helenos/kernel/sparc64/include/stack.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/stack.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/stack.h
+
+$(PROJECT_INCLUDE)/arch/arch.h: ../helenos/kernel/sparc64/include/sun4u/arch.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/arch.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/arch.h
+
+$(PROJECT_INCLUDE)/arch/cpu.h: ../helenos/kernel/sparc64/include/sun4u/cpu.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/cpu.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/cpu.h
+
+$(PROJECT_INCLUDE)/arch/mm//$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/arch/mm/
+	@: > $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
+
+$(PROJECT_INCLUDE)/arch/mm//mmu.h: ../helenos/kernel/sparc64/include/sun4u/mmu.h $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm//mmu.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm//mmu.h
+
+$(PROJECT_INCLUDE)/arch/mm//page.h: ../helenos/kernel/sparc64/include/sun4u/page.h $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm//page.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm//page.h
+
+$(PROJECT_INCLUDE)/arch/mm//tlb.h: ../helenos/kernel/sparc64/include/sun4u/tlb.h $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm//tlb.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm//tlb.h
+
+$(PROJECT_INCLUDE)/arch/mm//tte.h: ../helenos/kernel/sparc64/include/sun4u/tte.h $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm//tte.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm//tte.h
+
+$(PROJECT_INCLUDE)/genarch/ofw/$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/genarch/ofw
+	@: > $(PROJECT_INCLUDE)/genarch/ofw/$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/genarch/ofw/$(dirstamp)
+
+$(PROJECT_INCLUDE)/genarch/ofw/ofw_tree.h: ../helenos/kernel/genarch/include/ofw/ofw_tree.h $(PROJECT_INCLUDE)/genarch/ofw/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/genarch/ofw/ofw_tree.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/genarch/ofw/ofw_tree.h
 
 $(PROJECT_INCLUDE)/bspopts.h: include/bspopts.h $(PROJECT_INCLUDE)/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bspopts.h

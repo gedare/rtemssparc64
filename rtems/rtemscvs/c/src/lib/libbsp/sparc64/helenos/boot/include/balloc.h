@@ -38,7 +38,7 @@
 #ifndef BOOT_BALLOC_H_
 #define BOOT_BALLOC_H_
 
-#include <types.h>
+#include <boot/types.h>
 
 #define BALLOC_MAX_SIZE  (128 * 1024)
 

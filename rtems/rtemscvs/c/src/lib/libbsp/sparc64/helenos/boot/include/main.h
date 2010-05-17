@@ -29,10 +29,10 @@
 #ifndef BOOT_sparc64_MAIN_H_
 #define BOOT_sparc64_MAIN_H_
 
-#include <ofw.h>
-#include <ofw_tree.h>
-#include <balloc.h>
-#include <types.h>
+#include <boot/ofw.h>
+#include <boot/ofw_tree.h>
+#include <boot/balloc.h>
+#include <boot/types.h>
 
 #define KERNEL_VIRTUAL_ADDRESS  0x400000
 

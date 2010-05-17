@@ -21,7 +21,7 @@
 #include <rtems.h>
 #include <bsp.h>
 #include <bspopts.h>
-#include <ofw.h>
+#include <boot/ofw.h>
 
 /* this is default frequency for simics simulator of niagara. Use the 
  * get_Frequency function to determine the CPU clock frequency at runtime.

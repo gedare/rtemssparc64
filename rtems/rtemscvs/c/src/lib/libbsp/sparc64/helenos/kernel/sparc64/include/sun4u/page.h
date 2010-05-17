@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006 Martin Decky
+ * Copyright (c) 2005 Jakub Jermar
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,19 +26,59 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef BOOT_sparc64_TYPES_H_
-#define BOOT_sparc64_TYPES_H_
+/** @addtogroup sparc64mm	
+ * @{
+ */
+/** @file
+ */
 
-#include <boot/gentypes.h>
+#ifndef KERN_sparc64_PAGE_H_
+#define KERN_sparc64_PAGE_H_
 
-typedef signed char int8_t;
+#include <arch/mm/frame.h>
 
-typedef unsigned char uint8_t;
-typedef unsigned short uint16_t;
-typedef unsigned int uint32_t;
-typedef unsigned long uint64_t;
+/*
+ * On the TLB and TSB level, we still use 8K pages, which are supported by the
+ * MMU.
+ */
+#define MMU_PAGE_WIDTH	MMU_FRAME_WIDTH
+#define MMU_PAGE_SIZE	MMU_FRAME_SIZE
 
-typedef uint64_t uintptr_t;
-typedef uint64_t unative_t;
+/*
+ * On the page table level, we use 16K pages. 16K pages are not supported by
+ * the MMU but we emulate them with pairs of 8K pages.
+ */
+#define PAGE_WIDTH	FRAME_WIDTH
+#define PAGE_SIZE	FRAME_SIZE
+
+#define MMU_PAGES_PER_PAGE	(1 << (PAGE_WIDTH - MMU_PAGE_WIDTH))
+
+#ifdef KERNEL
+
+#ifndef __ASM__
+
+#include <arch/interrupt.h>
+
+extern uintptr_t physmem_base;
+
+#define KA2PA(x)	(((uintptr_t) (x)) + physmem_base)
+#define PA2KA(x)	(((uintptr_t) (x)) - physmem_base)
+
+typedef union {
+	uintptr_t address;
+	struct {
+		uint64_t vpn : 51;		/**< Virtual Page Number. */
+		unsigned offset : 13;		/**< Offset. */
+	} __attribute__ ((packed));
+} page_address_t;
+
+extern void page_arch_init(void);
+
+#endif /* !def __ASM__ */
+
+#endif /* KERNEL */
 
 #endif
+
+/** @}
+ */

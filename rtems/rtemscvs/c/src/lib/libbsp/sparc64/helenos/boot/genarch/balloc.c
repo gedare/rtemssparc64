@@ -35,12 +35,12 @@
  */
 
 
-#include <balloc.h>
+#include <boot/balloc.h>
 #if 0
 #include <asm.h>
 #endif
-#include <types.h>
-#include <align.h>
+#include <boot/types.h>
+#include <boot/align.h>
 
 static ballocs_t *ballocs;
 static uintptr_t phys_base;

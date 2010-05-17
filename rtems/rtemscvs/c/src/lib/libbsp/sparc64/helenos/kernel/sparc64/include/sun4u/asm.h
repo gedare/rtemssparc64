@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006 Martin Decky
+ * Copyright (c) 2005 Jakub Jermar
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,19 +26,35 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef BOOT_sparc64_TYPES_H_
-#define BOOT_sparc64_TYPES_H_
+/** @addtogroup sparc64	
+ * @{
+ */
+/** @file
+ */
 
-#include <boot/gentypes.h>
+#ifndef KERN_sparc64_sun4u_ASM_H_
+#define KERN_sparc64_sun4u_ASM_H_
 
-typedef signed char int8_t;
+extern uint64_t read_from_ag_g7(void);
+extern void write_to_ag_g6(uint64_t val);
+extern void write_to_ag_g7(uint64_t val);
+extern void write_to_ig_g6(uint64_t val);
 
-typedef unsigned char uint8_t;
-typedef unsigned short uint16_t;
-typedef unsigned int uint32_t;
-typedef unsigned long uint64_t;
 
-typedef uint64_t uintptr_t;
-typedef uint64_t unative_t;
+/** Read Version Register.
+ *
+ * @return Value of VER register.
+ */
+static inline uint64_t ver_read(void)
+{
+	uint64_t v;
+	
+	asm volatile ("rdpr %%ver, %0\n" : "=r" (v));
+	
+	return v;
+}
 
 #endif
+
+/** @}
+ */

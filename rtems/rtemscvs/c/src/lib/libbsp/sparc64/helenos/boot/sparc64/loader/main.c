@@ -38,12 +38,12 @@
  * Removes some header files. Adds back some missing defines.
  */
 
-#include <main.h>
-#include <balloc.h>
-#include <ofw.h>
-#include <ofw_tree.h>
-#include <ofwarch.h>
-#include <align.h>
+#include <boot/main.h>
+#include <boot/balloc.h>
+#include <boot/ofw.h>
+#include <boot/ofw_tree.h>
+#include <boot/ofwarch.h>
+#include <boot/align.h>
 
 #if 0
 #include "asm.h"
