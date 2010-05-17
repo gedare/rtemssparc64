@@ -38,6 +38,8 @@
  * Removes some header files. Adds back some missing defines.
  */
 
+#define RTEMS
+
 #include <boot/main.h>
 #include <boot/balloc.h>
 #include <boot/ofw.h>
@@ -58,9 +60,6 @@
 
 #define PAGE_WIDTH  14
 #define PAGE_SIZE   (1 << PAGE_WIDTH)
-
-/* RTEMS */
-uint64_t _physmem_start;
 
 static bootinfo_t bootinfo;
 #if 0
@@ -308,11 +307,6 @@ void bootstrap(void)
 	printk(" %x: kernel entry point\n", KERNEL_VIRTUAL_ADDRESS);
 	printk(" %x: boot info structure\n", &bootinfo);
 
-#if 0
-  /* RTEMS */
-  _physmem_start = bootinfo.physmem_start;
-#endif
-	
 #if 0
 	/*
 	 * Figure out destination address for each component.

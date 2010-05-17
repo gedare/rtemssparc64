@@ -16,8 +16,10 @@ include_HEADERS += include/tm27.h
 include_HEADERS += ../shared/include/asm.h 
 include_HEADERS += ../shared/include/traptable.h 
 
+## these are the include files used by the boot process from HelenOS Sparc64
 include_bootdir = $(includedir)/boot
-include_boot_HEADERS = ../helenos/boot/include/align.h \
+include_boot_HEADERS = \
+	../helenos/boot/include/align.h \
   ../helenos/boot/include/balloc.h \
   ../helenos/boot/include/gentypes.h \
   ../helenos/boot/include/main.h \
@@ -30,23 +32,59 @@ include_boot_HEADERS = ../helenos/boot/include/align.h \
 
 ## These include files mimic the HelenOS kernel include layout, which 
 ## in HelenOS-0.4.2 is more complicated than the boot include dirs.
-include_archdir = $(includedir)/arch
-include_arch_HEADERS = ../helenos/kernel/sparc64/include/boot.h \
-	../helenos/kernel/sparc64/include/barrier.h \
-	../helenos/kernel/sparc64/include/regdef.h \
-	../helenos/kernel/sparc64/include/register.h \
-	../helenos/kernel/sparc64/include/stack.h \
-  ../helenos/kernel/sparc64/include/sun4u/arch.h \
-	../helenos/kernel/sparc64/include/sun4u/cpu.h
 
-include_arch_mmdir = $(includedir)/arch/mm/
-include_arch_mm_HEADERS = ../helenos/kernel/sparc64/include/sun4u/mmu.h \
-	../helenos/kernel/sparc64/include/sun4u/page.h \
-	../helenos/kernel/sparc64/include/sun4u/tlb.h \
-	../helenos/kernel/sparc64/include/sun4u/tte.h
+# assumed by the HelenOS sources to be in the root includedir. We place them
+# in a kernel include directory.
+include_kerneldir = $(includedir)/kernel
+include_kernel_HEADERS = \
+	../helenos/kernel/generic/include/align.h 
+
+include_archdir = $(includedir)/arch
+include_arch_HEADERS = \
+	../helenos/kernel/sparc64/include/arch.h \
+	../helenos/kernel/sparc64/include/boot.h \
+	../helenos/kernel/sparc64/include/regdef.h \
+	../helenos/kernel/sparc64/include/stack.h 
+
+include_arch_sun4udir = $(includedir)/arch/sun4u
+include_arch_sun4u_HEADERS = \
+  ../helenos/kernel/sparc64/include/sun4u/arch.h 
+
+include_arch_mmdir = $(includedir)/arch/mm
+include_arch_mm_HEADERS = \
+	../helenos/kernel/sparc64/include/mm/cache_spec.h \
+	../helenos/kernel/sparc64/include/mm/frame.h \
+	../helenos/kernel/sparc64/include/mm/mmu.h \
+	../helenos/kernel/sparc64/include/mm/page.h \
+	../helenos/kernel/sparc64/include/mm/tlb.h \
+	../helenos/kernel/sparc64/include/mm/tte.h
+
+
+include_arch_mm_sun4udir = $(includedir)/arch/mm/sun4u
+include_arch_mm_sun4u_HEADERS = \
+	../helenos/kernel/sparc64/include/mm/sun4u/frame.h \
+	../helenos/kernel/sparc64/include/mm/sun4u/mmu.h \
+	../helenos/kernel/sparc64/include/mm/sun4u/page.h \
+	../helenos/kernel/sparc64/include/mm/sun4u/tlb.h \
+	../helenos/kernel/sparc64/include/mm/sun4u/tte.h
+
+include_arch_trapdir = $(includedir)/arch/trap
+include_arch_trap_HEADERS = \
+	../helenos/kernel/sparc64/include/trap/exception.h \
+	../helenos/kernel/sparc64/include/trap/interrupt.h \
+	../helenos/kernel/sparc64/include/trap/mmu.h \
+	../helenos/kernel/sparc64/include/trap/regwin.h 
+
+include_arch_trap_sun4udir = $(includedir)/arch/trap/sun4u
+include_arch_trap_sun4u_HEADERS = \
+	../helenos/kernel/sparc64/include/trap/sun4u/interrupt.h \
+	../helenos/kernel/sparc64/include/trap/sun4u/mmu.h \
+	../helenos/kernel/sparc64/include/trap/sun4u/regwin.h 
+
 
 include_genarch_ofwdir = $(includedir)/genarch/ofw
-include_genarch_ofw_HEADERS = ../helenos/kernel/genarch/include/ofw/ofw_tree.h
+include_genarch_ofw_HEADERS = \
+	../helenos/kernel/genarch/include/ofw/ofw_tree.h
 
 
 nodist_include_HEADERS = include/bspopts.h    
@@ -82,10 +120,11 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
 		../helenos/boot/sparc64/loader/main.c \
 		../helenos/boot/sparc64/loader/ofwasm.S \
 		../shared/asm/asm.S \
-		../shared/start/trap_table.S \
-		start/bspinit.c \
-		../helenos/kernel/sparc64/src/sun4u/takemmu.S
-##   ../shared/ofw/printf.c \
+		start/bspinit.c  \
+		../helenos/kernel/sparc64/src/cache.S \
+		../helenos/kernel/sparc64/src/sun4u/takemmu.S \
+		../helenos/kernel/sparc64/src/trap/sun4u/trap_table.S \
+		../helenos/kernel/sparc64/src/trap/sun4u/mmu.S
 
 clock_SOURCES = ../../shared/clock_driver_simidle.c
 #clock_SOURCES = clock/ckinit.c
@@ -94,9 +133,10 @@ console_SOURCES = ../../shared/console.c  ../sun4v/console/conscfg.c
 
 timer_SOURCES = ../../shared/timerstub.c
 
-noinst_LIBRARIES = libbsp.a
+noinst_LIBRARIES = libbsp.a 
 libbsp_a_SOURCES = $(startup_SOURCES) $(clock_SOURCES) $(console_SOURCES) \
     $(timer_SOURCES)
+
 
 libbsp_a_LIBADD = \
 		  ../../../libcpu/@RTEMS_CPU@/shared/shared-score.rel \

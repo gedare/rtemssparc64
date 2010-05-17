@@ -98,59 +98,136 @@ $(PROJECT_INCLUDE)/boot/types.h: ../helenos/boot/include/types.h $(PROJECT_INCLU
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/types.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/types.h
 
+$(PROJECT_INCLUDE)/kernel/$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/kernel
+	@: > $(PROJECT_INCLUDE)/kernel/$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/kernel/$(dirstamp)
+
+$(PROJECT_INCLUDE)/kernel/align.h: ../helenos/kernel/generic/include/align.h $(PROJECT_INCLUDE)/kernel/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/kernel/align.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/kernel/align.h
+
 $(PROJECT_INCLUDE)/arch/$(dirstamp):
 	@$(MKDIR_P) $(PROJECT_INCLUDE)/arch
 	@: > $(PROJECT_INCLUDE)/arch/$(dirstamp)
 PREINSTALL_DIRS += $(PROJECT_INCLUDE)/arch/$(dirstamp)
 
+$(PROJECT_INCLUDE)/arch/arch.h: ../helenos/kernel/sparc64/include/arch.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/arch.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/arch.h
+
 $(PROJECT_INCLUDE)/arch/boot.h: ../helenos/kernel/sparc64/include/boot.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/boot.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/boot.h
-
-$(PROJECT_INCLUDE)/arch/barrier.h: ../helenos/kernel/sparc64/include/barrier.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/barrier.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/barrier.h
 
 $(PROJECT_INCLUDE)/arch/regdef.h: ../helenos/kernel/sparc64/include/regdef.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/regdef.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/regdef.h
 
-$(PROJECT_INCLUDE)/arch/register.h: ../helenos/kernel/sparc64/include/register.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/register.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/register.h
-
 $(PROJECT_INCLUDE)/arch/stack.h: ../helenos/kernel/sparc64/include/stack.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/stack.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/stack.h
 
-$(PROJECT_INCLUDE)/arch/arch.h: ../helenos/kernel/sparc64/include/sun4u/arch.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/arch.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/arch.h
+$(PROJECT_INCLUDE)/arch/sun4u/$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/arch/sun4u
+	@: > $(PROJECT_INCLUDE)/arch/sun4u/$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/arch/sun4u/$(dirstamp)
 
-$(PROJECT_INCLUDE)/arch/cpu.h: ../helenos/kernel/sparc64/include/sun4u/cpu.h $(PROJECT_INCLUDE)/arch/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/cpu.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/cpu.h
+$(PROJECT_INCLUDE)/arch/sun4u/arch.h: ../helenos/kernel/sparc64/include/sun4u/arch.h $(PROJECT_INCLUDE)/arch/sun4u/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/sun4u/arch.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/sun4u/arch.h
 
-$(PROJECT_INCLUDE)/arch/mm//$(dirstamp):
-	@$(MKDIR_P) $(PROJECT_INCLUDE)/arch/mm/
-	@: > $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
-PREINSTALL_DIRS += $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
+$(PROJECT_INCLUDE)/arch/mm/$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/arch/mm
+	@: > $(PROJECT_INCLUDE)/arch/mm/$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/arch/mm/$(dirstamp)
 
-$(PROJECT_INCLUDE)/arch/mm//mmu.h: ../helenos/kernel/sparc64/include/sun4u/mmu.h $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm//mmu.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm//mmu.h
+$(PROJECT_INCLUDE)/arch/mm/cache_spec.h: ../helenos/kernel/sparc64/include/mm/cache_spec.h $(PROJECT_INCLUDE)/arch/mm/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/cache_spec.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/cache_spec.h
 
-$(PROJECT_INCLUDE)/arch/mm//page.h: ../helenos/kernel/sparc64/include/sun4u/page.h $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm//page.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm//page.h
+$(PROJECT_INCLUDE)/arch/mm/frame.h: ../helenos/kernel/sparc64/include/mm/frame.h $(PROJECT_INCLUDE)/arch/mm/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/frame.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/frame.h
 
-$(PROJECT_INCLUDE)/arch/mm//tlb.h: ../helenos/kernel/sparc64/include/sun4u/tlb.h $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm//tlb.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm//tlb.h
+$(PROJECT_INCLUDE)/arch/mm/mmu.h: ../helenos/kernel/sparc64/include/mm/mmu.h $(PROJECT_INCLUDE)/arch/mm/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/mmu.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/mmu.h
 
-$(PROJECT_INCLUDE)/arch/mm//tte.h: ../helenos/kernel/sparc64/include/sun4u/tte.h $(PROJECT_INCLUDE)/arch/mm//$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm//tte.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm//tte.h
+$(PROJECT_INCLUDE)/arch/mm/page.h: ../helenos/kernel/sparc64/include/mm/page.h $(PROJECT_INCLUDE)/arch/mm/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/page.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/page.h
+
+$(PROJECT_INCLUDE)/arch/mm/tlb.h: ../helenos/kernel/sparc64/include/mm/tlb.h $(PROJECT_INCLUDE)/arch/mm/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/tlb.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/tlb.h
+
+$(PROJECT_INCLUDE)/arch/mm/tte.h: ../helenos/kernel/sparc64/include/mm/tte.h $(PROJECT_INCLUDE)/arch/mm/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/tte.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/tte.h
+
+$(PROJECT_INCLUDE)/arch/mm/sun4u/$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/arch/mm/sun4u
+	@: > $(PROJECT_INCLUDE)/arch/mm/sun4u/$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/arch/mm/sun4u/$(dirstamp)
+
+$(PROJECT_INCLUDE)/arch/mm/sun4u/frame.h: ../helenos/kernel/sparc64/include/mm/sun4u/frame.h $(PROJECT_INCLUDE)/arch/mm/sun4u/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/sun4u/frame.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/sun4u/frame.h
+
+$(PROJECT_INCLUDE)/arch/mm/sun4u/mmu.h: ../helenos/kernel/sparc64/include/mm/sun4u/mmu.h $(PROJECT_INCLUDE)/arch/mm/sun4u/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/sun4u/mmu.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/sun4u/mmu.h
+
+$(PROJECT_INCLUDE)/arch/mm/sun4u/page.h: ../helenos/kernel/sparc64/include/mm/sun4u/page.h $(PROJECT_INCLUDE)/arch/mm/sun4u/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/sun4u/page.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/sun4u/page.h
+
+$(PROJECT_INCLUDE)/arch/mm/sun4u/tlb.h: ../helenos/kernel/sparc64/include/mm/sun4u/tlb.h $(PROJECT_INCLUDE)/arch/mm/sun4u/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/sun4u/tlb.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/sun4u/tlb.h
+
+$(PROJECT_INCLUDE)/arch/mm/sun4u/tte.h: ../helenos/kernel/sparc64/include/mm/sun4u/tte.h $(PROJECT_INCLUDE)/arch/mm/sun4u/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/sun4u/tte.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/sun4u/tte.h
+
+$(PROJECT_INCLUDE)/arch/trap/$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/arch/trap
+	@: > $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
+
+$(PROJECT_INCLUDE)/arch/trap/exception.h: ../helenos/kernel/sparc64/include/trap/exception.h $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/exception.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/exception.h
+
+$(PROJECT_INCLUDE)/arch/trap/interrupt.h: ../helenos/kernel/sparc64/include/trap/interrupt.h $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/interrupt.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/interrupt.h
+
+$(PROJECT_INCLUDE)/arch/trap/mmu.h: ../helenos/kernel/sparc64/include/trap/mmu.h $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/mmu.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/mmu.h
+
+$(PROJECT_INCLUDE)/arch/trap/regwin.h: ../helenos/kernel/sparc64/include/trap/regwin.h $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/regwin.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/regwin.h
+
+$(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp):
+	@$(MKDIR_P) $(PROJECT_INCLUDE)/arch/trap/sun4u
+	@: > $(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp)
+PREINSTALL_DIRS += $(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp)
+
+$(PROJECT_INCLUDE)/arch/trap/sun4u/interrupt.h: ../helenos/kernel/sparc64/include/trap/sun4u/interrupt.h $(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/sun4u/interrupt.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/sun4u/interrupt.h
+
+$(PROJECT_INCLUDE)/arch/trap/sun4u/mmu.h: ../helenos/kernel/sparc64/include/trap/sun4u/mmu.h $(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/sun4u/mmu.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/sun4u/mmu.h
+
+$(PROJECT_INCLUDE)/arch/trap/sun4u/regwin.h: ../helenos/kernel/sparc64/include/trap/sun4u/regwin.h $(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/sun4u/regwin.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/sun4u/regwin.h
 
 $(PROJECT_INCLUDE)/genarch/ofw/$(dirstamp):
 	@$(MKDIR_P) $(PROJECT_INCLUDE)/genarch/ofw

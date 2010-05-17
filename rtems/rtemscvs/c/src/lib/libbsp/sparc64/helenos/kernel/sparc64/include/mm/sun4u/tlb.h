@@ -91,8 +91,6 @@
 #define TLB_TAG_ACCESS_CONTEXT_MASK	((1 << 13) - 1)
 #define TLB_TAG_ACCESS_VPN_SHIFT	13
 
-#include <rtems/asm.h>
-
 #ifndef __ASM__
 
 #include <arch/mm/tte.h>

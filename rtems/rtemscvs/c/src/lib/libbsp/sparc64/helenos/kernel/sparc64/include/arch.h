@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006 Jakub Jermar
+ * Copyright (c) 2005 Jakub Jermar
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,65 +29,31 @@
 /** @addtogroup sparc64	
  * @{
  */
-/** @file
+/**
+ * @file
+ * @brief	Various sparc64-specific macros.
  */
 
-#ifndef KERN_sparc64_BOOT_H_
-#define KERN_sparc64_BOOT_H_
+#ifndef KERN_sparc64_ARCH_H_
+#define KERN_sparc64_ARCH_H_
 
-#define VMA			0x400000
-#define LMA			VMA
+#if defined (SUN4U)
+#include <arch/sun4u/arch.h>
+#elif defined (SUN4V)
+#include <arch/sun4v/arch.h>
+#endif
+
+#define ASI_AIUP		0x10	/** Access to primary context with user privileges. */
+#define ASI_AIUS		0x11	/** Access to secondary context with user privileges. */
+
+#define NWINDOWS		8	/** Number of register window sets. */
 
 #ifndef __ASM__
-#ifndef __LINKER__
 
-#include <config.h>
-#include <arch/types.h>
-#include <genarch/ofw/ofw_tree.h>
+extern void arch_pre_main(void);
 
-#define TASKMAP_MAX_RECORDS	32
-#define MEMMAP_MAX_RECORDS	32
+#endif /* __ASM__ */
 
-#define BOOTINFO_TASK_NAME_BUFLEN 32
-
-typedef struct {
-	void * addr;
-	uint32_t size;
-	char name[BOOTINFO_TASK_NAME_BUFLEN];
-} utask_t;
-
-typedef struct {
-	uint32_t count;
-	utask_t tasks[TASKMAP_MAX_RECORDS];
-} taskmap_t;
-
-typedef struct {
-	uintptr_t start;
-	uint32_t size;
-} memzone_t;
-
-typedef struct {
-	uint32_t total;
-	uint32_t count;
-	memzone_t zones[MEMMAP_MAX_RECORDS];
-} memmap_t;
-
-/** Bootinfo structure.
- *
- * Must be in sync with bootinfo structure used by the boot loader.
- */
-typedef struct {
-	uintptr_t physmem_start;
-	taskmap_t taskmap;
-	memmap_t memmap;
-	ballocs_t ballocs;
-	ofw_tree_node_t *ofw_root;
-} bootinfo_t;
-
-extern bootinfo_t bootinfo;
-
-#endif
-#endif
 
 #endif
 

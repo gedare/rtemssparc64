@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006 Jakub Jermar
+ * Copyright (c) 2008 Jakub Jermar
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,68 +26,31 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/** @addtogroup sparc64	
+/** @addtogroup sparc64mm	
  * @{
  */
 /** @file
  */
 
-#ifndef KERN_sparc64_BOOT_H_
-#define KERN_sparc64_BOOT_H_
+#ifndef KERN_sparc64_CACHE_SPEC_H_
+#define KERN_sparc64_CACHE_SPEC_H_
 
-#define VMA			0x400000
-#define LMA			VMA
-
-#ifndef __ASM__
-#ifndef __LINKER__
-
-#include <config.h>
-#include <arch/types.h>
-#include <genarch/ofw/ofw_tree.h>
-
-#define TASKMAP_MAX_RECORDS	32
-#define MEMMAP_MAX_RECORDS	32
-
-#define BOOTINFO_TASK_NAME_BUFLEN 32
-
-typedef struct {
-	void * addr;
-	uint32_t size;
-	char name[BOOTINFO_TASK_NAME_BUFLEN];
-} utask_t;
-
-typedef struct {
-	uint32_t count;
-	utask_t tasks[TASKMAP_MAX_RECORDS];
-} taskmap_t;
-
-typedef struct {
-	uintptr_t start;
-	uint32_t size;
-} memzone_t;
-
-typedef struct {
-	uint32_t total;
-	uint32_t count;
-	memzone_t zones[MEMMAP_MAX_RECORDS];
-} memmap_t;
-
-/** Bootinfo structure.
+/*
+ * The following macros are valid for the following processors:
  *
- * Must be in sync with bootinfo structure used by the boot loader.
+ * 	UltraSPARC, UltraSPARC II, UltraSPARC IIi, UltraSPARC III,
+ * 	UltraSPARC III+, UltraSPARC IV, UltraSPARC IV+
+ * 
+ * Should we support other UltraSPARC processors, we need to make sure that
+ * the macros are defined correctly for them.
  */
-typedef struct {
-	uintptr_t physmem_start;
-	taskmap_t taskmap;
-	memmap_t memmap;
-	ballocs_t ballocs;
-	ofw_tree_node_t *ofw_root;
-} bootinfo_t;
-
-extern bootinfo_t bootinfo;
-
+ 
+#if defined (US)
+#define DCACHE_SIZE		(16 * 1024)
+#elif defined (US3)
+#define DCACHE_SIZE		(64 * 1024)
 #endif
-#endif
+#define DCACHE_LINE_SIZE	32	
 
 #endif
 
