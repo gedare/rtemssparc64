@@ -34,12 +34,12 @@
  */
 
 
-#include <ofw_tree.h>
-#include <ofw.h>
-#include <ofwarch.h>
-#include <types.h>
+#include <boot/ofw_tree.h>
+#include <boot/ofw.h>
+#include <boot/ofwarch.h>
+#include <boot/types.h>
 #include <string.h>
-#include <balloc.h>
+#include <boot/balloc.h>
 #if 0
 #include <asm.h>
 #include <memstr.h>

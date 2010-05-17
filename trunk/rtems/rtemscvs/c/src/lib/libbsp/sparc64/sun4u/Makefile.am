@@ -15,16 +15,39 @@ include_HEADERS = include/bsp.h
 include_HEADERS += include/tm27.h
 include_HEADERS += ../shared/include/asm.h 
 include_HEADERS += ../shared/include/traptable.h 
-include_HEADERS += ../helenos/boot/include/align.h
-include_HEADERS += ../helenos/boot/include/balloc.h
-include_HEADERS += ../helenos/boot/include/gentypes.h   
-include_HEADERS += ../helenos/boot/include/main.h 
-include_HEADERS += ../helenos/boot/include/ofwarch.h
-include_HEADERS += ../helenos/boot/include/ofw.h
-include_HEADERS += ../helenos/boot/include/ofw_tree.h
-include_HEADERS += ../helenos/boot/include/register.h
-include_HEADERS += ../helenos/boot/include/stack.h
-include_HEADERS += ../helenos/boot/include/types.h
+
+include_bootdir = $(includedir)/boot
+include_boot_HEADERS = ../helenos/boot/include/align.h \
+  ../helenos/boot/include/balloc.h \
+  ../helenos/boot/include/gentypes.h \
+  ../helenos/boot/include/main.h \
+  ../helenos/boot/include/ofwarch.h \
+  ../helenos/boot/include/ofw.h \
+  ../helenos/boot/include/ofw_tree.h \
+  ../helenos/boot/include/register.h \
+  ../helenos/boot/include/stack.h \
+  ../helenos/boot/include/types.h 
+
+## These include files mimic the HelenOS kernel include layout, which 
+## in HelenOS-0.4.2 is more complicated than the boot include dirs.
+include_archdir = $(includedir)/arch
+include_arch_HEADERS = ../helenos/kernel/sparc64/include/boot.h \
+	../helenos/kernel/sparc64/include/barrier.h \
+	../helenos/kernel/sparc64/include/regdef.h \
+	../helenos/kernel/sparc64/include/register.h \
+	../helenos/kernel/sparc64/include/stack.h \
+  ../helenos/kernel/sparc64/include/sun4u/arch.h \
+	../helenos/kernel/sparc64/include/sun4u/cpu.h
+
+include_arch_mmdir = $(includedir)/arch/mm/
+include_arch_mm_HEADERS = ../helenos/kernel/sparc64/include/sun4u/mmu.h \
+	../helenos/kernel/sparc64/include/sun4u/page.h \
+	../helenos/kernel/sparc64/include/sun4u/tlb.h \
+	../helenos/kernel/sparc64/include/sun4u/tte.h
+
+include_genarch_ofwdir = $(includedir)/genarch/ofw
+include_genarch_ofw_HEADERS = ../helenos/kernel/genarch/include/ofw/ofw_tree.h
+
 
 nodist_include_HEADERS = include/bspopts.h    
 nodist_include_bsp_HEADERS = ../../shared/include/bootcard.h 
@@ -60,7 +83,8 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
 		../helenos/boot/sparc64/loader/ofwasm.S \
 		../shared/asm/asm.S \
 		../shared/start/trap_table.S \
-		start/bspinit.c
+		start/bspinit.c \
+		../helenos/kernel/sparc64/src/sun4u/takemmu.S
 ##   ../shared/ofw/printf.c \
 
 clock_SOURCES = ../../shared/clock_driver_simidle.c

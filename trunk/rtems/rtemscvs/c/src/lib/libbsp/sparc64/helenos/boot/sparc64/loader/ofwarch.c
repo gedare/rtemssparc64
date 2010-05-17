@@ -41,11 +41,11 @@
  */
 
 
-#include <ofwarch.h>
-#include <ofw.h>
+#include <boot/ofwarch.h>
+#include <boot/ofw.h>
 #include <string.h>
-#include <register.h>
-#include <main.h>
+#include <boot/register.h>
+#include <boot/main.h>
 #if 0
 #include "asm.h"
 #include <printf.h>

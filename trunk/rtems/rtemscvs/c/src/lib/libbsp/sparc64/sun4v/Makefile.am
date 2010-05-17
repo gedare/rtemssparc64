@@ -14,16 +14,18 @@ dist_project_lib_DATA = bsp_specs
 include_HEADERS = include/bsp.h 
 include_HEADERS += include/tm27.h
 include_HEADERS += ../shared/include/asm.h
-include_HEADERS += ../helenos/boot/include/align.h
-include_HEADERS += ../helenos/boot/include/balloc.h
-include_HEADERS += ../helenos/boot/include/gentypes.h   
-include_HEADERS += ../helenos/boot/include/main.h 
-include_HEADERS += ../helenos/boot/include/ofwarch.h
-include_HEADERS += ../helenos/boot/include/ofw.h
-include_HEADERS += ../helenos/boot/include/ofw_tree.h
-include_HEADERS += ../helenos/boot/include/register.h
-include_HEADERS += ../helenos/boot/include/stack.h
-include_HEADERS += ../helenos/boot/include/types.h
+
+include_bootdir = $(includedir)/boot
+include_boot_HEADERS = ../helenos/boot/include/align.h \
+  ../helenos/boot/include/balloc.h \
+  ../helenos/boot/include/gentypes.h \
+  ../helenos/boot/include/main.h \
+  ../helenos/boot/include/ofwarch.h \
+  ../helenos/boot/include/ofw.h \
+  ../helenos/boot/include/ofw_tree.h \
+  ../helenos/boot/include/register.h \
+  ../helenos/boot/include/stack.h \
+  ../helenos/boot/include/types.h
 
 nodist_include_HEADERS = include/bspopts.h    
 nodist_include_bsp_HEADERS = ../../shared/include/bootcard.h 

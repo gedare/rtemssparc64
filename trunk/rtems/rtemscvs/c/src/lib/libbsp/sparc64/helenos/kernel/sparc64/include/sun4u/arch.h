@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006 Martin Decky
+ * Copyright (c) 2005 Jakub Jermar
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,19 +26,22 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef BOOT_sparc64_TYPES_H_
-#define BOOT_sparc64_TYPES_H_
+/** @addtogroup sparc64	
+ * @{
+ */
+/**
+ * @file
+ * @brief	Various sun4u-specific macros.
+ */
 
-#include <boot/gentypes.h>
+#ifndef KERN_sparc64_sun4u_ARCH_H_
+#define KERN_sparc64_sun4u_ARCH_H_
 
-typedef signed char int8_t;
-
-typedef unsigned char uint8_t;
-typedef unsigned short uint16_t;
-typedef unsigned int uint32_t;
-typedef unsigned long uint64_t;
-
-typedef uint64_t uintptr_t;
-typedef uint64_t unative_t;
+#define ASI_NUCLEUS_QUAD_LDD	0x24	/** ASI for 16-byte atomic loads. */
+#define ASI_DCACHE_TAG		0x47	/** ASI D-Cache Tag. */
+#define ASI_ICBUS_CONFIG	0x4a	/** ASI of the UPA_CONFIG/FIREPLANE_CONFIG register. */
 
 #endif
+
+/** @}
+ */

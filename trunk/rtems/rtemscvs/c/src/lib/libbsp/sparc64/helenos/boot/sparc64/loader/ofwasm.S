@@ -35,8 +35,8 @@
  * located in the HelenOS code base.
  */
 
-#include <stack.h>
-#include <register.h>
+#include <boot/stack.h>
+#include <boot/register.h>
 
 .register %g2, #scratch
 .register %g3, #scratch

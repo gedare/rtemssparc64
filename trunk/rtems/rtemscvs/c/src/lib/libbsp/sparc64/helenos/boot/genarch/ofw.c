@@ -35,13 +35,13 @@
  */
 
 
-#include <ofw.h>
-#include <ofwarch.h>
+#include <boot/ofw.h>
+#include <boot/ofwarch.h>
 #if 0
-#include <printf.h>
-#include <asm.h>
+#include <boot/printf.h>
+#include <boot/asm.h>
 #endif
-#include <types.h>
+#include <boot/types.h>
 #include <string.h>
 #include <asm.h>
 
