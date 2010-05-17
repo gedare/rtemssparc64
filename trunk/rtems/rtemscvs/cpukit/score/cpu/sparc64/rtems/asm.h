@@ -32,6 +32,9 @@
 #ifndef ASM
 #define ASM
 #endif
+#ifndef __ASM__
+#define __ASM__
+#endif
 
 #include <rtems/score/cpuopts.h>
 #include <rtems/score/cpu.h>
