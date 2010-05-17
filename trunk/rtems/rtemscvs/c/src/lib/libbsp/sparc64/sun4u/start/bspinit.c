@@ -17,8 +17,11 @@
 #include <rtems.h>
 #include <bsp.h>
 #include <boot/ofw.h>
+#include <boot/ofwarch.h>
 #include <rtems/score/cpu.h>
 #include <traptable.h>
+
+extern void _take_mmu(void* phys_base);
 
 extern void (*syscall)();
 
@@ -67,6 +70,7 @@ void _BSP_init() {
 
   void* curr_tba_v; /* virtual address of current tba */
   void* curr_tba_p; /* physical address of current tba */
+  void* memstart;   /* start of physical memory */
 
   void *ignore = 0;
   unsigned int mode = 0;
@@ -75,6 +79,12 @@ void _BSP_init() {
 
   sparc64_get_tba(curr_tba_v);
   curr_tba_p = ofw_translate(curr_tba_v);
+
+  if(ofw_get_physmem_start(&memstart)) {
+    printk("Failed to get start of physical memory\n");
+  }
+
+  _take_mmu(memstart);
 
 #if 0
   tba_copy =  ofw_maplow(curr_tba_p, TABLE_SIZE);

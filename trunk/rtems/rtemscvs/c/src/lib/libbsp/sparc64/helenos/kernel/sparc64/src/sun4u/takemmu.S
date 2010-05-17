@@ -36,10 +36,14 @@
  */
 #define RTEMS
 
+#include <rtems/asm.h>
+
 /* RTEMS: moved all of these to a common include directory */
+#if 0
 #include <arch/arch.h>
 #include <arch/cpu.h>
 #include <arch/regdef.h>
+#endif
 #include <arch/boot.h>
 #include <arch/stack.h>
 
@@ -144,9 +148,8 @@ _take_mmu:
   ! l5 <= physmem_base[(PHYSMEM_ADDR_SIZE - 1):13]
   sllx %l5, 13 + (63 - (PHYSMEM_ADDR_SIZE - 1)), %l5
   srlx %l5, 63 - (PHYSMEM_ADDR_SIZE - 1), %l5
-#endif
-#if 0
-	/*
+	
+  /*
 	 * Switch to kernel trap table.
 	 */
 	sethi %hi(trap_table), %g1

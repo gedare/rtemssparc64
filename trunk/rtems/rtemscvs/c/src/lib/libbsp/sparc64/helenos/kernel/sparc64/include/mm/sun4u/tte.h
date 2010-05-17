@@ -46,8 +46,6 @@
 #define TTE_V_SHIFT	63
 #define TTE_SIZE_SHIFT	61
 
-#include <rtems/asm.h>
-
 #ifndef __ASM__
 
 #include <arch/types.h>

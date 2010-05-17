@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006 Jakub Jermar
+ * Copyright (c) 2005 Jakub Jermar
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,67 +26,42 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/** @addtogroup sparc64	
+/** @addtogroup sparc64interrupt
  * @{
  */
-/** @file
+#ifndef KERN_sparc64_sun4u_REGWIN_H_
+#define KERN_sparc64_sun4u_REGWIN_H_
+
+#ifdef __ASM__
+
+/*
+ * Macro used to spill userspace window to userspace window buffer.
+ * It can be either triggered from preemptible_handler doing SAVE
+ * at (TL=1) or from normal kernel code doing SAVE when OTHERWIN>0
+ * at (TL=0).
  */
+.macro SPILL_TO_USPACE_WINDOW_BUFFER
+	stx %l0, [%g7 + L0_OFFSET]	
+	stx %l1, [%g7 + L1_OFFSET]
+	stx %l2, [%g7 + L2_OFFSET]
+	stx %l3, [%g7 + L3_OFFSET]
+	stx %l4, [%g7 + L4_OFFSET]
+	stx %l5, [%g7 + L5_OFFSET]
+	stx %l6, [%g7 + L6_OFFSET]
+	stx %l7, [%g7 + L7_OFFSET]
+	stx %i0, [%g7 + I0_OFFSET]
+	stx %i1, [%g7 + I1_OFFSET]
+	stx %i2, [%g7 + I2_OFFSET]
+	stx %i3, [%g7 + I3_OFFSET]
+	stx %i4, [%g7 + I4_OFFSET]
+	stx %i5, [%g7 + I5_OFFSET]
+	stx %i6, [%g7 + I6_OFFSET]
+	stx %i7, [%g7 + I7_OFFSET]
+	add %g7, STACK_WINDOW_SAVE_AREA_SIZE, %g7
+	saved
+	retry
+.endm
 
-#ifndef KERN_sparc64_BOOT_H_
-#define KERN_sparc64_BOOT_H_
-
-#define VMA			0x400000
-#define LMA			VMA
-
-#ifndef __ASM__
-#ifndef __LINKER__
-
-#include <config.h>
-#include <arch/types.h>
-#include <genarch/ofw/ofw_tree.h>
-
-#define TASKMAP_MAX_RECORDS	32
-#define MEMMAP_MAX_RECORDS	32
-
-#define BOOTINFO_TASK_NAME_BUFLEN 32
-
-typedef struct {
-	void * addr;
-	uint32_t size;
-	char name[BOOTINFO_TASK_NAME_BUFLEN];
-} utask_t;
-
-typedef struct {
-	uint32_t count;
-	utask_t tasks[TASKMAP_MAX_RECORDS];
-} taskmap_t;
-
-typedef struct {
-	uintptr_t start;
-	uint32_t size;
-} memzone_t;
-
-typedef struct {
-	uint32_t total;
-	uint32_t count;
-	memzone_t zones[MEMMAP_MAX_RECORDS];
-} memmap_t;
-
-/** Bootinfo structure.
- *
- * Must be in sync with bootinfo structure used by the boot loader.
- */
-typedef struct {
-	uintptr_t physmem_start;
-	taskmap_t taskmap;
-	memmap_t memmap;
-	ballocs_t ballocs;
-	ofw_tree_node_t *ofw_root;
-} bootinfo_t;
-
-extern bootinfo_t bootinfo;
-
-#endif
 #endif
 
 #endif

@@ -86,8 +86,6 @@
 #define VA_DMMU_NUCLEUS_EXTENSION	0x58	/**< DMMU TSB nucleus extension register */
 #endif
 
-#include <rtems/asm.h>
-
 #ifndef __ASM__
 
 #include <arch/asm.h>

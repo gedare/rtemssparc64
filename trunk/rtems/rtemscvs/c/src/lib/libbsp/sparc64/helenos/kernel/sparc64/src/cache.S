@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2005 Jakub Jermar
+ * Copyright (c) 2006 Jakub Jermar
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,36 +25,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#include <rtems/asm.h>
+#include <arch/arch.h>
+#include <arch/mm/cache_spec.h>
 
-/** @addtogroup sparc64	
- * @{
- */
-/** @file
- */
+#define DCACHE_TAG_SHIFT	2
 
-#ifndef KERN_sparc64_sun4u_ASM_H_
-#define KERN_sparc64_sun4u_ASM_H_
+.register %g2, #scratch
+.register %g3, #scratch
 
-extern uint64_t read_from_ag_g7(void);
-extern void write_to_ag_g6(uint64_t val);
-extern void write_to_ag_g7(uint64_t val);
-extern void write_to_ig_g6(uint64_t val);
-
-
-/** Read Version Register.
- *
- * @return Value of VER register.
- */
-static inline uint64_t ver_read(void)
-{
-	uint64_t v;
-	
-	asm volatile ("rdpr %%ver, %0\n" : "=r" (v));
-	
-	return v;
-}
-
-#endif
-
-/** @}
- */
+/** Flush the whole D-cache. */
+.global dcache_flush
+dcache_flush:
+	set (DCACHE_SIZE - DCACHE_LINE_SIZE), %g1
+	stxa %g0, [%g1] ASI_DCACHE_TAG
+0:	membar #Sync
+	subcc %g1, DCACHE_LINE_SIZE, %g1
+	bnz,pt %xcc, 0b
+	stxa %g0, [%g1] ASI_DCACHE_TAG
+	membar #Sync			
+	retl
+	! beware SF Erratum #51, do not put the MEMBAR here
+	nop				

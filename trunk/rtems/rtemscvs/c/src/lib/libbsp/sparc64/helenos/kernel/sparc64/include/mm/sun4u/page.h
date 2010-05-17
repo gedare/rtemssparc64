@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006 Jakub Jermar
+ * Copyright (c) 2005 Jakub Jermar
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,68 +26,57 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/** @addtogroup sparc64	
+/** @addtogroup sparc64mm	
  * @{
  */
 /** @file
  */
 
-#ifndef KERN_sparc64_BOOT_H_
-#define KERN_sparc64_BOOT_H_
+#ifndef KERN_sparc64_PAGE_H_
+#define KERN_sparc64_PAGE_H_
 
-#define VMA			0x400000
-#define LMA			VMA
+#include <arch/mm/frame.h>
+
+/*
+ * On the TLB and TSB level, we still use 8K pages, which are supported by the
+ * MMU.
+ */
+#define MMU_PAGE_WIDTH	MMU_FRAME_WIDTH
+#define MMU_PAGE_SIZE	MMU_FRAME_SIZE
+
+/*
+ * On the page table level, we use 16K pages. 16K pages are not supported by
+ * the MMU but we emulate them with pairs of 8K pages.
+ */
+#define PAGE_WIDTH	FRAME_WIDTH
+#define PAGE_SIZE	FRAME_SIZE
+
+#define MMU_PAGES_PER_PAGE	(1 << (PAGE_WIDTH - MMU_PAGE_WIDTH))
+
+#ifdef KERNEL
 
 #ifndef __ASM__
-#ifndef __LINKER__
 
-#include <config.h>
-#include <arch/types.h>
-#include <genarch/ofw/ofw_tree.h>
+#include <arch/interrupt.h>
 
-#define TASKMAP_MAX_RECORDS	32
-#define MEMMAP_MAX_RECORDS	32
+extern uintptr_t physmem_base;
 
-#define BOOTINFO_TASK_NAME_BUFLEN 32
+#define KA2PA(x)	(((uintptr_t) (x)) + physmem_base)
+#define PA2KA(x)	(((uintptr_t) (x)) - physmem_base)
 
-typedef struct {
-	void * addr;
-	uint32_t size;
-	char name[BOOTINFO_TASK_NAME_BUFLEN];
-} utask_t;
+typedef union {
+	uintptr_t address;
+	struct {
+		uint64_t vpn : 51;		/**< Virtual Page Number. */
+		unsigned offset : 13;		/**< Offset. */
+	} __attribute__ ((packed));
+} page_address_t;
 
-typedef struct {
-	uint32_t count;
-	utask_t tasks[TASKMAP_MAX_RECORDS];
-} taskmap_t;
+extern void page_arch_init(void);
 
-typedef struct {
-	uintptr_t start;
-	uint32_t size;
-} memzone_t;
+#endif /* !def __ASM__ */
 
-typedef struct {
-	uint32_t total;
-	uint32_t count;
-	memzone_t zones[MEMMAP_MAX_RECORDS];
-} memmap_t;
-
-/** Bootinfo structure.
- *
- * Must be in sync with bootinfo structure used by the boot loader.
- */
-typedef struct {
-	uintptr_t physmem_start;
-	taskmap_t taskmap;
-	memmap_t memmap;
-	ballocs_t ballocs;
-	ofw_tree_node_t *ofw_root;
-} bootinfo_t;
-
-extern bootinfo_t bootinfo;
-
-#endif
-#endif
+#endif /* KERNEL */
 
 #endif
 
