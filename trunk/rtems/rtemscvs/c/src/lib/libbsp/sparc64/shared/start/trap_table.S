@@ -11,6 +11,8 @@
  * 
  *  This code defines the space for the trap table used by sun4u.
  *
+ *  This file is currently unused.
+ *
  * $Id$
  */
 
