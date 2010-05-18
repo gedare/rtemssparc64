@@ -37,7 +37,7 @@ include_boot_HEADERS = \
 # in a kernel include directory.
 include_kerneldir = $(includedir)/kernel
 include_kernel_HEADERS = \
-	../helenos/kernel/generic/include/align.h 
+	../helenos/kernel/generic/include/align.h
 
 include_archdir = $(includedir)/arch
 include_arch_HEADERS = \
@@ -120,11 +120,13 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
 		../helenos/boot/sparc64/loader/main.c \
 		../helenos/boot/sparc64/loader/ofwasm.S \
 		../shared/asm/asm.S \
-		start/bspinit.c  \
+		start/bspinit.S
+
+mmu_SOURCES = \
 		../helenos/kernel/sparc64/src/cache.S \
 		../helenos/kernel/sparc64/src/sun4u/takemmu.S \
 		../helenos/kernel/sparc64/src/trap/sun4u/trap_table.S \
-		../helenos/kernel/sparc64/src/trap/sun4u/mmu.S
+		../helenos/kernel/sparc64/src/trap/sun4u/mmu.S 
 
 clock_SOURCES = ../../shared/clock_driver_simidle.c
 #clock_SOURCES = clock/ckinit.c
@@ -134,7 +136,7 @@ console_SOURCES = ../../shared/console.c  ../sun4v/console/conscfg.c
 timer_SOURCES = ../../shared/timerstub.c
 
 noinst_LIBRARIES = libbsp.a 
-libbsp_a_SOURCES = $(startup_SOURCES) $(clock_SOURCES) $(console_SOURCES) \
+libbsp_a_SOURCES = $(startup_SOURCES) $(mmu_SOURCES) $(clock_SOURCES) $(console_SOURCES) \
     $(timer_SOURCES)
 
 

@@ -127,11 +127,15 @@
 	 * level and service the DTLB miss. In the end, we restart
 	 * the offending SAVE or RESTORE.
 	 */
-0:
+0: 
+  nop
+  ba 0b
+  nop
 .if (\tl > 0)
 	wrpr %g0, 1, %tl
 .endif
 
+#if 0
 	/*
 	 * Switch from the MM globals.
 	 */
@@ -147,6 +151,7 @@
 	 * g2 will be passed as an argument to fast_data_access_mmu_miss().
 	 */
 	PREEMPTIBLE_HANDLER fast_data_access_mmu_miss
+#endif
 .endm
 
 .macro FAST_DATA_ACCESS_PROTECTION_HANDLER tl
