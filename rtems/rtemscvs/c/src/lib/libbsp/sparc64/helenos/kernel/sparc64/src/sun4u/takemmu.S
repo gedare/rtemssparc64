@@ -295,6 +295,8 @@ _take_mmu:
 	! leave nucleus - using primary context, i.e. context 0
 	wrpr %g0, 0, %tl
 
+  wrpr %g0, 0, %wstate ! default spill/fill trap
+
 #if 0
 	brz %l7, 1f				! skip if you are not the bootstrap CPU
 	nop
