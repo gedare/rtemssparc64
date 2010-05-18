@@ -60,7 +60,7 @@
 .register %g2, #scratch
 .register %g3, #scratch
 #if defined (RTEMS)
-.section .text
+.section BOOTSTRAP
 #endif
 
 #if 0
@@ -140,6 +140,7 @@ kernel_image_start:
 _take_mmu:
 	save %sp, -STACK_WINDOW_SAVE_AREA_SIZE, %sp
   mov %i0, %l6
+#endif
   
   /* these are copied from above */
   ! Get bits (PHYSMEM_ADDR_SIZE - 1):13 of physmem_base.
@@ -154,11 +155,6 @@ _take_mmu:
 	 */
 	sethi %hi(trap_table), %g1
 	wrpr %g1, %lo(trap_table), %tba
-#endif
-#if defined (RTEMS)
-
-
-#endif
 
 
 	/* 

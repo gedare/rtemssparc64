@@ -35,7 +35,10 @@
 #ifndef KERN_sparc64_BOOT_H_
 #define KERN_sparc64_BOOT_H_
 
+#if 0
 #define VMA			0x400000
+#endif
+#define VMA     0x4000
 #define LMA			VMA
 
 #ifndef __ASM__
