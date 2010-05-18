@@ -429,6 +429,7 @@ _take_mmu:
 temporary_boot_stack:
 	.space STACK_WINDOW_SAVE_AREA_SIZE
 
+#endif /* 0 */
 
 .data
 
@@ -471,4 +472,3 @@ kernel_8k_tlb_data_template:
 	.quad ((1 << TTE_V_SHIFT) | (PAGESIZE_8K << TTE_SIZE_SHIFT) | TTE_CP | \
 		TTE_P | TTE_W)
 #endif /* CONFIG_VIRT_IDX_DCACHE */
-#endif /* 0 */

@@ -31,8 +31,15 @@
 PUBLIC(_BSP_init)
 .global _BSP_init
   SYM(_BSP_init):
+  save %sp, -STACK_WINDOW_SAVE_AREA_SIZE, %sp
+  mov %g0, %o0
+  call _take_mmu
+  nop
 
-  save %sp, -STACK_WINDOW_SAVE_AREA_SIZE, %sp  
+  ret
+  restore
+
+
 
 #if 0
   /* copy firmware trap table so that RTEMS can install ISR handlers */
@@ -62,6 +69,4 @@ PUBLIC(_BSP_init)
   setx  SYM(trap_table), %l0, %l1
   wrpr  %g0, %l1, %tba
 #endif
-  ret
-  restore
 

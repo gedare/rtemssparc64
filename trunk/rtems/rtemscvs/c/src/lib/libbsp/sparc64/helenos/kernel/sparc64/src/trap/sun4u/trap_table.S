@@ -48,6 +48,12 @@
   ba 0b; \
   nop; 
 
+
+.macro PREEMPTIBLE_HANDLER f
+  call \f
+  nop
+.endm
+
 /* from syscall.h */
 #define TT_TRAP_INSTRUCTION_0   0x100
 
@@ -298,8 +304,8 @@ fast_instruction_access_mmu_miss_handler_tl0:
 .org trap_table + TT_FAST_DATA_ACCESS_MMU_MISS*ENTRY_SIZE
 .global fast_data_access_mmu_miss_handler_tl0
 fast_data_access_mmu_miss_handler_tl0:
-/*  call fast_data_access_mmu_miss */
-  BAD_TRAP
+  /* TODO: fast_data_access_mmu_miss */
+  FAST_DATA_ACCESS_MMU_MISS_HANDLER 0
 
 /* TT = 0x6c, TL = 0, fast_data_access_protection */
 .org trap_table + TT_FAST_DATA_ACCESS_PROTECTION*ENTRY_SIZE
