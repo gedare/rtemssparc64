@@ -297,8 +297,7 @@ interrupt_vector_trap_handler_tl0:
 .org trap_table + TT_FAST_INSTRUCTION_ACCESS_MMU_MISS*ENTRY_SIZE
 .global fast_instruction_access_mmu_miss_handler_tl0
 fast_instruction_access_mmu_miss_handler_tl0:
-/*  call fast_instruction_access_mmu_miss */
-  BAD_TRAP
+  FAST_INSTRUCTION_ACCESS_MMU_MISS_HANDLER
 
 /* TT = 0x68, TL = 0, fast_data_access_MMU_miss */
 .org trap_table + TT_FAST_DATA_ACCESS_MMU_MISS*ENTRY_SIZE
@@ -311,7 +310,6 @@ fast_data_access_mmu_miss_handler_tl0:
 .org trap_table + TT_FAST_DATA_ACCESS_PROTECTION*ENTRY_SIZE
 .global fast_data_access_protection_handler_tl0
 fast_data_access_protection_handler_tl0:
-/*	call fast_data_access_protection */
   BAD_TRAP
 
 /* TT = 0x80, TL = 0, spill_0_normal handler */
@@ -421,14 +419,12 @@ mem_address_not_aligned_tl1:
 .org trap_table + (TT_FAST_DATA_ACCESS_MMU_MISS+512)*ENTRY_SIZE
 .global fast_data_access_mmu_miss_handler_tl1
 fast_data_access_mmu_miss_handler_tl1:
-/*	call fast_data_access_mmu_miss*/
-  BAD_TRAP
+  FAST_DATA_ACCESS_MMU_MISS_HANDLER 1
 
 /* TT = 0x6c, TL > 0, fast_data_access_protection */
 .org trap_table + (TT_FAST_DATA_ACCESS_PROTECTION+512)*ENTRY_SIZE
 .global fast_data_access_protection_handler_tl1
 fast_data_access_protection_handler_tl1:
-/*  call fast_data_access_protection	*/
   BAD_TRAP
 
 /* TT = 0x80, TL > 0, spill_0_normal handler */

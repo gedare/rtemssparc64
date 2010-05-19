@@ -167,16 +167,17 @@ _take_mmu:
 	 */
 
 	wr %g0, ASI_DMMU, %asi
-
+/*
 #define SET_TLB_DEMAP_CMD(r1, context_id) \
 	set (TLB_DEMAP_CONTEXT << TLB_DEMAP_TYPE_SHIFT) | (context_id << \
 		TLB_DEMAP_CONTEXT_SHIFT), %r1
-	
+*/
+/*	
 	! demap context 0
 	SET_TLB_DEMAP_CMD(g1, TLB_DEMAP_NUCLEUS)
 	stxa %g0, [%g1] ASI_DMMU_DEMAP			
 	membar #Sync
-
+*/
 #define SET_TLB_TAG(r1, context) \
 	set VMA | (context << TLB_TAG_ACCESS_CONTEXT_SHIFT), %r1
 
@@ -212,7 +213,7 @@ _take_mmu:
 	 * userspace), we prepare the identity mapping also in context 1. This
 	 * step is required by the code installing the ITLB mapping.
 	 */
-	! write DTLB tag of context 1 (i.e. MEM_CONTEXT_TEMP)
+/*	! write DTLB tag of context 1 (i.e. MEM_CONTEXT_TEMP)
 	SET_TLB_TAG(g1, MEM_CONTEXT_TEMP)
 	stxa %g1, [VA_DMMU_TAG_ACCESS] %asi			
 	membar #Sync
@@ -221,7 +222,7 @@ _take_mmu:
 	SET_TLB_DATA(g1, g2, TTE_W)			! use non-global mapping
 	stxa %g1, [%g0] ASI_DTLB_DATA_IN_REG		
 	membar #Sync
-	
+*/
 	/*
 	 * Now is time to take over the IMMU. Unfortunatelly, it cannot be done
 	 * as easily as the DMMU, because the IMMU is mapping the code it
@@ -247,7 +248,7 @@ _take_mmu:
 #if defined (RTEMS)
   set _take_mmu, %g5
 #endif
-	
+/*	
 	! write ITLB tag of context 1
 	SET_TLB_TAG(g1, MEM_CONTEXT_TEMP)
 	mov VA_DMMU_TAG_ACCESS, %g2
@@ -268,7 +269,7 @@ _take_mmu:
 	SET_TLB_DEMAP_CMD(g1, TLB_DEMAP_NUCLEUS)
 	stxa %g0, [%g1] ASI_IMMU_DEMAP			
 	flush %g5
-	
+*/
 	! write ITLB tag of context 0
 	SET_TLB_TAG(g1, MEM_CONTEXT_KERNEL)
 	mov VA_DMMU_TAG_ACCESS, %g2
@@ -279,7 +280,7 @@ _take_mmu:
 	SET_TLB_DATA(g1, g2, TTE_L)		! use non-global mapping
 	stxa %g1, [%g0] ASI_ITLB_DATA_IN_REG		
 	flush %g5
-
+/*
 	! enter nucleus - using context 0
 	wrpr %g0, 1, %tl
 
@@ -296,7 +297,7 @@ _take_mmu:
 	wrpr %g0, 0, %tl
 
   wrpr %g0, 0, %wstate ! default spill/fill trap
-
+*/
 #if 0
 	brz %l7, 1f				! skip if you are not the bootstrap CPU
 	nop

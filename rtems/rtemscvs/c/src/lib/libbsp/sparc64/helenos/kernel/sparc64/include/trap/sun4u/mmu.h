@@ -56,7 +56,52 @@
 
 #ifdef __ASM__
 
+#define OFW_MASK 0xf0000000
+
+#define SET_TLB_TAG(r1, context) \
+	set VMA | (context << TLB_TAG_ACCESS_CONTEXT_SHIFT), %r1
+
+#define SET_TLB_DATA(r1, r2, imm) \
+	set TTE_LOW_DATA(imm), %r1; \
+	or %r1, %l5, %r1; \
+	mov PAGESIZE_4M, %r2; \
+	sllx %r2, TTE_SIZE_SHIFT, %r2; \
+	or %r1, %r2, %r1; \
+	mov 1, %r2; \
+	sllx %r2, TTE_V_SHIFT, %r2; \
+	or %r1, %r2, %r1;
+
+
+
 .macro FAST_INSTRUCTION_ACCESS_MMU_MISS_HANDLER
+
+  /*
+   * RTEMS:
+   * Most instructions are identically mapped, except for the open firmware
+   * calls.  If we can identify the ofw calls, we might be able to hack a 
+   * correct mapping (this will be very brittle and unlikely to work on 
+   * real hardware, or any other simulator). One way to detect this is 
+   * to read the tpc...: I see no reason why the following should work.
+   */
+  rdpr %tpc, %g1
+  andcc %g1, OFW_MASK, %g2
+  bnz %xcc, 0f
+  mov %g0, %l5
+
+  /* need to set tag?? */
+
+  /* not ofw, just try an identity mapping? */
+  SET_TLB_DATA(g1, g2, TTE_L)
+  stxa %g1, [%g0] ASI_ITLB_DATA_IN_REG
+  retry
+0:
+  /* probably ofw code, try arbitrary mapping? */
+  mov %g1, %l5
+  SET_TLB_DATA(g1, g2, TTE_L)
+  stxa %g1, [%g0] ASI_ITLB_DATA_IN_REG
+  retry
+
+#if 0
 	/*
 	 * First, try to refill TLB from TSB.
 	 */
@@ -74,6 +119,7 @@
 0:
 	wrpr %g0, PSTATE_PRIV_BIT | PSTATE_AG_BIT, %pstate
 	PREEMPTIBLE_HANDLER fast_instruction_access_mmu_miss
+#endif
 .endm
 
 .macro FAST_DATA_ACCESS_MMU_MISS_HANDLER tl
