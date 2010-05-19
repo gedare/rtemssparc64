@@ -18,8 +18,8 @@
  *  ERC32 modifications of respective RTEMS file: COPYRIGHT (c) 1995. 
  *  European Space Agency.
  *
- *  Ported to UltraSPARC T1 Niagara implementation of the SPARC-v9.
- *  Niagara modifications of respective RTEMS file: 
+ *  Ported to UltraSPARC III (US3) implementation of the SPARC-v9.
+ *  US3 modifications of respective RTEMS file: 
  *    COPYRIGHT (c) 2010. Gedare Bloom.
  *
  *  $Id$
@@ -49,8 +49,9 @@
      *    g4 = tstate (old l0)
      *    g2 = trap type (vector) (old l3)
      *
-     *  NOTE: By an executive defined convention, trap type is between 0 and 255 if
-     *        it is an asynchonous trap and 256 and 511 if it is synchronous.
+     *  NOTE: By an executive defined convention:
+     *    if trap type is between 0 and 511 it is an asynchronous trap
+     *    if trap type is between 512 and 1023 it is an asynchonous trap
      */
 
   .align 4
@@ -58,9 +59,8 @@ PUBLIC(_ISR_Handler)
   SYM(_ISR_Handler):
 
     /* 
-     * The ISR is called at TL = 1. On sun4v, we can use the globals at this
-     * trap level (GL[1]).  Back-porting to sun4u would involve ensuring 
-     * compatability with the alternate global set. 
+     * The ISR is called at TL = 1. 
+     * On sun4u we use the alternate globals set.     
      *
      * On entry:
      *   g4 = tstate (from trap table)
@@ -110,14 +110,14 @@ PUBLIC(_ISR_Handler)
     ! make space for Stack_Frame||ISF
 
     /* save tstate, tpc, tnpc, pil */
-    stx     %g4, [%sp + STACK_BIAS + ISF_TSTATE_OFFSET]  
+    stx   %g4, [%sp + STACK_BIAS + ISF_TSTATE_OFFSET]  
     rdpr  %pil, %g3
     rdpr  %tpc, %g4
     rdpr  %tnpc, %g5
-    stx  %g3, [%sp + STACK_BIAS + ISF_PIL_OFFSET]
-    stx  %g4, [%sp + STACK_BIAS + ISF_TPC_OFFSET]
-    stx  %g5, [%sp + STACK_BIAS + ISF_TNPC_OFFSET]
-    stx  %g2, [%sp + STACK_BIAS + ISF_TVEC_NUM]
+    stx   %g3, [%sp + STACK_BIAS + ISF_PIL_OFFSET]
+    stx   %g4, [%sp + STACK_BIAS + ISF_TPC_OFFSET]
+    stx   %g5, [%sp + STACK_BIAS + ISF_TNPC_OFFSET]
+    stx   %g2, [%sp + STACK_BIAS + ISF_TVEC_NUM]
 
     rd  %y, %g4        ! save y
     stx   %g4, [%sp + STACK_BIAS + ISF_Y_OFFSET]
@@ -135,9 +135,16 @@ PUBLIC(_ISR_Handler)
     mov  %g1, %o5    ! hold the old sp here for now
     mov  %g2, %o1    ! we'll need trap # later
 
-    /* switch to TL[0], GL[0] get pstate to a known state */
+    /* switch to TL[0] */
     wrpr  %g0, 0, %tl
+
+    /* switch to normal globals */
+#if defined (SUN4U)
+    /* the assignment to pstate below will mask out the AG bit */
+#elif defined (SUN4V)
     wrpr  %g0, 0, %gl
+#endif
+    /* get pstate to known state */
     wrpr  %g0, SPARC_PSTATE_PRIV_MASK | SPARC_PSTATE_PEF_MASK, %pstate
 
     ! save globals
@@ -151,8 +158,8 @@ PUBLIC(_ISR_Handler)
 
 
   mov  %o1, %g2  ! get the trap #
-mov  %o5, %g7  ! store the interrupted %sp (preserve)
-  mov     %sp, %o1        ! 2nd arg to ISR Handler = address of ISF
+  mov  %o5, %g7  ! store the interrupted %sp (preserve)
+  mov  %sp, %o1  ! 2nd arg to ISR Handler = address of ISF
 
   /*
    *  Increment ISR nest level and Thread dispatch disable level.
@@ -212,14 +219,14 @@ mov  %o5, %g7  ! store the interrupted %sp (preserve)
    *  when the interrupt handler returns.
    */
 
-  and   %g2, 0x0ff, %g1 ! is bottom byte of vector number [0x41,0x4f]?
+  and      %g2, 0x0ff, %g1 ! is bottom byte of vector number [0x41,0x4f]?
 
   subcc    %g1, 0x41, %g0
   bl       dont_fix_pil
   subcc    %g1, 0x4f, %g0
   bg       dont_fix_pil
   nop
-  wrpr  %g0, %g1, %pil
+  wrpr     %g0, %g1, %pil
 
   dont_fix_pil:
   /* We need to be careful about enabling traps here.
@@ -228,7 +235,7 @@ mov  %o5, %g7  ! store the interrupted %sp (preserve)
    * TL = 0, so it should be safe.
    */
 
-  /* zero out g4 so that printf works */
+  /* zero out g4 so that ofw calls work */
   mov  %g0, %g4
 
   ! **** ENABLE TRAPS ****
@@ -242,7 +249,7 @@ mov  %o5, %g7  ! store the interrupted %sp (preserve)
      *        we just enabled traps.  It is definitely in g2.
      */
     setx  SYM(_ISR_Vector_table), %o5, %g1
-    ldx  [%g1], %g1
+    ldx      [%g1], %g1
     and      %g2, 0x1FF, %o5        ! remove synchronous trap indicator
     sll      %o5, 3, %o5            ! o5 = offset into table
     ldx      [%g1 + %o5], %g1       ! g1 = _ISR_Vector_table[ vector ]
@@ -256,7 +263,7 @@ mov  %o5, %g7  ! store the interrupted %sp (preserve)
 
     /*
      *  Redisable traps so we can finish up the interrupt processing.
-     *  This is a VERY conservative place to do this.
+     *  This is a conservative place to do this.
      */
     ! **** DISABLE TRAPS ****
     wrpr  %g0, SPARC_PSTATE_PRIV_MASK, %pstate
@@ -295,13 +302,13 @@ mov  %o5, %g7  ! store the interrupted %sp (preserve)
     setx  SYM(_Thread_Dispatch_disable_level), %o5, %g3
     lduw  [%g3],%g5
     lduw  [%g6],%g4
-    sub      %g5, 1, %g5
+    sub   %g5, 1, %g5
     stuw  %g5, [%g3]
-    sub  %g4, 1, %g4
+    sub   %g4, 1, %g4
     stuw  %g4, [%g6]
 
-    orcc    %g4, %g0, %g0           ! ISRs still nested?
-    bnz     dont_restore_stack      ! Yes then don't restore stack yet
+    orcc  %g4, %g0, %g0           ! ISRs still nested?
+    bnz   dont_restore_stack      ! Yes then don't restore stack yet
     nop
 
     /*
@@ -329,7 +336,7 @@ mov  %o5, %g7  ! store the interrupted %sp (preserve)
     orcc     %g5, %g0, %g0   ! Is dispatching disabled?
     bnz      simple_return   ! Yes, then do a "simple" exit
     ! NOTE: Use the delay slot
-    mov  %g0, %g4  ! clear g4 for printf
+    mov      %g0, %g4  ! clear g4 for ofw
 
     ! Are we dispatching from a previous ISR in the interrupted thread?
     setx  SYM(_CPU_ISR_Dispatch_disable), %o5, %g5
@@ -356,15 +363,15 @@ mov  %o5, %g7  ! store the interrupted %sp (preserve)
      *  Finally, check to see if signals were sent to the currently
      *  executing task.  If so, we need to invoke the interrupt dispatcher.
      */
-    setx SYM(_ISR_Signals_to_thread_executing), %o5, %g5
-    ldub  [%g5], %o5
+    setx    SYM(_ISR_Signals_to_thread_executing), %o5, %g5
+    ldub    [%g5], %o5
 
-    orcc     %o5, %g0, %g0   ! Were signals sent to the currently
+    orcc    %o5, %g0, %g0   ! Were signals sent to the currently
     !   executing thread?
-    bz       simple_return   ! yes, then invoke the dispatcher
+    bz      simple_return   ! yes, then invoke the dispatcher
     ! use the delay slot to clear the signals
     !   to the currently executing task flag
-    stb       %g0, [%g5]
+    stb     %g0, [%g5]
 
 
     /*
@@ -374,7 +381,7 @@ PUBLIC(_ISR_Dispatch)
   SYM(_ISR_Dispatch):
     ! Set ISR dispatch nesting prevention flag
       mov      1, %o1
-      setx    SYM(_CPU_ISR_Dispatch_disable), %o5, %o2
+      setx     SYM(_CPU_ISR_Dispatch_disable), %o5, %o2
       stuw     %o1, [%o2]
 
 
@@ -389,23 +396,23 @@ PUBLIC(_ISR_Dispatch)
          *  We invoked _Thread_Dispatch in a state similar to the interrupted
          *  task.  In order to safely be able to tinker with the register
          *  windows and get the task back to its pre-interrupt state, 
-         *  we need to disable interrupts disabled so we can safely tinker
-         *  with the register windowing. 
+         *  we need to disable interrupts. 
          */
-  mov  2,%g4        ! syscall (disable interrupts)
-ta  0        ! syscall (disable interrupts)
-  mov  0,%g4
+      mov   2, %g4        ! syscall (disable interrupts)
+      ta    0             ! syscall (disable interrupts)
+      mov   0, %g4
+
   /*
    *  While we had ISR dispatching disabled in this thread,
    *  did we miss anything.  If so, then we need to do another
    *  _Thread_Dispatch before leaving this ISR Dispatch context.
    */
 
-  setx  SYM(_Context_Switch_necessary), %o5, %o1
+  setx     SYM(_Context_Switch_necessary), %o5, %o1
   ldub     [%o1], %o2
 
   ! NOTE: Use some of delay slot to start loading this
-  setx    SYM(_ISR_Signals_to_thread_executing), %o5, %o1
+  setx     SYM(_ISR_Signals_to_thread_executing), %o5, %o1
   ldub     [%o1], %o3
 
   orcc     %o2, %g0, %g0   ! Is thread switch necessary?
@@ -426,15 +433,15 @@ ta  0        ! syscall (disable interrupts)
 
   ! Yes, then invoke the dispatcher
   dispatchAgain:
-  mov  3, %g4        ! syscall (enable interrupts)
-ta  0        ! syscall (enable interrupts)
-  ba      isr_dispatch
-  mov  0, %g4
+  mov      3, %g4        ! syscall (enable interrupts)
+  ta       0             ! syscall (enable interrupts)
+  ba       isr_dispatch
+  mov      0, %g4
 
   allow_nest_again:
 
   ! Zero out ISR stack nesting prevention flag
-  setx  SYM(_CPU_ISR_Dispatch_disable), %o5, %o1
+  setx    SYM(_CPU_ISR_Dispatch_disable), %o5, %o1
   stuw    %g0,[%o1]
 
   /*
@@ -447,15 +454,13 @@ ta  0        ! syscall (enable interrupts)
    */
 
   simple_return:
-  flushw
+  flushw          ! get register windows to a 'clean' state 
 
   ! **** DISABLE TRAPS ****
-  wrpr  %g0, SPARC_PSTATE_PRIV_MASK, %pstate
+  wrpr    %g0, SPARC_PSTATE_PRIV_MASK, %pstate
 
   ldx     [%sp + STACK_BIAS + ISF_Y_OFFSET], %o1      ! restore y
   wr      %o1, 0, %y
-
-
 
   ldx  [%sp + STACK_BIAS + ISF_TSTATE_OFFSET], %g1
 
@@ -531,13 +536,22 @@ ta  0        ! syscall (enable interrupts)
 
   ! return to TL[1], GL[1], and restore TSTATE, TPC, and TNPC
   wrpr  %g0, 1, %tl
+
+  ! return to GL=1 or AG
+#if defined(SUN4U)
+    rdpr  %pstate, %g1
+    andn  %g1, SPARC_PSTATE_AG_MASK, %g1
+    wrpr  %g1, %g0, %pstate                 ! go to regular global
+#elif defined(SUN4V)
   wrpr  %g0, 1, %gl
-! now we can use global registers (at gl 1)
-  ldx  [%sp + STACK_BIAS + ISF_PIL_OFFSET], %g3
-  ldx  [%sp + STACK_BIAS + ISF_TPC_OFFSET], %g4
-  ldx  [%sp + STACK_BIAS + ISF_TNPC_OFFSET], %g5
-  ldx  [%sp + STACK_BIAS + ISF_TSTATE_OFFSET], %g1
-  ldx  [%sp + STACK_BIAS + ISF_TVEC_NUM], %g2
+#endif
+
+! now we can use global registers (at gl=1 or AG)
+  ldx   [%sp + STACK_BIAS + ISF_PIL_OFFSET], %g3
+  ldx   [%sp + STACK_BIAS + ISF_TPC_OFFSET], %g4
+  ldx   [%sp + STACK_BIAS + ISF_TNPC_OFFSET], %g5
+  ldx   [%sp + STACK_BIAS + ISF_TSTATE_OFFSET], %g1
+  ldx   [%sp + STACK_BIAS + ISF_TVEC_NUM], %g2
   wrpr  %g0, %g3, %pil
   wrpr  %g0, %g4, %tpc
   wrpr  %g0, %g5, %tnpc
