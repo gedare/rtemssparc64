@@ -237,24 +237,31 @@ extern "C" {
 
 /*
  * read the stick register
+ *
+ * Note: 
+ * stick asr=24, mnemonic=stick
+ * Note: stick does not appear to be a valid ASR for US3, although it is 
+ * implemented in US3i.
  */
 #define sparc64_read_stick( _stick ) \
   do { \
     (_stick) = 0; \
-    asm volatile( "rd %%stick, %0" : "=r" (_stick) : "0" (_stick) ); \
+    asm volatile( "rd %%stick, %0" : "=r" (_stick) : "0" (_stick) );  \
   } while ( 0 )
 
 /*
- * write the stick_cmpr register
- * 
- * TODO: sun4v only?
+ * write the stick_cmpr register 
+ *
+ * Note: 
+ * stick_cmpr asr=25, mnemonic=stick_cmpr
+ * Note: stick_cmpr does not appear to be a valid ASR for US3, although it is 
+ * implemented in US3i.
  */
 #define sparc64_write_stick_cmpr( _stick_cmpr ) \
   do { \
     asm volatile( "wr %%g0, %0, %%stick_cmpr" :  "=r" (_stick_cmpr)  \
                                               :  "0" (_stick_cmpr) ); \
   } while ( 0 )
-
 
 /*
  * read the Tick register
@@ -267,8 +274,6 @@ extern "C" {
 
 /*
  * write the tick_cmpr register
- * 
- * TODO: sun4v only?
  */
 #define sparc64_write_tick_cmpr( _tick_cmpr ) \
   do { \
@@ -276,9 +281,16 @@ extern "C" {
                                              :  "0" (_tick_cmpr) ); \
   } while ( 0 )
 
+/* 
+ * Clear the softint register.
+ *
+ * sun4u and sun4v: softint_clr asr = 21, with mnemonic clear_softint
+ */
 #define sparc64_clear_interrupt_bits( _bit_mask ) \
-  asm volatile( "wr %%g0, %0, %%softint_clear" : "=r" (_bit_mask) \
-                                             : "0" (_bit_mask)); \
+  do { \
+  asm volatile( "wr %%g0, %0, %%clear_softint" : "=r" (_bit_mask) \
+                                               : "0" (_bit_mask)); \
+  } while ( 0 )
 
 /************* DEPRECATED ****************/
 /* Note: Although the y register is deprecated, gcc still uses it */
