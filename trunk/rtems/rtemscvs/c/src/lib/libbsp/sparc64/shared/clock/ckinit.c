@@ -64,7 +64,7 @@ void Clock_driver_support_at_tick(void)
 #elif defined (SUN4V)
   sparc64_read_stick(tick_reg);
 #endif
-  tick_reg &= ~(1<<63); /* mask out NPT bit, prevents int_dis from being set */
+  tick_reg &= ~(1UL<<63); /* mask out NPT bit, prevents int_dis from being set */
 
   tick_reg += sparc64_cycles_per_tick;
 
@@ -97,7 +97,7 @@ void Clock_driver_support_initialize_hardware(void)
   sparc64_read_stick(tick_reg);
 #endif
 
-  tick_reg &= ~(1<<63); /* mask out NPT bit, prevents int_dis from being set */
+  tick_reg &= ~(1UL<<63); /* mask out NPT bit, prevents int_dis from being set */
   tick_reg += sparc64_cycles_per_tick;
 
 #if defined (SUN4U)
