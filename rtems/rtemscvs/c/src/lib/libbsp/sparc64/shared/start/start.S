@@ -130,6 +130,12 @@ setstack:
   call SYM(_BSP_init)
   nop
 
+  /* Set up ISR handler for interrupt enable/disable */
+	setx SYM(syscall), %l0, %o1
+	setx param_space, %l0, %o2
+	call SYM(_CPU_ISR_install_raw_handler)
+	mov 0x100, %o0 
+
   /* Don't need to copy initialized data to RAM--link puts all in RAM already */
 
 	mov	%g0, %o0		! clear command line passed to main
@@ -147,6 +153,10 @@ setstack:
 
 halted:	nop
 	    b SYM(halted)
+
+  .align CPU_ALIGNMENT
+  param_space:
+  	.space 8
 
     .global _fini
     _fini:

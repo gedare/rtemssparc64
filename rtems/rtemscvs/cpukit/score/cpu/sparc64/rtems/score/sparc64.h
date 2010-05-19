@@ -115,6 +115,7 @@ extern "C" {
  *  NOTE: Reserved bits are ignored.
  */
 
+#define SPARC_PSTATE_AG_MASK   0x00000001   /* bit  0 */
 #define SPARC_PSTATE_IE_MASK   0x00000002   /* bit  1 */
 #define SPARC_PSTATE_PRIV_MASK 0x00000004   /* bit  2 */
 #define SPARC_PSTATE_AM_MASK   0x00000008   /* bit  3 */
@@ -123,6 +124,7 @@ extern "C" {
 #define SPARC_PSTATE_TLE_MASK  0x00000100   /* bit  8 */
 #define SPARC_PSTATE_CLE_MASK  0x00000200   /* bit  9 */
 
+#define SPARC_PSTATE_AG_BIT_POSITION   0   /* bit  0 */
 #define SPARC_PSTATE_IE_BIT_POSITION   1   /* bit  1 */
 #define SPARC_PSTATE_PRIV_BIT_POSITION 2   /* bit  2 */
 #define SPARC_PSTATE_AM_BIT_POSITION   3   /* bit  3 */
