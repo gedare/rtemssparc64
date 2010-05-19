@@ -125,8 +125,9 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
 mmu_SOURCES = \
 		../helenos/kernel/sparc64/src/cache.S \
 		../helenos/kernel/sparc64/src/sun4u/takemmu.S \
-		../helenos/kernel/sparc64/src/trap/sun4u/trap_table.S \
-		../helenos/kernel/sparc64/src/trap/sun4u/mmu.S 
+		../helenos/kernel/sparc64/src/trap/sun4u/mmu.S \
+		../shared/start/trap_table.S
+#		../helenos/kernel/sparc64/src/trap/sun4u/trap_table.S 
 
 clock_SOURCES = ../../shared/clock_driver_simidle.c
 #clock_SOURCES = clock/ckinit.c
