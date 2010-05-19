@@ -57,7 +57,7 @@ PUBLIC(_BSP_init)
   call _take_mmu
   nop
 
-#if 0
+#if 0 /* this is in shared/start.S */
   /* Set up ISR handler for interrupt enable/disable */
 	setx SYM(syscall), %l0, %o1
 	setx param_space, %l0, %o2
@@ -83,3 +83,9 @@ PUBLIC(_BSP_init)
 
   ret
   restore
+
+#if 0
+  .align CPU_ALIGNMENT
+  param_space:
+  	.space 8
+#endif

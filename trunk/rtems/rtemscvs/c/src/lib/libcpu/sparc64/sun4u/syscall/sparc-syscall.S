@@ -26,30 +26,42 @@
  *  system call
  *
  *  On entry:
+ *      g4[AG | GL=1] = tstate (from trap table)
+ *      g2[AG | GL=1] = trap vector # (256)
+ *      g3[AG | GL=1] = address of SYM(syscall)
+ *      g4[AG | GL-1] = system call id
  *    if arch = sun4v:
- *      g4 = tstate (from trap table)
- *      g2 = trap vector # (256)
- *      g3 = address of SYM(syscall)
- *      g4[GL-1] = system call id
- *
- *      We need to back to GL-1, so we won't use g2-g4. So the 
- *      syscall code needs to re-read tstate
+ *      We need to back to GL-1 to read the system call id. 
  *   on sun4u:
- *    We cannot easily load the trap table entry 0 with syscall. So instead
- *    just enable/disable interrupts directly.
+ *      We need to go back to the normal globals to read the system call id.
  *    
  *    First thing is to return to the previous set of globals, so 
- *    that the system call id can be read.
+ *    that the system call id can be read.  The syscall code needs 
+ *    to re-read tstate.
+ *
+ *    syscall should only ever be entered by ta 0 being called explicitly
+ *    by a function that knows what is happening.  This means the syscall
+ *    code can safely use any scratch registers and the %o registers.
  */
+
 
 PUBLIC(syscall)
 
+  /* Note: 
+  */
+  
   SYM(syscall):
-/*
     mov   %g0, %g4  ! clear %g4 at this GL
+#if 0 /* TODO: we can make this code shared by using #if SUN4V here */
     rdpr  %gl, %g1
     dec   %g1
     wrpr  %g0, %g1, %gl                     ! go back to GL = GL - 1
+#endif
+    /* and use #if SUN4U here */
+    rdpr  %pstate, %g1
+    andn  %g1, SPARC_PSTATE_AG_MASK, %g1
+    wrpr  %g1, %g0, %pstate                 ! go to regular globals
+
     subcc %g4, 2, %g0                     
     bne   3f
     rdpr  %tstate, %g5                      ! re-read tstate, use delay slot
@@ -80,15 +92,13 @@ PUBLIC(syscall)
     9:                                      ! leave
     mov  0, %g4                             ! clear %g4
     DONE
-*/
 
 PUBLIC(sparc_disable_interrupts)
 
   SYM(sparc_disable_interrupts):
-/*
     mov  SYS_irqdis, %g4
     ta  0
-*/
+#if 0
     rdpr  %pstate, %g5
     rdpr  %pil, %g1
     and   %g5, SPARC_PSTATE_IE_MASK, %o0
@@ -96,16 +106,16 @@ PUBLIC(sparc_disable_interrupts)
     wrpr  %g0, 0xf, %pil                    ! set PIL to 15
     andn  %g5, SPARC_PSTATE_IE_MASK, %g1
     wrpr  %g0, %g1, %pstate                 ! disable interrupts
+#endif
     retl  
     nop
 
 PUBLIC(sparc_enable_interrupts)
 
   SYM(sparc_enable_interrupts):
-/*
     mov  SYS_irqen, %g4
     ta  0
-*/
+#if 0
     rdpr  %pstate, %g5
     and   %o0, 0xf, %g1
     wrpr  %g0, %g1, %pil                    ! restore PIL
@@ -113,7 +123,7 @@ PUBLIC(sparc_enable_interrupts)
     or    %g5, %g1, %g1                     ! restore saved IE
 !    or    %g5, SPARC_PSTATE_IE_MASK, %g1    ! set IE regardless of old (safe?)
     wrpr  %g0, %g1, %pstate
-
+#endif
     retl  
     nop
 
