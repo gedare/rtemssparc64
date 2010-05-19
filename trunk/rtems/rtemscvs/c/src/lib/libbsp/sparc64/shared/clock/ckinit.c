@@ -28,9 +28,9 @@
  */
 #define CPU_FREQ (5000000)
 
-uint64_t sun4v_cycles_per_tick;
+uint64_t sparc64_cycles_per_tick;
 
-/* sun4v: TICK_CMPR triggers soft interrupt 14 */
+/* TICK_CMPR and STICK_CMPR trigger soft interrupt 14 */
 #define CLOCK_VECTOR SPARC_SYNCHRONOUS_TRAP(0x4E)
 
 static unsigned int get_Frequency(void)
@@ -55,11 +55,24 @@ void Clock_driver_support_at_tick(void)
   bit_mask = SPARC_SOFTINT_TM_MASK | SPARC_SOFTINT_SM_MASK | (1<<14);
   sparc64_clear_interrupt_bits(bit_mask);
 
+  /* Note: sun4v uses stick_cmpr for clock driver for M5 simulator, which 
+   * does not currently have tick_cmpr implemented */
   /* TODO: this could be more efficiently implemented as a single assembly 
    * inline */
+#if defined (SUN4U)
+  sparc64_read_tick(tick_reg);
+#elif defined (SUN4V)
   sparc64_read_stick(tick_reg);
-  tick_reg += sun4v_cycles_per_tick;
+#endif
+  tick_reg &= ~(1<<63); /* mask out NPT bit, prevents int_dis from being set */
+
+  tick_reg += sparc64_cycles_per_tick;
+
+#if defined (SUN4U)
+  sparc64_write_tick_cmpr(tick_reg);
+#elif defined (SUN4V)
   sparc64_write_stick_cmpr(tick_reg);
+#endif
 }
 
 #define Clock_driver_support_install_isr(_new, _old) \
@@ -76,11 +89,22 @@ void Clock_driver_support_initialize_hardware(void)
   bit_mask = SPARC_SOFTINT_TM_MASK | SPARC_SOFTINT_SM_MASK | (1<<14);
   sparc64_clear_interrupt_bits(bit_mask);
 
-  sun4v_cycles_per_tick = rtems_configuration_get_microseconds_per_tick()*(get_Frequency()/1000000);
+  sparc64_cycles_per_tick = rtems_configuration_get_microseconds_per_tick()*(get_Frequency()/1000000);
 
+#if defined (SUN4U)
+  sparc64_read_tick(tick_reg);
+#elif defined (SUN4V)
   sparc64_read_stick(tick_reg);
-  tick_reg += sun4v_cycles_per_tick;
+#endif
+
+  tick_reg &= ~(1<<63); /* mask out NPT bit, prevents int_dis from being set */
+  tick_reg += sparc64_cycles_per_tick;
+
+#if defined (SUN4U)
+  sparc64_write_tick_cmpr(tick_reg);
+#elif defined (SUN4V)
   sparc64_write_stick_cmpr(tick_reg);
+#endif
 }
 
 

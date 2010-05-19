@@ -66,7 +66,7 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
 ##   ../shared/ofw/printf.c \
 
 #clock_SOURCES = ../../shared/clock_driver_simidle.c
-clock_SOURCES = clock/ckinit.c
+clock_SOURCES = ../shared/clock/ckinit.c
 
 console_SOURCES = ../../shared/console.c  console/conscfg.c
 

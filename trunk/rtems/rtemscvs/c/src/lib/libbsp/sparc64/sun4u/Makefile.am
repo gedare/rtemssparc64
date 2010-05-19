@@ -129,8 +129,8 @@ mmu_SOURCES = \
 		../shared/start/trap_table.S
 #		../helenos/kernel/sparc64/src/trap/sun4u/trap_table.S 
 
-clock_SOURCES = ../../shared/clock_driver_simidle.c
-#clock_SOURCES = clock/ckinit.c
+#clock_SOURCES = ../../shared/clock_driver_simidle.c
+clock_SOURCES = ../shared/clock/ckinit.c
 
 console_SOURCES = ../../shared/console.c  ../sun4v/console/conscfg.c
 
