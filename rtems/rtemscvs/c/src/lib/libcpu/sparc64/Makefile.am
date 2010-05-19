@@ -16,7 +16,7 @@ include_libcpudir = $(includedir)/libcpu
 include_libcpu_HEADERS = ../shared/include/cache.h
 
 noinst_PROGRAMS += shared/shared-score.rel
-shared_shared_score_rel_SOURCES = shared/score/cpu.c
+shared_shared_score_rel_SOURCES = shared/score/cpu.c sun4u/score/interrupt.S
 shared_shared_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
 shared_shared_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 

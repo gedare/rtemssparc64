@@ -49,8 +49,9 @@
      *    g4 = tstate (old l0)
      *    g2 = trap type (vector) (old l3)
      *
-     *  NOTE: By an executive defined convention, trap type is between 0 and 255 if
-     *        it is an asynchonous trap and 256 and 511 if it is synchronous.
+     *  NOTE: By an executive defined convention:
+     *    if trap type is between 0 and 511 it is an asynchronous trap
+     *    if trap type is between 512 and 1023 it is an asynchonous trap
      */
 
   .align 4

@@ -47,20 +47,18 @@
 
 PUBLIC(syscall)
 
-  /* Note: 
-  */
   
   SYM(syscall):
     mov   %g0, %g4  ! clear %g4 at this GL
-#if 0 /* TODO: we can make this code shared by using #if SUN4V here */
+#if defined (SUN4U)
+    rdpr  %pstate, %g1
+    andn  %g1, SPARC_PSTATE_AG_MASK, %g1
+    wrpr  %g1, %g0, %pstate                 ! go to regular globals
+#elif defined (SUN4V)
     rdpr  %gl, %g1
     dec   %g1
     wrpr  %g0, %g1, %gl                     ! go back to GL = GL - 1
 #endif
-    /* and use #if SUN4U here */
-    rdpr  %pstate, %g1
-    andn  %g1, SPARC_PSTATE_AG_MASK, %g1
-    wrpr  %g1, %g0, %pstate                 ! go to regular globals
 
     subcc %g4, 2, %g0                     
     bne   3f
