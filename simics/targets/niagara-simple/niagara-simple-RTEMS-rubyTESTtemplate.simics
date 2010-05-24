@@ -103,7 +103,7 @@ script-branch {
 #	istc-disable
 #	dstc-disable
 #	cpu-switch-time 1
-	c
+#	c
 }   
 
 #@conf.con0.break_string = "START_TOKEN"
@@ -169,4 +169,4 @@ c
 	ruby0.setparam g_NUM_PROCESSORS 1
 	ruby0.setparam g_MEMORY_SIZE_BYTES 4294967296
 	ruby0.init
-	c
+#	c
