@@ -158,8 +158,8 @@ script-branch {
 	$con.wait-for-string "END_TOKEN"
 	$con.capture-stop
 	ruby0.dump-stats filename = REPLACEDBYSED534TESTNAME.ruby
-
-	quit 0
+	opal0.stats
+#	quit 0
 }
 
 #@def ctrl_ConsoleHAP(user_arg, trigger_obj, break_string):
@@ -221,5 +221,5 @@ c
 	opal0.init
 	opal0.sim-start "REPLACEDBYSED534TESTNAME.opal"
 	
-#c	opal0.sim-step 100
+	opal0.sim-step 100000000
 #c
