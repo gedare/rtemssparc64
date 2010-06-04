@@ -1,4 +1,4 @@
-/* Copyright (c) 2005 Anatoly Sokolov
+/* Copyright (c) 2005 Anatoly Sokolov 
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iom640.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iom640.h,v 1.3 2010/05/10 16:31:22 joel Exp $ */
 
 /* avr/iom640.h - definitions for ATmega640 */
 
@@ -82,7 +82,7 @@
 /* Lock Bits */
 #define __LOCK_BITS_EXIST
 #define __BOOT_LOCK_BITS_0_EXIST
-#define __BOOT_LOCK_BITS_1_EXIST
+#define __BOOT_LOCK_BITS_1_EXIST 
 
 
 /* Signature */

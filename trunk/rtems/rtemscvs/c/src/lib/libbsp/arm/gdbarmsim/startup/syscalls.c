@@ -2,7 +2,7 @@
  *  Copied from libgloss 1 Oct 2009.
  *  Minor modifications to work with RTEMS.
  *
- *  $Id: syscalls.c,v 1.2 2009/11/29 14:53:00 ralf Exp $
+ *  $Id: syscalls.c,v 1.3 2010/05/15 12:29:46 joel Exp $
  */
 
 /* Support files for GNU libc.  Files in the system namespace go here.
@@ -27,7 +27,7 @@
 /* Forward prototypes.  */
 int     _system     _PARAMS ((const char *));
 int     _rename     _PARAMS ((const char *, const char *));
-int     _isatty		_PARAMS ((int));
+int     __isatty		_PARAMS ((int));
 clock_t _times		_PARAMS ((struct tms *));
 int     _gettimeofday	_PARAMS ((struct timeval *, void *));
 int     _unlink		_PARAMS ((const char *));
@@ -779,7 +779,7 @@ _times (struct tms * tp)
 
 
 int
-_isatty (int fd)
+__isatty (int fd)
 {
   struct fdent *pfd;
 

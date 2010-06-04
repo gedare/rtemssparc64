@@ -49,6 +49,11 @@
 /* Why isn't this defined in stdio.h like it's supposed to be? */
 extern int snprintf(char*, size_t, const char*, ...);
 
+extern rtems_isr xilTemacIsr( void *handle );
+extern void xilTemacIsrOn(const rtems_irq_connect_data *);
+extern void xilTemacIsrOff(const rtems_irq_connect_data *);
+extern int xilTemacIsrIsOn(const rtems_irq_connect_data *);
+
 void xilTemacInit( void *voidptr );
 void xilTemacReset(struct ifnet *ifp);
 void xilTemacStop(struct ifnet *ifp);
@@ -299,10 +304,6 @@ void xilTemacStart(struct ifnet *ifp)
     }
 #else
     {
-      extern rtems_isr xilTemacIsr( void *handle );
-      extern void xilTemacIsrOn(const rtems_irq_connect_data *);
-      extern void xilTemacIsrOff(const rtems_irq_connect_data *);
-      extern int xilTemacIsrIsOn(const rtems_irq_connect_data *);
       rtems_irq_connect_data IrqConnData;
 
       /*
@@ -907,7 +908,7 @@ int32_t xilTemac_driver_attach(struct rtems_bsdnet_ifconfig* aBsdConfig, int aDu
 
    xilTemac->iIsPresent = 1;
 
-   snprintf( xilTemac->iUnitName, MAX_UNIT_BYTES, "%s%d", unitName, unit );
+   snprintf( xilTemac->iUnitName, MAX_UNIT_BYTES, "%s%" PRId32, unitName, unit );
 
    xilTemac->iIfp        = &(xilTemac->iArpcom.ac_if);
    ifp                  = &(xilTemac->iArpcom.ac_if);

@@ -1,3 +1,32 @@
+2010-05-20	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* startup/bspstarthooks.c: Removed start section attribute defines.
+
+2010-05-20	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/lpc24xx.h, misc/dma-copy.c, misc/dma.c,
+	misc/system-clocks.c, ssp/ssp.c, startup/bspstarthooks.c: Removed
+	superfluous macros.
+
+2010-05-20	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* Makefile.am, preinstall.am, include/bsp.h, startup/bspstart.c: Use
+	shared output character implementation.
+
+2010-05-20	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* make/custom/lpc24xx.inc: Workaround for GCC bug 38644.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/irq-config.h: Removed file.
+	* Makefile.am, preinstall.am: Reflect change above.
+	* irq/irq.c: Removed superfluous parameter checks.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* make/custom/lpc24xx.inc: Use VFP floating point model.
+
 2010-04-09	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
 
 	* make/custom/lpc24xx.inc: removed over-paranoid warning switches

@@ -11,7 +11,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: clock.c,v 1.11 2010/04/09 20:24:55 thomas Exp $
+ *  $Id: clock.c,v 1.12 2010/04/30 13:15:48 sh Exp $
  */
 #include <rtems.h>
 #include <rtems/clockdrv.h>
@@ -19,7 +19,7 @@
 
 #include <stdlib.h>
 #include <bsp.h>
-#include <irq.h>
+#include <bsp/irq.h>
 #include <at91rm9200.h>
 #include <at91rm9200_pmc.h>
 

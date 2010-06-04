@@ -1,7 +1,7 @@
-/.cvsignore/1.2/Sat Oct 24 23:17:16 2009//
-/Makefile.am/1.7/Thu Dec 31 16:55:00 2009//
-/config.h/1.5/Sat Oct 24 23:17:16 2009//
-/tm03.adb/1.5/Sat Oct 24 23:17:16 2009//
-/tmtest.adb/1.8/Thu Dec 31 16:55:00 2009//
-/tmtest.ads/1.7/Thu Dec 31 16:55:00 2009//
+/.cvsignore/1.2/Tue Jun  1 21:19:20 2010//
+/Makefile.am/1.7/Tue Jun  1 21:19:20 2010//
+/config.h/1.5/Tue Jun  1 21:19:20 2010//
+/tm03.adb/1.5/Tue Jun  1 21:19:20 2010//
+/tmtest.adb/1.8/Tue Jun  1 21:19:20 2010//
+/tmtest.ads/1.7/Tue Jun  1 21:19:20 2010//
 D

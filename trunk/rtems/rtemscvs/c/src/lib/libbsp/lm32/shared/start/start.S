@@ -7,7 +7,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: start.S,v 1.7 2009/11/29 14:48:22 ralf Exp $
+ *  $Id: start.S,v 1.9 2010/05/07 19:25:08 joel Exp $
  *
  *  Jukka Pietarinen <jukka.pietarinen@mrf.fi>, 2008,
  *  Micro-Research Finland Oy
@@ -150,10 +150,17 @@ crt0:
 	call	r7
 	# boot_card returns when RTEMS is shutdown
 #if ON_SIMULATOR
+    #if defined(ON_GDB_SIM)
 	#define	SYS_exit	1
-
         mvi     r8, SYS_exit
         scall
+    #else
+	# on qemu-lm32
+	#define	SYS_CTRL_REG 0xffff0000
+	mvhi	r7, hi(SYS_CTRL_REG)
+	ori	r7, r7, lo(SYS_CTRL_REG)
+	sw	(r7+0), r0
+    #endif
 #endif
 
 .dead_end:

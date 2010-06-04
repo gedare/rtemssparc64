@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: clock.c,v 1.6 2010/04/09 20:24:56 thomas Exp $
+ *  $Id: clock.c,v 1.7 2010/04/30 13:15:49 sh Exp $
  */
 
 #include <rtems.h>
@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <bsp.h>
 #include <bspopts.h>
-#include <irq.h>
+#include <bsp/irq.h>
 #include <pxa255.h>
 
 #if ON_SKYEYE==1

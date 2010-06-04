@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: version.h,v 1.1 2009/08/06 14:52:06 joel Exp $ */
+/* $Id: version.h,v 1.2 2010/05/10 16:31:24 joel Exp $ */
 
 /** \defgroup avr_version <avr/version.h>: avr-libc version macros
     \code #include <avr/version.h> \endcode
@@ -55,7 +55,7 @@
 
 /** \ingroup avr_version
     String literal representation of the current library version. */
-#define __AVR_LIBC_VERSION_STRING__ "1.6.6"
+#define __AVR_LIBC_VERSION_STRING__ "1.6.8"
 
 /** \ingroup avr_version
     Numerical representation of the current library version.
@@ -65,15 +65,15 @@
     added.  It is intented to provide a monotonically increasing
     numerical value that can easily be used in numerical checks.
  */
-#define __AVR_LIBC_VERSION__        10606UL
+#define __AVR_LIBC_VERSION__        10608UL
 
 /** \ingroup avr_version
     String literal representation of the release date. */
-#define __AVR_LIBC_DATE_STRING__    "20090309"
+#define __AVR_LIBC_DATE_STRING__    "20100211"
 
 /** \ingroup avr_version
     Numerical representation of the release date. */
-#define __AVR_LIBC_DATE_            20090309UL
+#define __AVR_LIBC_DATE_            20100211UL
 
 /** \ingroup avr_version
     Library major version number. */
@@ -85,6 +85,6 @@
 
 /** \ingroup avr_version
     Library revision number. */
-#define __AVR_LIBC_REVISION__       6
+#define __AVR_LIBC_REVISION__       8
 
 #endif /* _AVR_VERSION_H_ */

@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.4 2009/09/16 20:43:40 joel Exp $
+ *  $Id: bsp.h,v 1.5 2010/04/30 14:27:24 sh Exp $
  */
 
 #ifndef _BSP_H
@@ -21,6 +21,8 @@ extern "C" {
 #include <rtems/console.h>
 #include <rtems/clockdrv.h>
 #include <libchip/serial.h>
+
+#define BSP_FEATURE_IRQ_EXTENSION
 
 #define BSP_HAS_FRAME_BUFFER 1
 

@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.1 2008/12/04 22:55:42 joel Exp $
+## $Id: Makefile.am,v 1.3 2010/05/30 18:02:15 joel Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../aclocal
@@ -16,7 +16,7 @@ include_libcpudir = $(includedir)/libcpu
 ## shared/cache
 include_libcpu_HEADERS = ../shared/include/cache.h
 noinst_PROGRAMS += shared/cache.rel
-shared_cache_rel_SOURCES = shared/cache/cache.c shared/cache/cache_.h \
+shared_cache_rel_SOURCES = ../shared/src/no_cache.c shared/cache/cache_.h \
     ../shared/src/cache_aligned_malloc.c \
     ../shared/src/cache_manager.c
 shared_cache_rel_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/shared/cache

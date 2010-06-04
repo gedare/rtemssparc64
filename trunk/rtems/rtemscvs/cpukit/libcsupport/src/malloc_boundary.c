@@ -27,7 +27,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: malloc_boundary.c,v 1.8 2009/11/19 13:51:40 ralf Exp $
+ *  $Id: malloc_boundary.c,v 1.9 2010/05/23 06:30:23 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -75,18 +75,18 @@ static void rtems_malloc_boundary_at_malloc(
 {
   void *return_this;
   struct mallocNode *mp = (struct mallocNode *)pointer;
-  int *fp, *nfp;
+  intptr_t *fp, *nfp;
   int i;
 
   _RTEMS_Lock_allocator();
     mp->memory = mp + 1;
     return_this = mp->memory;
     mp->size = size - (sizeof(struct mallocNode) + SENTINELSIZE);
-    fp = (int *)&size - 2;
+    fp = (intptr_t *)&size - 2;
     for (i = 0 ; i < CALLCHAINSIZE ; i++) {
       mp->callChain[i] = fp[1];
-      nfp = (int *)(fp[0]);
-      if((nfp <= fp) || (nfp > (int *)(INT32_C(0x1000000) /* 1 << 24 */)))
+      nfp = (intptr_t *)(fp[0]);
+      if((nfp <= fp) || (nfp > (intptr_t *)(INT32_C(0x1000000) /* 1 << 24 */)))
        break;
       fp = nfp;
     }

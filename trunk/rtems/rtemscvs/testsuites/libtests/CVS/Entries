@@ -22,11 +22,11 @@ D/block06////
 D/block07////
 D/POSIX////
 D/stringto01////
-/.cvsignore/1.3/Sat Oct 24 23:15:38 2009//
-/ChangeLog/1.173/Mon Apr 26 15:34:25 2010//
-/Makefile.am/1.25/Mon Apr 26 15:34:25 2010//
-/README/1.3/Sat Oct 24 23:15:38 2009//
-/configure.ac/1.33/Mon Apr 26 15:34:25 2010//
 D/block08////
 D/block09////
 D/block10////
+/.cvsignore/1.3/Tue Jun  1 21:18:40 2010//
+/ChangeLog/1.176/Fri Jun  4 22:30:09 2010//
+/Makefile.am/1.26/Fri Jun  4 22:30:09 2010//
+/README/1.3/Tue Jun  1 21:18:40 2010//
+/configure.ac/1.33/Tue Jun  1 21:18:40 2010//

@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: io43u35x.h,v 1.2 2009/11/30 16:01:43 ralf Exp $ */
+/* $Id: io43u35x.h,v 1.3 2010/05/10 16:31:20 joel Exp $ */
 
 /* avr/io43u35x.h - definitions for AT43USB35x */
 
@@ -45,7 +45,7 @@
 #  define _AVR_IOXXX_H_ "io43u35x.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 /* I/O registers */
 
@@ -417,7 +417,7 @@
 #define    ADIE     3
 #define    ADPS2    2
 #define    ADPS1    1
-#define    ADPS0    0
+#define    ADPS0    0  
 
 /* Constants */
 #define    RAMEND   0x045F     /*Last On-Chip SRAM Location*/

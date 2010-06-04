@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iotnx61.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iotnx61.h,v 1.3 2010/05/10 16:31:23 joel Exp $ */
 
 /* avr/iotnx61.h - definitions for ATtiny261, ATtiny461 and ATtiny861 */
 
@@ -42,7 +42,7 @@
 #  define _AVR_IOXXX_H_ "iotnx61.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 #ifndef _AVR_IOTNx61_H_
 #define _AVR_IOTNx61_H_ 1

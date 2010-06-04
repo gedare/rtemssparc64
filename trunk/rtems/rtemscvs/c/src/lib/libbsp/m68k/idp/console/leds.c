@@ -2,7 +2,7 @@
  * leds.c -- control the led's on a Motorola mc68ec0x0 board.
  *           Written by rob@cygnus.com (Rob Savoye)
  *
- *  $Id: leds.c,v 1.9 2008/08/19 10:24:42 ralf Exp $
+ *  $Id: leds.c,v 1.10 2010/04/28 19:33:32 joel Exp $
  */
 #include "leds.h"
 
@@ -63,6 +63,8 @@ clear_leds ( )
     *leds = 0xFF;
 }
 
+void rtems_bsp_delay( int );
+
 /*
  * zylons -- draw a rotating pattern. NOTE: this function never returns.
  */
@@ -71,7 +73,6 @@ zylons()
 {
   unsigned char *leds 	= (unsigned char *)LED_ADDR;
   unsigned char curled = 0xfe;
-  void rtems_bsp_delay( int );
 
   while (1)
     {

@@ -23,7 +23,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq.h,v 1.9 2007/11/30 20:45:10 strauman Exp $
+ *  $Id: irq.h,v 1.10 2010/04/30 12:33:44 sh Exp $
  */
 
 #ifndef LIBBSP_POWERPC_IRQ_H
@@ -143,6 +143,9 @@ extern volatile unsigned int ppc_cached_irq_mask;
 #define BSP_DECREMENTER			(BSP_PROCESSOR_IRQ_LOWEST_OFFSET)
 #define BSP_PERIODIC_TIMER		(BSP_DECREMENTER)
 
+#define BSP_INTERRUPT_VECTOR_MIN BSP_LOWEST_OFFSET
+
+#define BSP_INTERRUPT_VECTOR_MAX BSP_MAX_OFFSET
 
 #define CPM_INTERRUPT
 

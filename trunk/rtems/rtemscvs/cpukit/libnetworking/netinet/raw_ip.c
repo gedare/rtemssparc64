@@ -31,7 +31,7 @@
  */
 
 /*
- *	$Id: raw_ip.c,v 1.8 2010/03/28 05:47:49 ralf Exp $
+ *	$Id: raw_ip.c,v 1.10 2010/05/29 04:33:42 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -336,7 +336,7 @@ rip_usrreq(struct socket *so, int req, struct mbuf *m, struct mbuf *nam,
 	int s;
 
 	if (req == PRU_CONTROL)
-		return (in_control(so, (u_long)m, (caddr_t)nam,
+		return (in_control(so, (uintptr_t)m, (caddr_t)nam,
 			(struct ifnet *)control));
 
 	switch (req) {
@@ -357,7 +357,7 @@ rip_usrreq(struct socket *so, int req, struct mbuf *m, struct mbuf *nam,
 		if (error)
 			break;
 		inp = (struct inpcb *)so->so_pcb;
-		inp->inp_ip_p = (int)nam;
+		inp->inp_ip_p = (uintptr_t)nam;
 		break;
 
 	case PRU_DISCONNECT:

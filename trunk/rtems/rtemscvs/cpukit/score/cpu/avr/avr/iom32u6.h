@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iom32u6.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iom32u6.h,v 1.3 2010/05/10 16:31:22 joel Exp $ */
 
 /* avr/iom32u6.h - definitions for ATmega32U6 */
 
@@ -42,7 +42,7 @@
 #  define _AVR_IOXXX_H_ "iom32u6.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 
 #ifndef _AVR_ATmega32U6_H_

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  @(#) $Id: msdos_eval.c,v 1.11 2010/03/04 06:36:51 ccj Exp $
+ *  @(#) $Id: msdos_eval.c,v 1.12 2010/05/27 16:23:04 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -72,7 +72,7 @@ msdos_set_handlers(rtems_filesystem_location_info_t *loc)
 int
 msdos_eval_path(
     const char                        *pathname,
-    int                                pathnamelen,
+    size_t                             pathnamelen,
     int                                flags,
     rtems_filesystem_location_info_t  *pathloc
     )

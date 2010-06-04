@@ -58,7 +58,7 @@ Summary:      	sh-rtems4.11 gcc
 
 Group:	      	Development/Tools
 Version:        %{gcc_rpmvers}
-Release:      	10%{?dist}
+Release:      	12%{?dist}
 License:      	GPL
 URL:		http://gcc.gnu.org
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -80,14 +80,14 @@ BuildRequires:  %{_host_rpmprefix}gcc
 
 # versions of libraries, we conditionally bundle if necessary
 %global mpc_version	0.8.1
-%global mpfr_version	2.4.1
+%global mpfr_version	2.4.2
 %global gmp_version	4.3.2
 %global libelf_version  0.8.13
 
 # versions of libraries these distros are known to ship
 %if 0%{?fc13}
 %global mpc_provided 0.8.1
-%global mpfr_provided 2.4.1
+%global mpfr_provided 2.4.2
 %global gmp_provided 4.3.1
 %endif
 
@@ -105,8 +105,7 @@ BuildRequires:  %{_host_rpmprefix}gcc
 
 %if 0%{?el6}
 %global mpc_provided %{nil}
-# el6 beta ships mpfr but mpfr-devel is missing
-%global mpfr_provided %{nil}
+%global mpfr_provided 2.4.1
 %global gmp_provided 4.3.1
 %endif
 
@@ -209,7 +208,7 @@ BuildRequires:  %{_host_rpmprefix}libelf-devel >= %{libelf_required}
 %{?fc11:BuildRequires: cloog-ppl-devel >= %cloog_required}
 %{?fc12:BuildRequires: cloog-ppl-devel >= %cloog_required}
 %{?fc13:BuildRequires: cloog-ppl-devel >= %cloog_required}
-# el6 ships cloog-ppl, but cloog-ppl-devel is missing
+%{?el6:BuildRequires: cloog-ppl-devel >= %cloog_required}
 %{?suse11_2:BuildRequires: cloog-devel >= %cloog_required, ppl-devel}
 %{?suse11_1:BuildRequires: cloog-devel >= %cloog_required, ppl-devel}
 %endif
@@ -241,7 +240,7 @@ BuildRequires:	rtems-4.11-sh-rtems4.11-binutils
 Requires:	rtems-4.11-gcc-common
 Requires:	rtems-4.11-sh-rtems4.11-binutils
 Requires:	rtems-4.11-sh-rtems4.11-gcc-libgcc = %{gcc_rpmvers}-%{release}
-Requires:	rtems-4.11-sh-rtems4.11-newlib = %{newlib_version}-10%{?dist}
+Requires:	rtems-4.11-sh-rtems4.11-newlib = %{newlib_version}-12%{?dist}
 
 %if "%{gcc_version}" >= "4.5.0"
 BuildRequires:  zlib-devel
@@ -255,18 +254,11 @@ BuildRequires:  %{_host_rpmprefix}zlib-devel
 
 %if "%{gcc_version}" == "4.5.0"
 Source0:	ftp://ftp.gnu.org/gnu/gcc/gcc-%{gcc_pkgvers}/gcc-core-%{gcc_pkgvers}.tar.bz2
-Patch0:         ftp://ftp.rtems.org/pub/rtems/SOURCES/4.11/gcc-core-4.5.0-rtems4.11-20100414.diff
-%endif
-%if "%{gcc_version}" == "4.4.3"
-Source0:	ftp://ftp.gnu.org/gnu/gcc/gcc-%{gcc_pkgvers}/gcc-core-%{gcc_pkgvers}.tar.bz2
-Patch0:		ftp://ftp.rtems.org/pub/rtems/SOURCES/4.10/gcc-core-4.4.3-rtems4.10-20100315.diff
+Patch0:         ftp://ftp.rtems.org/pub/rtems/SOURCES/4.11/gcc-core-4.5.0-rtems4.11-20100522.diff
 %endif
 %{?_without_sources:NoSource:	0}
 
 %if "%{gcc_version}" == "4.5.0" 
-Source1:	ftp://ftp.gnu.org/gnu/gcc/gcc-%{gcc_pkgvers}/gcc-g++-%{gcc_pkgvers}.tar.bz2
-%endif
-%if "%{gcc_version}" == "4.4.3" 
 Source1:	ftp://ftp.gnu.org/gnu/gcc/gcc-%{gcc_pkgvers}/gcc-g++-%{gcc_pkgvers}.tar.bz2
 %endif
 %{?_without_sources:NoSource:	1}
@@ -348,7 +340,7 @@ cd ..
   ln -s ../libelf-%{libelf_version} gcc-%{gcc_pkgvers}/libelf
 %endif
 
-echo "RTEMS gcc-%{gcc_version}-10%{?dist}/newlib-%{newlib_version}-10%{?dist}" > gcc-%{gcc_pkgvers}/gcc/DEV-PHASE
+echo "RTEMS gcc-%{gcc_version}-12%{?dist}/newlib-%{newlib_version}-12%{?dist}" > gcc-%{gcc_pkgvers}/gcc/DEV-PHASE
 
 
   # Fix timestamps
@@ -618,7 +610,7 @@ sed -e 's,^[ ]*/usr/lib/rpm/find-debuginfo.sh,./find-debuginfo.sh,' \
 # Group:          Development/Tools
 # Version:        %{gcc_rpmvers}
 # Requires:       rtems-4.11-sh-rtems4.11-binutils
-# Requires:       rtems-4.11-sh-rtems4.11-newlib = %{newlib_version}-10%{?dist}
+# Requires:       rtems-4.11-sh-rtems4.11-newlib = %{newlib_version}-12%{?dist}
 # License:	GPL
 
 # %if %build_infos
@@ -636,7 +628,7 @@ Summary:        libgcc for sh-rtems4.11-gcc
 Group:          Development/Tools
 Version:        %{gcc_rpmvers}
 %{?_with_noarch_subpackages:BuildArch: noarch}
-Requires:       rtems-4.11-sh-rtems4.11-newlib = %{newlib_version}-10%{?dist}
+Requires:       rtems-4.11-sh-rtems4.11-newlib = %{newlib_version}-12%{?dist}
 License:	GPL
 
 %description -n rtems-4.11-sh-rtems4.11-gcc-libgcc
@@ -810,7 +802,7 @@ Summary:      	C Library (newlib) for sh-rtems4.11
 Group: 		Development/Tools
 License:	Distributable
 Version:	%{newlib_version}
-Release:        10%{?dist}
+Release:        12%{?dist}
 %{?_with_noarch_subpackages:BuildArch: noarch}
 
 Requires:	rtems-4.11-newlib-common
@@ -831,7 +823,7 @@ Newlib C Library for sh-rtems4.11.
 Summary:	Base package for RTEMS newlib C Library
 Group:          Development/Tools
 Version:        %{newlib_version}
-Release:        10%{?dist}
+Release:        12%{?dist}
 %{?_with_noarch_subpackages:BuildArch: noarch}
 License:	Distributable
 

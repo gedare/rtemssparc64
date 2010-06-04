@@ -8,7 +8,7 @@
  * found in the file LICENSE in this distribution or at
  *    http://www.rtems.com/license
  *
- * $Id: uart.c,v 1.8 2010/04/07 21:48:14 joel Exp $
+ * $Id: uart.c,v 1.9 2010/04/30 14:40:16 sh Exp $
  */
 #include <bsp.h>
 #include <rtems/libio.h>
@@ -17,7 +17,7 @@
 #include <rtems/bspIo.h>
 #include <termios.h>
 #include <rtems/irq.h>
-#include <irq.h>
+#include <bsp/irq.h>
 #include <mc9328mxl.h>
 
 

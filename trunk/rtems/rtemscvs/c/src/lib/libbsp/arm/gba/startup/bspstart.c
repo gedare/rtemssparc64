@@ -15,17 +15,15 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.12 2008/09/16 18:59:04 joel Exp $
+ *  $Id: bspstart.c,v 1.13 2010/04/30 14:55:55 sh Exp $
  */
 
 #include <stdio.h>
 #include <bsp.h>
+#include <bsp/irq-generic.h>
 #include <rtems/bspIo.h>
 #include <gba.h>
 #include <conio.h>
-
-/* External Prototypes */
-extern void rtems_irq_mngt_init(void);
 
 /** Chip registers */
 volatile unsigned int *Regs = (unsigned int *)GBA_IO_REGS_ADDR;
@@ -50,7 +48,9 @@ void bsp_start_default( void )
   /* rtems_exception_init_mngt(); */
 
   /* Init rtems interrupt management */
-  rtems_irq_mngt_init();
+  if (bsp_interrupt_initialize() != RTEMS_SUCCESSFUL) {
+    _CPU_Fatal_halt(0xe);
+  }
 }
 
 /**

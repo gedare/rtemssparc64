@@ -30,7 +30,7 @@
 
 /* avr/iom644.h - definitions for ATmega644 */
 
-/* $Id: iom644.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iom644.h,v 1.3 2010/05/10 16:31:22 joel Exp $ */
 
 #ifndef _AVR_IOM644_H_
 #define _AVR_IOM644_H_ 1
@@ -82,7 +82,7 @@
 /* Lock Bits */
 #define __LOCK_BITS_EXIST
 #define __BOOT_LOCK_BITS_0_EXIST
-#define __BOOT_LOCK_BITS_1_EXIST
+#define __BOOT_LOCK_BITS_1_EXIST 
 
 
 /* Signature */

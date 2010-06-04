@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.79 2010/04/26 07:44:58 ralf Exp $
+# $Id: Makefile.am,v 1.80 2010/04/29 12:18:28 ralf Exp $
 
 TARGET = lm32-rtems4.10
 
@@ -10,12 +10,12 @@ BINUTILS_RPMREL = 2
 include ../binutils.am
 BINUTILS_OPTS +=
 
-GCC_VERS = 4.4.3
+GCC_VERS = 4.4.4
 GCC_PKGVERS = $(GCC_VERS)
-GCC_RPMREL = 10
+GCC_RPMREL = 1
 NEWLIB_VERS = 1.18.0
 NEWLIB_PKGVERS = $(NEWLIB_VERS)
-NEWLIB_RPMREL = `expr $(GCC_RPMREL) + 1`
+NEWLIB_RPMREL = `expr $(GCC_RPMREL) + 11`
 include ../gcc.am
 GCC_OPTS += --languages=cxx
 

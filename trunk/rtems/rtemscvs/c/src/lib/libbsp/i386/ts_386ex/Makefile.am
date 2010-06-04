@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.41 2009/07/03 15:07:26 joel Exp $
+## $Id: Makefile.am,v 1.43 2010/05/21 18:08:58 joel Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -27,7 +27,6 @@ include_HEADERS += include/coverhd.h
 
 include_bsp_HEADERS = ../../i386/shared/irq/irq.h \
     ../../i386/shared/irq/irq_asm.h \
-    ../../i386/shared/irq/irq-config.h \
     ../../shared/include/irq-generic.h \
     ../../shared/include/irq-info.h
 
@@ -45,7 +44,7 @@ include_HEADERS += ../../i386/shared/comm/uart.h
 # startup
 libbsp_a_SOURCES += ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/bsppredriverhook.c ../../shared/bsppretaskinghook.c \
-    ../../shared/bspgetworkarea.c \
+    ../../shared/bspgetworkarea.c ../../shared/bspreset.c \
     ../../shared/bsppost.c startup/bspstart.c ../../shared/bootcard.c \
     ../../shared/sbrk.c ../../i386/shared/irq/idt.c \
     ../../i386/shared/irq/irq.c ../../i386/shared/irq/irq_init.c \

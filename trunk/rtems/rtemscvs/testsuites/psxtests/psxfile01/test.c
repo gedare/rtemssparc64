@@ -10,14 +10,14 @@
  *    /dev
  *    /dev/XXX   [where XXX includes at least console]
  *
- *  COPYRIGHT (c) 1989-2009.
+ *  COPYRIGHT (c) 1989-2010.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test.c,v 1.20 2009/12/08 17:52:53 joel Exp $
+ *  $Id: test.c,v 1.23 2010/06/02 00:50:37 ccj Exp $
  */
 
 #include <stdio.h>
@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <string.h>
 #include <ctype.h>
+#include <rtems/imfs.h>
 
 #include <rtems.h>
 #include <rtems/libio.h>
@@ -37,6 +38,8 @@
 void test_case_reopen_append(void);
 
 char test_write_buffer[ 1024 ];
+rtems_filesystem_operations_table  IMFS_ops_no_evalformake;
+rtems_filesystem_operations_table  IMFS_ops_no_rename;
 
 /*
  *  File test support routines.
@@ -115,6 +118,32 @@ void stat_a_file(
 
 }
 
+int no_evalformake_IMFS_initialize(
+  rtems_filesystem_mount_table_entry_t *mt_entry,
+  const void                           *data
+)
+{
+   return IMFS_initialize_support(
+     mt_entry,
+     &IMFS_ops_no_evalformake,
+     &IMFS_memfile_handlers,
+     &IMFS_directory_handlers
+   );
+}
+
+int no_rename_IMFS_initialize(
+  rtems_filesystem_mount_table_entry_t *mt_entry,
+  const void                           *data
+)
+{
+   return IMFS_initialize_support(
+     mt_entry,
+     &IMFS_ops_no_rename,
+     &IMFS_memfile_handlers,
+     &IMFS_directory_handlers
+   );
+}
+
 
 /*
  *  Main entry point of the test
@@ -145,6 +174,23 @@ int main(
   rtems_status_code rtems_status;
   rtems_time_of_day time;
 
+  IMFS_ops_no_evalformake = IMFS_ops;
+  IMFS_ops_no_rename = IMFS_ops;
+
+  IMFS_ops_no_evalformake.fsmount_me_h = no_evalformake_IMFS_initialize;
+  IMFS_ops_no_evalformake.evalformake_h = NULL;
+
+  IMFS_ops_no_rename.fsmount_me_h = no_rename_IMFS_initialize;
+  IMFS_ops_no_rename.rename_h = NULL;
+
+  puts( "register no eval-for-make filesystem" );
+  status = rtems_filesystem_register( "nefm", no_evalformake_IMFS_initialize );
+  rtems_test_assert( status == 0 );
+  
+  puts( "register no rename filesystem" );
+  status = rtems_filesystem_register( "nren", no_rename_IMFS_initialize );
+  rtems_test_assert( status == 0 );
+  
   printf( "\n\n*** FILE TEST 1 ***\n" );
 
   /*
@@ -220,6 +266,7 @@ int main(
   /* test rtems_filesystem_evaluate_path by sending NULL path */
   status = chdir( NULL );
   rtems_test_assert( status == -1 );
+  rtems_test_assert( errno == EFAULT );
 
   /*
    *  Now switch gears and exercise rmdir().
@@ -334,6 +381,125 @@ int main(
   status = mknod( "/tmp/joel", (S_IFREG | S_IRWXU), 0LL );
   test_write( "/tmp/joel", 0, "the first write!!!\n" );
   test_cat( "/tmp/joel", 0, 0 );
+
+  /* Exercise _rename_r */
+
+  /* Simple rename test */
+  puts( "rename /tmp/joel to /tmp/drjoel");
+  status = _rename_r(NULL,"/tmp/joel","/tmp/drjoel");
+  rtems_test_assert(status == 0);
+
+  /* Simple rename test */
+  puts("rename /tmp/drjoel to /tmp/joel");
+  status = _rename_r(NULL,"/tmp/drjoel","/tmp/joel");
+  rtems_test_assert(status == 0);
+
+  /* Invalid old path */
+  puts("rename /tmp/drjoel to /tmp/joel - Should result in an error \
+since old path is not valid");
+  status = _rename_r(NULL,"/tmp/drjoel","/tmp/joel");
+  rtems_test_assert(status == -1);
+
+  /* Invalid new path */
+  puts("rename /tmp/joel to /tmp/drjoel/joel - Should result in an error \
+since new path is not valid");
+  status = _rename_r(NULL,"/tmp/joel","/tmp/drjoel/joel");
+  rtems_test_assert(status == -1);
+
+  puts("changing dir to /tmp");
+  status = chdir("/tmp/");
+  rtems_test_assert(status == 0);
+
+  puts("rename joel to drjoel");
+  status = _rename_r(NULL,"joel","drjoel");
+  rtems_test_assert(status == 0);
+
+  puts("rename drjoel to joel");
+  status = _rename_r(NULL,"drjoel","joel");
+  rtems_test_assert(status == 0);
+
+  /* Rename across file systems */
+  puts("creating directory /imfs");
+  status = mkdir("/imfs",0777);
+  rtems_test_assert(status == 0);
+  puts("creating directory /imfs/hidden_on_mount");
+  status = mkdir("/imfs/hidden_on_mount",0777);
+  rtems_test_assert(status == 0);
+
+  puts("mounting filesystem with IMFS_ops at /imfs");
+  status = mount("null", "/imfs", "imfs", RTEMS_FILESYSTEM_READ_WRITE, NULL);
+  rtems_test_assert(status == 0);
+  puts("creating directory /imfs/test (on newly mounted filesystem)");
+  status = mkdir("/imfs/test", 0777);
+  rtems_test_assert(status == 0);
+
+  puts("attempt to rename directory joel to /imfs/test/joel - should fail with EXDEV");
+  status = _rename_r(NULL, "joel", "/imfs/test/joel");
+  rtems_test_assert(status == -1);
+  rtems_test_assert(errno == EXDEV);
+
+  puts("changing dir to /");
+  status = chdir("/");
+  rtems_test_assert(status == 0);
+
+  puts("attempt to rename across filesystem, with old path having a parent node");
+  puts("attempt to rename tmp/joel to /imfs/test/joel");
+  status = _rename_r(NULL, "tmp/joel", "/imfs/test/joel");
+  rtems_test_assert(status == -1);
+  rtems_test_assert(errno == EXDEV);
+
+  puts("Unmounting /imfs");
+  status = unmount("/imfs");
+  rtems_test_assert(status == 0);
+
+  puts("Mounting filesystem @ /imfs with no support for evalformake");
+  
+  status = mount("null", "/imfs", "nefm", RTEMS_FILESYSTEM_READ_WRITE, NULL);
+  rtems_test_assert(status == 0);
+
+  puts("change directory to /imfs");
+  status = chdir("/imfs");
+  rtems_test_assert(status == 0);
+
+  puts("exercise _rename_r, with target on /imfs - expected ENOTSUP");
+  puts("attempt to rename /tmp/joel to joel");
+  status = _rename_r(NULL, "/tmp/joel", "joel");
+  rtems_test_assert(status == -1);
+  rtems_test_assert(errno == ENOTSUP);
+
+  puts("change directory to /");
+  status = chdir("/");
+  rtems_test_assert(status == 0);
+  
+  status = unmount("/imfs");
+  rtems_test_assert(status == 0);
+
+
+  puts("Mounting filesystem @ /imfs with no support for rename");
+  status = mount("null", "/imfs", "nren", RTEMS_FILESYSTEM_READ_WRITE, NULL);
+  rtems_test_assert(status == 0);
+
+  puts("creating directory /imfs/test");
+  status = mkdir("/imfs/test", 0777);
+  rtems_test_assert(status == 0);
+
+  puts("creating directory /imfs/test/old_dir");
+  status = mkdir("/imfs/test/old_dir", 0777);
+  rtems_test_assert(status == 0);
+
+  puts("changing to /");
+  status = chdir("/");
+  
+  puts("attempt to rename imfs/old_dir to imfs/new_dir");
+  status = _rename_r(NULL, "imfs/test/old_dir", "imfs/test/new_dir");
+  rtems_test_assert(status == -1);
+  rtems_test_assert(errno == ENOTSUP);
+
+  puts("unmounting /imfs");
+  status = unmount("/imfs");
+  rtems_test_assert(status == 0);
+
+  puts("End of _rename_r tests");
 
   /*
    *  Test simple write to a file at a non-0 offset in the first block

@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.55 2009/10/09 13:00:08 thomas Exp $
+## $Id: Makefile.am,v 1.56 2010/04/30 11:43:01 sh Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -28,7 +28,6 @@ SUBDIRS = . tools
 
 include_bsp_HEADERS = ../../i386/shared/irq/irq.h \
     ../../i386/shared/irq/irq_asm.h ../../i386/shared/comm/tty_drv.h \
-    ../../i386/shared/irq/irq-config.h \
     ../../shared/include/irq-generic.h \
     ../../shared/include/irq-info.h
 

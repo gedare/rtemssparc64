@@ -8,12 +8,12 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: start.S,v 1.5 2009/11/29 15:27:06 ralf Exp $
+ *  $Id: start.S,v 1.6 2010/05/13 20:51:27 joel Exp $
  *
  */
 
 #include <rtems/asm.h>
-#include "regs.h"
+#include <bsp/regs.h>
 
 	.text
 	.align	2

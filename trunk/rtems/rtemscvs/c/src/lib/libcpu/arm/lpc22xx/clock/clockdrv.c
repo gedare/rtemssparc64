@@ -12,11 +12,11 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: clockdrv.c,v 1.9 2010/04/09 20:24:55 thomas Exp $
+ *  $Id: clockdrv.c,v 1.10 2010/04/30 13:15:49 sh Exp $
 */
 #include <rtems.h>
 #include <bsp.h>
-#include <irq.h>
+#include <bsp/irq.h>
 #include <lpc22xx.h>
 #include <rtems/bspIo.h>  /* for printk */
 

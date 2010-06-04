@@ -1,8 +1,8 @@
 D/cache////
 D/reg_win////
 D/syscall////
-/.cvsignore/1.4/Sat Oct 24 23:21:06 2009//
-/ChangeLog/1.53/Sat Oct 24 23:21:05 2009//
-/Makefile.am/1.21/Sat Oct 24 23:21:06 2009//
-/configure.ac/1.25/Thu Dec 31 16:54:51 2009//
-/preinstall.am/1.6/Wed Feb 10 20:48:42 2010//
+/.cvsignore/1.4/Tue Jun  1 21:20:55 2010//
+/ChangeLog/1.53/Tue Jun  1 21:20:55 2010//
+/Makefile.am/1.21/Tue Jun  1 21:20:55 2010//
+/configure.ac/1.25/Tue Jun  1 21:20:55 2010//
+/preinstall.am/1.6/Tue Jun  1 21:20:55 2010//

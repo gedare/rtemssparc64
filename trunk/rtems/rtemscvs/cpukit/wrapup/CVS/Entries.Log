@@ -1,6 +1,0 @@
-A D/itron////
-A D/posix////
-A D/rtems////
-R D/rtems////
-R D/posix////
-R D/itron////

@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: cpu_asm.S,v 1.8 2010/03/27 15:01:24 joel Exp $
+ *  $Id: cpu_asm.S,v 1.9 2010/05/10 16:31:19 joel Exp $
  */
 
 /*
@@ -26,9 +26,8 @@
 #include "config.h"
 #endif
 
-#include <avr/io.h>
-#include <avr/sfr_defs.h>
 #include <rtems/asm.h>
+#include <avr/sfr_defs.h>
 
 
 #define jmpb_hi 	r25
@@ -60,7 +59,6 @@ SYM( setjmp ):
 	in 		ret_lo, AVR_STACK_POINTER_HI_ADDR
 	st 		X+, ret_lo
 #else
-	in		ret_lo,	__zero_reg__
 	st		X+, ret_lo
 #endif
 /*save status reg (I flag)*/

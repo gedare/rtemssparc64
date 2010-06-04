@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.58 2010/04/25 05:36:48 ralf Exp $
+# $Id: Makefile.am,v 1.59 2010/04/27 03:03:52 ralf Exp $
 
 TARGET = i686-pc-cygwin
 
@@ -62,7 +62,7 @@ BINUTILS_OPTS += --disable-infos
 
 GCC_VERS = 3.4.4
 GCC_PKGVERS = $(GCC_VERS)
-GCC_RPMREL = 0.20100225.0
+GCC_RPMREL = 0.20100427.0
 include ../gcc.am
 GCC_OPTS += --languages=c,cxx
 GCC_OPTS += --disable-infos

@@ -3,7 +3,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: devfs_init.c,v 1.4 2009/11/29 13:18:56 ralf Exp $
+ *  $Id: devfs_init.c,v 1.5 2010/05/31 13:56:36 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -59,7 +59,8 @@ rtems_filesystem_file_handlers_r devFS_file_handlers =
 
 
 int devFS_initialize(
-  rtems_filesystem_mount_table_entry_t *temp_mt_entry
+  rtems_filesystem_mount_table_entry_t *temp_mt_entry,
+  const void                           *data
 )
 {
   rtems_device_name_t  *device_name_table;

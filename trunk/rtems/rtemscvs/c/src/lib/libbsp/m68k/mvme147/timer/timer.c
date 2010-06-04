@@ -10,7 +10,7 @@
  *  by Dominique LE CAMPION (Dominique.LECAMPION@enst-bretagne.fr)
  *  May 1996
  *
- *  $Id: timer.c,v 1.13 2008/09/30 16:26:01 joel Exp $
+ *  $Id: timer.c,v 1.14 2010/04/28 19:43:31 joel Exp $
  */
 
 #include <bsp.h>
@@ -24,7 +24,7 @@
 int Ttimer_val;
 bool benchmark_timer_find_average_overhead;
 
-rtems_isr timerisr(void);
+rtems_isr_entry timerisr(rtems_vector_number);
 
 void benchmark_timer_initialize(void)
 {

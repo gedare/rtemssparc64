@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: imfs_initsupp.c,v 1.20 2010/01/19 19:31:00 joel Exp $
+ *  $Id: imfs_initsupp.c,v 1.21 2010/05/15 06:29:55 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -69,6 +69,7 @@ int IMFS_initialize_support(
    const rtems_filesystem_file_handlers_r     *directory_handlers
 )
 {
+  static int                             imfs_instance;
   IMFS_fs_info_t                        *fs_info;
   IMFS_jnode_t                          *jnode;
 
@@ -103,6 +104,7 @@ int IMFS_initialize_support(
    * Set st_ino for the root to 1.
    */
 
+  fs_info->instance              = imfs_instance++;
   fs_info->ino_count             = 1;
   fs_info->memfile_handlers      = memfile_handlers;
   fs_info->directory_handlers    = directory_handlers;

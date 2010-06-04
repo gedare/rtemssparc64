@@ -18,7 +18,7 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: m340uart.c,v 1.9 2009/12/17 08:42:16 thomas Exp $
+ *  $Id: m340uart.c,v 1.10 2010/04/28 19:33:25 joel Exp $
  */
 
 #include <termios.h>
@@ -199,6 +199,7 @@ Find_Right_m340_UART_Config(float ChannelA_ReceiverBaudRate, float ChannelA_Tran
  t_baud_speed_table return_value, tmp;
  int i,j;
 
+ memset( &return_value, '\0', sizeof(return_value) );
  return_value.nb=0;
 
  if (enableA && enableB) {

@@ -7,7 +7,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: nvdisk.c,v 1.15 2010/02/18 00:24:24 ccj Exp $
+ * $Id: nvdisk.c,v 1.16 2010/05/22 16:43:09 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -731,7 +731,7 @@ rtems_nvdisk_ioctl (rtems_disk_device *dd, uint32_t req, void* argp)
         break;
 
       case RTEMS_NVDISK_IOCTL_INFO_LEVEL:
-        rtems_nvdisks[minor].info_level = (uint32_t) argp;
+        rtems_nvdisks[minor].info_level = (uintptr_t) argp;
         break;
 
       default:

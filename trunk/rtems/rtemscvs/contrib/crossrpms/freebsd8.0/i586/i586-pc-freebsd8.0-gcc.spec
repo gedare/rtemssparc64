@@ -41,7 +41,7 @@ Summary:      	i586-pc-freebsd8.0 gcc
 
 Group:	      	Development/Tools
 Version:        %{gcc_rpmvers}
-Release:      	0.20100424.0%{?dist}
+Release:      	0.20100524.0%{?dist}
 License:      	GPL
 URL:		http://gcc.gnu.org
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -63,14 +63,14 @@ BuildRequires:  %{_host_rpmprefix}gcc
 
 # versions of libraries, we conditionally bundle if necessary
 %global mpc_version	0.8.1
-%global mpfr_version	2.4.1
+%global mpfr_version	2.4.2
 %global gmp_version	4.3.2
 %global libelf_version  0.8.13
 
 # versions of libraries these distros are known to ship
 %if 0%{?fc13}
 %global mpc_provided 0.8.1
-%global mpfr_provided 2.4.1
+%global mpfr_provided 2.4.2
 %global gmp_provided 4.3.1
 %endif
 
@@ -88,8 +88,7 @@ BuildRequires:  %{_host_rpmprefix}gcc
 
 %if 0%{?el6}
 %global mpc_provided %{nil}
-# el6 beta ships mpfr but mpfr-devel is missing
-%global mpfr_provided %{nil}
+%global mpfr_provided 2.4.1
 %global gmp_provided 4.3.1
 %endif
 
@@ -194,7 +193,7 @@ BuildRequires:  %{_host_rpmprefix}libelf-devel >= %{libelf_required}
 %{?fc11:BuildRequires: cloog-ppl-devel >= %cloog_required}
 %{?fc12:BuildRequires: cloog-ppl-devel >= %cloog_required}
 %{?fc13:BuildRequires: cloog-ppl-devel >= %cloog_required}
-# el6 ships cloog-ppl, but cloog-ppl-devel is missing
+%{?el6:BuildRequires: cloog-ppl-devel >= %cloog_required}
 %{?suse11_2:BuildRequires: cloog-devel >= %cloog_required, ppl-devel}
 %{?suse11_1:BuildRequires: cloog-devel >= %cloog_required, ppl-devel}
 %endif

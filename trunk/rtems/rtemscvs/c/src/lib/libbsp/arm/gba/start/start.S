@@ -18,7 +18,7 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: start.S,v 1.4 2010/04/07 21:49:47 joel Exp $
+ *  $Id: start.S,v 1.5 2010/04/30 14:55:55 sh Exp $
  */
 
 /*****************************************************************************
@@ -165,7 +165,7 @@
     .align
     PUBLIC_ARM_FUNCTION(_gba_ISR_handler)
         ldmfd  r13!,{r0-r3,r12,r14}
-        b      _ISR_Handler
+        b      arm_exc_interrupt
     LABEL_END(_gba_ISR_handler)
 
 

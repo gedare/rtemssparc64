@@ -9,7 +9,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp.h,v 1.10 2010/04/07 21:49:20 joel Exp $
+ *  $Id: bsp.h,v 1.12 2010/04/30 16:44:40 joel Exp $
 */
 #ifndef _BSP_H
 #define _BSP_H
@@ -20,11 +20,14 @@ extern "C" {
 
 #include <bspopts.h>
 
+#define BSP_SMALL_MEMORY 1
+
 #include <rtems.h>
 #include <rtems/iosupp.h>
 #include <rtems/console.h>
 #include <rtems/clockdrv.h>
 
+#define BSP_FEATURE_IRQ_EXTENSION
 
 #define CONFIG_ARM_CLK 60000000L
 /* cclk=cco/(2*P) */

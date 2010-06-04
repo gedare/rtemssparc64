@@ -1,5 +1,5 @@
 ##
-##  $Id: Makefile.am,v 1.116 2009/12/01 14:22:58 joel Exp $
+##  $Id: Makefile.am,v 1.118 2010/05/31 13:56:36 ccj Exp $
 ##
 
 include $(top_srcdir)/automake/multilib.am
@@ -44,7 +44,7 @@ ASSOCIATION_C_FILES = src/assoclocalbyname.c \
     src/assocremotebylocal.c src/assocremotebyname.c
 
 BASE_FS_C_FILES = src/base_fs.c src/mount.c src/unmount.c src/libio.c \
-    src/libio_init.c \
+    src/mount-mgr.c src/libio_init.c \
     src/libio_sockets.c src/eval.c src/fs_null_handlers.c src/privateenv.c \
     src/open_dev_console.c src/__usrenv.c
 
@@ -117,6 +117,8 @@ libcsupport_a_SOURCES += $(LIBC_GLUE_C_FILES) $(PASSWORD_GROUP_C_FILES) \
     $(TERMINAL_IDENTIFICATION_C_FILES) $(SYSTEM_CALL_C_FILES) \
     $(DIRECTORY_SCAN_C_FILES) $(ID_C_FILES) src/envlock.c \
     $(TERMIOS_C_FILES) src/getpagesize.c src/getrusage.c
+
+libcsupport_a_SOURCES += src/flockfile.c src/funlockfile.c src/ftrylockfile.c
 
 EXTRA_DIST = src/TODO src/CASES src/README
 

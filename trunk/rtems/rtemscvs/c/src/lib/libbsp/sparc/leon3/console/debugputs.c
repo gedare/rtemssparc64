@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: debugputs.c,v 1.9 2009/11/29 15:33:27 ralf Exp $
+ *  $Id: debugputs.c,v 1.10 2010/05/24 15:05:19 joel Exp $
  */
 
 #include <bsp.h>
@@ -26,6 +26,38 @@
  * Number of uarts on AMBA bus
  */
 extern int uarts;
+
+static int isinit = 0;
+
+/*
+ *  Scan for UARTS in configuration
+ */
+int scan_uarts(void)
+{
+  int i;
+  amba_apb_device apbuarts[LEON3_APBUARTS];
+
+  if (isinit == 0) {
+    i = 0;
+    uarts = 0;
+
+    uarts = amba_find_apbslvs(
+      &amba_conf, VENDOR_GAISLER, GAISLER_APBUART, apbuarts, LEON3_APBUARTS);
+    for(i=0; i<uarts; i++) {
+      LEON3_Console_Uart[i] = (volatile LEON3_UART_Regs_Map *)apbuarts[i].start;
+    }
+
+    /* initialize uart 0 if present for printk */
+    if ( uarts ) {
+      LEON3_Console_Uart[0]->ctrl |=
+        LEON_REG_UART_CTRL_RE | LEON_REG_UART_CTRL_TE;
+      LEON3_Console_Uart[0]->status = 0;
+    }
+    isinit = 1;
+  }
+
+  return uarts;
+}
 
 /*
  *  console_outbyte_polled

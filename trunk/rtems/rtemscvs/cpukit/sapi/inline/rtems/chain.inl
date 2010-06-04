@@ -24,7 +24,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: chain.inl,v 1.7 2009/10/08 07:07:36 ccj Exp $
+ *  $Id: chain.inl,v 1.8 2010/04/30 08:39:15 sh Exp $
  */
 
 #ifndef _RTEMS_CHAIN_H
@@ -385,6 +385,16 @@ RTEMS_INLINE_ROUTINE rtems_chain_node *rtems_chain_get(
 }
 
 /**
+ * @brief See _Chain_Get_unprotected().
+ */
+RTEMS_INLINE_ROUTINE rtems_chain_node *rtems_chain_get_unprotected(
+  rtems_chain_control *the_chain
+)
+{
+  return _Chain_Get_unprotected( the_chain );
+}
+
+/**
  *  @brief Insert a node on a chain
  *
  *  This routine inserts @a the_node on a chain immediately following
@@ -399,6 +409,17 @@ RTEMS_INLINE_ROUTINE void rtems_chain_insert(
 )
 {
   _Chain_Insert( after_node, the_node );
+}
+
+/**
+ * @brief See _Chain_Insert_unprotected().
+ */
+RTEMS_INLINE_ROUTINE void rtems_chain_insert_unprotected(
+  rtems_chain_node *after_node,
+  rtems_chain_node *the_node
+)
+{
+  _Chain_Insert_unprotected( after_node, the_node );
 }
 
 /**

@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.44 2009/07/03 15:07:54 joel Exp $
+## $Id: Makefile.am,v 1.46 2010/05/21 18:02:25 joel Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -23,12 +23,12 @@ include_HEADERS += include/coverhd.h
 
 include_bsp_HEADERS = ../../i386/shared/irq/irq.h \
     ../../i386/shared/irq/irq_asm.h \
-    ../../i386/shared/irq/irq-config.h \
     ../../shared/include/irq-generic.h \
     ../../shared/include/irq-info.h
 
 noinst_LIBRARIES = libbspstart.a
-libbspstart_a_SOURCES = start/start.S start/80386ex.h start/80386ex.inc start/macros.inc
+libbspstart_a_SOURCES = start/start.S start/80386ex.h start/80386ex.inc \
+    start/macros.inc
 project_lib_DATA = start.$(OBJEXT)
 
 dist_project_lib_DATA += startup/linkcmds
@@ -41,7 +41,8 @@ include_HEADERS += ../../i386/shared/comm/uart.h
 libbsp_a_SOURCES += ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../../shared/bsppredriverhook.c ../../shared/bsppretaskinghook.c \
     ../../shared/bspgetworkarea.c ../../shared/bsppost.c startup/bspstart.c \
-    ../../shared/bootcard.c ../../shared/sbrk.c ../../i386/shared/irq/idt.c \
+    ../../shared/bootcard.c ../../shared/bspreset.c ../../shared/sbrk.c \
+    ../../i386/shared/irq/idt.c \
     ../../i386/shared/irq/irq.c ../../i386/shared/irq/irq_init.c \
     ../../i386/shared/comm/i386-stub.c \
     ../../i386/shared/comm/i386-stub-glue.c ../../i386/shared/comm/uart.c \

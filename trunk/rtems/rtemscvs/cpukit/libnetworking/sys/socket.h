@@ -31,7 +31,7 @@
  */
 
 /*
- * $Id: socket.h,v 1.16 2007/05/10 07:29:13 ralf Exp $
+ * $Id: socket.h,v 1.17 2010/05/27 04:11:07 ralf Exp $
  */
 
 #ifndef _SYS_SOCKET_H_
@@ -123,8 +123,8 @@ struct	linger {
  */
 struct socket;
 struct	sockwakeup {
-	void	(*sw_pfn)(struct socket *, caddr_t);
-	caddr_t	sw_arg;
+	void	(*sw_pfn)(struct socket *, void *);
+	void	*sw_arg;
 };
 
 /*

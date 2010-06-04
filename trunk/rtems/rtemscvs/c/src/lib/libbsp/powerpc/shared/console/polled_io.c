@@ -12,7 +12,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: polled_io.c,v 1.14 2009/12/10 06:02:14 ralf Exp $
+ * $Id: polled_io.c,v 1.15 2010/04/28 18:51:58 joel Exp $
  */
 
 #include <rtems/system.h>
@@ -1094,7 +1094,7 @@ int k_vsprintf(char *buf, const char *fmt, va_list args)
 					n = (short) n;
 				else
 				  	n = (unsigned short) n;
-			} else if (! flags & LONG) {
+			} else if (!(flags & LONG)) {
 				/* Here the compiler correctly removes this
 				 * do nothing code on 32 bit PPC.
 				 */

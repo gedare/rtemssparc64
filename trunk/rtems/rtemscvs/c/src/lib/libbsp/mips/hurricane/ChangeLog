@@ -1,3 +1,27 @@
+2010-05-13	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* Makefile.am, preinstall.am: Many files were duplicated across MIPS
+	BSPs. Now those which were directly copied are shared.
+	* startup/usc.S: New file.
+	* liblnk/lnklib.S, liblnk/pmon.S, liblnk/regs.h, startup/idtmem.S,
+	startup/idttlb.S: Removed.
+
+2010-05-13	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* Makefile.am, configure.ac: rbtx4925, rbtx4938, and hurricane had very
+	similar versions of exception. Now all use shared/irq/exception.S
+	* startup/exception.S: Removed.
+
+2010-05-13	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* startup/exception.S: Minor changes to make more similar to the shared
+	version.
+
+2010-04-27	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* startup/linkcmds: Revert previous change. Remove .reginfo from .bss
+	section where it was present.
+
 2010-04-25	Joel Sherrill <joel.sherrilL@OARcorp.com>
 
 	* startup/linkcmds: Add NOLOAD to .bss to eliminate warnings.

@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iotnx5.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iotnx5.h,v 1.3 2010/05/10 16:31:23 joel Exp $ */
 
 /* avr/iotnx5.h - definitions for ATtiny25, ATtiny45 and ATtiny85 */
 
@@ -45,7 +45,7 @@
 #  define _AVR_IOXXX_H_ "iotnx5.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 /* I/O registers */
 
@@ -108,7 +108,7 @@
 #define USITC   0
 
 #define USISR   _SFR_IO8(0x0E)
-#define USISIF  7
+#define USISIF  7 
 #define USIOIF  6
 #define USIPF   5
 #define USIDC   4
@@ -129,7 +129,7 @@
 #define ADC2D   4
 #define ADC3D   3
 #define ADC1D   2
-#define AIN1D   1
+#define AIN1D   1 
 #define AIN0D   0
 
 #define PCMSK   _SFR_IO8(0x15)

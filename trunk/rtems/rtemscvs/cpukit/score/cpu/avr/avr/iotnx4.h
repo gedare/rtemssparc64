@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iotnx4.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iotnx4.h,v 1.3 2010/05/10 16:31:23 joel Exp $ */
 
 /* avr/iotnx4.h - definitions for ATtiny24, ATtiny44 and ATtiny84 */
 
@@ -45,7 +45,7 @@
 #  define _AVR_IOXXX_H_ "iotnx4.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 /* I/O registers */
 
@@ -62,7 +62,7 @@
 #define ADC4D   4
 #define ADC3D   3
 #define ADC2D   2
-#define ADC1D   1
+#define ADC1D   1 
 #define ADC0D   0
 
 /* Reserved [0x02] */
@@ -137,7 +137,7 @@
 #define USITC   0
 
 #define USISR   _SFR_IO8(0x0E)
-#define USISIF  7
+#define USISIF  7 
 #define USIOIF  6
 #define USIPF   5
 #define USIDC   4

@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: system.h,v 1.5 2009/04/28 06:39:01 ccj Exp $
+ *  $Id: system.h,v 1.6 2010/06/02 00:47:15 ccj Exp $
  */
 
 #include <rtems.h>
@@ -32,6 +32,7 @@
 #define CONFIGURE_INIT_TASK_STACK_SIZE    (RTEMS_MINIMUM_STACK_SIZE * 2)
 #define CONFIGURE_EXTRA_TASK_STACKS       RTEMS_MINIMUM_STACK_SIZE
 
+/* Only remove when this macro is removed from confdefs.h. It tests it. */
 #define CONFIGURE_USE_MINIIMFS_AS_BASE_FILESYSTEM
 
 #include <rtems/confdefs.h>

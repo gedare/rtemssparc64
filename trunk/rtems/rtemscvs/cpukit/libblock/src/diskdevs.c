@@ -12,7 +12,7 @@
  *
  * Copyright (c) 2009 embedded brains GmbH.
  *
- * @(#) $Id: diskdevs.c,v 1.23 2010/04/09 12:28:24 thomas Exp $
+ * @(#) $Id: diskdevs.c,v 1.26 2010/05/18 02:14:05 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -259,7 +259,7 @@ rtems_status_code rtems_disk_create_phys(
   dd->ioctl = handler;
   dd->driver_data = driver_data;
 
-  if ((*handler)(dd, RTEMS_BLKDEV_CAPABILITIES, &dd->capabilities) < 0) {
+  if ((*handler)(dd, RTEMS_BLKIO_CAPABILITIES, &dd->capabilities) < 0) {
     dd->capabilities = 0;
   }
 
@@ -462,33 +462,58 @@ rtems_disk_release(rtems_disk_device *dd)
 rtems_disk_device *
 rtems_disk_next(dev_t dev)
 {
-    rtems_device_major_number major;
-    rtems_device_minor_number minor;
-    rtems_disk_device_table *dtab;
+  rtems_status_code sc = RTEMS_SUCCESSFUL;
+  rtems_disk_device_table *dtab = NULL;
+  rtems_device_major_number major = 0;
+  rtems_device_minor_number minor = 0;
 
-    dev++;
-    rtems_filesystem_split_dev_t (dev, major, minor);
+  if (dev != (dev_t) -1) {
+    rtems_filesystem_split_dev_t(dev, major, minor);
 
-    if (major >= disktab_size)
+    /* If minor wraps around */
+    if ((minor + 1) < minor) {
+      /* If major wraps around */
+      if ((major + 1) < major) {
         return NULL;
-
-    dtab = disktab + major;
-    while (true)
-    {
-        if ((dtab == NULL) || (minor > dtab->size))
-        {
-             major++; minor = 0;
-             if (major >= disktab_size)
-                 return NULL;
-             dtab = disktab + major;
-        }
-        else if (dtab->minor[minor] == NULL)
-        {
-            minor++;
-        }
-        else
-            return dtab->minor[minor];
+      }
+      ++major;
+      minor = 0;
+    } else {
+      ++minor;
     }
+  }
+
+  sc = disk_lock();
+  if (sc != RTEMS_SUCCESSFUL) {
+    return NULL;
+  }
+
+  if (major >= disktab_size) {
+    disk_unlock();
+
+    return NULL;
+  }
+
+  dtab = disktab + major;
+  while (true) {
+    if (dtab->minor == NULL || minor >= dtab->size) {
+       minor = 0;
+       ++major;
+       if (major >= disktab_size) {
+         disk_unlock();
+
+         return NULL;
+       }
+       dtab = disktab + major;
+    } else if (dtab->minor [minor] == NULL) {
+      ++minor;
+    } else {
+      ++dtab->minor [minor]->uses;
+      disk_unlock();
+
+      return dtab->minor [minor];
+    }
+  }
 }
 
 rtems_status_code

@@ -11,7 +11,7 @@
 |  found in found in the file LICENSE in this distribution or at
 |  http://www.rtems.com/license/LICENSE.
 |
-|  $Id: bsp.h,v 1.12 2009/11/29 14:53:00 ralf Exp $
+|  $Id: bsp.h,v 1.13 2010/04/30 14:30:09 sh Exp $
 +--------------------------------------------------------------------------*/
 
 
@@ -29,6 +29,8 @@ extern "C" {
 #include <rtems/console.h>
 #include <rtems/clockdrv.h>
 #include <s3c24xx.h>
+
+#define BSP_FEATURE_IRQ_EXTENSION
 
 #define gp32_initButtons() {rPBCON=0x0;}
 #define gp32_getButtons() \

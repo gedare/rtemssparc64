@@ -28,7 +28,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: bdbuf_test1_3.c,v 1.1 2010/01/19 08:55:18 thomas Exp $
+ * $Id: bdbuf_test1_3.c,v 1.2 2010/05/17 08:34:55 sh Exp $
  */
 
 #include <bdbuf_tests.h>
@@ -70,7 +70,7 @@ bdbuf_test1_3_main()
      * Step 3:
      * Unblock thread #1 by reporting erroneous data transfer result.
      */
-    SEND_DRV_MSG(0, 0, RTEMS_NO_MEMORY, EFAULT);
+    SEND_DRV_MSG(0, 0, RTEMS_IO_ERROR, EFAULT);
 
     /*
      * Wait for sync from thread #1.
@@ -128,7 +128,7 @@ bdbuf_test1_3_thread1(rtems_task_argument arg)
      * result this call will return an error.
      */
     rc = rtems_bdbuf_read(test_dev, TEST_BLK_NUM, &bd);
-    if (rc != RTEMS_NO_MEMORY || bd != NULL)
+    if (rc != RTEMS_IO_ERROR || bd != NULL)
     {
         TEST_FAILED();
     }

@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iocan64.h,v 1.2 2009/11/30 16:01:44 ralf Exp $ */
+/* $Id: iocan64.h,v 1.3 2010/05/10 16:31:21 joel Exp $ */
 
 /* iocan64.h - definitions for CAN64 */
 
@@ -82,7 +82,7 @@
 /* Lock Bits */
 #define __LOCK_BITS_EXIST
 #define __BOOT_LOCK_BITS_0_EXIST
-#define __BOOT_LOCK_BITS_1_EXIST
+#define __BOOT_LOCK_BITS_1_EXIST 
 
 
 /* Signature */

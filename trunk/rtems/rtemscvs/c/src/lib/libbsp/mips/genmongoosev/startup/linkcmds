@@ -2,7 +2,7 @@
  *  Linker script for Mongoose-V prototyping board.
  *  See README for address map details.
  *
- *  $Id: linkcmds,v 1.15 2010/04/25 16:11:01 joel Exp $
+ *  $Id: linkcmds,v 1.17 2010/04/28 18:59:01 joel Exp $
  */
 
 /*    . = 0x80020000; */
@@ -34,6 +34,7 @@ SECTIONS
       *(.gnu.linkonce.t*)
       *(.mips16.fn.*)
       *(.mips16.call.*)
+      *(.reginfo)
       PROVIDE (__runtime_reloc_start = .);
       *(.rel.sdata)
       *(.rel.dyn)
@@ -156,11 +157,10 @@ SECTIONS
   } >ram   
 
 
-  .bss (NOLOAD): 
+  .bss : 
   {
     _bss_start = . ;
     *(.bss .bss.* .gnu.linkonce.b.*)
-    *(.reginfo)
     *(COMMON)
     . = ALIGN (64);
     _stack_limit = .;

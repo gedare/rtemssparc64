@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.32 2009/11/30 22:00:34 joel Exp $
+## $Id: Makefile.am,v 1.33 2010/04/30 14:44:17 sh Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -15,6 +15,8 @@ include_HEADERS += ../../shared/include/tm27.h
 if ENABLE_LCD
 include_HEADERS += include/sed1356.h
 endif
+
+include_bsp_HEADERS =
 
 if ENABLE_UMON
 include_umondir = $(includedir)/umon
@@ -60,6 +62,14 @@ libbsp_a_SOURCES = ../../shared/bsplibc.c ../../shared/bsppost.c \
     ../../shared/gnatinstallhandler.c
 # console
 libbsp_a_SOURCES += ../../shared/console.c console/uarts.c
+# IRQ
+include_bsp_HEADERS += ../../shared/include/irq-generic.h \
+	../../shared/include/irq-info.h
+libbsp_a_SOURCES += ../../shared/src/irq-generic.c \
+	../../shared/src/irq-legacy.c \
+	../../shared/src/irq-info.c \
+	../../shared/src/irq-shell.c \
+	../../shared/src/irq-server.c
 if ENABLE_LCD
 libbsp_a_SOURCES += console/sed1356.c console/fbcons.c
 endif

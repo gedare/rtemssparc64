@@ -1,3 +1,21 @@
+2010-05-13	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* shared/liblnk/lnklib.S, shared/liblnk/pmon.S, shared/liblnk/regs.h,
+	shared/startup/idtmem.S, shared/startup/idttlb.S: New files.
+
+2010-05-13	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* shared/irq/exception.S: rbtx4925, rbtx4938, and hurricane had very
+	similar versions of exception. Now all use shared/irq/exception.S
+
+2010-05-13	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* shared/irq/exception.S: New file.
+
+2010-04-28	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* shared/gdbstub/mips-stub.c: Remove warnings.
+
 2008-08-18	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* shared/gdbstub/mips-stub.c: Add missing prototypes.

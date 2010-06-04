@@ -1,6 +1,6 @@
 #ifndef RPCIO_H
 #define RPCIO_H
-/* $Id: rpcio.h,v 1.2 2009/11/29 13:18:56 ralf Exp $ */
+/* $Id: rpcio.h,v 1.3 2010/05/27 07:41:51 ralf Exp $ */
 
 /* A multihreaded RPC/UDP multiplexor */
 
@@ -73,11 +73,11 @@ rpcUdpInit(void);
 
 enum clnt_stat
 rpcUdpServerCreate(
-	struct sockaddr_in *paddr,
-	int					prog,
-	int					vers,
-	u_long				uid,		/* RPCIO_DEFAULT_ID picks default */
-	u_long				gid,		/* RPCIO_DEFAULT_ID picks default */
+	struct sockaddr_in	*paddr,
+	rpcprog_t		prog,
+	rpcvers_t		vers,
+	u_long			uid,		/* RPCIO_DEFAULT_ID picks default */
+	u_long			gid,		/* RPCIO_DEFAULT_ID picks default */
 	RpcUdpServer		*pclnt		/* new server is returned here    */
 	);
 
@@ -94,11 +94,11 @@ rpcUdpStats(FILE *f);
 enum clnt_stat
 rpcUdpClntCreate(
 	struct sockaddr_in	*psaddr,
-	int					prog,
-	int					vers,
-	u_long				uid,		/* RPCIO_DEFAULT_ID picks default */
-	u_long				gid,		/* RPCIO_DEFAULT_ID picks default */
-	RpcUdpClnt			*pclnt		/* new client is returned here    */
+	rpcprog_t		prog,
+	rpcvers_t		vers,
+	u_long			uid,		/* RPCIO_DEFAULT_ID picks default */
+	u_long			gid,		/* RPCIO_DEFAULT_ID picks default */
+	RpcUdpClnt		*pclnt		/* new client is returned here    */
 	);
 
 void
@@ -188,7 +188,7 @@ typedef struct RpcUdpXactPoolRec_  *RpcUdpXactPool;
  */
 RpcUdpXactPool
 rpcUdpXactPoolCreate(
-	int prog, 		int version,
+	rpcprog_t prog, rpcvers_t version,
 	int xactsize,	int poolsize);
 
 void

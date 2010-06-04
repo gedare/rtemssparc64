@@ -19,7 +19,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.26 2008/09/15 19:18:25 joel Exp $
+ *  $Id: bsp.h,v 1.27 2010/04/29 21:46:04 joel Exp $
  */
 
 #ifndef _BSP_H
@@ -34,6 +34,8 @@ extern "C" {
 #include <rtems/console.h>
 
 #include <bspopts.h>
+
+#define BSP_SMALL_MEMORY 1
 
 /* EDIT: To activate the sci driver, change the define below */
 #if 1

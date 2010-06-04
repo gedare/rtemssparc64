@@ -3,7 +3,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.1 2010/04/05 17:06:57 joel Exp $
+ *  $Id: bsp.h,v 1.2 2010/05/04 00:06:51 joel Exp $
  */
  
 #ifndef _BSP_H
@@ -20,6 +20,8 @@ extern "C" {
 #include <rtems/clockdrv.h>
 #include <rtems/iosupp.h>
 #include <rtems/bspIo.h>
+
+#define BSP_SMALL_MEMORY 1
 
 /***************************************************************************/
 /**  Hardware data structure headers                                      **/

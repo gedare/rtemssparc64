@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: pmacros.h,v 1.11 2009/12/08 17:52:52 joel Exp $
+ *  $Id: pmacros.h,v 1.12 2010/05/29 05:31:46 ralf Exp $
  */
 
 #ifndef __POSIX_TEST_MACROS_h
@@ -92,6 +92,14 @@
   } while ( 0 )
 
 #define empty_line() puts( "" )
+
+#if SIZEOF_OFF_T == 8
+#define PRIdoff_t PRIo64
+#elif SIZEOF_OFF_T == 4
+#define PRIdoff_t PRIo32
+#else
+#error "unsupported size of off_t"
+#endif
 
 #endif
 

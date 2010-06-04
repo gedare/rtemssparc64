@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: libio_init.c,v 1.4 2009/09/15 09:49:52 ralf Exp $
+ *  $Id: libio_init.c,v 1.5 2010/05/14 04:04:25 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -61,9 +61,9 @@ void rtems_libio_init( void )
             rtems_fatal_error_occurred(RTEMS_NO_MEMORY);
 
         iop = rtems_libio_iop_freelist = rtems_libio_iops;
-	for (i = 0 ; (i + 1) < rtems_libio_number_iops ; i++, iop++)
-		iop->data1 = iop + 1;
-	iop->data1 = NULL;
+        for (i = 0 ; (i + 1) < rtems_libio_number_iops ; i++, iop++)
+          iop->data1 = iop + 1;
+        iop->data1 = NULL;
     }
 
   /*

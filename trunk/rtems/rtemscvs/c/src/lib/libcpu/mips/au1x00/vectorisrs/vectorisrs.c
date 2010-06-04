@@ -9,14 +9,13 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: vectorisrs.c,v 1.4 2009/11/30 05:09:01 ralf Exp $
+ *  $Id: vectorisrs.c,v 1.5 2010/05/28 06:09:35 ralf Exp $
  */
 
 #include <rtems.h>
 #include <stdlib.h>
 #include <libcpu/au1x00.h>
 
-void mips_default_isr( int vector );
 static void call_vectored_isr(CPU_Interrupt_frame *, uint32_t , void *);
 
 #define CALL_ISR(_vector,_frame) \

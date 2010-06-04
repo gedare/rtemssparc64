@@ -30,7 +30,7 @@
 
 /* avr/iom324.h - definitions for ATmega324 */
 
-/* $Id: iom324.h,v 1.2 2009/11/30 16:01:44 ralf Exp $ */
+/* $Id: iom324.h,v 1.3 2010/05/10 16:31:21 joel Exp $ */
 
 #ifndef _AVR_IOM324_H_
 #define _AVR_IOM324_H_ 1
@@ -82,7 +82,13 @@
 /* Lock Bits */
 #define __LOCK_BITS_EXIST
 #define __BOOT_LOCK_BITS_0_EXIST
-#define __BOOT_LOCK_BITS_1_EXIST
+#define __BOOT_LOCK_BITS_1_EXIST 
+
+
+/* Signature (ATmega324P) */
+#define SIGNATURE_0 0x1E
+#define SIGNATURE_1 0x95
+#define SIGNATURE_2 0x08 
 
 
 #endif /* _AVR_IOM324_H_ */

@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iom103.h,v 1.2 2009/11/30 16:01:44 ralf Exp $ */
+/* $Id: iom103.h,v 1.3 2010/05/10 16:31:21 joel Exp $ */
 
 /* avr/iom103.h - definitions for ATmega103 */
 
@@ -45,7 +45,7 @@
 #  define _AVR_IOXXX_H_ "iom103.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 /* I/O registers */
 

@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timer.c,v 1.20 2009/11/29 14:59:41 ralf Exp $
+ *  $Id: timer.c,v 1.22 2010/04/28 19:43:22 joel Exp $
  */
 
 #include <rtems.h>
@@ -20,7 +20,7 @@
 int Ttimer_val;
 bool benchmark_timer_find_average_overhead;
 
-rtems_isr timerisr(void);
+rtems_isr_entry timerisr(rtems_vector_number);
 
 void benchmark_timer_initialize(void)
 {

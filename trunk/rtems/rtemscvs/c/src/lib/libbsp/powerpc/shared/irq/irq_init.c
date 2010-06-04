@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq_init.c,v 1.28 2009/12/10 08:50:57 ralf Exp $
+ *  $Id: irq_init.c,v 1.29 2010/04/28 18:51:58 joel Exp $
  */
 
 #include <libcpu/io.h>
@@ -39,23 +39,31 @@ pci_isa_bridge_device* via_82c586 = 0;
 static pci_isa_bridge_device bridge;
 
 /*
- * default on/off function
+ * default methods
  */
-static void nop_func(void){}
-/*
- * default isOn function
- */
-static int not_connected(void) {return 0;}
-/*
- * default possible isOn function
-static int connected(void) {return 1;}
- */
+static void nop_hdl(rtems_irq_hdl_param ignored)
+{
+}
+
+static void nop_irq_enable(const struct __rtems_irq_connect_data__*ignored)
+{
+}
+
+static int irq_is_connected(const struct __rtems_irq_connect_data__*ignored)
+{
+  return 0;
+}
+
 
 static rtems_irq_connect_data     	rtemsIrq[BSP_IRQ_NUMBER];
 static rtems_irq_global_settings     	initial_config;
 static rtems_irq_connect_data     	defaultIrq = {
-  /* vectorIdex,	 hdl		, handle	, on		, off		, isOn */
-  0, 			 nop_func	, NULL		, nop_func	, nop_func	, not_connected
+  0,                /* vector */
+  nop_hdl,          /* hdl */
+  NULL,             /* handle */
+  nop_irq_enable,   /* on */
+  nop_irq_enable,   /* off */
+  irq_is_connected  /* isOn */
 #ifdef BSP_SHARED_HANDLER_SUPPORT
   , NULL /* next_handler */
 #endif

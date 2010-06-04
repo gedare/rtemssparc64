@@ -3,7 +3,7 @@
  *
  * NOTE: This much simpler than the BSD ifmedia API
  *
- *  $Id: rtems_mii_ioctl.h,v 1.7 2009/11/30 15:57:51 ralf Exp $
+ *  $Id: rtems_mii_ioctl.h,v 1.8 2010/05/27 16:38:51 ralf Exp $
  */
 
 /*
@@ -92,7 +92,7 @@ struct rtems_mdio_info {
  *
  */
 int
-rtems_mii_ioctl (struct rtems_mdio_info *info, void *uarg, int cmd,
+rtems_mii_ioctl (struct rtems_mdio_info *info, void *uarg, uint32_t cmd,
                  int *media);
 
 #endif

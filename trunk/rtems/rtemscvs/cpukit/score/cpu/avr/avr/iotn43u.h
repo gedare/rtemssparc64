@@ -26,10 +26,10 @@
   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-  POSSIBILITY OF SUCH DAMAGE.
+  POSSIBILITY OF SUCH DAMAGE. 
 */
 
-/* $Id: iotn43u.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iotn43u.h,v 1.3 2010/05/10 16:31:23 joel Exp $ */
 
 /* avr/iotn43u.h - definitions for ATtiny43U */
 
@@ -43,7 +43,7 @@
 #  define _AVR_IOXXX_H_ "iotn43u.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 
 #ifndef _AVR_IOTN43U_H_
@@ -555,7 +555,7 @@
 #define FUSE_SPIEN       (unsigned char)~_BV(5)
 #define FUSE_DWEN        (unsigned char)~_BV(6)
 #define FUSE_RSTDISBL    (unsigned char)~_BV(7)
-#define HFUSE_DEFAULT (FUSE_SPIEN)
+#define HFUSE_DEFAULT (FUSE_SPIEN)    
 
 /* Extended Fuse Byte */
 #define FUSE_SELFPRGEN   (unsigned char)~_BV(0)

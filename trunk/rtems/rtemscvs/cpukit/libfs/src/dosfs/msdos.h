@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  @(#) $Id: msdos.h,v 1.22 2010/03/04 06:36:51 ccj Exp $
+ *  @(#) $Id: msdos.h,v 1.24 2010/05/31 13:56:36 ccj Exp $
  */
 #ifndef __DOSFS_MSDOS_H__
 #define __DOSFS_MSDOS_H__
@@ -223,13 +223,11 @@ typedef enum msdos_token_types_e
 #define MSDOS_DPS512_NUM    16
 
 /* Prototypes */
-int msdos_initialize(rtems_filesystem_mount_table_entry_t *temp_mt_entry);
-
 int msdos_shut_down(rtems_filesystem_mount_table_entry_t *temp_mt_entry);
 
 int msdos_eval_path(
   const char                       *pathname,    /* IN */
-  int                               pathnamelen, /* IN */
+  size_t                            pathnamelen, /* IN */
   int                               flags,       /* IN */
   rtems_filesystem_location_info_t *pathloc      /* IN/OUT */
 );

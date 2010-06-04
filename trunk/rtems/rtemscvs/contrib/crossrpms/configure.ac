@@ -1,4 +1,4 @@
-## $Id: configure.ac,v 1.72 2010/04/19 16:58:15 ralf Exp $
+## $Id: configure.ac,v 1.74 2010/05/24 07:30:23 ralf Exp $
 
 m4_define([RTEMS_API],[4.10])
 
@@ -41,6 +41,7 @@ all )
       targets="$targets $a-$o"
   done
   for d in freebsd*/*/Makefile.am \
+    netbsd*/*/Makefile.am \
     cygwin*/*/Makefile.am \
     mingw*/*/Makefile.am; \
   do
@@ -165,10 +166,11 @@ AC_CONFIG_FILES([freebsd7.3/i586/Makefile])
 
 AC_CONFIG_FILES([freebsd8.0/Makefile])
 AC_CONFIG_FILES([freebsd8.0/i586/Makefile])
+AC_CONFIG_FILES([freebsd8.0/x86_64/Makefile])
 
 AC_CONFIG_FILES([netbsd5.0.2/Makefile])
 AC_CONFIG_FILES([netbsd5.0.2/i386/Makefile])
-AC_CONFIG_FILES([netbsd5.0.2/amd64/Makefile])
+AC_CONFIG_FILES([netbsd5.0.2/x86_64/Makefile])
 
 AC_CONFIG_FILES([rtems4.10/Makefile])
 AC_CONFIG_FILES([rtems4.10/arm/Makefile])
@@ -201,6 +203,7 @@ AC_CONFIG_FILES([rtems4.11/mipstx39/Makefile])
 AC_CONFIG_FILES([rtems4.11/powerpc/Makefile])
 AC_CONFIG_FILES([rtems4.11/sh/Makefile])
 AC_CONFIG_FILES([rtems4.11/sparc/Makefile])
+AC_CONFIG_FILES([rtems4.11/sparc64/Makefile])
 
 AC_CONFIG_FILES([autotools/Makefile])
 

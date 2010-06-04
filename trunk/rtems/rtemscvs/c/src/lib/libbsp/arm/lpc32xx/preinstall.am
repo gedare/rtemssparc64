@@ -78,6 +78,10 @@ $(PROJECT_INCLUDE)/bsp/stackalloc.h: ../../shared/include/stackalloc.h $(PROJECT
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/stackalloc.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/stackalloc.h
 
+$(PROJECT_INCLUDE)/bsp/uart-output-char.h: ../../shared/include/uart-output-char.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/uart-output-char.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/uart-output-char.h
+
 $(PROJECT_INCLUDE)/bsp/tod.h: ../../shared/tod.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/tod.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/tod.h
@@ -97,10 +101,6 @@ PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/lpc-timer.h
 $(PROJECT_INCLUDE)/bsp/lpc-dma.h: ../shared/lpc/include/lpc-dma.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/lpc-dma.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/lpc-dma.h
-
-$(PROJECT_INCLUDE)/bsp/irq-config.h: include/irq-config.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/irq-config.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/bsp/irq-config.h
 
 $(PROJECT_INCLUDE)/bsp/irq.h: include/irq.h $(PROJECT_INCLUDE)/bsp/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/bsp/irq.h

@@ -1,3 +1,22 @@
+2010-05-14	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* Makefile.am, preinstall.am: Fix typo.
+
+2010-05-13	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* Makefile.am, preinstall.am, start/start.S: Many files were duplicated
+	across MIPS BSPs. Now those which were directly copied are shared.
+	* start/regs.h: Removed.
+
+2010-04-29	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* startup/linkcmds: Now links all tests.
+
+2010-04-27	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* startup/linkcmds: Revert previous change. Remove .reginfo from .bss
+	section where it was present.
+
 2010-04-25	Joel Sherrill <joel.sherrilL@OARcorp.com>
 
 	* startup/linkcmds: Add NOLOAD to .bss to eliminate warnings.

@@ -173,6 +173,15 @@ Mode of operation:
 #include "i82586reg.h"
 #include "i82586var.h"
 
+#if defined(ALIGNBYTES) && defined(ALIGN)
+/* FIXME: Redefine because some versions of 
+ * RTEMS newlib and the BSDs ship a broken ALIGN */
+#undef ALIGN
+#define ALIGN(p)	(((uintptr_t)(p) + ALIGNBYTES) & ~ALIGNBYTES)
+#else
+#define ALIGN(p)	(p)
+#endif
+
 /*
  * A global way to change all async cmd requests at once. For RTEMS and running
  * as tasks I wanted to see if the tx race condition is effected by this.
@@ -1508,7 +1517,7 @@ setup_simple_command(struct ie_softc *sc, int cmd, int cmdbuf)
 static void
 ie_run_tdr(struct ie_softc *sc, int cmd)
 {
-  int result;
+  uint32_t result;
 
   setup_simple_command(sc, IE_CMD_TDR, cmd);
   sc->ie_bus_write16(sc, IE_CMD_TDR_TIME(cmd), 0);
@@ -1530,13 +1539,13 @@ ie_run_tdr(struct ie_softc *sc, int cmd)
   else if (result & IE_TDR_XCVR)
     printf("%s: transceiver problem\n", sc->arpcom.ac_if.if_name);
   else if (result & IE_TDR_OPEN)
-    printf("%s: TDR detected incorrect termination %d clocks away\n",
+    printf("%s: TDR detected incorrect termination %" PRId32 " clocks away\n",
            sc->arpcom.ac_if.if_name, result & IE_TDR_TIME);
   else if (result & IE_TDR_SHORT)
-    printf("%s: TDR detected a short circuit %d clocks away\n",
+    printf("%s: TDR detected a short circuit %" PRId32 " clocks away\n",
            sc->arpcom.ac_if.if_name, result & IE_TDR_TIME);
   else
-    printf("%s: TDR returned unknown status 0x%x\n",
+    printf("%s: TDR returned unknown status 0x%" PRIx32 "\n",
            sc->arpcom.ac_if.if_name, result);
 }
 

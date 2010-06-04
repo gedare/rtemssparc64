@@ -33,7 +33,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: confdefs.h,v 1.131 2010/03/04 14:40:51 joel Exp $
+ *  $Id: confdefs.h,v 1.135 2010/06/03 06:46:51 ccj Exp $
  */
 
 #ifndef __CONFIGURATION_TEMPLATE_h
@@ -71,7 +71,6 @@ extern rtems_configuration_table        Configuration;
 #else
   #define CONFIGURE_NEWLIB_EXTENSION 0
 #endif
-
 
 #include <rtems/libio.h>
 
@@ -174,13 +173,194 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
   extern int rtems_telnetd_maximum_ptys;
 #endif
 
+/*
+ *  Filesystems and Mount Table Configuration.
+ *
+ *  Defines to control the file system:
+ *
+ *   CONFIGURE_APPLICATION_DISABLE_FILESYSTEM:
+ *     Disable the RTEMS filesystems. You get an empty DEVFS.
+ *
+ *   CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM:
+ *     Use the DEVFS as the root file system. Limited functions are
+ *     provided when this is used.
+ *
+ *   CONFIGURE_FILESYSTEM_ALL:
+ *     Add file filesystems to the default filesystem table.
+ *
+ *   List of available file systems. You can define as many as you like:
+ *     CONFIGURE_FILESYSTEM_miniIMFS - MiniIMFS, use DEVFS now
+ *     CONFIGURE_FILESYSTEM_IMFS     - In Memory File System (IMFS)
+ *     CONFIGURE_FILESYSTEM_DEVFS    - Device File System (DSVFS)
+ *     CONFIGURE_FILESYSTEM_TFTPFS   - TFTP File System, networking enabled
+ *     CONFIGURE_FILESYSTEM_FTPFS    - FTP File System, networking enabled
+ *     CONFIGURE_FILESYSTEM_NFSFS    - Network File System, networking enabled
+ *     CONFIGURE_FILESYSTEM_DOSFS    - DOS File System, uses libblock
+ *     CONFIGURE_FILESYSTEM_RFS      - RTEMS File System (RFS), uses libblock
+ *
+ *   Combinations:
+ *
+ *    - If nothing is defined the base file system is the IMFS.
+ *
+ *    - If CONFIGURE_APPLICATION_DISABLE_FILESYSTEM is defined all filesystem
+ *      are disabled by force and an empty DEVFS is created.
+ *
+ *    - If CONFIGURE_USE_DEV_AS_BASE_FILESYSTEM is defined all filesystem
+ *      are disabled by force and DEVFS is defined.
+ */
+
 #ifdef CONFIGURE_INIT
-  #ifdef CONFIGURE_APPLICATION_DISABLE_FILESYSTEM
-    #if defined(RTEMS_COVERAGE)
-      uint32_t rtems_device_table_size = 0;
+
+  /*
+   * Include all file systems. Do this before checking if the filesystem has
+   * been disabled.
+   */
+  #ifdef CONFIGURE_FILESYSTEM_ALL
+    #define CONFIGURE_FILESYSTEM_miniIMFS
+    #define CONFIGURE_FILESYSTEM_IMFS
+    #define CONFIGURE_FILESYSTEM_DEVFS
+    #define CONFIGURE_FILESYSTEM_TFTPFS
+    #define CONFIGURE_FILESYSTEM_FTPFS
+    #define CONFIGURE_FILESYSTEM_NFSFS
+    #define CONFIGURE_FILESYSTEM_DOSFS
+    #define CONFIGURE_FILESYSTEM_RFS
+  #endif
+
+  /*
+   * If disabling the file system undef everything. If DEVFS as the base
+   * filesystem undefine all other filesystems because you cannot mount other
+   * filesystems. Same for miniIMFS.
+   */
+  #if defined(CONFIGURE_APPLICATION_DISABLE_FILESYSTEM) || \
+      defined(CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM) || \
+      defined(CONFIGURE_USE_MINIIMFS_AS_BASE_FILESYSTEM)
+    #if defined(CONFIGURE_APPLICATION_DISABLE_FILESYSTEM)
+      #undef CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM
+      #undef CONFIGURE_USE_MINIIMFS_AS_BASE_FILESYSTEM
+    #elif defined(CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM)
+      #undef CONFIGURE_USE_MINIIMFS_AS_BASE_FILESYSTEM
     #endif
+    #undef CONFIGURE_FILESYSTEM_miniIMFS
+    #undef CONFIGURE_FILESYSTEM_IMFS
+    #undef CONFIGURE_FILESYSTEM_DEVFS
+    #undef CONFIGURE_FILESYSTEM_TFTPFS
+    #undef CONFIGURE_FILESYSTEM_FTPFS
+    #undef CONFIGURE_FILESYSTEM_NFSFS
+    #undef CONFIGURE_FILESYSTEM_DOSFS
+    #undef CONFIGURE_FILESYSTEM_RFS
+  #endif
+
+  /*
+   * If the base filesystem is DEVFS define it else define IMFS.
+   * We will have either DEVFS or IMFS defined after this.
+   */
+  #if defined(CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM)
+    #define CONFIGURE_FILESYSTEM_DEVFS
+  #elif defined(CONFIGURE_USE_MINIIMFS_AS_BASE_FILESYSTEM)
+    #define CONFIGURE_FILESYSTEM_miniIMFS
+  #elif !defined(CONFIGURE_FILESYSTEM_IMFS)
+    #define CONFIGURE_FILESYSTEM_IMFS
+  #endif
+
+#endif
+
+/**
+ * IMFS
+ */
+#include <rtems/imfs.h>
+
+/**
+ *  This specifies the number of bytes per block for files within the IMFS.
+ *  There are a maximum number of blocks per file so this dictates the maximum
+ *  size of a file.  This has to be balanced with the unused portion of each
+ *  block that might be wasted.
+ */
+#ifndef CONFIGURE_IMFS_MEMFILE_BYTES_PER_BLOCK
+  #define CONFIGURE_IMFS_MEMFILE_BYTES_PER_BLOCK \
+                    IMFS_MEMFILE_DEFAULT_BYTES_PER_BLOCK
+#endif
+
+/**
+ *  This defines the miniIMFS file system table entry.
+ */ 
+#if !defined(CONFIGURE_FILESYSTEM_ENTRY_miniIMFS) && \
+    defined(CONFIGURE_FILESYSTEM_miniIMFS)
+#define CONFIGURE_FILESYSTEM_ENTRY_miniIMFS { "mimfs", miniIMFS_initialize }
+#endif
+
+/**
+ *  This defines the IMFS file system table entry.
+ */ 
+#if !defined(CONFIGURE_FILESYSTEM_ENTRY_IMFS) && \
+    defined(CONFIGURE_FILESYSTEM_IMFS)
+#define CONFIGURE_FILESYSTEM_ENTRY_IMFS { "imfs", IMFS_initialize }
+#endif
+
+/**
+ * DEVFS
+ */ 
+#if !defined(CONFIGURE_FILESYSTEM_ENTRY_DEVFS) && \
+    defined(CONFIGURE_FILESYSTEM_DEVFS)
+#include <rtems/devfs.h>
+#define CONFIGURE_FILESYSTEM_ENTRY_DEVFS { "devfs", devFS_initialize }
+#endif
+
+#ifdef RTEMS_NETWORKING
+  /**
+   * FTPFS
+   */ 
+  #if !defined(CONFIGURE_FILESYSTEM_ENTRY_FTPFS) && \
+      defined(CONFIGURE_FILESYSTEM_FTPFS) 
+    #include <rtems/ftpfs.h>
+    #define CONFIGURE_FILESYSTEM_ENTRY_FTPFS { "ftpfs", rtems_ftpfs_initialize }
+  #endif
+
+  /**
+   * TFTPFS
+   */ 
+  #if !defined(CONFIGURE_FILESYSTEM_ENTRY_TFTPFS) && \
+      defined(CONFIGURE_FILESYSTEM_TFTPFS)
+    #include <rtems/tftp.h>
+    #define CONFIGURE_FILESYSTEM_ENTRY_TFTPFS { "tftpfs", rtems_tftpfs_initialize }
+  #endif
+
+  /**
+   * NFSFS
+   */ 
+  #if !defined(CONFIGURE_FILESYSTEM_ENTRY_NFSFS) && \
+      defined(CONFIGURE_FILESYSTEM_NFSFS)
+    #include <librtemsNfs.h>
+    #define CONFIGURE_FILESYSTEM_ENTRY_NFSFS { "nfs", rtems_nfsfs_initialize }
+  #endif
+#endif
+
+/**
+ * DOSFS
+ */ 
+#if !defined(CONFIGURE_FILESYSTEM_ENTRY_DOSFS) && \
+    defined(CONFIGURE_FILESYSTEM_DOSFS)
+  #include <rtems/dosfs.h>
+  #define CONFIGURE_FILESYSTEM_ENTRY_DOSFS { "dosfs", rtems_dosfs_initialize }
+#endif
+
+/**
+ * RFS
+ */ 
+#if !defined(CONFIGURE_FILESYSTEM_ENTRY_RFS) && \
+    defined(CONFIGURE_FILESYSTEM_RFS)
+  #include <rtems/rtems-rfs.h>
+  #define CONFIGURE_FILESYSTEM_ENTRY_RFS { "rfs", rtems_rfs_rtems_initialise }
+#endif
+
+#ifdef CONFIGURE_INIT
+
+  /*
+   *  DEVFS variables.
+   */
+  #if defined(CONFIGURE_APPLICATION_DISABLE_FILESYSTEM) && \
+      !defined(RTEMS_COVERAGE)
     #define CONFIGURE_MEMORY_FOR_DEVFS  0
-  #elif defined(CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM)
+  #elif defined(CONFIGURE_FILESYSTEM_DEVFS)
     #ifndef CONFIGURE_MAXIMUM_DEVICES
       #define CONFIGURE_MAXIMUM_DEVICES 4
     #endif
@@ -195,35 +375,69 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
   #else
     #define CONFIGURE_MEMORY_FOR_DEVFS  0
   #endif
-#endif
 
-/*
- *  Mount Table Configuration
- */
-#include <rtems/imfs.h>
+  #if defined(CONFIGURE_FILESYSTEM_IMFS) || \
+      defined(CONFIGURE_FILESYSTEM_miniIMFS)
+    int imfs_rq_memfile_bytes_per_block = CONFIGURE_IMFS_MEMFILE_BYTES_PER_BLOCK;
+  #endif
 
-/**
- *  This specifies the number of bytes per block for files within
- *  the IMFS.  There are a maximum number of blocks per file so
- *  this dictates the maximum size of a file.  This has to be balanced
- *  with the unused portion of each block that might be wasted.
- */
-#ifndef CONFIGURE_IMFS_MEMFILE_BYTES_PER_BLOCK
-  #define CONFIGURE_IMFS_MEMFILE_BYTES_PER_BLOCK \
-                    IMFS_MEMFILE_DEFAULT_BYTES_PER_BLOCK
-#endif
-#ifdef CONFIGURE_INIT
-  int imfs_rq_memfile_bytes_per_block = CONFIGURE_IMFS_MEMFILE_BYTES_PER_BLOCK;
-#endif /* CONFIGURE_INIT */
+  /**
+   * Table termination record.
+   */
+  #define CONFIGURE_FILESYSTEM_NULL { NULL, NULL }
 
-#ifdef CONFIGURE_INIT
+  /**
+   * The default file system table. Must be terminated with the NULL entry if
+   * you provide your own.
+   *
+   * The extern is needed to stop the table being removed by the optimizer.
+   */
+  extern const rtems_filesystem_table_t configuration_filesystem_table[];
+  #ifndef CONFIGURE_HAS_OWN_FILESYSTEM_TABLE
+    const rtems_filesystem_table_t configuration_filesystem_table[] = {
+      #if defined(CONFIGURE_FILESYSTEM_miniIMFS) && \
+          defined(CONFIGURE_FILESYSTEM_ENTRY_miniIMFS)
+        CONFIGURE_FILESYSTEM_ENTRY_miniIMFS,
+      #endif
+      #if defined(CONFIGURE_FILESYSTEM_IMFS) && \
+          defined(CONFIGURE_FILESYSTEM_ENTRY_IMFS)
+        CONFIGURE_FILESYSTEM_ENTRY_IMFS,
+      #endif
+      #if defined(CONFIGURE_FILESYSTEM_DEVFS) && \
+          defined(CONFIGURE_FILESYSTEM_ENTRY_DEVFS)
+        CONFIGURE_FILESYSTEM_ENTRY_DEVFS,
+      #endif
+      #if defined(CONFIGURE_FILESYSTEM_TFTPFS) && \
+          defined(CONFIGURE_FILESYSTEM_ENTRY_TFTPFS)
+        CONFIGURE_FILESYSTEM_ENTRY_TFTPFS,
+      #endif
+      #if defined(CONFIGURE_FILESYSTEM_FTPFS) && \
+          defined(CONFIGURE_FILESYSTEM_ENTRY_FTPFS)
+        CONFIGURE_FILESYSTEM_ENTRY_FTPFS,
+      #endif
+      #if defined(CONFIGURE_FILESYSTEM_NFSFS) && \
+          defined(CONFIGURE_FILESYSTEM_ENTRY_NFSFS)
+        CONFIGURE_FILESYSTEM_ENTRY_NFSFS,
+      #endif
+      #if defined(CONFIGURE_FILESYSTEM_DOSFS) && \
+          defined(CONFIGURE_FILESYSTEM_ENTRY_DOSFS)
+        CONFIGURE_FILESYSTEM_ENTRY_DOSFS,
+      #endif
+      #if defined(CONFIGURE_FILESYSTEM_RFS) && \
+          defined(CONFIGURE_FILESYSTEM_ENTRY_RFS)
+        CONFIGURE_FILESYSTEM_ENTRY_RFS,
+      #endif
+      CONFIGURE_FILESYSTEM_NULL
+    };
+  #endif
+
   /**
    *  This disables the inclusion of pipe support in the full IMFS.
    *
    *  NOTE: When building for coverage, we need this variable all the time.
    */
   #if !defined(CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM) || \
-       defined(RTEMS_COVERAGE)
+      defined(RTEMS_COVERAGE)
     #if defined(CONFIGURE_PIPES_ENABLED)
       bool rtems_pipe_configured = true;
     #else
@@ -233,12 +447,12 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
 
   #ifndef CONFIGURE_HAS_OWN_MOUNT_TABLE
     const rtems_filesystem_mount_table_t configuration_mount_table = {
-      #ifdef CONFIGURE_USE_IMFS_AS_BASE_FILESYSTEM
-        &IMFS_ops,
-      #elif defined(CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM)
-        &devFS_ops,
-      #else  /* using miniIMFS as base filesystem */
-        &miniIMFS_ops,
+      #if defined(CONFIGURE_USE_DEVFS_AS_BASE_FILESYSTEM)
+        "devfs",
+      #elif defined(CONFIGURE_USE_MINIIMFS_AS_BASE_FILESYSTEM)
+        "mimfs",
+      #else  /* using IMFS as base filesystem */
+        "imfs",
       #endif
       RTEMS_FILESYSTEM_READ_WRITE,
       NULL,
@@ -249,6 +463,7 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
         *rtems_filesystem_mount_table = &configuration_mount_table;
     const int rtems_filesystem_mount_table_size = 1;
   #endif
+
 #endif
 
 /*
@@ -784,11 +999,25 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
       CONFIGURE_BDBUF_BUFFER_MAX_SIZE
     };
   #endif
+
+  /*
+   *  Semaphores:
+   *    o disk lock
+   *    o bdbuf lock
+   *    o bdbuf sync lock
+   *    o bdbuf access condition
+   *    o bdbuf transfer condition
+   *    o bdbuf buffer condition
+   */
+  #define CONFIGURE_LIBBLOCK_SEMAPHORES 6
+
   #if defined(CONFIGURE_HAS_OWN_BDBUF_TABLE) || \
       defined(CONFIGURE_BDBUF_BUFFER_SIZE) || \
       defined(CONFIGURE_BDBUF_BUFFER_COUNT)
     #error BDBUF Cache does not use a buffer configuration table. Please remove.
   #endif
+#else
+  #define CONFIGURE_LIBBLOCK_SEMAPHORES 0
 #endif /* CONFIGURE_APPLICATION_NEEDS_LIBBLOCK */
 
 #if defined(RTEMS_MULTIPROCESSING)
@@ -909,16 +1138,17 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
 
   #ifndef CONFIGURE_MAXIMUM_SEMAPHORES
     #define CONFIGURE_MAXIMUM_SEMAPHORES                 0
-  #else
   #endif
+
+  #define CONFIGURE_SEMAPHORES \
+    (CONFIGURE_MAXIMUM_SEMAPHORES + CONFIGURE_LIBIO_SEMAPHORES + \
+      CONFIGURE_TERMIOS_SEMAPHORES + CONFIGURE_LIBBLOCK_SEMAPHORES)
 
   /*
    * If there are no user or support semaphores defined, then we can assume
    * that no memory need be allocated at all for semaphores.
    */
-  #if  ((CONFIGURE_MAXIMUM_SEMAPHORES == 0) && \
-        (CONFIGURE_LIBIO_SEMAPHORES == 0) && \
-        (CONFIGURE_TERMIOS_SEMAPHORES == 0))
+  #if CONFIGURE_SEMAPHORES == 0
     #define CONFIGURE_MEMORY_FOR_SEMAPHORES(_semaphores) 0
   #else
     #define CONFIGURE_MEMORY_FOR_SEMAPHORES(_semaphores) \
@@ -1686,8 +1916,7 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
   (CONFIGURE_MEMORY_FOR_TASK_VARIABLES(CONFIGURE_MAXIMUM_TASK_VARIABLES) + \
    CONFIGURE_MEMORY_FOR_TIMERS(CONFIGURE_MAXIMUM_TIMERS + \
     CONFIGURE_TIMER_FOR_SHARED_MEMORY_DRIVER ) + \
-   CONFIGURE_MEMORY_FOR_SEMAPHORES(CONFIGURE_MAXIMUM_SEMAPHORES + \
-     CONFIGURE_LIBIO_SEMAPHORES + CONFIGURE_TERMIOS_SEMAPHORES) + \
+   CONFIGURE_MEMORY_FOR_SEMAPHORES(CONFIGURE_SEMAPHORES) + \
    CONFIGURE_MEMORY_FOR_MESSAGE_QUEUES(CONFIGURE_MAXIMUM_MESSAGE_QUEUES) + \
    CONFIGURE_MEMORY_FOR_PARTITIONS(CONFIGURE_MAXIMUM_PARTITIONS) + \
    CONFIGURE_MEMORY_FOR_REGIONS( CONFIGURE_MAXIMUM_REGIONS ) + \
@@ -1780,8 +2009,7 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
     CONFIGURE_MEMORY_FOR_TASKS(CONFIGURE_MAXIMUM_TASKS, 0),
     CONFIGURE_MEMORY_FOR_TASK_VARIABLES(CONFIGURE_MAXIMUM_TASK_VARIABLES),
     CONFIGURE_MEMORY_FOR_TIMERS(CONFIGURE_MAXIMUM_TIMERS),
-    CONFIGURE_MEMORY_FOR_SEMAPHORES(CONFIGURE_MAXIMUM_SEMAPHORES +
-       CONFIGURE_LIBIO_SEMAPHORES + CONFIGURE_TERMIOS_SEMAPHORES),
+    CONFIGURE_MEMORY_FOR_SEMAPHORES(CONFIGURE_SEMAPHORES),
     CONFIGURE_MEMORY_FOR_MESSAGE_QUEUES(CONFIGURE_MAXIMUM_MESSAGE_QUEUES),
     CONFIGURE_MEMORY_FOR_PARTITIONS(CONFIGURE_MAXIMUM_PARTITIONS),
     CONFIGURE_MEMORY_FOR_REGIONS( CONFIGURE_MAXIMUM_REGIONS ),
@@ -1853,8 +2081,7 @@ rtems_fs_init_functions_t    rtems_fs_init_helper =
     CONFIGURE_MAXIMUM_TASKS,
     CONFIGURE_NOTEPADS_ENABLED,
     CONFIGURE_MAXIMUM_TIMERS + CONFIGURE_TIMER_FOR_SHARED_MEMORY_DRIVER,
-    CONFIGURE_MAXIMUM_SEMAPHORES + CONFIGURE_LIBIO_SEMAPHORES +
-      CONFIGURE_TERMIOS_SEMAPHORES,
+    CONFIGURE_SEMAPHORES,
     CONFIGURE_MAXIMUM_MESSAGE_QUEUES,
     CONFIGURE_MAXIMUM_PARTITIONS,
     CONFIGURE_MAXIMUM_REGIONS,

@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iom16.h,v 1.2 2009/11/30 16:01:44 ralf Exp $ */
+/* $Id: iom16.h,v 1.3 2010/05/10 16:31:21 joel Exp $ */
 
 /* avr/iom16.h - definitions for ATmega16 */
 
@@ -45,7 +45,7 @@
 #  define _AVR_IOXXX_H_ "iom16.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 /* Registers and associated bit numbers */
 
@@ -369,9 +369,9 @@
 #define COM1A0  6
 #define COM1A1  7
 
-/*
-   The ADHSM bit has been removed from all documentation,
-   as being not needed at all since the comparator has proven
+/* 
+   The ADHSM bit has been removed from all documentation, 
+   as being not needed at all since the comparator has proven 
    to be fast enough even without feeding it more power.
 */
 
@@ -602,7 +602,7 @@
 /* Lock Bits */
 #define __LOCK_BITS_EXIST
 #define __BOOT_LOCK_BITS_0_EXIST
-#define __BOOT_LOCK_BITS_1_EXIST
+#define __BOOT_LOCK_BITS_1_EXIST 
 
 
 /* Signature */

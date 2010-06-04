@@ -12,12 +12,12 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: clockdrv.c,v 1.5 2010/04/09 20:24:56 thomas Exp $
+ *  $Id: clockdrv.c,v 1.6 2010/04/30 14:55:51 sh Exp $
  */
 
 #include <rtems.h>
 #include <bsp.h>
-#include <irq.h>
+#include <bsp/irq.h>
 #include <gba.h>
 
 

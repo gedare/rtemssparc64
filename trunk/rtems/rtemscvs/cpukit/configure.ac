@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.178 2010/04/12 06:36:35 ralf Exp $
+## $Id: configure.ac,v 1.181 2010/05/29 02:31:09 ralf Exp $
 
 AC_PREREQ(2.61)
 AC_INIT([rtems-cpukit],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -18,6 +18,8 @@ RTEMS_ENABLE_POSIX
 RTEMS_ENABLE_ITRON
 RTEMS_ENABLE_RTEMS_DEBUG
 RTEMS_ENABLE_NETWORKING
+RTEMS_ENABLE_HTTPD
+RTEMS_ENABLE_SHTTPD
 
 RTEMS_ENV_RTEMSCPU
 RTEMS_CHECK_RTEMS_DEBUG
@@ -246,6 +248,12 @@ AC_CHECK_HEADERS([sys/queue.h],[NEED_SYS_QUEUE_H=no],[NEED_SYS_QUEUE_H=yes])
 # configuration-time diagnostics and are not really used.
 AC_CHECK_DECLS([_POSIX_LOGIN_NAME_MAX],,,[#include <limits.h>])
 AC_CHECK_DECLS([CHAR_BIT],,,[#include <limits.h>])
+
+# FIXME: We should get rid of this.
+# So far, only used in libfs/src/nfsclient/src/dirutils.c
+AC_CHECK_SIZEOF([mode_t])
+AC_CHECK_SIZEOF([off_t])
+
 # FIXME: Mandatory in SUSv4, optional in SUSv3. 
 #   Not implemented in GCC/newlib, so far.
 AC_CHECK_DECLS([WORD_BIT],,,[#include <limits.h>])
@@ -267,6 +275,10 @@ AM_CONDITIONAL(HAS_MP,test x"$enable_multiprocessing" = x"yes" )
 AM_CONDITIONAL(HAS_PTHREADS,test x"$rtems_cv_HAS_POSIX_API" = x"yes")
 AM_CONDITIONAL(LIBITRON,test x"$rtems_cv_HAS_ITRON_API" = x"yes")
 AM_CONDITIONAL(LIBNETWORKING,test x"$rtems_cv_HAS_NETWORKING" = x"yes")
+AM_CONDITIONAL([LIBHTTPD],[test x"$rtems_cv_HAS_NETWORKING" = xyes \
+&& test x"$enable_httpd" = xyes])
+AM_CONDITIONAL([LIBSHTTPD],[test x"$rtems_cv_HAS_NETWORKING" = xyes \
+&& test x"$enable_shttpd" = xyes])
 
 AM_CONDITIONAL([NEED_SYS_CDEFS_H],[test x"$NEED_SYS_CDEFS_H" = x"yes"])
 AM_CONDITIONAL([NEED_SYS_QUEUE_H],[test x"$NEED_SYS_QUEUE_H" = x"yes"])

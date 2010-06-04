@@ -10,7 +10,7 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: bsp.h,v 1.7 2009/11/29 14:52:59 ralf Exp $
+ *  $Id: bsp.h,v 1.8 2010/04/30 14:40:16 sh Exp $
 */
 #ifndef _BSP_H
 #define _BSP_H
@@ -26,6 +26,8 @@ extern "C" {
 #include <rtems/console.h>
 #include <rtems/clockdrv.h>
 #include <mc9328mxl.h>
+
+#define BSP_FEATURE_IRQ_EXTENSION
 
 /* What is the input clock freq in hertz? */
 #define BSP_OSC_FREQ  16000000    /* 16 MHz oscillator */

@@ -1,13 +1,8 @@
 /*
  *  From Newlib 1.16.0
  *
- *  $Id: start.S,v 1.3 2009/11/30 04:56:52 ralf Exp $
+ *  $Id: start.S,v 1.4 2010/05/31 13:52:07 joel Exp $
  */
-
-#warning Call to boot_card has changed and needs checking.
-#warning The call is "void boot_card(const char* cmdline);"
-#warning You need to pass a NULL.
-#warning Please check and remove these warnings.
 
 	.text
 	.balign 4
@@ -54,6 +49,8 @@ _start:
 
 # Call main, then exit.
 
+	ldi	r1, #0           ; r1 = argv
+	ldi	r0, #0           ; r0 = argc
 	bl	boot_card
 	bl	sys_exit
 

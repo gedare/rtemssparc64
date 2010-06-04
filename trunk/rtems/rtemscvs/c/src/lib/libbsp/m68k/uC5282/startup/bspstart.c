@@ -15,12 +15,13 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.58 2009/11/29 14:59:41 ralf Exp $
+ *  $Id: bspstart.c,v 1.59 2010/04/26 17:44:57 ericn Exp $
  */
 
 #include <bsp.h>
 #include <rtems/error.h>
 #include <errno.h>
+#include <stdio.h>
 
 /*
  * Location of 'VME' access
@@ -184,7 +185,7 @@ void _CPU_cache_invalidate_1_data_line(const void *addr)
 #endif
 }
 
-extern void bsp_fake_syscall(void);
+extern void bsp_fake_syscall(int);
 
 /*
  * The Arcturus boot ROM prints exception information improperly

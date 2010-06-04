@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.6 2009/10/30 13:50:25 thomas Exp $
+## $Id: Makefile.am,v 1.7 2010/04/30 12:32:51 sh Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -45,8 +45,7 @@ console_SOURCES = ../../shared/console-polled.c console/console-io.c
 
 # irq
 include_bsp_HEADERS = irq/irq.h \
-    ../../shared/include/irq-generic.h \
-    irq/irq-config.h
+    ../../shared/include/irq-generic.h
 
 irq_SOURCES = irq/irq_init.c \
 	../../shared/src/irq-generic.c \
