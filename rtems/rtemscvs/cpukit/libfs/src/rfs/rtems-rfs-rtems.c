@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtems-rfs-rtems.c,v 1.6 2010/04/12 05:29:25 ccj Exp $
+ *  $Id: rtems-rfs-rtems.c,v 1.9 2010/05/31 13:56:37 ccj Exp $
  */
 /**
  * @file
@@ -58,7 +58,7 @@
  */
 int
 rtems_rfs_rtems_eval_path (const char*                       path,
-                           int                               pathlen,
+                           size_t                            pathlen,
                            int                               flags,
                            rtems_filesystem_location_info_t* pathloc)
 {
@@ -67,12 +67,12 @@ rtems_rfs_rtems_eval_path (const char*                       path,
   rtems_rfs_ino          ino = rtems_rfs_rtems_get_pathloc_ino (pathloc);
   uint32_t               doff = 0;
   const char*            node;
-  int                    node_len;
+  size_t                 node_len;
   int                    stripped;
   int                    rc;
 
   if (rtems_rfs_rtems_trace (RTEMS_RFS_RTEMS_DEBUG_EVAL_PATH))
-    printf ("rtems-rfs-rtems: eval-path: in: path:%s pathlen:%i ino:%ld\n",
+    printf ("rtems-rfs-rtems: eval-path: in: path:%s pathlen:%zi ino:%ld\n",
             path, pathlen, ino);
   
   /*
@@ -120,7 +120,7 @@ rtems_rfs_rtems_eval_path (const char*                       path,
     node_len = 0;
     while (!rtems_filesystem_is_separator (*path) &&
            (*path != '\0') && pathlen &&
-           (node_len < (rtems_rfs_fs_max_name (fs) - 1)))
+           ((node_len + 1) < rtems_rfs_fs_max_name (fs)))
     {
       path++;
       pathlen--;
@@ -159,7 +159,7 @@ rtems_rfs_rtems_eval_path (const char*                       path,
       if (ino == RTEMS_RFS_ROOT_INO)
       {
         if (rtems_rfs_rtems_trace (RTEMS_RFS_RTEMS_DEBUG_EVAL_PATH))
-          printf("rtems-rfs-rtems: eval-path: crossmount: path:%s (%d)\n",
+          printf("rtems-rfs-rtems: eval-path: crossmount: path:%s (%zd)\n",
                  path - node_len, pathlen + node_len);
         rtems_rfs_inode_close (fs, &inode);
         rtems_rfs_rtems_unlock (fs);
@@ -1214,7 +1214,8 @@ const rtems_filesystem_file_handlers_r rtems_rfs_rtems_link_handlers =
  * Forward decl for the ops table.
  */
 
-int rtems_rfs_rtems_initialise (rtems_filesystem_mount_table_entry_t *mt_entry);
+int rtems_rfs_rtems_initialise (rtems_filesystem_mount_table_entry_t *mt_entry,
+                                const void                           *data);
 int rtems_rfs_rtems_shutdown (rtems_filesystem_mount_table_entry_t *mt_entry);
 
 /**
@@ -1247,7 +1248,8 @@ const rtems_filesystem_operations_table rtems_rfs_ops =
  */
 
 int
-rtems_rfs_rtems_initialise (rtems_filesystem_mount_table_entry_t* mt_entry)
+rtems_rfs_rtems_initialise (rtems_filesystem_mount_table_entry_t* mt_entry,
+                            const void*                           data)
 {
   rtems_rfs_rtems_private* rtems;
   rtems_rfs_file_system*   fs;

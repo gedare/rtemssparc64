@@ -1,7 +1,7 @@
-/detect_host_bridge.c/1.5/Thu Dec 31 16:53:59 2009//
-/gtpcireg.h/1.3/Thu Dec 31 16:53:59 2009//
-/pci.c/1.16/Thu Dec 31 16:53:59 2009//
-/pci.h/1.7/Thu Dec 31 16:53:59 2009//
-/pci_interface.c/1.6/Thu Dec 31 16:53:59 2009//
-/pcifinddevice.c/1.8/Thu Dec 31 16:53:59 2009//
+/detect_host_bridge.c/1.5/Tue Jun  1 21:20:03 2010//
+/gtpcireg.h/1.3/Tue Jun  1 21:20:03 2010//
+/pci.c/1.16/Tue Jun  1 21:20:03 2010//
+/pci.h/1.7/Tue Jun  1 21:20:03 2010//
+/pci_interface.c/1.6/Tue Jun  1 21:20:03 2010//
+/pcifinddevice.c/1.8/Tue Jun  1 21:20:03 2010//
 D

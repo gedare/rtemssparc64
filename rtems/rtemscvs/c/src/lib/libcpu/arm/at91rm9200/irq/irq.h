@@ -1,6 +1,8 @@
 /*
  * Interrupt handler Header file
  *
+ * Copyright (c) 2010 embedded brains GmbH.
+ *
  * Copyright (c) 2004 by Jay Monkman <jtm@lopingdog.com>
  *
  *  The license and distribution terms for this file may be
@@ -9,30 +11,20 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: irq.h,v 1.6 2010/04/09 20:24:55 thomas Exp $
+ *  $Id: irq.h,v 1.7 2010/04/30 13:15:49 sh Exp $
  */
 
 #ifndef __IRQ_H__
 #define __IRQ_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifndef __asm__
 
-/*
- * Include some preprocessor value also used by assember code
- */
-
-#include <rtems/irq.h>
 #include <rtems.h>
-#include <at91rm9200.h>
+#include <rtems/irq.h>
+#include <rtems/irq-extension.h>
 
-extern void default_int_handler(rtems_irq_hdl_param unused);
-/***********************************************************************
- * Constants
- **********************************************************************/
+#endif /* __asm__ */
+
 /* possible interrupt sources on the AT91RM9200 */
 #define AT91RM9200_INT_FIQ        0
 #define AT91RM9200_INT_SYSIRQ     1
@@ -68,20 +60,8 @@ extern void default_int_handler(rtems_irq_hdl_param unused);
 #define AT91RM9200_INT_IRQ6      31
 #define AT91RM9200_MAX_INT       32
 
-/* vector table used by shared/irq_init.c */
-/* we can treat the AT91RM9200 AIC_SVR_BASE as */
-/* a vector table */
-#define VECTOR_TABLE AIC_SVR_BASE
+#define BSP_INTERRUPT_VECTOR_MIN 0
 
-/*
- * function to initialize the interrupt for a specific BSP
- */
-void BSP_rtems_irq_mngt_init();
-
-#endif /* __asm__ */
-
-#ifdef __cplusplus
-}
-#endif
+#define BSP_INTERRUPT_VECTOR_MAX (AT91RM9200_MAX_INT - 1)
 
 #endif /* __IRQ_H__ */

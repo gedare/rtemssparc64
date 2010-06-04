@@ -16,7 +16,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq.h,v 1.6 2009/05/05 16:24:04 jennifer Exp $
+ *  $Id: irq.h,v 1.7 2010/04/28 20:25:22 joel Exp $
  */
 
 #ifndef BSP_POWERPC_IRQ_H
@@ -144,6 +144,8 @@ extern "C" {
 #define SCORE603E_85C30_3_IRQ          SCORE603E_IRQ19    /* SCC 232-2 */
 
 #define MAX_BOARD_IRQS                 SCORE603E_IRQ19
+
+extern void BSP_rtems_irq_mng_init(unsigned cpuId);
 
 #ifdef __cplusplus
 }

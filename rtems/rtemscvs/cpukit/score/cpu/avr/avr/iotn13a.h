@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iotn13a.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iotn13a.h,v 1.3 2010/05/10 16:31:22 joel Exp $ */
 
 /* avr/iotn13a.h - definitions for ATtiny13 */
 
@@ -42,7 +42,7 @@
 #  define _AVR_IOXXX_H_ "iotn13a.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 
 #ifndef _AVR_ATTINY13A_H_
@@ -187,8 +187,7 @@
 
 #define PRR _SFR_IO8(0x25)
 #define PRADC 0
-#define PRSPI 1
-#define PRTIM0 2
+#define PRTIM0 1
 
 #define CLKPR _SFR_IO8(0x26)
 #define CLKPS0 0

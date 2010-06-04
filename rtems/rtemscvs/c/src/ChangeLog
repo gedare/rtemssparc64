@@ -1,3 +1,41 @@
+2010-06-03	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* libchip/network/if_dc.c: Fix warning.
+
+2010-05-31	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libchip/network/greth.c: Misc. hacks to allow compilation on 
+	16bit targets.
+
+2010-05-31	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	PR 1531/newlib
+	* libchip/network/i82586.c:
+	Add local copy of ALIGN().
+
+2010-05-31	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libchip/network/cs8900.c:
+	Misc. changes to make code 16bit-target compliant.
+	* libchip/network/i82586.c:
+	Use int32_t instead of int for 16bit-target compliance.
+	* libchip/network/open_eth.c: 
+	Misc. changes to make code 16bit-target compliant.
+
+2010-05-18	Chris Johns <chrisj@rtems.org>
+
+	* libchip/i2c/spi-sd-card.c, libchip/ide/ata.c: PR
+	1448/filesystem.
+
+2010-05-11	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* aclocal/bsp-alias.m4: Change quoting to work-round
+	http://www.freebsd.org/cgi/query-pr.cgi?pr=146378.
+
+2010-04-28	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* libchip/network/if_dc.c: Remove warnings.
+
 2010-04-25	Joel Sherrill <joel.sherrilL@OARcorp.com>
 
 	* libchip/serial/mc68681.c, libchip/serial/mc68681_reg.c,

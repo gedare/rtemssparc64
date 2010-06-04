@@ -12,7 +12,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: ata.c,v 1.37 2010/04/08 16:36:13 joel Exp $
+ * $Id: ata.c,v 1.38 2010/05/18 02:12:39 ccj Exp $
  *
  */
 #include <errno.h>
@@ -1019,7 +1019,7 @@ ata_ioctl(rtems_disk_device *dd, uint32_t cmd, void *argp)
             status = ata_non_data_request(device, cmd, argp);
             break;
 
-        case RTEMS_BLKDEV_CAPABILITIES:
+        case RTEMS_BLKIO_CAPABILITIES:
             *((uint32_t*) argp)  = RTEMS_BLKDEV_CAP_MULTISECTOR_CONT;
             status = RTEMS_SUCCESSFUL;
             break;

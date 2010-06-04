@@ -5,7 +5,7 @@
 # @brief Makefile of LibBSP for the LPC32XX boards.
 #
 
-# $Id: Makefile.am,v 1.3 2010/04/09 12:25:21 thomas Exp $
+# $Id: Makefile.am,v 1.5 2010/05/20 13:15:35 sh Exp $
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
 
@@ -33,12 +33,12 @@ include_bsp_HEADERS += ../../shared/include/utility.h
 include_bsp_HEADERS += ../../shared/include/irq-generic.h
 include_bsp_HEADERS += ../../shared/include/irq-info.h
 include_bsp_HEADERS += ../../shared/include/stackalloc.h
+include_bsp_HEADERS += ../../shared/include/uart-output-char.h
 include_bsp_HEADERS += ../../shared/tod.h
 include_bsp_HEADERS += ../shared/include/linker-symbols.h
 include_bsp_HEADERS += ../shared/include/start.h
 include_bsp_HEADERS += ../shared/lpc/include/lpc-timer.h
 include_bsp_HEADERS += ../shared/lpc/include/lpc-dma.h
-include_bsp_HEADERS += include/irq-config.h
 include_bsp_HEADERS += include/irq.h
 include_bsp_HEADERS += include/mmu.h
 include_bsp_HEADERS += include/lpc32xx.h
@@ -61,7 +61,8 @@ project_lib_DATA = start.$(OBJEXT)
 project_lib_DATA += startup/linkcmds
 project_lib_DATA += ../shared/startup/linkcmds.base
 
-EXTRA_DIST = startup/linkcmds.lpc32xx_phycore
+EXTRA_DIST = startup/linkcmds.lpc32xx_phycore \
+	startup/linkcmds.lpc32xx_mzx_boot_int
 
 ###############################################################################
 #                  LibBSP                                                     #
@@ -84,6 +85,7 @@ libbsp_a_SOURCES += ../../shared/bootcard.c \
 	../../shared/gnatinstallhandler.c \
 	../../shared/sbrk.c \
 	../../shared/src/stackalloc.c \
+	../../shared/src/uart-output-char.c \
 	../shared/abort/simple_abort.c
 
 # Startup

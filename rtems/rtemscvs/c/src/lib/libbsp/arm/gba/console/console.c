@@ -12,7 +12,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: console.c,v 1.5 2010/04/09 20:24:56 thomas Exp $
+ *  $Id: console.c,v 1.6 2010/04/30 14:55:51 sh Exp $
  */
 
 #include <stdio.h>
@@ -24,7 +24,7 @@
 #include <rtems/libio.h>
 #include <rtems/termiostypes.h>
 #include <termios.h>
-#include <irq.h>
+#include <bsp/irq.h>
 #include <gba.h>
 #include <conio.h>
 

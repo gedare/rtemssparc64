@@ -1,3 +1,362 @@
+2010-06-03	Chris Johns <chrisj@rtems.org>
+
+	* sapi/include/confdefs.h: PR 1543. Make default file system when
+	nothing is defined IMFS not miniIMFS.
+
+2010-06-01 	Chris Johns <chrisj@rtems.org>
+
+	* libcsupport/include/rtems/libio.h: Make the struct name the same
+	as the typedef.
+	* sapi/include/confdefs.h: Fixes for use in C++.
+
+2010-06-01 	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/shell/print-ls.c: Remove (long) cast of st_ino.
+	* libcsupport/include/rtems/libio.h, libcsupport/src/mount-mgr.c:
+	Add missing 'const'.
+	* libfs/src/nfsclient/src/xdr_mbuf.c: Warning removal.
+
+2010-05-31	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libcsupport/include/rtems/libio.h: Remove if 0 section. Formatting.
+
+2010-05-31	Chris Johns <chrisj@rtems.org>
+
+	* libcsupport/Makefile.am: Add mount-mgr.c.
+	* libcsupport/src/mount-mgr.c: New.
+	* include/rtems/fs.h: Added rtems_filesystem_location_mount.
+	* libcsupport/include/rtems/libio.h, libcsupport/src/mount.c: New
+	mount interface. It is similar to Linux.
+	* libcsupport/include/rtems/libio_.h: Remove the
+	init_fs_mount_table call.
+	* libcsupport/src/base_fs.c: Remove init_fs_mount_table_call. Use
+	the new mount call. Remove setting the root node in the global
+	pathloc. Mount does this now.
+	* libcsupport/src/privateenv.c: Remove the hack to set the root
+	mount table entry in the environment.
+	* libcsupport/src/unmount.cL Free the target string.
+	* libblock/src/bdpart-mount.c: New mount API.
+	
+	* libfs/src/devfs/devfs.h, libfs/src/devfs/devfs_init.c,
+	libfs/src/dosfs/dosfs.h, libfs/src/dosfs/msdos.h,
+	libfs/src/dosfs/msdos_init.c, libfs/src/imfs/imfs.h,
+	libfs/src/imfs/imfs_eval.c, libfs/src/imfs/imfs_init.c,
+	libfs/src/imfs/miniimfs_init.c,
+	libfs/src/nfsclient/src/librtemsNfs.h,
+	libfs/src/rfs/rtems-rfs-rtems.c, libfs/src/rfs/rtems-rfs.h,
+	libnetworking/lib/ftpfs.c, libnetworking/rtems/ftpfs.h,
+	libnetworking/rtems/tftp.h: New mount_h API.
+	
+	* libfs/src/devfs/devfs_eval.c: Local include of extern ops.
+	* libfs/src/nfsclient/src/nfs.c: New mount API. Removed the mount
+	me call and fixed the initialisation to happen when mounting.
+	
+	* libmisc/Makefile.am, libmisc/shell/shellconfig.h: Remove mount
+	filesystem files.
+
+	* libmisc/fsmount/fsmount.c, libmisc/fsmount/fsmount.h: Updated to
+	the new mount table values.
+	
+	* libmisc/shell/main_mount_ftp.c,
+	libmisc/shell/main_mount_msdos.c, libmisc/shell/main_mount_rfs.c,
+	libmisc/shell/main_mount_tftp.c: Removed.
+
+	* libmisc/shell/main_mount.c: Use the new mount API. Also access
+	the file system table for the file system types.
+
+	* libnetworking/lib/tftpDriver.c: Updated to the new mount
+	API. Fixed to allow mounting from any mount point. Also can now
+	have more than file system mounted.
+	
+	* sapi/include/confdefs.h: Add file system configuration support.
+
+2010-05-30	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libfs/src/nfsclient/src/rpcio.c: Warning removal.
+
+2010-05-29	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	PR 1531/newlib:
+	* libmisc/shell/fts.c:
+	Add local copy of ALIGN().
+
+2010-05-29	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/net/if.c:
+	Use uintptr_t and void* in _offsetof().
+	* libnetworking/netinet/raw_ip.c:
+	Cast nam to uintptr_t instead of int.
+	* libnetworking/libc/gethostnamadr.c:
+	Cast addr to uintptr_t instead of size_t.
+	* libfs/src/nfsclient/src/xdr_mbuf.c (xdrmbuf_setup):
+	Cast addr to uintptr_t instead of size_t.
+	* librpc/src/xdr/xdr_mem.c (xdr_memcreate): 
+	Cast addr to uintptr_t instead of size_t.
+	* libfs/src/nfsclient/src/dirutils.c: Add PRIomode_t, PRIdoff_t.
+	* configure.ac: Add AC_CHECK_SIZEOF(mode_t), AC_CHECK_SIZEOF(off_t).
+
+2010-05-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libfs/src/rfs/rtems-rfs-rtems.c: Use size_t for node_len.
+
+2010-05-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/libc/gethostnamadr.c:
+	Try to make crazy address arithmetic more portable.
+	* libfs/src/nfsclient/src/xdr_mbuf.c:
+	Use void* arithmetic instead of u_long arithmetic.
+	* libnetworking/netinet/raw_ip.c,
+	libnetworking/netinet/udp_usrreq.c:
+	Cast mbufs to uintptr_t instead of u_long.
+	* libnetworking/rtems/rtems_mii_ioctl.h, 
+	libnetworking/rtems/rtems_mii_ioctl_kern.c:
+	Use uint32_t instead of int as ioctl cmd arg.
+
+2010-05-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	*  libnetworking/lib/ftpfs.c, libnetworking/lib/tftpDriver.c:
+	Use size_t instead of int for pathnamelen.
+	* libfs/src/rfs/rtems-rfs-rtems.c:
+	Use size_t instead of int for pathlen.
+	Use %zi to print pathlen.
+	* libcsupport/include/rtems/libio.h:
+	Use size_t instead of int for pathnamelen.
+	* libcsupport/include/rtems/libio_.h, libcsupport/src/eval.c:
+	Use size_t instead of int for pathnamelen.
+	* libfs/src/imfs/imfs.h, libfs/src/imfs/imfs_eval.c:
+	Use size_t instead of int for pathnamelen.
+	* libfs/src/dosfs/msdos.h, libfs/src/dosfs/msdos_eval.c:
+	Use size_t instead of int for pathnamelen.
+	* libfs/src/devfs/devfs.h, libfs/src/devfs/devfs_eval.c:
+	Use size_t instead of int for pathnamelen.
+	* libfs/src/nfsclient/src/nfs.c: 
+	Use uint32_t instead of u_int_t for readarg and writearg.
+
+2010-05-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libfs/src/nfsclient/src/nfs.c: Introduce union nfs_evalpath_arg.
+
+2010-05-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* librpc/src/rpc/clnt_tcp.c, librpc/src/rpc/clnt_udp.c:
+	Revert to using u_long instead of rpcprog_t, rpcvers_t 
+	to stay bug-ward compatible to freebsd.
+	* librpc/src/xdr/xdr_mem.c: Cosmetics from freebsd.
+
+2010-05-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libfs/src/nfsclient/src/rpcio.c: 
+	Cast pointers to uintptr_t instead of long.
+	xids are uint32_t not u_long.
+	* libfs/src/nfsclient/src/nfs.c (NFS_MAKE_DEV_T_INO_HACK,
+	NFS_MAKE_DEV_T): Cast "id"'s to rtems_device_minor_number.
+
+2010-05-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libfs/src/nfsclient/src/rpcio.c, libfs/src/nfsclient/src/rpcio.h:
+	Use rpcprog_t for "program args", use rpcvers_t for "version args".
+
+2010-05-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* librpc/src/rpc/rtems_portmapper.c: Reflect changes to librpc.
+
+2010-05-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* librpc/include/rpc/clnt.h, librpc/include/rpc/rpc_msg.h,
+	librpc/src/rpc/clnt_generic.c, librpc/src/rpc/clnt_raw.c,
+	librpc/src/rpc/clnt_tcp.c, librpc/src/rpc/clnt_udp.c,
+	librpc/src/rpc/pmap_clnt.c, librpc/src/rpc/pmap_getmaps.c
+	librpc/src/rpc/pmap_getport.c:
+	Partial merger from freebsd (portability fixes).
+
+2010-05-27	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/sys/socketvar.h (struct sockbuf):
+	Use void* instead of caddr_t.
+	* libfs/src/nfsclient/src/rpcio.c: 
+	Use address to rpciod in calls to rxWakeupCB.
+	* libnetworking/sys/socket.h (struct sockwakeup):
+	Use void* instead of caddr_t.
+	* librpc/include/rpc/xdr.h: Cosmetics from freebsd.
+
+2010-05-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* librpc/src/rpc/clnt_udp.c: Cosmetics from freebsd.
+
+2010-05-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* librpc/src/rpc/clnt_tcp.c: Partial merger from freebsd
+	(Fix strict-aliasing).
+
+2010-05-26	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* librpc/src/rpc/clnt_raw.c: Partial merger from freebsd
+	(Improved 16 bit compatibility; Fix strict-aliasing).
+
+2010-05-25	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* librpc/src/rpc/rpc_prot.c: Partial merger from freebsd
+	(Improved 64 bit compatibility; bug fix).
+
+2010-05-23	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	PR 1528/cpukit
+	* libcsupport/src/malloc_boundary.c: Cast to intptr_t* instead of
+	int32_t* for 16 bit target compliance.
+
+2010-05-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libblock/include/rtems/nvdisk.h, libblock/src/nvdisk-sram.c:
+	Use pointer arithmetic instead of int32_t arithmetic for 16bit
+	compatibility.
+
+2010-05-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libmisc/shell/fts.c: Cast to uintptr_t instead of long for better
+	16bit target compliance.
+
+2010-05-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libfs/src/rfs/rtems-rfs-bitmaps-ut.c: Use "16 bit int" arg 
+	in call to srand if "32 bit int" doesn't fit into "int".
+
+2010-05-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libblock/src/flashdisk.c, libblock/src/nvdisk.c:
+	Cast argp to uintptr_t temporary instead of uint32_t temporary
+	(Avoid incompatible pointer casts on 16bit targets).
+
+2010-05-22	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* automake/compile.am: (Temporarily) Add -Werror=overflow,
+	-Werror=pointer-to-int-cast, -Werror=int-to-pointer-cast.
+
+2010-05-20	Bharath Suri <bharath.s.jois@gmail.com>
+
+	* libcsupport/src/_rename_r.c: Avoid overwriting of errno by
+	_rename_r to invalid values.
+
+2010-05-18	Chris Johns <chrisj@rtems.org>
+
+	* libblock/src/diskdevs.c, libblock/include/rtems/blkdev.h,
+	libblock/src/bdbuf.c: PR 1448/filesystem.
+
+	* libblock/include/rtems/blkdev.h, libblock/src/bdbuf.c: PR
+	1514/filesystem.
+	
+2010-05-17	Oleg Kravtsov <Oleg.Kravtsov@oktetlabs.ru>
+
+	PR 1449/cpukit
+	* libblock/src/diskdevs.c: rtems_disk_next() will now implicitly
+	obtain the returned disk.
+	* libblock/include/rtems/diskdevs.h: Documentation.
+
+2010-05-15	Chris Johns <chrisj@rtems.org>
+
+	* libfs/src/imfs/imfs_initsupp.c, libfs/src/imfs/imfs.h,
+	libfs/src/imfs/imfs_stat.c: PR1419. Return a device for the IMFS.
+
+2010-05-14	Chris Johns <chrisj@rtems.org>
+
+	* libblock/src/flashdisk.c: Clean up on initialisation errors.
+	
+2010-05-07	Arnout Vandecappelle <arnout@mind.be>
+
+	PR 1511/networking
+	* ftpd/ftpd.c: Abort RETR for directories.
+
+2010-05-03	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* sapi/include/confdefs.h: New define CONFIGURE_SEMAPHORES for the
+	overall count of required semaphores.  New define
+	CONFIGURE_LIBBLOCK_SEMAPHORES for the count of required disk and bdbuf
+	semaphores.
+
+2010-05-01	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* configure.ac: Add missing "&&".
+
+2010-05-01	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libcsupport/Makefile.am: Add libcsupport/src/flockfile.c,
+	libcsupport/src/ftrylockfile.c, libcsupport/src/funlockfile.c.
+	* libcsupport/src/flockfile.c, libcsupport/src/ftrylockfile.c,
+	libcsupport/src/funlockfile.c: New (stub functions).
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libcsupport/include/rtems/libio_.h, libcsupport/src/envlock.c,
+	libcsupport/src/libio.c: Added and use rtems_libio_lock() and
+	rtems_libio_unlock().  Cleaned up includes and declarations.  Do not
+	use RTEMS_NO_PRIORITY for unused ceiling priority in
+	rtems_semaphore_create().
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libnetworking/lib/ftpfs.c: Format changes.  Fixed pathname
+	allocation in rtems_ftpfs_eval_path().  Send QUIT command during
+	file close.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libfs/src/dosfs/msdos_format.c: Added missing va_end().
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* libblock/src/bdpart.c: Removed file.
+	* libblock/src/bdpart-create.c, libblock/src/bdpart-dump.c,
+	libblock/src/bdpart-mount.c, libblock/src/bdpart-read.c,
+	libblock/src/bdpart-register.c, libblock/src/bdpart-sort.c,
+	libblock/src/bdpart-write.c: New files.
+	* libblock/include/rtems/bdpart.h: Moved some definitions from bdpart.c.
+	* libblock/Makefile.am: Update for file changes.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* sapi/inline/rtems/chain.inl: Added missing functions.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* posix/src/alarm.c, posix/src/psignal.c, posix/src/ualarm.c:
+	Moved watchdog control objects to reduce dependencies.
+
+2010-04-29	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	PR 1507/filesystem
+	* libblock/src/bdbuf.c: Avoid NULL pointer access.
+
+	* libblock/src/diskdevs.c: Fixed bounds check in rtems_disk_next().
+
+2010-04-29	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* librpc/src/rpc/clnt_udp.c, librpc/src/xdr/xdr_mem.c:
+	Use [u]intptr_t instead of [u_]long for better 16bit compliance.
+
+2010-04-29	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* aclocal/enable-itron.m4, aclocal/check-itron.m4: Replace
+	RTEMS_HAS_ITRON_API with enable_itron.
+	* librpc/src/rpc/pmap_rmt.c: Use uintptr_t for better 16bit
+	compliance.
+
+2010-04-29	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* aclocal/enable-itron.m4: Cosmetics.
+	* httpd/Makefile.am: Use LIBHTTPD.
+	* shttpd/Makefile.am: Use LIBSHTTPD.
+	* configure.ac: Add RTEMS_ENABLE_SHTTPD, RTEMS_ENABLE_HTTPD.
+	Introduce AM_CONDITIONALS LIBHTTPD, LIBSHTTPD.
+	* aclocal/enable-httpd.m4, aclocal/enable-shttpd.m4: New.
+
+2010-04-29	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* libnetworking/libc/map_v4v6.c: Use uintptr_t instead of u_long for
+	better 16bit target compliance.
+
+2010-04-28	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* libcsupport/src/chdir.c: Check for NULL pointer.
+
 2010-04-25	Joel Sherrill <joel.sherrilL@OARcorp.com>
 
 	* libfs/src/rfs/rtems-rfs-bitmaps-ut.c: Fix warning.

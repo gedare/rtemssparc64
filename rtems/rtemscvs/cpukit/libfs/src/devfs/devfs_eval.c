@@ -3,7 +3,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: devfs_eval.c,v 1.4 2009/08/25 13:45:30 joel Exp $
+ *  $Id: devfs_eval.c,v 1.6 2010/05/31 13:56:36 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -15,9 +15,23 @@
 #include <assert.h>
 #include "devfs.h"
 
+/**
+ *  The following defines the device-only filesystem operating
+ *  handlers.
+ */
+
+extern rtems_filesystem_operations_table devFS_ops;
+
+/**
+ *  The following defines the device-only filesystem operating
+ *  handlers.
+ */
+
+extern rtems_filesystem_file_handlers_r  devFS_file_handlers;
+
 int devFS_evaluate_path(
   const char                        *pathname,
-  int                                pathnamelen,
+  size_t                             pathnamelen,
   int                                flags,
   rtems_filesystem_location_info_t  *pathloc
 )

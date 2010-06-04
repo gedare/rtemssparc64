@@ -1,3 +1,21 @@
+2010-05-14	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* rtl8019/rtl8019.c: Fix typo.
+
+2010-05-03	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* rtl8019/rtl8019.c: Fixed interrupt handler.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* Makefile.am, preinstall.am: Added generic interrupt support modules.
+	* include/bsp.h: Define BSP_FEATURE_IRQ_EXTENSION.
+	* startup/bspstart.c, rtl8019/rtl8019.c: Interrupt support changes.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* make/custom/gumstix.cfg: Use VFP floating point model.
+
 2010-04-09	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
 
 	* rtl8019/rtl8019.c: make irq data types consistent

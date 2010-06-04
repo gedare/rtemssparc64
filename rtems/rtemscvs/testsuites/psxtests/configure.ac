@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.54 2009/10/12 00:00:04 joel Exp $
+## $Id: configure.ac,v 1.61 2010/05/29 05:31:45 ralf Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-tests-psxtests],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])

@@ -30,7 +30,7 @@
 
 /* avr/iom164.h - definitions for ATmega164 */
 
-/* $Id: iom164.h,v 1.2 2009/11/30 16:01:44 ralf Exp $ */
+/* $Id: iom164.h,v 1.3 2010/05/10 16:31:21 joel Exp $ */
 
 #ifndef _AVR_IOM164_H_
 #define _AVR_IOM164_H_ 1
@@ -82,7 +82,13 @@
 /* Lock Bits */
 #define __LOCK_BITS_EXIST
 #define __BOOT_LOCK_BITS_0_EXIST
-#define __BOOT_LOCK_BITS_1_EXIST
+#define __BOOT_LOCK_BITS_1_EXIST 
+
+
+/* Signature (ATmega164P) */
+#define SIGNATURE_0 0x1E
+#define SIGNATURE_1 0x94
+#define SIGNATURE_2 0x0A 
 
 
 #endif /* _AVR_IOM164_H_ */

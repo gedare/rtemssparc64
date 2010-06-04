@@ -24,12 +24,12 @@
  *  It is important that the timer start/stop overhead be determined
  *  when porting or modifying this code.
  *
- *  $Id: timer.c,v 1.5 2008/09/05 04:36:16 ralf Exp $
+ *  $Id: timer.c,v 1.6 2010/04/30 14:55:55 sh Exp $
  */
 
 #include <rtems.h>
 #include <bsp.h>
-#include <irq.h>
+#include <bsp/irq.h>
 #include <gba.h>
 
 /*

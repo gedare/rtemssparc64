@@ -1,4 +1,4 @@
-/* $Id: xdr_mbuf.c,v 1.6 2010/03/27 04:04:39 ccj Exp $ */
+/* $Id: xdr_mbuf.c,v 1.9 2010/06/01 10:41:40 ralf Exp $ */
 
 /* xdr_mbuf is derived from xdr_mem */
 
@@ -147,7 +147,7 @@ MBPrivate	mbp = (MBPrivate)xdrs->x_base;
 		mbp->mcurrent    = m;
 		xdrs->x_private  = mtod(m,caddr_t);
 		xdrs->x_handy    = m->m_len;
-		xdrs->x_ops      = ((size_t)xdrs->x_private & (sizeof(int32_t) - 1))
+		xdrs->x_ops      = ((uintptr_t)xdrs->x_private & (sizeof(int32_t) - 1))
 								? &xdrmbuf_ops_unaligned : &xdrmbuf_ops_aligned;
 }
 
@@ -186,7 +186,8 @@ xdrmbuf_create(XDR *xdrs, struct mbuf *mbuf, enum xdr_op op)
 MBPrivate mbp;
 
 	xdrs->x_op = op;
-	assert( mbp = (MBPrivate)my_malloc(sizeof(*mbp)) );
+	mbp = (MBPrivate)my_malloc(sizeof(*mbp));
+	assert( mbp );
 	xdrs->x_base  = (caddr_t) mbp;
 
 	mbp->mchain   = mbuf;
@@ -455,7 +456,7 @@ struct mbuf *m   = mbp->mcurrent;
 u_int       rval = mbp->pos;
 
 	if (m) {
-		rval += (u_long)xdrs->x_private - mtod(m, u_long);
+		rval += xdrs->x_private - mtod(m, void*);
 	}
 #else
 struct mbuf *m;

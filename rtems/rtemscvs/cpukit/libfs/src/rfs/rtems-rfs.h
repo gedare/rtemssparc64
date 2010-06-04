@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtems-rfs.h,v 1.1 2010/02/18 00:24:25 ccj Exp $
+ *  $Id: rtems-rfs.h,v 1.2 2010/05/31 13:56:37 ccj Exp $
  */
 /**
  * @file
@@ -23,13 +23,8 @@
 #include <rtems/fs.h>
 
 /**
- * File ops table for the RFS file system.
- */
-const rtems_filesystem_operations_table rtems_rfs_ops;
-
-/**
  * Initialise the RFS File system.
  */
-int rtems_rfs_initialise (rtems_filesystem_mount_table_entry_t *mt_entry);
+int rtems_rfs_rtems_initialise (rtems_filesystem_mount_table_entry_t *mt_entry);
 
 #endif

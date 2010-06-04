@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.2 2010/04/19 14:03:35 ralf Exp $
+# $Id: Makefile.am,v 1.3 2010/05/24 07:19:34 ralf Exp $
 
-SUBDIRS = i386 amd64
+SUBDIRS = i386 x86_64
 

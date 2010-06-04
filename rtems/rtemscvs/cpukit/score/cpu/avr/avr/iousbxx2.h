@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Anatoly Sokolov
+/* Copyright (c) 2007 Anatoly Sokolov 
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iousbxx2.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iousbxx2.h,v 1.3 2010/05/10 16:31:23 joel Exp $ */
 
 /* iousbxx2.h - definitions for AT90USB82 and AT90USB162.  */
 
@@ -45,7 +45,7 @@
 #  define _AVR_IOXXX_H_ "iousbxx2.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 /* Registers and associated bit numbers */
 
@@ -175,7 +175,7 @@
 #define INT4    4
 #define INT3    3
 #define INT2    2
-#define INT1    1
+#define INT1    1 
 #define INT0    0
 
 #define GPIOR0  _SFR_IO8(0x1E)

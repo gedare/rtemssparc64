@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: libio.h,v 1.60 2010/03/04 06:36:50 ccj Exp $
+ *  $Id: libio.h,v 1.65 2010/06/02 00:43:13 ccj Exp $
  */
 
 #ifndef _RTEMS_RTEMS_LIBIO_H
@@ -48,7 +48,6 @@ typedef _off64_t rtems_off64_t;
 /*
  * Valid RTEMS file types.
  */
-
 #define RTEMS_FILESYSTEM_DIRECTORY   1
 #define RTEMS_FILESYSTEM_DEVICE      2
 #define RTEMS_FILESYSTEM_HARD_LINK   3
@@ -59,7 +58,6 @@ typedef int rtems_filesystem_node_types_t;
 /*
  *  File Handler Operations Table
  */
-
 typedef int (*rtems_filesystem_open_t)(
   rtems_libio_t *iop,
   const char    *pathname,
@@ -161,7 +159,6 @@ struct _rtems_filesystem_file_handlers_r {
  *  ie. node_access does not have to contain valid data when the
  *      routine returns.
  */
-
 typedef int (*rtems_filesystem_mknod_t)(
    const char                        *path,       /* IN */
    mode_t                             mode,       /* IN */
@@ -176,7 +173,7 @@ typedef int (*rtems_filesystem_mknod_t)(
 
 typedef int (*rtems_filesystem_evalpath_t)(
   const char                        *pathname,      /* IN     */
-  int                                pathnamelen,   /* IN     */
+  size_t                             pathnamelen,   /* IN     */
   int                                flags,         /* IN     */
   rtems_filesystem_location_info_t  *pathloc        /* IN/OUT */
 );
@@ -209,23 +206,24 @@ typedef int (*rtems_filesystem_freenode_t)(
 );
 
 typedef int (* rtems_filesystem_mount_t ) (
-   rtems_filesystem_mount_table_entry_t *mt_entry     /* in */
+   rtems_filesystem_mount_table_entry_t *mt_entry     /* IN */
 );
 
 typedef int (* rtems_filesystem_fsmount_me_t )(
-   rtems_filesystem_mount_table_entry_t *mt_entry
+  rtems_filesystem_mount_table_entry_t *mt_entry,     /* IN */
+  const void                           *data          /* IN */
 );
 
 typedef int (* rtems_filesystem_unmount_t ) (
-   rtems_filesystem_mount_table_entry_t *mt_entry     /* in */
+  rtems_filesystem_mount_table_entry_t *mt_entry     /* IN */
 );
 
 typedef int (* rtems_filesystem_fsunmount_me_t ) (
-   rtems_filesystem_mount_table_entry_t *mt_entry    /* in */
+   rtems_filesystem_mount_table_entry_t *mt_entry    /* IN */
 );
 
 typedef rtems_filesystem_node_types_t (* rtems_filesystem_node_type_t) (
-  rtems_filesystem_location_info_t    *pathloc      /* in */
+  rtems_filesystem_location_info_t    *pathloc      /* IN */
 );
 
 typedef int (* rtems_filesystem_utime_t)(
@@ -291,41 +289,85 @@ struct _rtems_filesystem_operations_table {
     rtems_filesystem_statvfs_t       statvfs_h;
 };
 
-#if 0
-/* Now in exec/include/rtems/fs.h */
+/*
+ * File system table used by mount to manage file systems.
+ */
+typedef struct rtems_filesystem_table_t {
+  const char                    *type;
+  rtems_filesystem_fsmount_me_t  mount_h;
+} rtems_filesystem_table_t;
 
 /*
- * Structure used to determine a location/filesystem in the tree.
+ * File system table runtime loaded nodes.
  */
+typedef struct rtems_filesystem_table_node_t {
+  rtems_chain_node         node;
+  rtems_filesystem_table_t entry;
+} rtems_filesystem_table_node_t;
 
-struct rtems_filesystem_location_info_tt
-{
-  void                                   *node_access;
-  rtems_filesystem_file_handlers_r       *handlers;
-  rtems_filesystem_operations_table      *ops;
-  rtems_filesystem_mount_table_entry_t   *mt_entry;
-};
-#endif
+/*
+ * Get the first entry in the filesystem table.
+ */
+const rtems_filesystem_table_t* rtems_filesystem_table_first( void );
+
+/*
+ * Get the next entry in the file system table.
+ */
+const rtems_filesystem_table_t* 
+rtems_filesystem_table_next( const rtems_filesystem_table_t *entry );
+
+/*
+ * Get the first entry in the mount table.
+ */
+rtems_filesystem_mount_table_entry_t*
+rtems_filesystem_mounts_first( void );
+
+/*
+ * Get the next entry in the mount table.
+ */
+rtems_filesystem_mount_table_entry_t*
+rtems_filesystem_mounts_next( rtems_filesystem_mount_table_entry_t *entry );
+
+/*
+ * Register a file system.
+ */
+int
+rtems_filesystem_register(
+  const char                    *type,
+  rtems_filesystem_fsmount_me_t  mount_h
+);
+
+/*
+ * Unregister a file system.
+ */
+int
+rtems_filesystem_unregister(
+  const char *type
+);
 
 /*
  *  Structure used to contain file system specific information which
  *  is required to support fpathconf().
  */
-
 typedef struct {
-  int    link_max;
-  int    max_canon;
-  int    max_input;
-  int    name_max;
-  int    path_max;
-  int    pipe_buf;
-  int    posix_async_io;
-  int    posix_chown_restrictions;
-  int    posix_no_trunc;
-  int    posix_prio_io;
-  int    posix_sync_io;
-  int    posix_vdisable;
+  int    link_max;                 /* count */
+  int    max_canon;                /* max formatted input line size */
+  int    max_input;                /* max input line size */
+  int    name_max;                 /* max name length */
+  int    path_max;                 /* max path */
+  int    pipe_buf;                 /* pipe buffer size */
+  int    posix_async_io;           /* async IO supported on fs, 0=no, 1=yes */
+  int    posix_chown_restrictions; /* can chown: 0=no, 1=yes */
+  int    posix_no_trunc;           /* error on names > max name, 0=no, 1=yes */
+  int    posix_prio_io;            /* priority IO, 0=no, 1=yes */
+  int    posix_sync_io;            /* file can be sync'ed, 0=no, 1=yes */
+  int    posix_vdisable;           /* special char processing, 0=no, 1=yes */
 } rtems_filesystem_limits_and_options_t;
+
+/*
+ * Default pathconf settings. Override in a filesystem.
+ */
+extern const rtems_filesystem_limits_and_options_t rtems_filesystem_default_pathconf;
 
 /*
  * Structure for a mount table entry.
@@ -341,6 +383,16 @@ struct rtems_filesystem_mount_table_entry_tt {
   rtems_filesystem_limits_and_options_t  pathconf_limits_and_options;
 
   /*
+   * The target or mount point of the file system.
+   */
+  const char                            *target;
+
+  /*
+   * The type of filesystem or the name of the filesystem.
+   */
+  const char                            *type;
+
+  /*
    *  When someone adds a mounted filesystem on a real device,
    *  this will need to be used.
    *
@@ -350,12 +402,30 @@ struct rtems_filesystem_mount_table_entry_tt {
   char                                  *dev;
 };
 
+/**
+ * The pathconf setting for a file system.
+ */
+#define rtems_filesystem_pathconf(_mte) ((_mte)->pathconf_limits_and_options)
+
+/**
+ * The type of file system. Its name.
+ */
+#define rtems_filesystem_type(_mte) ((_mte)->type)
+
+/**
+ * The mount point of a file system.
+ */
+#define rtems_filesystem_mount_point(_mte) ((_mte)->target)
+
+/**
+ * The device entry of a file system.
+ */
+#define rtems_filesystem_mount_device(_mte) ((_mte)->dev)
+
 /*
  *  Valid RTEMS file systems options
  */
-
-typedef enum
-{
+typedef enum {
   RTEMS_FILESYSTEM_READ_ONLY,
   RTEMS_FILESYSTEM_READ_WRITE,
   RTEMS_FILESYSTEM_BAD_OPTIONS
@@ -368,18 +438,17 @@ typedef enum
  *     should really have a separate per/file data structure that this
  *     points to (eg: size, offset, driver, pathname should be in that)
  */
-
 struct rtems_libio_tt {
-    rtems_driver_name_t                    *driver;
-    rtems_off64_t                           size;      /* size of file */
-    rtems_off64_t                           offset;    /* current offset into file */
-    uint32_t                                flags;
-    rtems_filesystem_location_info_t        pathinfo;
-    rtems_id                                sem;
-    uint32_t                                data0;     /* private to "driver" */
-    void                                   *data1;     /* ... */
-    void                                   *file_info; /* used by file handlers */
-    const rtems_filesystem_file_handlers_r *handlers;  /* type specific handlers */
+  rtems_driver_name_t                    *driver;
+  rtems_off64_t                           size;      /* size of file */
+  rtems_off64_t                           offset;    /* current offset into file */
+  uint32_t                                flags;
+  rtems_filesystem_location_info_t        pathinfo;
+  rtems_id                                sem;
+  uint32_t                                data0;     /* private to "driver" */
+  void                                   *data1;     /* ... */
+  void                                   *file_info; /* used by file handlers */
+  const rtems_filesystem_file_handlers_r *handlers;  /* type specific handlers */
 };
 
 /*
@@ -387,41 +456,37 @@ struct rtems_libio_tt {
  *  Note: it must include 'offset' instead of using iop's offset since
  *        we can have multiple outstanding i/o's on a device.
  */
-
 typedef struct {
-    rtems_libio_t          *iop;
-    rtems_off64_t           offset;
-    char                   *buffer;
-    uint32_t                count;
-    uint32_t                flags;
-    uint32_t                bytes_moved;
+  rtems_libio_t          *iop;
+  rtems_off64_t           offset;
+  char                   *buffer;
+  uint32_t                count;
+  uint32_t                flags;
+  uint32_t                bytes_moved;
 } rtems_libio_rw_args_t;
 
 /*
  *  param block for open/close
  */
-
 typedef struct {
-    rtems_libio_t          *iop;
-    uint32_t                flags;
-    uint32_t                mode;
+  rtems_libio_t          *iop;
+  uint32_t                flags;
+  uint32_t                mode;
 } rtems_libio_open_close_args_t;
 
 /*
  *  param block for ioctl
  */
-
 typedef struct {
-    rtems_libio_t          *iop;
-    uint32_t                command;
-    void                   *buffer;
-    uint32_t                ioctl_return;
+  rtems_libio_t          *iop;
+  uint32_t                command;
+  void                   *buffer;
+  uint32_t                ioctl_return;
 } rtems_libio_ioctl_args_t;
 
 /*
  *  Values for 'flag'
  */
-
 #define LIBIO_FLAGS_NO_DELAY      0x0001  /* return immediately if no data */
 #define LIBIO_FLAGS_READ          0x0002  /* reading */
 #define LIBIO_FLAGS_WRITE         0x0004  /* writing */
@@ -476,7 +541,6 @@ typedef rtems_off64_t (*rtems_libio_lseek_t)(
  *  used to check permissions.  These are similar in style to the
  *  mode_t bits and should stay compatible with them.
  */
-
 #define RTEMS_LIBIO_PERMS_READ   S_IROTH
 #define RTEMS_LIBIO_PERMS_WRITE  S_IWOTH
 #define RTEMS_LIBIO_PERMS_RDWR   (S_IROTH|S_IWOTH)
@@ -487,17 +551,6 @@ typedef rtems_off64_t (*rtems_libio_lseek_t)(
 /*
  *  Macros
  */
-
-#if 0
-#define rtems_filesystem_make_dev_t( _major, _minor ) \
-  ((((dev_t)(_major)) << 32) | (dev_t)(_minor))
-
-#define rtems_filesystem_dev_major_t( _dev ) \
-  (rtems_device_major_number) ((_dev) >> 32)
-
-#define rtems_filesystem_dev_minor_t( _dev ) \
-  (rtems_device_minor_number) ((_dev) & 0xFFFFFFFF)
-#else
 
 #include <unistd.h>
 
@@ -542,8 +595,6 @@ static inline rtems_device_minor_number rtems_filesystem_dev_minor_t(
   return temp.__overlay.minor;
 }
 
-#endif
-
 #define rtems_filesystem_split_dev_t( _dev, _major, _minor ) \
   do { \
     (_major) = rtems_filesystem_dev_major_t ( _dev ); \
@@ -556,18 +607,15 @@ static inline rtems_device_minor_number rtems_filesystem_dev_minor_t(
 #define rtems_libio_is_valid_perms( _perm )     \
  (~ ((~RTEMS_LIBIO_PERMS_RWX) & _perm ))
 
-
 /*
  *  Prototypes for filesystem
  */
 
 void rtems_filesystem_initialize( void );
 
-
 /*
  * Callbacks from TERMIOS routines to device-dependent code
  */
-
 #include <termios.h>
 
 typedef struct rtems_termios_callbacks {
@@ -584,7 +632,6 @@ typedef struct rtems_termios_callbacks {
 /*
  *  Device-independent TERMIOS routines
  */
-
 void rtems_termios_initialize (void);
 
 /*
@@ -637,11 +684,11 @@ int unmount(
 );
 
 int mount(
-  rtems_filesystem_mount_table_entry_t    **mt_entry,
-  const rtems_filesystem_operations_table  *fs_ops,
-  rtems_filesystem_options_t                fsoptions,
-  const char                               *device,
-  const char                               *mount_point
+  const char                 *source,
+  const char                 *target,
+  const char                 *filesystemtype,
+  rtems_filesystem_options_t options,
+  const void                 *data
 );
 
 /*
@@ -649,7 +696,7 @@ int mount(
  */
 
 typedef struct {
-  const rtems_filesystem_operations_table *fs_ops;
+  const char                              *type;
   rtems_filesystem_options_t               fsoptions;
   const char                              *device;
   const char                              *mount_point;
@@ -657,7 +704,6 @@ typedef struct {
 
 extern const rtems_filesystem_mount_table_t *rtems_filesystem_mount_table;
 extern const int                             rtems_filesystem_mount_table_size;
-
 
 typedef void (*rtems_libio_init_functions_t)(void);
 extern  rtems_libio_init_functions_t rtems_libio_init_helper;

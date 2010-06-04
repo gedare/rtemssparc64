@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: unmount.c,v 1.24 2009/09/15 09:42:46 ralf Exp $
+ *  $Id: unmount.c,v 1.25 2010/05/31 13:56:36 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -213,6 +213,7 @@ int unmount(
    */
 
   rtems_filesystem_freenode( fs_mount_loc );
+  free( (void*) mt_entry->target );
   free( mt_entry );
 
   return 0;

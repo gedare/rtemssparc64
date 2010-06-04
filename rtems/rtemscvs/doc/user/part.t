@@ -1,9 +1,9 @@
 @c
-@c  COPYRIGHT (c) 1988-2008.
+@c  COPYRIGHT (c) 1988-2010.
 @c  On-Line Applications Research Corporation (OAR).
 @c  All rights reserved.
 @c
-@c  $Id: part.t,v 1.18 2008/11/07 15:02:54 joel Exp $
+@c  $Id: part.t,v 1.19 2010/05/18 13:41:53 joel Exp $
 @c
 
 @chapter Partition Manager
@@ -83,8 +83,8 @@ RTEMS allocates a Partition Control
 Block (PTCB) from the PTCB free list.  This data structure is
 used by RTEMS to manage the newly created partition.  The number
 of buffers in the partition is calculated based upon the
-specified partition length and buffer size, and returned to the
-calling task along with a unique partition ID.
+specified partition length and buffer size. If successful,the
+unique partition ID is returned to the calling task.
 
 @subsection Obtaining Partition IDs
 

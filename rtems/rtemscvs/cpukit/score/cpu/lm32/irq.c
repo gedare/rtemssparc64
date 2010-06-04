@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: irq.c,v 1.3 2010/03/27 15:01:51 joel Exp $
+ *  $Id: irq.c,v 1.4 2010/05/29 05:19:13 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -32,7 +32,7 @@
   unsigned long    *_old_stack_ptr;
 #endif
 
-unsigned long *_exception_stack_frame;
+void *_exception_stack_frame;
 
 register unsigned long  *stack_ptr asm("sp");
 

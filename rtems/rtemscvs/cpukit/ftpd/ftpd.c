@@ -86,7 +86,7 @@
  *        AF_INET, use snprintf() instead of sprintf() everywhere for safety,
  *        etc.
  *
- *  $Id: ftpd.c,v 1.22 2010/03/12 16:26:14 joel Exp $
+ *  $Id: ftpd.c,v 1.23 2010/05/07 09:07:17 sh Exp $
  */
 
 /*************************************************************************
@@ -795,6 +795,7 @@ command_retrieve(FTPD_SessionInfo_t  *info, char const *filename)
   int                 s = -1;
   int                 fd = -1;
   char                buf[FTPD_DATASIZE];
+  struct stat         stat_buf;
   int                 res = 0;
 
   if(!can_read())
@@ -806,6 +807,14 @@ command_retrieve(FTPD_SessionInfo_t  *info, char const *filename)
   if (0 > (fd = open(filename, O_RDONLY)))
   {
     send_reply(info, 550, "Error opening file.");
+    return;
+  }
+
+  if (fstat(fd, &stat_buf) == 0 && S_ISDIR(stat_buf.st_mode))
+  {
+    if (-1 != fd)
+      close(fd);
+    send_reply(info, 550, "Is a directory.");
     return;
   }
 

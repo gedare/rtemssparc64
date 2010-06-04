@@ -1,8 +1,8 @@
-/.cvsignore/1.1/Sat Oct 24 23:15:34 2009//
-/Makefile.am/1.1/Sat Oct 24 23:15:34 2009//
-/init.c/1.8/Thu Dec 31 16:55:39 2009//
-/termios01.doc/1.1/Sat Oct 24 23:15:34 2009/-kb/
-/termios01.scn/1.2/Sat Oct 24 23:15:34 2009//
-/termios_testdriver.c/1.7/Thu Dec 31 16:55:39 2009//
-/termios_testdriver.h/1.2/Thu Dec 31 16:55:39 2009//
+/.cvsignore/1.1/Tue Jun  1 21:18:37 2010//
+/Makefile.am/1.1/Tue Jun  1 21:18:37 2010//
+/init.c/1.8/Tue Jun  1 21:18:37 2010//
+/termios01.doc/1.1/Tue Jun  1 21:18:37 2010/-kb/
+/termios01.scn/1.2/Tue Jun  1 21:18:37 2010//
+/termios_testdriver.c/1.7/Tue Jun  1 21:18:37 2010//
+/termios_testdriver.h/1.2/Tue Jun  1 21:18:37 2010//
 D

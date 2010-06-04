@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iom64c1.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iom64c1.h,v 1.3 2010/05/10 16:31:22 joel Exp $ */
 
 /* avr/iom64c1.h - definitions for ATmega64C1 */
 
@@ -42,7 +42,7 @@
 #  define _AVR_IOXXX_H_ "iom64c1.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 
 #ifndef _AVR_ATmega64C1_H_
@@ -683,6 +683,7 @@
 
 #define DACON _SFR_MEM8(0x90)
 #define DAEN 0
+#define DAOE 1
 #define DALA 2
 #define DATS0 4
 #define DATS1 5

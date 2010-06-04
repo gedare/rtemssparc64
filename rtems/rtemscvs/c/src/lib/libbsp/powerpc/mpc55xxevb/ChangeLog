@@ -1,3 +1,20 @@
+2010-06-03	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
+
+	* startup/sd-card-init.c: fix bug in mount table
+
+2010-05-20	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* network/smsc9218i.c: Removed superfluous macros.
+
+2010-05-10	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* include/bsp.h: Add BSP_SMALL_MEMORY.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/irq-config.h: Removed file.
+	* Makefile.am, preinstall.am: Reflect changes above.
+
 2010-04-07      Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
 
 	* configure.ac, startup/bspstart.c:

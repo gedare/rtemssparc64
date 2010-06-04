@@ -1,8 +1,10 @@
-/* $Id: nfs.c,v 1.17 2010/03/12 16:26:14 joel Exp $ */
+/* $Id: nfs.c,v 1.21 2010/05/31 13:56:37 ccj Exp $ */
 
 /* NFS client implementation for RTEMS; hooks into the RTEMS filesystem */
 
 /* Author: Till Straumann <strauman@slac.stanford.edu> 2002 */
+
+/* Hacked on by others. */
 
 /*
  * Authorship
@@ -157,14 +159,14 @@ static struct timeval _nfscalltimeout = { 10, 0 };	/* {secs, us } */
 
 #define	NFS_MAKE_DEV_T_INO_HACK(node) \
 		rtems_filesystem_make_dev_t( NFS_MAJOR, \
-			(((node)->nfs->id)<<16) | (SERP_ATTR((node)).fileid >> 16) )
+			(((rtems_device_minor_number)((node)->nfs->id))<<16) | (((rtems_device_minor_number)SERP_ATTR((node)).fileid) >> 16) )
 
 /* use our 'nfs id' and the server's fsid for the minor device number
  * this should be fairly unique
  */
 #define	NFS_MAKE_DEV_T(node) \
 		rtems_filesystem_make_dev_t( NFS_MAJOR, \
-			(((node)->nfs->id)<<16) | (SERP_ATTR((node)).fsid & ((1<<16)-1)) )
+			(((rtems_device_minor_number)((node)->nfs->id))<<16) | (SERP_ATTR((node)).fsid & (((rtems_device_minor_number)1<<16)-1)) )
 
 #define  DIRENT_HEADER_SIZE ( sizeof(struct dirent) - \
 			sizeof( ((struct dirent *)0)->d_name ) )
@@ -384,16 +386,16 @@ typedef struct serporidok {
 			sattr		attributes;
 		}					sattrarg;
 		struct {
-			u_int 		offset;
-			u_int		count;
-			u_int		totalcount;
+			uint32_t	offset;
+			uint32_t	count;
+			uint32_t	totalcount;
 		}					readarg;
 		struct {
-			u_int		beginoffset;
-			u_int		offset;
-			u_int		totalcount;
+			uint32_t	beginoffset;
+			uint32_t	offset;
+			uint32_t	totalcount;
 			struct {
-				u_int data_len;
+				uint32_t data_len;
 				char* data_val;
 			}			data;
 		}					writearg;
@@ -415,7 +417,7 @@ typedef struct serporidok {
 		}					symlinkarg;
 		struct {
 			nfscookie	cookie;
-			u_int		count;
+			uint32_t	count;
 		}					readdirarg;
 	}							arg_u;
 } serporidok;
@@ -1193,8 +1195,7 @@ updateAttr(NfsNode node, int force)
 }
 
 /*
- * IP address helper. Note that we avoid
- * gethostbyname() since it's not reentrant.
+ * IP address helper.
  *
  * initialize a sockaddr_in from a
  * [<uid>'.'<gid>'@']<host>':'<path>" string and let
@@ -1211,7 +1212,8 @@ buildIpAddr(u_long *puid, u_long *pgid,
 			char **pHost, struct sockaddr_in *psa,
 			char **pPath)
 {
-char	host[30];
+struct hostent *h;
+char	host[64];
 char	*chpt = *pPath;
 char	*path;
 int		len;
@@ -1238,7 +1240,7 @@ int		len;
 
 	/* split the device name which is in the form
 	 *
-	 * <host_ip> ':' <path>
+	 * <host> ':' <path>
 	 *
 	 * into its components using a local buffer
 	 */
@@ -1254,10 +1256,18 @@ int		len;
 	strncpy(host, chpt, len);
 	host[len]=0;
 
-	if ( ! inet_pton(AF_INET, host, &psa->sin_addr) ) {
-		errno = ENXIO;
+  /* BEGIN OF NON-THREAD SAFE REGION */
+
+	h = gethostbyname(host);
+
+	if ( !h ) {
+		errno = EINVAL;
 		return -1;
 	}
+
+	memcpy(&psa->sin_addr, h->h_addr, sizeof (struct in_addr));
+  
+  /* END OF NON-THREAD SAFE REGION */
 
 	psa->sin_family = AF_INET;
 	psa->sin_port   = 0;
@@ -1353,10 +1363,15 @@ struct rtems_filesystem_location_info_tt
  *
  */
 
+union nfs_evalpath_arg {
+    int i;
+    const char **c;
+  };
+
 STATIC int nfs_do_evalpath(
 	const char                        *pathname,      /* IN     */
 	int                                pathnamelen,   /* IN     */
-	void                              *arg,
+	union nfs_evalpath_arg		  *arg,
 	rtems_filesystem_location_info_t  *pathloc,       /* IN/OUT */
 	int								  forMake
 )
@@ -1510,9 +1525,9 @@ unsigned long	niu,siu;
 #endif
 
 			if (forMake)
-				rval = pathloc->ops->evalformake_h(part, pathloc, (const char**)arg);
+				rval = pathloc->ops->evalformake_h(part, pathloc, arg->c);
 			else
-				rval = pathloc->ops->evalpath_h(part, strlen(part), (int)arg, pathloc);
+				rval = pathloc->ops->evalpath_h(part, strlen(part), arg->i, pathloc);
 
 			free(p);
 			return rval;
@@ -1669,17 +1684,22 @@ static int nfs_evalformake(
 	const char                      **pname       /* OUT    */
 )
 {
-	return nfs_do_evalpath(path, strlen(path), (void*)pname, pathloc, 1 /*forMake*/);
+	union nfs_evalpath_arg args;
+	args.c = pname;
+	                
+	return nfs_do_evalpath(path, strlen(path), &args, pathloc, 1 /*forMake*/);
 }
 
 static int nfs_evalpath(
 	const char						 *path,		  /* IN */
-	int								 pathlen,		  /* IN */
-	int								 flags,		  /* IN */
+	size_t							 pathlen,		  /* IN */
+	int							 flags,		  /* IN */
 	rtems_filesystem_location_info_t *pathloc    /* IN/OUT */
 )
 {
-	return nfs_do_evalpath(path, pathlen, (void*)flags, pathloc, 0 /*not forMake*/);
+	union nfs_evalpath_arg args;
+	args.i = flags;
+	return nfs_do_evalpath(path, pathlen, &args, pathloc, 0 /*not forMake*/);
 }
 
 
@@ -1888,9 +1908,9 @@ struct rtems_filesystem_mount_table_entry_tt {
 #endif
 
 
-/* This op is called as the last step of mounting this FS */
-STATIC int nfs_fsmount_me(
-	rtems_filesystem_mount_table_entry_t *mt_entry
+int rtems_nfsfs_initialize(
+	rtems_filesystem_mount_table_entry_t *mt_entry,
+  const void                           *data
 )
 {
 char				*host;
@@ -1907,10 +1927,19 @@ RpcUdpServer		nfsServer = 0;
 int					e         = -1;
 char				*path     = mt_entry->dev;
 
+  if (rpcUdpInit () < 0) {
+    fprintf (stderr, "error: initialising RPC\n");
+    return -1;
+  }
+  
+	nfsInit(0, 0);
 
+#if 0
+	printf("Trying to mount %s on %s\n",path,mntpoint);
+#endif
+  
 	if ( buildIpAddr(&uid, &gid, &host, &saddr, &path) )
 		return -1;
-
 
 #ifdef NFS_V2_PORT
 	/* if the portmapper fails, retry a fixed port */
@@ -2450,7 +2479,7 @@ struct _rtems_filesystem_operations_table nfs_fs_ops = {
 		nfs_chown,			/* OPTIONAL; may be NULL */
 		nfs_freenode,		/* OPTIONAL; may be NULL; (release node_access) */
 		nfs_mount,			/* OPTIONAL; may be NULL */
-		nfs_fsmount_me,		/* OPTIONAL; may be NULL -- but this makes NO SENSE */
+		rtems_nfsfs_initialize,		/* OPTIONAL; may be NULL -- not used anymore */
 		nfs_unmount,		/* OPTIONAL; may be NULL */
 		nfs_fsunmount_me,	/* OPTIONAL; may be NULL */
 		nfs_utime,			/* OPTIONAL; may be NULL */
@@ -2589,7 +2618,7 @@ Nfs		nfs  = node->nfs;
 
 	SERP_ARGS(node).readarg.offset		= iop->offset;
 	SERP_ARGS(node).readarg.count	  	= count;
-	SERP_ARGS(node).readarg.totalcount	= 0xdeadbeef;
+	SERP_ARGS(node).readarg.totalcount	= UINT32_C(0xdeadbeef);
 
 	rr.readres_u.reply.data.data_val	= buffer;
 
@@ -2692,7 +2721,7 @@ int			e;
 		count = NFS_MAXDATA;
 
 
-	SERP_ARGS(node).writearg.beginoffset   = 0xdeadbeef;
+	SERP_ARGS(node).writearg.beginoffset   = UINT32_C(0xdeadbeef);
 	if ( LIBIO_FLAGS_APPEND & iop->flags ) {
 		if ( updateAttr(node, 0) ) {
 			return -1;
@@ -2701,7 +2730,7 @@ int			e;
 	} else {
 		SERP_ARGS(node).writearg.offset	  	   = iop->offset;
 	}
-	SERP_ARGS(node).writearg.totalcount	   = 0xdeadbeef;
+	SERP_ARGS(node).writearg.totalcount	   = UINT32_C(0xdeadbeef);
 	SERP_ARGS(node).writearg.data.data_len = count;
 	SERP_ARGS(node).writearg.data.data_val = (void*)buffer;
 
@@ -3218,6 +3247,8 @@ Nfs		nfs;
 	return 0;
 }
 
+#if 0
+CCJ_REMOVE_MOUNT
 /* convenience wrapper
  *
  * NOTE: this routine calls NON-REENTRANT
@@ -3227,7 +3258,6 @@ Nfs		nfs;
 int
 nfsMount(char *uidhost, char *path, char *mntpoint)
 {
-rtems_filesystem_mount_table_entry_t	*mtab;
 struct stat								st;
 int										devl;
 char									*host;
@@ -3300,11 +3330,11 @@ char									*dev =  0;
 
 	printf("Trying to mount %s on %s\n",dev,mntpoint);
 
-	if (mount(&mtab,
-			  &nfs_fs_ops,
-			  RTEMS_FILESYSTEM_READ_WRITE,
-			  dev,
-			  mntpoint)) {
+	if (mount(dev,
+			  mntpoint,
+			  "nfs",
+ 			  RTEMS_FILESYSTEM_READ_WRITE,
+ 			  NULL)) {
 		perror("nfsMount - mount");
 		goto cleanup;
 	}
@@ -3315,6 +3345,7 @@ cleanup:
 	free(dev);
 	return rval;
 }
+#endif
 
 /* HERE COMES A REALLY UGLY HACK */
 

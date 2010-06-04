@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.e
  *
- *  $Id: linkcmds,v 1.1 2010/04/05 17:06:57 joel Exp $
+ *  $Id: linkcmds,v 1.2 2010/05/04 00:06:51 joel Exp $
  */
 
 /*
@@ -127,7 +127,7 @@ SECTIONS
     {
         PROVIDE( _data_dest_start = . );
         PROVIDE( _copy_start = .);
-        *(.data)
+        *(.data*)
         *(.gnu.linkonce.d*)
         *(.gcc_except_table*)
         *(.jcr)

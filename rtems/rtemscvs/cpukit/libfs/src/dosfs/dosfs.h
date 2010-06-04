@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  @(#) $Id: dosfs.h,v 1.8 2009/11/29 13:18:56 ralf Exp $
+ *  @(#) $Id: dosfs.h,v 1.9 2010/05/31 13:56:36 ccj Exp $
  */
 
 #ifndef _RTEMS_DOSFS_H
@@ -25,7 +25,8 @@
 extern "C" {
 #endif
 
-extern rtems_filesystem_operations_table  msdos_ops;
+int rtems_dosfs_initialize(rtems_filesystem_mount_table_entry_t *mt_entry,
+                           const void                           *data);
 
 #define MSDOS_FMT_FATANY 0
 #define MSDOS_FMT_FAT12  1

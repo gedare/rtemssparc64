@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iotn25.h,v 1.1 2009/08/06 14:52:06 joel Exp $ */
+/* $Id: iotn25.h,v 1.2 2010/05/10 16:31:23 joel Exp $ */
 
 /* avr/iotn25.h - definitions for ATtiny25 */
 

@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.49 2009/11/23 20:08:25 joel Exp $
+## $Id: Makefile.am,v 1.51 2010/05/11 07:40:39 sh Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -28,7 +28,7 @@ noinst_LIBRARIES = libbspstart.a
 libbspstart_a_SOURCES = ../../sparc/shared/start.S
 project_lib_DATA = start.$(OBJEXT)
 
-dist_project_lib_DATA += startup/linkcmds
+dist_project_lib_DATA += startup/linkcmds ../shared/startup/linkcmds.base
 
 noinst_LIBRARIES += libbsp.a
 libbsp_a_SOURCES =
@@ -43,7 +43,7 @@ libbsp_a_SOURCES += ../../shared/bspclean.c ../../shared/bsplibc.c \
 # gnatsupp
 libbsp_a_SOURCES += gnatsupp/gnatsupp.c ../../sparc/shared/gnatcommon.c
 # console
-libbsp_a_SOURCES += console/console.c
+libbsp_a_SOURCES += console/erc32_console.c ../../shared/console.c
 # debugio
 libbsp_a_SOURCES += console/debugputs.c
 # clock

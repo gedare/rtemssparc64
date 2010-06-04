@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspclean.c,v 1.12 2008/08/19 10:21:51 ralf Exp $
+ *  $Id: bspclean.c,v 1.13 2010/04/28 19:43:29 joel Exp $
  */
 
 #include <rtems.h>
@@ -16,10 +16,10 @@
 #include <rtems/clockdrv.h>
 #include <rtems/zilog/z8036.h>
 
+extern void start( void  );
+
 void bsp_return_to_monitor_trap(void)
 {
-  extern void start( void  );
-
   register volatile void *start_addr;
 
   m68k_set_vbr( 0 );                /* restore 135Bug vectors */

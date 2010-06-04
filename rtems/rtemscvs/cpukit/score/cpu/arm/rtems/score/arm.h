@@ -7,7 +7,7 @@
  */
 
 /*
- *  $Id: arm.h,v 1.18 2010/04/08 10:13:46 thomas Exp $
+ *  $Id: arm.h,v 1.19 2010/05/10 20:29:13 joel Exp $
  *
  *  COPYRIGHT (c) 2000 Canon Research Centre France SA.
  *  Emmanuel Raguet, mailto:raguet@crf.canon.fr
@@ -79,7 +79,7 @@ extern "C" {
 #define ARM_HAS_FPU     0
 #else
 #define ARM_HAS_FPU	1
-# error "FPU-support not yet implemented for the arm"
+#warning "FPU-support not yet implemented for the arm"
 #endif
 
 

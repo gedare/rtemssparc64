@@ -3,7 +3,7 @@
 @c  On-Line Applications Research Corporation (OAR).
 @c  All rights reserved.
 @c
-@c  $Id: chains.t,v 1.6 2010/04/22 06:47:28 ccj Exp $
+@c  $Id: chains.t,v 1.8 2010/05/18 11:44:54 joel Exp $
 @c
 
 @chapter Chains
@@ -96,7 +96,7 @@ node.
 
 @example
        Control
-        next ------------------------->
+        first ------------------------>
         permanent_null <--------------- NODE
         last ------------------------->
 @end example
@@ -146,7 +146,7 @@ Add nodes with the following code:
 for (i = 0; i < count; i++)
 @{
   foo* bar = malloc (sizeof (foo));
-  if (!foo)
+  if (!bar)
     return -1;
   bar->data = malloc (size);
   @value{DIRPREFIX}chain_append (&chain, &bar->node);

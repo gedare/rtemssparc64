@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: libio_.h,v 1.31 2009/08/05 18:17:11 joel Exp $
+ *  $Id: libio_.h,v 1.34 2010/05/31 13:56:36 ccj Exp $
  */
 
 #ifndef _RTEMS_RTEMS_LIBIO__H
@@ -204,6 +204,16 @@ extern rtems_user_env_t   rtems_global_user_env;
 rtems_status_code rtems_libio_set_private_env(void);
 rtems_status_code rtems_libio_share_private_env(rtems_id task_id) ;
 
+static inline void rtems_libio_lock( void )
+{
+  rtems_semaphore_obtain( rtems_libio_semaphore, RTEMS_WAIT, RTEMS_NO_TIMEOUT );
+}
+
+static inline void rtems_libio_unlock( void )
+{
+  rtems_semaphore_release( rtems_libio_semaphore );
+}
+
 /*
  *  File Descriptor Routine Prototypes
  */
@@ -236,7 +246,7 @@ int rtems_libio_is_file_open(
 
 int rtems_filesystem_evaluate_relative_path(
   const char                        *pathname,
-  int                                pathnamelen,
+  size_t                             pathnamelen,
   int                                flags,
   rtems_filesystem_location_info_t  *pathloc,
   int                                follow_link
@@ -244,7 +254,7 @@ int rtems_filesystem_evaluate_relative_path(
 
 int rtems_filesystem_evaluate_path(
   const char                        *pathname,
-  int                                pathnamelen,
+  size_t                             pathnamelen,
   int                                flags,
   rtems_filesystem_location_info_t  *pathloc,
   int                                follow_link
@@ -260,8 +270,6 @@ int rtems_filesystem_prefix_separators(
 );
 
 void rtems_filesystem_initialize(void);
-
-int init_fs_mount_table(void);
 
 #ifdef __cplusplus
 }

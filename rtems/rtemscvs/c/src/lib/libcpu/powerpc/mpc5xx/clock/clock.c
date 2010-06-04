@@ -38,7 +38,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: clock.c,v 1.7 2009/11/30 05:07:53 ralf Exp $
+ *  $Id: clock.c,v 1.8 2010/04/28 17:17:59 joel Exp $
  */
 
 #include <rtems.h>
@@ -52,6 +52,7 @@
 volatile uint32_t Clock_driver_ticks;
 extern int BSP_connect_clock_handler(rtems_isr_entry);
 extern int BSP_disconnect_clock_handler();
+extern uint32_t bsp_clicks_per_usec;
 
 void Clock_exit( void );
 
@@ -79,7 +80,6 @@ void clockOn(void* unused)
 {
   unsigned desiredLevel;
   uint32_t pit_value;
-  extern uint32_t bsp_clicks_per_usec;
 
   /* calculate and set modulus */
   pit_value = (rtems_configuration_get_microseconds_per_tick() *

@@ -5,17 +5,17 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.3 2009/08/22 13:55:51 joel Exp $
+ *  $Id: bspstart.c,v 1.4 2010/04/30 14:27:24 sh Exp $
  */
 
 #include <bsp.h>
+#include <bsp/irq-generic.h>
 #include <rtems/libcsupport.h>
 #include <rtems/libio.h>
 #include <pxa255.h>
 
 /* Function prototypes */
 void rtems_exception_init_mngt(void);
-void  rtems_irq_mngt_init(void);
 
 /*
  *
@@ -36,7 +36,9 @@ void bsp_start_default( void )
   /* disable interrupts */
   XSCALE_INT_ICMR = 0x0;
   rtems_exception_init_mngt();
-  rtems_irq_mngt_init();
+  if (bsp_interrupt_initialize() != RTEMS_SUCCESSFUL) {
+    _CPU_Fatal_halt(0xe);
+  }
 } /* bsp_start */
 
 /*

@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iotn13.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iotn13.h,v 1.3 2010/05/10 16:31:22 joel Exp $ */
 
 /* avr/iotn13.h - definitions for ATtiny13 */
 
@@ -47,7 +47,7 @@
 #  define _AVR_IOXXX_H_ "iotn13.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 /* I/O registers and bit names */
 

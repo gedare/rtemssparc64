@@ -9,7 +9,7 @@
  *  July 2009: Joel Sherrill merged csb637 PHY differences from
  *             MicroMonitor 1.17.
  *
- *  $Id: network.c,v 1.8 2010/04/09 20:24:56 thomas Exp $
+ *  $Id: network.c,v 1.9 2010/04/30 14:44:17 sh Exp $
  */
 
 #include <rtems.h>
@@ -35,7 +35,7 @@
 #include <netinet/in.h>
 #include <netinet/if_ether.h>
 
-#include <irq.h>
+#include <bsp/irq.h>
 #include <bspopts.h>
 
 /* enable debugging of the PHY code */

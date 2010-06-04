@@ -280,28 +280,24 @@ void bsp_interrupt_dispatch(void)
 
 rtems_status_code bsp_interrupt_vector_enable(rtems_vector_number vector)
 {
-  if (lpc32xx_irq_is_valid(vector)) {
-    rtems_interrupt_level level;
+  rtems_interrupt_level level;
 
-    rtems_interrupt_disable(level);
-    lpc32xx_irq_set_bit_in_register(vector, LPC32XX_IRQ_OFFSET_ER);
-    lpc32xx_irq_set_bit_in_field(vector, &lpc32xx_irq_enable);
-    rtems_interrupt_enable(level);
-  }
+  rtems_interrupt_disable(level);
+  lpc32xx_irq_set_bit_in_register(vector, LPC32XX_IRQ_OFFSET_ER);
+  lpc32xx_irq_set_bit_in_field(vector, &lpc32xx_irq_enable);
+  rtems_interrupt_enable(level);
 
   return RTEMS_SUCCESSFUL;
 }
 
 rtems_status_code bsp_interrupt_vector_disable(rtems_vector_number vector)
 {
-  if (lpc32xx_irq_is_valid(vector)) {
-    rtems_interrupt_level level;
+  rtems_interrupt_level level;
 
-    rtems_interrupt_disable(level);
-    lpc32xx_irq_clear_bit_in_field(vector, &lpc32xx_irq_enable);
-    lpc32xx_irq_clear_bit_in_register(vector, LPC32XX_IRQ_OFFSET_ER);
-    rtems_interrupt_enable(level);
-  }
+  rtems_interrupt_disable(level);
+  lpc32xx_irq_clear_bit_in_field(vector, &lpc32xx_irq_enable);
+  lpc32xx_irq_clear_bit_in_register(vector, LPC32XX_IRQ_OFFSET_ER);
+  rtems_interrupt_enable(level);
 
   return RTEMS_SUCCESSFUL;
 }
@@ -312,12 +308,18 @@ void lpc32xx_set_exception_handler(
 )
 {
   if ((unsigned) exception < MAX_EXCEPTIONS) {
-    uint32_t *table = (uint32_t *) bsp_section_vector_begin + MAX_EXCEPTIONS;
+    #ifndef LPC32XX_DISABLE_MMU
+      uint32_t *table = (uint32_t *) bsp_section_vector_begin + MAX_EXCEPTIONS;
+    #else
+      uint32_t *table = (uint32_t *) bsp_section_start_begin + MAX_EXCEPTIONS;
+    #endif
 
     table [exception] = (uint32_t) handler;
 
-    rtems_cache_flush_multiple_data_lines(NULL, 64);
-    rtems_cache_invalidate_multiple_data_lines(NULL, 64);
+    #ifndef LPC32XX_DISABLE_MMU
+      rtems_cache_flush_multiple_data_lines(table, 64);
+      rtems_cache_invalidate_multiple_instruction_lines(NULL, 64);
+    #endif
   }
 }
 

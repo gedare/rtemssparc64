@@ -1,11 +1,11 @@
-/bspreset.c/1.1/Sat Oct 24 23:18:28 2009//
-/bspstart.c/1.28/Mon Nov 30 23:40:49 2009//
-/cpuinit.c/1.11/Thu Dec 31 16:53:49 2009//
-/linkcmds/1.7/Sat Oct 24 23:18:28 2009//
-/linkcmds.base/1.4/Sat Oct 24 23:18:28 2009//
-/linkcmds.hsc_cm01/1.5/Sat Oct 24 23:18:28 2009//
-/linkcmds.mpc8313erdb/1.1/Sat Oct 24 23:18:28 2009//
-/linkcmds.mpc8349eamds/1.6/Sat Oct 24 23:18:28 2009//
-/mpc83xx_regs.c/1.2/Sat Oct 24 23:18:28 2009//
-/uboot_support.c/1.2/Sat Oct 24 23:18:28 2009//
+/bspreset.c/1.1/Tue Jun  1 21:19:53 2010//
+/bspstart.c/1.28/Tue Jun  1 21:19:53 2010//
+/cpuinit.c/1.11/Tue Jun  1 21:19:53 2010//
+/linkcmds/1.7/Tue Jun  1 21:19:53 2010//
+/linkcmds.base/1.4/Tue Jun  1 21:19:53 2010//
+/linkcmds.hsc_cm01/1.5/Tue Jun  1 21:19:53 2010//
+/linkcmds.mpc8313erdb/1.1/Tue Jun  1 21:19:53 2010//
+/linkcmds.mpc8349eamds/1.6/Tue Jun  1 21:19:53 2010//
+/mpc83xx_regs.c/1.2/Tue Jun  1 21:19:53 2010//
+/uboot_support.c/1.2/Tue Jun  1 21:19:53 2010//
 D

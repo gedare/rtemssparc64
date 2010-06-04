@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: fs.h,v 1.6 2009/11/29 11:52:51 ralf Exp $
+ *  $Id: fs.h,v 1.7 2010/05/31 13:56:36 ccj Exp $
  */
 
 #ifndef _RTEMS_FS_H
@@ -51,6 +51,11 @@ struct rtems_filesystem_location_info_tt
    const rtems_filesystem_operations_table *ops;
    rtems_filesystem_mount_table_entry_t    *mt_entry;
 };
+
+/*
+ * Return the mount table entry for a path location.
+ */
+#define rtems_filesystem_location_mount(_pl) ((_pl)->mt_entry)
 
 #ifdef __cplusplus
 }

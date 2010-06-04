@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: imfs_stat.c,v 1.13 2009/06/12 01:53:33 ccj Exp $
+ *  $Id: imfs_stat.c,v 1.14 2010/05/15 06:29:55 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -27,6 +27,7 @@ int IMFS_stat(
   struct stat                      *buf
 )
 {
+  IMFS_fs_info_t *fs_info;
   IMFS_jnode_t   *the_jnode;
   IMFS_device_t  *io;
 
@@ -58,6 +59,14 @@ int IMFS_stat(
       break;
   }
 
+  /*
+   * The device number of the IMFS is the major number and the minor is the
+   * instance.
+   */
+  fs_info = loc->mt_entry->fs_info;
+  buf->st_dev =
+    rtems_filesystem_make_dev_t( IMFS_DEVICE_MAJOR_NUMBER, fs_info->instance );
+  
   buf->st_mode  = the_jnode->st_mode;
   buf->st_nlink = the_jnode->st_nlink;
   buf->st_ino   = the_jnode->st_ino;

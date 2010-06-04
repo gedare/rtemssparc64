@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: ualarm.c,v 1.11 2009/11/30 15:44:21 ralf Exp $
+ *  $Id: ualarm.c,v 1.12 2010/04/30 08:37:27 sh Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -22,8 +22,6 @@
 #include <rtems/posix/pthread.h>
 #include <rtems/posix/psignal.h>
 #include <rtems/posix/time.h>
-
-Watchdog_Control _POSIX_signals_Ualarm_timer;
 
 /*PAGE
  *

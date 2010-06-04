@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iom48.h,v 1.1 2009/08/06 14:52:05 joel Exp $ */
+/* $Id: iom48.h,v 1.2 2010/05/10 16:31:22 joel Exp $ */
 
 #ifndef _AVR_IOM48_H_
 #define _AVR_IOM48_H_ 1

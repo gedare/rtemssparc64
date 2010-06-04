@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iom645.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iom645.h,v 1.3 2010/05/10 16:31:22 joel Exp $ */
 
 /* avr/iom645.h - definitions for ATmega645 */
 
@@ -45,7 +45,7 @@
 #  define _AVR_IOXXX_H_ "iom645.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 /* Registers and associated bit numbers */
 
@@ -804,7 +804,7 @@
 /* Lock Bits */
 #define __LOCK_BITS_EXIST
 #define __BOOT_LOCK_BITS_0_EXIST
-#define __BOOT_LOCK_BITS_1_EXIST
+#define __BOOT_LOCK_BITS_1_EXIST 
 
 
 /* Signature */

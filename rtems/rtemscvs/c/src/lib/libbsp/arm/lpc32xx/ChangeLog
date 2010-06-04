@@ -1,3 +1,43 @@
+2010-05-25	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* configure.ac, include/bspopts.h.in: Added BSP_SMALL_MEMORY option.
+
+2010-05-21	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/lpc32xx.h: Update for utility macro changes.
+
+2010-05-20	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* configure.ac: Fixed BSP option.
+	* include/lpc32xx.h, startup/bspstarthooks.c: Added PLL setup.
+
+2010-05-20	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* startup/bspstarthooks.c: Removed start section attribute defines.
+
+2010-05-20	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* make/custom/lpc32xx.inc, make/custom/lpc32xx_mzx_boot_int.cfg,
+	startup/linkcmds.lpc32xx_mzx_boot_int: New files.
+	* Makefile.am, configure.ac, preinstall.am, include/bsp.h,
+	include/bspopts.h.in, include/lpc32xx.h, irq/irq.c,
+	make/custom/lpc32xx_phycore.cfg, startup/bspstart.c,
+	startup/bspstarthooks.c: Changes throughout.
+
+2010-05-20	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* make/custom/lpc32xx_phycore.cfg: Workaround for GCC bug 38644.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/irq-config.h: Removed file.
+	* Makefile.am, preinstall.am: Reflect change above.
+	* irq/irq.c: Removed superfluous parameter checks.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* make/custom/lpc32xx_phycore.cfg: Use VFP floating point model.
+
 2010-04-09	Sebastian Huber <sebastian.huber@embedded-brains.de>
 
 	* console/hsu.c: New file.

@@ -15,7 +15,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bspstart.c,v 1.17 2009/11/29 15:33:27 ralf Exp $
+ *  $Id: bspstart.c,v 1.18 2010/05/24 15:05:19 joel Exp $
  */
 
 
@@ -26,6 +26,8 @@
  * Tells us if data cache snooping is available
  */
 int CPU_SPARC_HAS_SNOOPING;
+
+extern void amba_initialize(void);
 
 /*
  * set_snooping
@@ -54,4 +56,7 @@ static inline int set_snooping(void)
 void bsp_start( void )
 {
   CPU_SPARC_HAS_SNOOPING = set_snooping();
+
+  /* Find UARTs */
+  amba_initialize();
 }

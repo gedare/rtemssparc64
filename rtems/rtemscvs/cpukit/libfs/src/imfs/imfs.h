@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: imfs.h,v 1.38 2010/03/04 06:36:51 ccj Exp $
+ *  $Id: imfs.h,v 1.41 2010/05/31 13:56:36 ccj Exp $
  */
 
 #ifndef _RTEMS_IMFS_H
@@ -156,6 +156,12 @@ typedef union {
 } IMFS_types_union;
 
 /*
+ * Major device number for the IMFS. This is not a real device number because
+ * the IMFS is just a file system and does not have a driver.
+ */
+#define IMFS_DEVICE_MAJOR_NUMBER (0xfffe)
+
+/*
  *  Maximum length of a "basename" of an IMFS file/node.
  */
 
@@ -213,6 +219,7 @@ struct IMFS_jnode_tt {
   } while (0)
 
 typedef struct {
+  int                                     instance;
   ino_t                                   ino_count;
   const rtems_filesystem_file_handlers_r *memfile_handlers;
   const rtems_filesystem_file_handlers_r *directory_handlers;
@@ -248,11 +255,13 @@ extern const rtems_filesystem_limits_and_options_t  IMFS_LIMITS_AND_OPTIONS;
  */
 
 extern int IMFS_initialize(
-   rtems_filesystem_mount_table_entry_t *mt_entry
+   rtems_filesystem_mount_table_entry_t *mt_entry,
+   const void                           *data
 );
 
 extern int miniIMFS_initialize(
-   rtems_filesystem_mount_table_entry_t *mt_entry
+   rtems_filesystem_mount_table_entry_t *mt_entry,
+   const void                           *data
 );
 
 extern int IMFS_initialize_support(
@@ -317,7 +326,7 @@ extern int IMFS_evaluate_link(
 
 extern int IMFS_eval_path(
   const char                        *pathname,     /* IN     */
-  int                               pathnamelen,   /* IN     */
+  size_t                            pathnamelen,   /* IN     */
   int                               flags,         /* IN     */
   rtems_filesystem_location_info_t  *pathloc       /* IN/OUT */
 );

@@ -1,4 +1,4 @@
-/* $Id: rpcio.c,v 1.9 2010/03/27 04:04:39 ccj Exp $ */
+/* $Id: rpcio.c,v 1.13 2010/05/30 10:18:41 ralf Exp $ */
 
 /* RPC multiplexor for a multitasking environment */
 
@@ -288,7 +288,7 @@ typedef struct RpcUdpServerRec_ {
 } RpcUdpServerRec;
 
 typedef union  RpcBufU_ {
-		u_long				xid;
+		uint32_t			xid;
 		char				buf[1];
 } RpcBufU, *RpcBuf;
 
@@ -391,8 +391,10 @@ static rtems_id			rpciod  = 0;		/* task id of the RPC daemon                 */
 static rtems_id			msgQ    = 0;		/* message queue where the daemon picks up
 											 * requests
 											 */
+#ifndef NDEBUG
 static rtems_id			llock	= 0;		/* MUTEX protecting the server list */
 static rtems_id			hlock	= 0;		/* MUTEX protecting the hash table and the list of servers */
+#endif
 static rtems_id			fini	= 0;		/* a synchronization semaphore we use during
 											 * module cleanup / driver unloading
 											 */
@@ -485,10 +487,10 @@ bool_t rval;
 enum clnt_stat
 rpcUdpServerCreate(
 	struct sockaddr_in	*paddr,
-	int					prog,
-	int					vers,
-	u_long				uid,
-	u_long				gid,
+	rpcprog_t		prog,
+	rpcvers_t		vers,
+	u_long			uid,
+	u_long			gid,
 	RpcUdpServer		*psrv
 	)
 {
@@ -687,9 +689,9 @@ register int	i,j;
 			return 0;
 		}
 		/* pick a free table slot and initialize the XID */
-		rval->obuf.xid = time(0) ^ (unsigned long)rval;
+		rval->obuf.xid = time(0) ^ (uintptr_t)rval;
 		MU_LOCK(hlock);
-		rval->obuf.xid = (xidHashSeed++ ^ ((unsigned long)rval>>10)) & XACT_HASH_MSK;
+		rval->obuf.xid = (xidHashSeed++ ^ ((uintptr_t)rval>>10)) & XACT_HASH_MSK;
 		i=j=(rval->obuf.xid & XACT_HASH_MSK);
 		if (msgQ) {
 			/* if there's no message queue, refuse to
@@ -921,9 +923,10 @@ rtems_event_set		gotEvents;
  * be more efficient
  */
 static void
-rxWakeupCB(struct socket *sock, caddr_t arg)
+rxWakeupCB(struct socket *sock, void *arg)
 {
-rtems_event_send((rtems_id)arg, RPCIOD_RX_EVENT);
+  rtems_id *rpciod = (rtems_id*) arg;
+  rtems_event_send(*rpciod, RPCIOD_RX_EVENT);
 }
 
 int
@@ -966,7 +969,7 @@ struct sockwakeup	wkup;
 			assert( status == RTEMS_SUCCESSFUL );
 
 			wkup.sw_pfn = rxWakeupCB;
-			wkup.sw_arg = (caddr_t)rpciod;
+			wkup.sw_arg = &rpciod;
 			assert( 0==setsockopt(ourSock, SOL_SOCKET, SO_RCVWAKEUP, &wkup, sizeof(wkup)) );
 			status = rtems_message_queue_create(
 											rtems_build_name('R','P','C','q'),
@@ -1018,12 +1021,12 @@ rpcUdpCleanup(void)
  */
 enum clnt_stat
 rpcUdpClntCreate(
-		struct sockaddr_in *psaddr,
-		int					prog,
-		int					vers,
-		u_long				uid,
-		u_long				gid,
-		RpcUdpClnt			*pclnt
+		struct sockaddr_in	*psaddr,
+		rpcprog_t		prog,
+		rpcvers_t		vers,
+		u_long			uid,
+		u_long			gid,
+		RpcUdpClnt		*pclnt
 )
 {
 RpcUdpXact		x;
@@ -1512,7 +1515,7 @@ rtems_status_code	status;
 
 RpcUdpXactPool
 rpcUdpXactPoolCreate(
-	int prog, 		int version,
+	rpcprog_t prog, 		rpcvers_t version,
 	int xactsize,	int poolsize)
 {
 RpcUdpXactPool	rval = MY_MALLOC(sizeof(*rval));

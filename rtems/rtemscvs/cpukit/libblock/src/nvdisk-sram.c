@@ -1,5 +1,5 @@
 /*
- *  $Id: nvdisk-sram.c,v 1.4 2009/11/29 13:35:32 ralf Exp $
+ *  $Id: nvdisk-sram.c,v 1.5 2010/05/22 16:51:05 ralf Exp $
  *
  * RTEMS Project (http://www.rtems.org/)
  *
@@ -27,36 +27,36 @@
 static int
 rtems_nvdisk_sram_read (uint32_t device __attribute__((unused)),
                         uint32_t flags __attribute__((unused)),
-                        uint32_t base,
+                        void*    base,
                         uint32_t offset,
                         void*    buffer,
-                        uint32_t size)
+                        size_t   size)
 {
-  memcpy (buffer, (char*) (base + offset), size);
+  memcpy (buffer, (base + offset), size);
   return 0;
 }
 
 static int
 rtems_nvdisk_sram_write (uint32_t    device __attribute__((unused)),
                          uint32_t    flags __attribute__((unused)),
-                         uint32_t    base,
+                         void*       base,
                          uint32_t    offset,
                          const void* buffer,
-                         uint32_t    size)
+                         size_t      size)
 {
-  memcpy ((char*) (base + offset), buffer, size);
+  memcpy ((base + offset), buffer, size);
   return 0;
 }
 
 static int
 rtems_nvdisk_sram_verify (uint32_t    device __attribute__((unused)),
                           uint32_t    flags __attribute__((unused)),
-                          uint32_t    base,
+                          void*       base,
                           uint32_t    offset,
                           const void* buffer,
-                          uint32_t    size)
+                          size_t      size)
 {
-  return memcmp ((char*) (base + offset), buffer, size) == 0 ? 0 : EIO;
+  return memcmp ((base + offset), buffer, size) == 0 ? 0 : EIO;
 }
 
 

@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.37 2008/09/30 06:48:58 ralf Exp $
+## $Id: Makefile.am,v 1.38 2010/05/13 20:51:28 joel Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
@@ -12,6 +12,7 @@ dist_project_lib_DATA = bsp_specs
 
 include_HEADERS = include/bsp.h
 include_HEADERS += include/tm27.h
+include_bsp_HEADERS = start/regs.h
 
 nodist_include_HEADERS = include/bspopts.h
 nodist_include_bsp_HEADERS = ../../shared/include/bootcard.h

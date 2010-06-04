@@ -22,7 +22,7 @@
  *  COPYRIGHT (c) 1994-1997.
  *  On-Line Applications Research Corporation (OAR).
  *
- *  $Id: asm.h,v 1.7 2009/11/30 16:01:51 ralf Exp $
+ *  $Id: asm.h,v 1.8 2010/05/10 16:31:24 joel Exp $
  */
 
 #ifndef _RTEMS_ASM_H
@@ -142,7 +142,7 @@
      Created by Marek Michalkiewicz <marekm@linux.org.pl>
  */
 
-#include <avr/io.h>
+#include <avr/common.h>
 
 /* if not defined, assume old version with underscores */
 #ifndef __USER_LABEL_PREFIX__

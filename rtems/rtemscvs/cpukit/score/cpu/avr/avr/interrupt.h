@@ -30,7 +30,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: interrupt.h,v 1.2 2009/11/30 16:01:43 ralf Exp $ */
+/* $Id: interrupt.h,v 1.3 2010/05/10 16:31:20 joel Exp $ */
 
 #ifndef _AVR_INTERRUPT_H_
 #define _AVR_INTERRUPT_H_
@@ -42,16 +42,16 @@
 #define __STRINGIFY(x) #x
 #endif /* !defined(__DOXYGEN__) */
 
-/**
-\file
-\@{
+/** 
+\file 
+\@{ 
 */
 
 
 /** \name Global manipulation of the interrupt flag
 
     The global interrupt flag is maintained in the I bit of the status
-    register (SREG).
+    register (SREG). 
 */
 
 #if defined(__DOXYGEN__)
@@ -209,7 +209,7 @@
     }
 
     ISR_ALIAS(INT1_vect, INT0_vect);
-    \endcode
+    \endcode 
 */
 #  define ISR_ALIAS(vector, target_vector)
 #else /* real code */

@@ -9,7 +9,7 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: au1x00.h,v 1.4 2009/11/30 05:09:01 ralf Exp $
+ *  $Id: au1x00.h,v 1.5 2010/05/28 06:09:35 ralf Exp $
  *
  */
 
@@ -516,5 +516,14 @@ void static inline au_sync(void)
 {
 	__asm__ volatile ("sync");
 }
+
+
+extern void mips_default_isr( int vector );
+
+/* Generate a software interrupt */
+extern int assert_sw_irq(uint32_t irqnum);
+
+/* Clear a software interrupt */
+extern int negate_sw_irq(uint32_t irqnum);
 
 #endif

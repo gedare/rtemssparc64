@@ -10,7 +10,7 @@
  * Copyright (C) 2001 OKTET Ltd., St.-Petersburg, Russia
  * Author: Victor V. Vengerov <vvv@oktet.ru>
  *
- * @(#) $Id: diskdevs.h,v 1.18 2009/12/18 15:59:29 thomas Exp $
+ * @(#) $Id: diskdevs.h,v 1.19 2010/05/17 08:08:30 sh Exp $
  */
 
 #ifndef _RTEMS_DISKDEVS_H
@@ -323,10 +323,12 @@ rtems_status_code rtems_disk_io_done(void);
  * one to start the search.
  *
  * @code
- * rtems_disk_device *dd = rtems_disk_next((dev_t) -1);
+ * rtems_status_code sc = RTEMS_SUCCESSFUL;
+ * rtems_disk_device *dd = (dev_t) -1;
  *
- * while (dd != NULL) {
- *   dd = rtems_disk_next(dd->dev);
+ * while (sc == RTEMS_SUCCESSFUL && (dd = rtems_disk_next(dev)) != NULL) {
+ *   dev = rtems_disk_get_device_identifier(dd);
+ *   sc = rtems_disk_release(dd);
  * }
  * @endcode
  */

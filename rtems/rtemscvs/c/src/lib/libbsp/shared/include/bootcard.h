@@ -17,7 +17,7 @@
  * The license and distribution terms for this file may be found in the file
  * LICENSE in this distribution or at http://www.rtems.com/license/LICENSE.
  *
- * $Id: bootcard.h,v 1.8 2009/09/08 13:35:07 joel Exp $
+ * $Id: bootcard.h,v 1.9 2010/04/30 11:17:49 sh Exp $
  */
 
 /**
@@ -117,7 +117,7 @@ void bsp_get_work_area(
  * - bsp_postdriver_hook()
  * - rtems_initialize_start_multitasking()
  *   - 1st task executes C++ global constructors
- *   - .... appplication runs ...
+ *   - .... application runs ...
  *   - exit
  * - back to here eventually
  * - bsp_cleanup()

@@ -1,7 +1,5 @@
-/bspstart.c/1.10/Thu Dec 31 16:54:28 2009//
-/exception.S/1.4/Thu Dec 31 16:54:28 2009//
-/idtmem.S/1.1/Sat Oct 24 23:20:06 2009//
-/idttlb.S/1.2/Thu Dec 31 16:54:28 2009//
-/inittlb.c/1.1/Sat Oct 24 23:20:06 2009//
-/linkcmds/1.4/Mon Apr 26 15:33:47 2010//
+/bspstart.c/1.10/Tue Jun  1 21:20:38 2010//
+/idttlb.S/1.2/Tue Jun  1 21:20:38 2010//
+/inittlb.c/1.1/Tue Jun  1 21:20:38 2010//
+/linkcmds/1.5/Fri Jun  4 22:29:54 2010//
 D

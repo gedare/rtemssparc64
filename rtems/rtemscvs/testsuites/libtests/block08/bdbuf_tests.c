@@ -8,7 +8,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: bdbuf_tests.c,v 1.1 2010/01/19 08:55:18 thomas Exp $
+ * $Id: bdbuf_tests.c,v 1.2 2010/05/17 08:34:55 sh Exp $
  */
 
 #include <stdio.h>
@@ -24,11 +24,9 @@
 struct bdbuf_test_descr {
     void (* main)(void);
 } bdbuf_tests[] = {
-#if 0
     { bdbuf_test1_1_main },
     { bdbuf_test1_2_main },
     { bdbuf_test1_3_main },
-#endif
     { bdbuf_test1_4_main },
     { bdbuf_test1_5_main },
     

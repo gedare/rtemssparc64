@@ -1,4 +1,4 @@
-/* Copyright (c) 2006, Anatoly Sokolov
+/* Copyright (c) 2006, Anatoly Sokolov 
    All rights reserved.
 
    Redistribution and use in source and binary forms, with or without
@@ -28,9 +28,9 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iousbxx6_7.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iousbxx6_7.h,v 1.3 2010/05/10 16:31:23 joel Exp $ */
 
-/* iousbxx6_7.h - definitions for AT90USB646, AT90USB647, AT90USB1286
+/* iousbxx6_7.h - definitions for AT90USB646, AT90USB647, AT90USB1286 
    and AT90USB1287 */
 
 #ifndef _AVR_IOUSBXX6_7_H_
@@ -46,7 +46,7 @@
 #  define _AVR_IOXXX_H_ "iousbxx6_7.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 #if defined(__AVR_AT90USB646__) || defined(__AVR_AT90USB1286__)
 #  define __AT90USBxx6__ 1
@@ -284,7 +284,7 @@
 #define INT4    4
 #define INT3    3
 #define INT2    2
-#define INT1    1
+#define INT1    1 
 #define INT0    0
 
 #define GPIOR0  _SFR_IO8(0x1E)

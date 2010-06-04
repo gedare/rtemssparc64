@@ -1,12 +1,12 @@
 dnl
-dnl  $Id: bsp-alias.m4,v 1.49 2009/10/21 09:26:05 ralf Exp $
+dnl  $Id: bsp-alias.m4,v 1.50 2010/05/11 15:05:01 ralf Exp $
 dnl 
 
 dnl _RTEMS_BSP_ALIAS(BSP_ALIAS,RTEMS_BSP_FAMILY)
 dnl Internal subroutine to RTEMS_BSP_ALIAS
 AC_DEFUN([_RTEMS_BSP_ALIAS],
 [# account for "aliased" bsps which share source code
-      for bsp_cfgs in `ls "$srcdir/$RTEMS_TOPdir/c/src/lib/libbsp/$RTEMS_CPU/"*"/make/custom/$1.cfg" 2>/dev/null`; do
+      for bsp_cfgs in `ls "$srcdir"/"$RTEMS_TOPdir"/c/src/lib/libbsp/"$RTEMS_CPU"/*/"make/custom/$1.cfg" 2>/dev/null`; do
         $2=`echo "$bsp_cfgs" | sed \
           -e "s,^$srcdir/$RTEMS_TOPdir/c/src/lib/libbsp/$RTEMS_CPU/,," \
           -e "s,/make/custom/.*\.cfg$,,"`

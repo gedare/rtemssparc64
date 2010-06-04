@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iocanxx.h,v 1.2 2009/11/30 16:01:44 ralf Exp $ */
+/* $Id: iocanxx.h,v 1.3 2010/05/10 16:31:21 joel Exp $ */
 
 /* This file is based largely on:
    - iom128.h by Peter Jansen (bit defines)
@@ -53,7 +53,7 @@
 #  define _AVR_IOXXX_H_ "iocanxx.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 /* I/O registers and bit definitions. */
 
@@ -952,9 +952,9 @@
 #define    ADPS0        0
 /* End Register Bits */
 
-/*
-   The ADHSM bit has been removed from all documentation,
-   as being not needed at all since the comparator has proven
+/* 
+   The ADHSM bit has been removed from all documentation, 
+   as being not needed at all since the comparator has proven 
    to be fast enough even without feeding it more power.
 */
 

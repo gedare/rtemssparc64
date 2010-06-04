@@ -5,7 +5,7 @@
 # @brief Makefile of LibBSP for the LPC24XX boards.
 #
 
-# $Id: Makefile.am,v 1.26 2010/04/09 12:24:48 thomas Exp $
+# $Id: Makefile.am,v 1.28 2010/05/20 13:10:56 sh Exp $
 
 ACLOCAL_AMFLAGS = -I ../../../../aclocal
 
@@ -32,11 +32,11 @@ include_bsp_HEADERS += ../../shared/include/utility.h
 include_bsp_HEADERS += ../../shared/include/irq-generic.h
 include_bsp_HEADERS += ../../shared/include/irq-info.h
 include_bsp_HEADERS += ../../shared/include/stackalloc.h
+include_bsp_HEADERS += ../../shared/include/uart-output-char.h
 include_bsp_HEADERS += ../../shared/tod.h
 include_bsp_HEADERS += ../shared/include/linker-symbols.h
 include_bsp_HEADERS += ../shared/include/start.h
 include_bsp_HEADERS += ../shared/lpc/include/lpc-timer.h
-include_bsp_HEADERS += include/irq-config.h
 include_bsp_HEADERS += include/irq.h
 include_bsp_HEADERS += include/lpc24xx.h
 include_bsp_HEADERS += include/system-clocks.h
@@ -89,6 +89,7 @@ libbsp_a_SOURCES += ../../shared/bootcard.c \
 	../../shared/gnatinstallhandler.c \
 	../../shared/sbrk.c \
 	../../shared/src/stackalloc.c \
+	../../shared/src/uart-output-char.c \
 	../shared/abort/simple_abort.c
 
 # Startup

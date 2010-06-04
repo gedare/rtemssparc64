@@ -9,12 +9,12 @@
  *  http://www.rtems.com/license/LICENSE.
  *
  *
- *  $Id: clockdrv.c,v 1.12 2010/04/09 20:24:56 thomas Exp $
+ *  $Id: clockdrv.c,v 1.13 2010/04/30 14:48:52 sh Exp $
 */
 #include <rtems.h>
 #include <ep7312.h>
 #include <bsp.h>
-#include <irq.h>
+#include <bsp/irq.h>
 
 #if ON_SKYEYE==1
   #define CLOCK_DRIVER_USE_FAST_IDLE

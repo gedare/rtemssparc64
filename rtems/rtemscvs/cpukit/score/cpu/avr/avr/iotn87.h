@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iotn87.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iotn87.h,v 1.3 2010/05/10 16:31:23 joel Exp $ */
 
 /* avr/iotn87.h - definitions for ATtiny87 */
 
@@ -42,7 +42,7 @@
 #  define _AVR_IOXXX_H_ "iotn87.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 
 #ifndef _AVR_ATtiny87_H_

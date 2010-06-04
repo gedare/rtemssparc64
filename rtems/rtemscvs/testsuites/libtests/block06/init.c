@@ -5,7 +5,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: init.c,v 1.5 2010/01/19 08:55:18 thomas Exp $
+ * $Id: init.c,v 1.6 2010/05/03 09:14:27 sh Exp $
  */
 
 /**
@@ -1845,7 +1845,7 @@ static rtems_task Init(rtems_task_argument argument)
 
 #define CONFIGURE_MAXIMUM_TASKS 8
 #define CONFIGURE_MAXIMUM_DRIVERS 3
-#define CONFIGURE_MAXIMUM_SEMAPHORES 7
+#define CONFIGURE_MAXIMUM_SEMAPHORES 2
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 

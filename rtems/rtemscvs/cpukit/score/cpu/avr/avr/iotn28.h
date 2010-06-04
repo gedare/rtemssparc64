@@ -28,7 +28,7 @@
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE. */
 
-/* $Id: iotn28.h,v 1.2 2009/11/30 16:01:45 ralf Exp $ */
+/* $Id: iotn28.h,v 1.3 2010/05/10 16:31:23 joel Exp $ */
 
 /* avr/iotn28.h - definitions for ATtiny28 */
 
@@ -45,7 +45,7 @@
 #  define _AVR_IOXXX_H_ "iotn28.h"
 #else
 #  error "Attempt to include more than one <avr/ioXXX.h> file."
-#endif
+#endif 
 
 #ifndef __ASSEMBLER__
 #  warning "MCU not supported by the C compiler"

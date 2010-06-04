@@ -1,3 +1,39 @@
+2010-06-02	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	* user/.cvsignore: Add semaphore_attributes.pdf.
+
+2010-05-18	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	PR 1520/doc
+	* user/part.t: Partition create discussion said it returned the number
+	of buffers created but it does not.
+
+2010-05-18	Alin Rus <alin.codejunkie@gmail.com>
+
+	PR 1519/doc
+	* user/chains.t: Fix typo in Chain_Control example.
+
+2010-05-13	Chris Johns <chrisj@rtems.org>
+
+	* shell/file.t: Add dd, debugrfs, hexdump, ln, mknod, mkrfs, mv.
+	* shell/general.t: Add time.
+	
+2010-05-12	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	PR 1512/doc
+	* shell/general.t: Add rtc.
+	* shell/file.t: Add fdisk.
+
+2010-05-09	Joel Sherrill <joel.sherrill@oarcorp.com>
+
+	PR 1512/doc
+	* shell/general.t: Add setenv, getenv, and unsetenv.
+
+2010-05-05	Alin Rus <alin.codejunkie@gmail.com>
+
+	PR 1510/doc
+	* user/chains.t: Fix code example.
+
 2010-04-22	Alin Rus <alin.codejunkie@gmail.com>
 
 	* user/chain.t: Fixed the example from PR 1504.

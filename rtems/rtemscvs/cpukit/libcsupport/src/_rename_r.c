@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: _rename_r.c,v 1.5 2010/03/04 06:36:50 ccj Exp $
+ *  $Id: _rename_r.c,v 1.6 2010/05/20 03:10:41 ccj Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -70,7 +70,7 @@ int _rename_r(
   if ( result != 0 ) {
     if ( free_old_parentloc )
       rtems_filesystem_freenode( &old_parent_loc );
-    rtems_set_errno_and_return_minus_one( result );
+    return -1;
   }
   
   /*
@@ -92,7 +92,7 @@ int _rename_r(
     if ( free_old_parentloc )
       rtems_filesystem_freenode( &old_parent_loc );
     rtems_filesystem_freenode( &old_loc );
-    rtems_set_errno_and_return_minus_one( result );
+    return -1;
   }
 
   /*

@@ -1,7 +1,10 @@
 ##
-## $Id: compile.am,v 1.26 2009/10/23 14:57:58 ralf Exp $
+## $Id: compile.am,v 1.27 2010/05/22 09:15:42 ralf Exp $
 ##
 
 AM_CPPFLAGS = @RTEMS_CPPFLAGS@
 AM_CFLAGS =
+AM_CFLAGS += -Werror=overflow
+AM_CFLAGS += -Werror=pointer-to-int-cast
+AM_CFLAGS += -Werror=int-to-pointer-cast
 AM_CCASFLAGS = @RTEMS_CCASFLAGS@

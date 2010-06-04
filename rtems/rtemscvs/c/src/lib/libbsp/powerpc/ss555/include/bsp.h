@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: bsp.h,v 1.14 2008/09/18 17:41:26 joel Exp $
+ *  $Id: bsp.h,v 1.15 2010/06/02 03:34:37 ralf Exp $
  */
 
 #ifndef _BSP_H
@@ -74,6 +74,11 @@ typedef struct cpld_ {
 } cpld_t;
 
 extern volatile cpld_t cpld;              /* defined in linkcmds */
+
+/* clock/p_clock.c */
+extern int BSP_disconnect_clock_handler (void);
+
+extern int BSP_connect_clock_handler (rtems_irq_hdl hdl);
 
 #ifdef __cplusplus
 }

@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.1 2010/03/17 05:06:20 ralf Exp $
+# $Id: Makefile.am,v 1.2 2010/05/21 16:16:56 ralf Exp $
 
 SUBDIRS =
 SUBDIRS += arm
@@ -15,3 +15,5 @@ SUBDIRS += mipstx39
 SUBDIRS += powerpc
 SUBDIRS += sh
 SUBDIRS += sparc
+
+SUBDIRS += sparc64

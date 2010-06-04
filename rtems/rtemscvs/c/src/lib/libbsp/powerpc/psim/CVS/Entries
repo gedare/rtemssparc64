@@ -8,10 +8,10 @@ D/start////
 D/startup////
 D/tools////
 D/vectors////
-/.cvsignore/1.4/Sat Oct 24 23:18:44 2009//
-/ChangeLog/1.177/Thu Dec 31 16:53:52 2009//
-/Makefile.am/1.59/Thu Dec 31 16:53:52 2009//
-/README/1.1/Sat Oct 24 23:18:44 2009//
-/bsp_specs/1.15/Sat Oct 24 23:18:44 2009//
-/configure.ac/1.33/Thu Dec 31 16:53:52 2009//
-/preinstall.am/1.12/Wed Feb 10 20:48:42 2010//
+/.cvsignore/1.4/Tue Jun  1 21:19:59 2010//
+/ChangeLog/1.177/Tue Jun  1 21:19:59 2010//
+/Makefile.am/1.59/Tue Jun  1 21:19:59 2010//
+/README/1.1/Tue Jun  1 21:19:59 2010//
+/bsp_specs/1.15/Tue Jun  1 21:19:59 2010//
+/configure.ac/1.33/Tue Jun  1 21:19:59 2010//
+/preinstall.am/1.12/Tue Jun  1 21:19:59 2010//

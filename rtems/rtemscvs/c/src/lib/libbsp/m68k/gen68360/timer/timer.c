@@ -11,7 +11,7 @@
  * Saskatoon, Saskatchewan, CANADA
  * eric@skatter.usask.ca
  *
- *  $Id: timer.c,v 1.14 2008/09/30 16:25:51 joel Exp $
+ *  $Id: timer.c,v 1.15 2010/04/28 19:16:22 joel Exp $
  */
 
 /*
@@ -72,7 +72,10 @@ benchmark_timer_initialize (void)
 int
 benchmark_timer_read (void)
 {
-	return *(uint32_t*)&m360.tcn1;
+	unsigned short val;
+
+	val = m360.tcn1;
+	return val;
 }
 
 void

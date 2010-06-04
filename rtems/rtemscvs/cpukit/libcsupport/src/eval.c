@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: eval.c,v 1.15 2009/06/12 02:59:18 ccj Exp $
+ *  $Id: eval.c,v 1.16 2010/05/27 16:29:37 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -23,13 +23,12 @@
 
 int rtems_filesystem_evaluate_relative_path(
   const char                        *pathname,
-  int                                pathnamelen,
+  size_t                             pathnamelen,
   int                                flags,
   rtems_filesystem_location_info_t  *pathloc,
   int                                follow_link
 )
 {
-  //int                           i;
   int                           result;
   rtems_filesystem_node_types_t type;
 
@@ -93,7 +92,7 @@ int rtems_filesystem_evaluate_relative_path(
 
 int rtems_filesystem_evaluate_path(
   const char                        *pathname,
-  int                                pathnamelen,
+  size_t                             pathnamelen,
   int                                flags,
   rtems_filesystem_location_info_t  *pathloc,
   int                                follow_link

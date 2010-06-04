@@ -12,7 +12,7 @@
  *  found in found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: mm.c,v 1.5 2004/04/21 16:01:44 ralf Exp $
+ * $Id: mm.c,v 1.6 2010/04/28 18:51:58 joel Exp $
  */
 
 /* This code is a crude memory manager for early boot for LinuxPPC.
@@ -45,6 +45,9 @@
 #include <libcpu/mmu.h>
 #include <libcpu/page.h>
 #include <limits.h>
+
+extern void (tlb_handlers)(void);
+extern void (_handler_glue)(void);
 
 /* We use our own kind of simple memory areas for the loader, but
  * we want to avoid potential clashes with kernel includes.
@@ -706,8 +709,6 @@ void mm_init(u_long image_size)
 	u_long lowpage=ULONG_MAX, highpage;
 	struct _mm_private *mm = (struct _mm_private *) bd->mm_private;
 	RESIDUAL * res=bd->residual;
-	extern void (tlb_handlers)(void);
-	extern void (_handler_glue)(void);
 	int i;
 	map *p;
 

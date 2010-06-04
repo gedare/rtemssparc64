@@ -9,7 +9,7 @@
  *
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: network.c,v 1.7 2010/04/09 20:24:56 thomas Exp $
+ *  $Id: network.c,v 1.8 2010/04/30 14:40:17 sh Exp $
  */
 #include <rtems.h>
 #include <rtems/rtems_bsdnet.h>
@@ -33,7 +33,7 @@
 #include <netinet/in.h>
 #include <netinet/if_ether.h>
 
-#include <irq.h>
+#include <bsp/irq.h>
 
 /*  RTEMS event used by interrupt handler to start receive daemon. */
 #define START_RECEIVE_EVENT  RTEMS_EVENT_1

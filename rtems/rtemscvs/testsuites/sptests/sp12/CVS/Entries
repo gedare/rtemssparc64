@@ -1,14 +1,14 @@
-/.cvsignore/1.1/Sat Oct 24 23:16:26 2009//
-/Makefile.am/1.23/Sat Oct 24 23:16:26 2009//
-/init.c/1.15/Sat Oct 24 23:16:26 2009//
-/pridrv.c/1.13/Mon Nov 30 23:40:22 2009//
-/pritask.c/1.15/Thu Dec 31 16:55:52 2009//
-/sp12.doc/1.7/Sat Oct 24 23:16:26 2009//
-/sp12.scn/1.8/Sat Oct 24 23:16:26 2009//
-/system.h/1.20/Mon Nov 30 23:40:22 2009//
-/task1.c/1.11/Mon Nov 30 23:40:22 2009//
-/task2.c/1.7/Sat Oct 24 23:16:26 2009//
-/task3.c/1.7/Sat Oct 24 23:16:26 2009//
-/task4.c/1.7/Sat Oct 24 23:16:26 2009//
-/task5.c/1.8/Sat Oct 24 23:16:26 2009//
+/.cvsignore/1.1/Tue Jun  1 21:19:07 2010//
+/Makefile.am/1.23/Tue Jun  1 21:19:07 2010//
+/init.c/1.15/Tue Jun  1 21:19:07 2010//
+/pridrv.c/1.13/Tue Jun  1 21:19:07 2010//
+/pritask.c/1.15/Tue Jun  1 21:19:07 2010//
+/sp12.doc/1.7/Tue Jun  1 21:19:07 2010//
+/sp12.scn/1.8/Tue Jun  1 21:19:07 2010//
+/system.h/1.20/Tue Jun  1 21:19:07 2010//
+/task1.c/1.11/Tue Jun  1 21:19:07 2010//
+/task2.c/1.7/Tue Jun  1 21:19:07 2010//
+/task3.c/1.7/Tue Jun  1 21:19:07 2010//
+/task4.c/1.7/Tue Jun  1 21:19:07 2010//
+/task5.c/1.8/Tue Jun  1 21:19:07 2010//
 D

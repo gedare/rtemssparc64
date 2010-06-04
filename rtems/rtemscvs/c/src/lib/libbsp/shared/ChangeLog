@@ -1,3 +1,39 @@
+2010-05-28	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* umon/tfsDriver.c:
+	Use size_t instead of int for pathnamelen.
+
+2010-05-21	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/utility.h: Macros use now first and last bit values instead
+	of shift and length parameters.
+
+2010-05-20	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/utility.h: Removed superfluous macros.
+
+2010-05-20	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/uart-output-char.h, src/uart-output-char.c: New files.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/irq-config.h: Removed file.
+	* include/irq.h: New file (renamed from 'include/irq-config.h').
+	* include/irq-generic.h, src/irq-info.c: Include <bsp/irq.h> instead
+	of <bsp/irq-config.h>.
+	* src/irq-server.c: Use events instead of semaphore.  Added error
+	counter for multiple chain appends.  Added error counter to detect
+	erroneous interrupt events.
+
+2010-04-30	Sebastian Huber <sebastian.huber@embedded-brains.de>
+
+	* include/bootcard.h: Documentation.
+
+2010-04-28	Joel Sherrill <joel.sherrilL@OARcorp.com>
+
+	* gdbstub/rtems-stub-glue.c: Remove warnings.
+
 2010-04-09	Thomas Doerfler <Thomas.Doerfler@embedded-brains.de>
 
 	* umon/umonrtemsglue.c: change type to avoid warning
@@ -23,11 +59,11 @@
 2009-10-21	Sebastian Huber <sebastian.huber@embedded-brains.de>
 
 	* include/irq-generic.h, src/irq-generic.c, src/irq-legacy.c,
-	src/irq-server: Update for interrupt handler type change.
+	src/irq-server.c: Update for interrupt handler type change.
 
 2009-10-09	Sebastian Huber <sebastian.huber@embedded-brains.de>
 
-	* bootcard: Update for heap API changes.
+	* bootcard.c: Update for heap API changes.
 
 2009-09-08	Sebastian Huber <sebastian.huber@embedded-brains.de>
 
