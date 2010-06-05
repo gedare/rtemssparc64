@@ -1,3 +1,7 @@
+2010-06-05  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* Makefile.am: Use ../shared/console driver.
+
 2010-05-15  Gedare Bloom <gedare@gwmail.gwu.edu>
 
 	* Makefile.am: update to new ../helenos directory layout
