@@ -22,7 +22,7 @@ shared_shared_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
 noinst_PROGRAMS += shared/sparc64-syscall.rel
 shared_sparc64_syscall_rel_SOURCES = shared/syscall/sparc64-syscall.S \
-																	shared/syscall/sparc64-syscall.h
+  shared/syscall/sparc64-syscall.h
 shared_sparc64_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
 shared_sparc64_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
@@ -50,8 +50,8 @@ include_rtems_scoredir = $(includedir)/rtems/score
 
 #include_sparc64_HEADERS =  include/traps.h
 #include_rtems_score_HEADERS = sun4u/include/sparc64.h \
-#															sun4u/include/cpu.h \
-# 															sun4u/include/types.h
+#                              sun4u/include/cpu.h \
+#                               sun4u/include/types.h
 
 ## sun4u/score
 #noinst_PROGRAMS += sun4u/score.rel
@@ -62,7 +62,7 @@ include_rtems_scoredir = $(includedir)/rtems/score
 
 #noinst_PROGRAMS += sun4u/sparc-syscall.rel
 #sun4u_sparc_syscall_rel_SOURCES = sun4u/syscall/sparc-syscall.S \
-#																	sun4u/syscall/sparc-syscall.h
+#                                  sun4u/syscall/sparc-syscall.h
 #sun4u_sparc_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
 #sun4u_sparc_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 endif
@@ -75,8 +75,8 @@ include_rtems_scoredir = $(includedir)/rtems/score
 
 #include_sparc64_HEADERS =  include/traps.h
 #include_rtems_score_HEADERS = $(include_rtems_scoredir)/sparc64.h \
-#															$(include_rtems_scoredir)/cpu.h \
-#															$(include_rtems_scoredir)/types.h
+#                              $(include_rtems_scoredir)/cpu.h \
+#                              $(include_rtems_scoredir)/types.h
 
 ## sun4v/score
 #noinst_PROGRAMS += sun4v/score.rel
