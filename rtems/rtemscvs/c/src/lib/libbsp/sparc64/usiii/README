@@ -1,0 +1,12 @@
+#
+# $Id$
+#
+
+This BSP is designed to operate on the UltraSPARC III SPARC64 
+and similar processors.
+
+It has been run on the Simics simulator with the serengeti target.
+
+Simics:
+A commercially available simulator licensed by Virtutech.
+https://www.simics.net/
