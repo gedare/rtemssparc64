@@ -1,3 +1,7 @@
+2010-06-05  Gedare Bloom <gedare@gwmail.gwu.edu>
+
+	* sun4u/ usiii/: Moved sun4u to usiii.
+
 2010-05-13  Gedare Bloom <gedare@gwmail.gwu.edu>
 
 	* shared/startup/linkcmds: Some alignment changes, added some sections.
@@ -14,10 +18,6 @@
 2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
 
 	* shared/startup/ sun4v/startup: Move sun4v/startup to shared/startup.
-
-2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
-
-	* acinclude.m4: Add sun4u bsp.
 
 2010-05-10  Gedare Bloom <gedare@gwmail.gwu.edu>
 
