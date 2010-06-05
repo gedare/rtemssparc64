@@ -11,6 +11,8 @@ Simulator Invocation
 Status
 ======
 
+Current working status: Inoperable.
+
 * Due to limitations of the simulator you will only be able to run
 applications which do not try using any priviliged registers or instructions.
 

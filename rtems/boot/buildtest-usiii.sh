@@ -58,7 +58,7 @@ HELENONSBOOT=../../HeleonOS/HelenOS/boot/arch/sparc64/loader
 TOOLCHAIN=../compilers/sparc64-newlib-rtems4.10-4.4.1.gcc.full/sparc64/bin/sparc64-rtems4.10
 
 
-RTEMSTESTSBASE=../b-sun4ucvs/sparc64-rtems4.10/c/sun4u/testsuites
+RTEMSTESTSBASE=../b-usiiicvs/sparc64-rtems4.10/c/usiii/testsuites
 
 TEST=$2
 
@@ -90,5 +90,5 @@ $TOOLCHAIN-readelf -a image.1.boot > debug/rtems/$1/$TEST.elf
 rm image.1.boot.gz
 cp image.1.boot debug/rtems/$1/$TEST.exe
 gzip image.1.boot 
-cp image.1.boot.gz sun4u-isofiles/rtems/$1/$TEST.gz -f
+cp image.1.boot.gz usiii-isofiles/rtems/$1/$TEST.gz -f
 

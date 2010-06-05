@@ -16,7 +16,7 @@ include_libcpudir = $(includedir)/libcpu
 include_libcpu_HEADERS = ../shared/include/cache.h
 
 noinst_PROGRAMS += shared/shared-score.rel
-shared_shared_score_rel_SOURCES = shared/score/cpu.c sun4u/score/interrupt.S
+shared_shared_score_rel_SOURCES = shared/score/cpu.c shared/score/interrupt.S
 shared_shared_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
 shared_shared_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
@@ -48,10 +48,10 @@ include_rtems_scoredir = $(includedir)/rtems/score
 # 															sun4u/include/types.h
 
 ## sun4u/score
-noinst_PROGRAMS += sun4u/score.rel
-sun4u_score_rel_SOURCES = sun4u/score/interrupt.S 
-sun4u_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
-sun4u_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+#noinst_PROGRAMS += sun4u/score.rel
+#sun4u_score_rel_SOURCES = 
+#sun4u_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
+#sun4u_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
 
 noinst_PROGRAMS += sun4u/sparc-syscall.rel
@@ -73,10 +73,10 @@ include_rtems_scoredir = $(includedir)/rtems/score
 #															$(include_rtems_scoredir)/types.h
 
 ## sun4v/score
-noinst_PROGRAMS += sun4v/score.rel
-sun4v_score_rel_SOURCES = sun4v/score/interrupt.S
-sun4v_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
-sun4v_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+#noinst_PROGRAMS += sun4v/score.rel
+#sun4v_score_rel_SOURCES = 
+#sun4v_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
+#sun4v_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
 
 noinst_PROGRAMS += sun4v/sparc-syscall.rel
