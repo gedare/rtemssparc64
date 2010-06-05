@@ -54,15 +54,15 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../shared/startup/bspstart.c \
     ../shared/startup/setvec.c \
     ../../shared/gnatinstallhandler.c  \
-		../helenos/boot/genarch/balloc.c \
+    ../helenos/boot/genarch/balloc.c \
     ../helenos/boot/genarch/ofw.c \
-		../helenos/boot/genarch/ofw_tree.c \
-		../helenos/boot/generic/string.c \
-		../helenos/boot/sparc64/loader/ofwarch.c \
-		../helenos/boot/sparc64/loader/main.c \
-		../helenos/boot/sparc64/loader/ofwasm.S \
-		../shared/asm/asm.S \
-	  start/bspinit.S
+    ../helenos/boot/genarch/ofw_tree.c \
+    ../helenos/boot/generic/string.c \
+    ../helenos/boot/sparc64/loader/ofwarch.c \
+    ../helenos/boot/sparc64/loader/main.c \
+    ../helenos/boot/sparc64/loader/ofwasm.S \
+    ../shared/asm/asm.S \
+    start/bspinit.S
 ##   ../shared/ofw/printf.c \
 
 #clock_SOURCES = ../../shared/clock_driver_simidle.c
@@ -77,10 +77,10 @@ libbsp_a_SOURCES = $(startup_SOURCES) $(clock_SOURCES) $(console_SOURCES) \
     $(timer_SOURCES)
 
 libbsp_a_LIBADD = \
-			../../../libcpu/@RTEMS_CPU@/shared/shared-score.rel \
-			../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
-		  ../../../libcpu/@RTEMS_CPU@/shared/interrupts.rel \
-		  ../../../libcpu/@RTEMS_CPU@/shared/sparc64-syscall.rel 
+      ../../../libcpu/@RTEMS_CPU@/shared/shared-score.rel \
+      ../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
+      ../../../libcpu/@RTEMS_CPU@/shared/interrupts.rel \
+      ../../../libcpu/@RTEMS_CPU@/shared/sparc64-syscall.rel 
 
 EXTRA_DIST += times
 
