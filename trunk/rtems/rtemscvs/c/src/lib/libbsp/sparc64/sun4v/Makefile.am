@@ -68,7 +68,7 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
 #clock_SOURCES = ../../shared/clock_driver_simidle.c
 clock_SOURCES = ../shared/clock/ckinit.c
 
-console_SOURCES = ../../shared/console.c  console/conscfg.c
+console_SOURCES = ../../shared/console.c  ../shared/console/conscfg.c
 
 timer_SOURCES = ../../shared/timerstub.c
 
@@ -80,8 +80,7 @@ libbsp_a_LIBADD = \
 			../../../libcpu/@RTEMS_CPU@/shared/shared-score.rel \
 			../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
 		  ../../../libcpu/@RTEMS_CPU@/shared/interrupts.rel \
-		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/sparc-syscall.rel \
-			../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/score.rel
+		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/sparc-syscall.rel 
 
 EXTRA_DIST += times
 
