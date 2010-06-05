@@ -58,7 +58,7 @@ HELENONSBOOT=../../HeleonOS/HelenOS/boot/arch/sparc64/loader
 TOOLCHAIN=../compilers/sparc64-newlib-rtems4.10-4.4.1.gcc.full/sparc64/bin/sparc64-rtems4.10
 
 
-RTEMSTESTSBASE=../b-sun4vcvs/sparc64-rtems4.10/c/sun4v/testsuites
+RTEMSTESTSBASE=../b-niagaracvs/sparc64-rtems4.10/c/niagara/testsuites
 
 TEST=$2
 
