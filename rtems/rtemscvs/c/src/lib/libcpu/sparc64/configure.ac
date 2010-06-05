@@ -26,7 +26,6 @@ AM_CONDITIONAL(shared, test x"$RTEMS_CPU_MODEL" = x"sun4v" || \
 
 AM_CONDITIONAL([sun4u],[test x"$RTEMS_CPU_MODEL" = x"sun4u"])
 AM_CONDITIONAL([sun4v],[test x"$RTEMS_CPU_MODEL" = x"sun4v"])
-AM_CONDITIONAL([m5sim],[test x"$RTEMS_CPU_MODEL" = x"m5sim"])
 
 
 RTEMS_AMPOLISH3

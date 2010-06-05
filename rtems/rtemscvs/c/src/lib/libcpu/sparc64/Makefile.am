@@ -87,21 +87,5 @@ include_rtems_scoredir = $(includedir)/rtems/score
 
 endif
 
-if m5sim
-## m5sim/score
-noinst_PROGRAMS += m5sim/score.rel
-m5sim_score_rel_SOURCES = m5sim/score/cpu_asm.c m5sim/score/cpu.c
-m5sim_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
-m5sim_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
-
-noinst_PROGRAMS += m5sim/sparc-syscall.rel
-m5sim_sparc_syscall_rel_SOURCES = m5sim/syscall/sparc-syscall.S \
-																	m5sim/syscall/sparc-syscall.h
-m5sim_sparc_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
-m5sim_sparc_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
-endif
-
-
-
 include $(srcdir)/preinstall.am
 include $(top_srcdir)/../../../automake/local.am
