@@ -1,0 +1,6 @@
+m5sim
+
+This directory contains the result of trying to run RTEMS on the 
+SPARC_SE model of the M5 simulator.  Since the SE simulator does not provide
+for full system features such as interrupt handling, this effort was 
+abandoned without success.
