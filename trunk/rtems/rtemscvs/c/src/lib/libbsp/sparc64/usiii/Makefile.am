@@ -145,7 +145,7 @@ libbsp_a_LIBADD = \
 		  ../../../libcpu/@RTEMS_CPU@/shared/shared-score.rel \
 			../../../libcpu/@RTEMS_CPU@/shared/cache.rel \
 		  ../../../libcpu/@RTEMS_CPU@/shared/interrupts.rel \
-		  ../../../libcpu/@RTEMS_CPU@/@RTEMS_CPU_MODEL@/sparc-syscall.rel 
+		  ../../../libcpu/@RTEMS_CPU@/shared/sparc64-syscall.rel 
 
 EXTRA_DIST += times
 

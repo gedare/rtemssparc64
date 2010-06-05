@@ -18,7 +18,7 @@
  */
 
 #include <rtems/asm.h>
-#include "sparc-syscall.h"
+#include "sparc64-syscall.h"
 
 
 .seg    "text"

@@ -20,6 +20,12 @@ shared_shared_score_rel_SOURCES = shared/score/cpu.c shared/score/interrupt.S
 shared_shared_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
 shared_shared_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
+noinst_PROGRAMS += shared/sparc64-syscall.rel
+shared_sparc64_syscall_rel_SOURCES = shared/syscall/sparc64-syscall.S \
+																	shared/syscall/sparc64-syscall.h
+shared_sparc64_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
+shared_sparc64_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+
 noinst_PROGRAMS += shared/interrupts.rel
 shared_interrupts_rel_SOURCES = shared/interrupts/installisrentries.c
 shared_interrupts_rel_CPPFLAGS = $(AM_CPPFLAGS) -I$(srcdir)/shared/interrupts
@@ -54,11 +60,11 @@ include_rtems_scoredir = $(includedir)/rtems/score
 #sun4u_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
 
-noinst_PROGRAMS += sun4u/sparc-syscall.rel
-sun4u_sparc_syscall_rel_SOURCES = sun4u/syscall/sparc-syscall.S \
-																	sun4u/syscall/sparc-syscall.h
-sun4u_sparc_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
-sun4u_sparc_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+#noinst_PROGRAMS += sun4u/sparc-syscall.rel
+#sun4u_sparc_syscall_rel_SOURCES = sun4u/syscall/sparc-syscall.S \
+#																	sun4u/syscall/sparc-syscall.h
+#sun4u_sparc_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
+#sun4u_sparc_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 endif
 
 if sun4v
@@ -79,11 +85,6 @@ include_rtems_scoredir = $(includedir)/rtems/score
 #sun4v_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
 
-noinst_PROGRAMS += sun4v/sparc-syscall.rel
-sun4v_sparc_syscall_rel_SOURCES = sun4v/syscall/sparc-syscall.S \
-																	sun4v/syscall/sparc-syscall.h
-sun4v_sparc_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
-sun4v_sparc_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 endif
 
 if m5sim
