@@ -8,8 +8,11 @@ include $(top_srcdir)/../../../automake/compile.am
 
 noinst_PROGRAMS =
 
-# NOTE: shared only applies to targets meant to run with supervisor privilege,
-# i.e. sun4u or sun4v.
+# NOTE: shared applies to targets meant to run with supervisor privilege,
+# i.e. sun4u or sun4v. Any targets (e.g. simulators) that cannot emulate 
+# supervisor privilege should use their own score and sparc64-syscall.
+# The other shared code is probably usable, but should be defined separately.
+# See the example at the end of Makefile.am.
 if shared
 include_libcpudir = $(includedir)/libcpu
 
@@ -42,50 +45,28 @@ endif
 #cache_rel_CPPFLAGS += -DHAS_INSTRUCTION_CACHE
 #endif
 
-if sun4u
-# NOTE: Unlike other CPUs, we install into a subdirectory to avoid
-#       file name conflicts (See sh CPU for similar approach)
-include_sparc64dir = $(includedir)/sparc64
-include_rtems_scoredir = $(includedir)/rtems/score
-
-#include_sparc64_HEADERS =  include/traps.h
-#include_rtems_score_HEADERS = sun4u/include/sparc64.h \
-#                              sun4u/include/cpu.h \
-#                               sun4u/include/types.h
-
-## sun4u/score
-#noinst_PROGRAMS += sun4u/score.rel
-#sun4u_score_rel_SOURCES = 
-#sun4u_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
-#sun4u_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
 
 
-#noinst_PROGRAMS += sun4u/sparc-syscall.rel
-#sun4u_sparc_syscall_rel_SOURCES = sun4u/syscall/sparc-syscall.S \
-#                                  sun4u/syscall/sparc-syscall.h
-#sun4u_sparc_syscall_rel_CPPFLAGS = $(AM_CPPFLAGS)
-#sun4u_sparc_syscall_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
-endif
-
-if sun4v
-# NOTE: Unlike other CPUs, we install into a subdirectory to avoid
-#       file name conflicts (See sh CPU for similar approach)
-include_sparc64dir = $(includedir)/sparc64
-include_rtems_scoredir = $(includedir)/rtems/score
-
+### This is an example of how to define a separate score implementation.
+## NOTE: Unlike other CPUs, we install into a subdirectory to avoid
+##       file name conflicts (See sh CPU for simexampleilar approach)
+#include_sparc64dir = $(includedir)/sparc64
+#include_rtems_scoredir = $(includedir)/rtems/score
+#
+#if simexample
 #include_sparc64_HEADERS =  include/traps.h
 #include_rtems_score_HEADERS = $(include_rtems_scoredir)/sparc64.h \
 #                              $(include_rtems_scoredir)/cpu.h \
 #                              $(include_rtems_scoredir)/types.h
 
-## sun4v/score
-#noinst_PROGRAMS += sun4v/score.rel
-#sun4v_score_rel_SOURCES = 
-#sun4v_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
-#sun4v_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
-
-
-endif
+## simexample/score
+#noinst_PROGRAMS += simexample/score.rel
+#simexample_score_rel_SOURCES = 
+#simexample_score_rel_CPPFLAGS = $(AM_CPPFLAGS)
+#simexample_score_rel_LDFLAGS = $(RTEMS_RELLDFLAGS)
+#
+#endif
+### End of example.
 
 include $(srcdir)/preinstall.am
 include $(top_srcdir)/../../../automake/local.am
