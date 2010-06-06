@@ -30,7 +30,8 @@
  * $Id$
  *
  * Modifications are made to compile for RTEMS. Removes asm.h and printf.h.
- * Adds asm.h (rtems bsp). Adds ofw_read() and ofw_stdin variable.
+ * Adds asm.h (rtems bsp). Adds ofw_read() and ofw_stdin variable. Uses 
+ * printk instead of puts for error messages.
  *
  */
 
@@ -77,24 +78,24 @@ void ofw_init(void)
 
 	ofw_root = ofw_find_device("/");
 	if (ofw_root == -1) {
-		puts("\r\nError: Unable to find / device, halted.\r\n");
+		printk("\r\nError: Unable to find / device, halted.\r\n");
 		halt();
 	}
 	
 	if (ofw_get_property(ofw_chosen, "mmu", &ofw_mmu,
 	    sizeof(ofw_mmu)) <= 0) {
-		puts("\r\nError: Unable to get mmu property, halted.\r\n");
+		printk("\r\nError: Unable to get mmu property, halted.\r\n");
 		halt();
 	}
 	if (ofw_get_property(ofw_chosen, "memory", &ofw_memory_prop,
 	    sizeof(ofw_memory_prop)) <= 0) {
-		puts("\r\nError: Unable to get memory property, halted.\r\n");
+		printk("\r\nError: Unable to get memory property, halted.\r\n");
 		halt();
 	}
 	
 	ofw_memory = ofw_find_device("/memory");
 	if (ofw_memory == -1) {
-		puts("\r\nError: Unable to find /memory device, halted.\r\n");
+		printk("\r\nError: Unable to find /memory device, halted.\r\n");
 		halt();
 	}
 }
@@ -228,7 +229,7 @@ void *ofw_translate(const void *virt)
 
 	if (ofw_call("call-method", 4, 5, result, "translate", ofw_mmu,
 	    virt, 0) != 0) {
-		puts("Error: MMU method translate() failed, halting.\n");
+		printk("Error: MMU method translate() failed, halting.\n");
 		halt();
 	}
 
@@ -249,7 +250,7 @@ void *ofw_claim_virt(const void *virt, const unsigned int len)
 
 	if (ofw_call("call-method", 5, 2, &retaddr, "claim", ofw_mmu, 0, len,
 	    virt) != 0) {
-		puts("Error: MMU method claim() failed, halting.\n");
+		printk("Error: MMU method claim() failed, halting.\n");
 		halt();
 	}
 
@@ -277,7 +278,7 @@ static void *ofw_claim_phys_internal(const void *phys, const unsigned int len, c
 		if (ofw_call("call-method", 6, 3, retaddr, "claim",
 		    ofw_memory_prop, alignment, len, ((uintptr_t) phys) >> shift,
 		    ((uintptr_t) phys) & ((uint32_t) -1)) != 0) {
-			puts("Error: memory method claim() failed, halting.\n");
+			printk("Error: memory method claim() failed, halting.\n");
 			halt();
 		}
 		
@@ -287,7 +288,7 @@ static void *ofw_claim_phys_internal(const void *phys, const unsigned int len, c
 		
 		if (ofw_call("call-method", 5, 2, retaddr, "claim",
 		    ofw_memory_prop, alignment, len, (uintptr_t) phys) != 0) {
-			puts("Error: memory method claim() failed, halting.\n");
+			printk("Error: memory method claim() failed, halting.\n");
 			halt();
 		}
 		
