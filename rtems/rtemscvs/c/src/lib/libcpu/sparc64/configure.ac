@@ -27,6 +27,9 @@ AM_CONDITIONAL(shared, test x"$RTEMS_CPU_MODEL" = x"sun4v" || \
 AM_CONDITIONAL([sun4u],[test x"$RTEMS_CPU_MODEL" = x"sun4u"])
 AM_CONDITIONAL([sun4v],[test x"$RTEMS_CPU_MODEL" = x"sun4v"])
 
+## How to add a conditional simexample for the Makefile.am, based on a
+## RTEMS_CPU_MODEL defined as simulator.
+#AM_CONDITIONAL([simexample],[test x"$RTEMS_CPU_MODEL" = x"simulator"])
 
 RTEMS_AMPOLISH3
 
