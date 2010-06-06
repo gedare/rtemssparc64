@@ -28,19 +28,8 @@ PUBLIC(_BSP_init)
 
   save %sp, -STACK_WINDOW_SAVE_AREA_SIZE, %sp  
 
-#if 0
-  /* Set up ISR handler for interrupt enable/disable */
-	setx SYM(syscall), %l0, %o1
-	setx param_space, %l0, %o2
-	call SYM(_CPU_ISR_install_raw_handler)
-	mov 0x100, %o0 
-#endif
+
 
   ret
   restore
 
-#if 0
-  .align CPU_ALIGNMENT
-  param_space:
-  	.space 8
-#endif
