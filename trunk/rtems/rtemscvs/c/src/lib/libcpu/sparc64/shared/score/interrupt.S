@@ -18,8 +18,8 @@
  *  ERC32 modifications of respective RTEMS file: COPYRIGHT (c) 1995. 
  *  European Space Agency.
  *
- *  Ported to UltraSPARC III (US3) implementation of the SPARC-v9.
- *  US3 modifications of respective RTEMS file: 
+ *  Ported to Niagara and UltraSPARC III (US3) implementations of the SPARC-v9.
+ *  Niagara and US3 modifications of respective RTEMS file: 
  *    COPYRIGHT (c) 2010. Gedare Bloom.
  *
  *  $Id$
@@ -477,7 +477,7 @@ PUBLIC(_ISR_Dispatch)
    * this before reloading the task's output regs. Basically fake a
    * window spill/fill.
    *
-   * TODO: Is this necessary/correct? Why not just re-write 
+   * Is this necessary on sun4v? Why not just re-write 
    * tstate.cwp to be equal to the current cwp?
    */
   mov  %sp, %g1

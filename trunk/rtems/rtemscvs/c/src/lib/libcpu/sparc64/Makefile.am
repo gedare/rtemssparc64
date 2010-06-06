@@ -54,7 +54,7 @@ endif
 #include_rtems_scoredir = $(includedir)/rtems/score
 #
 #if simexample
-#include_sparc64_HEADERS =  include/traps.h
+#include_sparc64_HEADERS =  
 #include_rtems_score_HEADERS = $(include_rtems_scoredir)/sparc64.h \
 #                              $(include_rtems_scoredir)/cpu.h \
 #                              $(include_rtems_scoredir)/types.h
