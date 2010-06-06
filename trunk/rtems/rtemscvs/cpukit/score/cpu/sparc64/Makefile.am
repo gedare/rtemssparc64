@@ -8,7 +8,7 @@ include_rtemsdir = $(includedir)/rtems
 include_rtems_HEADERS = rtems/asm.h
 
 #include_rtems_sparc64dir = $(includedir)/rtems/sparc64
-#include_rtems_sparc64_HEADERS = rtems/sparc64/traps.h
+#include_rtems_sparc64_HEADERS = 
 
 include_rtems_scoredir = $(includedir)/rtems/score
 include_rtems_score_HEADERS = rtems/score/sparc64.h rtems/score/cpu.h \
