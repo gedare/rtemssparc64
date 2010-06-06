@@ -35,57 +35,17 @@ PUBLIC(_BSP_init)
   SYM(_BSP_init):
   save %sp, -STACK_WINDOW_SAVE_AREA_SIZE, %sp
 
-
-
-
-
-#if 1
   /* copy firmware trap table so that RTEMS can install ISR handlers */
   setx  SYM(trap_table), %l0, %o0
   rdpr  %tba, %o1
   set TABLE_SIZE, %o2
   call memcpy
   nop
-#endif
-
-  /* map firmware trap table so that RTEMS can install ISR handlers */
-
-
-
 
   mov %g0, %o0
   call _take_mmu
   nop
 
-#if 0 /* this is in shared/start.S */
-  /* Set up ISR handler for interrupt enable/disable */
-	setx SYM(syscall), %l0, %o1
-	setx param_space, %l0, %o2
-	call SYM(_CPU_ISR_install_raw_handler)
-	mov 0x100, %o0 
-#endif
-
-
-  /* turn off the I-MMU and D-MMU */
-  /* this approach fails -- apparently the RTEMS application is not entirely 
-     resident in physical memory... */
-#if 0
-  ! LSU Control Register ASI is 0x45, with VA 0x00
-  ldxa [%g0] (0x45), %g1 
-  andn %g1, LSU_CR_IM_MASK, %g1
-  andn %g1, LSU_CR_DM_MASK, %g1
-  stxa %g1, [%g0] (0x45)
-
-  /* set the trap base address */
-  setx  SYM(trap_table), %l0, %l1
-  wrpr  %g0, %l1, %tba
-#endif
-
   ret
   restore
 
-#if 0
-  .align CPU_ALIGNMENT
-  param_space:
-  	.space 8
-#endif
