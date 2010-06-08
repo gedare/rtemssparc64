@@ -16,16 +16,16 @@ include_HEADERS += include/tm27.h
 include_HEADERS += ../shared/include/asm.h
 
 include_bootdir = $(includedir)/boot
-include_boot_HEADERS = ../helenos/boot/include/align.h \
-  ../helenos/boot/include/balloc.h \
-  ../helenos/boot/include/gentypes.h \
-  ../helenos/boot/include/main.h \
-  ../helenos/boot/include/ofwarch.h \
-  ../helenos/boot/include/ofw.h \
-  ../helenos/boot/include/ofw_tree.h \
-  ../helenos/boot/include/register.h \
-  ../helenos/boot/include/stack.h \
-  ../helenos/boot/include/types.h
+include_boot_HEADERS = ../shared/helenos/boot/include/align.h \
+  ../shared/helenos/boot/include/balloc.h \
+  ../shared/helenos/boot/include/gentypes.h \
+  ../shared/helenos/boot/include/main.h \
+  ../shared/helenos/boot/include/ofwarch.h \
+  ../shared/helenos/boot/include/ofw.h \
+  ../shared/helenos/boot/include/ofw_tree.h \
+  ../shared/helenos/boot/include/register.h \
+  ../shared/helenos/boot/include/stack.h \
+  ../shared/helenos/boot/include/types.h
 
 nodist_include_HEADERS = include/bspopts.h    
 nodist_include_bsp_HEADERS = ../../shared/include/bootcard.h 
@@ -54,13 +54,13 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../shared/startup/bspstart.c \
     ../shared/startup/setvec.c \
     ../../shared/gnatinstallhandler.c  \
-    ../helenos/boot/genarch/balloc.c \
-    ../helenos/boot/genarch/ofw.c \
-    ../helenos/boot/genarch/ofw_tree.c \
-    ../helenos/boot/generic/string.c \
-    ../helenos/boot/sparc64/loader/ofwarch.c \
-    ../helenos/boot/sparc64/loader/main.c \
-    ../helenos/boot/sparc64/loader/ofwasm.S \
+    ../shared/helenos/boot/genarch/balloc.c \
+    ../shared/helenos/boot/genarch/ofw.c \
+    ../shared/helenos/boot/genarch/ofw_tree.c \
+    ../shared/helenos/boot/generic/string.c \
+    ../shared/helenos/boot/sparc64/loader/ofwarch.c \
+    ../shared/helenos/boot/sparc64/loader/main.c \
+    ../shared/helenos/boot/sparc64/loader/ofwasm.S \
     ../shared/asm/asm.S \
     start/bspinit.S
 ##   ../shared/ofw/printf.c \
