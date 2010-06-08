@@ -54,43 +54,43 @@ $(PROJECT_INCLUDE)/boot/$(dirstamp):
 	@: > $(PROJECT_INCLUDE)/boot/$(dirstamp)
 PREINSTALL_DIRS += $(PROJECT_INCLUDE)/boot/$(dirstamp)
 
-$(PROJECT_INCLUDE)/boot/align.h: ../helenos/boot/include/align.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+$(PROJECT_INCLUDE)/boot/align.h: ../shared/helenos/boot/include/align.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/align.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/align.h
 
-$(PROJECT_INCLUDE)/boot/balloc.h: ../helenos/boot/include/balloc.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+$(PROJECT_INCLUDE)/boot/balloc.h: ../shared/helenos/boot/include/balloc.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/balloc.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/balloc.h
 
-$(PROJECT_INCLUDE)/boot/gentypes.h: ../helenos/boot/include/gentypes.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+$(PROJECT_INCLUDE)/boot/gentypes.h: ../shared/helenos/boot/include/gentypes.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/gentypes.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/gentypes.h
 
-$(PROJECT_INCLUDE)/boot/main.h: ../helenos/boot/include/main.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+$(PROJECT_INCLUDE)/boot/main.h: ../shared/helenos/boot/include/main.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/main.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/main.h
 
-$(PROJECT_INCLUDE)/boot/ofwarch.h: ../helenos/boot/include/ofwarch.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+$(PROJECT_INCLUDE)/boot/ofwarch.h: ../shared/helenos/boot/include/ofwarch.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/ofwarch.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/ofwarch.h
 
-$(PROJECT_INCLUDE)/boot/ofw.h: ../helenos/boot/include/ofw.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+$(PROJECT_INCLUDE)/boot/ofw.h: ../shared/helenos/boot/include/ofw.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/ofw.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/ofw.h
 
-$(PROJECT_INCLUDE)/boot/ofw_tree.h: ../helenos/boot/include/ofw_tree.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+$(PROJECT_INCLUDE)/boot/ofw_tree.h: ../shared/helenos/boot/include/ofw_tree.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/ofw_tree.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/ofw_tree.h
 
-$(PROJECT_INCLUDE)/boot/register.h: ../helenos/boot/include/register.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+$(PROJECT_INCLUDE)/boot/register.h: ../shared/helenos/boot/include/register.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/register.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/register.h
 
-$(PROJECT_INCLUDE)/boot/stack.h: ../helenos/boot/include/stack.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+$(PROJECT_INCLUDE)/boot/stack.h: ../shared/helenos/boot/include/stack.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/stack.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/stack.h
 
-$(PROJECT_INCLUDE)/boot/types.h: ../helenos/boot/include/types.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
+$(PROJECT_INCLUDE)/boot/types.h: ../shared/helenos/boot/include/types.h $(PROJECT_INCLUDE)/boot/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/boot/types.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/boot/types.h
 
