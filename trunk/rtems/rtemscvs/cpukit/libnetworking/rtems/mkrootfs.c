@@ -1,6 +1,6 @@
 /*
   ------------------------------------------------------------------------
-  $Id: mkrootfs.c,v 1.11 2010/02/01 00:03:01 ccj Exp $
+  $Id: mkrootfs.c,v 1.13 2010/06/12 17:55:13 joel Exp $
   ------------------------------------------------------------------------
 
   Copyright Cybertec Pty Ltd, 2000
@@ -41,6 +41,7 @@
 #include <arpa/inet.h>
 
 #include <rtems/mkrootfs.h>
+#include <rtems/libio.h>
 
 /*
  * A table a list of names and their modes.
@@ -66,96 +67,6 @@ static const rtems_rootfs_dir_table default_directories[] =
 
 #define MKFILE_MODE (S_IRUSR | S_IWUSR | S_IWGRP | S_IRGRP | S_IROTH)
 #define MKDIR_MODE  (S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH)
-
-/*
- * Build a path. Taken from the BSD `mkdir' command.
- */
-
-int
-rtems_rootfs_mkdir (const char *path_orig, mode_t omode)
-{
-  struct stat sb;
-  mode_t      numask, oumask;
-  int         first, last, retval;
-  char        path[128];
-  char        *p = path;
-
-  if (strlen (path_orig) >= sizeof path)
-  {
-    printf ("root fs: mkdir path too long `%s'\n", path);
-    return -1;
-  }
-
-  strcpy (path, path_orig);
-  oumask = 0;
-  retval = 0;
-  if (p[0] == '/')    /* Skip leading '/'. */
-    ++p;
-  for (first = 1, last = 0; !last ; ++p)
-  {
-    if (p[0] == '\0')
-      last = 1;
-    else if (p[0] != '/')
-      continue;
-    *p = '\0';
-    if (p[1] == '\0')
-      last = 1;
-    if (first)
-    {
-      /*
-       * POSIX 1003.2:
-       * For each dir operand that does not name an existing
-       * directory, effects equivalent to those cased by the
-       * following command shall occcur:
-       *
-       * mkdir -p -m $(umask -S),u+wx $(dirname dir) &&
-       *    mkdir [-m mode] dir
-       *
-       * We change the user's umask and then restore it,
-       * instead of doing chmod's.
-       */
-      oumask = umask(0);
-      numask = oumask & ~(S_IWUSR | S_IXUSR);
-      umask(numask);
-      first = 0;
-    }
-    if (last)
-      umask(oumask);
-    if (stat(path, &sb))
-    {
-      if (errno != ENOENT)
-      {
-        printf ("root fs: error stat'ing path `%s', %s\n",
-                path, strerror (errno));
-        retval = 1;
-        break;
-      }
-      if (mkdir(path, last ? omode : S_IRWXU | S_IRWXG | S_IRWXO) < 0)
-      {
-        printf ("root fs: error building path `%s', %s\n",
-                path, strerror (errno));
-        retval = 1;
-        break;
-      }
-    }
-    else if ((sb.st_mode & S_IFMT) != S_IFDIR)
-    {
-      if (last)
-        errno = EEXIST;
-      else
-        errno = ENOTDIR;
-      printf ("root fs: path `%s' contains a file, %s\n",
-              path, strerror (errno));
-      retval = 1;
-      break;
-    }
-    if (!last)
-      *p = '/';
-  }
-  if (!first && !last)
-    umask(oumask);
-  return retval;
-}
 
 /*
  * Create enough files to support the networking stack.
@@ -205,7 +116,7 @@ rtems_rootfs_file_append (const char *file,
           strncpy (path, file, i);
           path[i] = '\0';
 
-          if (rtems_rootfs_mkdir (path, MKDIR_MODE))
+          if (rtems_mkdir (path, MKDIR_MODE))
             return -1;
           break;
         }
@@ -310,7 +221,7 @@ rtems_create_root_fs (void)
   for (i = 0;
        i < (sizeof (default_directories) / sizeof (rtems_rootfs_dir_table));
        i++)
-    if (rtems_rootfs_mkdir (default_directories[i].name,
+    if (rtems_mkdir (default_directories[i].name,
                             default_directories[i].mode))
       return -1;
 

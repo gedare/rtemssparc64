@@ -7,7 +7,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: flashdisk.c,v 1.18 2010/05/22 16:43:08 ralf Exp $
+ * $Id: flashdisk.c,v 1.19 2010/06/14 13:01:58 joel Exp $
  */
 /**
  * @file
@@ -2575,6 +2575,7 @@ rtems_fdisk_initialize (rtems_device_major_number major,
       free (fd->devices);
       rtems_fdisk_error ("recovery of disk failed: %s (%d)",
                          strerror (ret), ret);
+      return ret;
     }
     
     ret = rtems_fdisk_compact (fd);
@@ -2587,6 +2588,7 @@ rtems_fdisk_initialize (rtems_device_major_number major,
       free (fd->devices);
       rtems_fdisk_error ("compacting of disk failed: %s (%d)",
                          strerror (ret), ret);
+      return ret;
     }
   }
 

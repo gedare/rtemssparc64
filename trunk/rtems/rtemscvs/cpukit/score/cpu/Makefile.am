@@ -1,5 +1,5 @@
 ##
-##  $Id: Makefile.am,v 1.22 2009/10/22 17:10:59 ralf Exp $
+##  $Id: Makefile.am,v 1.23 2010/06/11 12:24:57 ralf Exp $
 ##
 
 SUBDIRS = @RTEMS_CPU@
@@ -8,7 +8,6 @@ DIST_SUBDIRS =
 DIST_SUBDIRS += arm
 DIST_SUBDIRS += avr
 DIST_SUBDIRS += bfin
-DIST_SUBDIRS += c4x
 DIST_SUBDIRS += h8300
 DIST_SUBDIRS += i386
 DIST_SUBDIRS += lm32

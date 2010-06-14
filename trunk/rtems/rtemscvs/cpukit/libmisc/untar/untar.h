@@ -5,14 +5,14 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: untar.h,v 1.8 2007/09/05 23:46:36 joel Exp $
+ *  $Id: untar.h,v 1.9 2010/06/13 03:36:34 ralf Exp $
  */
 
 #ifndef _RTEMS_UNTAR_H
 #define _RTEMS_UNTAR_H
 
 #include <stddef.h>
-#include <rtems/tar.h>
+#include <tar.h>
 
 #ifdef __cplusplus
 extern "C" {

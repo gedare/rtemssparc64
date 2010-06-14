@@ -12,7 +12,7 @@
  *  by Dominique LE CAMPION (Dominique.LECAMPION@enst-bretagne.fr)
  *  May 1996
  *
- *  $Id: bspclean.c,v 1.9 2010/04/28 19:43:31 joel Exp $
+ *  $Id: bspclean.c,v 1.10 2010/06/14 16:02:01 joel Exp $
  */
 
 #include <rtems.h>
@@ -40,5 +40,5 @@ void bsp_cleanup( void )
    pcc->timer2_int_control = 0; /* Disable Timer 2 */
 
    M68Kvec[ 45 ] = bsp_return_to_monitor_trap;   /* install handler */
-   asm volatile( "trap #13" );  /* insures SUPV mode */
+   asm volatile( "trap #13" );  /* ensures SUPV mode */
 }

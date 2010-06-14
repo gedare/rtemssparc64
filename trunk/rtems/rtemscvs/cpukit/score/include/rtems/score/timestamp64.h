@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timestamp64.h,v 1.2 2009/11/28 05:58:54 ralf Exp $
+ *  $Id: timestamp64.h,v 1.3 2010/06/12 05:56:26 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_TIMESTAMP64_H
@@ -221,7 +221,7 @@ static inline uint32_t _Timestamp64_Add_to_at_tick(
  *  @return This method returns the number of ticks computed.
  */
 uint32_t _Timestamp64_To_ticks(
-  const Timestamp64_Control *time
+  const Timestamp64_Control *_time
 );
 
 /** @brief Convert Ticks to Timestamp
@@ -229,8 +229,8 @@ uint32_t _Timestamp64_To_ticks(
  *  This routine converts the @a _ticks value to the corresponding
  *  timestamp format @a _time.
  *
- *  @param[in] time points to the timestamp format time result
- *  @param[in] ticks points to the number of ticks to be filled in
+ *  @param[in] _time points to the timestamp format time result
+ *  @param[in] _ticks points to the number of ticks to be filled in
  */
 void _Timestamp64_From_ticks(
   uint32_t             _ticks,

@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: priority.h,v 1.25 2009/11/28 05:58:54 ralf Exp $
+ *  $Id: priority.h,v 1.26 2010/06/14 06:08:40 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_PRIORITY_H
@@ -36,14 +36,14 @@
  */
 /**@{*/
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /*
  * Processor specific information.
  */
 #include <rtems/score/cpu.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  *  The following type defines the control block used to manage

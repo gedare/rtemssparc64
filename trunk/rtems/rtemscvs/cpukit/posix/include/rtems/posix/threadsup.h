@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: threadsup.h,v 1.29 2009/10/10 16:03:38 joel Exp $
+ *  $Id: threadsup.h,v 1.30 2010/06/14 06:03:57 ralf Exp $
  */
 
 #ifndef _RTEMS_POSIX_THREADSUP_H
@@ -19,6 +19,10 @@
 #include <sys/signal.h>
 #include <rtems/score/coresem.h>
 #include <rtems/score/tqdata.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*!
  *  This defines the POSIX API support structure associated with
@@ -82,6 +86,10 @@ void _POSIX_Thread_Exit(
   Thread_Control *the_thread,
   void           *value_ptr
 );
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 /* end of include file */

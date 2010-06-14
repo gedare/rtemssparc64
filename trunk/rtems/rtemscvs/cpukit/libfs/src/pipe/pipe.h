@@ -7,7 +7,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: pipe.h,v 1.3 2009/11/29 13:18:56 ralf Exp $
+ * $Id: pipe.h,v 1.5 2010/06/14 05:49:44 ralf Exp $
  */
 
 #ifndef _RTEMS_PIPE_H
@@ -22,15 +22,15 @@ extern "C" {
 /* Control block to manage each pipe */
 typedef struct pipe_control {
   char *Buffer;
-  uint Size;
-  uint Start;
-  uint Length;
-  uint Readers;
-  uint Writers;
-  uint waitingReaders;
-  uint waitingWriters;
-  uint readerCounter;     /* incremental counters */
-  uint writerCounter;     /* for differentiation of successive opens */
+  unsigned int Size;
+  unsigned int Start;
+  unsigned int Length;
+  unsigned int Readers;
+  unsigned int Writers;
+  unsigned int waitingReaders;
+  unsigned int waitingWriters;
+  unsigned int readerCounter;     /* incremental counters */
+  unsigned int writerCounter;     /* for differentiation of successive opens */
   rtems_id Semaphore;
   rtems_id readBarrier;   /* wait queues */
   rtems_id writeBarrier;
@@ -108,11 +108,6 @@ extern int pipe_lseek(
   int             whence,
   rtems_libio_t  *iop
 );
-
-/*
- * Initialization of FIFO/pipe module.
- */
-extern void rtems_pipe_initialize (void);
 
 #ifdef __cplusplus
 }

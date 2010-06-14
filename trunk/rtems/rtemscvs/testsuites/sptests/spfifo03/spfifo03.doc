@@ -1,0 +1,21 @@
+#
+#  $Id: spfifo03.doc,v 0.1 2010/05/31 20:05:56 bharath Exp $
+#
+#  COPYRIGHT (c) 2010
+#  Bharath Suri<bharath.s.jois@gmail.com>.
+#
+#  The license and distribution terms for this file may be
+#  found in the file LICENSE in this distribution or at
+#  http://www.rtems.com/license/LICENSE.
+#
+
+This file describes the directives and concepts tested by this test set.
+
+Configuration:
+
+Pipes enabled. Maximum number of barriers is set to 1.
+
+Expected:
+
+Pipe requires 2 barriers to be created. With max number of barriers
+set to 1, fifo_open fails with EINTR

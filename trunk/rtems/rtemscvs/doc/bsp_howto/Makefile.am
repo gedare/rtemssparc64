@@ -3,11 +3,10 @@
 #  On-Line Applications Research Corporation (OAR).
 #  All rights reserved.
 #
-#  $Id: Makefile.am,v 1.18 2009/07/28 18:02:25 joel Exp $
+#  $Id: Makefile.am,v 1.19 2010/06/11 07:40:00 ralf Exp $
 #
 
 PROJECT = bsp_howto
-EDITION = 1
 
 include $(top_srcdir)/project.am
 include $(top_srcdir)/main.am

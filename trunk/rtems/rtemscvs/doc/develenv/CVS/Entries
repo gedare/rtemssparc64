@@ -1,8 +1,10 @@
-/.cvsignore/1.8/Tue Jun  1 21:18:31 2010//
-/Makefile.am/1.16/Tue Jun  1 21:18:31 2010//
-/develenv.texi/1.23/Tue Jun  1 21:18:31 2010//
-/direct.t/1.7/Tue Jun  1 21:18:31 2010//
-/intro.texi/1.6/Tue Jun  1 21:18:31 2010//
-/sample.t/1.5/Tue Jun  1 21:18:31 2010//
-/utils.t/1.4/Tue Jun  1 21:18:31 2010//
+/.cvsignore/1.9/Mon Jun 14 18:09:48 2010//
+/Makefile.am/1.17/Mon Jun 14 18:09:48 2010//
+/develenv.texi/1.23/Sat Oct 24 23:15:24 2009//
+/direct.t/1.7/Sat Oct 24 23:15:24 2009//
+/intro.texi/1.6/Sat Oct 24 23:15:24 2009//
+/sample.t/1.5/Sat Oct 24 23:15:24 2009//
+/stamp-vti/1.10/Fri Jun 11 07:45:45 2010//
+/utils.t/1.4/Sat Oct 24 23:15:24 2009//
+/version.texi/1.10/Fri Jun 11 07:45:46 2010//
 D

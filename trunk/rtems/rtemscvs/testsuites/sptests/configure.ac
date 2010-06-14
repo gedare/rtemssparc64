@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.88 2010/03/10 18:14:43 joel Exp $
+## $Id: configure.ac,v 1.90 2010/06/08 13:24:10 sh Exp $
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-tests-sptests],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -111,6 +111,10 @@ spfatal10/Makefile
 spfatal11/Makefile
 spfatal12/Makefile
 spfatal13/Makefile
+spfifo01/Makefile
+spfifo02/Makefile
+spfifo03/Makefile
+spfifo04/Makefile
 spintrcritical01/Makefile
 spintrcritical02/Makefile
 spintrcritical03/Makefile
@@ -128,6 +132,7 @@ spintrcritical14/Makefile
 spintrcritical15/Makefile
 spintrcritical16/Makefile
 spintrcritical17/Makefile
+spmkdir/Makefile
 spnotepad01/Makefile
 spobjgetnext/Makefile
 spprintk/Makefile

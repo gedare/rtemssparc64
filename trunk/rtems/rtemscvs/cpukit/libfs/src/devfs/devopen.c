@@ -3,7 +3,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: devopen.c,v 1.3 2008/09/18 13:21:49 joel Exp $
+ *  $Id: devopen.c,v 1.4 2010/06/08 08:30:04 sh Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -37,8 +37,6 @@ int devFS_open(
     np->minor,
     (void *) &args
   );
-  if ( status )
-    return rtems_deviceio_errno(status);
 
-  return 0;
+  return rtems_deviceio_errno(status);
 }

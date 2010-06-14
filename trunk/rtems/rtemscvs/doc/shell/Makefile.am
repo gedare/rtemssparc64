@@ -3,11 +3,10 @@
 #  On-Line Applications Research Corporation (OAR).
 #  All rights reserved.
 #
-#  $Id: Makefile.am,v 1.3 2008/07/23 22:07:16 joel Exp $
+#  $Id: Makefile.am,v 1.4 2010/06/11 07:40:00 ralf Exp $
 #
 
 PROJECT = shell
-EDITION = 1
 
 include $(top_srcdir)/project.am
 include $(top_srcdir)/main.am

@@ -6,7 +6,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * $Id: imfs_load_tar.c,v 1.15 2010/01/19 19:31:00 joel Exp $
+ * $Id: imfs_load_tar.c,v 1.16 2010/06/13 03:36:34 ralf Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -24,6 +24,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <tar.h>
 
 #include <string.h>
 
@@ -31,7 +32,6 @@
 #include <rtems/libio_.h>
 #include <rtems/imfs.h>
 #include <rtems/untar.h>
-#include <rtems/tar.h>
 
 /*
  * TAR file format:

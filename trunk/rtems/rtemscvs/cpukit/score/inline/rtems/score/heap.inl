@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: heap.inl,v 1.35 2009/09/09 14:58:37 joel Exp $
+ *  $Id: heap.inl,v 1.36 2010/06/07 09:35:01 sh Exp $
  */
 
 #ifndef _RTEMS_SCORE_HEAP_H
@@ -197,6 +197,24 @@ RTEMS_INLINE_ROUTINE bool _Heap_Is_block_in_heap(
 {
   return (uintptr_t) block >= (uintptr_t) heap->first_block
     && (uintptr_t) block <= (uintptr_t) heap->last_block;
+}
+
+/**
+ * @brief Sets the size of the last block for heap @a heap.
+ *
+ * The next block of the last block will be the first block.  Since the first
+ * block indicates that the previous block is used, this ensures that the last
+ * block appears as used for the _Heap_Is_used() and _Heap_Is_free() functions.
+ *
+ * This feature will be used to terminate the scattered heap area list.  See
+ * also _Heap_Extend().
+ */
+RTEMS_INLINE_ROUTINE void _Heap_Set_last_block_size( Heap_Control *heap )
+{
+  _Heap_Block_set_size(
+    heap->last_block,
+    (uintptr_t) heap->first_block - (uintptr_t) heap->last_block
+  );
 }
 
 /**

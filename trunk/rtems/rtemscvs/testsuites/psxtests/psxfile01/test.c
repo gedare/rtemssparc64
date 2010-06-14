@@ -17,7 +17,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: test.c,v 1.23 2010/06/02 00:50:37 ccj Exp $
+ *  $Id: test.c,v 1.24 2010/06/08 13:12:56 sh Exp $
  */
 
 #include <stdio.h>
@@ -127,7 +127,8 @@ int no_evalformake_IMFS_initialize(
      mt_entry,
      &IMFS_ops_no_evalformake,
      &IMFS_memfile_handlers,
-     &IMFS_directory_handlers
+     &IMFS_directory_handlers,
+     &IMFS_fifo_handlers
    );
 }
 
@@ -140,7 +141,8 @@ int no_rename_IMFS_initialize(
      mt_entry,
      &IMFS_ops_no_rename,
      &IMFS_memfile_handlers,
-     &IMFS_directory_handlers
+     &IMFS_directory_handlers,
+     &IMFS_fifo_handlers
    );
 }
 

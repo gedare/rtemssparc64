@@ -1,5 +1,5 @@
 #
-# $Id: Makefile.am,v 1.60 2010/03/25 20:26:51 thomas Exp $
+# $Id: Makefile.am,v 1.61 2010/06/14 16:02:31 joel Exp $
 #
 
 ACLOCAL_AMFLAGS = -I ../../../aclocal
@@ -61,7 +61,8 @@ EXTRA_DIST += new-exceptions/bspsupport/ppc_exc_test.c
 
 # shared/include
 if shared
-include_libcpu_HEADERS += shared/include/io.h shared/include/mmu.h shared/include/page.h \
+include_libcpu_HEADERS += shared/include/io.h shared/include/mmu.h \
+    shared/include/page.h \
     shared/include/byteorder.h shared/include/pgtable.h
 
 noinst_PROGRAMS += shared/cpuIdent.rel

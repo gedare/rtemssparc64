@@ -60,6 +60,14 @@ $(PROJECT_INCLUDE)/memory.h: libnetworking/memory.h $(PROJECT_INCLUDE)/$(dirstam
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/memory.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/memory.h
 
+$(PROJECT_INCLUDE)/md4.h: libmd/md4.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/md4.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/md4.h
+
+$(PROJECT_INCLUDE)/md5.h: libmd/md5.h $(PROJECT_INCLUDE)/$(dirstamp)
+	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/md5.h
+PREINSTALL_FILES += $(PROJECT_INCLUDE)/md5.h
+
 $(PROJECT_INCLUDE)/sys/ioccom.h: libcsupport/include/sys/ioccom.h $(PROJECT_INCLUDE)/sys/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/sys/ioccom.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/sys/ioccom.h
@@ -134,10 +142,6 @@ PREINSTALL_FILES += $(PROJECT_INCLUDE)/rtems/pci.h
 $(PROJECT_INCLUDE)/rtems/concat.h: include/rtems/concat.h $(PROJECT_INCLUDE)/rtems/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/concat.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/rtems/concat.h
-
-$(PROJECT_INCLUDE)/rtems/tar.h: include/rtems/tar.h $(PROJECT_INCLUDE)/rtems/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/tar.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/rtems/tar.h
 
 $(PROJECT_INCLUDE)/rtems/status-checks.h: include/rtems/status-checks.h $(PROJECT_INCLUDE)/rtems/$(dirstamp)
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/rtems/status-checks.h

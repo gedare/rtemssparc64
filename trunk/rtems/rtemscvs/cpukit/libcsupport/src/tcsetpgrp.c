@@ -1,14 +1,14 @@
 /*
  *  tcsetprgrp() - POSIX 1003.1b 7.2.4 - Set Foreground Process Group ID
  *
- *  COPYRIGHT (c) 1989-1999.
+ *  COPYRIGHT (c) 1989-2010.
  *  On-Line Applications Research Corporation (OAR).
  *
  *  The license and distribution terms for this file may be
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: tcsetpgrp.c,v 1.6 2009/09/15 09:42:46 ralf Exp $
+ *  $Id: tcsetpgrp.c,v 1.7 2010/06/07 18:37:16 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -26,7 +26,7 @@
 
 #include <rtems/libio.h>
 
-int tcsetprgrp(
+int tcsetpgrp(
   int fd __attribute__((unused)),
   pid_t pid __attribute__((unused)) )
 {

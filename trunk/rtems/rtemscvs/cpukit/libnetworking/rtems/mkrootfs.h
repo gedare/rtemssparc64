@@ -18,24 +18,17 @@
 
   This software with is provided ``as is'' and with NO WARRANTY.
 
-  $Id: mkrootfs.h,v 1.8 2008/08/01 05:07:41 ralf Exp $
+  $Id: mkrootfs.h,v 1.10 2010/06/14 06:08:40 ralf Exp $
 */
 
 #ifndef _RTEMS_MKROOTFS_H
 #define _RTEMS_MKROOTFS_H
 
+#include <rtems.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <rtems.h>
-
-/*
- *  Builds the complete path, like "mkdir -p".
- */
-
-int
-rtems_rootfs_mkdir (const char *path, mode_t omode);
 
 /*
  *  Appends the lines to the a file. Create the file

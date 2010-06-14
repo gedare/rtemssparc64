@@ -1,4 +1,5 @@
 /**
+ * @file devctl.h
  */
 
 /*
@@ -9,8 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- * @file devctl.h
- *  $Id: devctl.h,v 1.8 2007/12/17 16:19:13 joel Exp $
+ *  $Id: devctl.h,v 1.9 2010/06/12 05:52:39 ralf Exp $
  */
 
 #ifndef _DEVCTL_H

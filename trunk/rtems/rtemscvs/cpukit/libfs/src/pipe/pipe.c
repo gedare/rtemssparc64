@@ -7,7 +7,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: pipe.c,v 1.4 2010/03/28 03:14:08 ralf Exp $
+ * $Id: pipe.c,v 1.6 2010/06/08 12:59:51 sh Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -20,7 +20,8 @@
 #include <rtems/seterr.h>
 
 /* Incremental number added to names of anonymous pipe files */
-uint16_t rtems_pipe_no = 0;
+/* FIXME: This approach is questionable */
+static uint16_t rtems_pipe_no = 0;
 
 /*
  * Called by pipe() to create an anonymous pipe.
@@ -29,19 +30,11 @@ int pipe_create(
   int filsdes[2]
 )
 {
-  rtems_filesystem_location_info_t loc;
   rtems_libio_t *iop;
   int err = 0;
-  /* Create /tmp if not exists */
-  if (rtems_filesystem_evaluate_path("/tmp", 3, RTEMS_LIBIO_PERMS_RWX, &loc, TRUE)
-      != 0) {
-    if (errno != ENOENT)
-      return -1;
-    if (mkdir("/tmp", S_IRWXU|S_IRWXG|S_IRWXO|S_ISVTX) != 0)
-      return -1;
-  }
-  else
-    rtems_filesystem_freenode(&loc);
+
+  if (rtems_mkdir("/tmp", S_IRWXU | S_IRWXG | S_IRWXO) != 0)
+    return -1;
 
   /* /tmp/.fifoXXXX */
   char fifopath[15];

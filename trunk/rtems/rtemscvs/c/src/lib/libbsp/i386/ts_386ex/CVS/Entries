@@ -7,10 +7,10 @@ D/start////
 D/startup////
 D/timer////
 D/tools////
-/.cvsignore/1.4/Tue Jun  1 21:20:27 2010//
-/ChangeLog/1.136/Fri Jun  4 22:29:51 2010//
-/Makefile.am/1.43/Fri Jun  4 22:29:51 2010//
-/README/1.2/Tue Jun  1 21:20:27 2010//
-/bsp_specs/1.8/Tue Jun  1 21:20:27 2010//
-/configure.ac/1.27/Tue Jun  1 21:20:27 2010//
-/preinstall.am/1.8/Fri Jun  4 22:29:51 2010//
+/.cvsignore/1.4/Sat Oct 24 23:19:47 2009//
+/ChangeLog/1.136/Sat Jun  5 15:45:19 2010//
+/Makefile.am/1.43/Sat Jun  5 15:45:19 2010//
+/README/1.2/Sat Oct 24 23:19:47 2009//
+/bsp_specs/1.8/Sat Oct 24 23:19:47 2009//
+/configure.ac/1.27/Thu Dec 31 16:54:23 2009//
+/preinstall.am/1.8/Sat Jun  5 15:45:19 2010//

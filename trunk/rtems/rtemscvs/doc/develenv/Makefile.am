@@ -3,11 +3,10 @@
 #  On-Line Applications Research Corporation (OAR).
 #  All rights reserved.
 #
-#  $Id: Makefile.am,v 1.16 2004/02/17 09:39:54 ralf Exp $
+#  $Id: Makefile.am,v 1.17 2010/06/11 07:40:00 ralf Exp $
 #
 
 PROJECT = develenv
-EDITION = 1
 
 include $(top_srcdir)/project.am
 include $(top_srcdir)/main.am

@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: main_mount.c,v 1.8 2010/05/31 13:56:37 ccj Exp $
+ *  $Id: main_mount.c,v 1.9 2010/06/07 15:35:24 sh Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -26,6 +26,13 @@
 #include <rtems/shellconfig.h>
 #include <rtems/libio.h>
 #include "internal.h"
+
+static bool print_filesystem(const rtems_filesystem_table_t *entry, void *arg)
+{
+  printf("%s ", entry->type);
+
+  return true;
+}
 
 int rtems_shell_main_mount(
   int   argc,
@@ -55,13 +62,8 @@ int rtems_shell_main_mount(
       } else if (argv[arg][1] == 'r') {
         options = RTEMS_FILESYSTEM_READ_ONLY;
       } else if (argv[arg][1] == 'L') {
-        const rtems_filesystem_table_t* fs;
-        fs = rtems_filesystem_table_first();
         printf ("File systems: ");
-        while (fs) {
-          printf ("%s ", fs->type);
-          fs = rtems_filesystem_table_next(fs);
-        }
+        rtems_filesystem_iterate(print_filesystem, NULL);
         printf ("\n");
         return 0;
       } else if (argv[arg][1] == 'o') {

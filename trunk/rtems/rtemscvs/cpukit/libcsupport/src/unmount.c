@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: unmount.c,v 1.25 2010/05/31 13:56:36 ccj Exp $
+ *  $Id: unmount.c,v 1.26 2010/06/10 10:12:28 sh Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -32,16 +32,6 @@
 
 #include <rtems/libio_.h>
 #include <rtems/seterr.h>
-
-/*
- *  Data structures and routines private to mount/unmount pair.
- */
-
-extern rtems_chain_control rtems_filesystem_mount_table_control;
-
-int search_mt_for_mount_point(
-  rtems_filesystem_location_info_t *location_of_mount_point
-);
 
 bool rtems_filesystem_nodes_equal(
   const rtems_filesystem_location_info_t   *loc1,
@@ -213,7 +203,6 @@ int unmount(
    */
 
   rtems_filesystem_freenode( fs_mount_loc );
-  free( (void*) mt_entry->target );
   free( mt_entry );
 
   return 0;

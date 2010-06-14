@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: imfs_eval.c,v 1.26 2010/05/31 13:56:36 ccj Exp $
+ *  $Id: imfs_eval.c,v 1.27 2010/06/08 10:25:44 sh Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -58,7 +58,7 @@ int IMFS_Set_handlers(
       loc->handlers = fs_info->memfile_handlers;
       break;
     case IMFS_FIFO:
-      loc->handlers = &IMFS_fifo_handlers;
+      loc->handlers = fs_info->fifo_handlers;
       break;
   }
 

@@ -31,7 +31,7 @@
  */
  
 /*
- *	$Id: in_pcb.c,v 1.9 2010/03/28 05:47:48 ralf Exp $
+ *	$Id: in_pcb.c,v 1.10 2010/06/14 05:59:49 ralf Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -206,7 +206,7 @@ in_pcbbind(struct inpcb *inp, struct mbuf *nam)
 		inp->inp_laddr = sin->sin_addr;
 	}
 	if (lport == 0) {
-		ushort first, last;
+		unsigned short first, last;
 		int count;
 
 		inp->inp_flags |= INP_ANONPORT;

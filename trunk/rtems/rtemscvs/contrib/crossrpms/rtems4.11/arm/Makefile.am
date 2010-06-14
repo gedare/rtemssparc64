@@ -1,4 +1,4 @@
-# $Id: Makefile.am,v 1.12 2010/05/22 03:31:38 ralf Exp $
+# $Id: Makefile.am,v 1.15 2010/06/09 06:59:05 ralf Exp $
 
 rtems_api = 4.11
 TARGET = arm-rtems4.11
@@ -7,13 +7,13 @@ include $(top_srcdir)/mkspec.am
 
 BINUTILS_VERS = 2.20.1
 BINUTILS_PKGVERS = $(BINUTILS_VERS)
-BINUTILS_RPMREL = 1
+BINUTILS_RPMREL = 2
 include ../binutils.am
 BINUTILS_OPTS +=
 
 GCC_VERS = 4.5.0
 GCC_PKGVERS = $(GCC_VERS)
-GCC_RPMREL = 12
+GCC_RPMREL = 13
 
 NEWLIB_VERS = 1.18.0
 NEWLIB_PKGVERS = $(NEWLIB_VERS)
@@ -23,7 +23,7 @@ GCC_OPTS += --languages=cxx
 
 GDB_VERS = 7.1
 GDB_PKGVERS = $(GDB_VERS)
-GDB_RPMREL = 1
+GDB_RPMREL = 3
 include ../gdb.am
 GDB_OPTS +=
 

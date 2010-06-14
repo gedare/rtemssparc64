@@ -6,11 +6,11 @@ D/make////
 D/network////
 D/startup////
 D/timer////
-/.cvsignore/1.4/Tue Jun  1 21:20:19 2010//
-/ChangeLog/1.128/Fri Jun  4 22:29:53 2010//
-/Makefile.am/1.36/Tue Jun  1 21:20:19 2010//
-/README/1.6/Tue Jun  1 21:20:19 2010//
-/bsp_specs/1.12/Tue Jun  1 21:20:19 2010//
-/configure.ac/1.24/Tue Jun  1 21:20:19 2010//
-/preinstall.am/1.6/Tue Jun  1 21:20:19 2010//
-/times/1.2/Tue Jun  1 21:20:19 2010//
+/.cvsignore/1.4/Sat Oct 24 23:19:28 2009//
+/ChangeLog/1.128/Sat Jun  5 15:45:17 2010//
+/Makefile.am/1.36/Sat Oct 24 23:19:28 2009//
+/README/1.6/Sat Oct 24 23:19:28 2009//
+/bsp_specs/1.12/Sat Oct 24 23:19:28 2009//
+/configure.ac/1.24/Thu Dec 31 16:54:19 2009//
+/preinstall.am/1.6/Mon May 10 21:56:10 2010//
+/times/1.2/Sat Oct 24 23:19:28 2009//

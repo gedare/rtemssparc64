@@ -8,7 +8,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: imfs.h,v 1.41 2010/05/31 13:56:36 ccj Exp $
+ *  $Id: imfs.h,v 1.43 2010/06/08 10:25:44 sh Exp $
  */
 
 #ifndef _RTEMS_IMFS_H
@@ -223,6 +223,7 @@ typedef struct {
   ino_t                                   ino_count;
   const rtems_filesystem_file_handlers_r *memfile_handlers;
   const rtems_filesystem_file_handlers_r *directory_handlers;
+  const rtems_filesystem_file_handlers_r *fifo_handlers;
 } IMFS_fs_info_t;
 
 /*
@@ -247,7 +248,6 @@ extern const rtems_filesystem_file_handlers_r       IMFS_link_handlers;
 extern const rtems_filesystem_file_handlers_r       IMFS_memfile_handlers;
 extern const rtems_filesystem_file_handlers_r       IMFS_fifo_handlers;
 extern const rtems_filesystem_operations_table      IMFS_ops;
-extern const rtems_filesystem_operations_table      miniIMFS_ops;
 extern const rtems_filesystem_limits_and_options_t  IMFS_LIMITS_AND_OPTIONS;
 
 /*
@@ -259,6 +259,11 @@ extern int IMFS_initialize(
    const void                           *data
 );
 
+extern int fifoIMFS_initialize(
+  rtems_filesystem_mount_table_entry_t  *mt_entry,
+  const void                            *data
+);
+
 extern int miniIMFS_initialize(
    rtems_filesystem_mount_table_entry_t *mt_entry,
    const void                           *data
@@ -268,7 +273,8 @@ extern int IMFS_initialize_support(
    rtems_filesystem_mount_table_entry_t       *mt_entry,
    const rtems_filesystem_operations_table    *op_table,
    const rtems_filesystem_file_handlers_r     *memfile_handlers,
-   const rtems_filesystem_file_handlers_r     *directory_handlers
+   const rtems_filesystem_file_handlers_r     *directory_handlers,
+   const rtems_filesystem_file_handlers_r     *fifo_handlers
 );
 
 extern int IMFS_fsunmount(
@@ -470,11 +476,6 @@ extern rtems_off64_t memfile_lseek(
   int                   whence      /* IN  */
 );
 
-extern int memfile_rmnod(
-  rtems_filesystem_location_info_t  *parent_pathloc, /* IN */
-  rtems_filesystem_location_info_t  *pathloc         /* IN */
-);
-
 extern int device_open(
   rtems_libio_t *iop,            /* IN  */
   const char    *pathname,       /* IN  */
@@ -552,6 +553,14 @@ extern int IMFS_fdatasync(
 extern int IMFS_fcntl(
   int            cmd,
   rtems_libio_t *iop
+);
+
+extern void IMFS_create_orphan(
+  IMFS_jnode_t *jnode
+);
+
+extern void IMFS_check_node_remove(
+  IMFS_jnode_t *jnode
 );
 
 extern int IMFS_rmnod(

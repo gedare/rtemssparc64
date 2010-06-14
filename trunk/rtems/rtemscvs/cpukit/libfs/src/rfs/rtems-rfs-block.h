@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtems-rfs-block.h,v 1.1 2010/02/18 00:24:24 ccj Exp $
+ *  $Id: rtems-rfs-block.h,v 1.2 2010/06/12 05:18:02 ralf Exp $
  */
 /**
  * @file
@@ -201,7 +201,7 @@ typedef struct rtems_rfs_block_map_t
  * so a seek of offset 0 will return the first block.
  *
  * @param fs The file system data.
- * @prarm inode The inode the map belongs to.
+ * @param inode The inode the map belongs to.
  * @param map The map that is opened.
  * @return int The error number (errno). No error if 0.
  */

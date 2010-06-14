@@ -10,7 +10,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: init.c,v 1.11 2009/11/30 03:33:22 ralf Exp $
+ *  $Id: init.c,v 1.12 2010/06/07 09:33:32 sh Exp $
  */
 
 #define __RTEMS_VIOLATE_KERNEL_VISIBILITY__
@@ -125,11 +125,6 @@ static void test_check_control(void)
   puts( "\tclear the previous used flag of the first block" );
   test_heap_init_default();
   TestHeap.first_block->size_and_flag &= ~HEAP_PREV_BLOCK_USED;
-  test_call_heap_walk( false );
-
-  puts( "\tset the previous block size of the first block to an invalid value" );
-  test_heap_init_custom();
-  TestHeap.first_block->prev_size = 0;
   test_call_heap_walk( false );
 
   puts( "\tset invalid next block for last block" );
