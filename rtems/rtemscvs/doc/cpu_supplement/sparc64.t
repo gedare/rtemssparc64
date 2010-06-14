@@ -10,83 +10,37 @@
 @end ifinfo
 @chapter SPARC-64 Specific Information
 
-The Real Time Executive for Multiprocessor Systems
-(RTEMS) is designed to be portable across multiple processor
-architectures.  However, the nature of real-time systems makes
-it essential that the application designer understand certain
-processor dependent implementation details.  These processor
-dependencies include calling convention, board support package
-issues, interrupt processing, exact RTEMS memory requirements,
-performance data, header files, and the assembly language
-interface to the executive.
+This document discusses the SPARC Version 9 (aka SPARC-64, SPARC64 or SPARC V9)
+architecture dependencies in this port of RTEMS.
 
-This document discusses the SPARC architecture
-dependencies in this port of RTEMS.  Currently, only
-implementations of SPARC Version 7 are supported by RTEMS.
 
-It is highly recommended that the SPARC RTEMS
-application developer obtain and become familiar with the
-documentation for the processor being used as well as the
-specification for the revision of the SPARC architecture which
-corresponds to that processor.
+The SPARC V9 architecture leaves a lot of undefined implemenation dependencies 
+which are defined by the processor models. Consult the specific CPU model 
+section in this document for additional documents covering the implementation
+dependent architectural features.
 
-@subheading SPARC Architecture Documents
+@subheading sun4u Specific Information
+sun4u is the subset of the SPARC V9 implementations comprising the UltraSPARC I
+through UltraSPARC IV processors.
 
-For information on the SPARC architecture, refer to
-the following documents available from SPARC International, Inc.
-(http://www.sparc.com):
-
+The following documents were used in developing the SPARC-64 sun4u port:
 @itemize @bullet
-@item SPARC Standard Version 7.
+@item UltraSPARC  User’s Manual
+(http://www.sun.com/microelectronics/manuals/ultrasparc/802-7220-02.pdf)
+@item UltraSPARC IIIi Processor (datasheets.chipdb.org/Sun/UltraSparc-IIIi.pdf)
+@end itemize  
 
-@item SPARC Standard Version 8.
+@subheading sun4v Specific Information
+sun4v is the subset of the SPARC V9 implementations comprising the 
+UltraSPARC T1 or T2 processors.
 
-@item SPARC Standard Version 9.
-@end itemize
-
-@subheading ERC32 Specific Information
-
-The European Space Agency's ERC32 is a three chip
-computing core implementing a SPARC V7 processor and associated
-support circuitry for embedded space applications. The integer
-and floating-point units (90C601E & 90C602E) are based on the
-Cypress 7C601 and 7C602, with additional error-detection and
-recovery functions. The memory controller (MEC) implements
-system support functions such as address decoding, memory
-interface, DMA interface, UARTs, timers, interrupt control,
-write-protection, memory reconfiguration and error-detection.
-The core is designed to work at 25MHz, but using space qualified
-memories limits the system frequency to around 15 MHz, resulting
-in a performance of 10 MIPS and 2 MFLOPS.
-
-Information on the ERC32 and a number of development
-support tools, such as the SPARC Instruction Simulator (SIS),
-are freely available on the Internet.  The following documents
-and SIS are available via anonymous ftp or pointing your web
-browser at ftp://ftp.estec.esa.nl/pub/ws/wsd/erc32.
-
+The following documents were used in developing the SPARC-64 sun4v port:
 @itemize @bullet
-@item ERC32 System Design Document
-
-@item MEC Device Specification
+@item UltraSPARC Architecture 2005 Specification  
+    (http://opensparc-t1.sunsource.net/specs/UA2005-current-draft-P-EXT.pdf)
+@item UltraSPARC T1 supplement to UltraSPARC Architecture 2005 Specification
+(http://opensparc-t1.sunsource.net/specs/UST1-UASuppl-current-draft-P-EXT.pdf)
 @end itemize
-
-Additionally, the SPARC RISC User's Guide from Matra
-MHS documents the functionality of the integer and floating
-point units including the instruction set information.  To
-obtain this document as well as ERC32 components and VHDL models
-contact:
-
-@example
-Matra MHS SA
-3 Avenue du Centre, BP 309,
-78054 St-Quentin-en-Yvelines,
-Cedex, France
-VOICE: +31-1-30607087
-FAX: +31-1-30640693
-@end example
-
-Amar Guennon (amar.guennon@@matramhs.fr) is familiar with the ERC32.
 
 @c
 @c  COPYRIGHT (c) 1988-2002.
@@ -98,56 +52,20 @@ Amar Guennon (amar.guennon@@matramhs.fr) is familiar with the ERC32.
 
 @section CPU Model Dependent Features
 
-
-Microprocessors are generally classified into
-families with a variety of CPU models or implementations within
-that family.  Within a processor family, there is a high level
-of binary compatibility.  This family may be based on either an
-architectural specification or on maintaining compatibility with
-a popular processor.  Recent microprocessor families such as the
-SPARC or PowerPC are based on an architectural specification
-which is independent or any particular CPU model or
-implementation.  Older families such as the M68xxx and the iX86
-evolved as the manufacturer strived to produce higher
-performance processor models which maintained binary
-compatibility with older models.
-
-RTEMS takes advantage of the similarity of the
-various models within a CPU family.  Although the models do vary
-in significant ways, the high level of compatibility makes it
-possible to share the bulk of the CPU dependent executive code
-across the entire family.
-
 @subsection CPU Model Feature Flags
-
-Each processor family supported by RTEMS has a
-list of features which vary between CPU models
-within a family.  For example, the most common model dependent
-feature regardless of CPU family is the presence or absence of a
-floating point unit or coprocessor.  When defining the list of
-features present on a particular CPU model, one simply notes
-that floating point hardware is or is not present and defines a
-single constant appropriately.  Conditional compilation is
-utilized to include the appropriate source code for this CPU
-model's feature set.  It is important to note that this means
-that RTEMS is thus compiled using the appropriate feature set
-and compilation flags optimal for this CPU model used.  The
-alternative would be to generate a binary which would execute on
-all family members using only the features which were always
-present.
-
-This section presents the set of features which vary
-across SPARC implementations and are of importance to RTEMS.
-The set of CPU model feature macros are defined in the file
-cpukit/score/cpu/sparc/sparc.h based upon the particular CPU
-model defined on the compilation command line.
+This section presents the set of features which vary across 
+SPARC-64 implementations and
+are of importance to RTEMS. The set of CPU model feature macros 
+are defined in the file
+cpukit/score/cpu/sparc64/sparc64.h based upon the particular 
+CPU model defined on the compilation command line.
 
 @subsubsection CPU Model Name
 
-The macro CPU_MODEL_NAME is a string which designates
-the name of this CPU model.  For example, for the European Space
-Agency's ERC32 SPARC model, this macro is set to the string
-"erc32".
+The macro CPU MODEL NAME is a string which designates 
+the name of this CPU model.
+For example, for the UltraSPARC T1 SPARC V9 model, 
+this macro is set to the string "sun4v".
 
 @subsubsection Floating Point Unit
 
@@ -155,66 +73,27 @@ The macro SPARC_HAS_FPU is set to 1 to indicate that
 this CPU model has a hardware floating point unit and 0
 otherwise.
 
-@subsubsection Bitscan Instruction
-
-The macro SPARC_HAS_BITSCAN is set to 1 to indicate
-that this CPU model has the bitscan instruction.  For example,
-this instruction is supported by the Fujitsu SPARClite family.
-
 @subsubsection Number of Register Windows
 
 The macro SPARC_NUMBER_OF_REGISTER_WINDOWS is set to
 indicate the number of register window sets implemented by this
-CPU model.  The SPARC architecture allows a for a maximum of
+CPU model.  The SPARC architecture allows for a maximum of
 thirty-two register window sets although most implementations
 only include eight.
 
-@subsubsection Low Power Mode
-
-The macro SPARC_HAS_LOW_POWER_MODE is set to one to
-indicate that this CPU model has a low power mode.  If low power
-is enabled, then there must be CPU model specific implementation
-of the IDLE task in cpukit/score/cpu/sparc/cpu.c.  The low
-power mode IDLE task should be of the form:
-
-@example
-while ( TRUE ) @{
-  enter low power mode
-@}
-@end example
-
-The code required to enter low power mode is CPU model specific.
-
 @subsection CPU Model Implementation Notes 
 
-The ERC32 is a custom SPARC V7 implementation based on the Cypress 601/602
-chipset.  This CPU has a number of on-board peripherals and was developed by
-the European Space Agency to target space applications.  RTEMS currently
-provides support for the following peripherals:
+This section describes the implemenation dependencies of the 
+CPU Models sun4u and sun4v of the SPARC V9 architecture.
 
-@itemize @bullet
-@item UART Channels A and B
-@item General Purpose Timer
-@item Real Time Clock
-@item Watchdog Timer (so it can be disabled)
-@item Control Register (so powerdown mode can be enabled)
-@item Memory Control Register
-@item Interrupt Control
-@end itemize
+@subsubsection sun4u Notes
 
-The General Purpose Timer and Real Time Clock Timer provided with the ERC32
-share the Timer Control Register.  Because the Timer Control Register is write
-only, we must mirror it in software and insure that writes to one timer do not
-alter the current settings and status of the other timer.  Routines are
-provided in erc32.h which promote the view that the two timers are completely
-independent.  By exclusively using these routines to access the Timer Control
-Register, the application can view the system as having a General Purpose
-Timer Control Register and a Real Time Clock Timer Control Register
-rather than the single shared value.
+XXX
 
-The RTEMS Idle thread take advantage of the low power mode provided by the
-ERC32.  Low power mode is entered during idle loops and is enabled at
-initialization time.
+@subsection sun4v Notes
+
+XXX
+
 @c
 @c  COPYRIGHT (c) 1988-2002.
 @c  On-Line Applications Research Corporation (OAR).
@@ -224,7 +103,6 @@ initialization time.
 @c
 
 @section Calling Conventions
-
 
 Each high-level language compiler generates
 subroutine entry and exit code based upon a set of rules known
@@ -245,6 +123,10 @@ assembly or high-level.  Even when the high-level language and
 target processor are the same, different compilers may use
 different calling conventions.  As a result, calling conventions
 are both processor and compiler dependent.
+
+The following document also provides some conventions on the 
+global register usage in SPARC V9: 
+http://developers.sun.com/solaris/articles/sparcv9abi.html
 
 @subsection Programming Model
 
@@ -411,49 +293,64 @@ describes the role of each of these registers:
 
 @subsubsection Floating Point Registers
 
-The SPARC V7 architecture includes thirty-two,
+The SPARC V9 architecture includes sixty-four,
 thirty-two bit registers.  These registers may be viewed as
 follows:
 
 @itemize @bullet
-@item 32 single precision floating point or integer registers
+@item 32 32-bit single precision floating point or integer registers
 (f0, f1,  ... f31)
 
-@item 16 double precision floating point registers (f0, f2,
-f4, ... f30)
+@item 32 64-bit double precision floating point registers (f0, f2,
+f4, ... f62)
 
-@item 8 extended precision floating point registers (f0, f4,
-f8, ... f28)
+@item 16 128-bit extended precision floating point registers (f0, f4,
+f8, ... f60)
 @end itemize
 
-The floating point status register (fpsr) specifies
+The floating point state register (fsr) specifies
 the behavior of the floating point unit for rounding, contains
 its condition codes, version specification, and trap information.
 
-A queue of the floating point instructions which have
-started execution but not yet completed is maintained.  This
-queue is needed to support the multiple cycle nature of floating
-point operations and to aid floating point exception trap
-handlers.  Once a floating point exception has been encountered,
-the queue is frozen until it is emptied by the trap handler.
-The floating point queue is loaded by launching instructions.
-It is emptied normally when the floating point completes all
-outstanding instructions and by floating point exception
-handlers with the store double floating point queue (stdfq)
-instruction.
-
 @subsubsection Special Registers
 
-The SPARC architecture includes two special registers
-which are critical to the programming model: the Processor State
-Register (psr) and the Window Invalid Mask (wim).  The psr
-contains the condition codes, processor interrupt level, trap
-enable bit, supervisor mode and previous supervisor mode bits,
-version information, floating point unit and coprocessor enable
-bits, and the current window pointer (cwp).  The cwp field of
-the psr and wim register are used to manage the register windows
-in the SPARC architecture.  The register windows are discussed
-in more detail below.
+The SPARC architecture includes a number of special registers:
+@table @b
+
+@item @code{Ancillary State Registers (ASRs)}
+The ancillary state registers (ASRs) are optional state registers that
+may be privileged or nonprivileged. ASRs 16-31 are implementation-
+dependent. The SPARC V9 ASRs include: y, ccr, asi, tick, pc, fprs.
+The sun4u ASRs include: pcr, pic, dcr, gsr, softint set, softint clr,
+softint, and tick cmpr. The sun4v ASRs include: pcr, pic, gsr, soft-
+int set, softint clr, softint, tick cmpr, stick, and stick cmpr.
+
+@item @code{Processor State Register (pstate)}
+The privileged pstate register contains control fields for the proces-
+sor’s current state. Its flag fields include the interrupt enable, privi-
+leged mode, and enable FPU.
+
+@item @code{Processor Interrupt Level (pil)}
+The PIL specifies the interrupt level above which interrupts will be
+accepted.
+
+@item @code{Trap Registers}
+The trap handling mechanism of the SPARC V9 includes a number of
+registers, including: trap program counter (tpc), trap next pc (tnpc),
+trap state (tstate), trap type (tt), trap base address (tba), and trap
+level (tl).
+
+@item @code{Alternate Globals}
+The AG bit of the pstate register provides access to an alternate set
+of global registers. On sun4v, the AG bit is replaced by the global
+level (gl) register, providing access to at least two and at most eight
+alternate sets of globals.
+
+@item @code{Register Window registers}
+A number of registers assist in register window management.
+These include the current window pointer (cwp), savable windows
+(cansave), restorable windows (canrestore), clean windows (clean-
+win), other windows (otherwin), and window state (wstate).
 
 @subsection Register Windows
 
@@ -463,18 +360,17 @@ windows is to imagine them as being an infinite supply of
 "fresh" register sets available for each subroutine to use.  In
 reality, they are much more complicated.
 
-The save instruction is used to obtain a new register
-window.  This instruction decrements the current window pointer,
-thus providing a new set of registers for use.  This register
-set includes eight fresh local registers for use exclusively by
-this subroutine.  When done with a register set, the restore
-instruction increments the current window pointer and the
-previous register set is once again available.
+The save instruction is used to obtain a new register window. 
+This instruction increments the current window pointer, thus 
+providing a new set of registers for use. This register set
+includes eight fresh local registers for use exclusively by 
+this subroutine. When done with a register set, the restore 
+instruction decrements the current window pointer and the 
+previous register set is once again available. 
 
-The two primary issues complicating the use of
-register windows are that (1) the set of register windows is
-finite, and (2) some registers are shared between adjacent
-registers windows.
+The two primary issues complicating the use of register windows 
+are that (1) the set of register windows is finite, and (2) some 
+registers are shared between adjacent registers windows.
 
 Because the set of register windows is finite, it is
 possible to execute enough save instructions without
@@ -498,30 +394,25 @@ window underflow trap handler is responsible for reloading the
 contents of the register window requested by the restore
 instruction from the program stack.
 
-The Window Invalid Mask (wim) and the Current Window
-Pointer (cwp) field in the psr are used in conjunction to manage
-the finite set of register windows and detect the window
-overflow and underflow conditions.  The cwp contains the index
-of the register window currently in use.  The save instruction
-decrements the cwp modulo the number of register windows.
-Similarly, the restore instruction increments the cwp modulo the
-number of register windows.  Each bit in the  wim represents
-represents whether a register window contains valid information.
-The value of 0 indicates the register window is valid and 1
-indicates it is invalid.  When a save instruction causes the cwp
-to point to a register window which is marked as invalid, a
-window overflow condition results.  Conversely, the restore
-instruction may result in a window underflow condition.
+The cansave, canrestore, otherwin, and cwp are used in conjunction 
+to manage the finite set of register windows and detect the window 
+overflow and underflow conditions. The first three of these 
+registers must satisfy the invariant cansave + canrestore + otherwin =
+nwindow - 2, where nwindow is the number of register windows. 
+The cwp contains the index of the register window currently in use. 
+RTEMS does not use the cleanwin and otherwin registers.
 
-Other than the assumption that a register window is
-always available for trap (i.e. interrupt) handlers, the SPARC
-architecture places no limits on the number of register windows
-simultaneously marked as invalid (i.e. number of bits set in the
-wim).  However, RTEMS assumes that only one register window is
-marked invalid at a time (i.e. only one bit set in the wim).
-This makes the maximum possible number of register windows
-available to the user while still meeting the requirement that
-window overflow and underflow conditions can be detected.
+The save instruction increments the cwp modulo the number of 
+register windows, and if cansave is 0 then it also generates a 
+window overflow. Similarly, the restore instruction decrements the
+cwp modulo the number of register windows, and if canrestore is 0 then it
+also generates a window underflow.
+
+Unlike with the SPARC model, the SPARC-64 port does not assume that 
+a register window is available for a trap. The window overflow 
+and underflow conditions are not detected without hardware generating 
+the trap. (These conditions can be detected by reading the register window 
+registers and doing some simple arithmetic.)
 
 The window overflow and window underflow trap
 handlers are a critical part of the run-time environment for a
@@ -531,13 +422,12 @@ than or equal to 32.  The most common choice for SPARC
 implementations appears to be 8 register windows.  This results
 in the cwp ranging in value from 0 to 7 on most implementations.
 
-
 The second complicating factor is the sharing of
 registers between adjacent register windows.  While each
 register window has its own set of local registers, the input
 and output registers are shared between adjacent windows.  The
 output registers for register window N are the same as the input
-registers for register window ((N - 1) modulo RW) where RW is
+registers for register window ((N + 1) modulo RW) where RW is
 the number of register windows.  An alternative way to think of
 this is to remember how parameters are passed to a subroutine on
 the SPARC.  The caller loads values into what are its output
@@ -566,6 +456,8 @@ It is important to note that the SPARC subroutine
 call and return mechanism does not automatically save and
 restore any registers.  This is accomplished via the save and
 restore instructions which manage the set of registers windows.
+This allows for the compiler to generate leaf-optimized functions 
+that utilize the caller’s output registers without using save and restore.
 
 @subsection Calling Mechanism
 
@@ -628,16 +520,17 @@ of that model are described in this chapter.
 
 @subsection Flat Memory Model
 
-The SPARC architecture supports a flat 32-bit address
-space with addresses ranging from 0x00000000 to 0xFFFFFFFF (4
-gigabytes).  Each address is represented by a 32-bit value and
-is byte addressable.  The address may be used to reference a
-single byte, half-word (2-bytes), word (4 bytes), or doubleword
-(8 bytes).  Memory accesses within this address space are
-performed in big endian fashion by the SPARC.  Memory accesses
-which are not properly aligned generate a "memory address not
-aligned" trap (type number 7).  The following table lists the
-alignment requirements for a variety of data accesses:
+The SPARC-64 architecture supports a flat 64-bit address space with 
+addresses ranging from 0x0000000000000000 to 0xFFFFFFFFFFFFFFFF. 
+Each address is represented by a 64-bit value (and an 8-bit address 
+space identifider or ASI) and is byte addressable. The address
+may be used to reference a single byte, half-word (2-bytes), 
+word (4 bytes), doubleword (8 bytes), or quad-word (16 bytes). 
+Memory accesses within this address space are performed
+in big endian fashion by the SPARC. Memory accesses which are not 
+properly aligned generate a "memory address not aligned" trap 
+(type number 0x34). The following table lists the alignment 
+requirements for a variety of data accesses:
 
 @ifset use-ascii
 @example
@@ -649,6 +542,7 @@ alignment requirements for a variety of data accesses:
           |   half-word  |          2            |
           |     word     |          4            |
           |  doubleword  |          8            |
+          |   quadword   |          16           |
           +--------------+-----------------------+
 @end group
 @end example
@@ -669,6 +563,7 @@ alignment requirements for a variety of data accesses:
 &half-word&&2&\cr\noalign{\hrule}
 &word&&4&\cr\noalign{\hrule}
 &doubleword&&8&\cr\noalign{\hrule}
+&quadword&&16&\cr\noalign{\hrule}
 }}\hfil}
 @end tex
 @end ifset
@@ -687,25 +582,14 @@ alignment requirements for a variety of data accesses:
     <TD ALIGN=center>4</TD></TR>
 <TR><TD ALIGN=center>doubleword</TD>
     <TD ALIGN=center>8</TD></TR>
+<TR><TD ALIGN=center>quadword</TD>
+    <TD ALIGN=center>16</TD></TR>
   </TABLE>
 </CENTER>
 @end html
 @end ifset
 
-Doubleword load and store operations must use a pair
-of registers as their source or destination.  This pair of
-registers must be an adjacent pair of registers with the first
-of the pair being even numbered.  For example, a valid
-destination for a doubleword load might be input registers 0 and
-1 (i0 and i1).  The pair i1 and i2 would be invalid.  [NOTE:
-Some assemblers for the SPARC do not generate an error if an odd
-numbered register is specified as the beginning register of the
-pair.  In this case, the assembler assumes that what the
-programmer meant was to use the even-odd pair which ends at the
-specified register.  This may or may not have been a correct
-assumption.]
-
-RTEMS does not support any SPARC Memory Management
+RTEMS currently does not support any SPARC Memory Management
 Units, therefore, virtual memory or segmentation systems
 involving the SPARC are not supported.
 
@@ -719,31 +603,18 @@ involving the SPARC are not supported.
 
 @section Interrupt Processing
 
-
-Different types of processors respond to the
-occurrence of an interrupt in its own unique fashion. In
-addition, each processor type provides a control mechanism to
-allow for the proper handling of an interrupt.  The processor
-dependent response to the interrupt modifies the current
-execution state and results in a change in the execution stream.
-Most processors require that an interrupt handler utilize some
-special control mechanisms to return to the normal processing
-stream.  Although RTEMS hides many of the processor dependent
-details of interrupt processing, it is important to understand
-how the RTEMS interrupt manager is mapped onto the processor's
-unique architecture. Discussed in this chapter are the SPARC's
-interrupt response and control mechanisms as they pertain to
-RTEMS.
-
 RTEMS and associated documentation uses the terms
 interrupt and vector.  In the SPARC architecture, these terms
 correspond to traps and trap type, respectively.  The terms will
-be used interchangeably in this manual.
+be used interchangeably in this manual. Note that in the SPARC manuals, 
+interrupts are a subset of the traps that are delivered to software 
+interrupt handlers.
 
 @subsection Synchronous Versus Asynchronous Traps
 
 The SPARC architecture includes two classes of traps:
-synchronous and asynchronous.  Asynchronous traps occur when an
+synchronous (precise) and asynchronous (deferred).  
+Asynchronous traps occur when an
 external event interrupts the processor.  These traps are not
 associated with any instruction executed by the processor and
 logically occur between instructions.  The instruction currently
@@ -768,37 +639,52 @@ Upon receipt of an interrupt the SPARC automatically
 performs the following actions:
 
 @itemize @bullet
-@item disables traps (sets the ET bit of the psr to 0),
-
-@item the S bit of the psr is copied into the Previous
-Supervisor Mode (PS) bit of the psr,
-
-@item the cwp is decremented by one (modulo the number of
-register windows) to activate a trap window,
-
-@item the PC and nPC are loaded into local register 1 and 2
-(l0 and l1),
-
-@item the trap type (tt) field of the Trap Base Register (TBR)
-is set to the appropriate value, and
-
-@item if the trap is not a reset, then the PC is written with
-the contents of the TBR and the nPC is written with TBR + 4.  If
-the trap is a reset, then the PC is set to zero and the nPC is
-set to 4.
+@item The trap level is set. This provides access to a fresh set of 
+privileged trap-state registers used to save the current state, 
+in effect, pushing a frame on the trap stack.
+TL <- TL + 1
+@item Existing state is preserved
+@itemize @bullet
+  @item TSTATE[TL].CCR <- CCR
+  @item TSTATE[TL].ASI <- ASI
+  @item TSTATE[TL].PSTATE <- PSTATE
+  @item TSTATE[TL].CWP <- CWP
+  @item TPC[TL] <- PC
+  @item TNPC[TL] <- nPC
+@end itemize
+@item The trap type is preserved. TT[TL] <- the trap type
+@item The PSTATE register is updated to a predefined state
+@itemize @bullet
+  @item PSTATE.MM is unchanged
+  @item PSTATE.RED <- 0
+  @item PSTATE.PEF <- 1 if FPU is present, 0 otherwise
+  @item PSTATE.AM <- 0 (address masking is turned off)
+  @item PSTATE.PRIV <- 1 (the processor enters privileged mode)
+  @item PSTATE.IE <- 0 (interrupts are disabled)
+  @item PSTATE.AG <- 1 (global regs are replaced with alternate globals)
+  @item PSTATE.CLE <- PSTATE.TLE (set endian mode for traps)
+@end itemize
+@item For a register-window trap only, CWP is set to point to the register 
+window that must be accessed by the trap-handler software, that is:
+@itemize @bullet
+  @item If TT[TL] = 0x24 (a clean window trap), then CWP <- CWP + 1.
+  @item If (0x80 <= TT[TL] <= 0xBF) (window spill trap), then CWP <- CWP +
+CANSAVE + 2.
+  @item If (0xC0 <= TT[TL] <= 0xFF) (window fill trap), then CWP <- CWP1.
+  @item For non-register-window traps, CWP is not changed.
+@end itemize
+@item Control is transferred into the trap table:
+@itemize @bullet
+  @item PC <- TBA<63:15> (TL>0) TT[TL] 0 0000
+  @item nPC <- TBA<63:15> (TL>0) TT[TL] 0 0100
+  @item where (TL>0) is 0 if TL = 0, and 1 if TL > 0.
 @end itemize
 
-Trap processing on the SPARC has two features which
-are noticeably different than interrupt processing on other
-architectures.  First, the value of psr register in effect
-immediately before the trap occurred is not explicitly saved.
-Instead only reversible alterations are made to it.  Second, the
-Processor Interrupt Level (pil) is not set to correspond to that
-of the interrupt being processed.  When a trap occurs, ALL
-subsequent traps are disabled.  In order to safely invoke a
-subroutine during trap handling, traps must be enabled to allow
-for the possibility of register window overflow and underflow
-traps.
+@end itemize
+
+In order to safely invoke a subroutine during trap handling, traps must be 
+enabled to allow for the possibility of register window overflow and 
+underflow traps.
 
 If the interrupt handler was installed as an RTEMS
 interrupt handler, then upon receipt of the interrupt, the
@@ -808,8 +694,7 @@ performs the following actions:
 @itemize @bullet
 @item saves the state of the interrupted task on it's stack,
 
-@item insures that a register window is available for
-subsequent traps,
+@item switches the processor to trap level 0,
 
 @item if this is the outermost (i.e. non-nested) interrupt,
 then the RTEMS interrupt handler switches from the current stack
@@ -822,7 +707,7 @@ to the interrupt stack,
 
 Asynchronous interrupts are ignored while traps are
 disabled.  Synchronous traps which occur while traps are
-disabled result in the CPU being forced into an error mode.
+disabled may result in the CPU being forced into an error mode.
 
 A nested interrupt is processed similarly with the
 exception that the current stack need not be switched to the
@@ -830,20 +715,7 @@ interrupt stack.
 
 @subsection Traps and Register Windows
 
-One of the register windows must be reserved at all
-times for trap processing.  This is critical to the proper
-operation of the trap mechanism in the SPARC architecture.  It
-is the responsibility of the trap handler to insure that there
-is a register window available for a subsequent trap before
-re-enabling traps.  It is likely that any high level language
-routines invoked by the trap handler (such as a user-provided
-RTEMS interrupt handler) will allocate a new register window.
-The save operation could result in a window overflow trap.  This
-trap cannot be correctly processed unless (1) traps are enabled
-and (2) a register window is reserved for traps.  Thus, the
-RTEMS interrupt handler insures that a register window is
-available for subsequent traps before enabling traps and
-invoking the user's interrupt handler.
+XXX
 
 @subsection Interrupt Levels
 
@@ -862,31 +734,7 @@ unpredictable.
 
 @subsection Disabling of Interrupts by RTEMS
 
-During the execution of directive calls, critical
-sections of code may be executed.  When these sections are
-encountered, RTEMS disables interrupts to level seven (15)
-before the execution of this section and restores them to the
-previous level upon completion of the section.  RTEMS has been
-optimized to insure that interrupts are disabled for less than
-RTEMS_MAXIMUM_DISABLE_PERIOD microseconds on a RTEMS_MAXIMUM_DISABLE_PERIOD_MHZ 
-Mhz ERC32 with zero wait states.
-These numbers will vary based the number of wait states and
-processor speed present on the target board.
-[NOTE:  The maximum period with interrupts disabled is hand calculated.  This
-calculation was last performed for Release 
-RTEMS_RELEASE_FOR_MAXIMUM_DISABLE_PERIOD.]
-
-[NOTE: It is thought that the length of time at which
-the processor interrupt level is elevated to fifteen by RTEMS is
-not anywhere near as long as the length of time ALL traps are
-disabled as part of the "flush all register windows" operation.]
-
-Non-maskable interrupts (NMI) cannot be disabled, and
-ISRs which execute at this level MUST NEVER issue RTEMS system
-calls.  If a directive is invoked, unpredictable results may
-occur due to the inability of RTEMS to protect its critical
-sections.  However, ISRs that make no system calls may safely
-execute as non-maskable interrupts.
+XXX
 
 @subsection Interrupt Stack
 
@@ -948,7 +796,6 @@ loop to simulate a halt processor instruction.
 
 @section Board Support Packages
 
-
 An RTEMS Board Support Package (BSP) must be designed
 to support a particular processor and target board combination.
 This chapter presents a discussion of SPARC specific BSP issues.
@@ -956,70 +803,4 @@ For more information on developing a BSP, refer to the chapter
 titled Board Support Packages in the RTEMS
 Applications User's Guide.
 
-@subsection System Reset
-
-An RTEMS based application is initiated or
-re-initiated when the SPARC processor is reset.  When the SPARC
-is reset, the processor performs the following actions:
-
-@itemize @bullet
-@item the enable trap (ET) of the psr is set to 0 to disable
-traps,
-
-@item the supervisor bit (S) of the psr is set to 1 to enter
-supervisor mode, and
-
-@item the PC is set 0 and the nPC is set to 4.
-@end itemize
-
-The processor then begins to execute the code at
-location 0.  It is important to note that all fields in the psr
-are not explicitly set by the above steps and all other
-registers retain their value from the previous execution mode.
-This is true even of the Trap Base Register (TBR) whose contents
-reflect the last trap which occurred before the reset.
-
-@subsection Processor Initialization
-
-It is the responsibility of the application's
-initialization code to initialize the TBR and install trap
-handlers for at least the register window overflow and register
-window underflow conditions.  Traps should be enabled before
-invoking any subroutines to allow for register window
-management.  However, interrupts should be disabled by setting
-the Processor Interrupt Level (pil) field of the psr to 15.
-RTEMS installs it's own Trap Table as part of initialization
-which is initialized with the contents of the Trap Table in
-place when the @code{rtems_initialize_executive} directive was invoked.
-Upon completion of executive initialization, interrupts are
-enabled.
-
-If this SPARC implementation supports on-chip caching
-and this is to be utilized, then it should be enabled during the
-reset application initialization code.
-
-In addition to the requirements described in the
-Board Support Packages chapter of the C
-Applications Users Manual for the reset code
-which is executed before the call to
-@code{rtems_initialize_executive}, the SPARC version has the following
-specific requirements:
-
-@itemize @bullet
-@item Must leave the S bit of the status register set so that
-the SPARC remains in the supervisor state.
-
-@item Must set stack pointer (sp) such that a minimum stack
-size of MINIMUM_STACK_SIZE bytes is provided for the
-@code{rtems_initialize_executive} directive.
-
-@item Must disable all external interrupts (i.e. set the pil
-to 15).
-
-@item Must enable traps so window overflow and underflow
-conditions can be properly handled.
-
-@item Must initialize the SPARC's initial trap table with at
-least trap handlers for register window overflow and register
-window underflow.
-@end itemize
+XXX
