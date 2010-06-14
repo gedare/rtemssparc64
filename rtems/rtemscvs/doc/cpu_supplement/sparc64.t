@@ -13,7 +13,6 @@
 This document discusses the SPARC Version 9 (aka SPARC-64, SPARC64 or SPARC V9)
 architecture dependencies in this port of RTEMS.
 
-
 The SPARC V9 architecture leaves a lot of undefined implemenation dependencies 
 which are defined by the processor models. Consult the specific CPU model 
 section in this document for additional documents covering the implementation
@@ -41,6 +40,12 @@ The following documents were used in developing the SPARC-64 sun4v port:
 @item UltraSPARC T1 supplement to UltraSPARC Architecture 2005 Specification
 (http://opensparc-t1.sunsource.net/specs/UST1-UASuppl-current-draft-P-EXT.pdf)
 @end itemize
+
+The defining feature that separates the sun4v architecture from its 
+predecessor is the existence of a super-privileged hypervisor that 
+is responsible for providing virtualized execution environments.  The impact 
+of the hypervisor on the real-time guarantees available with sun4v has not
+yet been determined.
 
 @c
 @c  COPYRIGHT (c) 1988-2002.
@@ -803,4 +808,12 @@ For more information on developing a BSP, refer to the chapter
 titled Board Support Packages in the RTEMS
 Applications User's Guide.
 
-XXX
+@subsection HelenOS and Open Firmware
+The provided BSPs make use of some bootstrap and low-level hardware code 
+of the HelenOS operating system. These files can be found in the shared/helenos
+directory of the sparc64 bsp directory.  Consult the sources for more
+detailed information.
+
+The shared BSP code also uses the Open Firmware interface to re-use firmware 
+code, primarily for console support and default trap handlers. 
+
