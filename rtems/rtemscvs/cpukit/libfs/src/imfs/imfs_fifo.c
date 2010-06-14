@@ -7,7 +7,7 @@
  * found in the file LICENSE in this distribution or at
  * http://www.rtems.com/license/LICENSE.
  *
- * $Id: imfs_fifo.c,v 1.3 2009/04/29 08:31:27 ccj Exp $
+ * $Id: imfs_fifo.c,v 1.4 2010/06/08 08:50:56 sh Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -53,11 +53,9 @@ int IMFS_fifo_close(
 
   int err = pipe_release(&JNODE2PIPE(jnode), iop);
 
-  if (! err) {
+  if (err == 0) {
     iop->flags &= ~LIBIO_FLAGS_OPEN;
-    /* Free jnode if file is already unlinked and no one opens it */
-    if (! rtems_libio_is_file_open(jnode) && jnode->st_nlink < 1)
-      free(jnode);
+    IMFS_check_node_remove(jnode);
   }
 
   IMFS_FIFO_RETURN(err);

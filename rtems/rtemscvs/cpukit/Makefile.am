@@ -1,5 +1,5 @@
 ##
-## $Id: Makefile.am,v 1.94 2010/02/18 00:24:24 ccj Exp $
+## $Id: Makefile.am,v 1.99 2010/06/14 11:57:06 sh Exp $
 ##
 
 ACLOCAL_AMFLAGS = -I aclocal
@@ -20,11 +20,9 @@ SUBDIRS += wrapup
 SUBDIRS += zlib
 
 # applications
-SUBDIRS += httpd
 SUBDIRS += ftpd
 SUBDIRS += telnetd
 SUBDIRS += pppd
-SUBDIRS += shttpd
 SUBDIRS += mghttpd
 
 noinst_DATA = preinstall-stamp
@@ -52,7 +50,9 @@ if NEWLIB
 include_sysdir = $(includedir)/sys
 include_sys_HEADERS =
 
-include_HEADERS += libnetworking/memory.h
+include_HEADERS += libnetworking/memory.h \
+    libmd/md4.h \
+    libmd/md5.h
 
 include_sys_HEADERS += libcsupport/include/sys/ioccom.h \
     libcsupport/include/sys/filio.h libcsupport/include/sys/ioctl.h \
@@ -72,7 +72,7 @@ endif
 
 include_rtems_HEADERS += include/rtems/bspIo.h include/rtems/userenv.h \
     include/rtems/fs.h include/rtems/pci.h \
-    include/rtems/concat.h include/rtems/tar.h \
+    include/rtems/concat.h \
     include/rtems/status-checks.h
 
 include_rtems_HEADERS += include/rtems/endian.h
@@ -178,6 +178,9 @@ include_rtems_HEADERS += libmisc/untar/untar.h
 
 ## fsmount
 include_rtems_HEADERS += libmisc/fsmount/fsmount.h
+
+## HACK: doxygen filter.
+EXTRA_DIST = doxy-filter
 
 include $(srcdir)/preinstall.am
 include $(top_srcdir)/automake/subdirs.am

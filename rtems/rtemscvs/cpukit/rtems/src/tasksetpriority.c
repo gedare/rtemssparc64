@@ -9,7 +9,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: tasksetpriority.c,v 1.11 2009/12/15 18:26:41 humph Exp $
+ *  $Id: tasksetpriority.c,v 1.12 2010/06/12 17:55:13 joel Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -58,7 +58,7 @@ rtems_status_code rtems_task_set_priority(
 )
 {
   register Thread_Control *the_thread;
-  Objects_Locations               location;
+  Objects_Locations        location;
 
   if ( new_priority != RTEMS_CURRENT_PRIORITY &&
        !_RTEMS_tasks_Priority_is_valid( new_priority ) )

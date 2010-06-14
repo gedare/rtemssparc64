@@ -1,7 +1,7 @@
-/cpu.h/1.35/Tue Jun  1 21:22:18 2010//
-/i386.h/1.17/Tue Jun  1 21:22:18 2010//
-/idtr.h/1.5/Tue Jun  1 21:22:18 2010//
-/interrupts.h/1.6/Tue Jun  1 21:22:18 2010//
-/registers.h/1.7/Fri Jun  4 22:30:08 2010//
-/types.h/1.14/Tue Jun  1 21:22:18 2010//
+/cpu.h/1.35/Thu Dec 31 16:55:17 2009//
+/i386.h/1.17/Sat Oct 24 23:22:26 2009//
+/idtr.h/1.5/Sat Oct 24 23:22:26 2009//
+/interrupts.h/1.6/Sat Oct 24 23:22:26 2009//
+/registers.h/1.7/Sat Jun  5 15:45:55 2010//
+/types.h/1.14/Sat Oct 24 23:22:26 2009//
 D

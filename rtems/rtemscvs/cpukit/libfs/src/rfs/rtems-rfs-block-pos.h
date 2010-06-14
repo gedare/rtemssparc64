@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtems-rfs-block-pos.h,v 1.1 2010/02/18 00:24:24 ccj Exp $
+ *  $Id: rtems-rfs-block-pos.h,v 1.2 2010/06/12 05:18:02 ralf Exp $
  */
 /**
  * @file
@@ -72,7 +72,7 @@ typedef struct rtems_rfs_block_pos_t
  * Copy a block position.
  *
  * @param _lhs The left hand side.
- * @parma _rhs The right handl side.
+ * @param _rhs The right hand side.
  */
 #define rtems_rfs_block_copy_bpos(_lhs, _rhs) \
   do { (_lhs)->bno = (_rhs)->bno; \
@@ -156,7 +156,7 @@ typedef struct rtems_rfs_block_size_t
  * Copy a block size.
  *
  * @param _lhs The left hand side.
- * @parma _rhs The right handl side.
+ * @param _rhs The right hand side.
  */
 #define rtems_rfs_block_copy_size(_lhs, _rhs) \
   do { (_lhs)->count = (_rhs)->count; \

@@ -1,10 +1,10 @@
-/.cvsignore/1.1/Tue Jun  1 21:19:07 2010//
-/Makefile.am/1.23/Tue Jun  1 21:19:07 2010//
-/asr.c/1.8/Tue Jun  1 21:19:07 2010//
-/init.c/1.11/Tue Jun  1 21:19:07 2010//
-/sp17.doc/1.8/Tue Jun  1 21:19:07 2010//
-/sp17.scn/1.1/Tue Jun  1 21:19:07 2010//
-/system.h/1.16/Tue Jun  1 21:19:07 2010//
-/task1.c/1.9/Tue Jun  1 21:19:07 2010//
-/task2.c/1.8/Tue Jun  1 21:19:07 2010//
+/.cvsignore/1.1/Sat Oct 24 23:16:29 2009//
+/Makefile.am/1.23/Sat Oct 24 23:16:29 2009//
+/asr.c/1.8/Sat Oct 24 23:16:29 2009//
+/init.c/1.11/Sat Oct 24 23:16:29 2009//
+/sp17.doc/1.8/Sat Oct 24 23:16:29 2009//
+/sp17.scn/1.1/Sat Oct 24 23:16:29 2009//
+/system.h/1.16/Sat Oct 24 23:16:29 2009//
+/task1.c/1.9/Sat Oct 24 23:16:29 2009//
+/task2.c/1.8/Sat Oct 24 23:16:29 2009//
 D

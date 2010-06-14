@@ -14,7 +14,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: pheapextend.c,v 1.4 2009/09/06 15:24:07 joel Exp $
+ *  $Id: pheapextend.c,v 1.5 2010/06/07 09:35:01 sh Exp $
  */
 
 #if HAVE_CONFIG_H
@@ -30,12 +30,12 @@ bool _Protected_heap_Extend(
   uintptr_t     size
 )
 {
-  Heap_Extend_status status;
-  uintptr_t           amount_extended;
+  bool      extend_ok;
+  uintptr_t amount_extended;
 
   _RTEMS_Lock_allocator();
-    status = _Heap_Extend(the_heap, starting_address, size, &amount_extended);
+    extend_ok = _Heap_Extend(the_heap, starting_address, size, &amount_extended);
   _RTEMS_Unlock_allocator();
-  return (status == HEAP_EXTEND_SUCCESSFUL);
+  return extend_ok;
 }
 

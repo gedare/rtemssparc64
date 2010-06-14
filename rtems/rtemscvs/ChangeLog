@@ -1,3 +1,8 @@
+2010-06-07	Ralf Corsépius <ralf.corsepius@rtems.org>
+
+	* aclocal/version.m4: Bump RTEMS_API to 4.11.
+	Bump _RTEMS_VERSION to 4.10.99.0.
+
 2010-05-11	Ralf Corsépius <ralf.corsepius@rtems.org>
 
 	* aclocal/bsp-alias.m4: Change quoting to work-round
@@ -1469,7 +1474,7 @@
 
 2001-11-13	Joel Sherrill <joel@OARcorp.com>
 
-	* COPYING: Test of $Id: ChangeLog,v 1.378 2010/05/11 15:05:01 ralf Exp $ -> $RTEMS$.
+	* COPYING: Test of $Id: ChangeLog,v 1.379 2010/06/07 19:33:53 ralf Exp $ -> $RTEMS$.
 
 2001-11-08	Dennis Ehlin (ECS) <Dennis.Ehlin@ecs.ericsson.se>
 

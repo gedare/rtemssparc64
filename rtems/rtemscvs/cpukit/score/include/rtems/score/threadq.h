@@ -13,7 +13,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: threadq.h,v 1.28 2009/11/28 05:58:54 ralf Exp $
+ *  $Id: threadq.h,v 1.29 2010/06/14 06:08:40 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_THREADQ_H
@@ -27,15 +27,15 @@
  */
 /**@{*/
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <rtems/score/tqdata.h>
 
 #include <rtems/score/object.h>
 #include <rtems/score/thread.h>
 #include <rtems/score/watchdog.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  *  Constant for indefinite wait.

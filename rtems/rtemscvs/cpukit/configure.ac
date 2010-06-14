@@ -1,6 +1,6 @@
 ## Process this file with autoconf to produce a configure script.
 ## 
-## $Id: configure.ac,v 1.181 2010/05/29 02:31:09 ralf Exp $
+## $Id: configure.ac,v 1.185 2010/06/13 03:36:33 ralf Exp $
 
 AC_PREREQ(2.61)
 AC_INIT([rtems-cpukit],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
@@ -18,8 +18,6 @@ RTEMS_ENABLE_POSIX
 RTEMS_ENABLE_ITRON
 RTEMS_ENABLE_RTEMS_DEBUG
 RTEMS_ENABLE_NETWORKING
-RTEMS_ENABLE_HTTPD
-RTEMS_ENABLE_SHTTPD
 
 RTEMS_ENV_RTEMSCPU
 RTEMS_CHECK_RTEMS_DEBUG
@@ -86,6 +84,10 @@ AS_IF([test x"${ac_cv_header_errno_h}" != xyes],
 AS_IF([test x"${ac_cv_header_sched_h}" != xyes],
 [AC_MSG_ERROR([Required header sched.h not found])])
 
+## error out if libc doesn't provide tar.h
+AS_IF([test x"${ac_cv_header_tar_h}" != xyes],
+[AC_MSG_ERROR([Required header tar.h not found])])
+
 AC_HEADER_STDBOOL
 AS_IF([test x"${ac_cv_header_stdbool_h}" != xyes],
 [AC_MSG_ERROR([No sufficient stdbool.h found])])
@@ -113,10 +115,6 @@ RTEMS_CHECK_MULTIPROCESSING
 RTEMS_CHECK_POSIX_API
 RTEMS_CHECK_ITRON_API
 RTEMS_CHECK_NETWORKING
-
-AS_IF([test x"${RTEMS_USE_NEWLIB}" = xyes],
-[RTEMS_USES_TAR_H=yes],
-[RTEMS_USES_TAR_H=$ac_cv_header_tar_h])
 
 rtems_major=`echo _RTEMS_VERSION | sed "s/\..*//"`
 rtems_minor=`echo _RTEMS_VERSION | sed "s/[[0-9]][[0-9]]*\.//;s/\..*//"`
@@ -153,11 +151,6 @@ RTEMS_CPUOPT([RTEMS_NETWORKING],
   [test x"$rtems_cv_HAS_NETWORKING" = xyes],
   [1],
   [if networking is enabled])
-
-RTEMS_CPUOPT([RTEMS_USES_TAR_H],
-  [test x"${RTEMS_USES_TAR_H}" = x"yes"],
-  [1],
-  [if RTEMS uses tar.h])
 
 RTEMS_CPUOPT([RTEMS_VERSION],
   [true],
@@ -275,10 +268,6 @@ AM_CONDITIONAL(HAS_MP,test x"$enable_multiprocessing" = x"yes" )
 AM_CONDITIONAL(HAS_PTHREADS,test x"$rtems_cv_HAS_POSIX_API" = x"yes")
 AM_CONDITIONAL(LIBITRON,test x"$rtems_cv_HAS_ITRON_API" = x"yes")
 AM_CONDITIONAL(LIBNETWORKING,test x"$rtems_cv_HAS_NETWORKING" = x"yes")
-AM_CONDITIONAL([LIBHTTPD],[test x"$rtems_cv_HAS_NETWORKING" = xyes \
-&& test x"$enable_httpd" = xyes])
-AM_CONDITIONAL([LIBSHTTPD],[test x"$rtems_cv_HAS_NETWORKING" = xyes \
-&& test x"$enable_shttpd" = xyes])
 
 AM_CONDITIONAL([NEED_SYS_CDEFS_H],[test x"$NEED_SYS_CDEFS_H" = x"yes"])
 AM_CONDITIONAL([NEED_SYS_QUEUE_H],[test x"$NEED_SYS_QUEUE_H" = x"yes"])
@@ -313,7 +302,6 @@ score/cpu/Makefile
 score/cpu/arm/Makefile
 score/cpu/bfin/Makefile
 score/cpu/avr/Makefile
-score/cpu/c4x/Makefile
 score/cpu/h8300/Makefile
 score/cpu/i386/Makefile
 score/cpu/lm32/Makefile
@@ -340,11 +328,9 @@ libmisc/Makefile
 libi2c/Makefile
 libmd/Makefile
 zlib/Makefile
-httpd/Makefile
 ftpd/Makefile
 telnetd/Makefile
 pppd/Makefile
-shttpd/Makefile
 mghttpd/Makefile
 wrapup/Makefile])
 

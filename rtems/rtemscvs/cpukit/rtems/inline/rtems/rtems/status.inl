@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: status.inl,v 1.16 2008/09/04 17:43:18 ralf Exp $
+ *  $Id: status.inl,v 1.17 2010/06/12 06:40:38 ralf Exp $
  */
 
 #ifndef _RTEMS_RTEMS_STATUS_H
@@ -28,7 +28,7 @@
  */
 
 /**
- *  @brief tems_is_status_successful
+ *  @brief rtems_is_status_successful
  *
  *  This function returns TRUE if the status code is equal to RTEMS_SUCCESSFUL,
  *  and FALSE otherwise.
@@ -41,7 +41,7 @@ RTEMS_INLINE_ROUTINE bool rtems_is_status_successful(
 }
 
 /**
- *  @brief tems_are_statuses_equal
+ *  @brief rtems_are_statuses_equal
  *
  *  This function returns TRUE if the status code1 is equal to code2,
  *  and FALSE otherwise.

@@ -27,7 +27,7 @@
 | *  http://www.rtems.com/license/LICENSE.
 | **************************************************************************
 |
-|  $Id: bspstart.c,v 1.48 2009/04/28 06:20:35 ccj Exp $
+|  $Id: bspstart.c,v 1.49 2010/06/14 16:01:08 joel Exp $
 +--------------------------------------------------------------------------*/
 
 #include <bsp.h>
@@ -66,6 +66,7 @@ void bsp_start_default( void )
    * Init rtems interrupt management
    */
   rtems_irq_mngt_init();
+
   /*
    * Init rtems exceptions management
    */
@@ -79,7 +80,7 @@ void bsp_start_default( void )
       printk("PCI bus: could not initialize PCI BIOS interface\n");
   }
 
-  bsp_ide_cmdline_init ();
+  bsp_ide_cmdline_init();
 
 } /* bsp_start */
 

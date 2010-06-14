@@ -12,7 +12,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: timestamp.h,v 1.3 2009/11/28 05:58:54 ralf Exp $
+ *  $Id: timestamp.h,v 1.5 2010/06/14 06:08:40 ralf Exp $
  */
 
 #ifndef _RTEMS_SCORE_TIMESTAMP_H
@@ -38,11 +38,11 @@
  */
 /**@{*/
 
+#include <rtems/score/timespec.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <rtems/score/timespec.h>
 
 /*
  *  NOTE: Eventually each port should select what it should use!!!
@@ -297,8 +297,8 @@ extern "C" {
  *  This routine converts the @a _ticks value to the corresponding
  *  timestamp format @a _time.
  *
- *  @param[in] time points to the timestamp format time result
- *  @param[in] ticks points to the number of ticks to be filled in
+ *  @param[in] _time points to the timestamp format time result
+ *  @param[in] _ticks points to the number of ticks to be filled in
  */
 #if defined(CPU_RTEMS_SCORE_TIMESTAMP_IS_STRUCT_SPEC)
   #define _Timestamp_From_ticks( _ticks, _time ) \

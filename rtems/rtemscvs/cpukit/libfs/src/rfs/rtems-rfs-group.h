@@ -5,7 +5,7 @@
  *  found in the file LICENSE in this distribution or at
  *  http://www.rtems.com/license/LICENSE.
  *
- *  $Id: rtems-rfs-group.h,v 1.2 2010/02/22 23:02:41 ccj Exp $
+ *  $Id: rtems-rfs-group.h,v 1.3 2010/06/12 05:18:02 ralf Exp $
  */
 /**
  * @file
@@ -127,7 +127,7 @@ int rtems_rfs_group_bitmap_alloc (rtems_rfs_file_system* fs,
  *
  * @param fs The file system data.
  * @param inode If true the number to free is an inode else it is a block.
- * @prarm block The inode or block number to free.
+ * @param block The inode or block number to free.
  * @return int The error number (errno). No error if 0.
  */
 int rtems_rfs_group_bitmap_free (rtems_rfs_file_system* fs,
@@ -139,8 +139,8 @@ int rtems_rfs_group_bitmap_free (rtems_rfs_file_system* fs,
  *
  * @param fs The file system data.
  * @param inode If true the number to free is an inode else it is a block.
- * @prarm block The inode or block number to free.
- * @prarm state Return the state of the bit.
+ * @param block The inode or block number to free.
+ * @param state Return the state of the bit.
  * @return int The error number (errno). No error if 0.
  */
 int rtems_rfs_group_bitmap_test (rtems_rfs_file_system* fs,
@@ -152,7 +152,7 @@ int rtems_rfs_group_bitmap_test (rtems_rfs_file_system* fs,
  * Determine the number of blocks and inodes used.
  *
  * @param fs The file system data.
- * @prarm blocks The number of blocks used.
+ * @param blocks The number of blocks used.
  * @param inodes The number of inodes used.
  * @return int The error number (errno). No error if 0.
  */
