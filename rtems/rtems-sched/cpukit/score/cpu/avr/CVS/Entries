@@ -1,9 +1,0 @@
-D/avr////
-D/rtems////
-/.cvsignore/1.1/Tue Apr 27 14:47:40 2010//
-/ChangeLog/1.46/Sat May  8 18:49:29 2010//
-/Makefile.am/1.9/Tue Apr 27 14:47:40 2010//
-/README/1.1/Tue Apr 27 14:47:40 2010//
-/cpu.c/1.16/Sat May  8 18:49:29 2010//
-/cpu_asm.S/1.8/Sat May  8 18:49:29 2010//
-/preinstall.am/1.7/Tue Apr 27 14:47:40 2010//

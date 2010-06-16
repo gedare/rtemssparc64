@@ -1,4 +1,0 @@
-*** TEST OF RTEMS CHAIN API ***
-Init - Initialize chain empty
-INIT - Verify rtems_chain_insert
-*** END OF RTEMS CHAIN API TEST ***

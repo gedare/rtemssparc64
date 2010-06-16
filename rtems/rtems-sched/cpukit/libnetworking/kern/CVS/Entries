@@ -1,8 +1,0 @@
-/kern_mib.c/1.3/Tue Apr 27 14:47:19 2010//
-/kern_subr.c/1.5/Tue Apr 27 14:47:19 2010//
-/kern_sysctl.c/1.16/Tue Apr 27 14:47:19 2010//
-/uipc_domain.c/1.6/Tue Apr 27 14:47:19 2010//
-/uipc_mbuf.c/1.10/Tue Apr 27 14:47:19 2010//
-/uipc_socket.c/1.10/Tue Apr 27 14:47:19 2010//
-/uipc_socket2.c/1.9/Tue Apr 27 14:47:19 2010//
-D

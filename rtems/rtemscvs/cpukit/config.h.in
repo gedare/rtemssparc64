@@ -284,9 +284,6 @@
 /* if posix api is supported */
 #undef RTEMS_POSIX_API
 
-/* if RTEMS uses tar.h */
-#undef RTEMS_USES_TAR_H
-
 /* RTEMS version string */
 #undef RTEMS_VERSION
 
