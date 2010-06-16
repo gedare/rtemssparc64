@@ -191,44 +191,6 @@ $(PROJECT_INCLUDE)/arch/mm/sun4u/tte.h: ../shared/helenos/kernel/sparc64/include
 	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/mm/sun4u/tte.h
 PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/mm/sun4u/tte.h
 
-$(PROJECT_INCLUDE)/arch/trap/$(dirstamp):
-	@$(MKDIR_P) $(PROJECT_INCLUDE)/arch/trap
-	@: > $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
-PREINSTALL_DIRS += $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
-
-$(PROJECT_INCLUDE)/arch/trap/exception.h: ../shared/helenos/kernel/sparc64/include/trap/exception.h $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/exception.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/exception.h
-
-$(PROJECT_INCLUDE)/arch/trap/interrupt.h: ../shared/helenos/kernel/sparc64/include/trap/interrupt.h $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/interrupt.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/interrupt.h
-
-$(PROJECT_INCLUDE)/arch/trap/mmu.h: ../shared/helenos/kernel/sparc64/include/trap/mmu.h $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/mmu.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/mmu.h
-
-$(PROJECT_INCLUDE)/arch/trap/regwin.h: ../shared/helenos/kernel/sparc64/include/trap/regwin.h $(PROJECT_INCLUDE)/arch/trap/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/regwin.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/regwin.h
-
-$(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp):
-	@$(MKDIR_P) $(PROJECT_INCLUDE)/arch/trap/sun4u
-	@: > $(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp)
-PREINSTALL_DIRS += $(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp)
-
-$(PROJECT_INCLUDE)/arch/trap/sun4u/interrupt.h: ../shared/helenos/kernel/sparc64/include/trap/sun4u/interrupt.h $(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/sun4u/interrupt.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/sun4u/interrupt.h
-
-$(PROJECT_INCLUDE)/arch/trap/sun4u/mmu.h: ../shared/helenos/kernel/sparc64/include/trap/sun4u/mmu.h $(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/sun4u/mmu.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/sun4u/mmu.h
-
-$(PROJECT_INCLUDE)/arch/trap/sun4u/regwin.h: ../shared/helenos/kernel/sparc64/include/trap/sun4u/regwin.h $(PROJECT_INCLUDE)/arch/trap/sun4u/$(dirstamp)
-	$(INSTALL_DATA) $< $(PROJECT_INCLUDE)/arch/trap/sun4u/regwin.h
-PREINSTALL_FILES += $(PROJECT_INCLUDE)/arch/trap/sun4u/regwin.h
-
 $(PROJECT_INCLUDE)/genarch/ofw/$(dirstamp):
 	@$(MKDIR_P) $(PROJECT_INCLUDE)/genarch/ofw
 	@: > $(PROJECT_INCLUDE)/genarch/ofw/$(dirstamp)

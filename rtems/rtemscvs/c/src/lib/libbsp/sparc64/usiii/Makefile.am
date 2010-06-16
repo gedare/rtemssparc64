@@ -68,20 +68,6 @@ include_arch_mm_sun4u_HEADERS = \
   ../shared/helenos/kernel/sparc64/include/mm/sun4u/tlb.h \
   ../shared/helenos/kernel/sparc64/include/mm/sun4u/tte.h
 
-include_arch_trapdir = $(includedir)/arch/trap
-include_arch_trap_HEADERS = \
-  ../shared/helenos/kernel/sparc64/include/trap/exception.h \
-  ../shared/helenos/kernel/sparc64/include/trap/interrupt.h \
-  ../shared/helenos/kernel/sparc64/include/trap/mmu.h \
-  ../shared/helenos/kernel/sparc64/include/trap/regwin.h 
-
-include_arch_trap_sun4udir = $(includedir)/arch/trap/sun4u
-include_arch_trap_sun4u_HEADERS = \
-  ../shared/helenos/kernel/sparc64/include/trap/sun4u/interrupt.h \
-  ../shared/helenos/kernel/sparc64/include/trap/sun4u/mmu.h \
-  ../shared/helenos/kernel/sparc64/include/trap/sun4u/regwin.h 
-
-
 include_genarch_ofwdir = $(includedir)/genarch/ofw
 include_genarch_ofw_HEADERS = \
   ../shared/helenos/kernel/genarch/include/ofw/ofw_tree.h
@@ -124,10 +110,8 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
 
 mmu_SOURCES = \
     ../shared/helenos/kernel/sparc64/src/cache.S \
-    ../shared/helenos/kernel/sparc64/src/sun4u/takemmu.S 
-#    ../shared/helenos/kernel/sparc64/src/trap/sun4u/mmu.S \
-#    ../shared/start/trap_table.S
-#    ../shared/helenos/kernel/sparc64/src/trap/sun4u/trap_table.S 
+    ../shared/helenos/kernel/sparc64/src/sun4u/takemmu.S \
+    ../shared/start/trap_table.S
 
 #clock_SOURCES = ../../shared/clock_driver_simidle.c
 clock_SOURCES = ../shared/clock/ckinit.c
