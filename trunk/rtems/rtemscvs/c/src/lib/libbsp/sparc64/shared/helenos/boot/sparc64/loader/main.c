@@ -40,6 +40,9 @@
 
 #define RTEMS
 
+#include <bsp.h>
+#include <rtems/bspIo.h>
+
 #include <boot/main.h>
 #include <boot/balloc.h>
 #include <boot/ofw.h>
@@ -79,24 +82,28 @@ static char *release = STRING(RELEASE);
 #endif
 #endif
 
+#if 0
 /** UltraSPARC subarchitecture - 1 for US, 3 for US3, 0 for other */
 static uint8_t subarchitecture = 0;
+#endif
 
+#if 0
 /**
  * mask of the MID field inside the ICBUS_CONFIG register shifted by
  * MID_SHIFT bits to the right
  */
 static uint16_t mid_mask;
+#endif
 
+#if 0
 /** Print version information. */
 static void version_print(void)
 {
-#if 0
 	printk("HelenOS SPARC64 Bootloader\nRelease %s%s%s\n"
 	    "Copyright (c) 2006 HelenOS project\n",
 	    release, revision, timestamp);
-#endif
 }
+#endif
 
 /* the lowest ID (read from the VER register) of some US3 CPU model */
 #define FIRST_US3_CPU  0x14
@@ -149,7 +156,7 @@ static void detect_architecture(void)
 	}
 }
 
-
+#if 0
 /**
  * Detects the subarchitecture (US, US3) of the sun4u
  * processor. Sets the global variables "subarchitecture" and "mid_mask" to
@@ -176,7 +183,9 @@ static void detect_subarchitecture(void)
 	} else
 		printk("\nThis CPU is not supported by HelenOS.");
 }
+#endif
 
+#if 0
 /**
  * Performs sun4u-specific initialization. The components are expected
  * to be already copied and boot allocator initialized.
@@ -220,7 +229,9 @@ static void bootstrap_sun4u(void *base, unsigned int top)
 #endif
 #endif
 }
+#endif
 
+#if 0
 /**
  *  * Performs sun4v-specific initialization. The components are expected
  *   * to be already copied and boot allocator initialized.
@@ -255,15 +266,17 @@ static void bootstrap_sun4v(void)
 	printf("The sun4v init finished.");
 #endif
 }
-
+#endif
 
 void bootstrap(void)
 {
+#if 0
 	void *base = (void *) KERNEL_VIRTUAL_ADDRESS;
 	unsigned int top = 0;
 	unsigned int i;
 	unsigned int j;
-	
+#endif
+
   detect_architecture();
 #if 0
 	init_components(components);

@@ -35,14 +35,10 @@ noinst_PROGRAMS =
 nodist_include_HEADERS += ../../shared/include/coverhd.h
 
 
-EXTRA_DIST = ../shared/start/start.S ../shared/asm/asm.S
+EXTRA_DIST = ../shared/start/start.S
 start.$(OBJEXT): ../shared/start/start.S
 	$(CPPASCOMPILE) -o $@ -c $<
-asm.$(OBJEXT): ../shared/asm/asm.S
-	$(CPPASCOMPILE) -o $@ -c $<
-bspinit.$(OBJEXT): start/bspinit.S
-	$(CPPASCOMPILE) -o $@ -c $<
-project_lib_DATA = start.$(OBJEXT) asm.$(OBJEXT) bspinit.$(OBJEXT)
+project_lib_DATA = start.$(OBJEXT)
 
 dist_project_lib_DATA += ../shared/startup/linkcmds
 
@@ -61,9 +57,8 @@ startup_SOURCES = ../../shared/bspclean.c ../../shared/bsplibc.c \
     ../shared/helenos/boot/sparc64/loader/ofwarch.c \
     ../shared/helenos/boot/sparc64/loader/main.c \
     ../shared/helenos/boot/sparc64/loader/ofwasm.S \
-    ../shared/asm/asm.S \
-    start/bspinit.S
-##   ../shared/ofw/printf.c \
+    start/bspinit.S \
+    ../shared/asm/asm.S
 
 #clock_SOURCES = ../../shared/clock_driver_simidle.c
 clock_SOURCES = ../shared/clock/ckinit.c

@@ -35,6 +35,8 @@
  *
  */
 
+#include <bsp.h>
+#include <rtems/bspIo.h>
 
 #include <boot/ofw.h>
 #include <boot/ofwarch.h>

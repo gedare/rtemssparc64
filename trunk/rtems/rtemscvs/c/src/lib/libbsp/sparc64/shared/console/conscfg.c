@@ -21,7 +21,7 @@ int sun4v_console_device_first_open(int major, int minor, void *arg)
 	return 0;
 }
 
-static int sun4v_console_poll_write(int minor, const char *buf, int n)
+static ssize_t sun4v_console_poll_write(int minor, const char *buf, size_t n)
 {
 	ofw_write(buf, n);
 	return 0;
@@ -54,7 +54,7 @@ console_fns pooled_functions={
  sun4v_console_device_first_open, /*int     (*deviceFirstOpen)(int major, int minor, void *arg);*/
  NULL, /*int     (*deviceLastClose)(int major, int minor, void *arg);*/
  sun4v_console_poll_read, /*int     (*deviceRead)(int minor);*/
- sun4v_console_poll_write, /*int     (*deviceWrite)(int minor, const char *buf, int len);*/
+ sun4v_console_poll_write, /*ssize_t     (*deviceWrite)(int minor, const char *buf, size_t len);*/
  sun4v_console_deviceInitialize, /*void    (*deviceInitialize)(int minor);*/
  NULL, /*void    (*deviceWritePolled)(int minor, char cChar);*/
  NULL, /*int     (*deviceSetAttributes)(int minor, const struct termios *t);*/
