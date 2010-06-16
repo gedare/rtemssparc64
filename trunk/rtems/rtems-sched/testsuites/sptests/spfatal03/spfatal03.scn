@@ -1,3 +1,0 @@
-*** TEST FATAL 3 ***
-Create semaphore S0
-Obtain semaphore in dispatching critical section
