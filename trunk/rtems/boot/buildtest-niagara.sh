@@ -86,5 +86,5 @@ $TOOLCHAIN-readelf -a image.1.boot > debug/rtems/$1/$TEST.elf
 rm image.1.boot.gz
 cp image.1.boot debug/rtems/$1/$TEST.exe
 gzip image.1.boot 
-cp image.1.boot.gz isofiles/rtems/$1/$TEST.gz -f
+cp image.1.boot.gz niagara-isofiles/rtems/$1/$TEST.gz -f
 
