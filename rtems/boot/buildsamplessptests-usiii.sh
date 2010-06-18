@@ -1,7 +1,7 @@
 #!/bin/bash
 
-TMP=../../rtems/boot/usiii-isofiles
-BASE=../../rtems/boot
+TMP=`pwd`/usiii-isofiles
+BASE=`pwd`
 
 ./buildtest-usiii.sh mibench sha_small
 ./buildtest-usiii.sh mibench sha_large
