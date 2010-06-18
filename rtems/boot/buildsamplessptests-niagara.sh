@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TMP=`pwd`/isofiles-niagara
+TMP=`pwd`/niagara-isofiles
 BASE=`pwd`
 
 ./buildtest-niagara.sh mibench sha_small
