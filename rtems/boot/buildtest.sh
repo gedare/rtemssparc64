@@ -1,5 +1,11 @@
 #!/bin/bash
 
+TOOLCHAIN=sparc64-rtems4.11
+
+RTEMSTESTSBASE=../b-niagaracvs/sparc64-rtems4.11/c/niagara/testsuites
+
+TEST=$2
+
 excludes=( \
 _fini \
 sparc_disable_interrupts \
@@ -49,18 +55,8 @@ removes=( \
 't good_window' \
 )
 
-INCLUDE1=../../HeleonOS/HelenOS/boot/arch/sparc64/loader
-INCLUDE2=../../HeleonOS/HelenOS/boot/generic
-INCLUDE3=../../HeleonOS/HelenOS/boot/genarch
-HELENONSBOOT=../../HeleonOS/HelenOS/boot/arch/sparc64/loader
 
 
-TOOLCHAIN=../compilers/sparc64-newlib-rtems4.10-4.4.1.gcc.full/sparc64/bin/sparc64-rtems4.10
-
-
-RTEMSTESTSBASE=../b-niagaracvs/sparc64-rtems4.10/c/niagara/testsuites
-
-TEST=$2
 
 cp $RTEMSTESTSBASE/$1/$TEST/$TEST.exe image.1.boot
 $TOOLCHAIN-objdump -D image.1.boot > debug/rtems/$1/$TEST.disasm
