@@ -1,0 +1,35 @@
+Index: c/src/lib/libbsp/sparc64/shared/start/start.S
+===================================================================
+RCS file: /usr1/CVS/rtems/c/src/lib/libbsp/sparc64/shared/start/start.S,v
+retrieving revision 1.1
+diff -u -p -r1.1 start.S
+--- c/src/lib/libbsp/sparc64/shared/start/start.S	17 Jun 2010 16:20:45 -0000	1.1
++++ c/src/lib/libbsp/sparc64/shared/start/start.S	18 Aug 2010 19:40:48 -0000
+@@ -147,13 +147,11 @@ setstack:
+ 	call SYM(boot_card)
+ 	sub	%sp, 0x60, %sp		! make room on stack (necessary?)
+ 
+-#if _BSP_DEBUG
+   /* execution returns here when RTEMS terminates */
+ 	sethi %hi(_end_token_string), %g1
+ 	add %g1, %lo(_end_token_string), %o0
+ 	call SYM(printk)
+ 	nop
+-#endif
+ 
+   call SYM(halt)
+   nop
+Index: c/src/lib/libcpu/sparc64/shared/interrupts/installisrentries.c
+===================================================================
+RCS file: /usr1/CVS/rtems/c/src/lib/libcpu/sparc64/shared/interrupts/installisrentries.c,v
+retrieving revision 1.1
+diff -u -p -r1.1 installisrentries.c
+--- c/src/lib/libcpu/sparc64/shared/interrupts/installisrentries.c	17 Jun 2010 16:16:25 -0000	1.1
++++ c/src/lib/libcpu/sparc64/shared/interrupts/installisrentries.c	18 Aug 2010 19:40:49 -0000
+@@ -19,5 +19,6 @@
+ 
+ void sparc64_install_isr_entries( void )
+ {
++  printk("START_TOKEN\n\r");
+   return;
+ }

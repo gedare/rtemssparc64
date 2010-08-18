@@ -22,10 +22,10 @@ BASE=`pwd`
 ./buildtest-usiii.sh samples unlimited
 
 
-#for ((  i = 1  ;  i <= 9;  i++  ))
-#do 
-#   ./buildtest-usiii.sh sptests sp0$i
-#done
+for ((  i = 1  ;  i <= 9;  i++  ))
+do 
+   ./buildtest-usiii.sh sptests sp0$i
+done
 #for ((  i = 10 ;  i <= 35;  i++  ))
 #do
 #  ./buildtest-usiii.sh sptests sp$i
