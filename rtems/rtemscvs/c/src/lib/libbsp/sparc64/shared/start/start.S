@@ -53,6 +53,11 @@
 .register %g6, #scratch
 .register %g7, #scratch
 
+#if 0
+#define _BSP_DEBUG
+#endif
+
+#if _BSP_DEBUG
 /*
  * This is for debug and script support to identify RTEMS app termination
  */
@@ -60,7 +65,7 @@
 	.align 8
 _end_token_string:
 	.asciz "END_TOKEN\n"
-
+#endif
 
 .section BOOTSTRAP, "ax"
 
@@ -142,11 +147,13 @@ setstack:
 	call SYM(boot_card)
 	sub	%sp, 0x60, %sp		! make room on stack (necessary?)
 
+#if _BSP_DEBUG
   /* execution returns here when RTEMS terminates */
 	sethi %hi(_end_token_string), %g1
 	add %g1, %lo(_end_token_string), %o0
 	call SYM(printk)
 	nop
+#endif
 
   call SYM(halt)
   nop
