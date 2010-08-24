@@ -141,5 +141,6 @@ spstkalloc/Makefile
 spthreadq01/Makefile
 spwatchdog/Makefile
 spwkspace/Makefile
+spticks/Makefile
 ])
 AC_OUTPUT
