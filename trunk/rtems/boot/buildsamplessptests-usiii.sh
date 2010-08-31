@@ -21,6 +21,7 @@ BASE=`pwd`
 ./buildtest-usiii.sh samples ticker
 ./buildtest-usiii.sh samples unlimited
 
+./buildtest-usiii.sh sptests spticks
 
 for ((  i = 1  ;  i <= 9;  i++  ))
 do 

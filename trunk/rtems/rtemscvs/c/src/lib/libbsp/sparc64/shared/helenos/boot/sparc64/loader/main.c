@@ -315,10 +315,12 @@ void bootstrap(void)
 		}
 	}
 	
+  /*
   printk("\nMemory statistics (total %d MB, starting at %x)\n",
 	    bootinfo.memmap.total >> 20, bootinfo.physmem_start);
 	printk(" %x: kernel entry point\n", KERNEL_VIRTUAL_ADDRESS);
 	printk(" %x: boot info structure\n", &bootinfo);
+  */
 
 #if 0
 	/*

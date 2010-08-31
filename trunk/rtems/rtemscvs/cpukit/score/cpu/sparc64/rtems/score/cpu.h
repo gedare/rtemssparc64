@@ -701,13 +701,13 @@ extern const CPU_Trap_table_entry _CPU_Trap_slot_template;
  *  CPU's worst alignment requirement for data types on a byte boundary.  This
  *  alignment does not take into account the requirements for the stack.
  *
- *  On the SPARC, this is required for double word loads and stores.
+ *  On the SPARC, alignment of 8 is required for double word loads and stores.
  *
- *  Note: quad-word loads/stores need alignment of 16, but currently supported
+ *  Quad-word loads/stores need alignment of 16, although currently supported
  *  architectures do not provide HW implemented quad-word operations.
  */
 
-#define CPU_ALIGNMENT      8
+#define CPU_ALIGNMENT      16
 
 /*
  *  This number corresponds to the byte alignment requirement for the

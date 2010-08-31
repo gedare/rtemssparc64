@@ -16,6 +16,6 @@
 #define TABLE_SIZE (1024*ENTRY_SIZE)
 
 #ifndef ASM
-extern void* trap_table[TABLE_SIZE];
+void* trap_table[TABLE_SIZE];
 #endif
 

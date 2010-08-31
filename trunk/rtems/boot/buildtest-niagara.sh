@@ -2,7 +2,7 @@
 
 TOOLCHAIN=sparc64-rtems4.11
 
-RTEMSTESTSBASE=../b-niagaracvs/sparc64-rtems4.11/c/niagara/testsuites
+RTEMSTESTSBASE=$R/b-niagara-diff/sparc64-rtems4.11/c/niagara/testsuites
 
 TEST=$2
 

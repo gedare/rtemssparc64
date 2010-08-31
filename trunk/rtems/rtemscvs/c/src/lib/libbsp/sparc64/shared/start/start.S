@@ -158,9 +158,6 @@ setstack:
   call SYM(halt)
   nop
 
-halted:	nop
-	    b SYM(halted)
-
   .align CPU_ALIGNMENT
   param_space:
   	.space 8

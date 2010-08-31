@@ -57,7 +57,7 @@ BASE=`pwd`
 ##./buildtest-niagara.sh sptests spintrcritical_support
 #./buildtest-niagara.sh sptests spnotepad01
 #./buildtest-niagara.sh sptests spobjgetnext
-#./buildtest-niagara.sh sptests spprintk
+./buildtest-niagara.sh sptests spprintk
 #./buildtest-niagara.sh sptests spsize
 #./buildtest-niagara.sh sptests spstkalloc
 #./buildtest-niagara.sh sptests spthreadq01
