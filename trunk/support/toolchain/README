@@ -1,0 +1,10 @@
+toolchain
+
+This directory contains scripts to help build the RTEMS sparc64 compiler 
+from sources.  The rtemspatches/ directory should be localized with symlinks 
+instead of empty files that point to the appropriate patch to apply for each 
+of the binutils, gcc, and newlib sources.
+
+Make sure that the version numbers in the .sh file match the patch and the 
+expected version for the RTEMS being built.
+
