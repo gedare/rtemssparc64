@@ -1,0 +1,14 @@
+rtems-patches
+
+This directory contains patches that might need to be applied to the 
+RTEMS CVS repository in order to get sparc64 working.
+
+rtems-sparc64.diff - This patch is optional, and adds the print statements 
+for START_TOKEN and END_TOKEN, which are used by some of the simics scripts
+to control when output is captured while running RTEMS tests.
+
+objectsextend.diff - This patch corrects an alignment issue caused during 
+system initialization.  See RTEMS PR 1560: 
+https://www.rtems.org/bugzilla/show_bug.cgi?id=1560
+
+
