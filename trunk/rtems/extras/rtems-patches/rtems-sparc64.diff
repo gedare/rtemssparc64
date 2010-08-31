@@ -1,0 +1,30 @@
+Index: c/src/lib/libbsp/sparc64/shared/start/start.S
+===================================================================
+RCS file: /usr1/CVS/rtems/c/src/lib/libbsp/sparc64/shared/start/start.S,v
+retrieving revision 1.1
+diff -u -p -r1.1 start.S
+--- c/src/lib/libbsp/sparc64/shared/start/start.S	17 Jun 2010 16:20:45 -0000	1.1
++++ c/src/lib/libbsp/sparc64/shared/start/start.S	25 Aug 2010 15:58:43 -0000
+@@ -53,7 +53,7 @@
+ .register %g6, #scratch
+ .register %g7, #scratch
+ 
+-#if 0
++#if 1
+ #define _BSP_DEBUG
+ #endif
+ 
+Index: c/src/lib/libcpu/sparc64/shared/interrupts/installisrentries.c
+===================================================================
+RCS file: /usr1/CVS/rtems/c/src/lib/libcpu/sparc64/shared/interrupts/installisrentries.c,v
+retrieving revision 1.1
+diff -u -p -r1.1 installisrentries.c
+--- c/src/lib/libcpu/sparc64/shared/interrupts/installisrentries.c	17 Jun 2010 16:16:25 -0000	1.1
++++ c/src/lib/libcpu/sparc64/shared/interrupts/installisrentries.c	25 Aug 2010 15:58:43 -0000
+@@ -19,5 +19,6 @@
+ 
+ void sparc64_install_isr_entries( void )
+ {
++  printk("START_TOKEN\n\r");
+   return;
+ }
