@@ -1,0 +1,10 @@
+support
+
+This directory contains additional scripts and tools to help build and run 
+RTEMS for the sparc64 target.
+
+build-sparc64.tgz - Contains scripts necessary to build a bootable ISO image.
+
+extras/ - Contains additional code and patches to apply to the RTEMS CVS 
+repository.
+
