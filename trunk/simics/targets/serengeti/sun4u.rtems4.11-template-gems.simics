@@ -215,7 +215,8 @@ c
 	
 	ruby0.setparam g_NUM_PROCESSORS 1
 	#ruby0.setparam g_MEMORY_SIZE_BYTES 4294967296
-	ruby0.setparam g_MEMORY_SIZE_BYTES 2147483648
+	#ruby0.setparam g_MEMORY_SIZE_BYTES 2147483648
+	ruby0.setparam g_MEMORY_SIZE_BYTES 268435456
 	ruby0.init
 	
 	opal0.init
