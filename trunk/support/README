@@ -8,3 +8,6 @@ build-sparc64.tgz - Contains scripts necessary to build a bootable ISO image.
 extras/ - Contains additional code and patches to apply to the RTEMS CVS 
 repository.
 
+toolchain/ - Contains scripts used to build the RTEMS sparc64 tools.
+
+
