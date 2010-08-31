@@ -1,5 +1,12 @@
 #!/bin/bash
 
+TOOLCHAIN=sparc64-rtems4.11
+
+RTEMSTESTSBASE=/home/gedare/work/rtems/rtems/b-usiii-diff/sparc64-rtems4.11/c/usiii/testsuites
+
+TEST=$2
+
+
 excludes=( \
 _fini \
 sparc_disable_interrupts \
@@ -53,14 +60,6 @@ INCLUDE1=../../HeleonOS/HelenOS/boot/arch/sparc64/loader
 INCLUDE2=../../HeleonOS/HelenOS/boot/generic
 INCLUDE3=../../HeleonOS/HelenOS/boot/genarch
 HELENONSBOOT=../../HeleonOS/HelenOS/boot/arch/sparc64/loader
-
-
-TOOLCHAIN=sparc64-rtems4.11
-
-
-RTEMSTESTSBASE=$R/b-usiii-diff/sparc64-rtems4.11/c/usiii/testsuites
-
-TEST=$2
 
 cp $RTEMSTESTSBASE/$1/$TEST/$TEST.exe image.1.boot
 $TOOLCHAIN-objdump -D image.1.boot > debug/rtems/$1/$TEST.disasm
