@@ -1,4 +1,6 @@
-toolchain
+toolchain/
+
+Note: The RTEMS Yum repository contains the up-to-date stock toolchain.
 
 This directory contains scripts to help build the RTEMS sparc64 compiler 
 from sources.  The rtemspatches/ directory should be localized with symlinks 
@@ -7,4 +9,10 @@ of the binutils, gcc, and newlib sources.
 
 Make sure that the version numbers in the .sh file match the patch and the 
 expected version for the RTEMS being built.
+
+Note that these scripts only build binutils and gcc with newlib. Other 
+up-to-date tools may need to be built separately, for example to build 
+gcc you may need to build gmp, mpfr, and mpc.  Also, up-to-date versions
+of autoconf and automake may need to be built.  We do not have automated 
+scripts for these tools yet.
 
