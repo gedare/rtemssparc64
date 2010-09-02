@@ -1,0 +1,35 @@
+Index: cpukit/score/cpu/sparc64/rtems/score/sparc64.h
+===================================================================
+RCS file: /usr1/CVS/rtems/cpukit/score/cpu/sparc64/rtems/score/sparc64.h,v
+retrieving revision 1.1
+diff -u -p -r1.1 sparc64.h
+--- cpukit/score/cpu/sparc64/rtems/score/sparc64.h	15 Jun 2010 22:43:56 -0000	1.1
++++ cpukit/score/cpu/sparc64/rtems/score/sparc64.h	2 Sep 2010 19:28:23 -0000
+@@ -145,6 +145,27 @@ extern "C" {
+ 
+ #define STACK_BIAS (2047)
+ 
++/* Additions to support MAGIC Simics commands */
++#ifdef ASM
++#define MAGIC(n) \
++  sethi n, %g0
++
++#endif /* ASM */
++
++#ifndef ASM
++
++#define __MAGIC_CASSERT(p) do {                                 \
++         typedef int __check_magic_argument[(p) ? 1 : -1];       \
++} while (0)
++
++#define MAGIC(n) do {                                   \
++    __MAGIC_CASSERT((n) > 0 && (n) < (1U << 22));   \
++         __asm__ __volatile__ ("sethi " #n ", %g0");     \
++} while (0)
++
++#endif /* !ASM */
++#define MAGIC_BREAKPOINT MAGIC(0x40000)
++
+ #ifdef ASM
+ 
+ /* 
