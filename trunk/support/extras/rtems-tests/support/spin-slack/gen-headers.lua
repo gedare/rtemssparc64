@@ -2,6 +2,7 @@
 --
 -- Generate header files for:
 --  spslackXX   -- slackparams.h, slackmacros.h
+--  spedfXX     -- edfparams.h, edfmacros.h
 --  spspinXX    -- params.h, macros.h
 --
 
@@ -367,17 +368,24 @@ function write_header(atasks, ptasks, J, slack_table, hpl)
 
   local periods = get_deadlines(ptasks);
   local prio = get_deadlines(atasks);
-  f:write(string.format("rtems_task_priority Priorities[1+NUM_TASKS]= { %s };\n\n",
-  "0, " .. table.concat(periods, ", ") .. table.concat(prio, ", ")))
 
-  if table.maxn(periods) > 0 then
+  f:write(string.format("rtems_task_priority Priorities[1+NUM_TASKS]= { 0"))
+  if #periods > 0 then
+    f:write(string.format(", %s", table.concat(periods, ", ")))
+  end
+  if #prio > 0 then
+    f:write(string.format(", %s", table.concat(prio, ", ")))
+  end
+  f:write(" };\n\n")
+
+  if #periods > 0 then
     f:write(string.format("uint32_t  Periods[1+NUM_PERIODIC_TASKS]    = { %s };\n",
     "0, " .. table.concat(periods, ", ")))
   else
     f:write(string.format("uint32_t  Periods[1+NUM_PERIODIC_TASKS]    = { 0 };\n"))
   end
 
-  if table.maxn(periods) > 0 then
+  if #periods > 0 then
     f:write(string.format("%s", 
     "uint32_t  Periods_us[1+NUM_PERIODIC_TASKS] = {\n" ..
     "                                             " ..
@@ -401,25 +409,36 @@ function write_header(atasks, ptasks, J, slack_table, hpl)
 
   local p_execution = get_execution_times(ptasks);
   local a_execution = get_execution_times(atasks);
-  f:write(string.format(
-  "uint32_t  Tick_Count[1+NUM_TASKS]           = { 0, %s };\n",
-    table.concat(p_execution, ", ") .. table.concat(a_execution, ", ")))
-  f:write(string.format(
-  "uint32_t  Execution[1+NUM_TASKS]           = { 0, %s };\n",
-    table.concat(p_execution, ", ") .. table.concat(a_execution, ", ")))
+  f:write("uint32_t  Tick_Count[1+NUM_TASKS]           = { 0")
+  if #p_execution > 0 then
+    f:write(string.format(", %s", table.concat(p_execution, ", ")))
+  end
+  if #a_execution > 0 then
+    f:write(string.format(", %s", table.concat(a_execution, ", ")))
+  end
+  f:write(" };\n")
+  
+  f:write("uint32_t  Execution[1+NUM_TASKS]           = { 0")
+  if #p_execution > 0 then
+    f:write(string.format(", %s", table.concat(p_execution, ", ")))
+  end
+  if #a_execution > 0 then
+    f:write(string.format(", %s", table.concat(a_execution, ", ")))
+  end
+  f:write(" };\n")
 
   f:write(string.format("%s", 
     "uint32_t  Execution_us[1+NUM_TASKS]        = {\n" ..
     "                                             " ..
     "0*CONFIGURE_MICROSECONDS_PER_TICK,\n"))
 
-  if table.maxn(p_execution) > 0 then
+  if #p_execution > 0 then
     f:write(string.format("%s",
     "                                             " ..
     table.concat(p_execution, "*CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ") ..
     "*CONFIGURE_MICROSECONDS_PER_TICK,\n"))
   end
-  if table.maxn(a_execution) > 0 then
+  if #a_execution > 0 then
     f:write(string.format("%s",
     "                                             " ..
     table.concat(a_execution, "*CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ") ..
@@ -432,22 +451,26 @@ function write_header(atasks, ptasks, J, slack_table, hpl)
 
   local p_phase = get_release_times(ptasks);
   local a_release = get_release_times(atasks);
-  f:write(string.format(
-  "uint32_t  Phases[1+NUM_TASKS]           = { 0, %s };\n",
-    table.concat(p_phase, ", ") .. table.concat(a_release, ", ")))
-
+  f:write("uint32_t  Phases[1+NUM_TASKS]           = { 0")
+  if #p_phase > 0 then
+    f:write(string.format(", %s", table.concat(p_phase, ", ")))
+  end
+  if #a_release > 0 then
+    f:write(string.format(", %s", table.concat(a_release, ", ")))
+  end
+  f:write(" };\n")
   f:write(string.format("%s", 
     "uint32_t  Phases_us[1+NUM_TASKS]        = {\n" ..
     "                                             " ..
     "0*CONFIGURE_MICROSECONDS_PER_TICK,\n"))
 
-  if table.maxn(p_phase) > 0 then
+  if #p_phase > 0 then
     f:write(string.format("%s",
     "                                             " ..
     table.concat(p_phase, "*CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ") ..
     "*CONFIGURE_MICROSECONDS_PER_TICK,\n"))
   end
-  if table.maxn(a_release) > 0 then
+  if #a_release > 0 then
     f:write(string.format("%s",
     "                                             " ..
     table.concat(a_release, "*CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ") ..
