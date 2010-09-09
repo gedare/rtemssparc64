@@ -2,7 +2,6 @@
 --
 -- Generate header files for:
 --  spslackXX   -- slackparams.h, slackmacros.h
---  spedfXX     -- edfparams.h, edfmacros.h
 --  spspinXX    -- params.h, macros.h
 --
 
