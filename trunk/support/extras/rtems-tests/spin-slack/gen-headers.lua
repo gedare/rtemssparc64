@@ -17,7 +17,7 @@ end
 function parse_args(arg)
   local t = {}
   local args = table.concat(arg," ")
-  for w in string.gmatch(args, "-%a%s[%w,]+") do  
+  for w in string.gmatch(args, "-%a%s[%w+%.?%w*,]+") do  
     table.insert(t, w)
   end
   return t
@@ -50,7 +50,7 @@ function task_lt(task1, task2)
       return true
     end
   elseif string.match(task2, "-A") then
-    return tre
+    return true
   end
 
   local p1 = get_task_params(task1)
@@ -104,7 +104,7 @@ function get_task_params(task)
   local i = 1
   if (task) then
     local s = tostring(task)
-    for w in string.gmatch(s, "%d+") do
+    for w in string.gmatch(s, "%d+%.?%d*") do
       t[i] = tonumber(w)
       i = i + 1
     end
