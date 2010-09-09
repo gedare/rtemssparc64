@@ -394,21 +394,25 @@ function write_header(atasks, ptasks, J, slack_table, hpl)
     table.concat(periods, "*CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ") ..
     "*CONFIGURE_MICROSECONDS_PER_TICK\n" ..
     "                                             };\n")) 
-
-    f:write(string.format("%s", 
-    "uint32_t  Periods_threshold[1+NUM_PERIODIC_TASKS] = {\n" ..
-    "                " .. "0,\n" .. "                THRESHOLD_US / (" ..
-    table.concat(periods, "*CONFIGURE_MICROSECONDS_PER_TICK ),\n                THRESHOLD_US / ( ") .. 
-    "*CONFIGURE_MICROSECONDS_PER_TICK )\n" ..  "                };\n")) 
   else
     f:write("uint32_t  Periods_us[1+NUM_PERIODIC_TASKS] = { 0 };\n");
-    f:write("uint32_t  Periods_threshold[1+NUM_PERIODIC_TASKS] = { 0 };\n");
   end
 
   f:write("\n")
 
   local p_execution = get_execution_times(ptasks);
   local a_execution = get_execution_times(atasks);
+
+  if #p_execution > 0 then
+    f:write(string.format("%s", 
+    "uint32_t  Execution_threshold[1+NUM_PERIODIC_TASKS] = {\n" ..
+    "                " .. "0,\n" .. "                THRESHOLD_US / (" ..
+    table.concat(p_execution, "*CONFIGURE_MICROSECONDS_PER_TICK ),\n                THRESHOLD_US / ( ") .. 
+    "*CONFIGURE_MICROSECONDS_PER_TICK )\n" ..  "                };\n")) 
+  else
+    f:write("uint32_t  Execution_threshold[1+NUM_PERIODIC_TASKS] = { 0 };\n");
+  end
+
   f:write("uint32_t  Tick_Count[1+NUM_TASKS]           = { 0")
   if #p_execution > 0 then
     f:write(string.format(", %s", table.concat(p_execution, ", ")))
