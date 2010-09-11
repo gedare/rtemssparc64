@@ -25,7 +25,7 @@ tar -zxf $2
 
   lua gen-headers.lua -T 1,0.5,0 -A 2,0.5,0
 
-  spindir=${RTEMS_DIR}/testsuites/sptests/spspin${count}
+  spindir=${RTEMS_DIR}/testsuites/gabtests/spspin${count}
   rm -rf ${spindir}
 
   mkdir ${spindir}
@@ -41,12 +41,12 @@ tar -zxf $2
   cp params.h ${spindir}/params.h
   cp macros.h ${spindir}/macros.h
 
-  sed -i "s/spspin${count}//" ${RTEMS_DIR}/testsuites/sptests/Makefile.am
-  sed -i "s/spspin/spspin spspin${count}/" ${RTEMS_DIR}/testsuites/sptests/Makefile.am
+  sed -i "s/spspin${count}//" ${RTEMS_DIR}/testsuites/gabtests/Makefile.am
+  sed -i "s/spspin/spspin spspin${count}/" ${RTEMS_DIR}/testsuites/gabtests/Makefile.am
 
-  sed -i "/spspin${count}/ d" ${RTEMS_DIR}/testsuites/sptests/configure.ac
+  sed -i "/spspin${count}/ d" ${RTEMS_DIR}/testsuites/gabtests/configure.ac
   sed -i "/spspin\/Makefile/ a\
-spspin${count}\/Makefile" ${RTEMS_DIR}/testsuites/sptests/configure.ac
+spspin${count}\/Makefile" ${RTEMS_DIR}/testsuites/gabtests/configure.ac
 
 
 
