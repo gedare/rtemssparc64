@@ -87,7 +87,8 @@ def main():
     Tasks += '-T ' + str(int(period)) + ',' + precise_u + ',0 '
 
   print Tasks
-  subprocess.call(["lua","gen-headers.lua " + Tasks])
+#  subprocess.call(["lua","gen-headers.lua " + Tasks])
+  os.system("lua gen-headers.lua " + Tasks)
 
 if __name__ == "__main__":
   main()
