@@ -307,8 +307,10 @@ function write_header(atasks, ptasks, J, slack_table, hpl, maxp)
     h:write(string.format("#define  TABLE_SIZE                 (%d)\n", 
     #slack_table))
   end
-  h:write(string.format("#define  JOBS_PER_HP                (%d)\n", 
-  #J))
+  if (J) then
+    h:write(string.format("#define  JOBS_PER_HP                (%d)\n", 
+    #J))
+  end
   h:write(string.format("#define  HP_LENGTH                  (%d)\n", 
   hpl))
   h:write(string.format("#define  MAX_PERIOD                 (%d)\n",
@@ -341,8 +343,10 @@ function write_header(atasks, ptasks, J, slack_table, hpl, maxp)
     f:write(string.format("#define  TABLE_SIZE                 (%d)\n", 
     #slack_table))
   end
-  f:write(string.format("#define  JOBS_PER_HP                (%d)\n", 
-  #J))
+  if (J) then
+    f:write(string.format("#define  JOBS_PER_HP                (%d)\n", 
+    #J))
+  end
   f:write(string.format("#define  HP_LENGTH                  (%d)\n", 
   hpl))
   f:write(string.format("#define  MAX_PERIOD                 (%d)\n",
@@ -367,7 +371,9 @@ function write_header(atasks, ptasks, J, slack_table, hpl, maxp)
   end
 
   -- miscellaneous globals
-  f:write("\nuint32_t  jobs_per_hyperperiod      = JOBS_PER_HP;\n")
+  if (J) then
+    f:write("\nuint32_t  jobs_per_hyperperiod      = JOBS_PER_HP;\n")
+  end
   f:write("uint32_t  periodic_tasks            = NUM_PERIODIC_TASKS;\n\n")
 
   local periods = get_deadlines(ptasks);
@@ -494,12 +500,12 @@ function write_header(atasks, ptasks, J, slack_table, hpl, maxp)
   local i = 1
   for _, _ in ipairs(ptasks) do
     f:write(string.format(
-    "Task_name[ %d ] =  rtems_build_name( 'P', 'T', '%d', ' ' );\\\n", i,i))
+    "Task_name[ %d ] =  rtems_build_name( 'P', 'T', '%d', '%d' );\\\n", i,i/10,i%10))
     i = i + 1
   end
   for _, _ in ipairs(atasks) do
     f:write(string.format(
-    "Task_name[ %d ] =  rtems_build_name( 'A', 'T', '%d', ' ' );\\\n", i,i))
+    "Task_name[ %d ] =  rtems_build_name( 'A', 'T', '%d', '%d' );\\\n", i,i/10,i%10))
     i = i + 1
   end
   f:write(string.format("} while(0)\n"))
@@ -536,7 +542,7 @@ hyperperiod_length = get_hyperperiod_length(periods)
 max_period = math.max(map(tonumber,unpack(periods)))
 
 -- determine set of jobs
-J = get_jobs(periodic_tasks, hyperperiod_length)
+--J = get_jobs(periodic_tasks, hyperperiod_length)
 
 -- J is a sorted table of tables, where the table at 
 -- J[i], i = 1 to n, has entries:
@@ -546,12 +552,12 @@ J = get_jobs(periodic_tasks, hyperperiod_length)
 -- J is ordered by earliest deadline, with ties broken by earliest release.
 
 -- compute \sigma_i(0) for i = 1 to n, the initial slack of all jobs
-compute_initial_slacks(J)
+--compute_initial_slacks(J)
 
 -- compute the slack table
-slack_table = compute_slack_table(J, hyperperiod_length)
+--slack_table = compute_slack_table(J, hyperperiod_length)
 
-write_header(aperiodic_tasks, periodic_tasks, J, slack_table, hyperperiod_length, max_period)
+--write_header(aperiodic_tasks, periodic_tasks, J, slack_table, hyperperiod_length, max_period)
 
 -- now generate the headers without the slack table.
-write_header(aperiodic_tasks, periodic_tasks, J, nil, hyperperiod_length, max_period)
+write_header(aperiodic_tasks, periodic_tasks, nil, nil, hyperperiod_length, max_period)
