@@ -281,7 +281,7 @@ function compute_slack_table(J)
   return t
 end
 
-function write_header(atasks, ptasks, J, slack_table, hpl)
+function write_header(atasks, ptasks, J, slack_table, hpl, maxp)
   local f,h
   if (slack_table) then
     f = io.open("slackparams.h","w")
@@ -311,13 +311,15 @@ function write_header(atasks, ptasks, J, slack_table, hpl)
   #J))
   h:write(string.format("#define  HP_LENGTH                  (%d)\n", 
   hpl))
+  h:write(string.format("#define  MAX_PERIOD                 (%d)\n",
+  maxp))
   h:write(string.format("#define  NUM_PERIODIC_TASKS         (%d)\n", 
   #ptasks))
   h:write(string.format("#define  NUM_APERIODIC_TASKS        (%d)\n",
   #atasks))
   h:write(string.format("#define  NUM_TASKS                  ( NUM_PERIODIC_TASKS + NUM_APERIODIC_TASKS )\n"))
 
-  h:write(string.format("#define  THRESHOLD_US      ( HP_LENGTH * 2 * CONFIGURE_MICROSECONDS_PER_TICK )\n"))
+--  h:write(string.format("#define  THRESHOLD_US      ( HP_LENGTH * 2 * CONFIGURE_MICROSECONDS_PER_TICK )\n"))
 
   h:write("#endif\n")
 
@@ -343,13 +345,15 @@ function write_header(atasks, ptasks, J, slack_table, hpl)
   #J))
   f:write(string.format("#define  HP_LENGTH                  (%d)\n", 
   hpl))
+  f:write(string.format("#define  MAX_PERIOD                 (%d)\n",
+  maxp))
   f:write(string.format("#define  NUM_PERIODIC_TASKS         (%d)\n", 
   #ptasks))
   f:write(string.format("#define  NUM_APERIODIC_TASKS        (%d)\n",
   #atasks))
   f:write(string.format("#define  NUM_TASKS                  ( NUM_PERIODIC_TASKS + NUM_APERIODIC_TASKS )\n"))
 
-  f:write(string.format("#define  THRESHOLD_US      ( HP_LENGTH * 2 * CONFIGURE_MICROSECONDS_PER_TICK )\n"))
+--  f:write(string.format("#define  THRESHOLD_US      ( HP_LENGTH * 2 * CONFIGURE_MICROSECONDS_PER_TICK )\n"))
 
   -- slack table
   if slack_table then
@@ -403,15 +407,16 @@ function write_header(atasks, ptasks, J, slack_table, hpl)
   local p_execution = get_execution_times(ptasks);
   local a_execution = get_execution_times(atasks);
 
-  if #p_execution > 0 then
-    f:write(string.format("%s", 
-    "uint32_t  Execution_threshold[1+NUM_PERIODIC_TASKS] = {\n" ..
-    "                " .. "0,\n" .. "                THRESHOLD_US / (" ..
-    table.concat(p_execution, "*CONFIGURE_MICROSECONDS_PER_TICK ),\n                THRESHOLD_US / ( ") .. 
-    "*CONFIGURE_MICROSECONDS_PER_TICK )\n" ..  "                };\n")) 
-  else
-    f:write("uint32_t  Execution_threshold[1+NUM_PERIODIC_TASKS] = { 0 };\n");
-  end
+---- DEPRECATED
+--  if #p_execution > 0 then
+--    f:write(string.format("%s", 
+--    "uint32_t  Execution_threshold[1+NUM_PERIODIC_TASKS] = {\n" ..
+--    "                " .. "0,\n" .. "                THRESHOLD_US / (" ..
+--    table.concat(p_execution, "*CONFIGURE_MICROSECONDS_PER_TICK ),\n                THRESHOLD_US / ( ") .. 
+--    "*CONFIGURE_MICROSECONDS_PER_TICK )\n" ..  "                };\n")) 
+--  else
+--    f:write("uint32_t  Execution_threshold[1+NUM_PERIODIC_TASKS] = { 0 };\n");
+--  end
 
   f:write("uint32_t  Tick_Count[1+NUM_TASKS]           = { 0")
   if #p_execution > 0 then
@@ -528,6 +533,8 @@ periods = get_deadlines(periodic_tasks)
 -- determine length of a hyperperiod
 hyperperiod_length = get_hyperperiod_length(periods)
 
+max_period = math.max(map(tonumber,unpack(periods)))
+
 -- determine set of jobs
 J = get_jobs(periodic_tasks, hyperperiod_length)
 
@@ -544,7 +551,7 @@ compute_initial_slacks(J)
 -- compute the slack table
 slack_table = compute_slack_table(J, hyperperiod_length)
 
-write_header(aperiodic_tasks, periodic_tasks, J, slack_table, hyperperiod_length)
+write_header(aperiodic_tasks, periodic_tasks, J, slack_table, hyperperiod_length, max_period)
 
 -- now generate the headers without the slack table.
-write_header(aperiodic_tasks, periodic_tasks, J, nil, hyperperiod_length)
+write_header(aperiodic_tasks, periodic_tasks, J, nil, hyperperiod_length, max_period)
