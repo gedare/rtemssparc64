@@ -14,7 +14,7 @@ import random
 import math
 import sys
 import getopt
-import subprocess
+import array
 
 def usage():
   print "\
@@ -49,45 +49,36 @@ def main():
     elif opt in ("-d", "--distribution"):
       distribution = int(arg)
     elif opt in ("-u", "--utilization"):
-      max_u = int(arg)
+      max_u = float(arg)
     else:
       assert False, "unhandled option"
 
-  utilization = 0
+  # Generate a list of num_tasks uniform random periods between 1 and 100.
+  p_list = [int(1+random.random()*100) for i in xrange(num_tasks)]
+
   Tasks = ''
 
-## Loop through all of the tasks, creating each task with a 
-## uniform period between 1 and 100, and utilization based on 
-## the distribution parameter.
+  if   (distribution == 1): # uniform(num_tasks)
+    u_list = [random.uniform(0.001,1) for i in xrange(num_tasks)]
+  elif (distribution == 2): #bimodal(num_tasks)
+    print "bimodal"
+  elif (distribution == 3): #expon(num_tasks, 0.25)
+    print "exponential with mean 0.25"
+  elif (distribution == 4): #expon(num_tasks, 0.5)
+    print "exponential with mean 0.5"
+  else:
+    assert False, "invalid distribution"
+
+  # Normalize task utilizations to sum(u_list) == max_u
+  u_sum = sum(u_list)
+  normalization_factor = max_u / u_sum
+  u_norm = [u*normalization_factor for u in u_list]
+  
   for i in xrange(num_tasks):
-    # Uniform random period between 1 and 100.
-    period = math.floor(1 + random.random()*MAXIMUM_PERIOD) ## 1 + [0.0,1.0)*100
-
-    if   (distribution == 1): # uniform(num_tasks)
-      u = random.uniform(0.001, max_u / float(num_tasks))
-    elif (distribution == 2): #bimodal(num_tasks)
-      print "bimodal"
-    elif (distribution == 3): #expon(num_tasks, 0.25)
-      print "exponential with mean 0.25"
-    elif (distribution == 4): #expon(num_tasks, 0.5)
-      print "exponential with mean 0.5"
-    else:
-      assert False, "invalid distribution"
-
-    if (u < 0.001): 
-      u = 0.001
-    if (u > 0.999):
-      u = 0.999
-
-    utilization = utilization + u
-
-    # Keep only 3 decimal places
-    precise_u = '%.3f' % u
-
-    Tasks += '-T ' + str(int(period)) + ',' + precise_u + ',0 '
+    Tasks += '-T ' + str(p_list[i]) + ',' + ('%.3f' % u_norm[i]) + ',0 '
 
   print Tasks
-#  subprocess.call(["lua","gen-headers.lua " + Tasks])
+  exit(1)
   os.system("lua gen-headers.lua " + Tasks)
 
 if __name__ == "__main__":
