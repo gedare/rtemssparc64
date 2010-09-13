@@ -15,6 +15,7 @@ import math
 import sys
 import getopt
 import array
+import os
 
 def usage():
   print "\
@@ -78,7 +79,6 @@ def main():
     Tasks += '-T ' + str(p_list[i]) + ',' + ('%.3f' % u_norm[i]) + ',0 '
 
   print Tasks
-  exit(1)
   os.system("lua gen-headers.lua " + Tasks)
 
 if __name__ == "__main__":
