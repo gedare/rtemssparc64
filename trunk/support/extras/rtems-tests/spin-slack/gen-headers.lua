@@ -454,7 +454,7 @@ function write_header(atasks, ptasks, J, slack_table, hpl, maxp)
       if i < #p_execution - 1 then
         f:write("CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ")
       else
-        f:write("*CONFIGURE_MICROSECONDS_PER_TICK\n")
+        f:write("CONFIGURE_MICROSECONDS_PER_TICK\n")
       end
     end
    -- table.concat(periods, "*") ..
