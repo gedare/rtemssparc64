@@ -1,0 +1,58 @@
+Index: c/src/lib/libbsp/sparc64/shared/clock/ckinit.c
+===================================================================
+RCS file: /usr1/CVS/rtems/c/src/lib/libbsp/sparc64/shared/clock/ckinit.c,v
+retrieving revision 1.1
+diff -u -p -r1.1 ckinit.c
+--- c/src/lib/libbsp/sparc64/shared/clock/ckinit.c	17 Jun 2010 16:20:44 -0000	1.1
++++ c/src/lib/libbsp/sparc64/shared/clock/ckinit.c	13 Sep 2010 22:58:24 -0000
+@@ -50,11 +50,16 @@ void Clock_driver_support_at_tick(void)
+ {
+   uint64_t tick_reg;
+   int bit_mask;
+-
++  uint64_t pil_reg;
+ 
+   bit_mask = SPARC_SOFTINT_TM_MASK | SPARC_SOFTINT_SM_MASK | (1<<14);
+   sparc64_clear_interrupt_bits(bit_mask);
+ 
++  sparc64_get_pil(pil_reg);
++  if(pil_reg == 0xe) { /* 0xe is the tick compare interrupt (softint(14)) */
++    pil_reg--;
++    sparc64_set_pil(pil_reg); /* enable the next timer interrupt */
++  }
+   /* Note: sun4v uses stick_cmpr for clock driver for M5 simulator, which 
+    * does not currently have tick_cmpr implemented */
+   /* TODO: this could be more efficiently implemented as a single assembly 
+@@ -85,7 +90,6 @@ void Clock_driver_support_initialize_har
+   uint64_t tick_reg; 	
+   int bit_mask;
+ 
+-
+   bit_mask = SPARC_SOFTINT_TM_MASK | SPARC_SOFTINT_SM_MASK | (1<<14);
+   sparc64_clear_interrupt_bits(bit_mask);
+ 
+Index: cpukit/score/cpu/sparc64/rtems/score/sparc64.h
+===================================================================
+RCS file: /usr1/CVS/rtems/cpukit/score/cpu/sparc64/rtems/score/sparc64.h,v
+retrieving revision 1.1
+diff -u -p -r1.1 sparc64.h
+--- cpukit/score/cpu/sparc64/rtems/score/sparc64.h	15 Jun 2010 22:43:56 -0000	1.1
++++ cpukit/score/cpu/sparc64/rtems/score/sparc64.h	13 Sep 2010 22:58:28 -0000
+@@ -186,7 +186,7 @@ extern "C" {
+ #define sparc64_set_pstate( _pstate ) \
+   do { \
+     asm volatile ( \
+-      "wrpr  %g0, %0, %%pstate " : "=r" ((_pstate)) : "0" ((_pstate)) ); \
++      "wrpr  %%g0, %0, %%pstate " : "=r" ((_pstate)) : "0" ((_pstate)) ); \
+   } while ( 0 )
+ 
+ /*
+@@ -201,7 +201,7 @@ extern "C" {
+ 
+ #define sparc64_set_pil( _pil ) \
+   do { \
+-    asm volatile ( "wrpr  %g0, %0, %%pil " : "=r" ((_pil)) : "0" ((_pil)) ); \
++    asm volatile ( "wrpr  %%g0, %0, %%pil " : "=r" ((_pil)) : "0" ((_pil)) ); \
+   } while ( 0 )
+ 
+ 
