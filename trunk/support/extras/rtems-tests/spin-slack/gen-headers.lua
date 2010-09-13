@@ -540,6 +540,7 @@ periods = get_deadlines(periodic_tasks)
 -- hyperperiod_length = get_hyperperiod_length(periods)
 max_period = math.max(map(tonumber,unpack(periods)))
 hyperperiod_length = -1
+print(hyperperiod_length)
 
 -- determine set of jobs
 --J = get_jobs(periodic_tasks, hyperperiod_length)
