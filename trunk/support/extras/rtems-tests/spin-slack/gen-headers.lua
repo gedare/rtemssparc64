@@ -448,10 +448,18 @@ function write_header(atasks, ptasks, J, slack_table, hpl, maxp)
     "0*CONFIGURE_MICROSECONDS_PER_TICK,\n"))
 
   if #p_execution > 0 then
-    f:write(string.format("%s",
-    "                                             " ..
-    table.concat(p_execution, "*CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ") ..
-    "*CONFIGURE_MICROSECONDS_PER_TICK,\n"))
+    f:write("                                             ")
+    for i,v in ipairs(periods) do
+      f:write(string.format("%s*%s*", tostring(v), tostring(p_execution[i])))
+      if i < #p_execution - 1 then
+        f:write("CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ")
+      else
+        f:write("*CONFIGURE_MICROSECONDS_PER_TICK\n")
+      end
+    end
+   -- table.concat(periods, "*") ..
+   -- table.concat(p_execution, "*CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ") ..
+   -- "*CONFIGURE_MICROSECONDS_PER_TICK,\n"))
   end
   if #a_execution > 0 then
     f:write(string.format("%s",
@@ -540,7 +548,6 @@ periods = get_deadlines(periodic_tasks)
 -- hyperperiod_length = get_hyperperiod_length(periods)
 max_period = math.max(map(tonumber,unpack(periods)))
 hyperperiod_length = -1
-print(hyperperiod_length)
 
 -- determine set of jobs
 --J = get_jobs(periodic_tasks, hyperperiod_length)
