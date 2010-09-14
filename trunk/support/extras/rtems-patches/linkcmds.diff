@@ -1,0 +1,17 @@
+Index: linkcmds
+===================================================================
+RCS file: /usr1/CVS/rtems/c/src/lib/libbsp/sparc64/shared/startup/linkcmds,v
+retrieving revision 1.2
+diff -r1.2 linkcmds
+16,18c16,18
+< RamSize = DEFINED(RamSize) ? RamSize : 16M;
+< HeapSize = DEFINED(HeapSize) ? HeapSize : 256k;
+< StackSize = DEFINED(StackSize) ? StackSize : 256k;
+---
+> RamSize = DEFINED(RamSize) ? RamSize : 256M;
+> HeapSize = DEFINED(HeapSize) ? HeapSize : 1M;
+> StackSize = DEFINED(StackSize) ? StackSize : 1M;
+28c28
+< 	        ram : ORIGIN = 0x0, LENGTH = 16M
+---
+> 	        ram : ORIGIN = 0x0, LENGTH = 256M
