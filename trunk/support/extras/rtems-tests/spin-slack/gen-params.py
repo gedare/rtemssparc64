@@ -74,7 +74,13 @@ def main():
   u_sum = sum(u_list)
   normalization_factor = max_u / u_sum
   u_norm = [u*normalization_factor for u in u_list]
-  
+ 
+  u_norm_sum = 0
+  for i in xrange(num_tasks):
+    u_norm_sum += int(float('%.3f' % (u_norm[i]*1000)))
+
+  print(float(u_norm_sum)/1000)
+
   for i in xrange(num_tasks):
     Tasks += '-T ' + str(p_list[i]) + ',' + ('%.3f' % u_norm[i]) + ',0 '
 
