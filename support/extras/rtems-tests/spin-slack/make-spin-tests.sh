@@ -46,8 +46,12 @@ RESULTS_TAG2=${6}_`date +%Y%m%d%H%M`
 
 ## prepare the pre-build (configure) environment.
 ## this makes for faster re-building later.
-${SIMICS_WKSP1}/build-sparc64/build-b-usiiicvs.sh
-${SIMICS_WKSP2}/build-sparc64/build-b-usiiicvs.sh
+cd ${SIMICS_WKSP1}/build-sparc64
+./build-b-usiiicvs.sh
+cd -
+cd ${SIMICS_WKSP2}/build-sparc64
+./build-b-usiiicvs.sh
+cd -
 mkdir ${SIMICS_WKSP1}/results
 mkdir ${SIMICS_WKSP2}/results
 mkdir ${SIMICS_WKSP1}/results/${RESULTS_TAG1}
@@ -90,9 +94,9 @@ do
 
     cd ${PWD}
     ## build and run tests
-    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD} &
-    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD} &
-    wait
+    PID1=./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD} &
+    PID2=./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD} &
+    wait ${PID1} ${PID2}
 
     ## Now do the EDF scheduler
     for count in {1..50}
@@ -105,15 +109,15 @@ do
       spindir1=${RTEMS_DIR1}/testsuites/gabtests/${spintest}
       spindir2=${RTEMS_DIR2}/testsuites/gabtests/${spintest}
 
-      sed -i -e 's/\/\/#define CONFIGURE_SCHEDULER_EDF/#define CONFIGURE_SCHEDULER_EDF/' ${spindir1}/system.h
-      sed -i -e 's/\/\/#define CONFIGURE_SCHEDULER_EDF/#define CONFIGURE_SCHEDULER_EDF/' ${spindir2}/system.h
+      sed -i -e 's/\/*#define CONFIGURE_SCHEDULER_EDF/#define CONFIGURE_SCHEDULER_EDF/' ${spindir1}/system.h
+      sed -i -e 's/\/*#define CONFIGURE_SCHEDULER_EDF/#define CONFIGURE_SCHEDULER_EDF/' ${spindir2}/system.h
     done
 
     cd ${PWD}
     ## build and run tests
-    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD} &
-    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD} &
-    wait
+    PID1=./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD} &
+    PID2=./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD} &
+    wait ${PID1} ${PID2}
   done
 done
 
