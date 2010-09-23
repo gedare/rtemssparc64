@@ -31,7 +31,7 @@ def usage():
                         4. Exponential distribution with mean 0.50\n\
   -u --utilization=   specify maximum utilization"
 
-MAXIMUM_PERIOD = 100
+MAXIMUM_PERIOD = 50
 
 def main():
   try:
@@ -55,7 +55,7 @@ def main():
       assert False, "unhandled option"
 
   # Generate a list of num_tasks uniform random periods between 1 and 100.
-  p_list = [int(1+random.random()*100) for i in xrange(num_tasks)]
+  p_list = [int(1+random.random()*MAXIMUM_PERIOD) for i in xrange(num_tasks)]
 
   Tasks = ''
 
