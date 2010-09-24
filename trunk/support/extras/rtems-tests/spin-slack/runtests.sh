@@ -36,3 +36,4 @@ tar -zcf results/${RESULTS_TAG}/${RESULTS_TAG}_${tasks}_${utilization}_${distrib
 cp results/${RESULTS_TAG}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz ${ARCHIVE_DIR}
 svn add  ${ARCHIVE_DIR}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz
 svn commit -m "uploading results"
+
