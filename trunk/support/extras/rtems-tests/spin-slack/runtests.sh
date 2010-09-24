@@ -24,8 +24,10 @@ do
   else
     spintest=spspin${count}
   fi
+      spindir=build-sparc64/rtems/testsuites/gabtests/${spintest}
 
   ./opal-quicktest.sh gabtests ${spintest} > output/${spintest}.stdout 2> output/${spintest}.stderr
+  cp ${spindir}/params.h output/${spintest}.params.h
 done
 
 mkdir results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
