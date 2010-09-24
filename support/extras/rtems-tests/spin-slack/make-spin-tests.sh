@@ -94,8 +94,10 @@ do
 
     cd ${PWD}
     ## build and run tests
-    PID1=./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD} &
-    PID2=./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD} &
+    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD} &
+    PID1=$!
+    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD} &
+    PID2=$!
     wait ${PID1} ${PID2}
 
     ## Now do the EDF scheduler
@@ -115,8 +117,10 @@ do
 
     cd ${PWD}
     ## build and run tests
-    PID1=./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD} &
-    PID2=./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD} &
+    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD} &
+    PID1=$!
+    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD} &
+    PID2=$!
     wait ${PID1} ${PID2}
   done
 done
