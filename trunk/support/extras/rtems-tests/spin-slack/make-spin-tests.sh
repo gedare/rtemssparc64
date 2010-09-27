@@ -46,12 +46,12 @@ RESULTS_TAG2=${6}_`date +%Y%m%d%H%M`
 
 ## prepare the pre-build (configure) environment.
 ## this makes for faster re-building later.
-cd ${SIMICS_WKSP1}/build-sparc64
-./build-b-usiiicvs.sh
-cd -
-cd ${SIMICS_WKSP2}/build-sparc64
-./build-b-usiiicvs.sh
-cd -
+#cd ${SIMICS_WKSP1}/build-sparc64
+#./build-b-usiiicvs.sh
+#cd -
+#cd ${SIMICS_WKSP2}/build-sparc64
+#./build-b-usiiicvs.sh
+#cd -
 mkdir ${SIMICS_WKSP1}/results
 mkdir ${SIMICS_WKSP2}/results
 mkdir ${SIMICS_WKSP1}/results/${RESULTS_TAG1}
@@ -59,7 +59,7 @@ mkdir ${SIMICS_WKSP2}/results/${RESULTS_TAG2}
 
 ## make this a loop
 ## get some parameters ...
-distribution=2
+distribution=3
 for tasks in 80 60 40 20
 do
   for utilization in 0.8 0.6 0.4 0.2
