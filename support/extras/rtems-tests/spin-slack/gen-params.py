@@ -74,13 +74,10 @@ def main():
   if   (distribution == 1): # uniform(num_tasks)
     u_list = [random.uniform(0.001,1) for i in xrange(num_tasks)]
   elif (distribution == 2): #bimodal(num_tasks)
-    print "bimodal"
     u_list = generate_bimodal(p_list, num_tasks);
   elif (distribution == 3): #expon(num_tasks, 0.25)
-    print "expo 0.25"
     u_list = [random.expovariate(4) for i in xrange(num_tasks)]
   elif (distribution == 4): #expon(num_tasks, 0.5)
-    print "expo 0.5"
     u_list = [random.expovariate(2) for i in xrange(num_tasks)]
   else:
     assert False, "invalid distribution"
