@@ -28,6 +28,7 @@ do
 
   ./opal-quicktest.sh gabtests ${spintest} > output/${spintest}.stdout 2> output/${spintest}.stderr
   cp ${spindir}/params.h output/${spintest}.params.h
+  cp ${spindir}/macros.h output/${spintest}.macros.h
 done
 
 mkdir results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
