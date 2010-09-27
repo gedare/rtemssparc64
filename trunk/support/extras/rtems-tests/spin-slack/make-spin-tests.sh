@@ -65,7 +65,7 @@ do
   for utilization in 0.8 0.6 0.4 0.2
   do
     ## Generate tests
-    for count in {1..50}
+    for count in {1..10}
       do
       if [ $count -lt 10 ]; then
         spintest=spspin0${count}
