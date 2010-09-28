@@ -17,7 +17,7 @@ cd ${SIMICS_WKSP}/build-sparc64/boot
 cd ${SIMICS_WKSP}
 ## clean up from previous run
 rm -rf output/*
-for count in {1..50}
+for count in {1..10}
 do
   if [ $count -lt 10 ]; then
     spintest=spspin0${count}
