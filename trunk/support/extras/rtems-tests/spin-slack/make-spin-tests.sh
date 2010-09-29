@@ -59,7 +59,7 @@ mkdir ${SIMICS_WKSP2}/results/${RESULTS_TAG2}
 
 ## make this a loop
 ## get some parameters ...
-distribution=3
+distribution=2
 for tasks in 80 60 40 20
 do
   for utilization in 0.8 0.6 0.4 0.2
