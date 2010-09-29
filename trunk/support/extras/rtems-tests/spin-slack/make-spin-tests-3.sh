@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $# -ne 6 ]]
+if [[ $# -ne 9 ]]
 then
   echo "Error - parameters missing"
   echo "Syntax: $0 rtems_dir1 simics_workspace1 rtems_dir2 simics_workspace2 results_tag1 results_tag2"
@@ -56,8 +56,8 @@ SIMICS_WKSP1=$2
 RTEMS_DIR2=$3
 SIMICS_WKSP2=$4
 
-RTEMS_DIR2=$7
-SIMICS_WKSP2=$8
+RTEMS_DIR3=$7
+SIMICS_WKSP3=$8
 
 RESULTS_TAG1=${5}_`date +%Y%m%d%H%M`
 RESULTS_TAG2=${6}_`date +%Y%m%d%H%M`
