@@ -59,7 +59,7 @@ mkdir ${SIMICS_WKSP2}/results/${RESULTS_TAG2}
 
 ## make this a loop
 ## get some parameters ...
-distribution=1
+distribution=3
 for tasks in 80 60 40 20
 do
   for utilization in 0.8 0.6 0.4 0.2
@@ -94,14 +94,14 @@ do
 
     cd ${PWD}
     ## build and run tests
-    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd &
+    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd2 &
     PID1=$!
-    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd &
+    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd2 &
     PID2=$!
     wait ${PID1} ${PID2}
 
     ## Now do the EDF scheduler
-    for count in {1..50}
+    for count in {1..10}
       do
       if [ $count -lt 10 ]; then
         spintest=spspin0${count}
@@ -117,9 +117,9 @@ do
 
     cd ${PWD}
     ## build and run tests
-    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd &
+    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd2 &
     PID1=$!
-    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd &
+    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd2 &
     PID2=$!
     wait ${PID1} ${PID2}
   done
