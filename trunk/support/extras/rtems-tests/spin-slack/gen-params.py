@@ -93,6 +93,13 @@ def main():
 
 #  print(float(u_norm_sum)/1000)
 
+  f = open('test_params.txt', 'w')
+  f.write(str(float(u_norm_sum)/1000))
+  f.write('\n')
+  for i in xrange(num_tasks):
+    f.write(str(p_list[i]) + ',' + ('%.3f' % u_norm[i]) + '\n')
+  f.write('\n')
+
   for i in xrange(num_tasks):
     Tasks += '-T ' + str(p_list[i]) + ',' + ('%.3f' % u_norm[i]) + ',0 '
 

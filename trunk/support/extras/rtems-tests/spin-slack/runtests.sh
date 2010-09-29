@@ -33,6 +33,7 @@ done
 
 mkdir results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
 mv output/* results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
+cp ${ARCHIVE_DIR}/../test_params.txt results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}/
 tar -zcf results/${RESULTS_TAG}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
 cp results/${RESULTS_TAG}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz ${ARCHIVE_DIR}
 svn add  ${ARCHIVE_DIR}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz
