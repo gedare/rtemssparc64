@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if [[ $# -ne 6 ]]
+if [[ $# -ne 9 ]]
 then
   echo "Error - parameters missing"
-  echo "Syntax: $0 rtems_dir1 simics_workspace1 rtems_dir2 simics_workspace2 results_tag1 results_tag2"
+  echo "Syntax: $0 rtems_dir1 simics_workspace1 rtems_dir2 simics_workspace2 rtems_dir3 simics_workspace3 results_tag1 results_tag2 results_tag3"
   echo "Example: $0 ${HOME}/work/rtems/rtems-sched/rtems ${HOME}/work/simics/gems/gems-2.1.1-gedare/simics ${HOME}/work/rtems/rtems-sched/rtems-hwds ${HOME}/work/simics/gems/gems-2.1.1-hwds/simics baseline hwds"
   exit 1
 fi
@@ -35,14 +35,32 @@ then
   echo "$4 is not a proper simics workspace"
   exit 1
 fi
+
+# Check that $5 is a valid rtems source directory
+if [[ ! -d $5/cpukit || ! -d $3/c ]]
+then
+  echo "$5 is not a valid rtems source-code directory"
+  exit 1
+fi
+
+# Check that $6 is a prepared simics workspace
+if [[ ! -f $6/opal-quicktest.sh ]]
+then
+  echo "$6 is not a proper simics workspace"
+  exit 1
+fi
+
 PWD=`pwd`
 count=0
 RTEMS_DIR1=$1
 SIMICS_WKSP1=$2
 RTEMS_DIR2=$3
 SIMICS_WKSP2=$4
-RESULTS_TAG1=${5}_`date +%Y%m%d%H%M`
-RESULTS_TAG2=${6}_`date +%Y%m%d%H%M`
+RTEMS_DIR3=$5
+SIMICS_WKSP3=$6
+RESULTS_TAG1=${7}_`date +%Y%m%d%H%M`
+RESULTS_TAG2=${8}_`date +%Y%m%d%H%M`
+RESULTS_TAG3=${9}_`date +%Y%m%d%H%M`
 
 ## prepare the pre-build (configure) environment.
 ## this makes for faster re-building later.
@@ -54,8 +72,10 @@ RESULTS_TAG2=${6}_`date +%Y%m%d%H%M`
 #cd -
 mkdir ${SIMICS_WKSP1}/results
 mkdir ${SIMICS_WKSP2}/results
+mkdir ${SIMICS_WKSP3}/results
 mkdir ${SIMICS_WKSP1}/results/${RESULTS_TAG1}
 mkdir ${SIMICS_WKSP2}/results/${RESULTS_TAG2}
+mkdir ${SIMICS_WKSP3}/results/${RESULTS_TAG3}
 
 ## make this a loop
 ## get some parameters ...
@@ -74,10 +94,11 @@ do
       fi
       spindir1=${RTEMS_DIR1}/testsuites/gabtests/${spintest}
       spindir2=${RTEMS_DIR2}/testsuites/gabtests/${spintest}
+      spindir3=${RTEMS_DIR3}/testsuites/gabtests/${spintest}
   
-      if [[ ! -d ${spindir1} || ! -d ${spindir2} ]]
+      if [[ ! -d ${spindir1} || ! -d ${spindir2} || ! -d ${spindir3} ]]
       then
-        echo "Unable to find directory: ${spindir1} or ${spindir2}"
+        echo "Unable to find directory: ${spindir1} or ${spindir2} or ${spindir3}"
         exit 1
       fi
   
@@ -87,9 +108,12 @@ do
       cp macros.h ${spindir1}/macros.h
       cp params.h ${spindir2}/params.h
       cp macros.h ${spindir2}/macros.h
+      cp params.h ${spindir3}/params.h
+      cp macros.h ${spindir3}/macros.h
       ## enforce RM (priority) scheduling first
       sed -i -e 's/#define CONFIGURE_SCHEDULER_EDF/\/\/#define CONFIGURE_SCHEDULER_EDF/' ${spindir1}/system.h
       sed -i -e 's/#define CONFIGURE_SCHEDULER_EDF/\/\/#define CONFIGURE_SCHEDULER_EDF/' ${spindir2}/system.h
+      sed -i -e 's/#define CONFIGURE_SCHEDULER_EDF/\/\/#define CONFIGURE_SCHEDULER_EDF/' ${spindir3}/system.h
     done
 
     cd ${PWD}
@@ -98,7 +122,9 @@ do
     PID1=$!
     ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd2 &
     PID2=$!
-    wait ${PID1} ${PID2}
+    ./runtests.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd2 &
+    PID3=$!
+    wait ${PID1} ${PID2} ${PID3}
 
     ## Now do the EDF scheduler
     for count in {1..10}
@@ -110,9 +136,11 @@ do
       fi
       spindir1=${RTEMS_DIR1}/testsuites/gabtests/${spintest}
       spindir2=${RTEMS_DIR2}/testsuites/gabtests/${spintest}
+      spindir3=${RTEMS_DIR3}/testsuites/gabtests/${spintest}
 
       sed -i -e 's/\/*#define CONFIGURE_SCHEDULER_EDF/#define CONFIGURE_SCHEDULER_EDF/' ${spindir1}/system.h
       sed -i -e 's/\/*#define CONFIGURE_SCHEDULER_EDF/#define CONFIGURE_SCHEDULER_EDF/' ${spindir2}/system.h
+      sed -i -e 's/\/*#define CONFIGURE_SCHEDULER_EDF/#define CONFIGURE_SCHEDULER_EDF/' ${spindir3}/system.h
     done
 
     cd ${PWD}
@@ -121,7 +149,9 @@ do
     PID1=$!
     ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd2 &
     PID2=$!
-    wait ${PID1} ${PID2}
+    ./runtests.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd2 &
+    PID3=$!
+    wait ${PID1} ${PID2} ${PID3}
   done
 done
 
