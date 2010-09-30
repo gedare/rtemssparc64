@@ -68,7 +68,7 @@ sched_ds1_cycles
 sched_accesses
 sched_cycles_saved
 sched_cycles_max
-sched_cycles_max_ds' ${results_file}
+sched_cycles_max_ds' ${results_file} | sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' -e 's/                         /:/' -e's/\s*$//' -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' -e 's/:.*:/:/g' -e 's/:/,/'
 
       done
       cd ..
