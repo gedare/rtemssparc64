@@ -17,7 +17,7 @@ ARCHIVE_DIR=$7
 cd ${SIMICS_WKSP}
 ## clean up from previous run
 rm -rf output/*
-for count in {1..10}
+for count in {1..40}
 do
   if [ $count -lt 10 ]; then
     spintest=spspin0${count}
