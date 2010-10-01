@@ -9,10 +9,10 @@ RUN_TAG=$6
 ARCHIVE_DIR=$7
 
 ## build tests and image
-#cd ${SIMICS_WKSP}/build-sparc64/b-usiiicvs/sparc64-rtems4.11/c/usiii/testsuites/gabtests/
-#make -j2
-#cd ${SIMICS_WKSP}/build-sparc64/boot
-#./build-usiii.sh
+cd ${SIMICS_WKSP}/build-sparc64/b-usiiicvs/sparc64-rtems4.11/c/usiii/testsuites/gabtests/
+make -j2
+cd ${SIMICS_WKSP}/build-sparc64/boot
+./build-usiii.sh
 
 cd ${SIMICS_WKSP}
 ## clean up from previous run
