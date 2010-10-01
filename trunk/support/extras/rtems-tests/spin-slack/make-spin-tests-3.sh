@@ -86,7 +86,7 @@ do
   for utilization in 0.8 0.6 0.4 0.2
   do
     ## Generate tests
-    for count in {1..10}
+    for count in {1..40}
       do
       if [ $count -lt 10 ]; then
         spintest=spspin0${count}
@@ -120,16 +120,16 @@ do
 
     cd ${PWD}
     ## build and run tests
-    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-full &
     PID1=$!
-    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-full &
     PID2=$!
-    ./runtests.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-full &
     PID3=$!
     wait ${PID1} ${PID2} ${PID3}
 
     ## Now do the EDF scheduler
-    for count in {1..10}
+    for count in {1..40}
       do
       if [ $count -lt 10 ]; then
         spintest=spspin0${count}
@@ -147,11 +147,11 @@ do
 
     cd ${PWD}
     ## build and run tests
-    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-full &
     PID1=$!
-    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-full &
     PID2=$!
-    ./runtests.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-full &
     PID3=$!
     wait ${PID1} ${PID2} ${PID3}
   done
