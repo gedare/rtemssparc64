@@ -156,4 +156,6 @@ do
     wait ${PID1} ${PID2} ${PID3}
   done
 done
+cd ${PWD}
+svn commit -m "updating results"
 
