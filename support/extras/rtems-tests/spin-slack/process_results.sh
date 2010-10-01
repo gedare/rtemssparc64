@@ -50,6 +50,7 @@ for dir in `ls`
 do
   TESTTAG=$dir
   cd ${TESTTAG}
+  TAG=`echo ${TESTTAG} | tr -d '\n' | sed -e 's/_.*$//'`
 
   if [[ -d ${OUTPUT}/${TESTTAG} ]]
   then
@@ -63,6 +64,7 @@ do
   for ((i=0;i<${#FILES[@]};i++))
   do
     touch ${D}/${FILES[$i]}
+    echo "testtag,dist,sched,tasks,util,run,field,value" >> ${D}/${FILES[$i]}
   done
   touch ${D}/test_params.csv
 
@@ -77,6 +79,13 @@ do
       cat test_params.txt >> ${D}/test_params.csv
       echo "==========" >> ${D}/test_params.csv
 
+      PARSERUN=`echo ${TESTRUN} | tr -d '\n' | \
+        sed -e 's/\(.*\)_\(.*\)_\(.*\)_\(.*\)$/\3,\4,\1,\2/'`
+#      UTIL=`echo ${TESTRUN} | tr -d '\n' | sed -e 's/.*_\(.*\)_.*$/\1/'`
+#      DIST=`echo ${TESTRUN} | tr -d '\n' | sed -e 's/.*_.*_\(.*\)_.*$/\1/'`
+#      SCHED=`echo ${TESTRUN} | tr -d '\n' | sed -e 's/.*_.*_.*_\(.*\)$/\1/'`
+      
+      TMP_FILE=
       for results_file in `ls *.opal`
       do
         for ((i=0;i<${#FILES[@]};i++))
@@ -87,10 +96,27 @@ do
           sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
           -e 's/                         /:/' -e 's/\s*$//' \
           -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
-          -e 's/:.*:/:/g' -e 's/:/,/' -e "s/^/${TESTRUN},${BUFFER},/" \
+          -e 's/:.*:/:/g' -e 's/:/,/' \
+          -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
           >>${D}/${FILES[$i]}
         done
+        TMP_FILE=${results_file}
       done
+
+      # Write out a placeholder for aggregates (average / max / min)
+      for ((i=0;i<${#FILES[@]};i++))
+      do
+        BUFFER='aggregate'
+        grep "${STRINGS[$i]}" ${TMP_FILE} | \
+          sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
+            -e 's/                         /:/' -e 's/\s*$//' \
+            -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
+            -e 's/:.*:/:/g' -e 's/:.*/,/' \
+            -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
+          >>${D}/${FILES[$i]}
+        echo "" >> ${D}/${FILES[$i]}
+      done
+
       cd ..
     fi
   done
