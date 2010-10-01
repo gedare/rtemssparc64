@@ -17,18 +17,14 @@ ARCHIVE_DIR=$7
 cd ${SIMICS_WKSP}
 ## clean up from previous run
 rm -rf output/*
-for count in {1..10}
+for count in {0..9}
 do
-  if [ $count -lt 10 ]; then
-    spintest=spspin0${count}
-  else
-    spintest=spspin${count}
-  fi
-      spindir=build-sparc64/rtems/testsuites/gabtests/${spintest}
+  cachetest=cache0${count}
+  cachedir=build-sparc64/rtems/testsuites/gabtests/${cachetest}
 
-  ./opal-quicktest.sh gabtests ${spintest} > output/${spintest}.stdout 2> output/${spintest}.stderr
-  cp ${spindir}/params.h output/${spintest}.params.h
-  cp ${spindir}/macros.h output/${spintest}.macros.h
+  ./opal-quicktest.sh gabtests ${cachetest} > output/${cachetest}.stdout 2> output/${cachetest}.stderr
+  cp ${cachedir}/params.h output/${cachetest}.params.h
+  cp ${cachedir}/macros.h output/${cachetest}.macros.h
 done
 
 mkdir results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
@@ -38,3 +34,4 @@ tar -zcf results/${RESULTS_TAG}/${RESULTS_TAG}_${tasks}_${utilization}_${distrib
 cp results/${RESULTS_TAG}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz ${ARCHIVE_DIR}
 svn add  ${ARCHIVE_DIR}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz
 cd -
+
