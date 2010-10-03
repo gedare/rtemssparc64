@@ -15,21 +15,21 @@ cd ${SIMICS_WKSP}/build-sparc64/boot
 ./build-usiii.sh
 
 cd ${SIMICS_WKSP}
+mkdir results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
 ## clean up from previous run
 rm -rf output/*
 for count in {0..9}
 do
   cachetest=cache0${count}
   cachedir=build-sparc64/rtems/testsuites/gabtests/${cachetest}
+  cp ${ARCHIVE_DIR}/../cache0${count}.test_params.txt results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}/
 
   ./opal-quicktest.sh gabtests ${cachetest} > output/${cachetest}.stdout 2> output/${cachetest}.stderr
   cp ${cachedir}/params.h output/${cachetest}.params.h
   cp ${cachedir}/macros.h output/${cachetest}.macros.h
 done
 
-mkdir results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
 mv output/* results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
-cp ${ARCHIVE_DIR}/../test_params.txt results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}/
 tar -zcf results/${RESULTS_TAG}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
 cp results/${RESULTS_TAG}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz ${ARCHIVE_DIR}
 svn add  ${ARCHIVE_DIR}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz
