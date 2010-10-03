@@ -64,7 +64,6 @@ do
   for ((i=0;i<${#FILES[@]};i++))
   do
     touch ${D}/${FILES[$i]}
-    echo "testtag,dist,sched,tasks,util,run,field,value" >> ${D}/${FILES[$i]}
   done
   touch ${D}/test_params.csv
 
@@ -76,9 +75,13 @@ do
     then
       cd ${TESTRUN}
       echo ${TESTRUN} >> ${D}/test_params.csv
-      cat test_params.txt >> ${D}/test_params.csv
-      echo "==========" >> ${D}/test_params.csv
+        echo "==========" >> ${D}/test_params.csv
 
+      for results_file in `ls | grep test_params`
+      do
+        cat ${results_file} >> ${D}/test_params.csv
+        echo "==========" >> ${D}/test_params.csv
+      done
       PARSERUN=`echo ${TESTRUN} | tr -d '\n' | \
         sed -e 's/\(.*\)_\(.*\)_\(.*\)_\(.*\)$/\3,\4,\1,\2/'`
 #      UTIL=`echo ${TESTRUN} | tr -d '\n' | sed -e 's/.*_\(.*\)_.*$/\1/'`
@@ -94,11 +97,13 @@ do
           BUFFER=`echo ${results_file} | tr -d '\n' | sed -e 's/$//'`
           grep "${STRINGS[$i]}" ${results_file} | \
           sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
-          -e 's/                         /:/' -e 's/\s*$//' \
-          -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
-          -e 's/:.*:/:/g' -e 's/:/,/' \
-          -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
+          -e 's/                         /:/' -e 's/  //g' \
+          -e 's/\s*$/,/' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
+          -e 's/:.*:/:/g' -e 's/:/,/' | \
+          tr -d '\n' | sed -e 's/,$//' | \
+          sed -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
           >>${D}/${FILES[$i]}
+          echo "" >> ${D}/${FILES[$i]}
         done
         TMP_FILE=${results_file}
       done
