@@ -81,9 +81,9 @@ mkdir ${SIMICS_WKSP3}/results/${RESULTS_TAG3}
 ## make this a loop
 ## get some parameters ...
 distribution=1
-for tasks in 60 #80 60 40 20
+for tasks in 80 60 40 20
 do
-  for utilization in 0.8 #0.6 0.4 0.2
+  for utilization in 0.8 0.6 0.4 0.2
   do
     ## Generate tests
     for count in {1..10}
@@ -121,11 +121,11 @@ do
 
     cd ${PWD}
     ## build and run tests
-    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd4 &
     PID1=$!
-    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd4 &
     PID2=$!
-    ./runtests.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd4 &
     PID3=$!
     wait ${PID1} ${PID2} ${PID3}
 
@@ -148,11 +148,11 @@ do
 
     cd ${PWD}
     ## build and run tests
-    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd4 &
     PID1=$!
-    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd4 &
     PID2=$!
-    ./runtests.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd3 &
+    ./runtests.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd4 &
     PID3=$!
     wait ${PID1} ${PID2} ${PID3}
   done
