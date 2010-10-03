@@ -15,6 +15,7 @@ cd ${SIMICS_WKSP}/build-sparc64/boot
 ./build-usiii.sh
 
 cd ${SIMICS_WKSP}
+mkdir results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
 ## clean up from previous run
 rm -rf output/*
 for count in {1..10}
@@ -26,14 +27,13 @@ do
   fi
       spindir=build-sparc64/rtems/testsuites/gabtests/${spintest}
 
+  mv ${ARCHIVE_DIR}/../${spintest}.test_params.txt results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}/
   ./opal-quicktest.sh gabtests ${spintest} > output/${spintest}.stdout 2> output/${spintest}.stderr
   cp ${spindir}/params.h output/${spintest}.params.h
   cp ${spindir}/macros.h output/${spintest}.macros.h
 done
 
-mkdir results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
 mv output/* results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
-cp ${ARCHIVE_DIR}/../test_params.txt results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}/
 tar -zcf results/${RESULTS_TAG}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}
 cp results/${RESULTS_TAG}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz ${ARCHIVE_DIR}
 svn add  ${ARCHIVE_DIR}/${RESULTS_TAG}_${tasks}_${utilization}_${distribution}_${RUN_TAG}.tgz

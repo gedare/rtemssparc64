@@ -84,6 +84,7 @@ do
   
       python gen-params.py -t ${tasks} -d ${distribution} -u ${utilization}
   
+      cp test_params.txt ${spintest}.test_params.txt
       cp params.h ${spindir1}/params.h
       cp macros.h ${spindir1}/macros.h
       cp params.h ${spindir2}/params.h
