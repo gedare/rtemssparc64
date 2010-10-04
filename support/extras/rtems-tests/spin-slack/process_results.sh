@@ -116,8 +116,9 @@ do
           sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
             -e 's/                         /:/' -e 's/\s*$//' \
             -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
-            -e 's/:.*:/:/g' -e 's/:.*/,/' \
-            -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
+            -e 's/:.*:/:/g' -e 's/:.*/,,/'| \
+          tr -d '\n' | \
+          sed -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
           >>${D}/${FILES[$i]}
         echo "" >> ${D}/${FILES[$i]}
       done
