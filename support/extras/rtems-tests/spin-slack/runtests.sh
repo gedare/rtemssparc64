@@ -27,7 +27,7 @@ do
   fi
       spindir=build-sparc64/rtems/testsuites/gabtests/${spintest}
 
-  cp ${ARCHIVE_DIR}/../${spintest}.test_params.txt results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}/
+  cp ${ARCHIVE_DIR}/${spintest}.test_params.txt results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}/
   ./opal-quicktest.sh gabtests ${spintest} > output/${spintest}.stdout 2> output/${spintest}.stderr
   cp ${spindir}/params.h output/${spintest}.params.h
   cp ${spindir}/macros.h output/${spintest}.macros.h
