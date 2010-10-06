@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $# -ne 9 ]]
+if [[ $# -ne 6 ]]
 then
   echo "Error - parameters missing"
   echo "Syntax: $0 rtems_dir1 simics_workspace1 rtems_dir2 simics_workspace2 results_tag1 results_tag2"
@@ -61,7 +61,7 @@ mkdir ${SIMICS_WKSP2}/results/${RESULTS_TAG2}
 
 ## make this a loop
 ## get some parameters ...
-distribution=1
+distribution=2
 archive_dir=results-cache2
 if [[ ! -d ${archive_dir} ]]
 then
