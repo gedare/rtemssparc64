@@ -111,7 +111,7 @@ do
       # Write out a placeholder for aggregates (average / max / min)
       for ((i=0;i<${#FILES[@]};i++))
       do
-        BUFFER='aggregate'
+        BUFFER='average'
         grep "${STRINGS[$i]}" ${TMP_FILE} | \
           sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
             -e 's/                         /:/' -e 's/\s*$//' \
@@ -120,7 +120,34 @@ do
           tr -d '\n' | \
           sed -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
           >>${D}/${FILES[$i]}
-        echo "" >> ${D}/${FILES[$i]}
+        BUFFER='stddev'
+         grep "${STRINGS[$i]}" ${TMP_FILE} | \
+          sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
+            -e 's/                         /:/' -e 's/\s*$//' \
+            -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
+            -e 's/:.*:/:/g' -e 's/:.*/,,/'| \
+          tr -d '\n' | \
+          sed -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
+          >>${D}/${FILES[$i]}      
+        BUFFER='max'
+        grep "${STRINGS[$i]}" ${TMP_FILE} | \
+          sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
+            -e 's/                         /:/' -e 's/\s*$//' \
+            -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
+            -e 's/:.*:/:/g' -e 's/:.*/,,/'| \
+          tr -d '\n' | \
+          sed -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
+          >>${D}/${FILES[$i]}
+        BUFFER='min'
+        grep "${STRINGS[$i]}" ${TMP_FILE} | \
+          sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
+            -e 's/                         /:/' -e 's/\s*$//' \
+            -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
+            -e 's/:.*:/:/g' -e 's/:.*/,,/'| \
+          tr -d '\n' | \
+          sed -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
+          >>${D}/${FILES[$i]}
+          echo "" >> ${D}/${FILES[$i]}
       done
 
       cd ..
