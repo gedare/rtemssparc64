@@ -80,12 +80,14 @@ mkdir ${SIMICS_WKSP3}/results/${RESULTS_TAG3}
 ## make this a loop
 ## get some parameters ...
 distribution=1
-utilization=0.6
-for tasks in 80 60 40 20 10 5 2 1
+archive_dir=results-cache1
+if [[ ! -d ${archive_dir} ]]
+then
+  mkdir ${archive_dir}
+fi
+utilization=0.6  ## IF THIS IS CHANGED, NEED TO UPDATE ALL tasks_periodic.c
+for tasks in 80 60 40 20 
 do
-    ## Generate tests
-    python gen-params.py -t ${tasks} -d ${distribution} -u ${utilization}
-    
     for count in {0..9}
     do
       cachetest=cache0${count}
@@ -98,8 +100,11 @@ do
         echo "Unable to find directory: ${cachedir1} or ${cachedir2}"
         exit 1
       fi
+    
+      ## Generate tests
+      python gen-params.py -t ${tasks} -d ${distribution} -u ${utilization}
   
-      cp test_params.txt cache0${count}.test_params.txt
+      cp test_params.txt ${archive_dir}/cache0${count}.test_params.txt
       cp params.h ${cachedir1}/params.h
       cp macros.h ${cachedir1}/macros.h
       cp params.h ${cachedir2}/params.h
@@ -115,11 +120,11 @@ do
 
     cd ${PWD}
     ## build and run tests
-    ./runtests-cache.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-cache1 &
+    ./runtests-cache.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/${archive_dir} &
     PID1=$!
-    ./runtests-cache.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-cache1 &
+    ./runtests-cache.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/${archive_dir} &
     PID2=$!
-    ./runtests-cache.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-cache1 &
+    ./runtests-cache.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/${archive_dir} &
     PID3=$!
     wait ${PID1} ${PID2} ${PID3}
 
@@ -138,11 +143,11 @@ do
 
     cd ${PWD}
     ## build and run tests
-    ./runtests-cache.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-cache1 &
+    ./runtests-cache.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/${archive_dir} &
     PID1=$!
-    ./runtests-cache.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-cache1 &
+    ./runtests-cache.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/${archive_dir} &
     PID2=$!
-    ./runtests-cache.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-cache1 &
+    ./runtests-cache.sh ${SIMICS_WKSP3} ${RESULTS_TAG3} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/${archive_dir} &
     PID3=$!
     wait ${PID1} ${PID2} ${PID3}
 done
