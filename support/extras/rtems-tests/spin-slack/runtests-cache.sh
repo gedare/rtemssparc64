@@ -22,7 +22,7 @@ for count in {0..9}
 do
   cachetest=cache0${count}
   cachedir=build-sparc64/rtems/testsuites/gabtests/${cachetest}
-  cp ${ARCHIVE_DIR}/../cache0${count}.test_params.txt results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}/
+  cp ${ARCHIVE_DIR}/cache0${count}.test_params.txt results/${RESULTS_TAG}/${tasks}_${utilization}_${distribution}_${RUN_TAG}/
 
   ./opal-quicktest.sh gabtests ${cachetest} > output/${cachetest}.stdout 2> output/${cachetest}.stderr
   cp ${cachedir}/params.h output/${cachetest}.params.h
