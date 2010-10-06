@@ -60,7 +60,8 @@ mkdir ${SIMICS_WKSP2}/results/${RESULTS_TAG2}
 
 ## make this a loop
 ## get some parameters ...
-distribution=2
+archive_dir=results-qd
+distribution=3
 for tasks in 80 60 40 20
 do
   for utilization in 0.8 0.6 0.4 0.2
@@ -84,7 +85,7 @@ do
   
       python gen-params.py -t ${tasks} -d ${distribution} -u ${utilization}
   
-      cp test_params.txt results-qd2/${spintest}.test_params.txt
+      cp test_params.txt ${archive_dir}/${spintest}.test_params.txt
       cp params.h ${spindir1}/params.h
       cp macros.h ${spindir1}/macros.h
       cp params.h ${spindir2}/params.h
@@ -97,9 +98,9 @@ do
 
     cd ${PWD}
     ## build and run tests
-    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd2 &
+    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/${archive_dir} &
     PID1=$!
-    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/results-qd2 &
+    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "RM" ${PWD}/${archive_dir} &
     PID2=$!
     wait ${PID1} ${PID2}
 
@@ -120,9 +121,9 @@ do
 
     cd ${PWD}
     ## build and run tests
-    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd2 &
+    ./runtests.sh ${SIMICS_WKSP1} ${RESULTS_TAG1} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/${archive_dir} &
     PID1=$!
-    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/results-qd2 &
+    ./runtests.sh ${SIMICS_WKSP2} ${RESULTS_TAG2} ${tasks} ${utilization} ${distribution} "EDF" ${PWD}/${archive_dir} &
     PID2=$!
     wait ${PID1} ${PID2}
   done
