@@ -3,7 +3,7 @@
 if [[ $# -ne 9 ]]
 then
   echo "Error - parameters missing"
-  echo "Syntax: $0 rtems_dir1 simics_workspace1 rtems_dir2 simics_workspace2 results_tag1 results_tag2"
+  echo "Syntax: $0 rtems_dir1 simics_workspace1 rtems_dir2 simics_workspace2 results_tag1 results_tag2 rtems_dir3 simics_workspace3 results_tag3"
   echo "Example: $0 ${HOME}/work/rtems/rtems-sched/rtems ${HOME}/work/simics/gems/gems-2.1.1-gedare/simics ${HOME}/work/rtems/rtems-sched/rtems-hwds ${HOME}/work/simics/gems/gems-2.1.1-hwds/simics baseline hwds"
   exit 1
 fi
@@ -80,7 +80,7 @@ mkdir ${SIMICS_WKSP3}/results/${RESULTS_TAG3}
 ## make this a loop
 ## get some parameters ...
 distribution=1
-archive_dir=results-cache1
+archive_dir=results-cache3
 if [[ ! -d ${archive_dir} ]]
 then
   mkdir ${archive_dir}

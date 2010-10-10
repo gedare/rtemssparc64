@@ -81,7 +81,7 @@ mkdir ${SIMICS_WKSP3}/results/${RESULTS_TAG3}
 ## make this a loop
 ## get some parameters ...
 distribution=1
-archive_dir=results-qd4
+archive_dir=results-qd
 if [[ ! -d ${archive_dir} ]]
 then
   mkdir ${archive_dir}
@@ -89,7 +89,7 @@ fi
 
 for tasks in 80 60 40 20
 do
-  for utilization in 0.8 0.6 0.4 0.2
+  for utilization in 0.4 0.6 0.8 1.0
   do
     ## Generate tests
     for count in {1..10}
