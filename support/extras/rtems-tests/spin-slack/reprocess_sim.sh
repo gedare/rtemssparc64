@@ -35,10 +35,9 @@ do
           touch temp.txt
           for i in {0..100}
           do
-            awk "BEGIN {printf(\"$i\t\") } 
-              /^${i}\t/ {print $2}" sim_${sched}_${dist}_${tasks}_${util}.dat \
-              | sed -e 's/$/\t/' | tr -d '\n' >> temp.txt
-            echo "" >> temp.txt
+            awk -v num="$i" -v pat="^$i$" 'BEGIN {printf("%d\t",num) } 
+              $1 ~ pat {print $2}' sim_${sched}_${dist}_${tasks}_${util}.dat \
+              | sed -e 's/$/\t/' | tr -d '\n' | sed -e 's/$/\n/' >> temp.txt
           done
           cp temp.txt sim_${sched}_${dist}_${tasks}_${util}.dat2
         fi
