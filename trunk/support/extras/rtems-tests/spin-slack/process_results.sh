@@ -36,8 +36,16 @@ else
   OUTPUT=${PWD}/$2
 fi
 
-STRINGS=('L1\.data' 'L1\.inst' 'Total number of instructions' 'Total number of cycles' 'Instruction per cycle' 'total power per cycle' 'average total power per cycle' 'average total power per cycle w/o FP and L2 power' 'average total power per insn' 'average total power per insn w/o FP and L2 power' 'total power usage of L1Dcache' 'total power usage of clock' 'avg power usage of L1Dcache' 'avg power usage of clock' 'total number accesses of L1Dcache' 'ds1_' 'ds2_' 'sched_')
-FILES=(L1data.csv L1inst.csv total_insn.csv total_cycles.csv insn_per_cycle.csv total_power_per_cycle.csv avg_total_power_per_cycle.csv avg_total_power_per_cycle_no_FP_L2.csv avg_total_power_per_insn.csv avg_total_power_per_insn_no_FP_L2.csv total_power_L1data.csv total_power_clock.csv avg_power_L1data.csv avg_power_clock.csv total_L1data_accesses.csv hw_ds1.csv hw_ds2.csv hw_sched.csv)
+STRINGS=( \
+  'L1\.data' 'L1\.inst' 'Total number of instructions' \
+  'Total number of cycles' 'Instruction per cycle' 'total power per cycle' \
+  'total number accesses of L1Dcache' 'ds1_' 'ds2_' 'sched_' \
+)
+FILES=( \
+  L1data.dat L1inst.dat total_insn.dat \
+  total_cycles.dat insn_per_cycle.dat total_power_per_cycle.dat \
+  total_L1data_accesses.dat hw_ds1.dat hw_ds2.dat hw_sched.dat \
+)
 
 cd ${RESULTS}
 for file in `ls | grep ".tgz"`
@@ -60,96 +68,68 @@ do
   D=${OUTPUT}/${TESTTAG}
   mkdir $D
 
-  ## Setup output files
-  for ((i=0;i<${#FILES[@]};i++))
-  do
-    touch ${D}/${FILES[$i]}
-  done
-  touch ${D}/test_params.csv
 
   for dir2 in `ls`
   do
     TESTRUN=$dir2
-    echo "Processing ${TESTRUN}"
+    FHEAD=${TESTRUN}
+    echo "Processing ${TAG}.${TESTRUN}"
+  
+    ## Setup output files
+    for ((i=0;i<${#FILES[@]};i++))
+    do
+      touch ${D}/${FHEAD}.${FILES[$i]}
+    done
+    touch ${D}/${FHEAD}.test_params.dat
+
     if [[ -d ${TESTRUN} ]]
     then
       cd ${TESTRUN}
-      echo ${TESTRUN} >> ${D}/test_params.csv
-        echo "==========" >> ${D}/test_params.csv
+      echo ${TESTRUN} >> ${D}/${FHEAD}.test_params.dat
+        echo "==========" >> ${D}/${FHEAD}.test_params.dat
 
       for results_file in `ls | grep test_params`
       do
-        cat ${results_file} >> ${D}/test_params.csv
-        echo "==========" >> ${D}/test_params.csv
+        cat ${results_file} | sed -e 's/,/  /' >> ${D}/${FHEAD}.test_params.dat
+        echo "==========" >> ${D}/${FHEAD}.test_params.dat
       done
-      PARSERUN=`echo ${TESTRUN} | tr -d '\n' | \
-        sed -e 's/\(.*\)_\(.*\)_\(.*\)_\(.*\)$/\3,\4,\1,\2/'`
+#      PARSERUN=`echo ${TESTRUN} | tr -d '\n' | \
+#        sed -e 's/\(.*\)_\(.*\)_\(.*\)_\(.*\)$/\3,\4,\1,\2/'`
 #      UTIL=`echo ${TESTRUN} | tr -d '\n' | sed -e 's/.*_\(.*\)_.*$/\1/'`
 #      DIST=`echo ${TESTRUN} | tr -d '\n' | sed -e 's/.*_.*_\(.*\)_.*$/\1/'`
 #      SCHED=`echo ${TESTRUN} | tr -d '\n' | sed -e 's/.*_.*_.*_\(.*\)$/\1/'`
       
-      TMP_FILE=
-      for results_file in `ls *.opal`
+#      TMP_FILE=
+      count=0
+      for results_file in `find . -name "*.opal" | sed -e 's/.\///' | sort`
       do
+        let count=count+1
         for ((i=0;i<${#FILES[@]};i++))
         do
+          # Write out file headers before processing first file
+          if [[ $count -eq 1 ]]
+          then
+            BUFFER=`echo "Filename  " | tr -d '\n'`
+            grep "${STRINGS[$i]}" ${results_file} | \
+              sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
+                  -e "s/^/'/" -e "s/:.*$/'  /" | \
+              tr -d '\n' | sed -e 's/\s*$//' | \
+              sed -e "s/^/${BUFFER}  /" \
+            >>${D}/${FHEAD}.${FILES[$i]}
+            echo "" >> ${D}/${FHEAD}.${FILES[$i]}
+          fi
+
           #write out the test
-          BUFFER=`echo ${results_file} | tr -d '\n' | sed -e 's/$//'`
+          BUFFER=`echo ${results_file} | tr -d '\n'`
           grep "${STRINGS[$i]}" ${results_file} | \
-          sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
-          -e 's/                         /:/' -e 's/  //g' \
-          -e 's/\s*$/,/' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
-          -e 's/:.*:/:/g' -e 's/:/,/' | \
-          tr -d '\n' | sed -e 's/,$//' | \
-          sed -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
-          >>${D}/${FILES[$i]}
-          echo "" >> ${D}/${FILES[$i]}
+            sed -e "s/\[0\]/:/" -e "s/\[/:/" -e "s/\[//g" -e "s/\]//g" \
+                -e 's/:.*:/  /' -e 's/\s*:/  /' | \
+            tr -d '\n' | \
+            sed -e "s/^/${BUFFER}  /" >>${D}/${FHEAD}.${FILES[$i]}
+          echo "" >> ${D}/${FHEAD}.${FILES[$i]}
         done
-        TMP_FILE=${results_file}
+#        TMP_FILE=${results_file}
       done
-
-      # Write out a placeholder for aggregates (average / max / min)
-      for ((i=0;i<${#FILES[@]};i++))
-      do
-        BUFFER='average'
-        grep "${STRINGS[$i]}" ${TMP_FILE} | \
-          sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
-            -e 's/                         /:/' -e 's/\s*$//' \
-            -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
-            -e 's/:.*:/:/g' -e 's/:.*/,,/'| \
-          tr -d '\n' | \
-          sed -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
-          >>${D}/${FILES[$i]}
-        BUFFER='stddev'
-         grep "${STRINGS[$i]}" ${TMP_FILE} | \
-          sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
-            -e 's/                         /:/' -e 's/\s*$//' \
-            -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
-            -e 's/:.*:/:/g' -e 's/:.*/,,/'| \
-          tr -d '\n' | \
-          sed -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
-          >>${D}/${FILES[$i]}      
-        BUFFER='max'
-        grep "${STRINGS[$i]}" ${TMP_FILE} | \
-          sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
-            -e 's/                         /:/' -e 's/\s*$//' \
-            -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
-            -e 's/:.*:/:/g' -e 's/:.*/,,/'| \
-          tr -d '\n' | \
-          sed -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
-          >>${D}/${FILES[$i]}
-        BUFFER='min'
-        grep "${STRINGS[$i]}" ${TMP_FILE} | \
-          sed -e 's/\[0\]\s*//' -e 's/\[/:/' -e 's/\]//' \
-            -e 's/                         /:/' -e 's/\s*$//' \
-            -e 's/  //g' -e 's/ /_/g' -e 's/:_/:/g' -e 's/_:/:/g' \
-            -e 's/:.*:/:/g' -e 's/:.*/,,/'| \
-          tr -d '\n' | \
-          sed -e "s/^/${TAG},${PARSERUN},${BUFFER},/" \
-          >>${D}/${FILES[$i]}
-          echo "" >> ${D}/${FILES[$i]}
-      done
-
       cd ..
     fi
   done
