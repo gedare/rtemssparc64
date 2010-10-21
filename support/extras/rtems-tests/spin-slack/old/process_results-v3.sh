@@ -41,6 +41,11 @@ STRINGS=( \
   'Total number of cycles' 'Instruction per cycle' 'total power per cycle' \
   'total number accesses of L1Dcache' 'ds1_' 'ds2_' 'sched_' \
 )
+FILES=( \
+  L1data.dat L1inst.dat total_insn.dat \
+  total_cycles.dat insn_per_cycle.dat total_power_per_cycle.dat \
+  total_L1data_accesses.dat hw_ds1.dat hw_ds2.dat hw_sched.dat \
+)
 
 cd ${RESULTS}
 for file in `ls | grep ".tgz"`
@@ -71,7 +76,10 @@ do
     echo "Processing ${TAG}.${TESTRUN}"
   
     ## Setup output files
-    touch ${D}/${FHEAD}.dat
+    for ((i=0;i<${#FILES[@]};i++))
+    do
+      touch ${D}/${FHEAD}.${FILES[$i]}
+    done
     touch ${D}/${FHEAD}.test_params.dat
 
     if [[ -d ${TESTRUN} ]]
@@ -96,36 +104,33 @@ do
       for results_file in `find . -name "*.opal" | sed -e 's/.\///' | sort`
       do
         let count=count+1
-        # Write out file headers before processing first file
-        if [[ $count -eq 1 ]]
-        then
-          BUFFER=`echo "Filename  " | tr -d '\n'`
-          grep -e 'L1\.data' -e 'L1\.inst' -e 'Total number of instructions' \
-               -e 'Total number of cycles' -e 'Instruction per cycle' \
-               -e 'total power per cycle' -e 'ds1_' -e 'ds2_' -e 'sched_' \
-               ${results_file} | \
-          sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
-              -e 's/  \s*/:/' \
-              -e "s/^/\"/" -e "s/:.*$/\"  /" | \
-          tr -d '\n' | sed -e 's/\s*$//' | \
-          sed -e "s/^/${BUFFER}  /" \
-          >>${D}/${FHEAD}.dat
-          echo "" >> ${D}/${FHEAD}.dat
-        fi
+        for ((i=0;i<${#FILES[@]};i++))
+        do
+          # Write out file headers before processing first file
+          if [[ $count -eq 1 ]]
+          then
+            BUFFER=`echo "Filename  " | tr -d '\n'`
+            grep "${STRINGS[$i]}" ${results_file} | \
+              sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
+                  -e 's/  \s*/:/' \
+                  -e "s/^/\"/" -e "s/:.*$/\"  /" | \
+              tr -d '\n' | sed -e 's/\s*$//' | \
+              sed -e "s/^/${BUFFER}  /" \
+            >>${D}/${FHEAD}.${FILES[$i]}
+            echo "" >> ${D}/${FHEAD}.${FILES[$i]}
+          fi
 
-        #write out the test
-        BUFFER=`echo ${results_file} | tr -d '\n'`
-        grep -e 'L1\.data' -e 'L1\.inst' -e 'Total number of instructions' \
-             -e 'Total number of cycles' -e 'Instruction per cycle' \
-             -e 'total power per cycle' -e 'ds1_' -e 'ds2_' -e 'sched_' \
-             ${results_file} | \
-        sed -e "s/\[0\]\s*/:/" -e "s/\[/:/" -e "s/\[//g" -e "s/\]//g" \
-            -e 's/  \s*/:/' -e 's/.*:/  /' \
-            -e 's/:.*:/  /' -e 's/\s*:/  /' | \
-        tr -d '\n' | \
-        sed -e "s/^/${BUFFER}  /" >>${D}/${FHEAD}.dat
-        echo "" >> ${D}/${FHEAD}.dat
-        #        TMP_FILE=${results_file}
+          #write out the test
+          BUFFER=`echo ${results_file} | tr -d '\n'`
+          grep "${STRINGS[$i]}" ${results_file} | \
+            sed -e "s/\[0\]\s*/:/" -e "s/\[/:/" -e "s/\[//g" -e "s/\]//g" \
+                -e 's/  \s*/:/' -e 's/.*:/  /' \
+                -e 's/:.*:/  /' -e 's/\s*:/  /' | \
+            tr -d '\n' | \
+            sed -e "s/^/${BUFFER}  /" >>${D}/${FHEAD}.${FILES[$i]}
+          echo "" >> ${D}/${FHEAD}.${FILES[$i]}
+        done
+#        TMP_FILE=${results_file}
       done
       cd ..
     fi
