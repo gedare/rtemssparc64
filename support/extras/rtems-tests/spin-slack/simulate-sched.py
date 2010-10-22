@@ -165,9 +165,9 @@ def main():
       assert False, "unhandled option"
 
   # Generate a list of num_tasks uniform random periods between 1 and 50.
-  p_list = [int(1+random.random()*MAXIMUM_PERIOD) for i in xrange(num_tasks)]
+#  p_list = [int(1+random.random()*MAXIMUM_PERIOD) for i in xrange(num_tasks)]
   ## Uncomment the following line to use periods with max hyperperiod of 30.
-#  p_list = [random.choice([30,15,10,6,5,3,2,1]) for i in xrange(num_tasks)]
+  p_list = [random.choice([30,15,10,6,5,3,2,1]) for i in xrange(num_tasks)]
 
   if   (distribution == 1): # uniform(num_tasks)
     u_list = [random.uniform(0.001,1) for i in xrange(num_tasks)]

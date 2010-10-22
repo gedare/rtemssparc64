@@ -3,12 +3,15 @@
 # Script to help with analyzing results of simulator output.
 # 
 
+PWD=`pwd`
+
 progname=${0##*/}        # fast basename hack for ksh, bash
 
 USAGE=\
 "usage: $progname [ -opts ] 
   -d    -- file listing directories of results to analyze
   -f    -- file listing fields of interest
+  -O    -- directory for output of processed results
 "
 
 error_out() {
@@ -24,11 +27,13 @@ fatal() {
 ## Parse arguments
 directories=
 fields=
-while getopts "d:f:" OPT
+OUTPUT=
+while getopts "d:f:O:" OPT
 do
   case "$OPT" in
     d) directories=$OPTARG;;
     f) fields=$OPTARG;;
+    O) OUTPUT=$OPTARG;;
     *) fatal;;
   esac
 done
@@ -46,21 +51,110 @@ validate_args() {
     error_out "Invalid fields file: ${fields}"
     fatal
   fi
+
+  if [[ ! -d ${OUTPUT} ]]
+  then
+    error_out "Invalid output directory: ${OUTPUT}"
+    fatal
+  fi
 }
 
 validate_args
 
+## A bit of a hack to make sure OUTPUT is fully qualified.
+if [[ -d ${PWD}/${OUTPUT} ]]
+then
+  OUTPUT=${PWD}/${OUTPUT}
+fi
+
 dir_arr=( `awk 'BEGIN {ORS=" "} \
-    $1 !~ /^(#| |$).*/ {print $1} \
-    END {printf("\n");}' ${directories}` )
+$1 !~ /^(#| |$).*/ {print $1} \
+END {printf("\n");}' ${directories}` )
 dir_arr_len=${#dir_arr[@]}
-echo ${dir_arr_len}
-for (( i=0; i<dir_arr_len; i++ ))
+if [[ ! -d ${dir_arr[0]} ]]
+then
+  error_out "Not a valid base directory: ${dir_arr[0]}"
+  fatal
+fi
+for (( i=1; i<dir_arr_len; i++ ))
 do
-  if [[ ! -d ${dir_arr[$i]} ]]
+  if [[ ! -d ${dir_arr[0]}/${dir_arr[$i]} ]]
   then
-    error_out "Not a valid directory: ${dir_arr[$i]}"
+    error_out "Not a valid directory: ${dir_arr[0]}/${dir_arr[$i]}"
     fatal
   fi
-  echo ${dir_arr[$i]}
+done
+
+field_arr=( `awk 'BEGIN {ORS=" "} \
+$1 !~ /^(#| |$).*/ {print $1} \
+END {printf("\n");}'  ${fields}` )
+field_arr_len=${#field_arr[@]}
+
+cd ${dir_arr[0]}
+for (( i=1; i<dir_arr_len; i++ ))
+do
+  dir=${dir_arr[$i]}
+  TESTTAG=$dir
+  cd ${TESTTAG}
+  TAG=`echo ${TESTTAG} | tr -d '\n' | sed -e 's/_.*$//'`
+
+  if [[ -d ${OUTPUT}/${TESTTAG} ]]
+  then
+    echo "${OUTPUT}/${TESTTAG} already exists, move it or delete it"
+    exit 1
+  fi
+  D=${OUTPUT}/${TESTTAG}
+  mkdir $D
+
+  for dir2 in `ls`
+  do
+    TESTRUN=$dir2
+    FHEAD=${TESTRUN}
+    echo "Processing ${TAG}.${TESTRUN}"
+
+    ## Setup output files
+    touch ${D}/${FHEAD}.dat
+
+    if [[ -d ${TESTRUN} ]]
+    then
+      cd ${TESTRUN}
+      count=0
+      for results_file in `find . -name "*.opal" | sed -e 's/.\///' | sort`
+      do
+        let count=count+1
+        # Write out file headers before processing first file
+        if [[ $count -eq 1 ]]
+        then
+          BUFFER=`echo "Filename  " | tr -d '\n'`
+          grep -e 'L1\.data' -e 'L1\.inst' -e 'Total number of instructions' \
+          -e 'Total number of cycles' -e 'Instruction per cycle' \
+          -e 'total power per cycle' -e 'ds1_' -e 'ds2_' -e 'sched_' \
+          ${results_file} | \
+          sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
+          -e 's/  \s*/:/' \
+          -e "s/^/\"/" -e "s/:.*$/\"  /" | \
+          tr -d '\n' | sed -e 's/\s*$//' | \
+          sed -e "s/^/${BUFFER}  /" \
+          >>${D}/${FHEAD}.dat
+          echo "" >> ${D}/${FHEAD}.dat
+        fi
+
+        #write out the test
+        BUFFER=`echo ${results_file} | tr -d '\n'`
+        grep -e 'L1\.data' -e 'L1\.inst' -e 'Total number of instructions' \
+        -e 'Total number of cycles' -e 'Instruction per cycle' \
+        -e 'total power per cycle' -e 'ds1_' -e 'ds2_' -e 'sched_' \
+        ${results_file} | \
+        sed -e "s/\[0\]\s*/:/" -e "s/\[/:/" -e "s/\[//g" -e "s/\]//g" \
+        -e 's/  \s*/:/' -e 's/.*:/  /' \
+        -e 's/:.*:/  /' -e 's/\s*:/  /' | \
+        tr -d '\n' | \
+        sed -e "s/^/${BUFFER}  /" >>${D}/${FHEAD}.dat
+        echo "" >> ${D}/${FHEAD}.dat
+        #        TMP_FILE=${results_file}
+      done
+      cd ..
+    fi
+  done
+  cd ${PWD}
 done
