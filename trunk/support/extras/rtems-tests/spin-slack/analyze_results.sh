@@ -67,6 +67,11 @@ then
   OUTPUT=${PWD}/${OUTPUT}
 fi
 
+if [[ -f ${PWD}/${fields} ]]
+then
+  fields=${PWD}/${fields}
+fi
+
 dir_arr=( `awk 'BEGIN {ORS=" "} \
 $1 !~ /^(#| |$).*/ {print $1} \
 END {printf("\n");}' ${directories}` )
@@ -85,10 +90,19 @@ do
   fi
 done
 
-field_arr=( `awk 'BEGIN {ORS=" "} \
-$1 !~ /^(#| |$).*/ {print $1} \
+OLDIFS=$IFS
+IFS=$'\n' 
+field_arr=( `awk 'BEGIN {ORS="\n"} \
+$1 !~ /^(#| |$).*/ {print $0} \
 END {printf("\n");}'  ${fields}` )
 field_arr_len=${#field_arr[@]}
+IFS=$OLDIFS
+
+for (( i=0; i<field_arr_len; i++ ))
+do
+  tmp="-e ${field_arr[$i]} "
+  grep_fields=${grep_fields}${tmp}
+done
 
 cd ${dir_arr[0]}
 for (( i=1; i<dir_arr_len; i++ ))
@@ -96,7 +110,7 @@ do
   dir=${dir_arr[$i]}
   TESTTAG=$dir
   cd ${TESTTAG}
-  TAG=`echo ${TESTTAG} | tr -d '\n' | sed -e 's/_.*$//'`
+  TAG=`echo -n ${TESTTAG} |  sed -e 's/_.*$//'`
 
   if [[ -d ${OUTPUT}/${TESTTAG} ]]
   then
@@ -125,11 +139,8 @@ do
         # Write out file headers before processing first file
         if [[ $count -eq 1 ]]
         then
-          BUFFER=`echo "Filename  " | tr -d '\n'`
-          grep -e 'L1\.data' -e 'L1\.inst' -e 'Total number of instructions' \
-          -e 'Total number of cycles' -e 'Instruction per cycle' \
-          -e 'total power per cycle' -e 'ds1_' -e 'ds2_' -e 'sched_' \
-          ${results_file} | \
+          BUFFER=`echo -n "Filename  "`
+          eval grep -f ${fields} ${results_file} | \
           sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
           -e 's/  \s*/:/' \
           -e "s/^/\"/" -e "s/:.*$/\"  /" | \
@@ -140,11 +151,8 @@ do
         fi
 
         #write out the test
-        BUFFER=`echo ${results_file} | tr -d '\n'`
-        grep -e 'L1\.data' -e 'L1\.inst' -e 'Total number of instructions' \
-        -e 'Total number of cycles' -e 'Instruction per cycle' \
-        -e 'total power per cycle' -e 'ds1_' -e 'ds2_' -e 'sched_' \
-        ${results_file} | \
+        BUFFER=`echo -n ${results_file}`
+        eval grep "${grep_fields}" ${results_file} | \
         sed -e "s/\[0\]\s*/:/" -e "s/\[/:/" -e "s/\[//g" -e "s/\]//g" \
         -e 's/  \s*/:/' -e 's/.*:/  /' \
         -e 's/:.*:/  /' -e 's/\s*:/  /' | \
@@ -156,5 +164,7 @@ do
       cd ..
     fi
   done
-  cd ${PWD}
+  cd ..
 done
+
+cd ${PWD}
