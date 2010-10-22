@@ -1,6 +1,6 @@
 #!/bin/bash
 
-outdir=simout
+outdir=simout-2hp
 cd ${outdir}
 
 for sched in 1 2
@@ -31,15 +31,25 @@ do
       do
         if [[ -f sim_${sched}_${dist}_${tasks}_${util}.dat ]]
         then
-          rm temp.txt
-          touch temp.txt
+          rm temp.txt tmp2.txt
+          touch temp.txt tmp2.txt
           for i in {0..100}
           do
             awk -v num="$i" -v pat="^$i$" 'BEGIN {printf("%d\t",num) } 
               $1 ~ pat {print $2}' sim_${sched}_${dist}_${tasks}_${util}.dat \
               | sed -e 's/$/\t/' | tr -d '\n' | sed -e 's/$/\n/' >> temp.txt
+            awk -v num="$i" -v pat="^$i$" \
+              'BEGIN {printf("%d\t",num); max=0 } \
+              $1 ~ pat { \
+                          sum=sum+$2; count+=1; \
+                          if (min=="" || $2<min) {min=$2}; \
+                          if ($2>max) {max=$2} \
+                       } \
+              END {printf("%f\t%d\t%d\n",sum/count,min,max)}' \
+              sim_${sched}_${dist}_${tasks}_${util}.dat >> tmp2.txt
           done
           cp temp.txt sim_${sched}_${dist}_${tasks}_${util}.dat2
+          cp tmp2.txt sim_${sched}_${dist}_${tasks}_${util}_avg.dat
         fi
       done
     done

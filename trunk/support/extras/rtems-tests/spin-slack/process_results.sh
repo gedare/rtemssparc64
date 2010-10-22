@@ -36,11 +36,14 @@ else
   OUTPUT=${PWD}/$2
 fi
 
-STRINGS=( \
-  'L1\.data' 'L1\.inst' 'Total number of instructions' \
-  'Total number of cycles' 'Instruction per cycle' 'total power per cycle' \
-  'total number accesses of L1Dcache' 'ds1_' 'ds2_' 'sched_' \
-)
+if [[ ! ${STRINGS} ]]
+then
+  STRINGS=( \
+    'L1\.data' 'L1\.inst' 'Total number of instructions' \
+    'Total number of cycles' 'Instruction per cycle' 'total power per cycle' \
+    'total number accesses of L1Dcache' 'ds1_' 'ds2_' 'sched_' \
+  )
+fi
 
 cd ${RESULTS}
 for file in `ls | grep ".tgz"`

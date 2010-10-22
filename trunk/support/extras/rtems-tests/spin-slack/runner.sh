@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTDIR=simout
+OUTDIR=simout-2hp
 rm ${OUTDIR}/*
 for sched in 1 2
 do

@@ -33,9 +33,9 @@ do
     do
         echo "set output \"sim_${sched}_${dist}_${tasks}.eps\"" >> plotter.p
         echo "set multiplot" >> plotter.p
-        echo "set title \"${scheduler} Scheduling with\nExecution times ${distribution} distributed, ${tasks} Tasks\"" >> plotter.p
-        echo "set xlabel 'OS Tick Count'" >> plotter.p
-        echo "set ylabel 'Tasks in Ready Queue'" >> plotter.p
+        echo "set title \"${scheduler} Scheduling with\nExecution times ${distribution} distributed, ${tasks} Tasks\" font \"Times-Roman,20\" " >> plotter.p
+        echo "set xlabel 'OS Tick Count' font \"Times-Roman,12\"" >> plotter.p
+        echo "set ylabel 'Tasks in Ready Queue' font \"Times-Roman,12\"" >> plotter.p
         echo "plot \"sim_${sched}_${dist}_${tasks}_0.4.dat\" title '0.4' , \\" \
           >> plotter.p
         echo "\"sim_${sched}_${dist}_${tasks}_0.6.dat\" title '0.6' , \\" \
@@ -45,6 +45,37 @@ do
         echo "\"sim_${sched}_${dist}_${tasks}_1.0.dat\" title '1.0' " \
           >> plotter.p
         echo "unset multiplot" >> plotter.p
+
+        echo "set output \"sim_${sched}_${dist}_${tasks}_avg.eps\"" >> plotter.p
+        echo "set multiplot" >> plotter.p
+        echo "set title \"${scheduler} Scheduling with\nExecution times ${distribution} distributed, ${tasks} Tasks\" font \"Times-Roman,20\" " >> plotter.p
+        echo "set xlabel 'OS Tick Count' font \"Times-Roman,12\"" >> plotter.p
+        echo "set ylabel 'Tasks in Ready Queue' font \"Times-Roman,12\"" >> plotter.p
+        echo "plot \"sim_${sched}_${dist}_${tasks}_0.4_avg.dat\" using 1:2 title '0.4' with lp, \\" \
+          >> plotter.p
+        echo "\"sim_${sched}_${dist}_${tasks}_0.6_avg.dat\" using 1:2 title '0.6' with lp  , \\" \
+          >> plotter.p
+        echo "\"sim_${sched}_${dist}_${tasks}_0.8_avg.dat\" using 1:2 title '0.8' with lp , \\" \
+          >> plotter.p
+        echo "\"sim_${sched}_${dist}_${tasks}_1.0_avg.dat\" using 1:2 title '1.0' with lp " \
+          >> plotter.p
+        echo "unset multiplot" >> plotter.p
+
+        echo "set output \"sim_${sched}_${dist}_${tasks}_avg_min_max.eps\"" >> plotter.p
+        echo "set multiplot" >> plotter.p
+        echo "set title \"${scheduler} Scheduling with\nExecution times ${distribution} distributed, ${tasks} Tasks\" font \"Times-Roman,20\" " >> plotter.p
+        echo "set xlabel 'OS Tick Count' font \"Times-Roman,12\"" >> plotter.p
+        echo "set ylabel 'Tasks in Ready Queue' font \"Times-Roman,12\"" >> plotter.p
+        echo "plot \"sim_${sched}_${dist}_${tasks}_0.4_avg.dat\" using 1:2:3:4 title '0.4' with yerrorbars , \\" \
+          >> plotter.p
+        echo "\"sim_${sched}_${dist}_${tasks}_0.6_avg.dat\" using 1:2:3:4 title '0.6' with yerrorbars  , \\" \
+          >> plotter.p
+        echo "\"sim_${sched}_${dist}_${tasks}_0.8_avg.dat\" using 1:2:3:4 title '0.8' with yerrorbars , \\" \
+          >> plotter.p
+        echo "\"sim_${sched}_${dist}_${tasks}_1.0_avg.dat\" using 1:2:3:4 title '1.0' with yerrorbars " \
+          >> plotter.p
+        echo "unset multiplot" >> plotter.p
+
     done
   done
 done
