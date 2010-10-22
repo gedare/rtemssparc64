@@ -90,19 +90,20 @@ do
   fi
 done
 
-OLDIFS=$IFS
-IFS=$'\n' 
-field_arr=( `awk 'BEGIN {ORS="\n"} \
-$1 !~ /^(#| |$).*/ {print $0} \
-END {printf("\n");}'  ${fields}` )
-field_arr_len=${#field_arr[@]}
-IFS=$OLDIFS
-
-for (( i=0; i<field_arr_len; i++ ))
-do
-  tmp="-e ${field_arr[$i]} "
-  grep_fields=${grep_fields}${tmp}
-done
+## Deprecated
+#OLDIFS=$IFS
+#IFS=$'\n' 
+#field_arr=( `awk 'BEGIN {ORS="\n"} \
+#$1 !~ /^(#| |$).*/ {print $0} \
+#END {printf("\n");}'  ${fields}` )
+#field_arr_len=${#field_arr[@]}
+#IFS=$OLDIFS
+#
+#for (( i=0; i<field_arr_len; i++ ))
+#do
+#  tmp="-e ${field_arr[$i]} "
+#  grep_fields=${grep_fields}${tmp}
+#done
 
 cd ${dir_arr[0]}
 for (( i=1; i<dir_arr_len; i++ ))
@@ -152,7 +153,7 @@ do
 
         #write out the test
         BUFFER=`echo -n ${results_file}`
-        eval grep "${grep_fields}" ${results_file} | \
+        eval grep -f ${fields} ${results_file} | \
         sed -e "s/\[0\]\s*/:/" -e "s/\[/:/" -e "s/\[//g" -e "s/\]//g" \
         -e 's/  \s*/:/' -e 's/.*:/  /' \
         -e 's/:.*:/  /' -e 's/\s*:/  /' | \
