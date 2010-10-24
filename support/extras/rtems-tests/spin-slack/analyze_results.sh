@@ -9,6 +9,7 @@ USAGE=\
 "usage: $progname [ -opts ] 
   -d    -- file listing directories of results to analyze (required)
   -f    -- file listing fields of interest (required)
+  -F    -- file containing function to compute
   -P    -- process data (default=no)
   -O    -- directory of processed results (required)
 "
@@ -35,13 +36,15 @@ PARAM_FILE=
 ## Arguments
 directories=
 fields=
+function_file=
 OUTPUT=
 PROCESS_DATA="no"
-while getopts "d:f:PO:" OPT
+while getopts "d:f:F:PO:" OPT
 do
   case "$OPT" in
     d) directories=$OPTARG;;
     f) fields=$OPTARG;;
+    F) function_file=$OPTARG;;
     P) PROCESS_DATA="yes";;
     O) OUTPUT=$OPTARG;;
     *) fatal;;
@@ -63,6 +66,12 @@ validate_args() {
     fatal
   fi
 
+  if [[ ! -f ${function_file} ]]
+  then
+    error_out "Invalid function file: ${function_file}"
+    fatal
+  fi
+
   if [[ ! -d ${OUTPUT} ]]
   then
     error_out "Invalid output directory: ${OUTPUT}"
@@ -71,7 +80,7 @@ validate_args() {
 }
 
 canonicalize_args() {
-  ## Somewhat hackish. Make sure OUTPUT and fields are fully-qualified paths.
+  ## Somewhat hackish. Make sure paths are fully-qualified.
   if [[ -d `pwd`/${OUTPUT} ]]
   then
     OUTPUT=`pwd`/${OUTPUT}
@@ -81,10 +90,17 @@ canonicalize_args() {
   then
     fields=`pwd`/${fields}
   fi
+
+  if [[ -f `pwd`/${function_file} ]]
+  then
+    function_file=`pwd`/${function_file}
+  fi
 }
 
 process_results() {
   local FIELDS=
+  local i=
+  local j=
   dir_arr=( `awk 'BEGIN {ORS=" "} \
   $1 !~ /^(#| |$).*/ {print $1} \
   END {printf("\n");}' ${directories}` )
@@ -288,6 +304,7 @@ function_avg() {
 function_1() {
     local arr1=( `function_avg 1 | sed -e 's/$/  /' | tr -d '\n'` )
     local arr2=( `function_avg 2 | sed -e 's/$/  /' | tr -d '\n'` )
+    local i=
     for (( i=0; i<${#arr1[@]}; i++ ))
     do
       a=${arr1[$i]}
@@ -308,6 +325,36 @@ function_1() {
         ${OUTPUT}/${dir_arr[${direntry[0]}]}/${dataset_arr[${dataentry[0]}]}.dat"
 }
 
+compute_function() {
+  num_funcs=`awk '$1 !~ /^(#| |$).*/ {count++ }  END { print count }' \
+            ${function_file}`
+  echo $num_funcs
+  local i=
+  for (( i=0; i<num_funcs; i++ ))
+  do
+    title=`awk -v n=$i 'BEGIN {FS=","; for (i=0;i<=n;i++) {getline;} \
+            print $1}' ${function_file}`
+    direntry=`awk -v n=$i 'BEGIN {FS=","; for (i=0;i<=n;i++) {getline;} \
+            print $2}' ${function_file}`
+    dataentry=( `awk -v n=$i 'BEGIN {FS=","; for (i=0;i<=n;i++) {getline;} \
+            print $3}' ${function_file}` )
+    func=( `awk -v n=$i 'BEGIN {FS=","; for (i=0;i<=n;i++) {getline;} \
+            print $4}' ${function_file}` )
+
+    echo $title
+    echo $direntry
+    echo ${dataentry[@]}
+    echo ${func[@]}
+    if [[ ${func[0]} -eq 1 ]]
+    then
+      function_1
+    else
+      error_out "unknown function: ${func[0]}"
+      fatal
+    fi
+  done
+}
+
 ## script entry point
 main() {
   validate_args
@@ -324,18 +371,7 @@ main() {
 
   print_info
 
-  title=`awk 'BEGIN {getline; print $0}' ${PWD}/functions.txt`
-  direntry=`awk 'BEGIN {getline; getline; print $1}' functions.txt`
-  dataentry=( `awk 'BEGIN {getline; getline; getline; ORS=" "; print $0}' functions.txt` )
-  func=( `awk 'BEGIN {getline; getline; getline; getline; ORS=" ";print $0}' functions.txt` )
-
-  if [[ ${func[0]} -eq 1 ]]
-  then
-    function_1
-  else
-    error_out "unknown function: ${func[0]}"
-    fatal
-  fi
+  compute_function
 
 }
 
