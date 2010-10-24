@@ -59,6 +59,80 @@ validate_args() {
   fi
 }
 
+
+dir_arr=
+dir_arr_len=
+field_arr=
+field_arr_len=
+
+
+process_results() {
+  cd ${dir_arr[0]}
+  for (( i=1; i<dir_arr_len; i++ ))
+  do
+    dir=${dir_arr[$i]}
+    TESTTAG=$dir
+    cd ${TESTTAG}
+    TAG=`echo -n ${TESTTAG} |  sed -e 's/_.*$//'`
+
+    if [[ -d ${OUTPUT}/${TESTTAG} ]]
+    then
+      echo "${OUTPUT}/${TESTTAG} already exists, move it or delete it"
+      exit 1
+    fi
+    D=${OUTPUT}/${TESTTAG}
+    mkdir $D
+
+    for dir2 in `ls`
+    do
+      TESTRUN=$dir2
+      FHEAD=${TESTRUN}
+      echo "Processing ${TAG}.${TESTRUN}"
+
+      ## Setup output files
+      touch ${D}/${FHEAD}.dat
+
+      if [[ -d ${TESTRUN} ]]
+      then
+        cd ${TESTRUN}
+        count=0
+        for results_file in `find . -name "*.opal" | sed -e 's/.\///' | sort`
+        do
+          let count=count+1
+          # Write out file headers before processing first file
+          if [[ $count -eq 1 ]]
+          then
+            BUFFER=`echo -n "Filename  "`
+            FIELDS=`eval grep -f ${fields} ${results_file} | \
+            sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
+            -e 's/  \s*/:/' \
+            -e "s/^/\"/" -e "s/:.*$/\"  /" | \
+            tr -d '\n' | sed -e 's/\s*$//' | \
+            sed -e "s/^/${BUFFER}  /"`
+            echo "${FIELDS}">>${D}/${FHEAD}.dat
+            eval field_arr=( `echo -n "${FIELDS}" | sed -e "s/\"/\'/g"` )
+            field_arr_len=${#field_arr[@]}
+          fi
+
+          #write out the test
+          BUFFER=`echo -n ${results_file}`
+          eval grep -f ${fields} ${results_file} | \
+          sed -e "s/\[0\]\s*/:/" -e "s/\[/:/" -e "s/\[//g" -e "s/\]//g" \
+          -e 's/  \s*/:/' -e 's/.*:/  /' \
+          -e 's/:.*:/  /' -e 's/\s*:/  /' | \
+          tr -d '\n' | \
+          sed -e "s/^/${BUFFER}  /" >>${D}/${FHEAD}.dat
+          echo "" >> ${D}/${FHEAD}.dat
+          #        TMP_FILE=${results_file}
+        done
+        cd ..
+      fi
+    done
+    cd ..
+  done
+  cd ${PWD}
+}
+
 validate_args
 
 ## A bit of a hack to make sure OUTPUT is fully qualified.
@@ -105,67 +179,10 @@ done
 #  grep_fields=${grep_fields}${tmp}
 #done
 
-cd ${dir_arr[0]}
-for (( i=1; i<dir_arr_len; i++ ))
+process_results
+
+for (( i=0; i<${field_arr_len}; i++ ))
 do
-  dir=${dir_arr[$i]}
-  TESTTAG=$dir
-  cd ${TESTTAG}
-  TAG=`echo -n ${TESTTAG} |  sed -e 's/_.*$//'`
-
-  if [[ -d ${OUTPUT}/${TESTTAG} ]]
-  then
-    echo "${OUTPUT}/${TESTTAG} already exists, move it or delete it"
-    exit 1
-  fi
-  D=${OUTPUT}/${TESTTAG}
-  mkdir $D
-
-  for dir2 in `ls`
-  do
-    TESTRUN=$dir2
-    FHEAD=${TESTRUN}
-    echo "Processing ${TAG}.${TESTRUN}"
-
-    ## Setup output files
-    touch ${D}/${FHEAD}.dat
-
-    if [[ -d ${TESTRUN} ]]
-    then
-      cd ${TESTRUN}
-      count=0
-      for results_file in `find . -name "*.opal" | sed -e 's/.\///' | sort`
-      do
-        let count=count+1
-        # Write out file headers before processing first file
-        if [[ $count -eq 1 ]]
-        then
-          BUFFER=`echo -n "Filename  "`
-          eval grep -f ${fields} ${results_file} | \
-          sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
-          -e 's/  \s*/:/' \
-          -e "s/^/\"/" -e "s/:.*$/\"  /" | \
-          tr -d '\n' | sed -e 's/\s*$//' | \
-          sed -e "s/^/${BUFFER}  /" \
-          >>${D}/${FHEAD}.dat
-          echo "" >> ${D}/${FHEAD}.dat
-        fi
-
-        #write out the test
-        BUFFER=`echo -n ${results_file}`
-        eval grep -f ${fields} ${results_file} | \
-        sed -e "s/\[0\]\s*/:/" -e "s/\[/:/" -e "s/\[//g" -e "s/\]//g" \
-        -e 's/  \s*/:/' -e 's/.*:/  /' \
-        -e 's/:.*:/  /' -e 's/\s*:/  /' | \
-        tr -d '\n' | \
-        sed -e "s/^/${BUFFER}  /" >>${D}/${FHEAD}.dat
-        echo "" >> ${D}/${FHEAD}.dat
-        #        TMP_FILE=${results_file}
-      done
-      cd ..
-    fi
-  done
-  cd ..
+  echo "$i  ${field_arr[$i]}"
 done
 
-cd ${PWD}
