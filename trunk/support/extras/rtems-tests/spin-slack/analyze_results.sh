@@ -267,9 +267,11 @@ func=
 title=
 direntry=
 
+## Compute the average over the awk expression stored in $1, calculated across
+## all of the datasets in the dataentry array.
 function_avg() {
-  field_num=$1
-  average=
+  local field_num=$1
+  local average=
   for (( i=0; i<${#dataentry[@]}; i++ ))
   do
     average[$i]=`eval "awk 'BEGIN {FS=\" [ ]+\"; getline header;} \
@@ -281,8 +283,21 @@ function_avg() {
 }
   
 
-## function_1 computes the 
+## function_1 computes a performance measure of the 1 and 2 arguments in the 
+## func line array.  The measure is: (1-2)/1.
 function_1() {
+    local arr1=( `function_avg 1 | sed -e 's/$/  /' | tr -d '\n'` )
+    local arr2=( `function_avg 2 | sed -e 's/$/  /' | tr -d '\n'` )
+    for (( i=0; i<${#arr1[@]}; i++ ))
+    do
+      a=${arr1[$i]}
+      b=${arr2[$i]}
+      result=`echo "scale=6; ($a-$b)/$a" | bc`
+      echo $result
+    done
+ return
+
+  ### DEPRECATED
   func_len=${#func[@]}
   field1=${func[1]}
   field2=${func[2]}
@@ -317,15 +332,6 @@ main() {
   if [[ ${func[0]} -eq 1 ]]
   then
     function_1
-    arr1=( `function_avg 1 | sed -e 's/$/  /' | tr -d '\n'` )
-    arr2=( `function_avg 2 | sed -e 's/$/  /' | tr -d '\n'` )
-    for (( i=0; i<${#arr1[@]}; i++ ))
-    do
-      a=${arr1[$i]}
-      b=${arr2[$i]}
-      result=`echo "scale=6; ($a-$b)/$a" | bc`
-      echo $result
-    done
   else
     error_out "unknown function: ${func[0]}"
     fatal
