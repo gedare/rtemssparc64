@@ -239,24 +239,10 @@ load_info() {
                     | sed -e "s/\"/\'/g" -e 's/\s*$//'` )
   field_arr_len=${#field_arr[@]}
   IFS=${OLDIFS}
-
-  
+  cd ..
 }
 
-
-## script entry point
-main() {
-  validate_args
-  canonicalize_args
-
-  ## Process data or load info from pre-processed results
-  if [ ${PROCESS_DATA} = "yes" ]
-  then
-    process_results
-  else
-    load_info
-  fi
-
+print_info() {
   echo "Directories"
   for (( i=0; i<${dir_arr_len}; i++ ))
   do
@@ -277,6 +263,82 @@ main() {
   do
     echo "$i  ${field_arr[$i]}"
   done
+}
+
+dataentry=
+func=
+title=
+direntry=
+
+function_avg() {
+  field_num=$1
+  average=
+  for (( i=0; i<${#dataentry[@]}; i++ ))
+  do
+    average[$i]=`eval "awk 'BEGIN {FS=\" [ ]+\"; getline header;} \
+                   /.*/ {sum+=${func[${field_num}]};count++} \
+                   END {printf(\"%f\n\",sum/count);}' \
+                   ${OUTPUT}/${dir_arr[${direntry[0]}]}/${dataset_arr[${dataentry[${i}]}]}.dat"`
+  echo "${average[$i]}"
+  done
+}
+  
+
+## function_1 computes the 
+function_1() {
+  func_len=${#func[@]}
+  field1=${func[1]}
+  field2=${func[2]}
+  eval "awk 'BEGIN {FS=\" [ ]+\"; getline header;} \
+    /.*/ {sum1+=${field1}; count1++} \
+    /.*/ {sum2+=${field2}; count2++;} \
+        END {printf(\"%f\n\",sum1/count1); printf(\"%f\n\",sum2/count2);}' \
+        ${OUTPUT}/${dir_arr[${direntry[0]}]}/${dataset_arr[${dataentry[0]}]}.dat"
+}
+
+## script entry point
+main() {
+  validate_args
+
+  echo ${PWD}
+  canonicalize_args
+
+  echo ${PWD}
+  ## Process data or load info from pre-processed results
+  if [ ${PROCESS_DATA} = "yes" ]
+  then
+    process_results
+  else
+    load_info
+  fi
+
+  echo ${PWD}
+  print_info
+
+  echo ${PWD}
+  cd ${PWD}
+  title=`awk 'BEGIN {getline; print $0}' ${PWD}/functions.txt`
+  direntry=`awk 'BEGIN {getline; getline; print $1}' functions.txt`
+  dataentry=( `awk 'BEGIN {getline; getline; getline; ORS=" "; print $0}' functions.txt` )
+  func=( `awk 'BEGIN {getline; getline; getline; getline; ORS=" ";print $0}' functions.txt` )
+
+  if [[ ${func[0]} -eq 1 ]]
+  then
+    function_1
+    arr1=( `function_avg 1 | sed -e 's/$/  /' | tr -d '\n'` )
+    arr2=( `function_avg 2 | sed -e 's/$/  /' | tr -d '\n'` )
+    for (( i=0; i<${#arr1[@]}; i++ ))
+    do
+      a=${arr1[$i]}
+      b=${arr2[$i]}
+      result=`echo "scale=6; ($a-$b)/$a" | bc`
+      echo $result
+    done
+  else
+    error_out "unknown function: ${func[0]}"
+    fatal
+  fi
+
 }
 
 
