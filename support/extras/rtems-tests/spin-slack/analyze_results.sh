@@ -3,15 +3,16 @@
 # Script to help with analyzing results of simulator output.
 # 
 
+
+### HELPERS  ###
 PWD=`pwd`
-
 progname=${0##*/}        # fast basename hack for ksh, bash
-
 USAGE=\
 "usage: $progname [ -opts ] 
-  -d    -- file listing directories of results to analyze
-  -f    -- file listing fields of interest
-  -O    -- directory for output of processed results
+  -d    -- file listing directories of results to analyze (required)
+  -f    -- file listing fields of interest (required)
+  -P    -- process data (default=no)
+  -O    -- directory of processed results (required)
 "
 
 error_out() {
@@ -24,20 +25,32 @@ fatal() {
   exit 1
 }
 
-## Parse arguments
+### GLOBAL VARIABLES ###
+dir_arr=
+let dir_arr_len=0
+dataset_arr=
+let dataset_arr_len=0
+field_arr=
+let field_arr_len=0
+PARAM_FILE=
+
+## Arguments
 directories=
 fields=
 OUTPUT=
-while getopts "d:f:O:" OPT
+PROCESS_DATA="no"
+while getopts "d:f:PO:" OPT
 do
   case "$OPT" in
     d) directories=$OPTARG;;
     f) fields=$OPTARG;;
+    P) PROCESS_DATA="yes";;
     O) OUTPUT=$OPTARG;;
     *) fatal;;
   esac
 done
 
+### FUNCTIONS ###
 validate_args() {
 
   if [[ ! -f $directories ]]
@@ -59,14 +72,54 @@ validate_args() {
   fi
 }
 
+canonicalize_args() {
+  ## Somewhat hackish. Make sure OUTPUT and fields are fully-qualified paths.
+  if [[ -d ${PWD}/${OUTPUT} ]]
+  then
+    OUTPUT=${PWD}/${OUTPUT}
+  fi
 
-dir_arr=
-dir_arr_len=
-field_arr=
-field_arr_len=
-
+  if [[ -f ${PWD}/${fields} ]]
+  then
+    fields=${PWD}/${fields}
+  fi
+}
 
 process_results() {
+  local FIELDS=
+  dir_arr=( `awk 'BEGIN {ORS=" "} \
+  $1 !~ /^(#| |$).*/ {print $1} \
+  END {printf("\n");}' ${directories}` )
+  dir_arr_len=${#dir_arr[@]}
+  if [[ ! -d ${dir_arr[0]} ]]
+  then
+    error_out "Not a valid base directory: ${dir_arr[0]}"
+    fatal
+  fi
+  for (( i=1; i<dir_arr_len; i++ ))
+  do
+    if [[ ! -d ${dir_arr[0]}/${dir_arr[$i]} ]]
+    then
+      error_out "Not a valid directory: ${dir_arr[0]}/${dir_arr[$i]}"
+      fatal
+    fi
+  done
+    
+  ## Deprecated
+  #OLDIFS=$IFS
+  #IFS=$'\n' 
+  #field_arr=( `awk 'BEGIN {ORS="\n"} \
+  #$1 !~ /^(#| |$).*/ {print $0} \
+  #END {printf("\n");}'  ${fields}` )
+  #field_arr_len=${#field_arr[@]}
+  #IFS=$OLDIFS
+  #
+  #for (( i=0; i<field_arr_len; i++ ))
+  #do
+  #  tmp="-e ${field_arr[$i]} "
+  #  grep_fields=${grep_fields}${tmp}
+  #done
+
   cd ${dir_arr[0]}
   for (( i=1; i<dir_arr_len; i++ ))
   do
@@ -83,8 +136,12 @@ process_results() {
     D=${OUTPUT}/${TESTTAG}
     mkdir $D
 
-    for dir2 in `ls`
+    dataset_arr=( `ls -1 | sed -e 's/$/ / ' | tr -d '\n'` )
+    dataset_arr_len=${#dataset_arr[@]}
+
+    for (( j=0;j<dataset_arr_len; j++ ))
     do
+      dir2=${dataset_arr[$j]}
       TESTRUN=$dir2
       FHEAD=${TESTRUN}
       echo "Processing ${TAG}.${TESTRUN}"
@@ -95,23 +152,26 @@ process_results() {
       if [[ -d ${TESTRUN} ]]
       then
         cd ${TESTRUN}
-        count=0
+        let count=0
         for results_file in `find . -name "*.opal" | sed -e 's/.\///' | sort`
         do
           let count=count+1
           # Write out file headers before processing first file
           if [[ $count -eq 1 ]]
           then
-            BUFFER=`echo -n "Filename  "`
-            FIELDS=`eval grep -f ${fields} ${results_file} | \
-            sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
-            -e 's/  \s*/:/' \
-            -e "s/^/\"/" -e "s/:.*$/\"  /" | \
-            tr -d '\n' | sed -e 's/\s*$//' | \
-            sed -e "s/^/${BUFFER}  /"`
+            if [[ ! ${FIELDS} ]]
+            then
+              BUFFER=`echo -n "Filename  "`
+              FIELDS=`eval grep -f ${fields} ${results_file} | \
+              sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
+              -e 's/  \s*/:/' \
+              -e "s/^/\"/" -e "s/:.*$/\"  /" | \
+              tr -d '\n' | sed -e 's/\s*$//' | \
+              sed -e "s/^/${BUFFER}  /"`
+              eval field_arr=( `echo -n "${FIELDS}" | sed -e "s/\"/\'/g"` )
+              field_arr_len=${#field_arr[@]}
+            fi
             echo "${FIELDS}">>${D}/${FHEAD}.dat
-            eval field_arr=( `echo -n "${FIELDS}" | sed -e "s/\"/\'/g"` )
-            field_arr_len=${#field_arr[@]}
           fi
 
           #write out the test
@@ -131,58 +191,95 @@ process_results() {
     cd ..
   done
   cd ${PWD}
+
+  ## Write out the directory and field information to a file.
+  ## Allows to decouple processing and analyzing data.
+  cd ${OUTPUT}
+  rm info.txt
+  touch info.txt
+  for (( i=1; i<dir_arr_len; i++ ))
+  do
+    echo -n "${dir_arr[$i]}  " >> info.txt
+  done
+  echo "" >> info.txt
+  for (( i=0; i<dataset_arr_len; i++ ))
+  do
+    echo -n "${dataset_arr[$i]}  " >> info.txt
+  done
+  echo "" >> info.txt
+  for (( i=0; i<field_arr_len; i++ ))
+  do
+    echo "${field_arr[$i]}" >> info.txt
+  done
 }
 
-validate_args
-
-## A bit of a hack to make sure OUTPUT is fully qualified.
-if [[ -d ${PWD}/${OUTPUT} ]]
-then
-  OUTPUT=${PWD}/${OUTPUT}
-fi
-
-if [[ -f ${PWD}/${fields} ]]
-then
-  fields=${PWD}/${fields}
-fi
-
-dir_arr=( `awk 'BEGIN {ORS=" "} \
-$1 !~ /^(#| |$).*/ {print $1} \
-END {printf("\n");}' ${directories}` )
-dir_arr_len=${#dir_arr[@]}
-if [[ ! -d ${dir_arr[0]} ]]
-then
-  error_out "Not a valid base directory: ${dir_arr[0]}"
-  fatal
-fi
-for (( i=1; i<dir_arr_len; i++ ))
-do
-  if [[ ! -d ${dir_arr[0]}/${dir_arr[$i]} ]]
+load_info() {
+  cd ${OUTPUT}
+  if [[ ! -f info.txt ]]
   then
-    error_out "Not a valid directory: ${dir_arr[0]}/${dir_arr[$i]}"
+    error_out "Unable to find ${OUTPUT}/info.txt -- Try processing data?"
     fatal
   fi
-done
 
-## Deprecated
-#OLDIFS=$IFS
-#IFS=$'\n' 
-#field_arr=( `awk 'BEGIN {ORS="\n"} \
-#$1 !~ /^(#| |$).*/ {print $0} \
-#END {printf("\n");}'  ${fields}` )
-#field_arr_len=${#field_arr[@]}
-#IFS=$OLDIFS
-#
-#for (( i=0; i<field_arr_len; i++ ))
-#do
-#  tmp="-e ${field_arr[$i]} "
-#  grep_fields=${grep_fields}${tmp}
-#done
+  # Get the directories
+  dir_arr=( `awk 'BEGIN {getline; ORS=" "; \
+                         for ( i=1; i<=NF; i++ ) { print $i }; }' info.txt` )
+  dir_arr_len=${#dir_arr[@]}
 
-process_results
+  # Get the datasets
+  dataset_arr=( `awk 'BEGIN {getline;getline; ORS=" "; \
+                         for ( i=1; i<=NF; i++ ) { print $i }; }' info.txt` )
+  dataset_arr_len=${#dataset_arr[@]}
 
-for (( i=0; i<${field_arr_len}; i++ ))
-do
-  echo "$i  ${field_arr[$i]}"
-done
+  # Get fields
+  OLDIFS=$IFS
+  IFS=$'\n' 
+  eval field_arr=( `awk 'BEGIN {getline;getline; ORS=" ";} \
+                    /.*/ {printf("\"%s\"  ",$0);}' info.txt \
+                    | sed -e "s/\"/\'/g" -e 's/\s*$//'` )
+  field_arr_len=${#field_arr[@]}
+  IFS=${OLDIFS}
 
+  
+}
+
+
+## script entry point
+main() {
+  validate_args
+  canonicalize_args
+
+  ## Process data or load info from pre-processed results
+  if [ ${PROCESS_DATA} = "yes" ]
+  then
+    process_results
+  else
+    load_info
+  fi
+
+  echo "Directories"
+  for (( i=0; i<${dir_arr_len}; i++ ))
+  do
+    echo "$i  ${dir_arr[$i]}"
+  done
+  echo ""
+
+  echo "Datasets"
+  for (( i=0; i<${dataset_arr_len}; i++ ))
+  do
+    echo "$i  ${dataset_arr[$i]}"
+  done
+  echo ""
+
+
+  echo "Fields"
+  for (( i=0; i<${field_arr_len}; i++ ))
+  do
+    echo "$i  ${field_arr[$i]}"
+  done
+}
+
+
+
+## Start script
+main
