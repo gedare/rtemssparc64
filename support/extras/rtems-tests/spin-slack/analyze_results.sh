@@ -325,7 +325,7 @@ function_1() {
         ${OUTPUT}/${dir_arr[${direntry[0]}]}/${dataset_arr[${dataentry[0]}]}.dat"
 }
 
-compute_function() {
+compute_functions() {
   num_funcs=`awk '$1 !~ /^(#| |$).*/ {count++ }  END { print count }' \
             ${function_file}`
   local i=
@@ -344,6 +344,7 @@ compute_function() {
     echo $direntry
     echo ${dataentry[@]}
     echo ${func[@]}
+
     if [[ ${func[0]} -eq 1 ]]
     then
       function_1
@@ -370,7 +371,7 @@ main() {
 
   print_info
 
-  compute_function
+  compute_functions
 
 }
 
