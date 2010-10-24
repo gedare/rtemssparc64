@@ -5,8 +5,6 @@
 
 
 ### HELPERS  ###
-export PWD=`pwd`
-progname=${0##*/}        # fast basename hack for ksh, bash
 USAGE=\
 "usage: $progname [ -opts ] 
   -d    -- file listing directories of results to analyze (required)
@@ -74,14 +72,14 @@ validate_args() {
 
 canonicalize_args() {
   ## Somewhat hackish. Make sure OUTPUT and fields are fully-qualified paths.
-  if [[ -d ${PWD}/${OUTPUT} ]]
+  if [[ -d `pwd`/${OUTPUT} ]]
   then
-    OUTPUT=${PWD}/${OUTPUT}
+    OUTPUT=`pwd`/${OUTPUT}
   fi
 
-  if [[ -f ${PWD}/${fields} ]]
+  if [[ -f `pwd`/${fields} ]]
   then
-    fields=${PWD}/${fields}
+    fields=`pwd`/${fields}
   fi
 }
 
@@ -190,7 +188,6 @@ process_results() {
     done
     cd ..
   done
-  cd ${PWD}
 
   ## Write out the directory and field information to a file.
   ## Allows to decouple processing and analyzing data.
@@ -239,7 +236,7 @@ load_info() {
                     | sed -e "s/\"/\'/g" -e 's/\s*$//'` )
   field_arr_len=${#field_arr[@]}
   IFS=${OLDIFS}
-  #cd ..
+  cd -
 }
 
 print_info() {
@@ -300,10 +297,8 @@ function_1() {
 main() {
   validate_args
 
-  echo ${PWD}
   canonicalize_args
 
-  echo ${PWD}
   ## Process data or load info from pre-processed results
   if [ ${PROCESS_DATA} = "yes" ]
   then
@@ -312,11 +307,8 @@ main() {
     load_info
   fi
 
-  echo ${PWD}
   print_info
 
-  echo ${PWD}
-  cd ${PWD}
   title=`awk 'BEGIN {getline; print $0}' ${PWD}/functions.txt`
   direntry=`awk 'BEGIN {getline; getline; print $1}' functions.txt`
   dataentry=( `awk 'BEGIN {getline; getline; getline; ORS=" "; print $0}' functions.txt` )
