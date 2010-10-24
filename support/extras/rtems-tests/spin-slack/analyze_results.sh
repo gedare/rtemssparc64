@@ -299,8 +299,8 @@ function_avg() {
 }
   
 
-## function_1 computes a performance measure of the 1 and 2 arguments in the 
-## func line array.  The measure is: (1-2)/1.
+## function_1 computes a performance measure of the second and third args in 
+## the func line array.  The measure is: (1-2)/1.
 function_1() {
     local arr1=( `function_avg 1 | sed -e 's/$/  /' | tr -d '\n'` )
     local arr2=( `function_avg 2 | sed -e 's/$/  /' | tr -d '\n'` )
