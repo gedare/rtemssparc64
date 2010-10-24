@@ -5,7 +5,7 @@
 
 
 ### HELPERS  ###
-PWD=`pwd`
+export PWD=`pwd`
 progname=${0##*/}        # fast basename hack for ksh, bash
 USAGE=\
 "usage: $progname [ -opts ] 
@@ -239,7 +239,7 @@ load_info() {
                     | sed -e "s/\"/\'/g" -e 's/\s*$//'` )
   field_arr_len=${#field_arr[@]}
   IFS=${OLDIFS}
-  cd ..
+  #cd ..
 }
 
 print_info() {
