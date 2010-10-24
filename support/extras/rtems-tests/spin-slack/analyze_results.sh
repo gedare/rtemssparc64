@@ -274,7 +274,7 @@ print_info() {
   echo "Fields"
   for (( i=0; i<${field_arr_len}; i++ ))
   do
-    echo "$i  ${field_arr[$i]}"
+    echo "\$$((i+1))  ${field_arr[$i]}"
   done
 }
 
@@ -328,7 +328,6 @@ function_1() {
 compute_function() {
   num_funcs=`awk '$1 !~ /^(#| |$).*/ {count++ }  END { print count }' \
             ${function_file}`
-  echo $num_funcs
   local i=
   for (( i=0; i<num_funcs; i++ ))
   do
@@ -365,9 +364,9 @@ main() {
   if [ ${PROCESS_DATA} = "yes" ]
   then
     process_results
-  else
-    load_info
   fi
+  
+  load_info
 
   print_info
 
