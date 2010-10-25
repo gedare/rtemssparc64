@@ -63,5 +63,6 @@ AC_CONFIG_FILES([Makefile
 sha_small/Makefile
 sha_large/Makefile
 crc/Makefile
+dijkstra/Makefile
 ])
 AC_OUTPUT
