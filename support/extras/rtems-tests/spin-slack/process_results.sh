@@ -1,138 +1,287 @@
 #!/bin/bash
+#
+# Script to help with analyzing results of simulator output.
+# 
 
-if [[ $# -ne 2 ]]
-then
-  echo "Error - parameters missing"
-  echo "Syntax: $0 in_results_dir out_results_dir"
+
+### HELPERS  ###
+USAGE=\
+"usage: $progname [ -opts ] 
+  -d    -- file listing directories of results to analyze (required)
+  -f    -- file listing fields of interest (required)
+  -O    -- directory of processed results (required)
+"
+
+error_out() {
+  echo "$*" >&2
+}
+
+fatal() {
+  [ "$1" ] && error_out $*
+  error_out "$USAGE"
   exit 1
-fi
+}
 
-if [[ ! -d $1 ]]
-then
-  echo "$1 is not a directory"
-  exit 1
-fi
+### GLOBAL VARIABLES ###
+dir_arr=
+let dir_arr_len=0
+dataset_arr=
+let dataset_arr_len=0
+field_arr=
+let field_arr_len=0
+PARAM_FILE=
 
-if [[ ! -d $2 ]]
-then
-  echo "$2 is not a directory"
-  exit 1
-fi
-
-PWD=`pwd`
-
-# Make sure it is a fully-specified directory
-if [[ ! -d ${PWD}/$1 ]]
-then
-  RESULTS=$1
-else
-  RESULTS=${PWD}/$1
-fi
-
-if [[ ! -d ${PWD}/$2 ]]
-then
-  OUTPUT=$2
-else
-  OUTPUT=${PWD}/$2
-fi
-
-if [[ ! ${STRINGS} ]]
-then
-  STRINGS=( \
-    'L1\.data' 'L1\.inst' 'Total number of instructions' \
-    'Total number of cycles' 'Instruction per cycle' 'total power per cycle' \
-    'total number accesses of L1Dcache' 'ds1_' 'ds2_' 'sched_' \
-  )
-fi
-
-cd ${RESULTS}
-for file in `ls | grep ".tgz"`
+## Arguments
+directories=
+fields=
+OUTPUT=
+PROCESS_DATA="yes"
+while getopts "d:f:O:" OPT
 do
-  tar -zxf $file
+  case "$OPT" in
+    d) directories=$OPTARG;;
+    f) fields=$OPTARG;;
+    O) OUTPUT=$OPTARG;;
+    *) fatal;;
+  esac
 done
 
-cd results
-for dir in `ls`
-do
-  TESTTAG=$dir
-  cd ${TESTTAG}
-  TAG=`echo ${TESTTAG} | tr -d '\n' | sed -e 's/_.*$//'`
+### FUNCTIONS ###
+validate_args() {
 
-  if [[ -d ${OUTPUT}/${TESTTAG} ]]
+  if [[ ! -f $directories ]]
   then
-    echo "${OUTPUT}/${TESTTAG} already exists, move it or delete it"
-    exit 1
+    error_out "Invalid directory file $directories"
+    fatal
   fi
-  D=${OUTPUT}/${TESTTAG}
-  mkdir $D
 
+  if [[ ! -f ${fields} ]]
+  then
+    error_out "Invalid fields file: ${fields}"
+    fatal
+  fi
 
-  for dir2 in `ls`
+  if [[ ! -d ${OUTPUT} ]]
+  then
+    error_out "Invalid output directory: ${OUTPUT}"
+    fatal
+  fi
+}
+
+canonicalize_args() {
+  ## Somewhat hackish. Make sure paths are fully-qualified.
+  if [[ -d `pwd`/${OUTPUT} ]]
+  then
+    OUTPUT=`pwd`/${OUTPUT}
+  fi
+
+  if [[ -f `pwd`/${fields} ]]
+  then
+    fields=`pwd`/${fields}
+  fi
+
+  if [[ -f `pwd`/${function_file} ]]
+  then
+    function_file=`pwd`/${function_file}
+  fi
+}
+
+process_results() {
+  local FIELDS=
+  local i=
+  local j=
+  dir_arr=( `awk 'BEGIN {ORS=" "} \
+  $1 !~ /^(#| |$).*/ {print $1} \
+  END {printf("\n");}' ${directories}` )
+  dir_arr_len=${#dir_arr[@]}
+  if [[ ! -d ${dir_arr[0]} ]]
+  then
+    error_out "Not a valid base directory: ${dir_arr[0]}"
+    fatal
+  fi
+  for (( i=1; i<dir_arr_len; i++ ))
   do
-    TESTRUN=$dir2
-    FHEAD=${TESTRUN}
-    echo "Processing ${TAG}.${TESTRUN}"
-  
-    ## Setup output files
-    touch ${D}/${FHEAD}.dat
-    touch ${D}/${FHEAD}.test_params.dat
-
-    if [[ -d ${TESTRUN} ]]
+    if [[ ! -d ${dir_arr[0]}/${dir_arr[$i]} ]]
     then
-      cd ${TESTRUN}
-      echo ${TESTRUN} >> ${D}/${FHEAD}.test_params.dat
-        echo "==========" >> ${D}/${FHEAD}.test_params.dat
-
-      for results_file in `ls | grep test_params`
-      do
-        cat ${results_file} | sed -e 's/,/  /' >> ${D}/${FHEAD}.test_params.dat
-        echo "==========" >> ${D}/${FHEAD}.test_params.dat
-      done
-#      PARSERUN=`echo ${TESTRUN} | tr -d '\n' | \
-#        sed -e 's/\(.*\)_\(.*\)_\(.*\)_\(.*\)$/\3,\4,\1,\2/'`
-#      UTIL=`echo ${TESTRUN} | tr -d '\n' | sed -e 's/.*_\(.*\)_.*$/\1/'`
-#      DIST=`echo ${TESTRUN} | tr -d '\n' | sed -e 's/.*_.*_\(.*\)_.*$/\1/'`
-#      SCHED=`echo ${TESTRUN} | tr -d '\n' | sed -e 's/.*_.*_.*_\(.*\)$/\1/'`
-      
-#      TMP_FILE=
-      count=0
-      for results_file in `find . -name "*.opal" | sed -e 's/.\///' | sort`
-      do
-        let count=count+1
-        # Write out file headers before processing first file
-        if [[ $count -eq 1 ]]
-        then
-          BUFFER=`echo "Filename  " | tr -d '\n'`
-          grep -e 'L1\.data' -e 'L1\.inst' -e 'Total number of instructions' \
-               -e 'Total number of cycles' -e 'Instruction per cycle' \
-               -e 'total power per cycle' -e 'ds1_' -e 'ds2_' -e 'sched_' \
-               ${results_file} | \
-          sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
-              -e 's/  \s*/:/' \
-              -e "s/^/\"/" -e "s/:.*$/\"  /" | \
-          tr -d '\n' | sed -e 's/\s*$//' | \
-          sed -e "s/^/${BUFFER}  /" \
-          >>${D}/${FHEAD}.dat
-          echo "" >> ${D}/${FHEAD}.dat
-        fi
-
-        #write out the test
-        BUFFER=`echo ${results_file} | tr -d '\n'`
-        grep -e 'L1\.data' -e 'L1\.inst' -e 'Total number of instructions' \
-             -e 'Total number of cycles' -e 'Instruction per cycle' \
-             -e 'total power per cycle' -e 'ds1_' -e 'ds2_' -e 'sched_' \
-             ${results_file} | \
-        sed -e "s/\[0\]\s*/:/" -e "s/\[/:/" -e "s/\[//g" -e "s/\]//g" \
-            -e 's/  \s*/:/' -e 's/.*:/  /' \
-            -e 's/:.*:/  /' -e 's/\s*:/  /' | \
-        tr -d '\n' | \
-        sed -e "s/^/${BUFFER}  /" >>${D}/${FHEAD}.dat
-        echo "" >> ${D}/${FHEAD}.dat
-        #        TMP_FILE=${results_file}
-      done
-      cd ..
+      error_out "Not a valid directory: ${dir_arr[0]}/${dir_arr[$i]}"
+      fatal
     fi
   done
-  cd ..
-done
+    
+  ## Deprecated
+  #OLDIFS=$IFS
+  #IFS=$'\n' 
+  #field_arr=( `awk 'BEGIN {ORS="\n"} \
+  #$1 !~ /^(#| |$).*/ {print $0} \
+  #END {printf("\n");}'  ${fields}` )
+  #field_arr_len=${#field_arr[@]}
+  #IFS=$OLDIFS
+  #
+  #for (( i=0; i<field_arr_len; i++ ))
+  #do
+  #  tmp="-e ${field_arr[$i]} "
+  #  grep_fields=${grep_fields}${tmp}
+  #done
 
+  cd ${dir_arr[0]}
+  for (( i=1; i<dir_arr_len; i++ ))
+  do
+    dir=${dir_arr[$i]}
+    TESTTAG=$dir
+    cd ${TESTTAG}
+    TAG=`echo -n ${TESTTAG} |  sed -e 's/_.*$//'`
+
+    if [[ -d ${OUTPUT}/${TESTTAG} ]]
+    then
+      echo "${OUTPUT}/${TESTTAG} already exists, move it or delete it"
+      exit 1
+    fi
+    D=${OUTPUT}/${TESTTAG}
+    mkdir $D
+
+    dataset_arr=( `ls -1 | sed -e 's/$/ / ' | tr -d '\n'` )
+    dataset_arr_len=${#dataset_arr[@]}
+
+    for (( j=0;j<dataset_arr_len; j++ ))
+    do
+      dir2=${dataset_arr[$j]}
+      TESTRUN=$dir2
+      FHEAD=${TESTRUN}
+      echo "Processing ${TAG}.${TESTRUN}"
+
+      ## Setup output files
+      touch ${D}/${FHEAD}.dat
+
+      if [[ -d ${TESTRUN} ]]
+      then
+        cd ${TESTRUN}
+        let count=0
+        for results_file in `find . -name "*.opal" | sed -e 's/.\///' | sort`
+        do
+          let count=count+1
+          # Write out file headers before processing first file
+          if [[ $count -eq 1 ]]
+          then
+            BUFFER=`echo -n "Filename  "`
+            FIELDS=`eval grep -f ${fields} ${results_file} | \
+            sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
+            -e 's/  \s*/:/' \
+            -e "s/^/\"/" -e "s/:.*$/\"  /" | \
+            tr -d '\n' | sed -e 's/\s*$//' | \
+            sed -e "s/^/${BUFFER}  /"`
+            eval field_arr=( `echo -n "${FIELDS}" | sed -e "s/\"/\'/g"` )
+            field_arr_len=${#field_arr[@]}
+            echo "${FIELDS}">>${D}/${FHEAD}.dat
+          fi
+
+          #write out the test
+          BUFFER=`echo -n ${results_file}`
+          eval grep -f ${fields} ${results_file} | \
+          sed -e "s/\[0\]\s*/:/" -e "s/\[/:/" -e "s/\[//g" -e "s/\]//g" \
+          -e 's/  \s*/:/' -e 's/.*:/  /' \
+          -e 's/:.*:/  /' -e 's/\s*:/  /' | \
+          tr -d '\n' | \
+          sed -e "s/^/${BUFFER}  /" >>${D}/${FHEAD}.dat
+          echo "" >> ${D}/${FHEAD}.dat
+          #        TMP_FILE=${results_file}
+        done
+        cd ..
+      fi
+    done
+    cd ..
+  done
+
+  ## Write out the directory and field information to a file.
+  ## Allows to decouple processing and analyzing data.
+  cd ${OUTPUT}
+  rm info.txt
+  touch info.txt
+  for (( i=1; i<dir_arr_len; i++ ))
+  do
+    echo -n "${dir_arr[$i]}  " >> info.txt
+  done
+  echo "" >> info.txt
+  for (( i=0; i<dataset_arr_len; i++ ))
+  do
+    echo -n "${dataset_arr[$i]}  " >> info.txt
+  done
+  echo "" >> info.txt
+  for (( i=0; i<field_arr_len; i++ ))
+  do
+    echo "${field_arr[$i]}" >> info.txt
+  done
+}
+
+load_info() {
+  cd ${OUTPUT}
+  if [[ ! -f info.txt ]]
+  then
+    error_out "Unable to find ${OUTPUT}/info.txt -- Try processing data?"
+    fatal
+  fi
+
+  # Get the directories
+  dir_arr=( `awk 'BEGIN {getline; ORS=" "; \
+                         for ( i=1; i<=NF; i++ ) { print $i }; }' info.txt` )
+  dir_arr_len=${#dir_arr[@]}
+
+  # Get the datasets
+  dataset_arr=( `awk 'BEGIN {getline;getline; ORS=" "; \
+                         for ( i=1; i<=NF; i++ ) { print $i }; }' info.txt` )
+  dataset_arr_len=${#dataset_arr[@]}
+
+  # Get fields
+  OLDIFS=$IFS
+  IFS=$'\n' 
+  eval field_arr=( `awk 'BEGIN {getline;getline; ORS=" ";} \
+                    /.*/ {printf("\"%s\"  ",$0);}' info.txt \
+                    | sed -e "s/\"/\'/g" -e 's/\s*$//'` )
+  field_arr_len=${#field_arr[@]}
+  IFS=${OLDIFS}
+  cd -
+}
+
+print_info() {
+  echo "Directories"
+  for (( i=0; i<${dir_arr_len}; i++ ))
+  do
+    echo "$i  ${dir_arr[$i]}"
+  done
+  echo ""
+
+  echo "Datasets"
+  for (( i=0; i<${dataset_arr_len}; i++ ))
+  do
+    echo "$i  ${dataset_arr[$i]}"
+  done
+  echo ""
+
+
+  echo "Fields"
+  for (( i=0; i<${field_arr_len}; i++ ))
+  do
+    echo "\$$((i+1))  ${field_arr[$i]}"
+  done
+}
+
+## script entry point
+main() {
+  validate_args
+
+  canonicalize_args
+
+  ## Process data or load info from pre-processed results
+  if [ ${PROCESS_DATA} = "yes" ]
+  then
+    process_results
+  fi
+  
+  load_info
+
+  print_info
+}
+
+
+
+## Start script
+main
