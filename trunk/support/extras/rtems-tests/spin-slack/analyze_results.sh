@@ -9,8 +9,6 @@ USAGE=\
 "usage: $progname [ -opts ] 
   -d    -- file listing directories of results to analyze (required)
   -f    -- file listing fields of interest (required)
-  -F    -- file containing function to compute
-  -P    -- process data (default=no)
   -O    -- directory of processed results (required)
 "
 
@@ -36,16 +34,12 @@ PARAM_FILE=
 ## Arguments
 directories=
 fields=
-function_file=
 OUTPUT=
-PROCESS_DATA="no"
-while getopts "d:f:F:PO:" OPT
+while getopts "d:f:O:" OPT
 do
   case "$OPT" in
     d) directories=$OPTARG;;
     f) fields=$OPTARG;;
-    F) function_file=$OPTARG;;
-    P) PROCESS_DATA="yes";;
     O) OUTPUT=$OPTARG;;
     *) fatal;;
   esac
@@ -63,12 +57,6 @@ validate_args() {
   if [[ ! -f ${fields} ]]
   then
     error_out "Invalid fields file: ${fields}"
-    fatal
-  fi
-
-  if [[ ! -f ${function_file} ]]
-  then
-    error_out "Invalid function file: ${function_file}"
     fatal
   fi
 
@@ -91,139 +79,6 @@ canonicalize_args() {
     fields=`pwd`/${fields}
   fi
 
-  if [[ -f `pwd`/${function_file} ]]
-  then
-    function_file=`pwd`/${function_file}
-  fi
-}
-
-process_results() {
-  local FIELDS=
-  local i=
-  local j=
-  dir_arr=( `awk 'BEGIN {ORS=" "} \
-  $1 !~ /^(#| |$).*/ {print $1} \
-  END {printf("\n");}' ${directories}` )
-  dir_arr_len=${#dir_arr[@]}
-  if [[ ! -d ${dir_arr[0]} ]]
-  then
-    error_out "Not a valid base directory: ${dir_arr[0]}"
-    fatal
-  fi
-  for (( i=1; i<dir_arr_len; i++ ))
-  do
-    if [[ ! -d ${dir_arr[0]}/${dir_arr[$i]} ]]
-    then
-      error_out "Not a valid directory: ${dir_arr[0]}/${dir_arr[$i]}"
-      fatal
-    fi
-  done
-    
-  ## Deprecated
-  #OLDIFS=$IFS
-  #IFS=$'\n' 
-  #field_arr=( `awk 'BEGIN {ORS="\n"} \
-  #$1 !~ /^(#| |$).*/ {print $0} \
-  #END {printf("\n");}'  ${fields}` )
-  #field_arr_len=${#field_arr[@]}
-  #IFS=$OLDIFS
-  #
-  #for (( i=0; i<field_arr_len; i++ ))
-  #do
-  #  tmp="-e ${field_arr[$i]} "
-  #  grep_fields=${grep_fields}${tmp}
-  #done
-
-  cd ${dir_arr[0]}
-  for (( i=1; i<dir_arr_len; i++ ))
-  do
-    dir=${dir_arr[$i]}
-    TESTTAG=$dir
-    cd ${TESTTAG}
-    TAG=`echo -n ${TESTTAG} |  sed -e 's/_.*$//'`
-
-    if [[ -d ${OUTPUT}/${TESTTAG} ]]
-    then
-      echo "${OUTPUT}/${TESTTAG} already exists, move it or delete it"
-      exit 1
-    fi
-    D=${OUTPUT}/${TESTTAG}
-    mkdir $D
-
-    dataset_arr=( `ls -1 | sed -e 's/$/ / ' | tr -d '\n'` )
-    dataset_arr_len=${#dataset_arr[@]}
-
-    for (( j=0;j<dataset_arr_len; j++ ))
-    do
-      dir2=${dataset_arr[$j]}
-      TESTRUN=$dir2
-      FHEAD=${TESTRUN}
-      echo "Processing ${TAG}.${TESTRUN}"
-
-      ## Setup output files
-      touch ${D}/${FHEAD}.dat
-
-      if [[ -d ${TESTRUN} ]]
-      then
-        cd ${TESTRUN}
-        let count=0
-        for results_file in `find . -name "*.opal" | sed -e 's/.\///' | sort`
-        do
-          let count=count+1
-          # Write out file headers before processing first file
-          if [[ $count -eq 1 ]]
-          then
-            if [[ ! ${FIELDS} ]]
-            then
-              BUFFER=`echo -n "Filename  "`
-              FIELDS=`eval grep -f ${fields} ${results_file} | \
-              sed -e 's/\[0\]\s*//' -e 's/\[.*\]/:/' -e 's/\[//g' -e 's/\]//g' \
-              -e 's/  \s*/:/' \
-              -e "s/^/\"/" -e "s/:.*$/\"  /" | \
-              tr -d '\n' | sed -e 's/\s*$//' | \
-              sed -e "s/^/${BUFFER}  /"`
-              eval field_arr=( `echo -n "${FIELDS}" | sed -e "s/\"/\'/g"` )
-              field_arr_len=${#field_arr[@]}
-            fi
-            echo "${FIELDS}">>${D}/${FHEAD}.dat
-          fi
-
-          #write out the test
-          BUFFER=`echo -n ${results_file}`
-          eval grep -f ${fields} ${results_file} | \
-          sed -e "s/\[0\]\s*/:/" -e "s/\[/:/" -e "s/\[//g" -e "s/\]//g" \
-          -e 's/  \s*/:/' -e 's/.*:/  /' \
-          -e 's/:.*:/  /' -e 's/\s*:/  /' | \
-          tr -d '\n' | \
-          sed -e "s/^/${BUFFER}  /" >>${D}/${FHEAD}.dat
-          echo "" >> ${D}/${FHEAD}.dat
-          #        TMP_FILE=${results_file}
-        done
-        cd ..
-      fi
-    done
-    cd ..
-  done
-
-  ## Write out the directory and field information to a file.
-  ## Allows to decouple processing and analyzing data.
-  cd ${OUTPUT}
-  rm info.txt
-  touch info.txt
-  for (( i=1; i<dir_arr_len; i++ ))
-  do
-    echo -n "${dir_arr[$i]}  " >> info.txt
-  done
-  echo "" >> info.txt
-  for (( i=0; i<dataset_arr_len; i++ ))
-  do
-    echo -n "${dataset_arr[$i]}  " >> info.txt
-  done
-  echo "" >> info.txt
-  for (( i=0; i<field_arr_len; i++ ))
-  do
-    echo "${field_arr[$i]}" >> info.txt
-  done
 }
 
 load_info() {
@@ -278,81 +133,94 @@ print_info() {
   done
 }
 
-dataentry=
-func=
-title=
-direntry=
+reduce_results() {
+  ## The directory names are in dir_arr, with length dir_arr_len
+  ## The data set names are in dataset_arr, with length dataset_arr_len
+  ## The field names are in field_arr, with length field_arr_len
+  ## This function should be customized to produce the desired data files, 
+  ## which can be read in by further tools such as gnuplot and xmgrace.
+  ##
+  ## The delimiters for the data files are two or more spaces, which allows 
+  ## for some fields to contain multiple elements that are comma-separated.
 
-## Compute the average over the awk expression stored in $1, calculated across
-## all of the datasets in the dataentry array.
-function_avg() {
-  local field_num=$1
-  local average=
-  for (( i=0; i<${#dataentry[@]}; i++ ))
-  do
-    average[$i]=`eval "awk 'BEGIN {FS=\" [ ]+\"; getline header;} \
-                   /.*/ {sum+=${func[${field_num}]};count++} \
-                   END {printf(\"%f\n\",sum/count);}' \
-                   ${OUTPUT}/${dir_arr[${direntry[0]}]}/${dataset_arr[${dataentry[${i}]}]}.dat"`
-  echo "${average[$i]}"
-  done
-}
+  ## Set up some groupings for the datasets. Whatever makes sense.
+  ## These are indices for the dataset_arr.
+  local \
+  dataset_indices=( 0   8   16  24 \
+                    1   9   17  25 \
+                    2   10  18  26 \
+                    3   11  19  27 \
+                    4   12  20  28 \
+                    5   13  21  29 \
+                    6   14  22  30 \
+                    7   15  23  31 )
+  local indices_per_set=4
+  local num_sets=8
+  local dataset_indices_files=
   
+  local X_vals=( 20 40 60 80 )
+  local tmp=
+  local index=
+  cd ${OUTPUT}
 
-## function_1 computes a performance measure of the second and third args in 
-## the func line array.  The measure is: (1-2)/1.
-function_1() {
-    local arr1=( `function_avg 1 | sed -e 's/$/  /' | tr -d '\n'` )
-    local arr2=( `function_avg 2 | sed -e 's/$/  /' | tr -d '\n'` )
-    local i=
-    for (( i=0; i<${#arr1[@]}; i++ ))
-    do
-      a=${arr1[$i]}
-      b=${arr2[$i]}
-      result=`echo "scale=6; ($a-$b)/$a" | bc`
-      echo $result
-    done
- return
+  ## Reduced results will be placed in the reduced_results subdirectory of the 
+  ## processed outputs. 
+  if [[ ! -d reduced_results ]]
+  then
+    mkdir reduced_results
+  fi
 
-  ### DEPRECATED
-  func_len=${#func[@]}
-  field1=${func[1]}
-  field2=${func[2]}
-  eval "awk 'BEGIN {FS=\" [ ]+\"; getline header;} \
-    /.*/ {sum1+=${field1}; count1++} \
-    /.*/ {sum2+=${field2}; count2++;} \
-        END {printf(\"%f\n\",sum1/count1); printf(\"%f\n\",sum2/count2);}' \
-        ${OUTPUT}/${dir_arr[${direntry[0]}]}/${dataset_arr[${dataentry[0]}]}.dat"
-}
+  ## This is where the 'work' gets done.  Loop over each grouping of dataset
+  ## indices and reduce results.  Typically, each individual dataset index
+  ## constitutes a single point of interest, probably an average with stdev
+  ## or range, or maybe a maximum.
 
-compute_functions() {
-  num_funcs=`awk '$1 !~ /^(#| |$).*/ {count++ }  END { print count }' \
-            ${function_file}`
-  local i=
-  for (( i=0; i<num_funcs; i++ ))
+  ## Calculate a performance metric over dir_arr[1], using the 
+  ## Total number of cycles, ds1_cycles_saved, and ds2_cycles_saved.
+  ## Save the results to the following files (.dat is extended)
+  dataset_indices_files=( 'perf_0.4_EDF' \
+                          'perf_0.4_RM' \
+                          'perf_0.6_EDF' \
+                          'perf_0.6_RM' \
+                          'perf_0.8_EDF' \
+                          'perf_0.8_RM' \
+                          'perf_1.0_EDF' \
+                          'perf_1.0_RM' )
+  for (( i=0; i < num_sets; i++ ))
   do
-    title=`awk -v n=$i 'BEGIN {FS=","; for (i=0;i<=n;i++) {getline;} \
-            print $1}' ${function_file}`
-    direntry=`awk -v n=$i 'BEGIN {FS=","; for (i=0;i<=n;i++) {getline;} \
-            print $2}' ${function_file}`
-    dataentry=( `awk -v n=$i 'BEGIN {FS=","; for (i=0;i<=n;i++) {getline;} \
-            print $3}' ${function_file}` )
-    func=( `awk -v n=$i 'BEGIN {FS=","; for (i=0;i<=n;i++) {getline;} \
-            print $4}' ${function_file}` )
-
-    echo $title
-    echo $direntry
-    echo ${dataentry[@]}
-    echo ${func[@]}
-
-    if [[ ${func[0]} -eq 1 ]]
-    then
-      function_1
-    else
-      error_out "unknown function: ${func[0]}"
-      fatal
-    fi
+    rm reduced_results/${dataset_indices_files[$i]}.dat
+    touch reduced_results/${dataset_indices_files[$i]}.dat
+    for (( j=0; j<indices_per_set; j++ ))
+    do
+      let tmp=(i*indices_per_set+j)
+      index=${dataset_indices[$tmp]}
+      echo -n "${X_vals[$j]}  " >>reduced_results/${dataset_indices_files[$i]}.dat
+      awk 'BEGIN {count=0; FS = " [ ]+";} \
+          /Filename/ {for (i=1;i<=NF;i++) \
+                      {if ($i == "\"Total number of cycles\"") idx1=i; \
+                       if ($i == "\"ds1_cycles_saved\"") idx2=i; \
+                       if ($i == "\"ds2_cycles_saved\"") idx3=i; \
+                       if ($i == "\"ds1_first\"") idx4=i; \
+                       if ($i == "\"ds1_enqueue\"") idx5=i; \
+                       if ($i == "\"ds1_extract\"") idx6=i; \
+                       if ($i == "\"ds1_requeue\"") idx7=i; \
+                       if ($i == "\"ds2_enqueue\"") idx8=i; \
+                       if ($i == "\"ds2_extract\"") idx9=i; \
+                     }} \
+          /spspin/ {A[count]=$idx1; \
+                    B[count]=$idx2+$idx3; \
+                    C[count]=$idx4*1+($idx5+$idx6+$idx8+$idx9)*2+$idx7*3 ; \
+                    count++;} \
+          END {for (i=0;i<count;i++) {sum+=(B[i]-C[i])/A[i]}; \
+               mean=sum/count; \
+               for (i=0;i<count;i++) {stdev_sum+=((B[i]-C[i])/A[i] - mean)*((B[i]-C[i])/A[i] - mean)}; \
+               stdev=sqrt(stdev_sum/count); \
+          printf("%f\t%f\n",mean,stdev)}' \
+          ${dir_arr[1]}/${dataset_arr[$index]}.dat >> reduced_results/${dataset_indices_files[$i]}.dat
+    done
   done
+
+  return
 }
 
 ## script entry point
@@ -361,18 +229,11 @@ main() {
 
   canonicalize_args
 
-  ## Process data or load info from pre-processed results
-  if [ ${PROCESS_DATA} = "yes" ]
-  then
-    process_results
-  fi
-  
   load_info
 
   print_info
 
-  compute_functions
-
+  reduce_results
 }
 
 
