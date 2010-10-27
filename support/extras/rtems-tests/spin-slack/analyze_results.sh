@@ -238,7 +238,102 @@ reduce_results() {
     reduced_results/${dataset_indices_files[7]}.dat \
     -hardcopy
 
-  cd -
+  ## Calculate max latencies for the various hwds operations.
+  ## Save the results to the following files (.dat is extended)
+  dataset_indices_files=( 'topn_0.4_EDF' \
+                          'topn_0.4_RM' \
+                          'topn_0.6_EDF' \
+                          'topn_0.6_RM' \
+                          'topn_0.8_EDF' \
+                          'topn_0.8_RM' \
+                          'topn_1.0_EDF' \
+                          'topn_1.0_RM' \
+  )
+
+  # top-3 fields
+  for process_fields in 'ds1_cycles' 'ds2_cycles' 'ds1_first' 'ds2_critical'
+  do
+    for (( i=0; i < num_sets; i++ ))
+    do
+      rm reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+      touch reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+      for (( j=0; j<indices_per_set; j++ ))
+      do
+        let tmp=(i*indices_per_set+j)
+        index=${dataset_indices[$tmp]}
+        echo -n "${X_vals[$j]}  " >> \
+          reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+        eval "awk 'BEGIN {FS = \" [ ]+\";} \
+                    /Filename/ {for (i=1;i<=NF;i++) \
+                    {if (\$i == \"\\\"${process_fields}_max\\\"\") idx=i; \
+                    }} \
+                    /spspin/ {print \$idx;}' \
+                    ${dir_arr[1]}/${dataset_arr[$index]}.dat > \
+                      reduced_results/tmp.dat"
+
+        # now process the top-3
+        awk 'BEGIN {count=0; FS= ", ";} \
+            /.*/ {if(one_max==""){one_max=$1; \
+                                   two_max=$2; \
+                                   three_max$3}; \
+                  if($1>one_max) {one_max=$1}; \
+                  if($2>two_max) {two_max=$2}; \
+                  if($3>three_max) {three_max=$3}} \
+            END { printf("%d\t%d\t%d\n",\
+                    one_max,two_max,three_max); }' \
+            reduced_results/tmp.dat >> \
+         reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+       done
+     done
+   done
+
+  # top-5 fields
+  for process_fields in 'ds1_enqueue' 'ds1_extract' 'ds2_enqueue' 'ds2_extract'
+  do
+    for (( i=0; i < num_sets; i++ ))
+    do
+      rm reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+      touch reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+      for (( j=0; j<indices_per_set; j++ ))
+      do
+        let tmp=(i*indices_per_set+j)
+        index=${dataset_indices[$tmp]}
+        echo -n "${X_vals[$j]}  " >> \
+          reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+        eval "awk 'BEGIN {FS = \" [ ]+\";} \
+                    /Filename/ {for (i=1;i<=NF;i++) \
+                    {if (\$i == \"\\\"${process_fields}_max\\\"\") idx=i; \
+                    }} \
+                    /spspin/ {print \$idx;}' \
+                    ${dir_arr[1]}/${dataset_arr[$index]}.dat > \
+                      reduced_results/tmp.dat"
+
+        # now process the top-5
+        awk 'BEGIN {count=0; FS= ", ";} \
+            /.*/ {if(one_max==""){one_max=$1; \
+                                  two_max=$2; \
+                                  three_max=$3; \
+                                  four_max=$4; \
+                                  five_max=$5;}; \
+                  if($1>one_max) {one_max=$1}; \
+                  if($2>two_max) {two_max=$2}; \
+                  if($3>three_max) {three_max=$3}; \
+                  if($4>four_max) {four_max=$4}; \
+                  if($5>five_max) {five_max=$5}; \
+            } \
+            END { printf("%d\t%d\t%d\t%d\t%d\n",\
+                    one_max,two_max,three_max,four_max,five_max); }' \
+            reduced_results/tmp.dat >> \
+         reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+       done
+     done
+   done
+
+
+
+
+
+   cd -
   return
 }
 
