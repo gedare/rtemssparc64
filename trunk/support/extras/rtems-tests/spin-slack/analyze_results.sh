@@ -161,7 +161,8 @@ reduce_results() {
   local X_vals=( 20 40 60 80 )
   local tmp=
   local index=
-  cp graph_params.txt ${OUTPUT}/
+  cp bar_graph_params.txt ${OUTPUT}/
+  cp nxy_graph_params.txt ${OUTPUT}/
   cp graph_perf_EDF.txt ${OUTPUT}/
   cp graph_perf_RM.txt ${OUTPUT}/
   cd ${OUTPUT}
@@ -224,14 +225,14 @@ reduce_results() {
   done
 
   ## Now plot perf graphs
-  xmgrace -param bargraph_params.txt -param graph_perf_EDF.txt \
+  xmgrace -param bar_graph_params.txt -param graph_perf_EDF.txt \
     reduced_results/${dataset_indices_files[0]}.dat \
     reduced_results/${dataset_indices_files[2]}.dat \
     reduced_results/${dataset_indices_files[4]}.dat \
     reduced_results/${dataset_indices_files[6]}.dat \
     -hardcopy
 
-  xmgrace -param bargraph_params.txt -param graph_perf_RM.txt \
+  xmgrace -param bar_graph_params.txt -param graph_perf_RM.txt \
     reduced_results/${dataset_indices_files[1]}.dat \
     reduced_results/${dataset_indices_files[3]}.dat \
     reduced_results/${dataset_indices_files[5]}.dat \
@@ -328,6 +329,41 @@ reduce_results() {
        done
      done
    done
+
+
+  ## Now plot max latency graphs
+  ## top-3
+
+  for process_fields in 'ds1_cycles' 'ds2_cycles' 'ds1_first' 'ds2_critical'
+  do
+    field_text=
+    case "${process_fields}" in
+      ds1_cycles)   field_text="Ready Queue";;
+      ds2_cycles)   field_text="Timer Chain";;
+      ds1_first)    field_text="Ready Queue Read First";;
+      ds2_critical) field_text="Timer Chain Critical Section";;
+    esac
+
+    for util in 0.4 0.6 0.8 1.0
+    do
+      xmgrace -param nxy_graph_params.txt \
+      -pexec "title \"${field_text} Latencies (Worst 3)\"" \
+      -pexec "subtitle \"EDF Scheduling, Task Set Utilization = ${util}\"" \
+      -pexec "xaxis label \"Number of Tasks\"" \
+      -pexec "print to \"topn_${util}_EDF_${process_fields}.eps\"" \
+      -nxy reduced_results/topn_${util}_EDF_${process_fields}.dat \
+      -hardcopy
+
+      xmgrace -param nxy_graph_params.txt \
+      -pexec "title \"${field_text} Latencies (Worst 3)\"" \
+      -pexec "subtitle \"RM Scheduling, Task Set Utilization = ${util}\"" \
+      -pexec "xaxis label \"Number of Tasks\"" \
+      -pexec "print to \"topn_${util}_RM_${process_fields}.eps\"" \
+      -nxy reduced_results/topn_${util}_RM_${process_fields}.dat \
+      -hardcopy
+    done
+  done
+
 
 
 
