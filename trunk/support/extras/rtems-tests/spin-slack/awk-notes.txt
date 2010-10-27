@@ -52,3 +52,55 @@ Similar example, to compute an average:
                    END {printf(\"%f\n\",sum/count);}' \
                    ${OUTPUT}/${dir_arr[${direntry[0]}]}/${dataset_arr[${dataentry[${i}]}]}.dat"`
 
+Simple computation of min, max, and average:
+awk '{if(min==""){min=max=$1}; if($1>max) {max=$1}; if($1< min) {min=$1}; total+=$1; count+=1} END {print total/count, min, max}' data.txt
+
+Process a comma-delimited field within a double-space delimited file:
+  for process_fields in 'ds1_enqueue' 'ds1_extract' 'ds2_enqueue' 'ds2_extract'
+  do
+    for (( i=0; i < num_sets; i++ ))
+    do
+      rm reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+      touch reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+      for (( j=0; j<indices_per_set; j++ ))
+      do
+        let tmp=(i*indices_per_set+j)
+        index=${dataset_indices[$tmp]}
+        echo -n "${X_vals[$j]}  " >> \
+          reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+        eval "awk 'BEGIN {FS = \" [ ]+\";} \
+                    /Filename/ {for (i=1;i<=NF;i++) \
+                    {if (\$i == \"\\\"${process_fields}_max\\\"\") idx=i; \
+                    }} \
+                    /spspin/ {print \$idx;}' \
+                    ${dir_arr[1]}/${dataset_arr[$index]}.dat > \
+                      reduced_results/tmp.dat"
+
+        # now process the top-5
+        awk 'BEGIN {count=0; FS= ", ";} \
+            /.*/ {if(one_min==""){one_max=one_min=$1; \
+                                  two_max=two_min=$2; \
+                                  three_max=three_min=$3; \
+                                  four_max=four_min=$4; \
+                                  five_max=five_min=$5;}; \
+                  if($1>one_max) {one_max=$1}; \
+                  if($2>two_max) {two_max=$2}; \
+                  if($3>three_max) {three_max=$3}; \
+                  if($4>four_max) {four_max=$4}; \
+                  if($5>five_max) {five_max=$5}; \
+                  if($1<one_min) {one_min=$1}; \
+                  if($2<two_min) {two_min=$2}; \
+                  if($3<three_min) {three_min=$3}; \
+                  if($4<four_min) {four_min=$4}; \
+                  if($5<five_min) {five_min=$5}; \
+            } \
+            END { printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",\
+                    one_max,two_max,three_max,four_max,five_max, \
+                    one_min,two_min,three_min,four_min,five_min); }' \
+            reduced_results/tmp.dat >> \
+         reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+       done
+     done
+   done
+
+
