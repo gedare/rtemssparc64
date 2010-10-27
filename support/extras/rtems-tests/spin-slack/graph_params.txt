@@ -1,0 +1,48 @@
+# Setup a bar chart, with small gaps between datasets
+type bardy
+g0 type chart
+g0 bar hgap .005
+
+# no lines connecting bars.
+s0 line type 0
+s1 line type 0
+s2 line type 0
+s3 line type 0
+s4 line type 0
+s5 line type 0
+s6 line type 0
+s7 line type 0
+s8 line type 0
+s9 line type 0
+s10 line type 0
+s11 line type 0
+s12 line type 0
+s13 line type 0
+s14 line type 0
+s15 line type 0
+s16 line type 0
+
+# Fixup lighter colors to be more readily visible.
+MAP COLOR 3 to (0,100,100),"green"
+
+# autoscale to y axis
+autoscale onread yaxes
+
+# preset range for x
+world xmin 0
+world xmax 100
+xaxis tick major 20
+xaxis tick minor off
+xaxis tick place normal
+yaxis tick place normal
+
+# Create legend
+legend on
+legend box on
+legend loctype view
+legend 0.2, 0.8
+
+# Setup printer
+device "EPS" dpi 300
+device "EPS" OP "bbox:tight"
+hardcopy device "EPS"

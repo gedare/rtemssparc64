@@ -1,0 +1,74 @@
+
+
+Plot a bar graph with y error bars, scaled to y, with x set to [0,100], using
+source file perf_0.8_EDF.dat:
+xmgrace -settype bardy -autoscale y -pexec "world xmin 0" -pexec "world xmax 100" perf_0.8_EDF.dat
+
+*** Parameter file examples ***
+Create a parameter file and read it in with the -param on the command line,
+then list the files containing the data sets to read in. For example:
+$> xmgrace -param graph_params.txt  perf_0.6_EDF.dat perf_0.8_EDF.dat
+Where graph_params.txt is the paramer file.
+
+Create a bar chart with small gaps between repeated data sets. 
+# begin graph_params.txt
+type bardy
+g0 type chart
+g0 bar hgap .005
+autoscale onread yaxes
+world xmin 0
+world xmax 100
+legend on
+legend box on
+# end graph_params.txt
+
+An expanded example of bar chart, with additional options:
+# begin graph_params.txt
+# Setup a bar chart, with small gaps between datasets
+type bardy
+g0 type chart
+g0 bar hgap .005
+
+# no lines connecting bars.
+s0 line type 0
+s1 line type 0
+s2 line type 0
+s3 line type 0
+s4 line type 0
+s5 line type 0
+s6 line type 0
+s7 line type 0
+s8 line type 0
+s9 line type 0
+s10 line type 0
+s11 line type 0
+s12 line type 0
+s13 line type 0
+s14 line type 0
+s15 line type 0
+s16 line type 0
+
+# Fixup lighter colors to be more readily visible.
+MAP COLOR 3 to (0,100,100),"green"
+
+# autoscale to y axis
+autoscale onread yaxes
+
+# preset range for x
+world xmin 0
+world xmax 100
+autoticks
+
+# Create legend
+legend on
+legend box on
+legend loctype view
+legend 0.2, 0.8
+s0 legend "0.4"
+s1 legend "0.6"
+s2 legend "0.8"
+s3 legend "1.0"
+
+# end graph_params.txt
+
+
