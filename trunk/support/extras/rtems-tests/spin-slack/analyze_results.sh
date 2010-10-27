@@ -224,14 +224,14 @@ reduce_results() {
   done
 
   ## Now plot perf graphs
-  xmgrace -param graph_params.txt -param graph_perf_EDF.txt \
+  xmgrace -param bargraph_params.txt -param graph_perf_EDF.txt \
     reduced_results/${dataset_indices_files[0]}.dat \
     reduced_results/${dataset_indices_files[2]}.dat \
     reduced_results/${dataset_indices_files[4]}.dat \
     reduced_results/${dataset_indices_files[6]}.dat \
     -hardcopy
 
-  xmgrace -param graph_params.txt -param graph_perf_RM.txt \
+  xmgrace -param bargraph_params.txt -param graph_perf_RM.txt \
     reduced_results/${dataset_indices_files[1]}.dat \
     reduced_results/${dataset_indices_files[3]}.dat \
     reduced_results/${dataset_indices_files[5]}.dat \
