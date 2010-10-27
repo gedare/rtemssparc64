@@ -1,0 +1,10 @@
+s0 legend "0.4"
+s1 legend "0.6"
+s2 legend "0.8"
+s3 legend "1.0"
+
+title "Performance Speedup of HWDS for RM Scheduling"
+subtitle "Various Task Set Utilizations"
+xaxis label "Number of Tasks"
+
+print to "perf_RM.eps"

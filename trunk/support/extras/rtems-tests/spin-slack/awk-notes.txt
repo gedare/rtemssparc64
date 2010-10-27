@@ -1,0 +1,54 @@
+
+Printing the header line, and then printing the number of fields in each record:
+awk 'BEGIN {getline; print $0} /spspin/ {print NF}' 20_0.4_1_EDF.L1data.dat
+
+Separating by two or more spaces (to prevent splitting on spaces in strings):
+awk 'BEGIN {FS = " [ ]+"} /^/ {print $1 " " $2}' 20_0.4_1_EDF.total_cycles.dat
+
+Splitting the header and searching the header for a particular string:
+awk 'BEGIN {FS = " [ ]+" ; getline header; split(header,A," [ ]+"); \
+            for (x in A) \
+              if (A[x] == "\"L1.data total number of read misses\"") \
+                print x \
+           } /spspin/ {print NF}' 20_0.4_1_EDF.L1data.dat
+
+Extending the previous example to store the index and compute an average
+(Note that NR is off-by-one due to reading the header line):
+awk 'BEGIN {FS = " [ ]+" ; getline header; split(header,A," [ ]+"); for (x in A) if (A[x] == "\"L1.data total number of read misses\"") idx=x} /spspin/ {sum+=$idx} END {print sum/(NR-1)}' 20_0.4_1_EDF.L1data.dat
+
+A similar example, but now using printf:
+awk 'BEGIN {FS = " [ ]+" ; getline header; split(header,A," [ ]+"); for (x in A) if (A[x] == "\"Total number of cycles\"") idx=x} /spspin/ {sum+=$idx} END {printf("%d\n",sum/(NR-1))}' 20_0.4_1_EDF.total_cycles.dat
+
+Similar example, but now over two files (Note that NR is off-by-two):
+awk 'BEGIN {FS = " [ ]+" ; getline header; split(header,A," [ ]+"); for (x in A) if (A[x] == "\"Total number of cycles\"") idx=x} /spspin/ {sum+=$idx} END {printf("%d\n",sum/(NR-2))}' 20_0.4_1_EDF.total_cycles.dat 20_0.6_1_EDF.total_cycles.dat
+
+Similar example, but now maintaining a count of elements to avoid using NR:
+awk 'BEGIN {FS = " [ ]+" ; getline header; split(header,A," [ ]+"); for (x in A) if (A[x] == "\"Total number of cycles\"") idx=x} /spspin/ {count++;sum+=$idx} END {printf("%d\n",sum/count)}' 20_0.4_1_EDF.total_cycles.dat 20_0.6_1_EDF.total_cycles.dat
+
+Example using a search string for the first line, which will refresh the 
+header information with each new file.
+awk 'BEGIN {count=0;sum=0; FS = " [ ]+";} /Filename/ {for (i=1;i<=NF;i++) if ($i == "\"Total number of cycles\"") idx=i} /spspin/ {count++;sum+=$idx} END {printf("%d\n",sum/count)}' 20_0.4_1_EDF.total_cycles.dat 20_0.6_1_EDF.total_cycles.dat
+
+Using two files, and computing expressions between the two:
+awk 'BEGIN {count=0;sum=0;flag=0; FS = " [ ]+";} /Filename/ {for (i=1;i<=NF;i++) {if ($i == "\"Total number of cycles\"") idx=i; if ($i == "\"ds1_cycles_saved\"") {idx=i;flag=1;count2=0}} } /spspin/ {if(flag==0) {A[count]=$idx;count++;sum+=$idx} else {D[count2]=A[count2]-$idx;print D[count2];count2++;sum-=$idx}} END {print count;print count2;printf("%d\n",sum/count)}' 20_0.4_1_EDF.total_cycles.dat 20_0.4_1_EDF.hw_ds1.dat
+
+Using two files, constructing arrays of the interesting fields and using the 
+END statement to do whatever computations are desired:
+awk 'BEGIN {count=0;count2=0;flag=0; FS = " [ ]+";} /Filename/ {for (i=1;i<=NF;i++) {if ($i == "\"Total number of cycles\"") idx=i; if ($i == "\"ds1_cycles_saved\"") {idx=i;flag=1}} } /spspin/ {if(flag==0) {A[count]=$idx;count++} else {B[count2]=$idx;count2++;}} END {for (i=0;i<count;i++) printf("%d\t%d\n",A[i],B[i])}' 20_0.4_1_EDF.total_cycles.dat 20_0.4_1_EDF.hw_ds1.dat
+
+Using a single file, constructing arrays of interesting fields:
+awk 'BEGIN {count=0; FS = " [ ]+";} /Filename/ {for (i=1;i<=NF;i++) {if ($i == "\"Total number of cycles\"") idx1=i; if ($i == "\"ds1_cycles_saved\"") idx2=i;} } /spspin/ {A[count]=$idx1;B[count]=$idx2;printf("%d\t%d\n",A[count],B[count]);count++;} END {print count}' 20_0.4_1_EDF.dat
+
+Using shell variables in an awk script
+eval "awk 'BEGIN {FS=\" [ ]+\"; getline header;} \
+    /.*/ {sum1+=${field1};printf(\"%d\n\", ${field1}); count1++} \
+    /.*/ {sum2+=${field2};print ${field2};count2++;} \
+        END {printf(\"%f\n\",sum1/count1); printf(\"%f\n\",sum2/count2);}' \
+        ${OUTPUT}/${dir_arr[${direntry[0]}]}/${dataset_arr[${dataentry[0]}]}.dat"
+
+Similar example, to compute an average:
+    average[$i]=`eval "awk 'BEGIN {FS=\" [ ]+\"; getline header;} \
+                   /.*/ {sum+=${func[${field_num}]};count++} \
+                   END {printf(\"%f\n\",sum/count);}' \
+                   ${OUTPUT}/${dir_arr[${direntry[0]}]}/${dataset_arr[${dataentry[${i}]}]}.dat"`
+

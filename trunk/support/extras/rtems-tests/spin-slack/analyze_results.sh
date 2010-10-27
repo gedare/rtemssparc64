@@ -161,6 +161,9 @@ reduce_results() {
   local X_vals=( 20 40 60 80 )
   local tmp=
   local index=
+  cp graph_params.txt ${OUTPUT}/
+  cp graph_perf_EDF.txt ${OUTPUT}/
+  cp graph_perf_RM.txt ${OUTPUT}/
   cd ${OUTPUT}
 
   ## Reduced results will be placed in the reduced_results subdirectory of the 
@@ -220,6 +223,22 @@ reduce_results() {
     done
   done
 
+  ## Now plot perf graphs
+  xmgrace -param graph_params.txt -param graph_perf_EDF.txt \
+    reduced_results/${dataset_indices_files[0]}.dat \
+    reduced_results/${dataset_indices_files[2]}.dat \
+    reduced_results/${dataset_indices_files[4]}.dat \
+    reduced_results/${dataset_indices_files[6]}.dat \
+    -hardcopy
+
+  xmgrace -param graph_params.txt -param graph_perf_RM.txt \
+    reduced_results/${dataset_indices_files[1]}.dat \
+    reduced_results/${dataset_indices_files[3]}.dat \
+    reduced_results/${dataset_indices_files[5]}.dat \
+    reduced_results/${dataset_indices_files[7]}.dat \
+    -hardcopy
+
+  cd -
   return
 }
 
