@@ -7,4 +7,4 @@ title "Performance Speedup of HWDS for EDF Scheduling"
 subtitle "Various Task Set Utilizations"
 xaxis label "Number of Tasks"
 
-print to "perf_EDF.eps"
+print to "perf/plots/perf_EDF.eps"

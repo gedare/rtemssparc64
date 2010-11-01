@@ -7,4 +7,4 @@ title "Performance Speedup of HWDS for RM Scheduling"
 subtitle "Various Task Set Utilizations"
 xaxis label "Number of Tasks"
 
-print to "perf_RM.eps"
+print to "perf/plots/perf_RM.eps"
