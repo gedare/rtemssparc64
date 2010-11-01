@@ -133,6 +133,89 @@ print_info() {
   done
 }
 
+plot_max_latency_graphs() {
+  ## top-3
+  for process_fields in 'ds1_cycles' 'ds2_cycles' 'ds1_first' 'ds2_critical'
+  do
+    field_text=
+    case "${process_fields}" in
+      ds1_cycles)   field_text="Ready Queue";;
+      ds2_cycles)   field_text="Timer Chain";;
+      ds1_first)    field_text="Ready Queue Read First";;
+      ds2_critical) field_text="Timer Chain Critical Section";;
+    esac
+
+    for util in 0.4 0.6 0.8 1.0
+    do
+      xmgrace -param nxy_graph_params.txt \
+      -pexec "title \"${field_text} Latencies (Worst 3)\"" \
+      -pexec "subtitle \"EDF Scheduling, Task Set Utilization = ${util}\"" \
+      -pexec "xaxis label \"Number of Tasks\"" \
+      -pexec "print to \"topn_${util}_EDF_${process_fields}.eps\"" \
+      -nxy reduced_results/topn_${util}_EDF_${process_fields}.dat \
+      -hardcopy
+
+      xmgrace -param nxy_graph_params.txt \
+      -pexec "title \"${field_text} Latencies (Worst 3)\"" \
+      -pexec "subtitle \"RM Scheduling, Task Set Utilization = ${util}\"" \
+      -pexec "xaxis label \"Number of Tasks\"" \
+      -pexec "print to \"topn_${util}_RM_${process_fields}.eps\"" \
+      -nxy reduced_results/topn_${util}_RM_${process_fields}.dat \
+      -hardcopy
+    done
+  done
+}
+
+make_max_latency_tables() {
+
+  ## top-3
+  for process_fields in 'ds1_cycles' 'ds2_cycles' 'ds1_first' 'ds2_critical'
+  do
+    field_text=
+    case "${process_fields}" in
+      ds1_cycles)   Field_Text="Ready Queue Access";
+                    field_text="ready queue access";;
+      ds2_cycles)   Field_Text="Timer Chain Access";
+                    field_text="timer chain access";;
+      ds1_first)    Field_Text="Ready Queue Read First";
+                    field_text="ready queue read first";;
+      ds2_critical) Field_Text="Timer Chain Critical Section";
+                    field_text="timer chain critical section";;
+    esac
+
+    for util in 0.4 0.6 0.8 1.0
+    do
+      echo "\begin{table}
+  \centering
+  \begin{tabular}{ l | c c c }
+  \hline
+  Tasks & \multicolumn{3}{c}{${Field_Text} Latencies} \\\\
+  \hline\hline" > topn_${util}_EDF_${process_fields}.tex
+      cat reduced_results/topn_${util}_EDF_${process_fields}.dat | \
+        sed -e 's/[\t]/ \& /g' -e 's/  / \& /g' -e 's/$/ \\\\/' -e 's/^/  /' \
+      >> topn_${util}_EDF_${process_fields}.tex
+      echo "  \hline
+  \end{tabular}
+  \caption{Worst 3 latencies of ${field_text} for EDF Scheduling with task set utilization equal to ${util} at varying task set sizes.}\label{table:topn_${util}_edf_${process_fields}}
+\end{table}" >> topn_${util}_EDF_${process_fields}.tex
+
+      echo "\begin{table}
+  \centering
+  \begin{tabular}{ l | c c c }
+  \hline
+  Tasks & \multicolumn{3}{c}{${Field_Text} Latencies} \\\\
+  \hline\hline" > topn_${util}_RM_${process_fields}.tex
+      cat reduced_results/topn_${util}_RM_${process_fields}.dat | \
+        sed -e 's/[\t]/ \& /g' -e 's/  / \& /g' -e 's/$/ \\\\/' -e 's/^/  /' \
+      >> topn_${util}_RM_${process_fields}.tex
+      echo "  \hline
+  \end{tabular}
+  \caption{Worst 3 latencies of ${field_text} for RM Scheduling with task set utilization equal to ${util} at varying task set sizes.}\label{table:topn_${util}_rm_${process_fields}}
+\end{table}" >> topn_${util}_RM_${process_fields}.tex
+    done
+  done
+}
+
 reduce_results() {
   ## The directory names are in dir_arr, with length dir_arr_len
   ## The data set names are in dataset_arr, with length dataset_arr_len
@@ -330,42 +413,9 @@ reduce_results() {
      done
    done
 
-
-  ## Now plot max latency graphs
-  ## top-3
-
-  for process_fields in 'ds1_cycles' 'ds2_cycles' 'ds1_first' 'ds2_critical'
-  do
-    field_text=
-    case "${process_fields}" in
-      ds1_cycles)   field_text="Ready Queue";;
-      ds2_cycles)   field_text="Timer Chain";;
-      ds1_first)    field_text="Ready Queue Read First";;
-      ds2_critical) field_text="Timer Chain Critical Section";;
-    esac
-
-    for util in 0.4 0.6 0.8 1.0
-    do
-      xmgrace -param nxy_graph_params.txt \
-      -pexec "title \"${field_text} Latencies (Worst 3)\"" \
-      -pexec "subtitle \"EDF Scheduling, Task Set Utilization = ${util}\"" \
-      -pexec "xaxis label \"Number of Tasks\"" \
-      -pexec "print to \"topn_${util}_EDF_${process_fields}.eps\"" \
-      -nxy reduced_results/topn_${util}_EDF_${process_fields}.dat \
-      -hardcopy
-
-      xmgrace -param nxy_graph_params.txt \
-      -pexec "title \"${field_text} Latencies (Worst 3)\"" \
-      -pexec "subtitle \"RM Scheduling, Task Set Utilization = ${util}\"" \
-      -pexec "xaxis label \"Number of Tasks\"" \
-      -pexec "print to \"topn_${util}_RM_${process_fields}.eps\"" \
-      -nxy reduced_results/topn_${util}_RM_${process_fields}.dat \
-      -hardcopy
-    done
-  done
-
-
-
+ ## Now plot max latency graphs / make tables
+ plot_max_latency_graphs
+ make_max_latency_tables
 
 
 
