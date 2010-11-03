@@ -60,11 +60,11 @@ mkdir ${SIMICS_WKSP2}/results/${RESULTS_TAG2}
 
 ## make this a loop
 ## get some parameters ...
-archive_dir=results-qd6
+archive_dir=results-qd-cache1
 distribution=1
 for tasks in 80 60 40 20
 do
-  for utilization in 0.8 0.6 0.4 0.2
+  for utilization in 0.6
   do
     ## Generate tests
     for count in {1..10}

@@ -81,7 +81,7 @@ mkdir ${SIMICS_WKSP3}/results/${RESULTS_TAG3}
 ## make this a loop
 ## get some parameters ...
 distribution=1
-archive_dir=results-qd
+archive_dir=results-qd-cache
 if [[ ! -d ${archive_dir} ]]
 then
   mkdir ${archive_dir}
