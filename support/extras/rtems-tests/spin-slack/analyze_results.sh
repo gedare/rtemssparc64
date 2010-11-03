@@ -601,6 +601,122 @@ reduce_results() {
       -hardcopy
   done
 
+  # repeat the Per Access plots, but remove the top-3 as 'outliers'.
+  ## Save the results to the following files (.dat is extended)
+  dataset_indices_files=( 'mod_avg_0.4_EDF' \
+                          'mod_avg_0.4_RM' \
+                          'mod_avg_0.6_EDF' \
+                          'mod_avg_0.6_RM' \
+                          'mod_avg_0.8_EDF' \
+                          'mod_avg_0.8_RM' \
+                          'mod_avg_1.0_EDF' \
+                          'mod_avg_1.0_RM' \
+  )
+  for process_fields in 'ds1' 'ds2' 'ds1_first' 'ds1_enqueue' 'ds1_extract' 'ds2_enqueue' 'ds2_extract'
+  do
+    for (( i=0; i < num_sets; i++ ))
+    do
+      rm reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+      touch reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+      for (( j=0; j<indices_per_set; j++ ))
+      do
+        let tmp=(i*indices_per_set+j)
+        index=${dataset_indices[$tmp]}
+      echo -n "${X_vals[$j]}  " >>reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat
+
+      # extract the sum of the top-3 for each test
+      eval "awk 'BEGIN {FS = \" [ ]+\";} \
+                    /Filename/ {for (i=1;i<=NF;i++) \
+                    {if (\$i == \"\\\"${process_fields}_max\\\"\") idx=i; \
+                     if (\$i == \"\\\"${process_fields}_cycles_max\\\"\") idx=i; \
+                    }; printf(\"Filename  %s\n\", \$idx);} \
+                    /spspin/ {printf(\"%s, %s\n\",\$1,\$idx);}' \
+                    ${dir_arr[1]}/${dataset_arr[$index]}.dat | \
+                    awk 'BEGIN {FS=\", \";} \
+                        /max/ {print \$0} \
+                        /spspin/ {printf(\"modavg  %d\n\",\$2+\$3+\$4+\$5+\$6);}' > reduced_results/tmp.dat"
+
+      # Now compute the average but subtract the top-3.
+      eval "awk 'BEGIN {count=0; mcount=0; FS=\" [ ]+\";} \
+          /Filename/ {for (i=1;i<=NF;i++) \
+                      {if (\$i == \"\\\"${process_fields}\\\"\") idx1=i; \
+                       if (\$i == \"\\\"${process_fields}_accesses\\\"\") idx1=i; \
+                       if (\$i == \"\\\"${process_fields}_cycles_saved\\\"\") idx2=i; \
+                       if (\$i == \"\\\"${process_fields}_cycles\\\"\") idx2=i; \
+                       if (\$i == \"\\\"${process_fields}_max\\\"\") idx3=i; \
+                       if (\$i == \"\\\"${process_fields}_cycles_max\\\"\") idx3=i; \
+                     }}; \
+          /spspin/ {A[count]=\$idx1; B[count]=\$idx2; \
+                    count++;}; \
+          /modavg/ {C[mcount]=\$idx3; mcount++;}; \
+          END {for (i=0;i<count;i++) {cycles=cycles+B[i]-C[i];accesses+=A[i];}; \
+               mean_cycles=cycles/count;mean_accesses=accesses/count; \
+               mean_access_time=mean_cycles/mean_accesses; \
+               for (i=0;i<count;i++) {stdev_sum+=((B[i]-C[i])/A[i] - mean_access_time)*((B[i]-C[i])/A[i] - mean_access_time)}; \
+               stdev=sqrt(stdev_sum/count); \
+          printf(\"%f\t%f\n\",mean_access_time,stdev)}' \
+          ${dir_arr[1]}/${dataset_arr[$index]}.dat reduced_results/tmp.dat >> reduced_results/${dataset_indices_files[$i]}_${process_fields}.dat"
+       done
+     done
+   done
+
+ ## Now plot modavg graphs. These are the avg, throwing out the top-3.
+  mkdir modavg
+  mkdir modavg/plots
+
+  for process_fields in 'ds1' 'ds2' 'ds1_first' 'ds1_enqueue' 'ds1_extract' 'ds2_enqueue' 'ds2_extract'
+  do
+
+    case "${process_fields}" in
+      ds1)   Field_Text="Ready Queue Access";
+                    field_text="ready queue access";;
+      ds2)   Field_Text="Timer Chain Access";
+                    field_text="timer chain access";;
+      ds1_first)    Field_Text="Ready Queue Read First";
+                    field_text="ready queue read first";;
+      ds1_enqueue)  Field_Text="Ready Queue Enqueue";
+                    field_text="ready queue enqueue";;
+      ds1_extract)  Field_Text="Ready Queue Extract";
+                    field_text="ready queue extract";;
+      ds2_enqueue)   Field_Text="Timer Chain Enqueue";
+                    field_text="timer chain enqueue";;
+      ds2_extract) Field_Text="Timer Chain Extract";
+                    field_text="timer chain extract";;
+    esac
+
+  xmgrace -param bar_graph_params.txt \
+      -pexec "title \"Average Latency Per ${Field_Text}\"" \
+      -pexec "subtitle \"EDF Scheduling, Varying Task Set Utilization\"" \
+      -pexec "xaxis label \"Number of Tasks\"" \
+      -pexec "print to \"modavg/plots/avg_EDF_${process_fields}.eps\"" \
+      -pexec "s0 legend \"0.4\"" \
+      -pexec "s1 legend \"0.6\"" \
+      -pexec "s2 legend \"0.8\"" \
+      -pexec "s3 legend \"1.0\"" \
+      reduced_results/${dataset_indices_files[0]}_${process_fields}.dat \
+      reduced_results/${dataset_indices_files[2]}_${process_fields}.dat \
+      reduced_results/${dataset_indices_files[4]}_${process_fields}.dat \
+      reduced_results/${dataset_indices_files[6]}_${process_fields}.dat \
+      -hardcopy
+
+  xmgrace -param bar_graph_params.txt \
+      -pexec "title \"Average Latency Per ${Field_Text}\"" \
+      -pexec "subtitle \"RM Scheduling, Varying Task Set Utilization\"" \
+      -pexec "xaxis label \"Number of Tasks\"" \
+      -pexec "print to \"modavg/plots/avg_RM_${process_fields}.eps\"" \
+      -pexec "s0 legend \"0.4\"" \
+      -pexec "s1 legend \"0.6\"" \
+      -pexec "s2 legend \"0.8\"" \
+      -pexec "s3 legend \"1.0\"" \
+     reduced_results/${dataset_indices_files[1]}_${process_fields}.dat \
+      reduced_results/${dataset_indices_files[3]}_${process_fields}.dat \
+      reduced_results/${dataset_indices_files[5]}_${process_fields}.dat \
+      reduced_results/${dataset_indices_files[7]}_${process_fields}.dat \
+      -hardcopy
+  done
+
+
+
    cd -
   return
 }
