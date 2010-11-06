@@ -1,0 +1,33 @@
+Total number of cycles
+Total number of instructions
+ds1_accesses
+ds1_first
+ds1_enqueue
+ds1_extract
+ds1_requeue
+ds2_accesses
+ds2_enqueue
+ds2_extract
+ds1_cycles_saved
+ds2_cycles_saved
+ds1_first_cycles
+ds1_enqueue_cycles
+ds1_extract_cycles
+ds1_requeue_cycles
+ds2_enqueue_cycles
+ds2_extract_cycles
+ds1_cycles_max
+ds2_cycles_max
+ds1_first_max
+ds1_enqueue_max
+ds1_enqueue_first_max
+ds1_extract_max
+ds1_requeue_max
+ds2_enqueue_max
+ds2_extract_max
+ds2_critical_max
+sched_accesses
+sched_cycles_saved
+sched_cycles_max
+sched_ds1_max
+sched_ds2_max
