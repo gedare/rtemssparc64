@@ -12,44 +12,17 @@
 #include <simics/alloc.h>
 #include <simics/utils.h>
 
+#include "opal-bitlib.h"
+#include "pq.h"
+
+priority_queue ready_queue;
+priority_queue timer_queue;
+
 #define DEVICE_NAME "hwpq-decoder"
 
 static uint8 v9_impdep2[]         = { 0x81, 0xB8, 0x00, 0x00 };
 
 #define GAB_DEBUG
-
-/**
- * masks off bits of a 32-bit integer.
- *
- * The start and stop bits can be in either order, start < stop or start > stop
- * The preferred order is start < stop. Mask includes start and stop bits.
- * @param data The data to be masked
- * @param start The bit to start masking at.
- * @param stop The bit to stop masking at.
- * @return int32 the masked data.
- */
-//**************************************************************************
-static inline uint32  maskBits32( uint32 data, int start, int stop )
-{
-  int big;
-  int small;
-  int mask;
-
-  if (stop > start) {
-    big = stop;
-    small = start;
-  } else {
-    big = start;
-    small = stop;
-  }
-  
-  if (big >= 31) {
-    mask = ~0;
-  } else {
-    mask = ~(~0 << (big + 1));
-  }
-  return ((data & mask) >> small);
-}
 
 static decoder_t my_decoder;
 static conf_object_t *last_cpu = NULL;
@@ -71,18 +44,110 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
 //  int op3 = maskBits32( inst, 19, 24 );
   int rd = maskBits32( inst, 25, 29 );
   int rs1 = maskBits32( inst, 14, 18 );
-  int rs2 = maskBits32( inst, 0, 4 );
+//  int rs2 = maskBits32( inst, 0, 4 );
 //  int opf_hi = maskBits32( inst, 9, 13 );
 //  int opf_lo = maskBits32( inst, 5, 8 );
 //  int cond = maskBits32( inst, 25, 28 );
 //  int mcond = maskBits32( inst, 14, 17 );
 //  int rcond = maskBits32( inst, 10, 12 );
-//  int i = maskBits32( inst, 13, 13 );
+  int i = maskBits32( inst, 13, 13 );
 //  int asi = maskBits32( inst, 12, 5 );
 
-  int rs1_value = SIM_read_register(cpu, rs1);
-  int rs2_value = SIM_read_register(cpu, rs2);
-  SIM_write_register( cpu, rd, rs1_value + rs2_value );
+
+  /* the impdep2 insn is tailored to particular uses.
+   * there is always rs1 and rd field, and either 13-bit immediate
+   * or rs2.
+   */
+
+  /* for the hw pq, need to implement:
+   *  insert
+   *  extract
+   *  first (peek)
+   *
+   *  insert requires a pointer and a priority value, so two registers, 
+   *  but does not require to write to a register.
+   *
+   *  extract writes to a register, and does not need source regs.
+   *
+   *  first writes to a register, and does not need source regs.
+   *
+   *  To multiplex these instructions, it is necessary to define another
+   *  "opcode".  We are somewhat constrained, but we can use the rd register
+   *  in insert, without actually writing anything to it.  This is hackish, 
+   *  but should work. So rd will hold the input pointer for insert, and the
+   *  output pointer for extract or first. rs1 will hold the priority 
+   *  value for insert, and ignored by extract and first.  It might be useful
+   *  later to use the rs1 field for setting up some conditions perhaps.
+   *  
+   *  This leaves the immediate field available for encoding the instruction 
+   *  type and any other options that might be useful.  In particular, 
+   *  the priority queue to manipulate should also be specified somehow.
+   */
+
+  // check the immediate bit
+  if ( i ) {
+    /* don't sign extend on purpose */
+    int imm = maskBits32( inst, 12, 0 );
+
+    /* high order bit(s) specify the queue to use. 
+     * For now there are only two queues, but we will use 2 bits
+     * so that it can support up to 4 queues.
+     */
+    int queue = maskBits32( imm, 12, 11 );
+
+    /* low order bits specify the queue operation. */
+    int operation = maskBits32( imm, 2, 0 );
+    pq_node *node;
+
+    switch ( queue ) {
+      case 0:   // ready queue
+        switch ( operation ) {
+          case 0:   // first
+            node = pq_first(&ready_queue);
+            if (node) {
+              SIM_write_register(cpu, rd, (uint64)node->payload);
+            }
+            break;
+          case 1:   // extract
+            node = pq_extract(&ready_queue);
+            if (node) {
+              SIM_write_register(cpu, rd, (uint64)node->payload);
+              free(node);
+            }
+            break;
+          case 2:   // insert
+            node = (pq_node*)malloc(sizeof(pq_node));
+            if (!node) {
+              printf("Unable to allocate space for new pq node\n");
+              return Sim_PE_No_Exception; // should throw exception
+            }
+            node->priority = SIM_read_register(cpu, rd);
+            node->payload = SIM_read_register(cpu, rs1);
+            pq_insert(&ready_queue, node);
+            break;
+
+          default:
+            printf("Unknown operation: %d\n", operation);
+            return Sim_PE_No_Exception; // should throw exception
+        }
+        
+        break;
+      case 1:   // timer queue
+
+        break;
+      default:
+        printf("Unknown queue operation\n");
+        return Sim_PE_No_Exception; // fail silently, maybe throw exception?
+        break;
+    }
+
+    
+
+  } else {
+    printf("Unimplemented instruction\n");
+  }
+
+  
 
   return Sim_PE_No_Exception;
 }
@@ -336,6 +401,11 @@ init_local(void)
   my_decoder.flush = my_flush;
 
   SIM_register_arch_decoder(&my_decoder, "sparc-v9", 0);
+
+  ready_queue.head = NULL;
+  ready_queue.options = 0;
+  timer_queue.head = NULL;
+  timer_queue.options = 2;
 
 #ifdef GAB_DEBUG
   printf("gica-decoder \"init_local\"\n");
