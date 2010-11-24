@@ -209,6 +209,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
             new_node->priority = SIM_read_register(cpu, rs1);
             if (!flag) {
               pq_insert(&timer_queue, new_node);
+              SIM_write_register(cpu, rd, new_node->priority);
               new_node = NULL;
             }
             break;
@@ -225,6 +226,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
             new_node->payload = SIM_read_register(cpu, rs1);
             if (!flag) {
               pq_insert(&timer_queue, new_node);
+              SIM_write_register(cpu, rd, new_node->priority);
               new_node = NULL;
             }
             break;
