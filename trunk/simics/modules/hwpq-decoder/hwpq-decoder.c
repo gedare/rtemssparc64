@@ -100,6 +100,8 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
     pq_node *node = NULL;
     static pq_node *new_node = NULL;
     static int flag = 0;
+    uint64 payload = 0;
+
     switch ( queue ) {
       case 0:   // ready queue
         switch ( operation ) {
@@ -107,14 +109,15 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
             node = pq_first(&ready_queue);
             if (node) {
               SIM_write_register(cpu, rd, (uint64)node->payload);
+            } else {
+              SIM_write_register(cpu, rd, 0);
             }
             break;
           case 1:   // extract
-            node = pq_extract(&ready_queue);
-            if (node) {
-              SIM_write_register(cpu, rd, (uint64)node->payload);
+            payload = SIM_read_register(cpu, rs1);
+            node = pq_extract(&ready_queue, payload);
+            if (node)
               free(node);
-            }
             break;
 
           /* There are two cases to cover insert. This is because of the 
@@ -124,6 +127,8 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
            * As long as both instructions are executed, the node should be 
            * properly generated and inserted; the order of instructions 
            * should not affect the correctness of these operations...
+           * This is not thread-safe (in the target) since it is non-reentrant
+           * in the simulator :(
            */
           case 2:   // insert
             if (!flag) {
@@ -170,12 +175,14 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
             node = pq_first(&timer_queue);
             if (node) {
               SIM_write_register(cpu, rd, (uint64)node->payload);
+            } else {
+              SIM_write_register(cpu, rd, 0);
             }
             break;
           case 1:   // extract
-            node = pq_extract(&timer_queue);
+            payload = SIM_read_register(cpu, rs1);
+            node = pq_extract(&timer_queue, payload);
             if (node) {
-              SIM_write_register(cpu, rd, (uint64)node->payload);
               free(node);
             }
             break;
@@ -187,6 +194,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
            * As long as both instructions are executed, the node should be 
            * properly generated and inserted; the order of instructions 
            * should not affect the correctness of these operations...
+           * Note that this is not thread-safe.
            */
           case 2:   // insert
             if (!flag) {
