@@ -28,9 +28,15 @@ pq_node* pq_extract(priority_queue *pq, uint64 data)
   pq_node *node = pq->head;
   while (node && node->payload != data) node = node->next;
   if (node) {
-    if (node->prev) node->prev->next = node->next;
-    else pq->head = node->next;
-    if (node->next) node->next->prev = node->prev;
+    if (node->prev) 
+      node->prev->next = node->next;
+    else 
+      pq->head = node->next;
+    if (node->next) {
+      node->next->prev = node->prev;
+      if (pq->options == 2) // special case for removing timer chain
+        node->next->priority += node->priority;
+    }
   }
   return node;
 }
