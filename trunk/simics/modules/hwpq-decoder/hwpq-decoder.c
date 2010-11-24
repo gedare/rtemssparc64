@@ -97,8 +97,9 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
 
     /* low order bits specify the queue operation. */
     int operation = maskBits32( imm, 2, 0 );
-    pq_node *node;
-
+    pq_node *node = NULL;
+    static pq_node *new_node = NULL;
+    static int flag = 0;
     switch ( queue ) {
       case 0:   // ready queue
         switch ( operation ) {
@@ -115,15 +116,46 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
               free(node);
             }
             break;
+
+          /* There are two cases to cover insert. This is because of the 
+           * lack of enough fields to properly encode instructions and 
+           * registers. In a true ISA extension, we could add extra opcode,
+           * but we are constrained to the impdep2 insn.
+           * As long as both instructions are executed, the node should be 
+           * properly generated and inserted; the order of instructions 
+           * should not affect the correctness of these operations...
+           */
           case 2:   // insert
-            node = (pq_node*)malloc(sizeof(pq_node));
-            if (!node) {
+            if (!flag) {
+              new_node = (pq_node*)malloc(sizeof(pq_node));
+              flag = 1;
+            } else
+              flag = 0;
+            if (!new_node) {
               printf("Unable to allocate space for new pq node\n");
               return Sim_PE_No_Exception; // should throw exception
             }
-            node->priority = SIM_read_register(cpu, rd);
-            node->payload = SIM_read_register(cpu, rs1);
-            pq_insert(&ready_queue, node);
+            new_node->priority = SIM_read_register(cpu, rs1);
+            if (!flag) {
+              pq_insert(&ready_queue, new_node);
+              new_node = NULL;
+            }
+            break;
+          case 3:   // insert
+             if (!flag) {
+              new_node = (pq_node*)malloc(sizeof(pq_node));
+              flag = 1;
+            } else
+              flag = 0;
+            if (!new_node) {
+              printf("Unable to allocate space for new pq node\n");
+              return Sim_PE_No_Exception; // should throw exception
+            }
+            new_node->payload = SIM_read_register(cpu, rs1);
+            if (!flag) {
+              pq_insert(&ready_queue, new_node);
+              new_node = NULL;
+            }
             break;
 
           default:
@@ -133,8 +165,68 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
         
         break;
       case 1:   // timer queue
+        switch ( operation ) {
+          case 0:   // first
+            node = pq_first(&timer_queue);
+            if (node) {
+              SIM_write_register(cpu, rd, (uint64)node->payload);
+            }
+            break;
+          case 1:   // extract
+            node = pq_extract(&timer_queue);
+            if (node) {
+              SIM_write_register(cpu, rd, (uint64)node->payload);
+              free(node);
+            }
+            break;
 
+          /* There are two cases to cover insert. This is because of the 
+           * lack of enough fields to properly encode instructions and 
+           * registers. In a true ISA extension, we could add extra opcode,
+           * but we are constrained to the impdep2 insn.
+           * As long as both instructions are executed, the node should be 
+           * properly generated and inserted; the order of instructions 
+           * should not affect the correctness of these operations...
+           */
+          case 2:   // insert
+            if (!flag) {
+              new_node = (pq_node*)malloc(sizeof(pq_node));
+              flag = 1;
+            } else
+              flag = 0;
+            if (!new_node) {
+              printf("Unable to allocate space for new pq node\n");
+              return Sim_PE_No_Exception; // should throw exception
+            }
+            new_node->priority = SIM_read_register(cpu, rs1);
+            if (!flag) {
+              pq_insert(&timer_queue, new_node);
+              new_node = NULL;
+            }
+            break;
+          case 3:   // insert
+             if (!flag) {
+              new_node = (pq_node*)malloc(sizeof(pq_node));
+              flag = 1;
+            } else
+              flag = 0;
+            if (!new_node) {
+              printf("Unable to allocate space for new pq node\n");
+              return Sim_PE_No_Exception; // should throw exception
+            }
+            new_node->payload = SIM_read_register(cpu, rs1);
+            if (!flag) {
+              pq_insert(&timer_queue, new_node);
+              new_node = NULL;
+            }
+            break;
+
+          default:
+            printf("Unknown operation: %d\n", operation);
+            return Sim_PE_No_Exception; // should throw exception
+        }
         break;
+
       default:
         printf("Unknown queue operation\n");
         return Sim_PE_No_Exception; // fail silently, maybe throw exception?
