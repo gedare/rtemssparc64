@@ -23,17 +23,16 @@ typedef struct priority_queue {
 
 pq_node* pq_first(priority_queue *pq) { return pq->head; }
 
-pq_node* pq_extract(priority_queue *pq)
+pq_node* pq_extract(priority_queue *pq, uint64 data)
 {
-  pq_node *first = pq->head;
-  if (first) {
-    pq->head = first->next;
-    if (first->next)
-      first->next->prev = NULL;
-  } else {
-    pq->head = NULL;
+  pq_node *node = pq->head;
+  while (node && node->payload != data) node = node->next;
+  if (node) {
+    if (node->prev) node->prev->next = node->next;
+    else pq->head = node->next;
+    if (node->next) node->next->prev = node->prev;
   }
-  return first;
+  return node;
 }
 
 void pq_insert(priority_queue *pq, pq_node *node) 
