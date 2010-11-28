@@ -48,7 +48,7 @@ struct container_def
 
 struct stack_Object_def
 {
-	container * container;
+	container * containerObj;
 	md_addr_t returnAddress; //dynamic location . keeps the return address of the last f. call. each return should equal this value ( other wise it is an attack)
 };
 

@@ -358,23 +358,23 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 		//printf("\n GICA check for function return: 0x%llx\n",addr);
 		fflush(stdin);
 		stackObject t = stack_top(returnAddressStack);
-		UpdateAddressList(&( t.container->addressAccessList), addr, 4);
-		UpdateAddressList(&( t.container->addressAccessListInstance), addr, 4);
+		UpdateAddressList(&( t.containerObj->addressAccessList), addr, 4);
+		UpdateAddressList(&( t.containerObj->addressAccessListInstance), addr, 4);
 
 		int returned = 0;
-		while(t.returnAddress == addr || t.container->endAddress == addr)
+		while(t.returnAddress == addr || t.containerObj->endAddress == addr)
 		{
-			//printf("return from function , popping container %s\n", t.container->name);
+			//printf("return from function , popping container %s\n", t.containerObj->name);
 			//fflush(stdin);
 			stack_pop(returnAddressStack);
-			t.container->totalStackPops ++;
+			t.containerObj->totalStackPops ++;
 			//for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
-			//printDecodedAddressList(printBuffer,t.container->addressAccessListInstance);
+			//printDecodedAddressList(printBuffer,t.containerObj->addressAccessListInstance);
 			//sprintf(printBuffer,"*\n");
 			//myprint(printBuffer);
-			updateGlobalAddressList(t.container);
-			updateHeapCalls(t.container,t.container->addressAccessListInstance);
-			t.container->addressAccessListPenalty += penaltyAddressList( t.container->addressAccessListInstance);
+			updateGlobalAddressList(t.containerObj);
+			updateHeapCalls(t.containerObj,t.containerObj->addressAccessListInstance);
+			t.containerObj->addressAccessListPenalty += penaltyAddressList( t.containerObj->addressAccessListInstance);
 			sprintf(printBuffer,"%lld\t",cycles);
 			myprint(printBuffer);
 			for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
@@ -383,11 +383,11 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 
 			//for heap acceses we need to update the parent container with that call as well ( heap memory accesses are passed from parent to child)
 			if(!stack_empty(returnAddressStack)){
-				updateHeapCalls(stack_top(returnAddressStack).container,t.container->addressAccessListInstance);
-				loadPenalty.containerStaticListSize = stack_top(returnAddressStack).container->traceLoadedAddressCount + stack_top(returnAddressStack).container->traceLoadeduniqueChildContainersCalled + 3; //all static memory + code + stacksize + timeout
-			    loadPenalty.containerDynamicListSize = stack_top(returnAddressStack).container->isCalledWithHeapData;
+				updateHeapCalls(stack_top(returnAddressStack).containerObj,t.containerObj->addressAccessListInstance);
+				loadPenalty.containerStaticListSize = stack_top(returnAddressStack).containerObj->traceLoadedAddressCount + stack_top(returnAddressStack).containerObj->traceLoadeduniqueChildContainersCalled + 3; //all static memory + code + stacksize + timeout
+			    loadPenalty.containerDynamicListSize = stack_top(returnAddressStack).containerObj->isCalledWithHeapData;
 			}
-			t.container->addressAccessListInstance = NULL;
+			t.containerObj->addressAccessListInstance = NULL;
 
 			//if(stack_empty(returnAddressStack)) TraceSuspend(bt);
 			returned = 1;
@@ -410,11 +410,11 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 
 					int found = 0;
 					stackObject currentContainer = stack_top(returnAddressStack);
-					currentContainer.container->totalChildContainersCalled++;
-			        llist l = currentContainer.container->childFunctions;
+					currentContainer.containerObj->totalChildContainersCalled++;
+			        llist l = currentContainer.containerObj->childFunctions;
 					while(l!= NULL)
 					{
-						if(l->element.container->entryAddress == addr)
+						if(l->element.containerObj->entryAddress == addr)
 						{
 							found = 1;
 							break;
@@ -423,10 +423,10 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 					}
 					if(!found)
 					{
-						currentContainer.container->uniqueChildContainersCalled ++;
+						currentContainer.containerObj->uniqueChildContainersCalled ++;
 						stackObject t ;
-						t.container = foundSearch;
-						currentContainer.container->childFunctions = cons(t,currentContainer.container->childFunctions);
+						t.containerObj = foundSearch;
+						currentContainer.containerObj->childFunctions = cons(t,currentContainer.containerObj->childFunctions);
 					}
 				}
 				sprintf(printBuffer,"%lld\t",cycles);
@@ -445,7 +445,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 					int sizeOfAccessList = foundSearch->traceLoadedAddressCount + foundSearch->traceLoadeduniqueChildContainersCalled + 3; //all static memory + code + stacksize + timeout
 					loadPenalty.containerStaticListSize = sizeOfAccessList;
 					if(!stack_empty(returnAddressStack))
-						loadPenalty.containerDynamicListSize = (-1)*stack_top(returnAddressStack).container->isCalledWithHeapData;
+						loadPenalty.containerDynamicListSize = (-1)*stack_top(returnAddressStack).containerObj->isCalledWithHeapData;
 
 
 					stackObject t;
@@ -453,13 +453,13 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 					//printf("MemAccess : FP(%d)=%x SP(%d)=%x \n",MD_REG_FP,regs->regs_R[MD_REG_FP],MD_REG_SP,regs->regs_R[MD_REG_SP]);
 					//container_dumpRegisters(*regs);
 
-					t.container = foundSearch;
+					t.containerObj = foundSearch;
 					t.returnAddress = getRet();//return_addr;
 					//printf("\n GICA: pushed to stack 0x%llx return :0x%llx %s\n",foundSearch->entryAddress,return_addr,foundSearch->name);
 					//fflush(stdout);
 					stack_push(returnAddressStack, t);
-					UpdateAddressList(&( t.container->addressAccessList), addr, 4);
-					UpdateAddressList(&( t.container->addressAccessListInstance), addr, 4);
+					UpdateAddressList(&( t.containerObj->addressAccessList), addr, 4);
+					UpdateAddressList(&( t.containerObj->addressAccessListInstance), addr, 4);
 				}
 				else
 				{
@@ -477,13 +477,13 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 					{
 						stackObject t = stack_top(returnAddressStack);
 						stack_pop(returnAddressStack);
-						t.container->totalStackPops ++;
+						t.containerObj->totalStackPops ++;
 						for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
-						printDecodedAddressList(printBuffer,t.container->addressAccessListInstance);
+						printDecodedAddressList(printBuffer,t.containerObj->addressAccessListInstance);
 						myprint("*\n");
-						updateGlobalAddressList(t.container);
-						updateHeapCalls(t.container,t.container->addressAccessListInstance);
-						t.container->addressAccessListPenalty += penaltyAddressList( t.container->addressAccessListInstance);
+						updateGlobalAddressList(t.containerObj);
+						updateHeapCalls(t.containerObj,t.containerObj->addressAccessListInstance);
+						t.containerObj->addressAccessListPenalty += penaltyAddressList( t.containerObj->addressAccessListInstance);
 						for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
 						myprint("*\n");
 					}
@@ -514,22 +514,22 @@ void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes)
 		//collect the continuous address accesses
 		//this implementation : take care only of the memaccesses that are in sequence.
 
-		UpdateAddressList(&( t.container->addressAccessList), addr, nbytes);
-		UpdateAddressList(&( t.container->addressAccessListInstance), addr, nbytes);
+		UpdateAddressList(&( t.containerObj->addressAccessList), addr, nbytes);
+		UpdateAddressList(&( t.containerObj->addressAccessListInstance), addr, nbytes);
 
 
 		if(cmd == Read)
 		{
-			t.container->totalNumberOfReads++;
-			t.container->totalNumberOfBytesRead +=nbytes;
+			t.containerObj->totalNumberOfReads++;
+			t.containerObj->totalNumberOfBytesRead +=nbytes;
 			//for(j = 0; j< returnAddressStack->size; j++) myprint("|\t");
 			//sprintf(printBuffer,"R %x %x(%d)\n",regs->regs_PC,addr,nbytes);
 			//myprint(printBuffer);
 		}
 		else
 		{
-			t.container->totalNumberOfBytesWritten +=nbytes;
-			t.container->totalNumberOfWrites++;
+			t.containerObj->totalNumberOfBytesWritten +=nbytes;
+			t.containerObj->totalNumberOfWrites++;
 			//for(j = 0; j< returnAddressStack->size; j++) myprint("|\t");
 			//sprintf(printBuffer,"W %x %x(%d)\n",regs->regs_PC,addr,nbytes);
 			//myprint(printBuffer);
@@ -754,10 +754,10 @@ void printCurrentContainerStack( )
 		{
 			printf("%d 0x %llx %s ret = 0x%lld \n",
 				i,
-				next->element.container->entryAddress,
-				next->element.container->name,
+				next->element.containerObj->entryAddress,
+				next->element.containerObj->name,
 				next->element.returnAddress);
-			printAddressList(stdoutPrintBuffer,next->element.container->addressAccessListInstance);
+			printAddressList(stdoutPrintBuffer,next->element.containerObj->addressAccessListInstance);
 			next = next->next;
 		}
 	}

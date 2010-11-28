@@ -1595,7 +1595,7 @@ void ExceptionCallBack(lang_void *callback_data,
 	if(!stack_empty(thread_active->container_runtime_stack)){
 
 		stackObject t = stack_top(thread_active->container_runtime_stack);
-		if(t.container->entryAddress == SIM_get_program_counter(proc)){
+		if(t.containerObj->entryAddress == SIM_get_program_counter(proc)){
 			//stack_pop(returnAddressStack);
 			ignore_due_to_Exception = 1;
 			//printf("HAP AND CONTAINERS : %lld  %s\n",exception_number,SIM_get_exception_name(proc,exception_number));
