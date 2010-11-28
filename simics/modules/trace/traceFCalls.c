@@ -910,7 +910,7 @@ char * funcNameFromAddress(int addr)
 
 addressList consAddressList(int startAddress, int endAddress, addressList l)
 {
-	addressList temp = malloc(sizeof(struct addressCell));
+	addressList temp = (addressList) malloc(sizeof(struct addressCell));
     temp -> startAddress = startAddress;
 	temp -> endAddress = endAddress;
     temp -> next = l;
@@ -925,7 +925,7 @@ addressList freeAddressList(addressList l)
 
 
 llist cons(stackObject element, llist l){
-    llist temp = malloc(sizeof(struct cell));
+    llist temp = (llist) malloc(sizeof(struct cell));
     temp -> element = element;
     temp -> next = l;
     return temp;
@@ -939,7 +939,7 @@ llist cdr_and_free(llist l){
 
 mystack stack_create(void)
 {
-  mystack temp = malloc(sizeof(struct mystackStr));
+  mystack temp = (mystack) malloc(sizeof(struct mystackStr));
   temp -> elements = NULL;
   temp->size = 0;
   temp->maxsize = 0;
