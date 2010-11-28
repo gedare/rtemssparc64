@@ -939,7 +939,7 @@ llist cdr_and_free(llist l){
 
 mystack stack_create(void)
 {
-  mystack temp = malloc(sizeof(struct mystack));
+  mystack temp = malloc(sizeof(struct mystackStr));
   temp -> elements = NULL;
   temp->size = 0;
   temp->maxsize = 0;

@@ -90,14 +90,14 @@ void printAddressList(char* printbuff, addressList l);
 
 //Stack
 
-struct mystack
+struct mystackStr
 {
   llist elements;
   int size;
   int maxsize;
 };
 
-typedef struct mystack *mystack;
+typedef struct mystackStr * mystack;
 
 /* create a new, empty stack */
 extern mystack stack_create(void);
