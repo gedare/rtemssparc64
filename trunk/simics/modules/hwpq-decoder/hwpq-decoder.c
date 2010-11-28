@@ -22,7 +22,8 @@ priority_queue timer_queue;
 
 static uint8 v9_impdep2[]         = { 0x81, 0xB8, 0x00, 0x00 };
 
-#define GAB_DEBUG
+//#define GAB_DEBUG
+#undef GAB_DEBUG
 
 static decoder_t my_decoder;
 static conf_object_t *last_cpu = NULL;
@@ -143,6 +144,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
             new_node->priority = SIM_read_register(cpu, rs1);
             if (!flag) {
               pq_insert(&ready_queue, new_node);
+//              SIM_write_register(cpu, rd, new_node->priority);
               new_node = NULL;
             }
             break;
@@ -159,6 +161,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
             new_node->payload = SIM_read_register(cpu, rs1);
             if (!flag) {
               pq_insert(&ready_queue, new_node);
+//              SIM_write_register(cpu, rd, new_node->priority);
               new_node = NULL;
             }
             break;
