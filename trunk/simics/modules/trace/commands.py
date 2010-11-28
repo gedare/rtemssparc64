@@ -39,7 +39,7 @@ def trace_start_cmd(obj, file, raw, same, traceaddress):
                      else:
                             obj.raw_mode = 0
 
-              traceaddress
+##             traceaddress
               if traceaddress:
                      obj.traceaddress = traceaddress[1]
                      obj.enabled = 0
