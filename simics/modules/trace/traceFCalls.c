@@ -39,7 +39,7 @@ struct traceData_def{
 
 traceData traceLoader[CONTAINERMAX];
 int traceLoaderSize;
- 
+
 char *fullTracefdFileName = NULL;
 FILE *tracefdIn = NULL; //TODO !!
 FILE *tracefdOut = NULL;
@@ -65,16 +65,16 @@ thread_monitor_t* ThreadAdd(int64 id, int64 name)
 	thread_monitor_t* newThread;
 	newThread = (thread_monitor_t*) calloc (sizeof(thread_monitor_t),1);
 	newThread->thread_id = id;
-	newThread->thread_name = name; 
+	newThread->thread_name = name;
 	newThread->maxStack = 0;
 	newThread->minStack = ULLONG_MAX ;
 	newThread->maxFP = 0;
 	newThread->minFP = ULLONG_MAX ;
-	
+
 	newThread->container_runtime_stack = stack_create();
 	//create a name for the thread trace file
 	if(fullTracefdFileName != NULL){
-		char fname[500]; 
+		char fname[500];
 		memset(fname,0,500);
 		if(id == 0)
 			strcpy((char *)fname,fullTracefdFileName);
@@ -104,12 +104,13 @@ thread_monitor_t* ThreadAdd(int64 id, int64 name)
 thread_monitor_t* ThreadFind(int64 id)
 {
 	thread_monitor_t* iterate;
+	ASSERT(thread_active != NULL);
 	if(thread_active->thread_id== id) return thread_active;
 	iterate = thread_active->next;
-	
+
 	while (iterate != thread_active)
 	{
-		if(iterate->thread_id == id) return iterate;	
+		if(iterate->thread_id == id) return iterate;
 		iterate = iterate->next;
 	}
 	return NULL;
@@ -124,7 +125,9 @@ void Thread_switch( int64 id, int64 name)
 	fflush(thread_active->traceFD);
 	thread_active = newThread;
 
-	printf("Thread_switch 0x%llx\n",thread_active->thread_id);
+	printf("\nThread_switch 0x%llx ",thread_active->thread_id);
+	printRTEMSTaksName(thread_active->thread_name);
+	printf("\n");
 }
 
 
@@ -167,13 +170,13 @@ void container_initialize( base_trace_t *bt)
 			}
 		}
 
-		
+
 		proc =	SIM_current_processor();
 		o7id = SIM_get_register_number(proc,"o7");
 
 		o6id = SIM_get_register_number(proc,"o6");
 		i6id = SIM_get_register_number(proc,"i6");
-		
+
 	}
 	else
 	{
@@ -201,21 +204,22 @@ void setFullTraceFile(base_trace_t *bt)
 			fullTracefd = stdout;
 		}
 
+
+
 		thread_monitor_t* th;
 		th = ThreadFind(0);
 		th->traceFD = fullTracefd;
 	}
-	
 }
 
-//Obtain a list of symbols 
+//Obtain a list of symbols
 void loadContainersFromSymtable(const char* symFileName)
 {
 	FILE* symfile ;
 	unsigned long long addr;
 	char type[4];
 	char name[200];
-	char linenumber[1000];
+	char linenumber[2000];
 	symfile = fopen(symFileName,"r");
 	if(!symfile)
 	{
@@ -229,9 +233,10 @@ void loadContainersFromSymtable(const char* symFileName)
 		strncpy(newcont->linenumber,linenumber,1000);
 	}
 
+	//container_quickprint();
 
 	//get function list from gicasymtable
-	//The end address is non in the NM file, but can be found in the simics symtable.functions list
+	//The end address is not in the NM file, but can be found in the simics symtable.functions list
 	attr_value_t functions = SIM_get_attribute(SIM_get_object("gicasymtable"),"functions");
 	//printf("functions attr type %d\n", functions.kind);
 	//printf("functions list lenght %lld\n", functions.u.list.size);
@@ -248,11 +253,12 @@ void loadContainersFromSymtable(const char* symFileName)
 		{
 			attr_value_t detail = functions.u.list.vector[i].u.list.vector[j];
 			//printf("functions %d %d attr type %d\n",i ,j , detail.kind);
-			if(detail.kind == 1)
+			if(detail.kind == 1){
 			;
-			//	fprintf(functionsoutFD,"%s ",detail.u.string);
+				//fprintf(functionsoutFD,"%s ",detail.u.string);
+			}
 			else if(detail.kind == 2){
-			//	fprintf(functionsoutFD,"0x%llx ",detail.u.integer);
+				//fprintf(functionsoutFD,"0x%llx ",detail.u.integer);
 				if( j == 2)
 					startaddr = detail.u.integer;
 				else if (j==3)
@@ -265,7 +271,10 @@ void loadContainersFromSymtable(const char* symFileName)
 			foundSearch->endAddress = endaddr;
 	}
 	//fclose(functionsoutFD);
+	//printf("\nloadContainersFromSymtable ended");
 
+	//container_quickprint();
+	//exit(0);
 }
 
 container* container_add(md_addr_t addr, char * name)
@@ -305,7 +314,7 @@ container* container_add(md_addr_t addr, char * name)
 			if(strcmp(traceLoader[i].name,name) == 0){
 				newContainer->traceLoadedAddressCount = traceLoader[i].traceLoadedAddressCount;
 				newContainer->traceLoadeduniqueChildContainersCalled = traceLoader[i].traceLoadeduniqueChildContainersCalled;
-				
+
 				break;
 			}
 			i++;
@@ -387,7 +396,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 		}
 		if(returned) return loadPenalty;
 	}
-	
+
     //printf("\n GICA: searching 0x%llx\n",addr);
 	//if it was not a function return , it is either a function call ( push to container stack in this case), a exit function (pop all from container stack), or just a regular memory call ( in this case, add it to the current active container)
 	foundSearch = search(addr);
@@ -402,7 +411,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 					int found = 0;
 					stackObject currentContainer = stack_top(returnAddressStack);
 					currentContainer.container->totalChildContainersCalled++;
-			        list l = currentContainer.container->childFunctions;
+			        llist l = currentContainer.container->childFunctions;
 					while(l!= NULL)
 					{
 						if(l->element.container->entryAddress == addr)
@@ -427,9 +436,9 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 					//sprintf(printBuffer,"%x %s \n",addr,foundSearch->name);
 					//sprintf(printBuffer,"0x%llx %s %d %d\n",foundSearch->entryAddress,foundSearch->name,foundSearch->traceLoadedAddressCount,foundSearch->traceLoadeduniqueChildContainersCalled);
 					if(bt->displayLineNumbers)
-						sprintf(printBuffer,"%s {%s \n",foundSearch->name, foundSearch->linenumber);
+						sprintf(printBuffer,"%llx %s {%s \n",addr, foundSearch->name, foundSearch->linenumber);
 					else
-						sprintf(printBuffer,"%s {\n", foundSearch->name);	
+						sprintf(printBuffer,"%s {\n", foundSearch->name);
 					myprint(printBuffer);
 					//fflush(stdin);
 					//simulate loading the access list
@@ -462,7 +471,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 				}
 				//EXIT function needs to force containers to pop all remaining from stack. Otherwise the Complete access list for main
 				/*
-				if(strcmp(foundSearch->name,"_Exit") == 0)
+				if(strcmp(foundSearch->name,"*halt") == 0)
 				{
 					while(!stack_empty(returnAddressStack))
 					{
@@ -478,6 +487,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 						for(i = 0; i< returnAddressStack->size; i++) myprint("|\t");
 						myprint("*\n");
 					}
+					exit(printf("FORCE EXIT - please fix"));
 				}
 				*/
 			}
@@ -494,7 +504,7 @@ void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes)
 {
 
 	mystack returnAddressStack = thread_active->container_runtime_stack;
-	
+
 	if(containerInitialized == 1 && !stack_empty(returnAddressStack))
 	{
 
@@ -528,6 +538,16 @@ void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes)
 
 }
 
+void container_quickprint()
+{
+	for (int i=0 ; i < containerSize; i++)
+	{
+		fprintf(stdout,"%llx %llx \t %s \n",
+						containerTable[i].entryAddress,
+						containerTable[i].endAddress,
+				(containerTable[i].name));
+	}
+}
 
 void container_printStatistics ()
 {
@@ -726,22 +746,22 @@ void printCurrentContainerStack( )
 	printf("Thread: %s id:0x%llx\n",
 		name,
 		thread_active->thread_id
-		);	
+		);
 	if(!stack_empty(thread_active->container_runtime_stack)){
 		//list start = returnAddressStack->elements;
-		list next = returnAddressStack->elements;
+		llist next = returnAddressStack->elements;
 		for(int i=0;i<returnAddressStack->size && next != NULL ;i++)
 		{
 			printf("%d 0x %llx %s ret = 0x%lld \n",
 				i,
-				next->element.container->entryAddress, 
-				next->element.container->name, 
+				next->element.container->entryAddress,
+				next->element.container->name,
 				next->element.returnAddress);
 			printAddressList(stdoutPrintBuffer,next->element.container->addressAccessListInstance);
 			next = next->next;
 		}
 	}
-	
+
 }
 
 void printDecodedAddressList(char * printbuff,addressList l)
@@ -853,17 +873,27 @@ void myprint(char * toPrint)
 		fprintf(compilerInfofd,"%s",toPrint);
 	else if(fullTracefd){
 		fprintf(thread_active->traceFD,"%s",toPrint);
-		fflush(thread_active->traceFD);
-		fprintf(stdout,"%s",toPrint);
-		fflush(stdout);
+		//fflush(thread_active->traceFD);
+		//fprintf(stdout,"%s",toPrint);
+		//fflush(stdout);
 	}
 	else
 	{
 		//fprintf(stdout,"%s",toPrint);
 		//fflush(stdout);
 	}
-	
+
 	//printf("%s",toPrint);
+}
+
+void containers_flush()
+{
+	fflush(stdin);
+	fflush(stderr);
+	if(fullTracefd)
+		fflush(thread_active->traceFD);
+	if(compilerInfofd)
+		fflush(compilerInfofd);
 }
 
 char * funcNameFromAddress(int addr)
@@ -894,15 +924,15 @@ addressList freeAddressList(addressList l)
 }
 
 
-list cons(stackObject element, list l){
-    list temp = malloc(sizeof(struct cell));
+llist cons(stackObject element, llist l){
+    llist temp = malloc(sizeof(struct cell));
     temp -> element = element;
     temp -> next = l;
     return temp;
 }
 
-list cdr_and_free(list l){
-    list temp = l -> next;
+llist cdr_and_free(llist l){
+    llist temp = l -> next;
     free(l);
     return temp;
   }
@@ -966,9 +996,9 @@ int checkAlphaNumeric(char x)
 void toStringRTEMSTaksName(char * dest, int _name)
 {
 	dest[0] = ((_name) >> 24) & 0xff;
-	dest[1] = ((_name) >> 16) & 0xff; 
-	dest[2] = ((_name) >> 8) & 0xff; 
-	dest[3] = (_name) & 0xff; 
+	dest[1] = ((_name) >> 16) & 0xff;
+	dest[2] = ((_name) >> 8) & 0xff;
+	dest[3] = (_name) & 0xff;
 	dest[4] = 0;
 
 	if(!checkAlphaNumeric(dest[0])) dest[0] = 0;
@@ -993,7 +1023,7 @@ void itoa(int n, char s[])
         s[i++] = '-';
     s[i] = '\0';
     reverse(s);
-} 
+}
 
 /* reverse:  reverse string s in place */
 void reverse(char s[])
@@ -1010,7 +1040,7 @@ void reverse(char s[])
 
 uint64 getSP()
 {
-	
+
 	uint64 sp = SIM_read_register(proc,o6id);
 	if(sp < thread_active->minStack){
 		thread_active->minStack = sp;
@@ -1024,8 +1054,8 @@ uint64 getSP()
 		//toStringRTEMSTaksName(name,thread_active->thread_name);
 		//printf("%s : spmax=0x%llx\n",name,sp);
 	}
-	
-	
+
+
 	return	sp;
 }
 
@@ -1058,7 +1088,7 @@ void printThreads()
 	if(thread_active == NULL ) printf("NO THREAD ADDED\n");
 	thread_monitor_t* iterate;
 	iterate = thread_active;
-	
+
 	do
 	{
 		char name[4];
@@ -1070,7 +1100,7 @@ void printThreads()
 			iterate->maxStack,
 			iterate->minFP,
 			iterate->maxFP
-			);	
+			);
 		iterate = iterate->next;
 	}
 	while (iterate != thread_active);

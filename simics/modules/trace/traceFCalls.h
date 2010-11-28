@@ -12,7 +12,7 @@ typedef enum mem_cmd {
 
 typedef struct container_def container;
 typedef struct stack_Object_def stackObject;
-typedef struct cell *list;//Linked List
+typedef struct cell *llist;//Linked List
 typedef unsigned long long md_addr_t;
 
 typedef struct addressCell *addressList; //address access list
@@ -36,7 +36,7 @@ struct container_def
 	int addressAccessListPenalty;
 	char isCalledWithHeapData; //counts the number of heap regions used. I will use it to recognize where in the code should I put ASSIGN directives
 
-	list childFunctions; 			 //keep the id of the child function ( or the entire container )
+	llist childFunctions; 			 //keep the id of the child function ( or the entire container )
 	addressList addressAccessList;  //keeps the global access list for mem Regions that this function accesses
 	addressList addressAccessListInstance;  //keeps the access list for mem Regions that this function accesses, only for the last instance called
 
@@ -73,10 +73,10 @@ struct addressCell
 struct cell
 {
   stackObject element;
-  list next;
+  llist next;
 };
-extern list cons(stackObject element, list l);
-extern list cdr_and_free(list l);
+extern llist cons(stackObject element, llist l);
+extern llist cdr_and_free(llist l);
 
 extern addressList consAddressList(int startAddress, int endAddress, addressList l);
 extern addressList freeAddressList(addressList l);
@@ -92,7 +92,7 @@ void printAddressList(char* printbuff, addressList l);
 
 struct mystack
 {
-  list elements;
+  llist elements;
   int size;
   int maxsize;
 };
@@ -126,6 +126,7 @@ void container_close();
 container * container_add(md_addr_t addr, char * name);
 
 struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem, base_trace_t *obj);
+void container_quickprint();
 void container_printStatistics();
 void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes);
 
@@ -152,7 +153,7 @@ void setFullTraceFile(base_trace_t *bt);
 container * search(md_addr_t addr);
 
 //this value keep a state that tells the container manager to ignore a duplicate push due to a trap
-int ignore_due_to_Exception; 
+int ignore_due_to_Exception;
 
 void toStringRTEMSTaksName(char * dest, int _name);
 
@@ -177,11 +178,11 @@ void reverse(char s[]);
 
 
 
-//Adding thread awareness to the containers. 
-// We need a list of containers, not only one, one for each threads. 
-// 1. a list of Threads ( circular linked list ), as data : thread id, thread name, container 
-// 2.global Thread_active pointer to the current thread. 
-// 3.Thread_switch(thread id, thread name), an external event that detects the thread switch. 
+//Adding thread awareness to the containers.
+// We need a list of containers, not only one, one for each threads.
+// 1. a list of Threads ( circular linked list ), as data : thread id, thread name, container
+// 2.global Thread_active pointer to the current thread.
+// 3.Thread_switch(thread id, thread name), an external event that detects the thread switch.
 
 typedef struct thread_monitor
 {
@@ -194,7 +195,7 @@ typedef struct thread_monitor
 	uint64 maxStack;
 	uint64 minFP;
 	uint64 maxFP;
-	
+
 } thread_monitor_t;
 
 thread_monitor_t *thread_active;
@@ -208,6 +209,7 @@ uint64 getSP();
 uint64 getFP();
 uint64 getRet();
 void printThreads();
+void containers_flush();
 
 
 
