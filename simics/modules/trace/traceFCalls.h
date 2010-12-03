@@ -83,6 +83,7 @@ extern addressList freeAddressList(addressList l);
 void UpdateAddressList(addressList *l,md_addr_t addr,int nbytes);
 void joinAddress(addressList future, addressList present);
 void printAddressList(char* printbuff, addressList l);
+void printCountMemoryAccesses(char * printbuff,addressList l);
 
 
 
@@ -127,7 +128,11 @@ container * container_add(md_addr_t addr, char * name);
 
 struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem, base_trace_t *obj);
 void container_quickprint();
-void container_printStatistics();
+void container_printStatistics(int bAll);
+void container_printMemoryRanges(int bAll);
+void container_printDecodedMemoryRanges(int bAll);
+
+
 void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes);
 
 //void container_SetRegisterFile( struct regs_t *regs);
@@ -141,6 +146,8 @@ void printDecodedAddressList(char * printbuff,addressList l);
 void updateHeapCalls(container* c,addressList l);
 void updateGlobalAddressList(container* c);
 int penaltyAddressList( addressList l);
+void printAllStatsFiles(base_trace_t *bt);
+
 
 
 
