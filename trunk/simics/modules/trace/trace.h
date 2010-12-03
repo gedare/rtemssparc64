@@ -184,6 +184,7 @@ typedef struct base_trace {
 
 		char fullTraceFileName[200];
 		char fTraceSymbolFileName[200];
+		char fStatsFileBaseName[200];
 
 		uint64 traceaddress;
 		char displayLineNumbers;
@@ -207,5 +208,6 @@ typedef struct trace_mem_hier_object {
 void TraceStop();
 void TraceStart();
 void TraceSuspend(base_trace_t *obj);
+uint64 mySimicsIntSymbolRead(char * symbol);
 
 

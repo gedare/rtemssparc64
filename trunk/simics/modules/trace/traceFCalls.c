@@ -45,13 +45,15 @@ FILE *tracefdIn = NULL; //TODO !!
 FILE *tracefdOut = NULL;
 FILE *compilerInfofd = NULL;
 FILE *fullTracefd = NULL;
-int ld_text_base;
-int ld_text_bound;
-int ld_data_base;
-int ld_data_bound;
-int ld_stack_size;
-int ld_stack_base;
-int ld_environ_base;
+FILE *overrideOutputfd = NULL;
+
+md_addr_t ld_text_base = 0x4000;
+md_addr_t ld_text_bound = 0x4DBF0;
+md_addr_t ld_data_base = 0x4dbf0;
+md_addr_t ld_data_bound = 0x4EFA8;
+md_addr_t ld_stack_size = 0x302090;
+md_addr_t ld_stack_base = 0x351040;
+md_addr_t ld_environ_base = 0;
 
 
 conf_object_t *proc = NULL; //Simics Sparc current processor
@@ -124,10 +126,16 @@ void Thread_switch( int64 id, int64 name)
 	if(!newThread) newThread = ThreadAdd(id,name);
 	fflush(thread_active->traceFD);
 	thread_active = newThread;
-
+    
 	printf("\nThread_switch 0x%llx ",thread_active->thread_id);
 	printRTEMSTaksName(thread_active->thread_name);
 	printf("\n");
+
+	int64 StackArea = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Start.Initial_stack.area");
+	uint64 StackSize = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Start.Initial_stack.size");
+
+	ld_stack_base = StackArea;
+	ld_stack_size = StackSize;
 }
 
 
@@ -502,9 +510,9 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 
 void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes)
 {
-
+    
 	mystack returnAddressStack = thread_active->container_runtime_stack;
-
+	
 	if(containerInitialized == 1 && !stack_empty(returnAddressStack))
 	{
 
@@ -513,6 +521,8 @@ void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes)
 
 		//collect the continuous address accesses
 		//this implementation : take care only of the memaccesses that are in sequence.
+		//if(strcmp(t.containerObj->name,"crc32file") == 0)
+    	//	printf("MemoryCall %d %llx\n",cmd,addr);
 
 		UpdateAddressList(&( t.containerObj->addressAccessList), addr, nbytes);
 		UpdateAddressList(&( t.containerObj->addressAccessListInstance), addr, nbytes);
@@ -549,7 +559,191 @@ void container_quickprint()
 	}
 }
 
-void container_printStatistics ()
+void container_printMemoryRanges(int bAll )
+{
+	for (int i=0 ; i < containerSize; i++)
+	{
+		addressList l = containerTable[i].addressAccessList;
+		int bUsed = containerTable[i].totalStackPushes > 0;
+		if(bAll || bUsed){
+			sprintf(printBuffer,"%llx %llx\t%s\t",
+							containerTable[i].entryAddress,
+							containerTable[i].endAddress,
+					(containerTable[i].name));
+			myprint(printBuffer);
+			
+			while(l!=NULL)
+			{
+				sprintf(printBuffer,"[%llx,%llx) ",l->startAddress, l->endAddress);
+				myprint(printBuffer);
+				l = l->next;
+			}
+			sprintf(printBuffer,"\n");
+			myprint(printBuffer);
+		}
+	}
+}
+
+void container_printDecodedMemoryRanges(int bAll )
+{
+	sprintf(printBuffer,"code: %llx %llx initialized: %llx %llx stack: %llx %llx \n",ld_text_base,ld_text_bound,ld_data_base,ld_data_bound,ld_stack_base ,ld_stack_base+ ld_stack_size);
+	myprint(printBuffer);
+	for (int i=0 ; i < containerSize; i++)
+	{
+		addressList l = containerTable[i].addressAccessList;
+		int bUsed = containerTable[i].totalStackPushes > 0;
+		if(bAll || bUsed){
+			sprintf(printBuffer,"%llx %llx\t%s\t",
+							containerTable[i].entryAddress,
+							containerTable[i].endAddress,
+					(containerTable[i].name));
+			myprint(printBuffer);
+			
+				printDecodedAddressList(printBuffer,l);
+				myprint(printBuffer);
+				sprintf(printBuffer,"\n");
+				myprint(printBuffer);
+		}
+	}
+}
+
+void container_printSimpleCountAddressAcess(int bAll )
+{
+	sprintf(printBuffer,"entryAddress endAddress\tname\tcode initialized stack heap\n");
+	myprint(printBuffer);
+	for (int i=0 ; i < containerSize; i++)
+	{
+		addressList l = containerTable[i].addressAccessList;
+		int bUsed = containerTable[i].totalStackPushes > 0;
+		if(bAll || bUsed){
+			sprintf(printBuffer,"%llx %llx\t%s\t",
+							containerTable[i].entryAddress,
+							containerTable[i].endAddress,
+					(containerTable[i].name));
+			myprint(printBuffer);
+			
+				printCountMemoryAccesses(printBuffer,l);
+				myprint(printBuffer);
+				sprintf(printBuffer,"\n");
+				myprint(printBuffer);
+		}
+	}
+
+	
+}
+
+void container_printChildFunctionsCalled(int bAll)
+{
+	for (int i=0 ; i < containerSize; i++)
+	{
+		llist l = containerTable[i].childFunctions;
+		if(bAll || l){
+			sprintf(printBuffer,"%llx %llx\t%s\t",
+							containerTable[i].entryAddress,
+							containerTable[i].endAddress,
+					(containerTable[i].name));
+			myprint(printBuffer);
+
+			llist l = containerTable[i].childFunctions;
+			while(l)
+			{
+				sprintf(printBuffer,"%llx %s\t",
+							l->element.containerObj->endAddress,
+							l->element.containerObj->name);
+				myprint(printBuffer);
+				l = l->next;
+			}
+			sprintf(printBuffer,"\n");
+			myprint(printBuffer);	
+		}
+	}
+	
+}
+
+
+void printAllStatsFiles(base_trace_t *bt)
+{
+	char * baseFileName = "\0";
+
+	if(strlen(bt->fStatsFileBaseName) != 0)
+	{
+		baseFileName = bt->fStatsFileBaseName;
+	}
+	
+	char * fullAddressAccessListFileName = "FullAddressAccessList.txt";
+	char * fullDecodedAddressAccessListFileName = "FullDecodedAddressAccessList.txt";
+	char * simpleCountAddressAcessFileName = "SimpleCountAddressAccessList.txt";
+	char * containerCallListFileName = "ContainerCallList.txt";
+	char * containerStatisticsFileName = "ContainerStats.txt";
+
+	FILE * fullAddressAccessListFile;
+	FILE * fullDecodedAddressAccessListFile;
+	FILE * simpleCountAddressAcessFile;
+	FILE * containerCallListFile;
+	FILE * containerStatisticsFile;
+	
+	char *s = malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullAddressAccessListFileName) + 1);
+	sprintf(s, "%s%s", baseFileName, fullAddressAccessListFileName);
+    fullAddressAccessListFile = fopen(s,"w");
+		if(!fullAddressAccessListFile){
+			printf("\n\n Unable to open %s, using stdout \n\n",s);
+			fullAddressAccessListFile = stdout;
+		}
+	free(s);
+	s = malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullDecodedAddressAccessListFileName) + 1);
+	sprintf(s, "%s%s", baseFileName, fullDecodedAddressAccessListFileName);
+	fullDecodedAddressAccessListFile = fopen(s,"w");
+		if(!fullDecodedAddressAccessListFile){
+			printf("\n\n Unable to open %s, using stdout \n\n",s);
+			fullDecodedAddressAccessListFile = stdout;
+		}
+	free(s);
+	s = malloc(snprintf(NULL, 0, "%s %s", baseFileName, simpleCountAddressAcessFileName) + 1);
+	sprintf(s, "%s%s", baseFileName, simpleCountAddressAcessFileName);
+	simpleCountAddressAcessFile = fopen(s,"w");
+		if(!simpleCountAddressAcessFile){
+			printf("\n\n Unable to open %s, using stdout \n\n",s);
+			simpleCountAddressAcessFile = stdout;
+		}
+	free(s);
+	s = malloc(snprintf(NULL, 0, "%s %s", baseFileName, containerCallListFileName) + 1);
+	sprintf(s, "%s%s", baseFileName, containerCallListFileName);
+	containerCallListFile = fopen(s,"w");
+		if(!containerCallListFile){
+			printf("\n\n Unable to open %s, using stdout \n\n",s);
+			containerCallListFile = stdout;
+		}
+	free(s);
+	s = malloc(snprintf(NULL, 0, "%s %s", baseFileName, containerStatisticsFileName) + 1);
+	sprintf(s, "%s%s", baseFileName, containerStatisticsFileName);
+	containerStatisticsFile = fopen(s,"w");
+		if(!containerStatisticsFile){
+			printf("\n\n Unable to open %s, using stdout \n\n",s);
+			containerStatisticsFile = stdout;
+		}
+	free(s);
+
+
+	overrideOutputfd = containerStatisticsFile;
+	container_printStatistics(0);
+	fflush(overrideOutputfd);
+	overrideOutputfd = fullAddressAccessListFile;
+	container_printMemoryRanges(0);
+	fflush(overrideOutputfd);
+	overrideOutputfd = fullDecodedAddressAccessListFile;
+	container_printDecodedMemoryRanges(0);
+	fflush(overrideOutputfd);
+	overrideOutputfd = simpleCountAddressAcessFile;
+	container_printSimpleCountAddressAcess(0);
+	fflush(overrideOutputfd);
+	overrideOutputfd = containerCallListFile;
+	container_printChildFunctionsCalled(0);
+	fflush(overrideOutputfd);
+	overrideOutputfd = NULL;
+}
+
+
+void container_printStatistics (int bAll)
 {
 	int i;
 	int totalFunctionCalls = 0;
@@ -567,24 +761,26 @@ void container_printStatistics ()
 	myprint(printBuffer);
 	for ( i=0 ; i < containerSize; i++)
 	{
-
-		sprintf(printBuffer,"%llx %llx \t %s \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \n",
-				containerTable[i].entryAddress,
-				containerTable[i].endAddress,
-				(containerTable[i].name),
-				containerTable[i].totalNumberOfReads,
-				containerTable[i].totalNumberOfBytesRead,
-				containerTable[i].totalNumberOfWrites,
-				containerTable[i].totalNumberOfBytesWritten,
-				containerTable[i].totalChildContainersCalled,
-				containerTable[i].totalStackPushes,
-				containerTable[i].totalStackPops,
-				containerTable[i].uniqueChildContainersCalled,
-				containerTable[i].addressAccessListPenalty
-				);
-		myprint(printBuffer);
-		totalFunctionCalls += containerTable[i].totalStackPushes;
-		totalFunctionReturns += containerTable[i].totalStackPops;
+		int bUsed = containerTable[i].totalStackPushes > 0;
+		if(bAll || bUsed){
+			sprintf(printBuffer,"%llx %llx \t %s \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \t %d \n",
+					containerTable[i].entryAddress,
+					containerTable[i].endAddress,
+					(containerTable[i].name),
+					containerTable[i].totalNumberOfReads,
+					containerTable[i].totalNumberOfBytesRead,
+					containerTable[i].totalNumberOfWrites,
+					containerTable[i].totalNumberOfBytesWritten,
+					containerTable[i].totalChildContainersCalled,
+					containerTable[i].totalStackPushes,
+					containerTable[i].totalStackPops,
+					containerTable[i].uniqueChildContainersCalled,
+					containerTable[i].addressAccessListPenalty
+					);
+			myprint(printBuffer);
+			totalFunctionCalls += containerTable[i].totalStackPushes;
+			totalFunctionReturns += containerTable[i].totalStackPops;
+		}	
 	}
 	//sprintf(printBuffer,"totalFunctionCalls: %d\n",totalFunctionCalls);
 	//myprint(printBuffer);
@@ -633,22 +829,6 @@ void container_printStatistics ()
 	*/
 
 }
-
-//void container_SetRegisterFile( struct regs_t * globalregs)
-//{
-//
-//	regs = globalregs;
-//}
-
-
-//void container_dumpRegisters(struct regs_t regfile)
-//{
-//	int i;
-//	for(i = 0 ; i< 32 ; i++)
-//		fprintf(stderr,"R%d = %x \n", i, regfile.regs_R[i]);
-//
-//
-//}
 
 void UpdateAddressList(addressList *list,md_addr_t addr,int nbytes)
 {
@@ -766,6 +946,7 @@ void printCurrentContainerStack( )
 
 void printDecodedAddressList(char * printbuff,addressList l)
 {
+    
 	char type = 'c';
 	while(l!=NULL)
 	{
@@ -775,21 +956,47 @@ void printDecodedAddressList(char * printbuff,addressList l)
 		else if(l->startAddress >= ld_data_base && l->startAddress <= ld_data_bound) {
 			type = 'i'; //initialized
 		}
-		else if(l->startAddress >= ld_stack_base - ld_stack_size && l->startAddress <= ld_stack_base) {
+		else if(l->startAddress >= ld_stack_base  && l->startAddress <= ld_stack_base + ld_stack_size) {
 			type = 's'; //stack
-		}
-		else if(l->startAddress >= 0xb0000000 && l->startAddress <= ld_environ_base){
-			type = 'e'; //enviroment(static)
 		}
 		else {
 			type = 'h'; //heap
 		}
-		sprintf(printbuff,"%c[%llx,%llx) ",type,l->startAddress, l->endAddress);
-		myprint(printbuff);
+		printbuff += sprintf(printbuff,"%c[%llx,%llx) ",type,l->startAddress, l->endAddress);
 		l = l->next;
 	}
 
 }
+
+void printCountMemoryAccesses(char * printbuff,addressList l)
+{
+    int c = 0, i = 0, s = 0, h = 0;
+	char type = 'c';
+	while(l!=NULL)
+	{
+		if(l->startAddress >= ld_text_base && l->startAddress <= ld_text_bound) {
+			type = 'c'; //code
+			c++;
+		}
+		else if(l->startAddress >= ld_data_base && l->startAddress <= ld_data_bound) {
+			type = 'i'; //initialized
+			i++;
+		}
+		else if(l->startAddress >= ld_stack_base  && l->startAddress <= ld_stack_base + ld_stack_size) {
+			type = 's'; //stack
+			s++;
+		}
+		else {
+			type = 'h'; //heap
+			h++;
+		}
+		l = l->next;
+	}
+
+	sprintf(printbuff,"%d %d %d %d",c, i, s, h);
+
+}
+
 
 //Computes how many distinct heap memory access a function makes.
 //It takes the maximum number of different accesses that a particular instance makes ( this is a conservative approach)
@@ -807,12 +1014,12 @@ void updateHeapCalls(container* c,addressList l)
 		else if(l->startAddress >= ld_data_base && l->startAddress <= ld_data_bound) {
 			type = 'i'; //initialized
 		}
-		else if(l->startAddress >= ld_stack_base - ld_stack_size && l->startAddress <= ld_stack_base) {
+		else if(l->startAddress >= ld_stack_base  && l->startAddress <= ld_stack_base + ld_stack_size) {
 			type = 's'; //stack
 		}
-		else if(l->startAddress >= 0xb0000000 && l->startAddress <= ld_environ_base){
-			type = 'e'; //enviroment(static)
-		}
+		//else if(l->startAddress >= 0xb0000000 && l->startAddress <= ld_environ_base){
+		//	type = 'e'; //enviroment(static)
+		//}
 		else {
 			UpdateAddressList( &(c->addressAccessListInstance), l->startAddress,l->endAddress-l->startAddress);
 			heapAccessesInInstance ++;
@@ -837,12 +1044,8 @@ void updateGlobalAddressList(container* c)
 			UpdateAddressList( &c->staticAddressList, l->startAddress,l->endAddress-l->startAddress);
 			type = 'i'; //initialized
 		}
-		else if(l->startAddress >= ld_stack_base - ld_stack_size && l->startAddress <= ld_stack_base) {
+		else if(l->startAddress >= ld_stack_base  && l->startAddress <= ld_stack_base + ld_stack_size) {
 			type = 's'; //stack
-		}
-		else if(l->startAddress >= 0xb0000000 && l->startAddress <= ld_environ_base){
-			UpdateAddressList( &c->staticAddressList, l->startAddress,l->endAddress-l->startAddress);
-			type = 'e'; //enviroment(static)
 		}
 		else {
 			//c->isCalledWithHeapData ++;
@@ -867,6 +1070,12 @@ int penaltyAddressList( addressList l) //counts the number of ranges in the acce
 
 void myprint(char * toPrint)
 {
+	if(overrideOutputfd)
+	{
+		fprintf(overrideOutputfd,"%s",toPrint);
+		return;
+	}
+
 	if(toPrint == printBuffer2)
 		fprintf(tracefdOut,"%s",toPrint);
 	else if(toPrint == compilerPrintBuffer && compilerInfofd)
@@ -879,7 +1088,7 @@ void myprint(char * toPrint)
 	}
 	else
 	{
-		//fprintf(stdout,"%s",toPrint);
+		fprintf(stdout,"%s",toPrint);
 		//fflush(stdout);
 	}
 
