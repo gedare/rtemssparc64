@@ -222,6 +222,7 @@ uint64 getRet();
 void printThreads();
 void containers_flush();
 
+uint64 mySimicsIntSymbolRead(char * symbol);
 
 
 
