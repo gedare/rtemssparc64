@@ -64,5 +64,6 @@ sha_small/Makefile
 sha_large/Makefile
 crc/Makefile
 dijkstra/Makefile
+susan_smoothing/Makefile
 ])
 AC_OUTPUT

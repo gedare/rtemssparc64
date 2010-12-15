@@ -49,11 +49,32 @@ rtems_task Init(
   
   //printf( "Wrote: intended=%d wrote=%d error=%d\n",FileSystemImage_size - 0x400, n,errno);
 
-  	
+	
   printf( "\n\n*** crc benchmark ***\n" );
 
   DWORD crc;
   long charcnt;
+
+ /* 
+ 	__asm__ ( "testpcd:"
+  			"nop\n\t"
+  			"nop\n\t"
+  			"stx  %g1, [ %fp + 0x7ef ]\n\t"
+  			"nop\n\t"
+  			"impdep2  0, %g0, %g0, %g0\n\t"
+			"nop\n\t"
+			"nop\n\t"
+	 );
+*/
+
+	 __asm__ ( "testpcd:"
+  			"nop\n\t"
+  			"nop\n\t"
+  			"nop\n\t"
+  			"impdep2  0, %g0, %g0, %g0\n\t"
+			"nop\n\t"
+			"nop\n\t"
+	 );
 
   crc32file(in_file,&crc, &charcnt);
   printf("%08lX %7ld %s\n", crc, charcnt, in_file);
