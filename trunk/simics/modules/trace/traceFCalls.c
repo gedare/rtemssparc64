@@ -564,15 +564,23 @@ void container_quickprint()
 
 void container_printMemoryRanges(int bAll )
 {
+	sprintf(printBuffer,"entryAddress endAddress\tname\tcount\tLIST\n");
+	myprint(printBuffer);
 	for (int i=0 ; i < containerSize; i++)
 	{
 		addressList l = containerTable[i].addressAccessList;
 		int bUsed = containerTable[i].totalStackPushes > 0;
 		if(bAll || bUsed){
-			sprintf(printBuffer,"%llx %llx\t%s\t",
+			//count (we do not have a size of the list)
+			int jcnt = 0;
+			addressList jl = l;
+			while (jl) {jcnt++;jl=jl->next;}
+			
+			sprintf(printBuffer,"%llx %llx\t%s\t%d\t",
 							containerTable[i].entryAddress,
 							containerTable[i].endAddress,
-					(containerTable[i].name));
+					(containerTable[i].name),
+					jcnt);
 			myprint(printBuffer);
 			
 			while(l!=NULL)
@@ -591,15 +599,23 @@ void container_printDecodedMemoryRanges(int bAll )
 {
 	sprintf(printBuffer,"code: %llx %llx initialized: %llx %llx stack: %llx %llx \n",ld_text_base,ld_text_bound,ld_data_base,ld_data_bound,ld_stack_base ,ld_stack_base+ ld_stack_size);
 	myprint(printBuffer);
+	sprintf(printBuffer,"entryAddress endAddress\tname\tcount\tLIST\n");
+	myprint(printBuffer);
 	for (int i=0 ; i < containerSize; i++)
 	{
 		addressList l = containerTable[i].addressAccessList;
 		int bUsed = containerTable[i].totalStackPushes > 0;
 		if(bAll || bUsed){
-			sprintf(printBuffer,"%llx %llx\t%s\t",
+			//count (we do not have a size of the list)
+			int jcnt = 0;
+			addressList jl = l;
+			while (jl) {jcnt++;jl=jl->next;}
+			
+			sprintf(printBuffer,"%llx %llx\t%s\t%d\t",
 							containerTable[i].entryAddress,
 							containerTable[i].endAddress,
-					(containerTable[i].name));
+					(containerTable[i].name),
+					jcnt);
 			myprint(printBuffer);
 			
 				printDecodedAddressList(printBuffer,l);
@@ -637,21 +653,26 @@ void container_printSimpleCountAddressAcess(int bAll )
 
 void container_printChildFunctionsCalled(int bAll)
 {
+	sprintf(printBuffer,"entryAddress endAddress\tname\tcount\tLIST\n");
+		myprint(printBuffer);
+
 	for (int i=0 ; i < containerSize; i++)
 	{
 		llist l = containerTable[i].childFunctions;
 		if(bAll || l){
-			sprintf(printBuffer,"%llx %llx\t%s\t",
+			sprintf(printBuffer,"%llx %llx\t%s\t%d\t",
 							containerTable[i].entryAddress,
 							containerTable[i].endAddress,
-					(containerTable[i].name));
+					(containerTable[i].name),
+					containerTable[i].uniqueChildContainersCalled
+					);
 			myprint(printBuffer);
 
 			llist l = containerTable[i].childFunctions;
 			while(l)
 			{
 				sprintf(printBuffer,"%llx %s\t",
-							l->element.containerObj->endAddress,
+							l->element.containerObj->entryAddress,
 							l->element.containerObj->name);
 				myprint(printBuffer);
 				l = l->next;

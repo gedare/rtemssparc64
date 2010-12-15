@@ -223,6 +223,8 @@ void printThreads();
 void containers_flush();
 
 uint64 mySimicsIntSymbolRead(char * symbol);
+attr_value_t myeval(char * evalExpr);
+
 
 
 
