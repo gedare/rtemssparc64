@@ -27,7 +27,7 @@ struct container_def
 	int totalNumberOfReads;
 	int totalNumberOfBytesRead;
 	int totalNumberOfBytesWritten;
-	int totalNumberOfWrites;
+	int totalNumberOfWrites;	
 	int totalChildContainersCalled;
 	int uniqueChildContainersCalled; // count the number of child functions
 	int	staticAddressCount;
@@ -41,6 +41,10 @@ struct container_def
 	addressList addressAccessListInstance;  //keeps the access list for mem Regions that this function accesses, only for the last instance called
 
 	addressList staticAddressList; //the static values will add-up here as the tracing is performed
+
+	addressList opalCodeAccessList; //use in the opal module.
+	addressList opalStackAccessList; //use in the opal module.
+	addressList opalHeapAccessList; //use in the opal module.
 
 	int nonFunction; //1 or 0. For non-function do not trace this symbol, but it might be sometimes usefull to print it
 	char linenumber[1000]; //if this info is available for symbols, load it and display it in the trace
@@ -160,7 +164,7 @@ void setFullTraceFile(base_trace_t *bt);
 container * search(md_addr_t addr);
 
 //this value keep a state that tells the container manager to ignore a duplicate push due to a trap
-int ignore_due_to_Exception;
+extern int ignore_due_to_Exception;
 
 void toStringRTEMSTaksName(char * dest, int _name);
 
@@ -205,7 +209,7 @@ typedef struct thread_monitor
 
 } thread_monitor_t;
 
-thread_monitor_t *thread_active;
+extern thread_monitor_t *thread_active;
 thread_monitor_t* ThreadAdd(int64 id, int64 name);
 thread_monitor_t* ThreadFind(int64 id);
 void Thread_switch( int64 id, int64 name);
