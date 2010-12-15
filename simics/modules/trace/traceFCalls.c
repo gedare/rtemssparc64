@@ -22,6 +22,9 @@ int componentTableSize = 1;
 int containerInitialized = 0; 	//local flag to track wheater the containers were initialized
 md_addr_t return_addr;			//monitors the return addresses ( saved before a function call and stored to stack)
 
+thread_monitor_t *thread_active;
+int ignore_due_to_Exception;
+
 
 
 struct regs_t *regs;			//this pointer gives access to the simulated register file
@@ -106,7 +109,7 @@ thread_monitor_t* ThreadAdd(int64 id, int64 name)
 thread_monitor_t* ThreadFind(int64 id)
 {
 	thread_monitor_t* iterate;
-	ASSERT(thread_active != NULL);
+	//ASSERT(thread_active != NULL);
 	if(thread_active->thread_id== id) return thread_active;
 	iterate = thread_active->next;
 
@@ -682,7 +685,7 @@ void printAllStatsFiles(base_trace_t *bt)
 	FILE * containerCallListFile;
 	FILE * containerStatisticsFile;
 	
-	char *s = malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullAddressAccessListFileName) + 1);
+	char *s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullAddressAccessListFileName) + 1);
 	sprintf(s, "%s%s", baseFileName, fullAddressAccessListFileName);
     fullAddressAccessListFile = fopen(s,"w");
 		if(!fullAddressAccessListFile){
@@ -690,7 +693,7 @@ void printAllStatsFiles(base_trace_t *bt)
 			fullAddressAccessListFile = stdout;
 		}
 	free(s);
-	s = malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullDecodedAddressAccessListFileName) + 1);
+	s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullDecodedAddressAccessListFileName) + 1);
 	sprintf(s, "%s%s", baseFileName, fullDecodedAddressAccessListFileName);
 	fullDecodedAddressAccessListFile = fopen(s,"w");
 		if(!fullDecodedAddressAccessListFile){
@@ -698,7 +701,7 @@ void printAllStatsFiles(base_trace_t *bt)
 			fullDecodedAddressAccessListFile = stdout;
 		}
 	free(s);
-	s = malloc(snprintf(NULL, 0, "%s %s", baseFileName, simpleCountAddressAcessFileName) + 1);
+	s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, simpleCountAddressAcessFileName) + 1);
 	sprintf(s, "%s%s", baseFileName, simpleCountAddressAcessFileName);
 	simpleCountAddressAcessFile = fopen(s,"w");
 		if(!simpleCountAddressAcessFile){
@@ -706,7 +709,7 @@ void printAllStatsFiles(base_trace_t *bt)
 			simpleCountAddressAcessFile = stdout;
 		}
 	free(s);
-	s = malloc(snprintf(NULL, 0, "%s %s", baseFileName, containerCallListFileName) + 1);
+	s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, containerCallListFileName) + 1);
 	sprintf(s, "%s%s", baseFileName, containerCallListFileName);
 	containerCallListFile = fopen(s,"w");
 		if(!containerCallListFile){
@@ -714,7 +717,7 @@ void printAllStatsFiles(base_trace_t *bt)
 			containerCallListFile = stdout;
 		}
 	free(s);
-	s = malloc(snprintf(NULL, 0, "%s %s", baseFileName, containerStatisticsFileName) + 1);
+	s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, containerStatisticsFileName) + 1);
 	sprintf(s, "%s%s", baseFileName, containerStatisticsFileName);
 	containerStatisticsFile = fopen(s,"w");
 		if(!containerStatisticsFile){
