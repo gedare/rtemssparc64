@@ -152,7 +152,6 @@ Boolean_T crc32file(char *name, DWORD *crc, long *charcnt)
       fclose(fin);
 
       *crc = oldcrc32 = ~oldcrc32;
-
       return Success_;
 }
 
