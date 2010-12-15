@@ -1623,52 +1623,7 @@ void ExceptionCallBack(lang_void *callback_data,
 	}
 }
 
-attr_value_t myeval(char * evalExpr)
-{
-	//printf("\n GICADEBUG %s \n",evalExpr);
-	conf_class_t* symtblclass = SIM_get_class("symtable");
-	void * intrface = SIM_get_class_interface(symtblclass,"symtable");
-	symtable_interface_t * symIntr = (symtable_interface_t *)intrface;
-	conf_object_t *proc;
-	proc =	SIM_current_processor();
-    //we need the top stack frame
-    attr_value_t frames = symIntr->stack_trace(proc,10);
-	attr_list_t frameList = frames.u.list;
 
-	return symIntr->eval_sym(proc, evalExpr ,&(frameList.vector[frameList.size-1]), NULL);
-}
-
-//lenght in bytes
-uint64 myMemoryRead(generic_address_t vaddr, int lenght)
-{
-	SIM_clear_exception();
-	uint64 tt = 0;
-	conf_object_t * cpu_mem;
-
-	//printf("\n GICADEBUG myMemoryRead vaddr=%llx length=%d\n",vaddr, lenght);
-	//SIM_break_simulation("GICADEBUG break_simulation\n");
-
-	physical_address_t physaddr = SIM_logical_to_physical(SIM_current_processor(),Sim_DI_Data, vaddr);
-	cpu_mem = SIM_get_object("phys_mem");
-	if(!cpu_mem) exit(printf("\n'phys_mem' is not a valid memory space for this target. Exiting !"));
-	for ( generic_address_t addrt = physaddr; addrt < physaddr + lenght; addrt++){
-   		uint32 whatdidread =  SIM_read_byte(cpu_mem, addrt);
-		tt <<= 8;
-		tt |= 0x000000FF & whatdidread;
-	}
-	return tt;
-}
-
-uint64 mySimicsIntSymbolRead(char * symbol)
-{
-	uint64 ret = 0;
-
-	attr_value_t symbolStartOld = myeval(symbol);
-	ASSERT(symbolStartOld.kind == 4);
-	ret = symbolStartOld.u.list.vector[1].u.integer;
-	
-	return ret;		
-}
 
 void ThreadMonitor_callback_after(lang_void *userdata,
 	conf_object_t *obj,

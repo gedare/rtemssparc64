@@ -208,6 +208,6 @@ typedef struct trace_mem_hier_object {
 void TraceStop();
 void TraceStart();
 void TraceSuspend(base_trace_t *obj);
-uint64 mySimicsIntSymbolRead(char * symbol);
+
 
 
