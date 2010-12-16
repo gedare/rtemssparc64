@@ -1,17 +1,98 @@
-Index: linkcmds
+Index: c/src/lib/libbsp/sparc64/shared/startup/bspgetworkarea.c
+===================================================================
+RCS file: /usr1/CVS/rtems/c/src/lib/libbsp/sparc64/shared/startup/bspgetworkarea.c,v
+retrieving revision 1.1
+diff -u -p -r1.1 bspgetworkarea.c
+--- c/src/lib/libbsp/sparc64/shared/startup/bspgetworkarea.c	17 Jun 2010 16:20:46 -0000	1.1
++++ c/src/lib/libbsp/sparc64/shared/startup/bspgetworkarea.c	16 Dec 2010 02:05:12 -0000
+@@ -22,20 +22,11 @@
+ /*
+  *  These are provided by the linkcmds for ALL of the BSPs which use this file.
+  */
+-extern char WorkAreaBase[];
+-extern char HeapSize[];
+-extern char HeapBase[];
++extern char StackSize[];
++extern char end[];
+ 
+-
+-/*
+- *  We may get the size information from U-Boot or the linker scripts.
+- */
+-#ifdef HAS_UBOOT
+-  extern bd_t bsp_uboot_board_info;
+-#else
+-  extern char RamBase[];
+-  extern char RamSize[];
+-#endif /* HAS_UBOOT */
++extern char RamBase[];
++extern char RamSize[];
+ 
+ /*
+  *  This method returns the base address and size of the area which
+@@ -51,17 +42,12 @@ void bsp_get_work_area(
+ {
+   uintptr_t ram_end;
+ 
+-  #ifdef HAS_UBOOT
+-    ram_end = (uintptr_t) bsp_uboot_board_info.bi_memstart +
+-                          bsp_uboot_board_info.bi_memsize;
+-  #else
+-    ram_end = (uintptr_t)RamBase + (uintptr_t)RamSize;
+-  #endif
++  ram_end = (uintptr_t)RamBase + (uintptr_t)RamSize;
+ 
+-  *work_area_start = WorkAreaBase;
+-  *work_area_size  = ram_end - (uintptr_t) WorkAreaBase;
+-  *heap_start      = (void*) HeapBase;
+-  *heap_size       = (uintptr_t) HeapSize;
++  *work_area_start = &end;
++  *work_area_size  = (void*)((void*)ram_end - (void*)&end) - (void*)StackSize;
++  *heap_start      = BSP_BOOTCARD_HEAP_USES_WORK_AREA;
++  *heap_size       = BSP_BOOTCARD_HEAP_SIZE_DEFAULT;
+ 
+   /*
+    *  The following may be helpful in debugging what goes wrong when
+Index: c/src/lib/libbsp/sparc64/shared/startup/linkcmds
 ===================================================================
 RCS file: /usr1/CVS/rtems/c/src/lib/libbsp/sparc64/shared/startup/linkcmds,v
-retrieving revision 1.2
-diff -r1.2 linkcmds
-16,18c16,18
-< RamSize = DEFINED(RamSize) ? RamSize : 16M;
-< HeapSize = DEFINED(HeapSize) ? HeapSize : 256k;
-< StackSize = DEFINED(StackSize) ? StackSize : 256k;
----
-> RamSize = DEFINED(RamSize) ? RamSize : 256M;
-> HeapSize = DEFINED(HeapSize) ? HeapSize : 1M;
-> StackSize = DEFINED(StackSize) ? StackSize : 1M;
-28c28
-< 	        ram : ORIGIN = 0x0, LENGTH = 16M
----
-> 	        ram : ORIGIN = 0x0, LENGTH = 256M
+retrieving revision 1.3
+diff -u -p -r1.3 linkcmds
+--- c/src/lib/libbsp/sparc64/shared/startup/linkcmds	16 Nov 2010 23:20:08 -0000	1.3
++++ c/src/lib/libbsp/sparc64/shared/startup/linkcmds	16 Dec 2010 02:05:12 -0000
+@@ -13,9 +13,8 @@
+  * Declare some sizes.
+  */
+ RamBase = DEFINED(RamBase) ? RamBase : 0x0;
+-RamSize = DEFINED(RamSize) ? RamSize : 16M;
+-HeapSize = DEFINED(HeapSize) ? HeapSize : 256k;
+-StackSize = DEFINED(StackSize) ? StackSize : 256k;
++RamSize = DEFINED(RamSize) ? RamSize : 4M;
++StackSize = DEFINED(StackSize) ? StackSize : 1M;
+ 
+ RAM_END = RamBase + RamSize;
+ 
+@@ -189,18 +188,14 @@ SECTIONS
+     *(.bss .bss* .gnu.linkonce.b*)
+     *(COMMON)
+     . = ALIGN (16);
+-    end = .;
++    PROVIDE (end = .);
+     _end = .;
+     __end = .;
+-  
+-    . = ALIGN (16); /* arbitrary alignment */
+-    PROVIDE (WorkAreaBase = .);
+-    . += HeapSize;
+-    PROVIDE (HeapBase = .);
+-    . += HeapSize;
+-    . += StackSize;
+-     PROVIDE (__stack = .);
++
++    . = RAM_END;
++    . = ALIGN (16);
+      PROVIDE (StackStart = .);
++
+   } > ram
+ }
+ 
