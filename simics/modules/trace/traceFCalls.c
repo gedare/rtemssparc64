@@ -7,7 +7,7 @@
 #include "traceFCalls.h"
 
 #define CONTAINERMAX 6000
-#define PRINTBUFFMAX 10000
+#define PRINTBUFFMAX 100000
 
 typedef struct traceData_def traceData;
 //External Variables
@@ -344,6 +344,7 @@ container* container_add(md_addr_t addr, char * name)
 
 struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem, base_trace_t *bt)
 {
+	
 	int i,j=0;
 	container * foundSearch;
 	mystack returnAddressStack = thread_active->container_runtime_stack;
@@ -369,6 +370,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 		//printf("\n GICA check for function return: 0x%llx\n",addr);
 		fflush(stdin);
 		stackObject t = stack_top(returnAddressStack);
+		//if(addr > 0xf0000000ULL) { printf("%s %llx %s \n",__PRETTY_FUNCTION__, addr, t.containerObj->name); fflush(stdin);}
 		UpdateAddressList(&( t.containerObj->addressAccessList), addr, 4);
 		UpdateAddressList(&( t.containerObj->addressAccessListInstance), addr, 4);
 
@@ -518,10 +520,11 @@ void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes)
 	
 	if(containerInitialized == 1 && !stack_empty(returnAddressStack))
 	{
-
+		
 		stackObject t = stack_top(returnAddressStack);
 		//container_dumpRegisters(*regs);
-
+		//if(addr >= 0xf0000000ULL)  
+		//	{ printf("%s %s %llxn\n",__PRETTY_FUNCTION__, t.containerObj->name, addr); fflush(stdin);}
 		//collect the continuous address accesses
 		//this implementation : take care only of the memaccesses that are in sequence.
 		//if(strcmp(t.containerObj->name,"crc32file") == 0)
@@ -601,6 +604,8 @@ void container_printDecodedMemoryRanges(int bAll )
 	myprint(printBuffer);
 	sprintf(printBuffer,"entryAddress endAddress\tname\tcount\tLIST\n");
 	myprint(printBuffer);
+
+	
 	for (int i=0 ; i < containerSize; i++)
 	{
 		addressList l = containerTable[i].addressAccessList;
@@ -751,19 +756,26 @@ void printAllStatsFiles(base_trace_t *bt)
 	overrideOutputfd = containerStatisticsFile;
 	container_printStatistics(0);
 	fflush(overrideOutputfd);
+	fclose(overrideOutputfd);
 	overrideOutputfd = fullAddressAccessListFile;
 	container_printMemoryRanges(0);
 	fflush(overrideOutputfd);
+	fclose(overrideOutputfd);
 	overrideOutputfd = fullDecodedAddressAccessListFile;
 	container_printDecodedMemoryRanges(0);
 	fflush(overrideOutputfd);
+	fclose(overrideOutputfd);
 	overrideOutputfd = simpleCountAddressAcessFile;
 	container_printSimpleCountAddressAcess(0);
 	fflush(overrideOutputfd);
+	fclose(overrideOutputfd);
 	overrideOutputfd = containerCallListFile;
 	container_printChildFunctionsCalled(0);
 	fflush(overrideOutputfd);
+	fclose(overrideOutputfd);
 	overrideOutputfd = NULL;
+
+	printf("Done PRINTING stat files \n"); fflush(stdin);
 }
 
 
@@ -856,6 +868,23 @@ void container_printStatistics (int bAll)
 
 void UpdateAddressList(addressList *list,md_addr_t addr,int nbytes)
 {
+
+	/*
+	mystack returnAddressStack = thread_active->container_runtime_stack;
+	if(containerInitialized == 1 && !stack_empty(returnAddressStack)) {
+		stackObject t = stack_top(returnAddressStack);
+		
+		//if( strcmp(t.containerObj->name,"malloc") == 0){
+		  if( addr > 0xf0000000ULL){
+		  	
+			printf("%s %s start",__PRETTY_FUNCTION__, t.containerObj->name);
+			addressList pl = *list;
+			while(pl) { printf("(%llx %llx) ",pl->startAddress, pl->endAddress); pl=pl->next;}
+			printf("%llx %d\n",addr, nbytes);
+		}
+	}*/
+	
+
 	//parse the list
 	//try every range , if the new address is inside , ignore
 	//if the addr_nbytes overlaps one range, addit and continue searching . If the address hits another range, merge the 2 ranges
@@ -865,16 +894,18 @@ void UpdateAddressList(addressList *list,md_addr_t addr,int nbytes)
 	//int ignore = 0;
 	addressList lprevious = NULL;
 	addressList l = *list;
-
 	while(l!= NULL)
 	{
 		md_addr_t start = l->startAddress;
 		md_addr_t end = l->endAddress;
+		//printf("start = %llx end = %llx addr = %llx addr+nbytes = %llx\n",start, end, addr, addr + nbytes);
 		if( start <= addr && end >= addr+nbytes)
 		{
+			//printf("start <= addr AND end >= addr+nbytes\n");
 			if(found == 0)
 			{
 				found = 1;
+				lprevious = l;
 				break;
 			}
 			else
@@ -884,6 +915,7 @@ void UpdateAddressList(addressList *list,md_addr_t addr,int nbytes)
 		}
 		else if( addr <= start  && addr + nbytes >= start )
 		{
+			//printf("addr <= start  AND addr + nbytes >= start\n");
 			if(found == 1) joinAddress(l, lprevious);
 			else
 			{
@@ -895,6 +927,7 @@ void UpdateAddressList(addressList *list,md_addr_t addr,int nbytes)
 		}
 		else if( addr <= end && addr + nbytes > end )
 		{
+			//printf("addr <= end AND addr + nbytes > end\n");
 			if(found == 1) joinAddress(l, lprevious);
 			else
 			{
@@ -909,12 +942,27 @@ void UpdateAddressList(addressList *list,md_addr_t addr,int nbytes)
 	{
 		*list = consAddressList(addr,addr + nbytes,*list);
 	}
-
-
+	
+	/*
+	if(containerInitialized == 1 && !stack_empty(returnAddressStack)) {
+		stackObject t = stack_top(returnAddressStack);
+		
+		//if(strcmp(t.containerObj->name,"malloc") == 0){
+		if( addr > 0xf0000000ULL){
+			printf("%s end",__PRETTY_FUNCTION__);
+			addressList pl = *list;
+			while(pl) { printf("(%llx %llx) ",pl->startAddress, pl->endAddress); pl=pl->next; }
+			printf("\n");
+		}
+	}
+	*/
+	
 }
 
 void joinAddress(addressList future, addressList present)
 {
+	//printf("%s\n",__PRETTY_FUNCTION__);
+	
 	present->startAddress = present->startAddress > future->startAddress ? future->startAddress : present->startAddress;
 	present->endAddress = present->endAddress < future->startAddress ? future->startAddress : present->endAddress;
 	//exit(0);
@@ -1106,7 +1154,7 @@ void myprint(char * toPrint)
 		fprintf(compilerInfofd,"%s",toPrint);
 	else if(fullTracefd){
 		fprintf(thread_active->traceFD,"%s",toPrint);
-		//fflush(thread_active->traceFD);
+		fflush(thread_active->traceFD);
 		//fprintf(stdout,"%s",toPrint);
 		//fflush(stdout);
 	}
@@ -1141,7 +1189,7 @@ char * funcNameFromAddress(int addr)
 	return NULL;
 }
 
-addressList consAddressList(int startAddress, int endAddress, addressList l)
+addressList consAddressList(md_addr_t startAddress, md_addr_t endAddress, addressList l)
 {
 	addressList temp = (addressList) malloc(sizeof(struct addressCell));
     temp -> startAddress = startAddress;
@@ -1384,6 +1432,50 @@ uint64 mySimicsIntSymbolRead(char * symbol)
 	ret = symbolStartOld.u.list.vector[1].u.integer;
 	
 	return ret;		
+}
+
+
+void containers_testRandomStuff(int option){
+
+	printf("%s",__PRETTY_FUNCTION__);
+	switch(option)
+	{
+		case 0 : 
+			printf("test range merge\n");
+			uint64 a,b,c,d;
+			a = 0xfffffffff000618c;
+			b = 0xfffffffff0006190;
+			c = 0xfffffffff0006188;
+			d = 0xfffffffff000618c;
+			
+			addressList pl1 = (addressList )malloc(sizeof(struct addressCell));
+			addressList pl2 = (addressList )malloc(sizeof(struct addressCell));
+
+					
+			pl1->startAddress = c;
+			pl1->endAddress = d;
+			pl2->startAddress = c;
+			pl2->endAddress = d;
+
+			pl1->next = NULL;
+			pl2->next = NULL;
+
+			addressList l = pl1;
+			while(l){
+				printf("(%llx %llx)", l->startAddress, l->endAddress);l = l->next;
+			}
+			printf("\n");
+			UpdateAddressList(&pl1,a,4);
+			l = pl1;
+			while(l){
+				printf("(%llx %llx)", l->startAddress, l->endAddress);l = l->next;
+			}
+			
+			break;
+		default :
+			printf("%s nothing to do for this option\n",__PRETTY_FUNCTION__);
+			break;
+	}
 }
 
 
