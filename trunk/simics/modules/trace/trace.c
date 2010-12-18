@@ -1659,7 +1659,8 @@ void ThreadMonitor_callback_after(lang_void *userdata,
 		}
 	}
 
-	Thread_switch(threadIdNew,threadNameNew);	
+	Thread_switch(threadIdNew,threadNameNew);
+	printf("%s => After Thread_switch  %s\n",__PRETTY_FUNCTION__,threadNameString );fflush(stdin);
 }
 
 
@@ -1694,6 +1695,9 @@ void ThreadMonitor_callback_before(lang_void *userdata,
 			{
 				printf("GICA ThreadMonitor_register, breakpoint is !!NOT!! set\n");
 			}
+
+		
+		printf("%s => reached  %llx\n",__PRETTY_FUNCTION__,uievalThreadPtr );fflush(stdin);
 	}
 
 }
@@ -1703,14 +1707,16 @@ void ThreadMonitor_callback_before(lang_void *userdata,
 
 void ThreadMonitor_register()
 {
-	attr_value_t evalThreadAddress = myeval("&_Per_CPU_Information.executing");
-	ASSERT(evalThreadAddress.kind == 4);
-
+	//attr_value_t evalThreadAddress = myeval("&_Per_CPU_Information.executing");
+	//ASSERT(evalThreadAddress.kind == 4);
+	uint64 breakAddress = mySimicsIntSymbolRead("&_Per_CPU_Information.executing");
+	
 	breakpoint_id_t bkpt = SIM_breakpoint(
 			SIM_get_object("gicacontext"),//memory object ?
 			Sim_Break_Virtual,
 			Sim_Access_Write,
-			evalThreadAddress.u.list.vector[1].u.integer,
+			//evalThreadAddress.u.list.vector[1].u.integer,
+			breakAddress,
 			4,
 			0);
 	if(bkpt != -1){
@@ -1725,7 +1731,7 @@ void ThreadMonitor_register()
 				printf("GICA ThreadMonitor_register, breakpoint is !!NOT!! set\n");
 			}
 
-
+   printf("%s => Breakpoint set at address %llx\n",__PRETTY_FUNCTION__, breakAddress);fflush(stdin);
 
 }
 
@@ -1829,6 +1835,17 @@ set_trace_flush(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *
 	return Sim_Set_Ok;
 }
 
+static attr_value_t
+get_trace_TestRandomStuff(void *arg, conf_object_t *obj, attr_value_t *idx){
+	return SIM_make_attr_integer(1);
+}
+
+static set_error_t
+set_trace_TestRandomStuff(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
+{
+	containers_testRandomStuff(val->u.integer);
+	return Sim_Set_Ok;
+}
 
 
 
@@ -2079,13 +2096,20 @@ init_local(void)
 			Sim_Attr_Optional,"i",NULL,
 			"does not set anything, it prints container stats");
 			
-
+		
 		SIM_register_typed_attribute
 			(base_class,"trace_flush",
 			get_trace_flush,	NULL,
 			set_trace_flush,	NULL,
 			Sim_Attr_Optional,"i",NULL,
 			"does not set anything, it flushes buffers ");
+
+		SIM_register_typed_attribute
+			(base_class,"trace_TestRandomStuff",
+			get_trace_TestRandomStuff,	NULL,
+			set_trace_TestRandomStuff,	NULL,
+			Sim_Attr_Optional,"i",NULL,
+			"testing different things");
 
 
 #if defined(TRACE_STATS)

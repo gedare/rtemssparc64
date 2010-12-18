@@ -82,7 +82,7 @@ struct cell
 extern llist cons(stackObject element, llist l);
 extern llist cdr_and_free(llist l);
 
-extern addressList consAddressList(int startAddress, int endAddress, addressList l);
+extern addressList consAddressList(md_addr_t startAddress, md_addr_t endAddress, addressList l);
 extern addressList freeAddressList(addressList l);
 void UpdateAddressList(addressList *l,md_addr_t addr,int nbytes);
 void joinAddress(addressList future, addressList present);
@@ -224,6 +224,7 @@ void containers_flush();
 
 uint64 mySimicsIntSymbolRead(char * symbol);
 attr_value_t myeval(char * evalExpr);
+void containers_testRandomStuff(int option);
 
 
 
