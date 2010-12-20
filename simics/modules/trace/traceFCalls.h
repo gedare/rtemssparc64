@@ -73,6 +73,13 @@ struct addressCell
   addressList next;
 };
 
+typedef struct dm
+{
+	md_addr_t base;
+	md_addr_t bound;
+	char type;
+} decodedMemRange;
+
 
 struct cell
 {
@@ -88,6 +95,8 @@ void UpdateAddressList(addressList *l,md_addr_t addr,int nbytes);
 void joinAddress(addressList future, addressList present);
 void printAddressList(char* printbuff, addressList l);
 void printCountMemoryAccesses(char * printbuff,addressList l);
+decodedMemRange decodeMemoryRange(md_addr_t base, md_addr_t bound);
+
 
 
 
@@ -210,9 +219,11 @@ typedef struct thread_monitor
 } thread_monitor_t;
 
 extern thread_monitor_t *thread_active;
-thread_monitor_t* ThreadAdd(int64 id, int64 name);
-thread_monitor_t* ThreadFind(int64 id);
-void Thread_switch( int64 id, int64 name);
+thread_monitor_t* ThreadAdd(uint64 id, uint64 name);
+thread_monitor_t* ThreadFind(uint64 id);
+void Thread_switch( uint64 id, uint64 name);
+void ThreadInitializeOnStart();
+
 
 void printCurrentContainerStack( );
 

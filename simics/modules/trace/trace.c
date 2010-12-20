@@ -1042,6 +1042,7 @@ set_enabled(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
                 instruction_trace_onoff_update(bt);
                 exception_trace_onoff_update(bt);
                 file_onoff_update(bt);
+				ThreadInitializeOnStart();
         } else {
                 /* Failure, revert the change. */
                 bt->trace_enabled = !bt->trace_enabled;
