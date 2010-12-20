@@ -50,13 +50,10 @@ FILE *compilerInfofd = NULL;
 FILE *fullTracefd = NULL;
 FILE *overrideOutputfd = NULL;
 
-md_addr_t ld_text_base = 0x4000;
-md_addr_t ld_text_bound = 0x4DBF0;
-md_addr_t ld_data_base = 0x4dbf0;
-md_addr_t ld_data_bound = 0x4EFA8;
-md_addr_t ld_stack_size = 0x302090;
-md_addr_t ld_stack_base = 0x351040;
-md_addr_t ld_environ_base = 0;
+md_addr_t ld_text_base = 0x0;
+md_addr_t ld_text_bound = 0x0;
+md_addr_t ld_stack_size = 0x0;
+md_addr_t ld_stack_base = 0x0;
 
 
 conf_object_t *proc = NULL; //Simics Sparc current processor
@@ -65,7 +62,7 @@ int o6id;  //sp
 int i6id;  //fp
 
 
-thread_monitor_t* ThreadAdd(int64 id, int64 name)
+thread_monitor_t* ThreadAdd(uint64 id, uint64 name)
 {
 	thread_monitor_t* newThread;
 	newThread = (thread_monitor_t*) calloc (sizeof(thread_monitor_t),1);
@@ -106,7 +103,7 @@ thread_monitor_t* ThreadAdd(int64 id, int64 name)
 	return newThread;
 }
 
-thread_monitor_t* ThreadFind(int64 id)
+thread_monitor_t* ThreadFind(uint64 id)
 {
 	thread_monitor_t* iterate;
 	//ASSERT(thread_active != NULL);
@@ -121,7 +118,7 @@ thread_monitor_t* ThreadFind(int64 id)
 	return NULL;
 }
 
-void Thread_switch( int64 id, int64 name)
+void Thread_switch( uint64 id, uint64 name)
 {
 	thread_monitor_t* newThread;
 	newThread = ThreadFind(id);
@@ -134,11 +131,22 @@ void Thread_switch( int64 id, int64 name)
 	printRTEMSTaksName(thread_active->thread_name);
 	printf("\n");
 
-	int64 StackArea = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Start.Initial_stack.area");
+	md_addr_t StackArea = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Start.Initial_stack.area");
 	uint64 StackSize = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Start.Initial_stack.size");
 
 	ld_stack_base = StackArea;
 	ld_stack_size = StackSize;
+
+	ld_text_base = mySimicsIntSymbolRead("start");
+	ld_text_bound = mySimicsIntSymbolRead("end");
+}
+
+
+void ThreadInitializeOnStart()
+{
+	uint64 threadNameNew = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Object.name.name_u32");
+	uint64 threadIdNew = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Object.id");
+	Thread_switch( threadIdNew, threadNameNew);
 }
 
 
@@ -385,7 +393,7 @@ struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem
 			//printDecodedAddressList(printBuffer,t.containerObj->addressAccessListInstance);
 			//sprintf(printBuffer,"*\n");
 			//myprint(printBuffer);
-			updateGlobalAddressList(t.containerObj);
+			//updateGlobalAddressList(t.containerObj);
 			updateHeapCalls(t.containerObj,t.containerObj->addressAccessListInstance);
 			t.containerObj->addressAccessListPenalty += penaltyAddressList( t.containerObj->addressAccessListInstance);
 			sprintf(printBuffer,"%lld\t",cycles);
@@ -600,7 +608,7 @@ void container_printMemoryRanges(int bAll )
 
 void container_printDecodedMemoryRanges(int bAll )
 {
-	sprintf(printBuffer,"code: %llx %llx initialized: %llx %llx stack: %llx %llx \n",ld_text_base,ld_text_bound,ld_data_base,ld_data_bound,ld_stack_base ,ld_stack_base+ ld_stack_size);
+	sprintf(printBuffer,"data: %llx %llx stack: %llx %llx \n",ld_text_base,ld_text_bound,ld_stack_base ,ld_stack_base+ ld_stack_size);
 	myprint(printBuffer);
 	sprintf(printBuffer,"entryAddress endAddress\tname\tcount\tLIST\n");
 	myprint(printBuffer);
@@ -1018,55 +1026,30 @@ void printCurrentContainerStack( )
 
 void printDecodedAddressList(char * printbuff,addressList l)
 {
-    
-	char type = 'c';
 	while(l!=NULL)
 	{
-		if(l->startAddress >= ld_text_base && l->startAddress <= ld_text_bound) {
-			type = 'c'; //code
-		}
-		else if(l->startAddress >= ld_data_base && l->startAddress <= ld_data_bound) {
-			type = 'i'; //initialized
-		}
-		else if(l->startAddress >= ld_stack_base  && l->startAddress <= ld_stack_base + ld_stack_size) {
-			type = 's'; //stack
-		}
-		else {
-			type = 'h'; //heap
-		}
-		printbuff += sprintf(printbuff,"%c[%llx,%llx) ",type,l->startAddress, l->endAddress);
+		decodedMemRange md = decodeMemoryRange(l->startAddress, l->startAddress);
+		printbuff += sprintf(printbuff,"%c[%llx,%llx) ",md.type,md.base,md.bound);
 		l = l->next;
 	}
-
 }
 
 void printCountMemoryAccesses(char * printbuff,addressList l)
 {
     int c = 0, i = 0, s = 0, h = 0;
-	char type = 'c';
 	while(l!=NULL)
 	{
-		if(l->startAddress >= ld_text_base && l->startAddress <= ld_text_bound) {
-			type = 'c'; //code
-			c++;
-		}
-		else if(l->startAddress >= ld_data_base && l->startAddress <= ld_data_bound) {
-			type = 'i'; //initialized
-			i++;
-		}
-		else if(l->startAddress >= ld_stack_base  && l->startAddress <= ld_stack_base + ld_stack_size) {
-			type = 's'; //stack
-			s++;
-		}
-		else {
-			type = 'h'; //heap
-			h++;
+		decodedMemRange md = decodeMemoryRange(l->startAddress, l->startAddress);
+		switch (md.type)
+		{
+			case 'c': c++;break;
+			case 's': s++;break;
+			case 'h': h++;break;
+			default : break;
 		}
 		l = l->next;
 	}
-
 	sprintf(printbuff,"%d %d %d %d",c, i, s, h);
-
 }
 
 
@@ -1075,57 +1058,32 @@ void printCountMemoryAccesses(char * printbuff,addressList l)
 // I can take the average or mean in the future.
 void updateHeapCalls(container* c,addressList l)
 {
-	//addressList l = c->addressAccessListInstance;
 	int heapAccessesInInstance = 0;
-	char type = 'c';
 	while(l!=NULL)
 	{
-		if(l->startAddress >= ld_text_base && l->startAddress <= ld_text_bound) {
-			type = 'c'; //code
-		}
-		else if(l->startAddress >= ld_data_base && l->startAddress <= ld_data_bound) {
-			type = 'i'; //initialized
-		}
-		else if(l->startAddress >= ld_stack_base  && l->startAddress <= ld_stack_base + ld_stack_size) {
-			type = 's'; //stack
-		}
-		//else if(l->startAddress >= 0xb0000000 && l->startAddress <= ld_environ_base){
-		//	type = 'e'; //enviroment(static)
-		//}
-		else {
+		decodedMemRange md = decodeMemoryRange(l->startAddress, l->startAddress);
+		if (md.type == 'h') {
 			UpdateAddressList( &(c->addressAccessListInstance), l->startAddress,l->endAddress-l->startAddress);
 			heapAccessesInInstance ++;
-			type = 'h'; //heap
 		}
 		l = l->next;
 	}
 	if(c->isCalledWithHeapData < heapAccessesInInstance) c->isCalledWithHeapData = heapAccessesInInstance;
 }
 
-void updateGlobalAddressList(container* c)
+decodedMemRange decodeMemoryRange(md_addr_t base, md_addr_t bound)
 {
- 	addressList l = c->addressAccessList;
-//	c->isCalledWithHeapData = 0;
-	char type = 'c';
-	while(l!=NULL)
-	{
-		if(l->startAddress >= ld_text_base && l->startAddress <= ld_text_bound) {
-			type = 'c'; //code
-		}
-		else if(l->startAddress >= ld_data_base && l->startAddress <= ld_data_bound) {
-			UpdateAddressList( &c->staticAddressList, l->startAddress,l->endAddress-l->startAddress);
-			type = 'i'; //initialized
-		}
-		else if(l->startAddress >= ld_stack_base  && l->startAddress <= ld_stack_base + ld_stack_size) {
-			type = 's'; //stack
-		}
-		else {
-			//c->isCalledWithHeapData ++;
-			type = 'h'; //heap
-		}
-		l = l->next;
-	}
+	decodedMemRange ret;
+ 	ret.base = base;
+	ret.bound = bound;
+	if( base >= ld_text_base && bound <= ld_text_bound )
+		ret.type = 'c';
+	else if(base >= ld_stack_base  && bound <= ld_stack_base + ld_stack_size) 
+		ret.type = 's'; //stack
+	else 
+		ret.type = 'h'; //heap
 
+	return ret;
 }
 
 int penaltyAddressList( addressList l) //counts the number of ranges in the access list.
