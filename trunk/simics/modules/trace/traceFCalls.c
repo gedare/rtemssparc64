@@ -1398,37 +1398,37 @@ void containers_testRandomStuff(int option){
 	printf("%s",__PRETTY_FUNCTION__);
 	switch(option)
 	{
-		case 0 : 
-			printf("test range merge\n");
-			uint64 a,b,c,d;
-			a = 0xf000618c;
-			b = 0xf0006190;
-			c = 0xf0006188;
-			d = 0xf000618c;
-			
-			addressList pl1 = (addressList )malloc(sizeof(struct addressCell));
-			addressList pl2 = (addressList )malloc(sizeof(struct addressCell));
+		case 0 : {
+				printf("test range merge\n");
+				uint64 a,b,c,d;
+				a = 0xf000618c;
+				b = 0xf0006190;
+				c = 0xf0006188;
+				d = 0xf000618c;
+				
+				addressList pl1 = (addressList )malloc(sizeof(struct addressCell));
+				addressList pl2 = (addressList )malloc(sizeof(struct addressCell));
 
-					
-			pl1->startAddress = c;
-			pl1->endAddress = d;
-			pl2->startAddress = c;
-			pl2->endAddress = d;
+						
+				pl1->startAddress = c;
+				pl1->endAddress = d;
+				pl2->startAddress = c;
+				pl2->endAddress = d;
 
-			pl1->next = NULL;
-			pl2->next = NULL;
+				pl1->next = NULL;
+				pl2->next = NULL;
 
-			addressList l = pl1;
-			while(l){
-				printf("(%llx %llx)", l->startAddress, l->endAddress);l = l->next;
+				addressList l = pl1;
+				while(l){
+					printf("(%llx %llx)", l->startAddress, l->endAddress);l = l->next;
+				}
+				printf("\n");
+				UpdateAddressList(&pl1,a,4);
+				l = pl1;
+				while(l){
+					printf("(%llx %llx)", l->startAddress, l->endAddress);l = l->next;
+				}
 			}
-			printf("\n");
-			UpdateAddressList(&pl1,a,4);
-			l = pl1;
-			while(l){
-				printf("(%llx %llx)", l->startAddress, l->endAddress);l = l->next;
-			}
-			
 			break;
 		default :
 			printf("%s nothing to do for this option\n",__PRETTY_FUNCTION__);
