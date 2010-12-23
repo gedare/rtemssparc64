@@ -1401,10 +1401,10 @@ void containers_testRandomStuff(int option){
 		case 0 : 
 			printf("test range merge\n");
 			uint64 a,b,c,d;
-			a = 0xfffffffff000618c;
-			b = 0xfffffffff0006190;
-			c = 0xfffffffff0006188;
-			d = 0xfffffffff000618c;
+			a = 0xf000618c;
+			b = 0xf0006190;
+			c = 0xf0006188;
+			d = 0xf000618c;
 			
 			addressList pl1 = (addressList )malloc(sizeof(struct addressCell));
 			addressList pl2 = (addressList )malloc(sizeof(struct addressCell));
