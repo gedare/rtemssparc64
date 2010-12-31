@@ -1,0 +1,12 @@
+This test application is conditioned to do the following:
+  1) Create some periodic tasks according to the params.h settings
+  2) Create some dijkstra aperiodic tasks according to the params.h settings
+  3) Start all tasks.
+  4) The last dijkstra task to finish will terminate the test.
+
+The intent is to run a similar amount of background work, while periodic 
+(critical) real-time tasks are running some synthetic workload.
+
+The characteristics of the periodic tasks can be exchanged, for the basic 
+test I use some CPU bound tasks.
+
