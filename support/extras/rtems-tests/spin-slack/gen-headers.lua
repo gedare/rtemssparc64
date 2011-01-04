@@ -454,7 +454,7 @@ function write_header(atasks, ptasks, J, slack_table, hpl, maxp)
       if i < #p_execution then
         f:write("CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ")
       else
-        f:write("CONFIGURE_MICROSECONDS_PER_TICK\n")
+        f:write("CONFIGURE_MICROSECONDS_PER_TICK")
       end
     end
    -- table.concat(periods, "*") ..
@@ -462,13 +462,18 @@ function write_header(atasks, ptasks, J, slack_table, hpl, maxp)
    -- "*CONFIGURE_MICROSECONDS_PER_TICK,\n"))
   end
   if #a_execution > 0 then
-    f:write(string.format("%s",
-    "                                             " ..
-    table.concat(a_execution, "*CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ") ..
-    "*CONFIGURE_MICROSECONDS_PER_TICK\n"))
+    f:write(",\n                                             ")
+    for i,v in ipairs(prio) do
+      f:write(string.format("%s*%s*", tostring(v), tostring(a_execution[i])))
+      if i < #a_execution then
+        f:write("CONFIGURE_MICROSECONDS_PER_TICK,\n                                             ")
+      else
+        f:write("CONFIGURE_MICROSECONDS_PER_TICK")
+      end
+    end
   end
   f:write(string.format("%s",
-    "                                             };\n"))
+    "\n                                             };\n"))
   
   f:write("\n")
 
