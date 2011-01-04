@@ -19,9 +19,10 @@ import os
 
 def usage():
   print "\
-      Usage: gen-params.py -[ht:d:u:]\n\
+      Usage: gen-params.py -[ha:p:d:u:]\n\
   -h --help           print this help\n\
-  -t --tasks=         specify number of tasks\n\
+  -a --atasks=        specify number of aperiodic tasks\n\
+  -p --ptasks=        specify number of periodic tasks\n\
   -d --distribution=  specify utilization distribution, one of:\n\
                         1. Uniform distribution between 1/p and 1\n\
                         2. Bimodal distribution:\n\
@@ -47,8 +48,8 @@ def generate_bimodal(p_list, t):
 
 def main():
   try:
-    opts, args = getopt.getopt(sys.argv[1:], "ht:d:u:", 
-        ["help", "tasks=", "distribution=", "utilization="])
+    opts, args = getopt.getopt(sys.argv[1:], "ha:p:d:u:", 
+        ["help", "atasks=", "ptasks=", "distribution=", "utilization="])
   except getopt.GetoptError, err:
     print str(err)
     usage()
@@ -57,8 +58,10 @@ def main():
     if opt in ("-h", "--help"):
       usage()
       sys.exit()
-    elif opt in ("-t", "--tasks"):
-      num_tasks = int(arg)
+    elif opt in ("-a", "--atasks"):
+      num_atasks = int(arg)
+    elif opt in ("-p", "--ptasks"):
+      num_ptasks = int(arg)
     elif opt in ("-d", "--distribution"):
       distribution = int(arg)
     elif opt in ("-u", "--utilization"):
@@ -67,18 +70,19 @@ def main():
       assert False, "unhandled option"
 
   # Generate a list of num_tasks uniform random periods between 1 and 100.
-  p_list = [int(1+random.random()*MAXIMUM_PERIOD) for i in xrange(num_tasks)]
+  p_list = [int(1+random.random()*MAXIMUM_PERIOD) for i in xrange(num_ptasks)]
 
   Tasks = ''
 
+  # Generate periodic tasks
   if   (distribution == 1): # uniform(num_tasks)
-    u_list = [random.uniform(0.001,1) for i in xrange(num_tasks)]
+    u_list = [random.uniform(0.001,1) for i in xrange(num_ptasks)]
   elif (distribution == 2): #bimodal(num_tasks)
-    u_list = generate_bimodal(p_list, num_tasks);
+    u_list = generate_bimodal(p_list, num_ptasks);
   elif (distribution == 3): #expon(num_tasks, 0.25)
-    u_list = [random.expovariate(4) for i in xrange(num_tasks)]
+    u_list = [random.expovariate(4) for i in xrange(num_ptasks)]
   elif (distribution == 4): #expon(num_tasks, 0.5)
-    u_list = [random.expovariate(2) for i in xrange(num_tasks)]
+    u_list = [random.expovariate(2) for i in xrange(num_ptasks)]
   else:
     assert False, "invalid distribution"
 
@@ -88,7 +92,7 @@ def main():
   u_norm = [u*normalization_factor for u in u_list]
  
   u_norm_sum = 0
-  for i in xrange(num_tasks):
+  for i in xrange(num_ptasks):
     u_norm_sum += int(float('%.3f' % (u_norm[i]*1000)))
 
 #  print(float(u_norm_sum)/1000)
@@ -96,12 +100,17 @@ def main():
   f = open('test_params.txt', 'w')
   f.write(str(float(u_norm_sum)/1000))
   f.write('\n')
-  for i in xrange(num_tasks):
+  for i in xrange(num_ptasks):
     f.write(str(p_list[i]) + ',' + ('%.3f' % u_norm[i]) + '\n')
   f.write('\n')
 
-  for i in xrange(num_tasks):
+  for i in xrange(num_ptasks):
     Tasks += '-T ' + str(p_list[i]) + ',' + ('%.3f' % u_norm[i]) + ',0 '
+
+  # Generate aperiodic tasks. For now these are simply created as 
+  # priority 200, execution time of 1 cycle, and immediate release time.
+  for i in xrange(num_atasks):
+    Tasks += '-A 200,1,0'
 
 #  print Tasks
   os.system("lua gen-headers.lua " + Tasks)
