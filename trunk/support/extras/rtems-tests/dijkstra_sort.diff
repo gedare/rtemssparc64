@@ -1,0 +1,35 @@
+--- init.c	2011-01-05 11:52:28.000000000 -0500
++++ ../dijkstra/init.c	2011-01-05 11:52:42.000000000 -0500
+@@ -76,26 +76,15 @@ void enqueue (int iNode, int iDist, int 
+   qNew->iPrev = iPrev;
+   qNew->qNext = NULL;
+ 
+-  // GAB: instead of tail-queueing, sort entries as a 
+-  // priority queue by the iDist.
+   if (!qLast)
+-  {
+-    qHead = qNew;
+-  }
+-  else if (qLast->iDist > qNew->iDist) // new case to handle head's priority
+-  {
+-    qHead = qNew;
+-    qNew->qNext = qLast;
+-  }
++    {
++      qHead = qNew;
++    }
+   else
+-  {
+-    // already handled head case, find the Q element to insert qNew after.
+-    while (qLast->qNext && qLast->qNext->iDist <= qNew->iDist) {
+-      qLast = qLast->qNext;
++    {
++      while (qLast->qNext) qLast = qLast->qNext;
++      qLast->qNext = qNew;
+     }
+-    qNew->qNext = qLast->qNext;
+-    qLast->qNext = qNew;
+-  }
+   g_qCount++;
+   //               ASSERT(g_qCount);
+ }
