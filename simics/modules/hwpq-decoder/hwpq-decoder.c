@@ -15,8 +15,7 @@
 #include "opal-bitlib.h"
 #include "pq.h"
 
-priority_queue ready_queue;
-priority_queue timer_queue;
+priority_queue queues[10];
 
 #define DEVICE_NAME "hwpq-decoder"
 
@@ -45,7 +44,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
 //  int op3 = maskBits32( inst, 19, 24 );
   int rd = maskBits32( inst, 25, 29 );
   int rs1 = maskBits32( inst, 14, 18 );
-//  int rs2 = maskBits32( inst, 0, 4 );
+  int rs2 = maskBits32( inst, 0, 4 );
 //  int opf_hi = maskBits32( inst, 9, 13 );
 //  int opf_lo = maskBits32( inst, 5, 8 );
 //  int cond = maskBits32( inst, 25, 28 );
@@ -65,194 +64,88 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
    *  extract
    *  first (peek)
    *
-   *  insert requires a pointer and a priority value, so two registers, 
-   *  but does not require to write to a register.
+   *  insert requires a pointer and a priority value.
    *
    *  extract writes to a register, and does not need source regs.
    *
    *  first writes to a register, and does not need source regs.
    *
    *  To multiplex these instructions, it is necessary to define another
-   *  "opcode".  We are somewhat constrained, but we can use the rd register
-   *  in insert, without actually writing anything to it.  This is hackish, 
-   *  but should work. So rd will hold the input pointer for insert, and the
-   *  output pointer for extract or first. rs1 will hold the priority 
-   *  value for insert, and ignored by extract and first.  It might be useful
-   *  later to use the rs1 field for setting up some conditions perhaps.
-   *  
-   *  This leaves the immediate field available for encoding the instruction 
-   *  type and any other options that might be useful.  In particular, 
-   *  the priority queue to manipulate should also be specified somehow.
+   *  "opcode".  We are somewhat constrained, but we load the rs2 register
+   *  with the additional information, reserving rs1 for the payload and 
+   *  putting in rs2 the priority value (if any), an encoding of the 
+   *  queue index to use, and an encoding of the operation to use.
    */
 
   // check the immediate bit
   if ( i ) {
-    /* don't sign extend on purpose */
-    int imm = maskBits32( inst, 12, 0 );
-
+    printf("Unimplemented instruction\n");
+  } else {
     /* high order bit(s) specify the queue to use. 
      * For now there are only two queues, but we will use 2 bits
      * so that it can support up to 4 queues.
      */
-    int queue = maskBits32( imm, 12, 11 );
-
-    /* low order bits specify the queue operation. */
-    int operation = maskBits32( imm, 2, 0 );
-    pq_node *node = NULL;
-    static pq_node *new_node = NULL;
-    static int flag = 0;
+    int queue_idx = 0;
+    int operation = 0;
+    int priority = 0;
     uint64 payload = 0;
+    uint64 encoded = 0;
+    pq_node *node = NULL;
+    pq_node *new_node = NULL;
 
-    switch ( queue ) {
-      case 0:   // ready queue
-        switch ( operation ) {
-          case 0:   // first
-            node = pq_first(&ready_queue);
-            if (node) {
-              SIM_write_register(cpu, rd, (uint64)node->payload);
-            } else {
-              SIM_write_register(cpu, rd, 0);
-            }
-            break;
-          case 1:   // extract
-            payload = SIM_read_register(cpu, rs1);
-            node = pq_extract(&ready_queue, payload);
-            if (node)
-              free(node);
-            break;
+    payload = SIM_read_register(cpu, rs1);
+    encoded = SIM_read_register(cpu, rs2);
+    
+    queue_idx = maskBits32( encoded, 31, 20 );
+    priority = maskBits32( encoded, 19, 4 );
+    operation = maskBits32( encoded, 3, 0 );
 
-          /* There are two cases to cover insert. This is because of the 
-           * lack of enough fields to properly encode instructions and 
-           * registers. In a true ISA extension, we could add extra opcode,
-           * but we are constrained to the impdep2 insn.
-           * As long as both instructions are executed, the node should be 
-           * properly generated and inserted; the order of instructions 
-           * should not affect the correctness of these operations...
-           * This is not thread-safe (in the target) since it is non-reentrant
-           * in the simulator :(
-           */
-          case 2:   // insert
-            if (!flag) {
-              new_node = (pq_node*)malloc(sizeof(pq_node));
-              flag = 1;
-            } else
-              flag = 0;
-            if (!new_node) {
-              printf("Unable to allocate space for new pq node\n");
-              return Sim_PE_No_Exception; // should throw exception
-            }
-            new_node->priority = SIM_read_register(cpu, rs1);
-            if (!flag) {
-              pq_insert(&ready_queue, new_node);
-//              SIM_write_register(cpu, rd, new_node->priority);
-              new_node = NULL;
-            }
-            break;
-          case 3:   // insert
-             if (!flag) {
-              new_node = (pq_node*)malloc(sizeof(pq_node));
-              flag = 1;
-            } else
-              flag = 0;
-            if (!new_node) {
-              printf("Unable to allocate space for new pq node\n");
-              return Sim_PE_No_Exception; // should throw exception
-            }
-            new_node->payload = SIM_read_register(cpu, rs1);
-            if (!flag) {
-              pq_insert(&ready_queue, new_node);
-//              SIM_write_register(cpu, rd, new_node->priority);
-              new_node = NULL;
-            }
-            break;
+#ifdef GAB_DEBUG
+    printf("Queue %d\n", queue_idx);
+    printf("operation %d\n", operation);
+    printf("priority %d\n", priority);
+    if(queue_idx != 1) 
+      \SIM_break_simulation("Invalid queue_idx"); 
+#endif
 
-          default:
-            printf("Unknown operation: %d\n", operation);
-            return Sim_PE_No_Exception; // should throw exception
+
+    switch ( operation ) {
+
+      case 1: // first
+        node = pq_first(&queues[queue_idx]);
+      if (node) {
+        SIM_write_register(cpu, rd, (uint64)node->payload);
+      } else {
+        SIM_write_register(cpu, rd, 0);
+      }
+      break;
+
+      case 2: // enqueue
+        new_node = (pq_node*)malloc(sizeof(pq_node));
+        if (!new_node) {
+          printf("Unable to allocate space for new pq node\n");
+          break; // should throw exception
         }
-        
+        new_node->priority = priority;
+        new_node->payload = payload;
+        pq_insert(&queues[queue_idx], new_node);
+        new_node = NULL;
+        SIM_write_register(cpu, rd, 0);
         break;
-      case 1:   // timer queue
-        switch ( operation ) {
-          case 0:   // first
-            node = pq_first(&timer_queue);
-            if (node) {
-              SIM_write_register(cpu, rd, (uint64)node->payload);
-            } else {
-              SIM_write_register(cpu, rd, 0);
-            }
-            break;
-          case 1:   // extract
-            payload = SIM_read_register(cpu, rs1);
-            node = pq_extract(&timer_queue, payload);
-            if (node) {
-              free(node);
-            }
-            break;
 
-          /* There are two cases to cover insert. This is because of the 
-           * lack of enough fields to properly encode instructions and 
-           * registers. In a true ISA extension, we could add extra opcode,
-           * but we are constrained to the impdep2 insn.
-           * As long as both instructions are executed, the node should be 
-           * properly generated and inserted; the order of instructions 
-           * should not affect the correctness of these operations...
-           * Note that this is not thread-safe.
-           */
-          case 2:   // insert
-            if (!flag) {
-              new_node = (pq_node*)malloc(sizeof(pq_node));
-              flag = 1;
-            } else
-              flag = 0;
-            if (!new_node) {
-              printf("Unable to allocate space for new pq node\n");
-              return Sim_PE_No_Exception; // should throw exception
-            }
-            new_node->priority = SIM_read_register(cpu, rs1);
-            if (!flag) {
-              pq_insert(&timer_queue, new_node);
-              SIM_write_register(cpu, rd, new_node->priority);
-              new_node = NULL;
-            }
-            break;
-          case 3:   // insert
-             if (!flag) {
-              new_node = (pq_node*)malloc(sizeof(pq_node));
-              flag = 1;
-            } else
-              flag = 0;
-            if (!new_node) {
-              printf("Unable to allocate space for new pq node\n");
-              return Sim_PE_No_Exception; // should throw exception
-            }
-            new_node->payload = SIM_read_register(cpu, rs1);
-            if (!flag) {
-              pq_insert(&timer_queue, new_node);
-              SIM_write_register(cpu, rd, new_node->priority);
-              new_node = NULL;
-            }
-            break;
-
-          default:
-            printf("Unknown operation: %d\n", operation);
-            return Sim_PE_No_Exception; // should throw exception
-        }
+      case 3: // extract
+        node = pq_extract(&queues[queue_idx], payload);
+        if (node)
+          free(node);
+        SIM_write_register(cpu, rd, 0);
         break;
 
       default:
-        printf("Unknown queue operation\n");
-        return Sim_PE_No_Exception; // fail silently, maybe throw exception?
-        break;
+        printf("Unknown operation: %d\n", operation);
+        return Sim_PE_No_Exception; // should throw exception
     }
 
-    
-
-  } else {
-    printf("Unimplemented instruction\n");
   }
-
-  
 
   return Sim_PE_No_Exception;
 }
@@ -507,10 +400,10 @@ init_local(void)
 
   SIM_register_arch_decoder(&my_decoder, "sparc-v9", 0);
 
-  ready_queue.head = NULL;
-  ready_queue.options = 0;
-  timer_queue.head = NULL;
-  timer_queue.options = 2;
+  for (int i = 0;i < 10; i++) {
+    queues[i].head = NULL;
+    queues[i].options = 0;
+  }
 
 #ifdef GAB_DEBUG
   printf("gica-decoder \"init_local\"\n");
