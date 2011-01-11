@@ -15,8 +15,9 @@
 
 #define CONFIGURE_INIT
 #include "system.h"
-
 #include <stdio.h>
+
+//#define GAB_PRINT
 
 #define NUM_NODES                          100
 #define NONE                               9999
@@ -40,12 +41,14 @@ int iCost, iDist;
 
 void print_path (NODE *rgnNodes, int chNode)
 {
+#if defined(GAB_PRINT)
   if (rgnNodes[chNode].iPrev != NONE)
     {
       print_path(rgnNodes, rgnNodes[chNode].iPrev);
     }
   printf (" %d", chNode);
   fflush(stdout);
+#endif
 }
 
 void enqueue (int iNode, int iDist, int iPrev)
@@ -101,7 +104,9 @@ int dijkstra(int chStart, int chEnd)
 
   if (chStart == chEnd)
   {
-    //      printf("Shortest path is 0 in cost. Just stay where you are.\n");
+#if defined(GAB_PRINT)
+    printf("Shortest path is 0 in cost. Just stay where you are.\n");
+#endif
   }
   else
   {
@@ -127,10 +132,12 @@ int dijkstra(int chStart, int chEnd)
         }
       }
     }
+#if defined(GAB_PRINT)
     printf("Shortest path is %d in cost. ", rgnNodes[chEnd].iDist);
     printf("Path is: ");
     print_path(rgnNodes, chEnd);
     printf("\n");
+#endif
   }
 }
 
