@@ -17,7 +17,7 @@
 #include "system.h"
 #include <stdio.h>
 
-#define GAB_PRINT
+//#define GAB_PRINT
 
 #define NUM_NODES                          100
 #define NONE                               9999
@@ -92,7 +92,7 @@ void heap_remove( int i ) {
   if (i < 1 || i > heap_current_size) return;
   swap_entries(i, heap_current_size);
   --heap_current_size;
-  bubble_down(1);
+  bubble_down(i);
 }
 
 NODE *heap_min( ) {
