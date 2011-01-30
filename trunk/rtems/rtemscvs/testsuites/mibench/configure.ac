@@ -72,6 +72,8 @@ patricia/Makefile
 qsort/Makefile
 sha_large/Makefile
 sha_small/Makefile
+stringsearch_large/Makefile
+stringsearch_small/Makefile
 susan_corners/Makefile
 susan_edges/Makefile
 susan_smoothing/Makefile
