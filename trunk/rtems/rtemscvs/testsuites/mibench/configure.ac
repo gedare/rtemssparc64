@@ -64,8 +64,12 @@ bitcount_large/Makefile
 bitcount_small/Makefile
 crc/Makefile
 dijkstra/Makefile
-sha_small/Makefile
+fft_large/Makefile
+fft_small/Makefile
+fftinv_large/Makefile
+fftinv_small/Makefile
 sha_large/Makefile
+sha_small/Makefile
 susan_corners/Makefile
 susan_edges/Makefile
 susan_smoothing/Makefile
