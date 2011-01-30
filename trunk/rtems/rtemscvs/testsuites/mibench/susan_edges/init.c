@@ -344,7 +344,7 @@ int getint(fd)
 {
   char c;
   int i = 0;
-  char dummy[10000];
+//  char dummy[10000];
 
   c = getc(fd);
   while (1) /* find next integer */
@@ -1972,8 +1972,8 @@ corner_list[n].info=7;
 
 /* }}} */
 /* {{{ main(argc, argv) */
-CORNER_LIST corner_list;
 
+CORNER_LIST corner_list;
 main(argc, argv)
   int   argc;
   char  *argv [];
@@ -2154,12 +2154,12 @@ rtems_task Init(
   }
 
 
-  printf( "\n\n*** susan_smoothing benchmark ***\n" );
+  printf( "\n\n*** susan_edges benchmark ***\n" );
 
-  char * argv[] = {"susan_smoothing","/input_small.pgm", "/susan_smoothing.pgm","-s"};
+  char * argv[] = {"susan_edges","/input_small.pgm", "/susan_edges.pgm","-e"};
   main(4,argv);
 
-  printf( "*** end of susan_smoothing benchmark ***\n" );
+  printf( "*** end of susan_edges benchmark ***\n" );
   exit( 0 );
 }
 

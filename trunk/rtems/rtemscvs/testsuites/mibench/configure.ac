@@ -4,7 +4,7 @@
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-tests-mibench],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
-AC_CONFIG_SRCDIR([sha_small])
+AC_CONFIG_SRCDIR([crc])
 RTEMS_TOP([../..],[..])
 
 RTEMS_CANONICAL_TARGET_CPU
@@ -60,10 +60,12 @@ AM_CONDITIONAL(LIBCHIP,[test "$RTEMS_BSP_FAMILY" != "posix"])
 
 # Explicitly list all Makefiles here
 AC_CONFIG_FILES([Makefile
-sha_small/Makefile
-sha_large/Makefile
 crc/Makefile
 dijkstra/Makefile
+sha_small/Makefile
+sha_large/Makefile
+susan_corners/Makefile
+susan_edges/Makefile
 susan_smoothing/Makefile
 ])
 AC_OUTPUT

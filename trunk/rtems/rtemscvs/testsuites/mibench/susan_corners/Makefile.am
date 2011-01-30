@@ -15,6 +15,7 @@ include $(top_srcdir)/../automake/compile.am
 include $(top_srcdir)/../automake/leaf.am
 
 susan_corners_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
+susan_corners_LDLIBS = -lm
 
 LINK_OBJS = $(susan_corners_OBJECTS) $(susan_corners_LDADD)
 LINK_LIBS = $(susan_corners_LDLIBS)

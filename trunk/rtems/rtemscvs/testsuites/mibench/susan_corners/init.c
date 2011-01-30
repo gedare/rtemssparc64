@@ -192,7 +192,7 @@
 
   SGI      IRIX       SGI cc
 
-  DEC      Unix V3.2+ 
+  DEC      Unix V3.2+
 
   IBM RISC AIX        gcc
 
@@ -285,6 +285,9 @@
 
 /* ********** Optional settings */
 
+#define CONFIGURE_INIT
+#include "system.h"
+
 #ifndef PPC
 typedef int        TOTAL_TYPE; /* this is faster for "int" but should be "float" for large d masks */
 #else
@@ -301,8 +304,6 @@ typedef float      TOTAL_TYPE; /* for my PowerPC accelerator only */
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <sys/file.h>    /* may want to remove this line */
-#include <malloc.h>      /* may want to remove this line */
 #define  exit_error(IFB,IFC) { fprintf(stderr,IFB,IFC); exit(0); }
 #define  FTOI(a) ( (a) < 0 ? ((int)(a-0.5)) : ((int)(a+0.5)) )
 typedef  unsigned char uchar;
@@ -341,14 +342,21 @@ usage()
 int getint(fd)
   FILE *fd;
 {
-  int c, i;
+  char c;
+  int i = 0;
   char dummy[10000];
 
   c = getc(fd);
   while (1) /* find next integer */
   {
     if (c=='#')    /* if we're at a comment, read to end of line */
-      fgets(dummy,9000,fd);
+      //fgets(dummy,9000,fd);
+      while(c != "\n" && i<56)
+      	{
+			c = getc(fd);
+			//printf("%d",i);
+			i++;
+		}
     if (c==EOF)
       exit_error("Image %s not binary PGM.\n","is");
     if (c>='0' && c<='9')
@@ -379,6 +387,8 @@ FILE  *fd;
 char header [100];
 int  tmp;
 
+printf("in get_image\n");
+
 #ifdef FOPENB
   if ((fd=fopen(filename,"rb")) == NULL)
 #else
@@ -387,6 +397,8 @@ int  tmp;
     exit_error("Can't input image %s.\n",filename);
 
   /* {{{ read header */
+
+printf("get_image: read header\n");
 
   header[0]=fgetc(fd);
   header[1]=fgetc(fd);
@@ -398,6 +410,8 @@ int  tmp;
   tmp = getint(fd);
 
 /* }}} */
+
+printf("get_image: read header %d %d \n",*x_size,*y_size);
 
   *in = (uchar *) malloc(*x_size * *y_size);
 
@@ -419,16 +433,16 @@ put_image(filename,in,x_size,y_size)
 FILE  *fd;
 
 #ifdef FOPENB
-  if ((fd=fopen(filename,"wb")) == NULL) 
+  if ((fd=fopen(filename,"wb")) == NULL)
 #else
-  if ((fd=fopen(filename,"w")) == NULL) 
+  if ((fd=fopen(filename,"w")) == NULL)
 #endif
     exit_error("Can't output image%s.\n",filename);
 
   fprintf(fd,"P5\n");
   fprintf(fd,"%d %d\n",x_size,y_size);
   fprintf(fd,"255\n");
-  
+
   if (fwrite(in,x_size*y_size,1,fd) != 1)
     exit_error("Can't write image %s.\n",filename);
 
@@ -510,7 +524,7 @@ uchar *p,*cp;
       n+=*(cp-*p++);
       n+=*(cp-*p++);
       n+=*(cp-*p);
-      p+=x_size-3; 
+      p+=x_size-3;
 
       n+=*(cp-*p++);
       n+=*(cp-*p++);
@@ -586,7 +600,7 @@ uchar *p,*cp;
       n+=*(cp-*p++);
       n+=*(cp-*p++);
       n+=*(cp-*p);
-      p+=x_size-2; 
+      p+=x_size-2;
 
       n+=*(cp-*p);
       p+=2;
@@ -824,7 +838,7 @@ uchar *inp, *midp;
     midp=mid;
     for (i=0; i<x_size*y_size; i++)
     {
-      if (*midp<8) 
+      if (*midp<8)
       {
         inp = in + (midp - mid) - x_size - 1;
         *inp++=255; *inp++=255; *inp=255; inp+=x_size-2;
@@ -839,7 +853,7 @@ uchar *inp, *midp;
   midp=mid;
   for (i=0; i<x_size*y_size; i++)
   {
-    if (*midp<8) 
+    if (*midp<8)
       *(in + (midp - mid)) = 0;
     midp++;
   }
@@ -903,21 +917,21 @@ uchar *mp;
           l[3]=r[(i  )*x_size+j-1]; l[4]=0;                 l[5]=r[(i  )*x_size+j+1];
           l[6]=r[(i+1)*x_size+j-1]; l[7]=r[(i+1)*x_size+j]; l[8]=r[(i+1)*x_size+j+1];
 
-          if (mid[(i-1)*x_size+j-1]<8)        { l[0]=0; l[1]=0; l[3]=0; l[2]*=2; 
+          if (mid[(i-1)*x_size+j-1]<8)        { l[0]=0; l[1]=0; l[3]=0; l[2]*=2;
                                                 l[6]*=2; l[5]*=3; l[7]*=3; l[8]*=4; }
-          else { if (mid[(i-1)*x_size+j]<8)   { l[1]=0; l[0]=0; l[2]=0; l[3]*=2; 
+          else { if (mid[(i-1)*x_size+j]<8)   { l[1]=0; l[0]=0; l[2]=0; l[3]*=2;
                                                 l[5]*=2; l[6]*=3; l[8]*=3; l[7]*=4; }
-          else { if (mid[(i-1)*x_size+j+1]<8) { l[2]=0; l[1]=0; l[5]=0; l[0]*=2; 
+          else { if (mid[(i-1)*x_size+j+1]<8) { l[2]=0; l[1]=0; l[5]=0; l[0]*=2;
                                                 l[8]*=2; l[3]*=3; l[7]*=3; l[6]*=4; }
-          else { if (mid[(i)*x_size+j-1]<8)   { l[3]=0; l[0]=0; l[6]=0; l[1]*=2; 
+          else { if (mid[(i)*x_size+j-1]<8)   { l[3]=0; l[0]=0; l[6]=0; l[1]*=2;
                                                 l[7]*=2; l[2]*=3; l[8]*=3; l[5]*=4; }
-          else { if (mid[(i)*x_size+j+1]<8)   { l[5]=0; l[2]=0; l[8]=0; l[1]*=2; 
+          else { if (mid[(i)*x_size+j+1]<8)   { l[5]=0; l[2]=0; l[8]=0; l[1]*=2;
                                                 l[7]*=2; l[0]*=3; l[6]*=3; l[3]*=4; }
-          else { if (mid[(i+1)*x_size+j-1]<8) { l[6]=0; l[3]=0; l[7]=0; l[0]*=2; 
+          else { if (mid[(i+1)*x_size+j-1]<8) { l[6]=0; l[3]=0; l[7]=0; l[0]*=2;
                                                 l[8]*=2; l[1]*=3; l[5]*=3; l[2]*=4; }
-          else { if (mid[(i+1)*x_size+j]<8)   { l[7]=0; l[6]=0; l[8]=0; l[3]*=2; 
+          else { if (mid[(i+1)*x_size+j]<8)   { l[7]=0; l[6]=0; l[8]=0; l[3]*=2;
                                                 l[5]*=2; l[0]*=3; l[2]*=3; l[1]*=4; }
-          else { if (mid[(i+1)*x_size+j+1]<8) { l[8]=0; l[5]=0; l[7]=0; l[6]*=2; 
+          else { if (mid[(i+1)*x_size+j+1]<8) { l[8]=0; l[5]=0; l[7]=0; l[6]*=2;
                                                 l[2]*=2; l[1]*=3; l[3]*=3; l[0]*=4; } }}}}}}}
 
           m=0;     /* find the highest point */
@@ -956,7 +970,7 @@ uchar *mp;
                 e.g. X O X  CAN  become X X X
                      O X O              O O O
                      O O O              O O O    */
-            if (b00) 
+            if (b00)
 	    {
               if (b02) { x=0; y=-1; }
               else     { x=-1; y=0; }
@@ -1081,7 +1095,7 @@ uchar c,*p,*cp;
       n+=*(cp-*p++);
       n+=*(cp-*p++);
       n+=*(cp-*p);
-      p+=x_size-3; 
+      p+=x_size-3;
 
       n+=*(cp-*p++);
       n+=*(cp-*p++);
@@ -1149,15 +1163,15 @@ uchar c,*p,*cp;
           c=*(cp-*p++);x-=c;y-=3*c;
           c=*(cp-*p++);y-=3*c;
           c=*(cp-*p);x+=c;y-=3*c;
-          p+=x_size-3; 
-    
+          p+=x_size-3;
+
           c=*(cp-*p++);x-=2*c;y-=2*c;
           c=*(cp-*p++);x-=c;y-=2*c;
           c=*(cp-*p++);y-=2*c;
           c=*(cp-*p++);x+=c;y-=2*c;
           c=*(cp-*p);x+=2*c;y-=2*c;
           p+=x_size-5;
-    
+
           c=*(cp-*p++);x-=3*c;y-=c;
           c=*(cp-*p++);x-=2*c;y-=c;
           c=*(cp-*p++);x-=c;y-=c;
@@ -1175,7 +1189,7 @@ uchar c,*p,*cp;
           c=*(cp-*p++);x+=2*c;
           c=*(cp-*p);x+=3*c;
           p+=x_size-6;
-    
+
           c=*(cp-*p++);x-=3*c;y+=c;
           c=*(cp-*p++);x-=2*c;y+=c;
           c=*(cp-*p++);x-=c;y+=c;
@@ -1217,11 +1231,11 @@ uchar c,*p,*cp;
           else
             do_symmetry=1;
         }
-        else 
+        else
           do_symmetry=1;
 
         if (do_symmetry==1)
-	{ 
+	{
           p=in + (i-3)*x_size + j - 1;
           x=0; y=0; w=0;
 
@@ -1232,15 +1246,15 @@ uchar c,*p,*cp;
           c=*(cp-*p++);x+=c;y+=9*c;w+=3*c;
           c=*(cp-*p++);y+=9*c;
           c=*(cp-*p);x+=c;y+=9*c;w-=3*c;
-          p+=x_size-3; 
-  
+          p+=x_size-3;
+
           c=*(cp-*p++);x+=4*c;y+=4*c;w+=4*c;
           c=*(cp-*p++);x+=c;y+=4*c;w+=2*c;
           c=*(cp-*p++);y+=4*c;
           c=*(cp-*p++);x+=c;y+=4*c;w-=2*c;
           c=*(cp-*p);x+=4*c;y+=4*c;w-=4*c;
           p+=x_size-5;
-    
+
           c=*(cp-*p++);x+=9*c;y+=c;w+=3*c;
           c=*(cp-*p++);x+=4*c;y+=c;w+=2*c;
           c=*(cp-*p++);x+=c;y+=c;w+=c;
@@ -1258,7 +1272,7 @@ uchar c,*p,*cp;
           c=*(cp-*p++);x+=4*c;
           c=*(cp-*p);x+=9*c;
           p+=x_size-6;
-    
+
           c=*(cp-*p++);x+=9*c;y+=c;w-=3*c;
           c=*(cp-*p++);x+=4*c;y+=c;w-=2*c;
           c=*(cp-*p++);x+=c;y+=c;w-=c;
@@ -1267,7 +1281,7 @@ uchar c,*p,*cp;
           c=*(cp-*p++);x+=4*c;y+=c;w+=2*c;
           c=*(cp-*p);x+=9*c;y+=c;w+=3*c;
           p+=x_size-5;
- 
+
           c=*(cp-*p++);x+=4*c;y+=4*c;w-=4*c;
           c=*(cp-*p++);x+=c;y+=4*c;w-=2*c;
           c=*(cp-*p++);y+=4*c;
@@ -1289,7 +1303,7 @@ uchar c,*p,*cp;
                                 else { a=1; b=1; }}}
           if ( (m > r[(i+a)*x_size+j+b]) && (m >= r[(i-a)*x_size+j-b]) &&
                (m > r[(i+(2*a))*x_size+j+(2*b)]) && (m >= r[(i-(2*a))*x_size+j-(2*b)]) )
-            mid[i*x_size+j] = 2;	
+            mid[i*x_size+j] = 2;
         }
       }
     }
@@ -1320,7 +1334,7 @@ uchar c,*p,*cp;
       n+=*(cp-*p++);
       n+=*(cp-*p++);
       n+=*(cp-*p);
-      p+=x_size-2; 
+      p+=x_size-2;
 
       n+=*(cp-*p);
       p+=2;
@@ -1352,7 +1366,7 @@ uchar c,*p,*cp;
           c=*(cp-*p++);x-=c;y-=c;
           c=*(cp-*p++);y-=c;
           c=*(cp-*p);x+=c;y-=c;
-          p+=x_size-2; 
+          p+=x_size-2;
 
           c=*(cp-*p);x-=c;
           p+=2;
@@ -1387,7 +1401,7 @@ uchar c,*p,*cp;
           do_symmetry=1;
 
         if (do_symmetry==1)
-	{ 
+	{
           p=in + (i-1)*x_size + j - 1;
           x=0; y=0; w=0;
 
@@ -1398,7 +1412,7 @@ uchar c,*p,*cp;
           c=*(cp-*p++);x+=c;y+=c;w+=c;
           c=*(cp-*p++);y+=c;
           c=*(cp-*p);x+=c;y+=c;w-=c;
-          p+=x_size-2; 
+          p+=x_size-2;
 
           c=*(cp-*p);x+=c;
           p+=2;
@@ -1418,7 +1432,7 @@ uchar c,*p,*cp;
           else { /* diagonal */ if (w>0) { a=-1; b=1; }
                                 else { a=1; b=1; }}}
           if ( (m > r[(i+a)*x_size+j+b]) && (m >= r[(i-a)*x_size+j-b]) )
-            mid[i*x_size+j] = 2;	
+            mid[i*x_size+j] = 2;
         }
       }
     }
@@ -1485,7 +1499,7 @@ uchar c,*p,*cp;
         n+=*(cp-*p++);
         n+=*(cp-*p++);
         n+=*(cp-*p);
-        p+=x_size-3; 
+        p+=x_size-3;
 
         n+=*(cp-*p++);
         n+=*(cp-*p++);
@@ -1558,15 +1572,15 @@ uchar c,*p,*cp;
             c=*(cp-*p++);x-=c;y-=3*c;
             c=*(cp-*p++);y-=3*c;
             c=*(cp-*p);x+=c;y-=3*c;
-            p+=x_size-3; 
-    
+            p+=x_size-3;
+
             c=*(cp-*p++);x-=2*c;y-=2*c;
             c=*(cp-*p++);x-=c;y-=2*c;
             c=*(cp-*p++);y-=2*c;
             c=*(cp-*p++);x+=c;y-=2*c;
             c=*(cp-*p);x+=2*c;y-=2*c;
             p+=x_size-5;
-    
+
             c=*(cp-*p++);x-=3*c;y-=c;
             c=*(cp-*p++);x-=2*c;y-=c;
             c=*(cp-*p++);x-=c;y-=c;
@@ -1584,7 +1598,7 @@ uchar c,*p,*cp;
             c=*(cp-*p++);x+=2*c;
             c=*(cp-*p);x+=3*c;
             p+=x_size-6;
-    
+
             c=*(cp-*p++);x-=3*c;y+=c;
             c=*(cp-*p++);x-=2*c;y+=c;
             c=*(cp-*p++);x-=c;y+=c;
@@ -1666,7 +1680,7 @@ uchar c,*p,*cp;
 	      (x>=r[(i+1)*x_size+j-2]) )
 #endif
 #ifdef SEVEN_SUPP
-          if ( 
+          if (
                 (x>r[(i-3)*x_size+j-3]) &&
                 (x>r[(i-3)*x_size+j-2]) &&
                 (x>r[(i-3)*x_size+j-1]) &&
@@ -1867,7 +1881,7 @@ uchar *p,*cp;
 	      (x>=r[(i+1)*x_size+j-2]) )
 #endif
 #ifdef SEVEN_SUPP
-          if ( 
+          if (
                 (x>r[(i-3)*x_size+j-3]) &&
                 (x>r[(i-3)*x_size+j-2]) &&
                 (x>r[(i-3)*x_size+j-1]) &&
@@ -1959,6 +1973,7 @@ corner_list[n].info=7;
 /* }}} */
 /* {{{ main(argc, argv) */
 
+CORNER_LIST corner_list;
 main(argc, argv)
   int   argc;
   char  *argv [];
@@ -1982,14 +1997,17 @@ int    *r,
        max_no_edges=2650,
        mode = 0, i,
        x_size, y_size;
-CORNER_LIST corner_list;
 
 /* }}} */
 
   if (argc<3)
     usage();
 
+printf("before get_image\n");
+
   get_image(argv[1],&in,&x_size,&y_size);
+
+printf("look at options\n");
 
   /* {{{ look at options */
 
@@ -2036,7 +2054,7 @@ CORNER_LIST corner_list;
 	    exit(0);}
 	  bt=atoi(argv[argindex]);
 	  break;
-      }	    
+      }
       else
         usage();
     argindex++;
@@ -2044,7 +2062,7 @@ CORNER_LIST corner_list;
 
   if ( (principle==1) && (mode==0) )
     mode=1;
-
+printf("begin main processing\n");
 /* }}} */
   /* {{{ main processing */
 
@@ -2112,7 +2130,7 @@ CORNER_LIST corner_list;
       break;
 
 /* }}} */
-  }    
+  }
 
 /* }}} */
 
@@ -2120,3 +2138,28 @@ CORNER_LIST corner_list;
 }
 
 /* }}} */
+
+rtems_task Init(
+  rtems_task_argument ignored
+)
+{
+
+
+  char in_file[20] = "/input_small.pgm";
+
+  printf("Unpacking tar filesystem\nThis may take awhile...\n");
+  if(Untar_FromMemory(FileSystemImage, FileSystemImage_size) != 0) {
+    printf("Can't unpack tar filesystem\n");
+    exit(1);
+  }
+
+
+  printf( "\n\n*** susan_corners benchmark ***\n" );
+
+  char * argv[] = {"susan_corners","/input_small.pgm", "/susan_corners.pgm","-c"};
+  main(4,argv);
+
+  printf( "*** end of susan_corners benchmark ***\n" );
+  exit( 0 );
+}
+

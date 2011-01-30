@@ -4,7 +4,8 @@
 
 ACLOCAL_AMFLAGS = -I ../aclocal
 
-SUBDIRS = sha_small sha_large crc dijkstra susan_smoothing
+SUBDIRS = crc dijkstra sha_small sha_large \
+					susan_corners susan_edges susan_smoothing
 
 if MPTESTS
 endif
