@@ -68,6 +68,8 @@ fft_large/Makefile
 fft_small/Makefile
 fftinv_large/Makefile
 fftinv_small/Makefile
+patricia/Makefile
+qsort/Makefile
 sha_large/Makefile
 sha_small/Makefile
 susan_corners/Makefile
