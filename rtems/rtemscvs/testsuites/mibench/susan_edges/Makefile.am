@@ -15,6 +15,7 @@ include $(top_srcdir)/../automake/compile.am
 include $(top_srcdir)/../automake/leaf.am
 
 susan_edges_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
+susan_edges_LDLIBS = -lm
 
 LINK_OBJS = $(susan_edges_OBJECTS) $(susan_edges_LDADD)
 LINK_LIBS = $(susan_edges_LDLIBS)
