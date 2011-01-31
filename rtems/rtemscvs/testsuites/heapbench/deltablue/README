@@ -1,0 +1,66 @@
+initial version: Nov 27  1991
+
+This directory contains several implementations in different languages
+of the DeltaBlue incremental dataflow constraint solver described in
+UW CS TR 91-08-12 ``Using Constraints for User Interface
+Construction'' by John Maloney.  Each implementation is in a separate
+subdirectory, named with the name of the language: C-DEC, C-SUN4,
+Smalltalk, common-lisp.
+
+The C-DEC and C-SUN4 subdirectories contain almost-identical
+implementations of the algorithm in the C language, developed on a
+Decstation and a Sun 4.  There were some minor differences betweeen
+the C compilers on the two machines that required a few changes.  The
+major difference, however, is that the Sun 4 version preallocates and
+re-uses temporary storage needed by the benchmarks.  Similar changes
+could also be made to the Decstation version.
+
+==================================
+addition: Oct 18  1993
+
+Warning: It appears that the C implementations of DeltaBlue can loop
+infinitely when compiled on an IRIS (and perhaps other machines).  Here is
+the fix:
+
+>   I finally tracked down the bug in the DeltaBlue C code on the IRIS.
+>   
+>   Simple fix (though probably not best):
+>   
+>       In Constraint.h, change
+>          #define NO_METHOD        (-1)
+>       to
+>          #define NO_METHOD        (255)
+>   
+>   Problem with the code or the C compiler (I'm not sure which): the
+>   whichMethod field of a constraint is declared as a char.  When a
+>   constraint's selected method is removed with "overridden->whichMethod =
+>   NO_METHOD" this puts 255 into the char field.  Later, checking whether the
+>   constraint is satisfied via "#define SATISFIED(c) ((c)->whichMethod !=
+>   NO_METHOD)" returns nil, since -1 is not = 255.
+
+==================================
+addition: May 1, 2001
+
+From: Nathan Hurst <njh@csse.monash.edu.au>
+
+Only a triffle, but DeltaBlue won't work on many Linux machine due to the
+vague def. of char.  here is a simple fix (-fsigned-char will also fix,
+but that can upset linking etc):
+
+bash-2.04$ diff Constraints.h ../delta/Delta-C/Constraints.h
+13c13
+<   signed char		walkStrength;
+---
+>   char		walkStrength;
+21,25c21,25
+<   signed char		strength;
+<   signed char		whichMethod;
+<   signed char		methodCount;
+<   signed char		varCount;
+<   signed char		methodOuts[7];
+---
+>   char		strength;
+>   char		whichMethod;
+>   char		methodCount;
+>   char		varCount;
+>   char		methodOuts[7];
