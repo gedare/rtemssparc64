@@ -1,0 +1,42 @@
+This is the README file for boxed-sim, a program that simulates some number
+of polyhedral approximated balls bouncing around inside a box. It was
+orininally developed to examine the scalability of the particular
+rigid-body simulation algorithm that it uses, but has since seen some use
+as a heap-intensive program for other areas of systems research. I'm making
+it available as a general resource, although I make absolutely no claim that
+it is representative of anything other than rigid body simulation algorithms.
+
+To compile, type make. It doesn't use any particularly special include
+files or libraries. There might be some system calls that are not standard
+across all UNIX or Windows environments, but there ultimately isn't anything
+too strange in there.
+
+To run, type "boxed -n <num> -s <seed>", replacing <num> with the number of
+balls you wish to simulate, and <seed> with the random seed. You don't have
+to specify the random seed - it will default to the current time. It is
+there as a command line argument for repeatability. You must specify the
+number of balls. More balls means more memory and slower running times.
+
+The main() function is in boxed.c. There is some code in there for getting
+the output of the simulation (positions of all the balls every 30th of
+a second). It produces lots and lots of output. There is also the virtual
+run-time of the simulation, which can be adjusted to adjust the actual
+run-time of the algorithm.
+
+There are apparently some minor bugs, such as uninitialized data reads. If
+someone tells me precisely where they are then I will fix them. Someone
+might also like to run it through purify or another memory checking
+program.
+
+Since this program has been used for experiments with heap management and
+other memory related issues, I'll say a little about its memory usage.
+It allocates additional heap space as it needs it, but it never (?)
+frees heap memory. Instead, it maintains internal free lists for all
+the frequently allocated/deallocated structures, and allocates from
+these before going to the heap for more. Apart from that, I can't say
+much. It's memory usage has not been optimized in any way, which is maybe
+why people use it in experiments.
+
+Stephen Chenney
+University of Wisconsin at Madison
+schenney@acm.org
