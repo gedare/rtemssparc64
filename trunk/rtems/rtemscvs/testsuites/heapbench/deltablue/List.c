@@ -33,7 +33,7 @@ int initialCount;
     newList = (List) malloc(sizeof(ListStruct));
     if (newList == NULL) Error("out of memory");
     newList->slots = (Element *) malloc(initialCount * sizeof(Element));
-    if (newList->slots == NULL) Error("out of memory");
+    if (initialCount && newList->slots == NULL) Error("out of memory");
     newList->slotCount = initialCount;
     newList->first = 0;
     newList->last = -1;
@@ -43,8 +43,10 @@ int initialCount;
 void List_Destroy(list)
 register List list;
 {
-    if (list->slots == NULL) Error("bad ListStruct; already freed?");
-    free(list->slots);
+    if (list->slotCount && list->slots == NULL) 
+      Error("bad ListStruct; already freed?");
+    else
+      free(list->slots);
     list->slots = NULL;
     list->slotCount = 0;
     list->first = 0;

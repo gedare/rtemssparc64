@@ -417,10 +417,19 @@ int main(int argc, char *argv[])
     Benchmark(200);
     Benchmark(400);
     Benchmark(800);
+    /* GAB: Added the following Benchmark calls */
+    Benchmark(1000);
+    Benchmark(1200);
+    Benchmark(1400);
+    Benchmark(1600);
+    Benchmark(1800);
+    Benchmark(2000);
+    /* GAB: removed projection tests */
+    /*
     ProjectionTest(250);
     ProjectionTest(500);
     ProjectionTest(1000);
     ProjectionTest(2000);
-
+    */
     return 0;
 }
