@@ -351,7 +351,7 @@ int getint(fd)
   {
     if (c=='#')    /* if we're at a comment, read to end of line */
       //fgets(dummy,9000,fd);
-      while(c != "\n" && i<56)
+      while(c != '\n' && i<100)
       	{
 			c = getc(fd);
 			//printf("%d",i);
