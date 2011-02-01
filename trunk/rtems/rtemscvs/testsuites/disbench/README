@@ -1,0 +1,15 @@
+
+Code downloaded from:
+http://www.ics.uci.edu/~amrm/hdu/DIS_Stressmark/DIS_stressmark.html
+
+The Data-Intensive Systems Stressmark Suite
+
+See the file DIS_Stressmarks_v1_0.pdf for a description of the tests and 
+documentation ( http://www.aaec.com/projectweb/dis/DIS_Stressmarks_v1_0.pdf ).
+
+The directory ./inputs contains the updated inputs for Pointer, Update, 
+Field, and Transitive.  Matrix and Neighborhood use the original inputs.
+
+Original inputs are provided in each of the subdirectories.
+
+
