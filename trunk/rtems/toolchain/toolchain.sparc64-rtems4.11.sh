@@ -15,13 +15,18 @@ check_error() {
     fi
 }
 
-OPTIONDOWNLOAD=1
-OPTIONUNPACK=1
-OPTIONPATCH=1
+OPTIONDOWNLOAD=0
+OPTIONUNPACK=0
+OPTIONPATCH=0
 
 BINUTILS_VERSION="2.20.1"
-GCC_VERSION="4.5.0"
+GCC_VERSION="4.5.1"
 NEWLIB_VERSION="1.18.0"
+
+MYTOOLSVERSION="0.2"
+
+CROSS_PREFIX=/home/eugen/work/rtemssparc64/rtems/compilers/rtems11-sparc64-newlib-${NEWLIB_VERSION}-binutils-${BINUTILS_VERSION}-gcc-${GCC_VERSION}_${MYTOOLSVERSION}
+
 
 if [ -z "${CROSS_PREFIX}" ] ; then
     CROSS_PREFIX="/opt/rtems-4.11"
@@ -146,11 +151,15 @@ check_error $? "Error compiling/installing binutils."
 echo ">>> Compiling and installing GCC"
 cd ${GCCDIR}
 ln -s ../newlib-${NEWLIB_VERSION}/newlib .
+ln -s ../mpfr-3.0.0 mpfr
+ln -s ../mpc-0.8.2 mpc
+ln -s ../gmp-5.0.1 gmp
+
 cd "${OBJDIR}"
 check_error $? "Change directory failed."
 #"${GCCDIR}/configure" "--target=${TARGET}" "--prefix=${PREFIX}" --with-gnu-as --with-gnu-ld --with-newlib --disable-nls --disable-threads --enable-languages=c,c++ --disable-multilib --disable-libgcj --without-headers --disable-shared 
 #"${GCCDIR}/configure" "--target=${TARGET}" "--prefix=${PREFIX}" --with-gnu-as --with-gnu-ld --with-newlib --enable-threads --enable-languages=c --disable-libgcj --without-headers --disable-shared "--program-prefix=${PROGRAMPREFIX}-"
-"${GCCDIR}/configure" "--target=${TARGET}" "--prefix=${PREFIX}" --with-newlib --enable-threads --enable-languages=c,c++
+"${GCCDIR}/configure" "--target=${TARGET}" "--prefix=${PREFIX}" --with-newlib --enable-threads --enable-languages=c,c++ 
 check_error $? "Error configuring GCC."
 PATH="${PATH}:${PREFIX}/bin" 
 #make all-gcc install-gcc
