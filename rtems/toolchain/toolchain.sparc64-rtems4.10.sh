@@ -15,9 +15,9 @@ check_error() {
     fi
 }
 
-OPTIONDOWNLOAD=1
-OPTIONUNPACK=1
-OPTIONPATCH=1
+OPTIONDOWNLOAD=0
+OPTIONUNPACK=0
+OPTIONPATCH=0
 
 BINUTILS_VERSION="2.20"
 GCC_VERSION="4.4.2"
@@ -110,8 +110,8 @@ if [ "${OPTIONUNPACK}" = "0" ]
 then
 	echo ">>>>>> Skipping Unpacking tarballs"
 else
-	rm ${BINUTILSDIR} -rf 
-	tar -xvzf "${BINUTILS}"
+ 	rm ${BINUTILSDIR} -rf 
+  tar -xvzf "${BINUTILS}"
 	check_error $? "Error unpacking binutils."
 	rm ${GCCDIR} -rf
 	tar -xvjf "${GCC_CORE}"
