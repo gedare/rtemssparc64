@@ -1,0 +1,462 @@
+count: e5
+data: 4000 c4440 stack: 102290 10c2a0 
+entryAddress endAddress	name	totalHeap	totalPushes	count	LIST
+4418 461c	FFTTaskFunction	0	1	10	8 
+520c 52ac	test_switch	7	2	13	7 
+52ac 52f4	KillTaskFunction	0	1	5	4 
+58bc 5920	IsPowerOfTwo	0	1	5	4 
+5920 59d0	NumberOfBitsNeeded	0	1	4	3 
+59d0 5a50	ReverseBits	2	4096	19	16 
+5bd0 5c2c	CheckPointer	0	3	6	5 
+5c2c 62cc	fft_float	5	1	63	55 
+62cc 68bc	fft_main	5	1	76	65 
+6934 6a04	cos	0	8308	16	15 
+6a04 6ad8	sin	0	8124	9	9 
+6ad8 7014	__ieee754_rem_pio2	2	8286	32	28 
+7014 7378	__kernel_cos	2	8173	20	19 
+7378 7d8c	__kernel_rem_pio2	4	3714	40	35 
+7d8c 7f5c	__kernel_sin	0	8259	6	6 
+7f5c 7f8c	fabs	0	12672	2	2 
+7f8c 8198	floor	0	3714	5	5 
+8198 8378	scalbn	0	12999	8	8 
+8854 8910	Clock_driver_support_at_tick	40	20	3	3 
+89d8 8a20	Clock_isr	20	20	8	7 
+8f0c 8f44	console_write	0	6	11	9 
+9e08 9fa8	ofw_call	0	68	10	9 
+a3b0 a438	ofw_write	0	68	11	10 
+b1b8 b344	strncmp	6	2	10	6 
+18770 187ac	sun4v_console_poll_write	0	65	8	7 
+188a8 188dc	ofw	4169	68	28	22 
+1a1d4 1a1f8	_System_state_Get	0	6	3	3 
+1a1f8 1a224	_System_state_Is_up	0	6	3	2 
+1a224 1a38c	free	0	6	25	23 
+1a6f0 1a714	rtems_chain_get	0	6	5	4 
+1a738 1a7a0	malloc_is_system_state_OK	0	12	7	7 
+1a7c0 1a804	malloc_deferred_frees_process	0	6	5	5 
+1aa0c 1aa30	_System_state_Get	0	6	3	3 
+1aa30 1aa5c	_System_state_Is_up	0	6	3	2 
+1aa5c 1aa90	_Protected_heap_Allocate	0	6	8	6 
+1aa90 1ac50	malloc	0	6	30	28 
+1baf4 1bbb4	newlib_free_buffers	3	3	9	5 
+1bbb4 1bc8c	newlib_delete_hook	6	2	22	14 
+1dc28 1de88	rtems_termios_puts	195	65	13	9 
+1de88 1e1dc	oproc	120	60	25	21 
+1e1dc 1e3d8	rtems_termios_write	12	6	34	25 
+20cf8 20d18	_Watchdog_Tickle_ticks	0	20	4	4 
+20d48 20d6c	_Thread_Is_context_switch_necessary	0	20	3	3 
+20d6c 20ddc	rtems_clock_tick	0	20	11	11 
+22008 22048	rtems_object_get_name	4	4	7	5 
+22b2c 22b5c	_Attributes_Is_counting_semaphore	0	3	4	3 
+22b8c 22bb8	_CORE_mutex_Is_locked	3	3	5	3 
+22bb8 22be4	_CORE_mutex_Is_inherit_priority	3	3	5	3 
+22be4 22c10	_CORE_mutex_Is_priority_ceiling	3	3	5	3 
+22c10 22f28	_CORE_mutex_Seize_interrupt_trylock_body	15	3	28	18 
+23080 230cc	_Semaphore_Get_interrupt_disable	0	6	8	7 
+230cc 233c4	rtems_semaphore_obtain	6	6	23	19 
+233c4 23418	_Thread_Enable_dispatch	0	3	5	5 
+23418 23448	_Attributes_Is_counting_semaphore	0	3	4	3 
+23448 2348c	_Semaphore_Get	0	3	6	5 
+2348c 235b0	rtems_semaphore_release	3	3	14	12 
+235b0 235e8	_Semaphore_Translate_core_mutex_return_code	0	3	5	4 
+23c40 23c94	_Thread_Enable_dispatch	0	2	3	3 
+23c94 23cd4	_RTEMS_tasks_Free	2	2	24	18 
+23cd4 23dc8	rtems_task_delete	0	2	34	28 
+2403c 24090	_Thread_Enable_dispatch	0	2	5	5 
+24090 24160	rtems_task_start	0	2	13	12 
+249c4 249e0	_Chain_Tail	0	57	9	4 
+249e0 24a1c	_Chain_Is_tail	0	57	11	6 
+24b2c 24bbc	_API_extensions_Run_postswitch	0	19	13	13 
+24e0c 24e38	_CORE_mutex_Is_locked	14	14	7	2 
+24e38 24e64	_CORE_mutex_Is_inherit_priority	14	14	7	2 
+24e64 24e90	_CORE_mutex_Is_priority_ceiling	14	14	7	2 
+24e90 251a8	_CORE_mutex_Seize_interrupt_trylock_body	70	14	32	16 
+251a8 252bc	_API_Mutex_Lock	0	14	16	12 
+25304 25334	_Thread_Disable_dispatch	0	14	3	3 
+25334 25388	_Thread_Enable_dispatch	0	14	4	4 
+25388 253d0	_API_Mutex_Unlock	14	14	15	10 
+253d0 253ec	_Chain_Tail	0	2	4	2 
+253ec 25448	_Chain_Append_unprotected	4	2	10	5 
+25448 25490	_Chain_Append	0	2	9	7 
+25528 25544	_Chain_Tail	0	7	5	4 
+25544 25580	_Chain_Is_empty	0	6	6	5 
+255d4 25648	_Chain_Get	0	6	9	8 
+25a38 25a70	_Thread_Is_executing	0	3	5	4 
+25a70 25a9c	_CORE_mutex_Is_inherit_priority	17	17	10	3 
+25ac8 25d94	_CORE_mutex_Surrender	68	17	32	18 
+2625c 2632c	_TOD_Tickle_ticks	40	20	8	8 
+2635c 2639c	_Heap_Free_list_remove	12	6	11	3 
+263f8 26448	_Heap_Free_list_insert_after	12	6	11	3 
+26448 264a8	_Heap_Align_up	0	6	4	3 
+264e0 26504	_Heap_Block_at	0	24	7	4 
+26528 26544	_Heap_Alloc_area_of_block	0	6	3	2 
+26574 26594	_Heap_Block_size	24	36	18	6 
+26594 265cc	_Heap_Block_set_size	6	6	9	2 
+265cc 265fc	_Heap_Is_prev_used	12	12	8	2 
+265fc 26648	_Heap_Is_used	0	18	13	11 
+26648 26678	_Heap_Is_free	0	6	5	4 
+266b8 266e4	_Heap_Max	0	6	3	2 
+26a94 26c90	_Heap_Block_split	12	6	31	22 
+26c90 26ccc	_Heap_Block_allocate_from_begin	0	6	5	4 
+26e60 26fe8	_Heap_Block_allocate	6	6	23	16 
+273f0 27414	_Objects_Get_index	0	2	4	2 
+27414 27450	_Objects_Set_local_object	2	2	6	3 
+27450 274a0	_Objects_Invalidate_Id	2	2	10	6 
+274a0 274d4	_Objects_Close	0	2	8	6 
+27c38 27d78	_Objects_Free	0	2	8	6 
+27d78 27da0	_Objects_Get_API	6	10	10	4 
+27da0 27dc4	_Objects_Get_class	4	8	8	2 
+27dc4 27e30	_Objects_Get_information_id	6	10	14	8 
+27f80 28088	_Objects_Get_isr_disable	3	6	15	12 
+28088 280dc	_Thread_Enable_dispatch	0	2	4	4 
+280dc 28344	_Objects_Get_name_as_string	28	4	40	32 
+28344 28374	_Thread_Disable_dispatch	0	9	3	3 
+28374 283c8	_Thread_Enable_dispatch	0	2	4	4 
+283c8 28498	_Objects_Get	25	9	25	15 
+28790 287f0	_Objects_Namespace_remove	2	2	8	4 
+28a28 28aa0	_Protected_heap_Allocate_aligned_with_boundary	0	6	13	11 
+28aa0 28b10	_Protected_heap_Free	0	6	13	11 
+295e8 2960c	_Objects_Get_index	0	2	4	2 
+2960c 29648	_Objects_Set_local_object	2	2	6	3 
+29648 29698	_Objects_Invalidate_Id	2	2	10	6 
+29698 296c4	_Watchdog_Is_active	2	2	6	2 
+296c4 296fc	_Thread_Is_allocated_fp	0	2	5	3 
+29718 29748	_Thread_Disable_dispatch	0	2	3	3 
+29748 29778	_Thread_Unnest_dispatch	0	2	3	3 
+29778 298d4	_Thread_Close	6	2	38	28 
+29bfc 29ed0	_Thread_Dispatch	4	21	15	15 
+29ed0 29ef8	_Objects_Get_API	0	2	3	2 
+29ef8 29f1c	_Objects_Get_class	0	2	3	2 
+29f1c 29f68	_Objects_Is_api_valid	0	2	4	3 
+29f68 29fa0	_Objects_Are_ids_equal	0	4	4	2 
+29fa0 29fd0	_Thread_Disable_dispatch	0	2	3	3 
+29fd0 2a168	_Thread_Get	0	4	25	21 
+2a9a4 2aaa0	_Thread_queue_Dequeue	19	19	22	11 
+2aab8 2aad4	_Chain_Tail	0	74	10	5 
+2aad4 2ab10	_Chain_Is_empty	68	74	20	7 
+2abb0 2ae78	_Thread_queue_Dequeue_priority	0	17	15	10 
+2b78c 2b7c4	_States_Is_waiting_on_thread_queue	0	2	4	2 
+2b7c4 2b838	_Thread_queue_Extract_with_proxy	2	2	9	5 
+2bdb4 2bdcc	_Chain_Head	0	1	3	2 
+2bdcc 2bde8	_Chain_Tail	0	1	3	2 
+2bde8 2be1c	_Chain_Has_only_one_node	4	2	6	2 
+2be1c 2be64	_Chain_Initialize_empty	1	1	8	6 
+2be64 2bea4	_Chain_Extract_unprotected	3	1	6	2 
+2bea4 2bec4	_Priority_Bits_index	0	4	5	3 
+2bec4 2bf48	_Priority_bit_map_Remove	2	1	7	4 
+2bf48 2c088	_Priority_bit_map_Get_highest	0	2	12	12 
+2c0b8 2c0e4	_States_Is_ready	0	2	4	2 
+2c0e4 2c11c	_Thread_Is_executing	0	2	5	3 
+2c11c 2c154	_Thread_Is_heir	0	2	5	3 
+2c154 2c1a8	_Thread_Calculate_heir	2	2	8	6 
+2c1a8 2c34c	_Thread_Set_state	4	2	28	22 
+2c760 2c7f0	_Thread_Stack_Free	4	2	13	7 
+2c8c8 2c8f8	_States_Is_dormant	0	2	3	2 
+2c8f8 2c9b4	_Thread_Start	4	2	16	11 
+2c9e0 2cb44	_Thread_Tickle_timeslice	40	20	6	5 
+2cdac 2ce70	_Timespec_Add_to	136	48	24	10 
+2ce70 2cf2c	_Timespec_Subtract	4	2	8	4 
+2d134 2d150	_Chain_Tail	0	10	4	3 
+2d18c 2d1c8	_Chain_Is_tail	0	10	6	5 
+2d1c8 2d25c	_User_extensions_Thread_begin	8	2	16	11 
+2d4f0 2d508	_Chain_Head	0	10	4	2 
+2d508 2d544	_Chain_Is_head	0	10	6	4 
+2d544 2d5ec	_User_extensions_Thread_delete	8	2	19	13 
+2d5ec 2d608	_Chain_Tail	0	10	3	2 
+2d608 2d644	_Chain_Is_tail	0	10	5	4 
+2d644 2d6ec	_User_extensions_Thread_start	8	2	16	11 
+2d6ec 2d708	_Chain_Tail	6	6	4	2 
+2d708 2d744	_Chain_Is_tail	6	6	6	4 
+2d744 2d7d0	_User_extensions_Thread_switch	6	2	18	12 
+2df40 2df5c	_Chain_Tail	20	32	5	4 
+2df5c 2df98	_Chain_Is_empty	20	29	8	7 
+2dfb4 2e164	_Watchdog_Tickle	40	20	10	9 
+2e27c 2e2b0	_Workspace_Free	0	8	15	8 
+2e45c 2e4f8	_CPU_Context_switch	2	2	4	2 
+2e5e8 2e674	_CPU_Context_Initialize	4	2	7	2 
+3270c 328d0	write	6	6	22	18 
+32c38 32dac	_POSIX_signals_Post_switch_extension	38	19	20	9 
+33544 33600	_POSIX_Threads_Delete_extension	6	2	20	12 
+339bc 339e4	_RTEMS_tasks_Start_extension	4	2	7	2 
+339e4 33a60	_RTEMS_tasks_Delete_extension	4	2	11	5 
+33a60 33b1c	_RTEMS_tasks_Switch_extension	8	2	9	4 
+33b1c 33c40	_RTEMS_tasks_Post_switch_extension	38	19	19	8 
+34098 34160	_TOD_Get_uptime	8	2	14	10 
+34160 34178	_Heap_Free_list_head	0	6	3	2 
+34178 34190	_Heap_Free_list_tail	0	6	3	2 
+34190 341b8	_Heap_Free_list_first	0	6	6	5 
+341f0 3420c	_Heap_Alloc_area_of_block	0	6	3	2 
+34488 34698	_Heap_Allocate_aligned_with_boundary	14	6	24	16 
+34698 346b0	_Heap_Free_list_head	0	5	6	2 
+346b0 346f0	_Heap_Free_list_remove	7	3	12	4 
+346f0 3474c	_Heap_Free_list_replace	9	3	12	3 
+3474c 3479c	_Heap_Free_list_insert_after	9	5	16	4 
+3479c 347d4	_Heap_Align_down	0	14	8	2 
+347d4 347f8	_Heap_Block_at	0	37	11	6 
+347f8 34828	_Heap_Block_of_alloc_area	0	14	10	4 
+34828 34848	_Heap_Block_size	26	26	27	3 
+34848 34878	_Heap_Is_prev_used	44	44	32	5 
+34878 348d4	_Heap_Is_block_in_heap	0	32	12	6 
+348d4 34d1c	_Heap_Free	31	14	69	46 
+34d1c 34d88	_Objects_API_maximum_class	6	10	12	6 
+34d88 34e98	_Thread_Load_environment	6	2	12	5 
+34eb0 34ecc	_Chain_Tail	0	4	6	4 
+34ecc 34f08	_Chain_Is_empty	2	2	8	4 
+34fc8 350f4	_Thread_queue_Dequeue_fifo	0	2	10	8 
+3572c 35748	_Chain_Tail	0	2	3	2 
+35748 357a4	_Chain_Append_unprotected	6	2	10	4 
+357a4 357c4	_Priority_Bits_index	0	4	4	3 
+357c4 35828	_Priority_bit_map_Add	2	2	7	4 
+35828 35968	_Priority_bit_map_Get_highest	0	2	12	12 
+35968 359a0	_Thread_Is_executing	0	2	4	3 
+359a0 359f4	_Thread_Calculate_heir	2	2	7	6 
+359f4 35af4	_Thread_Ready	4	2	20	15 
+378d0 379a0	device_write	6	6	14	10 
+3839c 383b8	_Chain_Tail	0	4	6	4 
+383b8 383f4	_Chain_Is_empty	2	2	8	4 
+38434 38508	_POSIX_Threads_cancel_run	4	2	11	5 
+38508 38530	_Objects_Get_API	0	2	4	2 
+38530 38554	_Objects_Get_index	0	2	4	2 
+38554 38700	_POSIX_Keys_Run_destructors	2	2	12	8 
+3974c 39814	rtems_io_write	0	6	15	13 
+39880 398d4	_Thread_Enable_dispatch	0	2	5	5 
+398d4 39a94	_Thread_Handler	0	2	24	16 
+39ee8 39f08	atoi	0	2	5	5 
+3a3a8 3a3e4	fileno	6	3	9	5 
+3a7c8 3a808	fiprintf	14	3	53	37 
+3b3f0 3b4f8	memset	6	6	11	5 
+3b674 3b688	srand	1	1	4	3 
+3b688 3b6c8	rand	16393	16392	19	17 
+3c7f4 3ca04	_strtol_r	0	2	10	10 
+3ca04 3ca30	strtol	0	2	3	3 
+3f028 3f0f8	__sprint_r	12	3	35	21 
+4c7d0 4c814	_write_r	0	5	11	9 
+1844 
+8 c[4418,444c) c[3a7c8,3a7cc) c[4450,4490) c[62cc,62d0) c[4494,44bc) c[44c0,44c8) c[23cd4,23cd8) c[c1ab8,c1ac0) 
+7 c[520c,523c) c[22008,2200c) c[5240,5260) c[5264,5280) c[b1b8,b1bc) c[5284,52ac) c[2d78c,2d790) 
+4 s[10c1a0,10c1a8) c[52ac,52e0) c[3a7c8,3a7cc) c[c1ab8,c1ac0) 
+4 c[58bc,58d8) c[58e4,5900) c[590c,5920) c[5c78,5c7c) 
+3 c[5920,593c) c[5980,59d0) c[5d44,5d48) 
+16 c[59d0,5a50) c[5d78,5d7c) c[109c0,109e0) c[182cc,182dc) c[182e4,18438) c[89d8,89dc) c[1843c,184d8) c[18564,1858c) c[18618,18698) c[11b80,11ba0) c[c32c8,c32d0) c[c3be0,c3bf0) c[c3398,c33a0) c[c3190,c3198) c[c3c08,c3c10) c[c1850,c1858) 
+5 c[5bd0,5be8) c[5c24,5c2c) c[5d00,5d04) c[5d18,5d1c) c[5d30,5d34) 
+55 c[5c2c,5c78) c[58bc,58c0) c[5c7c,5c88) c[5ccc,5cdc) c[5ce8,5d00) c[5bd0,5bd4) c[5d04,5d18) c[5d1c,5d30) c[5d34,5d44) c[5920,5924) c[5d48,5d78) c[59d0,59d4) c[5d7c,5df0) c[5e00,5e60) c[5e7c,5eec) c[6a04,6a08) c[6adc,6b20) c[6b98,6ba8) c[6d28,6d30) c[7f5c,7f60) c[6d34,6e08) c[6e40,6e64) c[6e68,6f80) c[6e0c,6e3c) c[6cb8,6cc4) c[6a4c,6a78) c[7d8c,7d90) c[6a7c,6a80) c[6a9c,6aac) c[6ab0,6ab4) c[6934,6938) c[5ef0,5efc) c[5f00,61d4) c[6ac8,6ad0) c[6fac,7018) c[6ad4,6ad8) c[109c0,109e0) c[182cc,182dc) c[182e4,18438) c[89d8,89dc) c[1843c,184d8) c[18564,1858c) c[18618,18698) c[62c4,62cc) c[11b80,11ba0) c[6860,6864) c[bf0c8,bf0d0) c[bf0d8,bf0e0) c[bf174,bf184) c[c32c8,c32d0) c[c3be0,c3bf0) c[c3398,c33a0) c[c3190,c3198) c[c3c08,c3c10) c[c1850,c1858) 
+65 c[62cc,62f0) c[634c,635c) c[6398,63b0) c[39ee8,39eec) c[63b4,63d0) c[63d4,63e4) c[3b674,3b678) c[63e8,63fc) c[1aa90,1aa94) c[6400,641c) c[6420,643c) c[6440,645c) c[6460,647c) c[6480,649c) c[64a0,64cc) c[3b688,3b68c) c[64d0,6538) c[653c,65f0) c[65f4,6698) c[6a04,6a08) c[6798,6860) c[66b4,66c8) c[6934,6938) c[66cc,677c) c[6adc,6b14) c[6d28,6d30) c[7f5c,7f60) c[6d34,6de0) c[6e3c,6eec) c[6e0c,6e20) c[6cb8,6cc4) c[7014,7018) c[6a9c,6aac) c[7d8c,7d90) c[6ab0,6ad0) c[6a4c,6a80) c[109c0,109e0) c[182cc,182dc) c[182e4,18438) c[89d8,89dc) c[1843c,184d8) c[18564,1858c) c[18618,18698) c[11b80,11ba0) c[7378,737c) c[6c84,6c8c) c[6b90,6c80) c[6ad4,6ad8) c[5c2c,5c30) c[6864,686c) c[1a224,1a228) c[6870,6878) c[687c,6884) c[6888,6890) c[6894,689c) c[68a0,68a8) c[68ac,68bc) c[4490,4494) c[bf16c,bf174) c[c32c8,c32d0) c[c3be0,c3bf0) c[c3398,c33a0) c[c3190,c3198) c[c3c08,c3c10) c[c1850,c1858) 
+15 c[6934,696c) c[69a8,69bc) c[7014,7018) c[69c0,69d0) c[66c8,66cc) c[6974,697c) c[6ad8,6adc) c[6980,69a4) c[69d4,69e8) c[7d8c,7d90) c[69ec,6a04) c[11b80,11ba0) c[5eec,5ef0) c[5efc,5f00) c[c1850,c1858) 
+9 c[6a04,6a3c) c[6a80,6a94) c[7d8c,7d90) c[6a98,6a9c) c[67ac,67b0) c[6a44,6a4c) c[6ad8,6adc) c[5ec4,5ec8) c[5eac,5eb0) 
+28 c[6ad8,6b4c) c[7f5c,7f60) c[6d34,6e08) c[6e0c,6e3c) c[6cb8,6cc4) c[697c,6980) c[109c0,109e0) c[182cc,182dc) c[182e4,18438) c[89d8,89dc) c[1843c,184d8) c[18564,1858c) c[18618,18698) c[11b80,11ba0) c[7378,737c) c[6c84,6c8c) c[6e40,6e64) c[6e68,6f80) c[6cd8,6d28) c[6b78,6b98) c[6fac,6fc4) c[c32c8,c32d0) c[c3be0,c3bf0) c[c3398,c33a0) c[c3190,c3198) c[c3c08,c3c10) c[c1850,c1858) c[bf174,bf184) 
+19 c[7014,7060) c[69bc,69c0) c[6ad0,6ad4) c[69d0,69d4) c[7180,7378) c[6ac0,6ac4) c[69a4,69a8) c[109c0,109e0) c[182cc,182dc) c[182e4,18438) c[89d8,89dc) c[1843c,184d8) c[18564,1858c) c[18618,18698) c[c32c8,c32d0) c[c3be0,c3bf0) c[c3398,c33a0) c[c3190,c3198) c[c3c08,c3c10) 
+35 c[7378,7578) c[8198,819c) c[757c,759c) c[7f8c,7f90) c[75a0,75f0) c[7924,7944) c[7638,7670) c[7674,76c0) c[76f8,771c) c[7868,78b0) c[78b4,78d8) c[7c70,7c80) c[7c84,7cfc) c[7990,79a8) c[79ac,7a30) c[7a38,7b4c) c[6c80,6c84) c[7d50,7d6c) c[109c0,109e0) c[182cc,182dc) c[182e4,18438) c[89d8,89dc) c[1843c,184d8) c[18564,1858c) c[18618,18698) c[11b80,11ba0) c[bf320,bf350) c[bf1f0,bf208) c[bf2f8,bf318) c[c32c8,c32d0) c[c3be0,c3bf0) c[c3398,c33a0) c[c3190,c3198) c[c3c08,c3c10) c[c1850,c1858) 
+6 c[7d8c,7f5c) c[6a94,6a98) c[69e8,69ec) c[69fc,6a00) c[6aac,6ab0) c[6a78,6a7c) 
+2 c[7f5c,7f8c) c[6d30,6d34) 
+5 c[7f8c,8020) c[8134,8138) c[813c,8148) c[8024,8040) c[759c,75a0) 
+8 c[8198,81c4) c[82ac,82b4) c[8218,8228) c[822c,8260) c[7578,757c) c[78b0,78b4) c[7c80,7c84) c[79a8,79ac) 
+3 c[8854,8910) c[8a10,8a14) c[c2f68,c2f70) 
+7 c[89d8,8a10) c[8854,8858) c[8a14,8a18) c[20d6c,20d70) c[8a1c,8a20) c[18438,1843c) c[c2f70,c2f78) 
+9 s[10b480,10b498) s[10b408,10b478) c[8f0c,8f30) c[11384,113a0) c[1e1dc,1e1e0) c[8f34,8f44) c[11b80,11ba0) c[397f4,397f8) c[c1850,c1858) 
+9 s[10aff0,10b028) c[11384,113a0) c[9e08,9f10) c[188a8,188ac) c[9f14,9f20) c[9f6c,9fa8) c[11b80,11ba0) c[a424,a428) c[c1850,c1858) 
+10 s[10b0b0,10b0c0) c[a3b0,a424) c[11384,113a0) c[9e08,9e0c) c[a428,a42c) c[a430,a438) c[11b80,11ba0) c[1879c,187a0) c[c1850,c1858) c[c2f80,c2f88) 
+6 c[b1b8,b238) c[b244,b2d0) c[b2fc,b308) c[b334,b344) c[5280,5284) c[beec8,beed2) 
+7 s[10b160,10b178) c[18770,1879c) c[a3b0,a3b4) c[187a0,187ac) c[11b80,11ba0) c[1dc90,1dc94) c[c1850,c1858) 
+22 s[10aee8,10af20) s[10b2f0,10b2f8) c[188a8,188dc) c[11380,113a0) c[11b80,11ba0) c[9f10,9f14) c[109c0,109e0) c[182cc,182dc) c[182e4,18438) c[89d8,89dc) c[1843c,184d8) c[18564,1858c) c[18618,18698) c[c1850,c1858) c[c2f90,c2f98) c[bf770,bf77d) c[bff48,bff50) c[c32c8,c32d0) c[c3be0,c3bf0) c[c3398,c33a0) c[c3190,c3198) c[c3c08,c3c10) 
+3 c[1a1d4,1a1f8) c[1a264,1a268) c[c3538,c3540) 
+2 c[1a1f8,1a224) c[1a278,1a27c) 
+23 c[1a224,1a264) c[1a1d4,1a1d8) c[1a268,1a278) c[1a1f8,1a1fc) c[1a27c,1a294) c[1a738,1a73c) c[1a298,1a2ac) c[1a2c0,1a2d8) c[1a2f8,1a318) c[28aa0,28aa4) c[1a31c,1a330) c[1a384,1a38c) c[11b80,11ba0) c[686c,6870) c[6878,687c) c[6884,6888) c[6890,6894) c[689c,68a0) c[68a8,68ac) c[c3004,c300c) c[c22c8,c22d0) c[c1668,c1670) c[c1850,c1858) 
+4 c[1a6f0,1a704) c[255d4,255d8) c[1a708,1a714) c[1a7ec,1a7f0) 
+7 c[1a738,1a758) c[1a764,1a780) c[1a78c,1a7a0) c[1ab14,1ab18) c[1a294,1a298) c[c32c8,c32d0) c[c3be8,c3bf0) 
+5 c[1a7c0,1a7cc) c[1a7d8,1a7ec) c[1a6f0,1a6f4) c[1a7f0,1a804) c[1aac4,1aac8) 
+3 c[1aa0c,1aa30) c[1aae4,1aae8) c[c3538,c3540) 
+2 c[1aa30,1aa5c) c[1aaf8,1aafc) 
+6 c[1aa5c,1aa80) c[28a28,28a2c) c[1aa84,1aa90) c[11b80,11ba0) c[1ab58,1ab5c) c[c1850,c1858) 
+28 c[1aa90,1aac4) c[1a7c0,1a7c4) c[1aac8,1aad0) c[1aadc,1aae4) c[1aa0c,1aa10) c[1aae8,1aaf8) c[1aa30,1aa34) c[1aafc,1ab14) c[1a738,1a73c) c[1ab18,1ab2c) c[1ab38,1ab58) c[1aa5c,1aa60) c[1ab5c,1ab68) c[1abd0,1abe8) c[1ac08,1ac20) c[1ac40,1ac50) c[11b80,11ba0) c[63fc,6400) c[641c,6420) c[643c,6440) c[645c,6460) c[647c,6480) c[649c,64a0) c[c2ffc,c3004) c[c1668,c1670) c[c22d8,c22e0) c[c22c8,c22d0) c[c1850,c1858) 
+5 c[1baf4,1bb08) c[3a3a8,3a3ac) c[1bb0c,1bb3c) c[1bb9c,1bbb4) c[3af80,3af84) 
+14 c[1bbb4,1bbf0) c[1bbfc,1bc8c) c[2d5a8,2d5ac) c[3af2c,3af50) c[3a70c,3a71c) c[3af58,3af64) c[3af68,3af74) c[3af78,3af80) c[1baf4,1baf8) c[3af84,3af98) c[3af9c,3afac) c[2e27c,2e280) c[c1ab8,c1ac0) c[c0be8,c0bf0) 
+9 s[10b230,10b248) c[1dc28,1dc90) c[18770,18774) c[1dc94,1dc98) c[1de80,1de88) c[11b80,11ba0) c[1df5c,1df60) c[1e1c8,1e1cc) c[c1850,c1858) 
+21 s[10b2f0,10b300) s[10b278,10b2e8) c[1de88,1ded4) c[1dee8,1df20) c[1df28,1df5c) c[1dc28,1dc2c) c[1df60,1df6c) c[1e1b0,1e1c8) c[1e1cc,1e1d0) c[1e1d4,1e1dc) c[11b80,11ba0) c[1e330,1e334) c[1e0bc,1e0d4) c[1e134,1e188) c[c1850,c1858) c[c1ab0,c1ab8) c[c0b12,c0b1a) c[c0b08,c0b11) c[c0b49,c0b64) c[c0b2c,c0b35) c[c0b36,c0b3f) 
+25 s[10b3d0,10b3d8) s[10b578,10b580) s[10b588,10b5a0) s[10b230,10b238) s[10b358,10b3c8) c[1e1dc,1e21c) c[11384,113a0) c[230cc,230d0) c[1e220,1e234) c[1e240,1e26c) c[1e2cc,1e374) c[1de88,1de8c) c[1e3ac,1e3d8) c[2348c,23490) c[235b4,235e8) c[2354c,23558) c[235a0,235b0) c[11b80,11ba0) c[8f30,8f34) c[c1850,c1858) c[c2c98,c2ca0) c[4e470,4e48f) c[c0034,c003c) c[4e4b0,4e4d4) c[bef00,bef0e) 
+4 c[20cf8,20d10) c[2dfb4,2dfb8) c[20d14,20d18) c[20d80,20d84) 
+3 c[20d48,20d6c) c[20d90,20d94) c[c3c08,c3c10) 
+11 c[20d6c,20d78) c[2625c,26260) c[20d7c,20d80) c[20cf8,20cfc) c[20d84,20d88) c[2c9e0,2c9e4) c[20d8c,20d90) c[20d48,20d4c) c[20d94,20da4) c[20dc8,20ddc) c[8a18,8a1c) 
+5 c[22008,22038) c[280dc,280e0) c[2203c,22048) c[523c,5240) c[5260,5264) 
+3 s[10b230,10b238) c[22b2c,22b5c) c[23148,2314c) 
+3 s[10b170,10b178) c[22b8c,22bb8) c[22c44,22c48) 
+3 s[10b170,10b178) c[22bb8,22be4) c[22ca0,22ca4) 
+3 s[10b170,10b178) c[22be4,22c10) c[22d04,22d08) 
+18 s[10b230,10b240) s[10b268,10b270) c[22c10,22c44) c[22b8c,22b90) c[22c48,22ca0) c[22bb8,22bbc) c[22ca4,22cb4) c[22cdc,22d04) c[22be4,22be8) c[22d08,22d40) c[1870c,1871c) c[12000,12020) c[1869c,186b8) c[186d4,186f0) c[186f4,186fc) c[22f18,22f28) c[23208,2320c) c[c3bf0,c3bf8) 
+7 s[10b230,10b248) c[23080,230bc) c[11384,113a0) c[27f80,27f84) c[230c0,230cc) c[2310c,23110) c[c1850,c1858) 
+19 s[10b2f0,10b308) c[230cc,2310c) c[11384,113a0) c[23080,23084) c[23110,23120) c[23134,23148) c[22b2c,22b30) c[2314c,2317c) c[231f0,23208) c[22c10,22c14) c[2320c,23218) c[232ec,23310) c[235b0,235b4) c[23314,2331c) c[233b4,233c4) c[1e21c,1e220) c[c1850,c1858) c[c32c8,c32d0) c[c3bf0,c3bf8) 
+5 c[233c4,23410) c[29bfc,29c00) c[23414,23418) c[23538,2353c) c[c32c8,c32d0) 
+3 s[10b230,10b238) c[23418,23448) c[234f0,234f4) 
+5 s[10b230,10b240) c[23448,2347c) c[283c8,283cc) c[23480,2348c) c[234b4,234b8) 
+12 s[10b2f0,10b2f8) c[2348c,234b4) c[23448,2344c) c[234b8,234c8) c[234dc,234f0) c[23418,2341c) c[234f4,23528) c[25ac8,25acc) c[2352c,23538) c[233c4,233c8) c[2353c,2354c) c[235b0,235b4) 
+4 s[10b230,10b238) c[235b0,235e8) c[23310,23314) c[c0034,c003c) 
+3 c[23c40,23c8c) c[29bfc,29c00) c[c32c8,c32d0) 
+18 c[23c94,23ccc) c[27dc4,27dc8) c[27e34,27e5c) c[27e68,27e7c) c[34d1c,34d20) c[27e80,27e94) c[27ea0,27ebc) c[27ec8,27eec) c[27ef8,27f3c) c[27f48,27f64) c[27f70,27f80) c[27e20,27e30) c[27c38,27c3c) c[23cd0,23cd4) c[23d90,23d94) c[c31b8,c31c0) c[c3b88,c3b90) c[c3130,c3138) 
+28 c[23cd4,23cfc) c[251a8,251ac) c[23d00,23d18) c[29fd0,29fd4) c[23d1c,23d2c) c[23d5c,23d84) c[27dc4,27dc8) c[27e34,27e5c) c[27e68,27e7c) c[34d1c,34d20) c[27e80,27e94) c[27ea0,27ebc) c[27ec8,27eec) c[27ef8,27f3c) c[27f48,27f64) c[27f70,27f80) c[27e20,27e30) c[29778,2977c) c[23d88,23d90) c[23c94,23c98) c[23d94,23dac) c[25388,2538c) c[23db0,23db4) c[23c40,23c44) c[c33e8,c33f0) c[c31b8,c31c0) c[c3b88,c3b90) c[c3130,c3138) 
+5 c[2403c,24088) c[29bfc,29c00) c[2408c,24090) c[24138,2413c) c[c32c8,c32d0) 
+12 c[24090,240b0) c[240bc,240d8) c[29fd0,29fd4) c[240dc,240ec) c[24100,2411c) c[2c8f8,2c8fc) c[24120,24138) c[2403c,24040) c[2413c,24144) c[24150,24160) c[4c68,4c6c) c[4df0,4df4) 
+4 s[10be90,10be98) s[10af20,10af28) c[249c4,249e0) c[249f8,249fc) 
+6 s[10bf40,10bf50) s[10afd0,10afe0) c[249e0,249f8) c[249c4,249c8) c[249fc,24a1c) c[24b9c,24ba0) 
+13 c[24b2c,24b78) c[249e0,249e4) c[24ba0,24bbc) c[33b1c,33b20) c[24b7c,24b9c) c[32c38,32c3c) c[29ec8,29ecc) c[c3670,c3678) c[c1a18,c1a20) c[c3bf0,c3bf8) c[c1a00,c1a08) c[c1990,c1998) c[c1978,c1980) 
+2 c[24e0c,24e38) c[24ec4,24ec8) 
+2 c[24e38,24e64) c[24f20,24f24) 
+2 c[24e64,24e90) c[24f84,24f88) 
+16 c[24e90,24ec4) c[24e0c,24e10) c[24ec8,24f20) c[24e38,24e3c) c[24f24,24f34) c[24f5c,24f84) c[24e64,24e68) c[24f88,24fc0) c[1870c,1871c) c[12000,12020) c[1869c,186b8) c[186d4,186f0) c[186f4,186fc) c[25198,251a8) c[25224,25228) c[c3bf0,c3bf8) 
+12 c[251a8,251dc) c[12000,12020) c[1869c,186d4) c[186f4,1870c) c[25208,25224) c[24e90,24e94) c[25228,25234) c[252b4,252bc) c[23cfc,23d00) c[28a58,28a5c) c[28ac8,28acc) c[c32c8,c32d0) 
+3 c[25304,25334) c[25398,2539c) c[c32c8,c32d0) 
+4 c[25334,25388) c[253c8,253cc) c[29bfc,29c00) c[c32c8,c32d0) 
+10 c[25388,25398) c[25304,25308) c[2539c,253c0) c[25ac8,25acc) c[253c4,253c8) c[25334,25338) c[253cc,253d0) c[23dac,23db0) c[28a90,28a94) c[28afc,28b00) 
+2 c[253d0,253ec) c[25404,25408) 
+5 c[253ec,25404) c[253d0,253d4) c[25408,25448) c[25474,25478) c[c3158,c3160) 
+7 c[25448,25474) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[253ec,253f0) c[25478,25490) c[27c74,27c78) 
+4 c[25528,25544) c[11384,113a0) c[25560,25564) c[c1850,c1858) 
+5 c[25544,25560) c[25528,2552c) c[25564,25580) c[255fc,25600) c[c2fe0,c2fe8) 
+8 c[255d4,255fc) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[25544,25548) c[25600,25614) c[25624,25648) c[1a704,1a708) 
+4 s[10b160,10b168) c[25a38,25a70) c[25b0c,25b10) c[c3bf0,c3bf8) 
+3 s[10b160,10b168) c[25a70,25a9c) c[25b98,25b9c) 
+18 s[10b230,10b248) c[25ac8,25b0c) c[25b30,25b44) c[25b50,25b78) c[25b84,25b98) c[25a70,25a74) c[25b9c,25bac) c[25bd4,25be8) c[25bf4,25c38) c[25c58,25c78) c[2a9a4,2a9a8) c[25c7c,25c88) c[25d5c,25d70) c[25d80,25d94) c[253c0,253c4) c[25a38,25a3c) c[25b10,25b24) c[23528,2352c) 
+8 c[2625c,262d4) c[2cdac,2cdb0) c[262d8,262f0) c[262f4,26300) c[26314,2632c) c[20d78,20d7c) c[c17d4,c17dc) c[c34c4,c34cc) 
+3 c[2635c,2639c) c[26edc,26ee0) c[c2ee0,c2ef0) 
+3 c[263f8,26448) c[26bdc,26be0) c[c2ee0,c2ef0) 
+3 c[26448,2647c) c[26498,264a8) c[26b14,26b18) 
+4 c[264e0,26504) c[26624,26628) c[26b48,26b4c) c[26b70,26b74) 
+2 c[26528,26544) c[26e8c,26e90) 
+6 c[26574,26594) c[11384,113a0) c[26610,26614) c[26f18,26f1c) c[26ae4,26ae8) c[c1850,c1858) 
+2 c[26594,265cc) c[26b94,26b98) 
+2 c[265cc,265fc) c[26634,26638) 
+11 c[265fc,26610) c[11384,113a0) c[26574,26578) c[26614,26624) c[264e0,264e4) c[26628,26634) c[265cc,265d0) c[26638,26648) c[2665c,26660) c[26bb8,26bbc) c[c1850,c1858) 
+4 c[26648,2665c) c[265fc,26600) c[26660,26678) c[26eb0,26eb4) 
+2 c[266b8,266e4) c[26af8,26afc) 
+22 c[26a94,26ae4) c[26574,26578) c[26ae8,26af8) c[266b8,266bc) c[26afc,26b14) c[26448,2644c) c[26b18,26b48) c[264e0,264e4) c[26b4c,26b70) c[26b74,26b94) c[26594,26598) c[26b98,26bb8) c[265fc,26600) c[26bbc,26bdc) c[263f8,263fc) c[26be0,26bf8) c[26c3c,26c74) c[26c88,26c90) c[26cbc,26cc0) c[c2ef0,c2f00) c[c2f30,c2f38) c[c2f40,c2f48) 
+4 c[26c90,26cbc) c[26a94,26a98) c[26cc0,26ccc) c[26f80,26f84) 
+16 c[26e60,26e8c) c[26528,2652c) c[26e90,26eb0) c[26648,2664c) c[26eb4,26edc) c[2635c,26360) c[26ee0,26f18) c[26574,26578) c[26f1c,26f30) c[26f40,26f80) c[26c90,26c94) c[26f84,26f8c) c[26fac,26fe8) c[34660,34664) c[c2f30,c2f50) c[c2ef0,c2ef8) 
+2 c[273f0,27414) c[27474,27478) 
+3 c[27414,27450) c[27498,2749c) c[c3140,c3148) 
+6 c[27450,27474) c[273f0,273f4) c[27478,27498) c[27414,27418) c[2749c,274a0) c[274bc,274c0) 
+6 c[274a0,274bc) c[27450,27454) c[274c0,274cc) c[28790,28794) c[274d0,274d4) c[297c8,297cc) 
+6 c[27c38,27c74) c[25448,2544c) c[27c78,27c8c) c[27d70,27d78) c[23ccc,23cd0) c[c3132,c313c) 
+4 c[27d78,27da0) c[27de4,27de8) c[11384,113a0) c[c1850,c1858) 
+2 c[27da0,27dc4) c[27e00,27e04) 
+8 c[27dc4,27de4) c[27d78,27d7c) c[27de8,27e00) c[27da0,27da4) c[27e04,27e20) c[27e30,27e34) c[11384,113a0) c[c1850,c1858) 
+12 s[10b180,10b1a0) s[10b268,10b274) c[27f80,2802c) c[11384,113a0) c[12000,12020) c[1869c,186d4) c[186f4,1870c) c[2807c,28088) c[230bc,230c0) c[c1850,c1858) c[c30c0,c30d0) c[c30d8,c30e0) 
+4 c[28088,280cc) c[280d4,280dc) c[28328,2832c) c[c32c8,c32d0) 
+32 c[280dc,280fc) c[28108,28114) c[28120,28130) c[2814c,28178) c[27dc4,27dc8) c[27e34,27e5c) c[27e68,27e7c) c[34d1c,34d20) c[27e80,27e94) c[27ea0,27ebc) c[27ec8,27eec) c[27ef8,27f3c) c[27f48,27f64) c[27f70,27f80) c[27e20,27e30) c[28184,281a4) c[283c8,283cc) c[281a8,281e8) c[28338,28344) c[22038,2203c) c[281fc,282b0) c[282b4,28328) c[28088,2808c) c[2832c,28334) c[c31b8,c31c0) c[c3b88,c3b90) c[c3130,c3138) c[c3178,c3180) c[c1ab0,c1ab8) c[c0b19,c0b21) c[c0b08,c0b10) c[c0b29,c0b3c) 
+3 c[28344,28374) c[2841c,28420) c[c32c8,c32d0) 
+4 c[28374,283b8) c[283c0,283c8) c[28464,28468) c[c32c8,c32d0) 
+15 s[10b180,10b198) s[10b264,10b26c) c[283c8,2841c) c[28344,28348) c[28420,28464) c[2848c,28498) c[2a150,2a154) c[28374,28378) c[28468,2847c) c[281a4,281a8) c[2347c,23480) c[c3128,c3138) c[c3140,c3148) c[c30c0,c30d0) c[c30d8,c30e0) 
+4 c[28790,287b4) c[287d8,287f0) c[274cc,274d0) c[c3178,c3180) 
+11 c[28a28,28a58) c[251a8,251ac) c[28a5c,28a70) c[34488,3448c) c[28a74,28a90) c[25388,2538c) c[28a94,28aa0) c[11b80,11ba0) c[1aa80,1aa84) c[c33e8,c33f0) c[c1850,c1858) 
+11 c[28aa0,28ac8) c[251a8,251ac) c[28acc,28ad8) c[348d4,348d8) c[28adc,28afc) c[25388,2538c) c[28b00,28b10) c[11b80,11ba0) c[1a318,1a31c) c[c33e8,c33f0) c[c1850,c1858) 
+2 c[295e8,2960c) c[2966c,29670) 
+3 c[2960c,29648) c[29690,29694) c[c3140,c3148) 
+6 c[29648,2966c) c[295e8,295ec) c[29670,29690) c[2960c,29610) c[29694,29698) c[29798,2979c) 
+2 c[29698,296c4) c[29810,29814) 
+3 c[296c4,296fc) c[29844,29848) c[c33b0,c33b8) 
+3 c[29718,29748) c[297b4,297b8) c[c32c8,c32d0) 
+3 c[29748,29778) c[297a0,297a4) c[c32c8,c32d0) 
+28 c[29778,29798) c[29648,2964c) c[2979c,297a0) c[29748,2974c) c[297a4,297ac) c[2d544,2d548) c[297b0,297b4) c[29718,2971c) c[297b8,297c8) c[274a0,274a4) c[297cc,297d8) c[2c1a8,2c1ac) c[297dc,297e4) c[2b7c4,2b7c8) c[297e8,29810) c[29698,2969c) c[29814,29824) c[29838,29844) c[296c4,296c8) c[29848,29858) c[29860,29878) c[2988c,29898) c[2c760,2c764) c[2989c,298d4) c[11b80,11ba0) c[23d84,23d88) c[2e27c,2e280) c[c1850,c1858) 
+15 c[29bfc,29c78) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[29e70,29e98) c[29e9c,29ec8) c[24b2c,24b30) c[29ecc,29ed0) c[24088,2408c) c[398cc,398d0) c[23410,23414) c[25380,25384) c[c3bf0,c3c00) c[c3c08,c3c10) c[c32c8,c32d0) 
+2 c[29ed0,29ef8) c[2a050,2a054) 
+2 c[29ef8,29f1c) c[2a0ac,2a0b0) 
+3 c[29f1c,29f48) c[29f54,29f68) c[2a06c,2a070) 
+2 c[29f68,29fa0) c[29ffc,2a000) 
+3 c[29fa0,29fd0) c[2a018,2a01c) c[c32c8,c32d0) 
+21 c[29fd0,29ffc) c[29f68,29f6c) c[2a000,2a018) c[29ed0,29ed4) c[2a054,2a06c) c[29f1c,29f20) c[2a070,2a084) c[2a098,2a0ac) c[29ef8,29efc) c[2a0b0,2a0c4) c[2a0d8,2a120) c[2a134,2a150) c[283c8,283cc) c[2a154,2a168) c[240d8,240dc) c[29fa0,29fa4) c[2a01c,2a03c) c[23d18,23d1c) c[c31b8,c31c0) c[c3b88,c3b90) c[c3bf0,c3bf8) 
+11 s[10b160,10b168) c[2a9a4,2aa10) c[34fc8,34fcc) c[2aa14,2aa5c) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[2aa7c,2aaa0) c[335ac,335b0) c[2abb0,2abb4) c[25c78,25c7c) 
+5 s[10aee0,10aee8) c[2aab8,2aad4) c[2aaf0,2aaf4) c[11384,113a0) c[c1850,c1858) 
+7 s[10af90,10af98) c[2aad4,2aaf0) c[2aab8,2aabc) c[2aaf4,2ab10) c[2ac00,2ac04) c[11384,113a0) c[c1850,c1858) 
+10 s[10b090,10b098) c[2abb0,2ac00) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[2aad4,2aad8) c[2ac04,2ac18) c[2aca4,2ace0) c[2ae6c,2ae78) c[2aa10,2aa14) 
+2 c[2b78c,2b7c4) c[2b7ec,2b7f0) 
+5 c[2b7c4,2b7ec) c[2b78c,2b790) c[2b7f0,2b800) c[2b824,2b838) c[297e4,297e8) 
+2 c[2bdb4,2bdcc) c[2be50,2be54) 
+2 c[2bdcc,2bde8) c[2be30,2be34) 
+2 c[2bde8,2be1c) c[2c26c,2c270) 
+6 c[2be1c,2be30) c[2bdcc,2bdd0) c[2be34,2be50) c[2bdb4,2bdb8) c[2be54,2be64) c[2c28c,2c290) 
+2 c[2be64,2bea4) c[2c2b8,2c2bc) 
+3 c[2bea4,2bec4) c[2c04c,2c050) c[2c070,2c074) 
+4 c[2bec4,2bf10) c[2bf40,2bf48) c[2c2a0,2c2a4) c[c34a0,c34a8) 
+12 c[2bf48,2bf7c) c[2bf9c,2bff8) c[2c018,2c04c) c[2bea4,2bea8) c[2c050,2c070) c[2c074,2c088) c[2c170,2c174) c[c33e0,c33e8) c[c00e8,c00f0) c[c34a0,c34a8) c[c00c8,c00d0) c[c0088,c0090) 
+2 c[2c0b8,2c0e4) c[2c1ec,2c1f0) 
+3 c[2c0e4,2c11c) c[2c308,2c30c) c[c3bf0,c3bf8) 
+3 c[2c11c,2c154) c[2c2e0,2c2e4) c[c3bf8,c3c00) 
+6 c[2c154,2c170) c[2bf48,2bf4c) c[2c174,2c1a8) c[2c2fc,2c300) c[c3198,c31a0) c[c3bf8,c3c00) 
+22 c[2c1a8,2c1ec) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[2c0b8,2c0bc) c[2c1f0,2c204) c[2c254,2c26c) c[2bde8,2bdec) c[2c270,2c28c) c[2be64,2be68) c[2c2a4,2c2e0) c[2c11c,2c120) c[2c2e4,2c2fc) c[2c154,2c158) c[2c300,2c308) c[2c0e4,2c0e8) c[2c30c,2c34c) c[297d8,297dc) c[2be1c,2be20) c[2c290,2c2a0) c[2bec4,2bec8) c[c3c08,c3c10) 
+7 c[2c760,2c79c) c[2c7c8,2c7dc) c[2e27c,2e280) c[2c7e0,2c7e4) c[2c7e8,2c7f0) c[29898,2989c) c[c17f8,c1800) 
+2 c[2c8c8,2c8f8) c[2c92c,2c930) 
+11 c[2c8f8,2c92c) c[2c8c8,2c8cc) c[2c930,2c97c) c[34d88,34d8c) c[2c980,2c988) c[359f4,359f8) c[2c98c,2c994) c[2d644,2d648) c[2c998,2c9a0) c[2c9a4,2c9b4) c[2411c,24120) 
+5 c[2c9e0,2ca14) c[2cb14,2cb20) c[2cb3c,2cb44) c[20d88,20d8c) c[c3bf0,c3bf8) 
+10 c[2cdac,2ce04) c[2ce40,2ce70) c[34144,34148) c[29d1c,29d20) c[262d4,262d8) c[262f0,262f4) c[11384,113a0) c[c33a0,c33b0) c[c33c0,c33d0) c[c1850,c1858) 
+4 c[2ce70,2ce9c) c[2ceec,2cf2c) c[29d00,29d04) c[c33f8,c3408) 
+3 s[10c030,10c038) c[2d134,2d150) c[2d1a4,2d1a8) 
+5 s[10c0e0,10c0f0) c[2d18c,2d1a4) c[2d134,2d138) c[2d1a8,2d1c8) c[2d23c,2d240) 
+11 s[10c1a0,10c1a8) c[2d1c8,2d204) c[2d18c,2d190) c[2d240,2d25c) c[2d218,2d23c) c[399c8,399cc) c[c3658,c3660) c[c1a70,c1a78) c[c1a20,c1a28) c[c19e8,c19f0) c[c1998,c19a0) 
+2 c[2d4f0,2d508) c[2d520,2d524) 
+4 c[2d508,2d520) c[2d4f0,2d4f4) c[2d524,2d544) c[2d5cc,2d5d0) 
+13 c[2d508,2d50c) c[2d5d0,2d5ec) c[33544,33548) c[2d544,2d5cc) c[339e4,339e8) c[1bbb4,1bbb8) c[297ac,297b0) c[c3668,c3670) c[c19d8,c19e0) c[c3bf0,c3bf8) c[c19a0,c19a8) c[c1a60,c1a68) c[c1a28,c1a30) 
+2 c[2d5ec,2d608) c[2d620,2d624) 
+4 c[2d608,2d620) c[2d5ec,2d5f0) c[2d624,2d644) c[2d6cc,2d6d0) 
+11 c[2d608,2d60c) c[2d6d0,2d6ec) c[2d644,2d6cc) c[339bc,339c0) c[2c994,2c998) c[c3658,c3660) c[c1a50,c1a58) c[c3bf0,c3bf8) c[c1a20,c1a28) c[c19c8,c19d0) c[c1998,c19a0) 
+2 c[2d6ec,2d708) c[2d720,2d724) 
+4 c[2d708,2d720) c[2d6ec,2d6f0) c[2d724,2d744) c[2d7b0,2d7b4) 
+12 c[2d744,2d78c) c[2d708,2d70c) c[2d7b4,2d7d0) c[520c,5210) c[2d790,2d7b0) c[33a60,33a64) c[11b80,11ba0) c[29d98,29d9c) c[c32d0,c32d8) c[c1a40,c1a48) c[c1a30,c1a38) c[c1850,c1858) 
+4 c[2df40,2df5c) c[11384,113a0) c[2df78,2df7c) c[c1850,c1858) 
+7 c[2df5c,2df78) c[11384,113a0) c[2df40,2df44) c[2df7c,2df98) c[2dfd8,2dfdc) c[c1850,c1858) c[c3420,c3428) 
+9 c[2dfb4,2dfd8) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[2df5c,2df60) c[2dfdc,2dfec) c[2e138,2e144) c[2e148,2e164) c[20d10,20d14) 
+8 c[2e27c,2e29c) c[348d4,348d8) c[2e2a0,2e2b0) c[335f8,335fc) c[33a50,33a54) c[2c7dc,2c7e0) c[1bc58,1bc5c) c[298c4,298c8) 
+2 c[2e45c,2e4fc) c[c3190,c3198) 
+2 c[2e5e8,2e674) c[34e90,34e94) 
+18 s[10b6f0,10b708) s[10b678,10b6e8) c[3270c,32740) c[11384,113a0) c[32760,327bc) c[327c0,327dc) c[327fc,32808) c[32828,32834) c[32840,32858) c[32878,32898) c[378d0,378d4) c[3289c,328d0) c[11b80,11ba0) c[4c804,4c808) c[c1850,c1858) c[c1658,c1660) c[c2fc8,c2fd0) c[c0308,c0310) 
+9 s[10bf40,10bf48) s[10afd0,10afd8) c[32c38,32cbc) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[32da4,32dac) c[24b78,24b7c) c[c3fd8,c3fe0) 
+12 c[33544,33568) c[38434,38438) c[3356c,33574) c[38554,38558) c[33578,33588) c[33598,335ac) c[2a9a4,2a9a8) c[335b0,335d0) c[335e4,335f8) c[2e27c,2e280) c[335fc,33600) c[2d5a8,2d5ac) 
+2 c[339bc,339e4) c[2d6a8,2d6ac) 
+5 c[339e4,33a0c) c[33a30,33a50) c[2e27c,2e280) c[33a54,33a60) c[2d5a8,2d5ac) 
+4 c[33a60,33a80) c[33ab4,33ad4) c[33b08,33b1c) c[2d78c,2d790) 
+8 s[10bf40,10bf48) s[10afd0,10afd8) c[33b1c,33b90) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[33c34,33c40) c[24b78,24b7c) 
+10 c[34098,340e8) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[3410c,34144) c[2cdac,2cdb0) c[34148,34160) c[29cdc,29ce0) c[c33a0,c33b0) c[c3540,c3548) 
+2 c[34160,34178) c[341a4,341a8) 
+2 c[34178,34190) c[3453c,34540) 
+5 c[34190,341a4) c[34160,34164) c[341a8,341b8) c[3454c,34550) c[c2ee0,c2ee8) 
+2 c[341f0,3420c) c[34588,3458c) 
+16 c[34488,344e4) c[344f0,344fc) c[34530,3453c) c[34178,3417c) c[34540,3454c) c[34190,34194) c[34550,34588) c[345b4,345ec) c[341f0,341f4) c[3458c,34594) c[345f4,34660) c[26e60,26e64) c[34664,34698) c[28a70,28a74) c[c2ef0,c2ef8) c[c2f4c,c2f5c) 
+2 c[34698,346b0) c[34c44,34c48) 
+4 c[346b0,346f0) c[34b38,34b3c) c[c2ee8,c2ef0) c[c3318,c3320) 
+3 c[346f0,3474c) c[34c00,34c04) c[c3318,c3320) 
+4 c[3474c,3479c) c[34c58,34c5c) c[c3318,c3320) c[c2ee0,c2ee8) 
+2 c[3479c,347d4) c[34814,34818) 
+6 c[347d4,347f8) c[34974,34978) c[34a14,34a18) c[34c20,34c24) c[34a98,34a9c) c[34b6c,34b70) 
+4 c[347f8,34814) c[3479c,347a0) c[34818,34828) c[3490c,34910) 
+3 c[34828,34848) c[34960,34964) c[349e8,349ec) 
+5 c[34848,34878) c[349b8,349bc) c[34a24,34a28) c[34a5c,34a60) c[34adc,34ae0) 
+6 c[34878,348d4) c[34930,34934) c[34988,3498c) c[34aac,34ab0) c[c3348,c3358) c[c2f10,c2f20) 
+46 c[348d4,3490c) c[347f8,347fc) c[34910,34930) c[34878,3487c) c[34934,34960) c[34828,3482c) c[34964,34974) c[347d4,347d8) c[34978,34988) c[3498c,349a0) c[349ac,349b8) c[34848,3484c) c[349bc,349d0) c[349dc,349e8) c[349ec,34a14) c[34a18,34a24) c[34a28,34a5c) c[34a60,34a98) c[34698,3469c) c[34c48,34c58) c[3474c,34750) c[34c5c,34d1c) c[2e29c,2e2a0) c[346f0,346f4) c[34c04,34c20) c[34c24,34c44) c[28ad8,28adc) c[34a9c,34aac) c[34ab0,34ac4) c[34ad0,34adc) c[34ae0,34af4) c[34b00,34b38) c[346b0,346b4) c[34b3c,34b6c) c[34b70,34b84) c[34bcc,34c00) c[c3328,c3330) c[c3350,c3358) c[c3378,c3388) c[c3390,c3398) c[c3368,c3370) c[c2ef0,c2ef8) c[c2f18,c2f20) c[c2f40,c2f50) c[c2f58,c2f60) c[c2f30,c2f38) 
+6 c[34d1c,34d38) c[34d5c,34d68) c[34d78,34d88) c[27e7c,27e80) c[11384,113a0) c[c1850,c1858) 
+5 c[34d88,34da0) c[34df4,34e90) c[2e5e8,2e5ec) c[34e94,34e98) c[2c97c,2c980) 
+4 c[34eb0,34ecc) c[11384,113a0) c[34ee8,34eec) c[c1850,c1858) 
+4 c[34ecc,34ee8) c[34eb0,34eb4) c[34eec,34f08) c[34ff0,34ff4) 
+8 c[34fc8,34ff0) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[34ecc,34ed0) c[34ff4,35008) c[350d0,350f4) c[2aa10,2aa14) 
+2 c[3572c,35748) c[35760,35764) 
+4 c[35748,35760) c[3572c,35730) c[35764,357a4) c[35a44,35a48) 
+3 c[357a4,357c4) c[3592c,35930) c[35950,35954) 
+4 c[357c4,35828) c[35a28,35a2c) c[c34a0,c34a8) c[c33e0,c33e8) 
+12 c[35828,3585c) c[3587c,358d8) c[358f8,3592c) c[357a4,357a8) c[35930,35950) c[35954,35968) c[359bc,359c0) c[c33e0,c33e8) c[c00e8,c00f0) c[c34a0,c34a8) c[c00a8,c00b0) c[c00c8,c00d0) 
+3 c[35968,359a0) c[35a88,35a8c) c[c3bf0,c3bf8) 
+6 c[359a0,359bc) c[35828,3582c) c[359c0,359f4) c[35a68,35a6c) c[c3198,c31a0) c[c3bf8,c3c00) 
+15 c[359f4,35a28) c[12000,12020) c[1869c,186f0) c[186f4,1871c) c[357c4,357c8) c[35a2c,35a44) c[35748,3574c) c[35a48,35a68) c[359a0,359a4) c[35a6c,35a88) c[35968,3596c) c[35a8c,35aa0) c[35ad8,35af4) c[2c988,2c98c) c[c3bf8,c3c00) 
+10 s[10b630,10b648) s[10b5b8,10b628) c[378d0,37950) c[11384,113a0) c[3974c,39750) c[37954,37968) c[3798c,379a0) c[11b80,11ba0) c[32898,3289c) c[c1850,c1858) 
+4 c[3839c,383b8) c[11384,113a0) c[383d4,383d8) c[c1850,c1858) 
+4 c[383b8,383d4) c[3839c,383a0) c[383d8,383f4) c[384e8,384ec) 
+5 c[38434,38468) c[384dc,384e8) c[383b8,383bc) c[384ec,38508) c[33568,3356c) 
+2 c[38508,38530) c[38594,38598) 
+2 c[38530,38554) c[38574,38578) 
+8 c[38554,38574) c[38530,38534) c[38578,38594) c[38508,3850c) c[38598,385d8) c[386bc,38700) c[33574,33578) c[c39f0,c39f8) 
+13 s[10b540,10b558) s[10b4c8,10b538) c[3974c,39784) c[11384,113a0) c[39790,397f4) c[8f0c,8f10) c[397f8,39800) c[39804,39814) c[11b80,11ba0) c[37950,37954) c[c1850,c1858) c[c4328,c4338) c[c16c0,c16c8) 
+5 c[39880,398cc) c[29bfc,29c00) c[398d0,398d4) c[399d0,399d4) c[c32c8,c32d0) 
+16 c[398d4,3994c) c[1870c,1871c) c[12000,12020) c[1869c,186b8) c[186d4,186f0) c[186f4,186fc) c[399bc,399c8) c[2d1c8,2d1cc) c[399cc,399d0) c[39880,39884) c[399d4,399e8) c[399f0,39a20) c[4418,441c) c[52ac,52b0) c[c3bf0,c3bf8) c[c2e94,c2e9c) 
+5 c[39ee8,39efc) c[3ca04,3ca08) c[39f00,39f08) c[63b0,63b4) c[63d0,63d4) 
+5 c[3a3a8,3a3bc) c[3a3c0,3a3d0) c[3a3dc,3a3e4) c[1bb08,1bb0c) c[c1ab8,c1ac0) 
+37 s[10c100,10c120) s[10c048,10c050) s[10bfb8,10c028) s[10c078,10c0e8) c[3a7c8,3a808) c[3fe2c,3fe3c) c[3a488,3a508) c[3b3f0,3b3f4) c[3a50c,3a5b8) c[3a5bc,3a608) c[3a60c,3a624) c[40128,4014c) c[44318,4432c) c[44330,44358) c[44418,4442c) c[4435c,44370) c[443d4,443e0) c[443e4,44414) c[3b104,3b118) c[3b224,3b240) c[44374,44380) c[44384,44398) c[3f0f8,3f170) c[3f174,3f2a8) c[3ffcc,3ffec) c[3f028,3f02c) c[3fff0,3fff4) c[3fc10,3fc20) c[11b80,11ba0) c[444c,4450) c[44bc,44c0) c[52e0,52e4) c[c1ab8,c1ac0) c[4e470,4e490) c[c1850,c1858) c[4e4b0,4e4d5) c[bef00,bef0f) 
+5 c[3b3f0,3b438) c[3b4d8,3b4f8) c[3a508,3a50c) c[3a5b8,3a5bc) c[3a608,3a60c) 
+3 c[3b674,3b688) c[63e4,63e8) c[c1ab8,c1ac0) 
+17 c[3b688,3b6c8) c[64cc,64d0) c[6538,653c) c[65f0,65f4) c[109c0,109e0) c[182cc,182dc) c[182e4,18438) c[89d8,89dc) c[1843c,184d8) c[18564,1858c) c[18618,18698) c[c1ab8,c1ac0) c[c32c8,c32d0) c[c3be0,c3bf0) c[c3398,c33a0) c[c3190,c3198) c[c3c08,c3c10) 
+10 c[3c7f4,3c860) c[3c888,3c910) c[3c914,3c94c) c[3c964,3c980) c[3c98c,3c994) c[39efc,39f00) c[c1ab0,c1ab8) c[4e4a0,4e4b4) c[c0b18,c0b29) c[c0ae8,c0af0) 
+3 c[3ca04,3ca2c) c[3c7f4,3c7f8) c[c1ab8,c1ac0) 
+21 s[10bf98,10bfa8) s[10bef0,10bf00) s[10c1e8,10c260) s[10b7d8,10b848) s[10b888,10b8f8) s[10b938,10b9a8) c[3f028,3f04c) c[3f0dc,3f0f0) c[460f0,46138) c[462d0,4630c) c[3bbc0,3bbd4) c[11380,113a0) c[3bbf0,3bc14) c[4c7d0,4c7d4) c[3bc18,3bc20) c[11b80,11ba0) c[46310,46324) c[463e8,463f4) c[3f09c,3f0a8) c[3ffec,3fff0) c[c1850,c1858) 
+9 s[10b7a0,10b7c0) s[10b728,10b798) c[4c7d0,4c804) c[11384,113a0) c[3270c,32710) c[4c808,4c814) c[11b80,11ba0) c[3bc14,3bc18) c[c1850,c1858) 
