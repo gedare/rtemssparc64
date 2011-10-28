@@ -5560,7 +5560,7 @@ fi
 
 
 # Explicitly list all Makefiles here
-ac_config_files="$ac_config_files Makefile helloWorld/Makefile mix01/Makefile fft/Makefile mixdijkstra/Makefile"
+ac_config_files="$ac_config_files Makefile helloWorld/Makefile mix01/Makefile fft/Makefile mixdijkstra/Makefile dhrystone/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -6329,6 +6329,7 @@ do
     "mix01/Makefile") CONFIG_FILES="$CONFIG_FILES mix01/Makefile" ;;
     "fft/Makefile") CONFIG_FILES="$CONFIG_FILES fft/Makefile" ;;
     "mixdijkstra/Makefile") CONFIG_FILES="$CONFIG_FILES mixdijkstra/Makefile" ;;
+    "dhrystone/Makefile") CONFIG_FILES="$CONFIG_FILES dhrystone/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac

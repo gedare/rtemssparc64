@@ -64,5 +64,6 @@ helloWorld/Makefile
 mix01/Makefile
 fft/Makefile
 mixdijkstra/Makefile
+dhrystone/Makefile
 ])
 AC_OUTPUT
