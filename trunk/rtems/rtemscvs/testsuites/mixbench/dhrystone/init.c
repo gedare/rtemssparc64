@@ -30,12 +30,13 @@ rtems_task TaskFunction(
 )
 
 {
-  int run= 20;
-  while(run){
-  	printf( "Hello World %d %d\n", (int)argument, run);
-  	run --;
-  }
-  
+  //int run= 20;
+  //while(run){
+  //	printf( "Hello World %d %d\n", (int)argument, run);
+  //	run --;
+  //}
+  char *argv[] = {"dihry","1000"}; /* small */
+  main(2, argv);
   rtems_status_code status = rtems_task_delete( RTEMS_SELF );
   directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
 }

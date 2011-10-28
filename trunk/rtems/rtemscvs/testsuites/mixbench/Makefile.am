@@ -4,7 +4,7 @@
 
 ACLOCAL_AMFLAGS = -I ../aclocal
 
-SUBDIRS = helloWorld mix01 fft mixdijkstra
+SUBDIRS = helloWorld mix01 fft mixdijkstra dhrystone
 
 if MPTESTS
 endif
