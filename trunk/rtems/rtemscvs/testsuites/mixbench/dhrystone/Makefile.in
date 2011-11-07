@@ -63,7 +63,7 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(rtems_testsdir)"
 PROGRAMS = $(rtems_tests_PROGRAMS)
 am_dhrystone_OBJECTS = init.$(OBJEXT) dhry_1.$(OBJEXT) \
-	dhry_2.$(OBJEXT)
+	dhry_2.$(OBJEXT) allow.$(OBJEXT) FileSystemImage.$(OBJEXT)
 dhrystone_OBJECTS = $(am_dhrystone_OBJECTS)
 dhrystone_DEPENDENCIES =  \
 	$(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
@@ -206,7 +206,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 MANAGERS = io semaphore
-dhrystone_SOURCES = init.c system.h dhry_1.c dhry_2.c dhry.h
+dhrystone_SOURCES = init.c system.h dhry_1.c dhry_2.c dhry.h ../../common/allow.c FileSystemImage.c
 AM_CPPFLAGS = -I$(top_srcdir)/../support/include
 AM_CFLAGS = 
 AM_CXXFLAGS = 
@@ -295,6 +295,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FileSystemImage.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/allow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dhry_1.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dhry_2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/init.Po@am__quote@
@@ -312,6 +314,20 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
+
+allow.o: ../../common/allow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT allow.o -MD -MP -MF $(DEPDIR)/allow.Tpo -c -o allow.o `test -f '../../common/allow.c' || echo '$(srcdir)/'`../../common/allow.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/allow.Tpo $(DEPDIR)/allow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../../common/allow.c' object='allow.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o allow.o `test -f '../../common/allow.c' || echo '$(srcdir)/'`../../common/allow.c
+
+allow.obj: ../../common/allow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT allow.obj -MD -MP -MF $(DEPDIR)/allow.Tpo -c -o allow.obj `if test -f '../../common/allow.c'; then $(CYGPATH_W) '../../common/allow.c'; else $(CYGPATH_W) '$(srcdir)/../../common/allow.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/allow.Tpo $(DEPDIR)/allow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../../common/allow.c' object='allow.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o allow.obj `if test -f '../../common/allow.c'; then $(CYGPATH_W) '../../common/allow.c'; else $(CYGPATH_W) '$(srcdir)/../../common/allow.c'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

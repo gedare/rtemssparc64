@@ -14,7 +14,7 @@
  *
  ****************************************************************************
  */
-
+#include "../../common/allow.h"
 #include "dhry.h"
 #define TIME
 
@@ -29,7 +29,6 @@ char            Ch_1_Glob,
 int             Arr_1_Glob [50];
 int             Arr_2_Glob [50] [50];
 
-extern char     *malloc ();
 Enumeration     Func_1 ();
   /* forward declaration necessary since Enumeration may not simply be int */
 
@@ -85,13 +84,15 @@ main (int argc, char* argv[])
 
   /* Initializations */
 
-  Next_Ptr_Glob = (Rec_Pointer) malloc (sizeof (Rec_Type));
-  Ptr_Glob = (Rec_Pointer) malloc (sizeof (Rec_Type));
+  Next_Ptr_Glob = (Rec_Pointer) mymalloc (sizeof (Rec_Type));
+  Ptr_Glob = (Rec_Pointer) mymalloc (sizeof (Rec_Type));
 
   Ptr_Glob->Ptr_Comp                    = Next_Ptr_Glob;
   Ptr_Glob->Discr                       = Ident_1;
   Ptr_Glob->variant.var_1.Enum_Comp     = Ident_3;
   Ptr_Glob->variant.var_1.Int_Comp      = 40;
+
+  ALLOW(Ptr_Glob->variant.var_1.Str_Comp,31,3LL);
   strcpy (Ptr_Glob->variant.var_1.Str_Comp,
           "DHRYSTONE PROGRAM, SOME STRING");
   strcpy (Str_1_Loc, "DHRYSTONE PROGRAM, 1'ST STRING");
@@ -162,6 +163,9 @@ main (int argc, char* argv[])
       /* Int_1_Loc == 3, Int_2_Loc == 3, Int_3_Loc == 7 */
     Proc_8 (Arr_1_Glob, Arr_2_Glob, Int_1_Loc, Int_3_Loc);
       /* Int_Glob == 5 */
+
+	ALLOW(Ptr_Glob,sizeof(Ptr_Glob),3LL);
+	ALLOW(Ptr_Glob->Ptr_Comp,sizeof(Ptr_Glob),3LL);
     Proc_1 (Ptr_Glob);
     for (Ch_Index = 'A'; Ch_Index <= Ch_2_Glob; ++Ch_Index)
                              /* loop body executed twice */
@@ -257,7 +261,7 @@ main (int argc, char* argv[])
 
   if (User_Time < Too_Small_Time)
   {
-    printf ("Measured time too small to obtain meaningful results\n");
+    printf ("Measured time too small to obtain meaningful results Begin_Time=%ld End_Time=%ld\n", Begin_Time, End_Time);
     printf ("Please increase number of runs\n");
     printf ("\n");
   }
@@ -299,6 +303,9 @@ REG Rec_Pointer Ptr_Val_Par;
   Next_Record->variant.var_1.Int_Comp
         = Ptr_Val_Par->variant.var_1.Int_Comp;
   Next_Record->Ptr_Comp = Ptr_Val_Par->Ptr_Comp;
+
+  ALLOW(Next_Record,sizeof(Ptr_Glob),3LL);
+  ALLOW(Next_Record->Ptr_Comp,sizeof(Ptr_Glob),3LL);
   Proc_3 (&Next_Record->Ptr_Comp);
     /* Ptr_Val_Par->Ptr_Comp->Ptr_Comp
                         == Ptr_Glob->Ptr_Comp */
@@ -306,9 +313,13 @@ REG Rec_Pointer Ptr_Val_Par;
     /* then, executed */
   {
     Next_Record->variant.var_1.Int_Comp = 6;
+	ALLOW(Ptr_Val_Par->variant.var_1.Enum_Comp,sizeof(Ptr_Val_Par->variant.var_1.Enum_Comp),3LL);
+    ALLOW(Next_Record->variant.var_1.Enum_Comp,sizeof(Next_Record->variant.var_1.Enum_Comp),3LL);
     Proc_6 (Ptr_Val_Par->variant.var_1.Enum_Comp,
            &Next_Record->variant.var_1.Enum_Comp);
     Next_Record->Ptr_Comp = Ptr_Glob->Ptr_Comp;
+
+	ALLOW(Next_Record->variant.var_1.Int_Comp,sizeof(Next_Record->variant.var_1.Int_Comp),3LL);
     Proc_7 (Next_Record->variant.var_1.Int_Comp, 10,
            &Next_Record->variant.var_1.Int_Comp);
   }

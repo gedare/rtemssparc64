@@ -22,6 +22,7 @@
 
 #define CONFIGURE_INIT
 #include "system.h"
+#include "../../common/allow.h"
 #include "../../common/magic-instruction.h"
 
 
@@ -35,21 +36,11 @@ rtems_task TaskFunction(
   //	printf( "Hello World %d %d\n", (int)argument, run);
   //	run --;
   //}
-  char *argv[] = {"dihry","1000"}; /* small */
+  char *argv[] = {"dihry","100000"}; /* small */
   main(2, argv);
   rtems_status_code status = rtems_task_delete( RTEMS_SELF );
   directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
 }
-
-rtems_task KillTaskFunction(
-  rtems_task_argument argument
-)
-{
-  printf( "DONE !\n");
-  MAGIC_BREAKPOINT;
-  exit(0);
-}
-
 
 rtems_task Init(
   rtems_task_argument argument
@@ -65,9 +56,7 @@ rtems_task Init(
   directive_failed( status, "rtems_clock_set" );
 
   Task_name[ 1 ] = rtems_build_name( 'T', 'A', '1', ' ' );
-  Task_name[ 2 ] = rtems_build_name( 'T', 'A', '2', ' ' );
-  Task_name[ 3 ] = rtems_build_name( 'T', 'A', '3', ' ' );
-  Task_name[ 4 ] = rtems_build_name( 'K', 'I', 'L', 'L' );
+  Task_name[ 2 ] = rtems_build_name( 'K', 'I', 'L', 'L' );
 
   status = rtems_task_create(
      Task_name[ 1 ],
@@ -81,31 +70,11 @@ rtems_task Init(
 
   status = rtems_task_create(
      Task_name[ 2 ],
-     1,
-     RTEMS_MINIMUM_STACK_SIZE ,
-     RTEMS_PREEMPT|RTEMS_TIMESLICE,
-     RTEMS_DEFAULT_ATTRIBUTES,
-     &Task_id[ 2 ]
-  );
-  directive_failed( status, "rtems_task_create of TA2" );
-
-  status = rtems_task_create(
-     Task_name[ 3 ],
-     1,
-     RTEMS_MINIMUM_STACK_SIZE ,
-     RTEMS_PREEMPT|RTEMS_TIMESLICE,
-     RTEMS_DEFAULT_ATTRIBUTES,
-     &Task_id[ 3 ]
-  );
-  directive_failed( status, "rtems_task_create of TA3" );
-
-  status = rtems_task_create(
-     Task_name[ 4 ],
      2,
      RTEMS_MINIMUM_STACK_SIZE ,
      RTEMS_PREEMPT|RTEMS_TIMESLICE,
      RTEMS_DEFAULT_ATTRIBUTES,
-     &Task_id[ 4 ]
+     &Task_id[ 2 ]
   );
   directive_failed( status, "rtems_task_create of KILL" );
 
@@ -116,13 +85,7 @@ rtems_task Init(
   status = rtems_task_start( Task_id[ 1 ], TaskFunction, 1 );
   directive_failed( status, "rtems_task_start of TA1" );
 
-  status = rtems_task_start( Task_id[ 2 ], TaskFunction, 2 );
-  directive_failed( status, "rtems_task_start of TA2" );
-
-  status = rtems_task_start( Task_id[ 3 ], TaskFunction, 3 );
-  directive_failed( status, "rtems_task_start of TA3" );
-
-  status = rtems_task_start( Task_id[ 4 ], KillTaskFunction, 3 );
+  status = rtems_task_start( Task_id[ 2 ], KillTaskFunction, 3 );
   directive_failed( status, "rtems_task_start of TA4" );
 
   status = rtems_task_delete( RTEMS_SELF );
