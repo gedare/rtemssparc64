@@ -5,7 +5,7 @@
 MANAGERS = io semaphore
 
 rtems_tests_PROGRAMS = susan_smoothing
-susan_smoothing_SOURCES = init.c FileSystemImage.c
+susan_smoothing_SOURCES = init.c FileSystemImage.c ../../common/allow.c
 
 #dist_rtems_tests_DATA = susan_smoothing.scn
 #dist_rtems_tests_DATA += susan_smoothing.doc

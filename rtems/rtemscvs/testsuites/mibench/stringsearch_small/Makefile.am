@@ -5,7 +5,7 @@
 MANAGERS = io semaphore
 
 rtems_tests_PROGRAMS = stringsearch_small
-stringsearch_small_SOURCES = init.c system.h pbmsrch_small.c bmhasrch.c bmhsrch.c bmhisrch.c search.h
+stringsearch_small_SOURCES = init.c system.h pbmsrch_small.c bmhasrch.c bmhsrch.c bmhisrch.c search.h Permission.c PermissionStack.c
 
 #dist_rtems_tests_DATA = stringsearch_small.scn
 #dist_rtems_tests_DATA += stringsearch_small.doc

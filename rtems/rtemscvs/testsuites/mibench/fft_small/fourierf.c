@@ -23,6 +23,8 @@
 
 #include "fourier.h"
 #include "ddcmath.h"
+#include "../../common/allow.h"
+
 
 #define CHECKPOINTER(p)  CheckPointer(p,#p)
 
@@ -64,8 +66,11 @@ void fft_float (
     if ( InverseTransform )
         angle_numerator = -angle_numerator;
 
+	ALLOW(RealIn,sizeof(float)*NumSamples,3LL);
     CHECKPOINTER ( RealIn );
+	ALLOW(RealOut,sizeof(float)*NumSamples,3LL);
     CHECKPOINTER ( RealOut );
+	ALLOW(ImagOut,sizeof(float)*NumSamples,3LL);
     CHECKPOINTER ( ImagOut );
 
     NumBits = NumberOfBitsNeeded ( NumSamples );
@@ -95,7 +100,7 @@ void fft_float (
         double cm1 = cos ( -delta_angle );
         double w = 2 * cm1;
         double ar[3], ai[3];
-        double temp;
+        //double temp;
 
         for ( i=0; i < NumSamples; i += BlockSize )
         {

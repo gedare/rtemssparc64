@@ -5,7 +5,7 @@
 MANAGERS = io semaphore
 
 rtems_tests_PROGRAMS = qsort_small
-qsort_small_SOURCES = init.c FileSystemImage.c qsort_small.c
+qsort_small_SOURCES = init.c FileSystemImage.c qsort_small.c 
 
 #dist_rtems_tests_DATA = qsort_small.scn
 #dist_rtems_tests_DATA += qsort_small.doc

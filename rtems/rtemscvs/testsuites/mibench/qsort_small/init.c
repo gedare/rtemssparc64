@@ -22,6 +22,7 @@
 
 #define CONFIGURE_INIT
 #include "system.h"
+#include "../../common/magic-instruction.h"
 
 rtems_task Init(
   rtems_task_argument ignored
@@ -37,7 +38,11 @@ rtems_task Init(
   printf( "\n\n*** qsort_small benchmark ***\n" );
 
   char *argv[] = {"qsort_small","/input_small.dat"};
-  main(2,argv);
+
+  MAGIC_BREAKPOINT;
+  quicksort_main(2,argv);
+  MAGIC_BREAKPOINT;
+  
 
   printf( "*** end of qsort_small benchmark ***\n" );
   exit( 0 );

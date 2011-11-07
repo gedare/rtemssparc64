@@ -5,7 +5,7 @@
 MANAGERS = io semaphore
 
 rtems_tests_PROGRAMS = dijkstra
-dijkstra_SOURCES = init.c FileSystemImage.c
+dijkstra_SOURCES = init.c FileSystemImage.c dijkstra.c ../../common/allow.c
 
 #dist_rtems_tests_DATA = dijkstra.scn
 #dist_rtems_tests_DATA += dijkstra.doc

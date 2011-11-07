@@ -35,15 +35,16 @@ rtems_task Init(
 
   FILE *fin;
   SHA_INFO sha_info;
+
   
   char in_file[20] = "/input_large.asc";
-
+/*
   printf("Unpacking tar filesystem\nThis may take awhile...\n");
   if(Untar_FromMemory(FileSystemImage, FileSystemImage_size) != 0) {
     printf("Can't unpack tar filesystem\n");
     exit(1);
   }
-
+*/
   fin = fopen(in_file,"r");
   if (!fin) {
     printf("error opening %s for reading\n", in_file);
@@ -54,7 +55,7 @@ rtems_task Init(
 
   sha_stream(&sha_info, fin);
   sha_print(&sha_info);
-  fclose(fin);
+  fclose(fin); 
 
   printf( "*** end of sha benchmark ***\n" );
   exit( 0 );

@@ -68,8 +68,8 @@ fft_large/Makefile
 fft_small/Makefile
 fftinv_large/Makefile
 fftinv_small/Makefile
-patricia/Makefile
-qsort/Makefile
+patricia_small/Makefile
+qsort_small/Makefile
 sha_large/Makefile
 sha_small/Makefile
 stringsearch_large/Makefile

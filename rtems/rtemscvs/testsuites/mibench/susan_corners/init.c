@@ -287,6 +287,8 @@
 
 #define CONFIGURE_INIT
 #include "system.h"
+#include "crc.h"
+
 
 #ifndef PPC
 typedef int        TOTAL_TYPE; /* this is faster for "int" but should be "float" for large d masks */
@@ -304,6 +306,12 @@ typedef float      TOTAL_TYPE; /* for my PowerPC accelerator only */
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+ 
+#include "../../common/allow.h"
+#include "../../common/magic-instruction.h"
+
+
+
 #define  exit_error(IFB,IFC) { fprintf(stderr,IFB,IFC); exit(0); }
 #define  FTOI(a) ( (a) < 0 ? ((int)(a-0.5)) : ((int)(a+0.5)) )
 typedef  unsigned char uchar;
@@ -311,7 +319,7 @@ typedef  struct {int x,y,info, dx, dy, I;} CORNER_LIST[MAX_CORNERS];
 
 /* }}} */
 /* {{{ usage() */
-
+ 
 usage()
 {
   printf("Usage: susan <in.pgm> <out.pgm> [options]\n\n");
@@ -402,6 +410,7 @@ printf("get_image: read header\n");
 
   header[0]=fgetc(fd);
   header[1]=fgetc(fd);
+  ALLOW(*in,*x_size * *y_size,3LL);
   if(!(header[0]=='P' && header[1]=='5'))
     exit_error("Image %s does not have binary PGM header.\n",filename);
 
@@ -413,12 +422,14 @@ printf("get_image: read header\n");
 
 printf("get_image: read header %d %d \n",*x_size,*y_size);
 
-  *in = (uchar *) malloc(*x_size * *y_size);
+  *in = (uchar *) mymalloc(*x_size * *y_size);
 
+  ALLOW(*in,*x_size * *y_size,3LL);
   if (fread(*in,1,*x_size * *y_size,fd) == 0)
     exit_error("Image %s is wrong size.\n",filename);
 
   fclose(fd);
+   ALLOW(*in,*x_size * *y_size,3LL);
 }
 
 /* }}} */
@@ -443,6 +454,7 @@ FILE  *fd;
   fprintf(fd,"%d %d\n",x_size,y_size);
   fprintf(fd,"255\n");
 
+  ALLOW(in,x_size *y_size, 3LL);
   if (fwrite(in,x_size*y_size,1,fd) != 1)
     exit_error("Can't write image %s.\n",filename);
 
@@ -486,7 +498,7 @@ void setup_brightness_lut(bp,thresh,form)
 int   k;
 float temp;
 
-  *bp=(unsigned char *)malloc(516);
+  *bp=(unsigned char *)mymalloc(516);
   *bp=*bp+258;
 
   for(k=-256;k<257;k++)
@@ -498,6 +510,7 @@ float temp;
     temp=100.0*exp(-temp);
     *(*bp+k)= (uchar)temp;
   }
+  ALLOW(*bp,516, 3LL);
 }
 
 /* }}} */
@@ -512,6 +525,7 @@ susan_principle(in,r,bp,max_no,x_size,y_size)
 int   i, j, n;
 uchar *p,*cp;
 
+  ALLOW(r,x_size * y_size * sizeof(int), 3LL);
   memset (r,0,x_size * y_size * sizeof(int));
 
   for (i=3;i<y_size-3;i++)
@@ -586,6 +600,7 @@ susan_principle_small(in,r,bp,max_no,x_size,y_size)
 int   i, j, n;
 uchar *p,*cp;
 
+  ALLOW(r,x_size * y_size * sizeof(int), 3LL);
   memset (r,0,x_size * y_size * sizeof(int));
 
   max_no = 730; /* ho hum ;) */
@@ -722,7 +737,9 @@ TOTAL_TYPE total;
     exit(0);
   }
 
-  tmp_image = (uchar *) malloc( (x_size+mask_size*2) * (y_size+mask_size*2) );
+  tmp_image = (uchar *) mymalloc( (x_size+mask_size*2) * (y_size+mask_size*2) );
+  ALLOW(in,x_size *y_size, 3LL);
+  ALLOW(tmp_image,(x_size+mask_size*2) * (y_size+mask_size*2), 3LL);
   enlarge(&in,tmp_image,&x_size,&y_size,mask_size);
 
 /* }}} */
@@ -735,7 +752,7 @@ TOTAL_TYPE total;
 
   increment = x_size - n_max;
 
-  dp     = (unsigned char *)malloc(n_max*n_max);
+  dp     = (unsigned char *)mymalloc(n_max*n_max);
   dpt    = dp;
   temp   = -(dt*dt);
 
@@ -771,8 +788,10 @@ TOTAL_TYPE total;
         ip += increment;
       }
       tmp = area-10000;
-      if (tmp==0)
+      if (tmp==0){
+	  	ALLOW(in,x_size *y_size, 3LL);
         *out++=median(in,i,j,x_size);
+      }
       else
         *out++=((total-(centre*10000))/tmp);
     }
@@ -807,8 +826,10 @@ TOTAL_TYPE total;
       brightness=*ip; tmp=*(cp-brightness); area += tmp; total += tmp * brightness;
 
       tmp = area-100;
-      if (tmp==0)
-        *out++=median(in,i,j,x_size);
+      if (tmp==0){
+		ALLOW(in,x_size *y_size, 3LL);
+		*out++=median(in,i,j,x_size);
+      }
       else
         *out++=(total-(centre*100))/tmp;
     }
@@ -1485,10 +1506,11 @@ int   n,x,y,sq,xx,yy,
 float divide;
 uchar c,*p,*cp;
 
+   ALLOW(r,x_size * y_size * sizeof(int), 3LL);
   memset (r,0,x_size * y_size * sizeof(int));
 
-  cgx=(int *)malloc(x_size*y_size*sizeof(int));
-  cgy=(int *)malloc(x_size*y_size*sizeof(int));
+  cgx=(int *)mymalloc(x_size*y_size*sizeof(int));
+  cgy=(int *)mymalloc(x_size*y_size*sizeof(int));
 
   for (i=5;i<y_size-5;i++)
     for (j=5;j<x_size-5;j++) {
@@ -1766,6 +1788,7 @@ susan_corners_quick(in,r,bp,max_no,corner_list,x_size,y_size)
 int   n,x,y,i,j;
 uchar *p,*cp;
 
+   ALLOW(r,x_size * y_size * sizeof(int), 3LL);
   memset (r,0,x_size * y_size * sizeof(int));
 
   for (i=7;i<y_size-7;i++)
@@ -2072,6 +2095,8 @@ printf("begin main processing\n");
       /* {{{ smoothing */
 
       setup_brightness_lut(&bp,bt,2);
+	  ALLOW(bp,516, 3LL);
+	  ALLOW(in,x_size *y_size, 3LL);
       susan_smoothing(three_by_three,in,dt,x_size,y_size,bp);
       break;
 
@@ -2079,28 +2104,50 @@ printf("begin main processing\n");
     case 1:
       /* {{{ edges */
 
-      r   = (int *) malloc(x_size * y_size * sizeof(int));
+      r   = (int *) mymalloc(x_size * y_size * sizeof(int));
+	  
       setup_brightness_lut(&bp,bt,6);
 
       if (principle)
       {
+      	 ALLOW(r,x_size * y_size * sizeof(int), 3LL);
+		 ALLOW(bp,516, 3LL);
+		 ALLOW(in,x_size *y_size, 3LL);
+		 
         if (three_by_three)
           susan_principle_small(in,r,bp,max_no_edges,x_size,y_size);
         else
           susan_principle(in,r,bp,max_no_edges,x_size,y_size);
-        int_to_uchar(r,in,x_size*y_size);
+
+		ALLOW(r,x_size * y_size * sizeof(int), 3LL);
+    	ALLOW(in,x_size *y_size, 3LL);
+		int_to_uchar(r,in,x_size*y_size);
       }
       else
       {
-        mid = (uchar *)malloc(x_size*y_size);
+        mid = (uchar *)mymalloc(x_size*y_size);
+		 ALLOW(mid,x_size*y_size, 3LL);
         memset (mid,100,x_size * y_size); /* note not set to zero */
 
+		ALLOW(r,x_size * y_size * sizeof(int), 3LL);
+		ALLOW(bp,516, 3LL);
+		ALLOW(in,x_size *y_size, 3LL);
+		ALLOW(mid,x_size*y_size, 3LL);
         if (three_by_three)
           susan_edges_small(in,r,mid,bp,max_no_edges,x_size,y_size);
         else
           susan_edges(in,r,mid,bp,max_no_edges,x_size,y_size);
-        if(thin_post_proc)
+
+		
+        if(thin_post_proc){
+
+		  ALLOW(r,x_size * y_size * sizeof(int), 3LL);
+		  ALLOW(mid,x_size*y_size, 3LL);
           susan_thin(r,mid,x_size,y_size);
+
+        }
+		ALLOW(in,x_size *y_size, 3LL);
+		ALLOW(mid,x_size*y_size, 3LL);
         edge_draw(in,mid,x_size,y_size,drawing_mode);
       }
 
@@ -2110,20 +2157,31 @@ printf("begin main processing\n");
     case 2:
       /* {{{ corners */
 
-      r   = (int *) malloc(x_size * y_size * sizeof(int));
+      r   = (int *) mymalloc(x_size * y_size * sizeof(int));
       setup_brightness_lut(&bp,bt,6);
 
       if (principle)
       {
+      	 ALLOW(r,x_size * y_size * sizeof(int), 3LL);
+		 ALLOW(bp,516, 3LL);
+		 ALLOW(in,x_size *y_size, 3LL);
         susan_principle(in,r,bp,max_no_corners,x_size,y_size);
+
+		 ALLOW(r,x_size * y_size * sizeof(int), 3LL);
+		 ALLOW(in,x_size *y_size, 3LL);
         int_to_uchar(r,in,x_size*y_size);
       }
       else
       {
+      	 ALLOW(r,x_size * y_size * sizeof(int), 3LL);
+		 ALLOW(bp,516, 3LL);
+		 ALLOW(in,x_size *y_size, 3LL);
         if(susan_quick)
           susan_corners_quick(in,r,bp,max_no_corners,corner_list,x_size,y_size);
         else
           susan_corners(in,r,bp,max_no_corners,corner_list,x_size,y_size);
+
+		ALLOW(in,x_size *y_size, 3LL);
         corner_draw(in,corner_list,x_size,drawing_mode);
       }
 
@@ -2133,7 +2191,7 @@ printf("begin main processing\n");
   }
 
 /* }}} */
-
+  ALLOW(in,x_size *y_size, 3LL);
   put_image(argv[2],in,x_size,y_size);
 }
 
@@ -2157,9 +2215,33 @@ rtems_task Init(
   printf( "\n\n*** susan_corners benchmark ***\n" );
 
   char * argv[] = {"susan_corners","/input_small.pgm", "/susan_corners.pgm","-c"};
+//  char * argv2[] = {"susan_edges","/input_small.pgm", "/susan_edges.pgm","-e"};
+//  char * argv3[] = {"susan_smoothing","/input_small.pgm", "/susan_smoothing.pgm","-s"};
+  MAGIC_BREAKPOINT;
   main(4,argv);
+  MAGIC_BREAKPOINT;
 
   printf( "*** end of susan_corners benchmark ***\n" );
+/*
+  printf( "*** double check results with crc ***\n" );
+
+  DWORD crc;
+  long charcnt;
+
+  crc32file(argv[2],&crc, &charcnt);
+  printf("%08lX %7ld %s\n", crc, charcnt, argv[2]);
+
+  main(4,argv2);
+  crc32file(argv2[2],&crc, &charcnt);
+  printf("%08lX %7ld %s\n", crc, charcnt, argv2[2]);
+
+
+  main(4,argv3);
+  crc32file(argv3[2],&crc, &charcnt);
+  printf("%08lX %7ld %s\n", crc, charcnt, argv3[2]);
+
+  printf( "*** end double check results with crc ***\n" );
+*/  
   exit( 0 );
 }
 

@@ -22,8 +22,11 @@
 
 #define CONFIGURE_INIT
 #include "system.h"
+#include "../../common/allow.h"
+#include "../../common/magic-instruction.h"
 
-int main(int argc, char *argv[]);
+
+int fft_main(int argc, char *argv[]);
 
 rtems_task Init(
   rtems_task_argument ignored
@@ -36,7 +39,11 @@ rtems_task Init(
   char *argv[] = {"fft_small","4","4096"}; /* small */
   //char *argv[] = {"fft_large","8","32768"}; /* large */
 
-  main(3,argv);
+  MAGIC_BREAKPOINT;
+
+  fft_main(3,argv);
+
+  MAGIC_BREAKPOINT;
   
   printf( "*** end of fft benchmark ***\n" );
   exit( 0 );

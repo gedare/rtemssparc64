@@ -308,6 +308,9 @@ typedef float      TOTAL_TYPE; /* for my PowerPC accelerator only */
 typedef  unsigned char uchar;
 typedef  struct {int x,y,info, dx, dy, I;} CORNER_LIST[MAX_CORNERS];
 
+
+
+
 /* }}} */
 /* {{{ usage() */
 
@@ -405,6 +408,7 @@ int  tmp;
     exit_error("Image %s is wrong size.\n",filename);
 
   fclose(fd);
+
 }
 
 /* }}} */
@@ -1959,7 +1963,7 @@ corner_list[n].info=7;
 /* }}} */
 /* {{{ main(argc, argv) */
 
-main(argc, argv)
+susan_main(argc, argv)
   int   argc;
   char  *argv [];
 {
