@@ -29,15 +29,15 @@ rtems_task Task_1_through_3(
 #define CONFIGURE_TICKS_PER_TIMESLICE       1
 
 
-#define CONFIGURE_EXTRA_TASK_STACKS         (5 * RTEMS_MINIMUM_STACK_SIZE)
-#define CONFIGURE_MAXIMUM_TASKS             5
+#define CONFIGURE_EXTRA_TASK_STACKS         (3 * RTEMS_MINIMUM_STACK_SIZE)
+#define CONFIGURE_MAXIMUM_TASKS             3
 
 #include <rtems/confdefs.h>
 
 /* global variables */
 
-TEST_EXTERN rtems_id   Task_id[ 5 ];         /* array of task ids */
-TEST_EXTERN rtems_name Task_name[ 5 ];       /* array of task names */
+TEST_EXTERN rtems_id   Task_id[ 3 ];         /* array of task ids */
+TEST_EXTERN rtems_name Task_name[ 3 ];       /* array of task names */
 
 /* end of include file */
 
