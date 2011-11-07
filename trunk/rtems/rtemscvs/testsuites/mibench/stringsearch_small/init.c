@@ -22,6 +22,8 @@
 
 #define CONFIGURE_INIT
 #include "system.h"
+#include "../../common/magic-instruction.h"
+
 
 int main(int argc, char *argv[]);
 
@@ -35,9 +37,9 @@ rtems_task Init(
 
   char *argv[] = {"stringsearch_small"}; /* small */
   //char *argv[] = {"stringsearch_large"}; /* large */
-
+  MAGIC_BREAKPOINT;
   main(1,argv);
-  
+  MAGIC_BREAKPOINT;
   printf( "*** end of stringsearch benchmark ***\n" );
   exit( 0 );
 }

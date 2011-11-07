@@ -5,7 +5,7 @@
 MANAGERS = io semaphore
 
 rtems_tests_PROGRAMS = crc
-crc_SOURCES = init.c crc_32.c FileSystemImage.c
+crc_SOURCES = init.c crc_32.c FileSystemImage.c ../../common/allow.c
 
 #dist_rtems_tests_DATA = crc.scn
 #dist_rtems_tests_DATA += crc.doc

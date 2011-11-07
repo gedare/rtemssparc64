@@ -17,7 +17,7 @@ if CXXTESTS
 endif
 
 if NETTESTS
-SUBDIRS += patricia
+SUBDIRS += patricia_small
 endif
 
 include $(top_srcdir)/../automake/subdirs.am

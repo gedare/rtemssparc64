@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "system.h"
+
 
 #define UNLIMIT
 #define MAXARRAY 15000 /* this number, if too large, will cause a seg. fault!! */
@@ -20,8 +22,7 @@ int compare(const void *elem1, const void *elem2)
 
   struct myStringStruct array[MAXARRAY];
 
-int
-main(int argc, char *argv[]) {
+int quicksort_main(int argc, char *argv[]) {
   FILE *fp;
   int i,count=0;
   
@@ -37,9 +38,9 @@ main(int argc, char *argv[]) {
     }
   }
   printf("\nSorting %d elements.\n\n",count);
+
   qsort(array,count,sizeof(struct myStringStruct),compare);
-  
-  for(i=0;i<count;i++)
-    printf("%s\n", array[i].qstring);
+  //for(i=0;i<count;i++)
+  //  printf("%s\n", array[i].qstring);
   return 0;
 }

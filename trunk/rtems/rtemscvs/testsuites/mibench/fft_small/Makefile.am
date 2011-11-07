@@ -5,7 +5,7 @@
 MANAGERS = io semaphore
 
 rtems_tests_PROGRAMS = fft_small
-fft_small_SOURCES = init.c system.h fftmisc.c  fourierf.c  main.c ddc.h  ddcmath.h  fourier.h
+fft_small_SOURCES = init.c system.h fftmisc.c  fourierf.c  main.c ddc.h  ddcmath.h  fourier.h FileSystemImage.c ../../common/allow.c
 
 
 #dist_rtems_tests_DATA = fft_small.scn

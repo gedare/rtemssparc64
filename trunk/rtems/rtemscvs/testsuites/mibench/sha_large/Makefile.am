@@ -5,7 +5,7 @@
 MANAGERS = io semaphore
 
 rtems_tests_PROGRAMS = sha_large
-sha_large_SOURCES = init.c sha.c FileSystemImage.c
+sha_large_SOURCES = init.c sha.c 
 
 dist_rtems_tests_DATA = sha.scn
 dist_rtems_tests_DATA += sha.doc

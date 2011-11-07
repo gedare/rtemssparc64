@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
+#include "fourier.h"
+#include "../../common/allow.h"
 
-int main(int argc, char *argv[]) {
+int fft_main(int argc, char *argv[]) {
 	unsigned MAXSIZE;
 	unsigned MAXWAVES;
 	unsigned i,j;
@@ -29,12 +32,12 @@ int main(int argc, char *argv[]) {
 		
  srand(1);
 
- RealIn=(float*)malloc(sizeof(float)*MAXSIZE);
- ImagIn=(float*)malloc(sizeof(float)*MAXSIZE);
- RealOut=(float*)malloc(sizeof(float)*MAXSIZE);
- ImagOut=(float*)malloc(sizeof(float)*MAXSIZE);
- coeff=(float*)malloc(sizeof(float)*MAXWAVES);
- amp=(float*)malloc(sizeof(float)*MAXWAVES);
+ RealIn=(float*)mymalloc(sizeof(float)*MAXSIZE);
+ ImagIn=(float*)mymalloc(sizeof(float)*MAXSIZE);
+ RealOut=(float*)mymalloc(sizeof(float)*MAXSIZE);
+ ImagOut=(float*)mymalloc(sizeof(float)*MAXSIZE);
+ coeff=(float*)mymalloc(sizeof(float)*MAXWAVES);
+ amp=(float*)mymalloc(sizeof(float)*MAXWAVES);
 
  /* Makes MAXWAVES waves of random amplitude and period */
 	for(i=0;i<MAXWAVES;i++) 
@@ -62,8 +65,15 @@ int main(int argc, char *argv[]) {
  }
 
  /* regular*/
+ ALLOW(RealIn,sizeof(float)*MAXSIZE,3LL);
+ ALLOW(ImagIn,sizeof(float)*MAXSIZE,3LL);
+ ALLOW(RealOut,sizeof(float)*MAXSIZE,3LL);
+ ALLOW(ImagOut,sizeof(float)*MAXSIZE,3LL);
+ ALLOW(coeff,sizeof(float)*MAXSIZE,3LL);
+ ALLOW(amp,sizeof(float)*MAXSIZE,3LL);
  fft_float (MAXSIZE,invfft,RealIn,ImagIn,RealOut,ImagOut);
- 
+
+ #ifdef GICADEBUG
  printf("RealOut:\n");
  for (i=0;i<MAXSIZE;i++)
    printf("%f \t", RealOut[i]);
@@ -73,6 +83,7 @@ printf("ImagOut:\n");
  for (i=0;i<MAXSIZE;i++)
    printf("%f \t", ImagOut[i]);
    printf("\n");
+ #endif
 
  free(RealIn);
  free(ImagIn);
@@ -80,7 +91,6 @@ printf("ImagOut:\n");
  free(ImagOut);
  free(coeff);
  free(amp);
- exit(0);
 
-
+ return 0;
 }
