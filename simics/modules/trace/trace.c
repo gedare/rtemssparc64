@@ -304,7 +304,7 @@ text_tracer(base_trace_t *bt, trace_entry_t *ent)
         case TR_Data:
                 //text_trace_data(bt, ent, s);
 				s[0] = 0;
-				container_MemoryCall(ent->read_or_write,ent->va,ent->size);
+				container_MemoryCall(ent->read_or_write,ent->va,8);
                 break;
         case TR_Exception:
                 text_trace_exception(bt, ent, s);
@@ -312,7 +312,7 @@ text_tracer(base_trace_t *bt, trace_entry_t *ent)
         case TR_Instruction:
                 //text_trace_instruction(bt, ent, s);
 				s[0] = 0;
-				container_traceFunctioncall(ent->va,0,bt);
+				container_traceFunctioncall(ent->va,0,bt->displayLineNumbers);
                 break;
         case TR_Reserved:
         default:
@@ -1332,13 +1332,30 @@ get_data_intervals(void *arg, conf_object_t *obj, attr_value_t *idx)
 }
 
 
+static set_error_t
+set_fulltrace_enabled(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
+{
+        base_trace_t *bt = (base_trace_t *)obj;
+        bt->fulltrace_enabled = !!val->u.integer;
+        setFullTraceEnabled(bt->fulltrace_enabled);
+        return Sim_Set_Ok;
+}
+
+
+static attr_value_t
+get_fulltrace_enabled(void *arg, conf_object_t *obj, attr_value_t *idx)
+{
+        base_trace_t *bt = (base_trace_t *)obj;
+        return SIM_make_attr_integer(bt->fulltrace_enabled);
+}
+
 
 static set_error_t
 set_ftrace_file(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
 {
         base_trace_t *bt = (base_trace_t *)obj;
         strncpy(bt->fullTraceFileName, val->u.string,200);
-		setFullTraceFile(bt);
+		setFullTraceFile(bt->fullTraceFileName);
         return Sim_Set_Ok;
 }
 
@@ -1425,7 +1442,7 @@ void bp_callback(lang_void *userdata,
 	//printf("GICA bp_callback reached, enabling the trace 0x%llx.\n",bt->traceaddress);
 	//printf("GICA DEBUG bp_callback %s.\n",obj->name);
 	TraceStart();
-	container_traceFunctioncall(bt->traceaddress,0, bt);
+	container_traceFunctioncall(bt->traceaddress,0, bt->displayLineNumbers);
 
 }
 
@@ -1577,6 +1594,7 @@ base_trace_new_instance(parse_object_t *pa)
         bt->print_virtual_address = 1;
         bt->print_physical_address = 1;
         bt->print_data = 1;
+        bt->fulltrace_enabled = 1;
         bt->print_linear_address = 1;
         bt->print_access_type = 1;
         bt->print_memory_type = 1;
@@ -1590,7 +1608,7 @@ base_trace_new_instance(parse_object_t *pa)
 
         SIM_hap_add_callback("Core_At_Exit", f, bt);
 
-    	container_initialize(bt);
+    	container_initialize(bt->fullTraceFileName);
 
         return &bt->obj;
 }
@@ -1633,7 +1651,7 @@ void ThreadMonitor_callback_after(lang_void *userdata,
 {
 	uint64 threadNameNew = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Object.name.name_u32");
 	uint64 threadIdNew = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Object.id");
-	
+
 	base_trace_t * bt = (base_trace_t *)SIM_get_object("trace0");
 	//printf("threadskip %s\n",bt->threadSkip);
 	char threadNameString[20];
@@ -1674,7 +1692,7 @@ void ThreadMonitor_callback_before(lang_void *userdata,
 	uinteger_t memTranVal = SIM_get_mem_op_value_cpu(memop);
 	attr_value_t evalThreadPtr = myeval("_Per_CPU_Information.executing");
 	uint64 uievalThreadPtr = evalThreadPtr.u.list.vector[1].u.integer;
-	
+
 	if(memTranVal != 0 && uievalThreadPtr != 0){
 		logical_address_t PC = SIM_get_program_counter(SIM_current_processor());
 		breakpoint_id_t bkpt = SIM_breakpoint(
@@ -1697,7 +1715,7 @@ void ThreadMonitor_callback_before(lang_void *userdata,
 				printf("GICA ThreadMonitor_register, breakpoint is !!NOT!! set\n");
 			}
 
-		
+
 		printf("%s => reached  %llx\n",__PRETTY_FUNCTION__,uievalThreadPtr );fflush(stdin);
 	}
 
@@ -1711,7 +1729,7 @@ void ThreadMonitor_register()
 	//attr_value_t evalThreadAddress = myeval("&_Per_CPU_Information.executing");
 	//ASSERT(evalThreadAddress.kind == 4);
 	uint64 breakAddress = mySimicsIntSymbolRead("&_Per_CPU_Information.executing");
-	
+
 	breakpoint_id_t bkpt = SIM_breakpoint(
 			SIM_get_object("gicacontext"),//memory object ?
 			Sim_Break_Virtual,
@@ -1810,14 +1828,14 @@ set_trace_printDecodedAccessList(void *arg, conf_object_t *obj, attr_value_t *va
 
 static attr_value_t
 get_trace_printContainerStats(void *arg, conf_object_t *obj, attr_value_t *idx){
-	printAllStatsFiles((base_trace_t *)obj);
+	printAllStatsFiles(((base_trace_t *)obj)->fStatsFileBaseName);
 	return SIM_make_attr_integer(1);
 }
 
 static set_error_t
 set_trace_printContainerStats(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
 {
-	printAllStatsFiles((base_trace_t *)obj);
+	printAllStatsFiles(((base_trace_t *)obj)->fStatsFileBaseName);
 	return Sim_Set_Ok;
 }
 
@@ -2015,6 +2033,14 @@ init_local(void)
                 " If no name is specified, all output is sent to stdout.");
 
 		SIM_register_typed_attribute(
+				base_class, "set_fulltrace_enabled",
+				get_fulltrace_enabled, NULL,
+				set_fulltrace_enabled, NULL,
+				Sim_Attr_Session, "i", NULL,
+				"<tt>1</tt>|<tt>0</tt> Set to 1 to enable 0 to disable(enabled by default)"
+                " controls if set_ftrace_file is printed");
+
+		SIM_register_typed_attribute(
                 base_class, "set_ftracesymbol_file",
                 get_ftracesymbol_filename, NULL,
                 set_ftracesymbol_file, NULL,
@@ -2096,8 +2122,8 @@ init_local(void)
 			set_trace_printContainerStats,	NULL,
 			Sim_Attr_Optional,"i",NULL,
 			"does not set anything, it prints container stats");
-			
-		
+
+
 		SIM_register_typed_attribute
 			(base_class,"trace_flush",
 			get_trace_flush,	NULL,

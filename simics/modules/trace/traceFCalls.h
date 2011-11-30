@@ -3,7 +3,13 @@
 #ifndef COMPONENTS_H
 #define COMPONENTS_H
 
+//#include "trace.h"
+
 #define STRINGTABLEID 24
+#define STACK_BIAS (2047)
+
+extern char stdoutPrintBuffer[];
+
 
 typedef enum mem_cmd {
   Read,			/* read memory from target (simulated prog) to host */
@@ -13,7 +19,7 @@ typedef enum mem_cmd {
 typedef struct container_def container;
 typedef struct stack_Object_def stackObject;
 typedef struct cell *llist;//Linked List
-typedef unsigned long long md_addr_t;
+typedef uint64 md_addr_t;
 
 typedef struct addressCell *addressList; //address access list
 
@@ -27,24 +33,31 @@ struct container_def
 	int totalNumberOfReads;
 	int totalNumberOfBytesRead;
 	int totalNumberOfBytesWritten;
-	int totalNumberOfWrites;	
+	int totalNumberOfWrites;
 	int totalChildContainersCalled;
 	int uniqueChildContainersCalled; // count the number of child functions
 	int	staticAddressCount;
 	int traceLoadedAddressCount; //this value will be added from the trace file on the second run
 	int traceLoadeduniqueChildContainersCalled;//this value will be added from the trace file on the second run
 	int addressAccessListPenalty;
-	char isCalledWithHeapData; //counts the number of heap regions used. I will use it to recognize where in the code should I put ASSIGN directives
+	int maximumHeapRanges; //maximum number of heap memory regions accessed. I will use it to recognize where in the code should I put ASSIGN directives
+	int totalHeapRanges; //accumulates all heap memory regions accessed, divide this by totalStackPushes to get the average. I will use it to recognize where in the code should I put ASSIGN directives
 
-	llist childFunctions; 			 //keep the id of the child function ( or the entire container )
+
+	llist childFunctions; 			//keep the id of the child function ( or the entire container )
+	addressList instructionFetches; //all the instruction fetches made from within one container
+
 	addressList addressAccessList;  //keeps the global access list for mem Regions that this function accesses
 	addressList addressAccessListInstance;  //keeps the access list for mem Regions that this function accesses, only for the last instance called
+	addressList addressAccessListWithoutLocalStackAccesses;	//do not record local stack accesses in this list
 
-	addressList staticAddressList; //the static values will add-up here as the tracing is performed
 
 	addressList opalCodeAccessList; //use in the opal module.
 	addressList opalStackAccessList; //use in the opal module.
 	addressList opalHeapAccessList; //use in the opal module.
+	addressList opalStaticDataAccessList;//use in the opal module.
+	md_addr_t   opalOffsetLocateContainerInPermissions;//use in the opal module.
+	md_addr_t   opalSizeOfPermissionLists;//use in the opal module.
 
 	int nonFunction; //1 or 0. For non-function do not trace this symbol, but it might be sometimes usefull to print it
 	char linenumber[1000]; //if this info is available for symbols, load it and display it in the trace
@@ -89,14 +102,23 @@ struct cell
 extern llist cons(stackObject element, llist l);
 extern llist cdr_and_free(llist l);
 
-extern addressList consAddressList(md_addr_t startAddress, md_addr_t endAddress, addressList l);
-extern addressList freeAddressList(addressList l);
+addressList consAddressList(md_addr_t startAddress, md_addr_t endAddress, addressList l);
+addressList freeAddressList(addressList l);
+addressList invertAddressList(addressList l);
+
 void UpdateAddressList(addressList *l,md_addr_t addr,int nbytes);
 void joinAddress(addressList future, addressList present);
+void MergeAddressList(addressList *listA, addressList listB);
+int FindInAddressList(addressList list,md_addr_t addr, int nbytes);
+
+
+
+void printAddressListStdout(addressList l);
 void printAddressList(char* printbuff, addressList l);
+void printAddressListCount(char* printbuff, addressList l);
+
 void printCountMemoryAccesses(char * printbuff,addressList l);
 decodedMemRange decodeMemoryRange(md_addr_t base, md_addr_t bound);
-
 
 
 
@@ -133,13 +155,15 @@ extern int stack_empty(mystack s);
 //end Stack
 
 
-void container_initialize( base_trace_t *bt);
+void container_initialize( char *);
+void container_simicsInit();
+
 void container_close();
 
 
 container * container_add(md_addr_t addr, char * name);
 
-struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem, base_trace_t *obj);
+struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem, char displayLineNumbers);
 void container_quickprint();
 void container_printStatistics(int bAll);
 void container_printMemoryRanges(int bAll);
@@ -159,7 +183,10 @@ void printDecodedAddressList(char * printbuff,addressList l);
 void updateHeapCalls(container* c,addressList l);
 void updateGlobalAddressList(container* c);
 int penaltyAddressList( addressList l);
-void printAllStatsFiles(base_trace_t *bt);
+void printDecodedInstructionFetchList(char * printbuff,addressList l);
+
+void printAllStatsFiles(char *);
+int addressListSize(addressList l);
 
 
 
@@ -167,10 +194,16 @@ void printAllStatsFiles(base_trace_t *bt);
 
 
 void loadContainersFromSymtable(const char* symFileName);
-void setFullTraceFile(base_trace_t *bt);
+void setFullTraceFile(char *);
+void setFullTraceEnabled(int);
 
 //the container list is sorted by address
 container * search(md_addr_t addr);
+container * search_debug(md_addr_t addr);
+
+
+//given a PC value, return the index of the container (in container table) that has that instruction
+int searchUsingInnerAddress(md_addr_t addr);
 
 //this value keep a state that tells the container manager to ignore a duplicate push due to a trap
 extern int ignore_due_to_Exception;
@@ -236,6 +269,12 @@ void containers_flush();
 uint64 mySimicsIntSymbolRead(char * symbol);
 attr_value_t myeval(char * evalExpr);
 void containers_testRandomStuff(int option);
+
+uint64 myMemoryRead(generic_address_t vaddr, int lenght);
+void myMemoryWrite(generic_address_t vaddr,uint64 value, int lenght);
+
+
+
 
 
 
