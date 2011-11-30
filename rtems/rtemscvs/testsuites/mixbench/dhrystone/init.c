@@ -26,18 +26,12 @@
 #include "../../common/magic-instruction.h"
 
 
-rtems_task TaskFunction(
+rtems_task Dhrystone_TaskFunction(
   rtems_task_argument argument
 )
-
 {
-  //int run= 20;
-  //while(run){
-  //	printf( "Hello World %d %d\n", (int)argument, run);
-  //	run --;
-  //}
   char *argv[] = {"dihry","100000"}; /* small */
-  main(2, argv);
+  dhrystone_main(2, argv);
   rtems_status_code status = rtems_task_delete( RTEMS_SELF );
   directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
 }
@@ -82,7 +76,7 @@ rtems_task Init(
 
   MAGIC_BREAKPOINT;
 
-  status = rtems_task_start( Task_id[ 1 ], TaskFunction, 1 );
+  status = rtems_task_start( Task_id[ 1 ], Dhrystone_TaskFunction, 1 );
   directive_failed( status, "rtems_task_start of TA1" );
 
   status = rtems_task_start( Task_id[ 2 ], KillTaskFunction, 3 );

@@ -66,7 +66,7 @@ float           Microseconds,
 /* end of variables for time measurement */
 
 
-main (int argc, char* argv[])
+dhrystone_main (int argc, char* argv[])
 /*****/
 
   /* main program, corresponds to procedures        */
@@ -103,18 +103,18 @@ main (int argc, char* argv[])
         /* Warning: With 16-Bit processors and Number_Of_Runs > 32000,  */
         /* overflow may occur for this array element.                   */
 
-  printf ("\n");
-  printf ("Dhrystone Benchmark, Version 2.1 (Language: C)\n");
-  printf ("\n");
+  puts ("\n");
+  puts ("Dhrystone Benchmark, Version 2.1 (Language: C)\n");
+  puts ("\n");
   if (Reg)
   {
-    printf ("Program compiled with 'register' attribute\n");
-    printf ("\n");
+    puts ("Program compiled with 'register' attribute\n");
+    puts ("\n");
   }
   else
   {
-    printf ("Program compiled without 'register' attribute\n");
-    printf ("\n");
+    puts ("Program compiled without 'register' attribute\n");
+    puts ("\n");
   }
   //printf ("Please give the number of runs through the benchmark: ");
   Number_Of_Runs = 100;
@@ -124,9 +124,9 @@ main (int argc, char* argv[])
     sscanf (argv[1],"%d", &n);
     Number_Of_Runs = n;
   }
-  printf ("\n");
+  //puts ("\n");
 
-  printf ("Execution starts, %d runs through Dhrystone\n", Number_Of_Runs);
+  //printf ("Execution starts, %d runs through Dhrystone\n", Number_Of_Runs);
 
   /***************/
   /* Start timer */
@@ -255,7 +255,7 @@ main (int argc, char* argv[])
   printf ("Str_2_Loc:           %s\n", Str_2_Loc);
   printf ("        should be:   DHRYSTONE PROGRAM, 2'ND STRING\n");
   printf ("\n");
-#endif
+
 
   User_Time = End_Time - Begin_Time;
 
@@ -283,6 +283,7 @@ main (int argc, char* argv[])
     printf ("%6.1f \n", Dhrystones_Per_Second);
     printf ("\n");
   }
+#endif
 
 }
 
