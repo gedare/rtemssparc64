@@ -2,18 +2,18 @@
   trace.h
 
   Copyright 1998-2007 Virtutech AB
-  
+
   The contents herein are Source Code which are a subset of Licensed
   Software pursuant to the terms of the Virtutech Simics Software
   License Agreement (the "Agreement"), and are being distributed under
   the Agreement.  You should have received a copy of the Agreement with
   this Licensed Software; if not, please contact Virtutech for a copy
   of the Agreement prior to using this Licensed Software.
-  
+
   By using this Source Code, you agree to be bound by all of the terms
   of the Agreement, and use of this Source Code is subject to the terms
   the Agreement.
-  
+
   This Source Code and any derivatives thereof are provided on an "as
   is" basis.  Virtutech makes no warranties with respect to the Source
   Code or any derivatives thereof and disclaims all implied warranties,
@@ -21,6 +21,10 @@
   fitness for a particular purpose and non-infringement.
 
 */
+
+#ifndef COMPONENTSTRACE_H
+#define COMPONENTSTRACE_H
+
 
 #include <simics/api.h>
 #include <simics/alloc.h>
@@ -39,8 +43,8 @@
 #endif
 
 
-typedef enum { 
-        TR_Reserved = 0, TR_Data = 1, TR_Instruction = 2, TR_Exception = 3, 
+typedef enum {
+        TR_Reserved = 0, TR_Data = 1, TR_Instruction = 2, TR_Exception = 3,
         TR_Execute = 4, TR_Reserved_2, TR_Reserved_3, TR_Reserved_4,
         TR_Reserved_5, TR_Reserved_6, TR_Reserved_7, TR_Reserved_8,
         TR_Reserved_9, TR_Reserved_10, TR_Reserved_11, TR_Reserved_12
@@ -182,6 +186,7 @@ typedef struct base_trace {
         uint64 other_records;
 #endif   /* TRACE_STATS */
 
+		int fulltrace_enabled;
 		char fullTraceFileName[200];
 		char fTraceSymbolFileName[200];
 		char fStatsFileBaseName[200];
@@ -210,4 +215,5 @@ void TraceStart();
 void TraceSuspend(base_trace_t *obj);
 
 
+#endif /* COMPONENTS_H */
 
