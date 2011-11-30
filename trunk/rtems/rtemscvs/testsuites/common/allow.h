@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <system.h>
-#define WITHALLOW 1
+#define WITHALLOW 0
 
 
 struct perm_record
@@ -113,8 +113,14 @@ typedef struct staticpermssions
 inline void * mymalloc(size_t);
 
 packed_permission_rec create_permrec(uint64 startaddr,uint64 endaddr,char perm);
-bool test_create(Thread_Control * executing,  Thread_Control * creating);
-void test_switch (  Thread_Control * a,  Thread_Control * b);
+bool task_container_create(Thread_Control * executing,  Thread_Control * creating);
+void task_container_switch (  Thread_Control * a,  Thread_Control * b);
+bool task_tlb_create(Thread_Control * executing,  Thread_Control * creating);
+void task_tlb_switch (  Thread_Control * a,  Thread_Control * b);
+
+
+
+
 rtems_task KillTaskFunction(rtems_task_argument argument);
 void LoadContainersFromDecodedAccessListFile(const char * FileWithPrefix, Thread_Control *creating);
 

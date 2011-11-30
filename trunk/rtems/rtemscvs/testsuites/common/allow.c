@@ -1,5 +1,7 @@
 #include "allow.h"
 #include <stdlib.h>
+#include <libcpu/mmu_support.h>
+#include <rtems/libmmu.h>
 
 
 
@@ -15,14 +17,106 @@ inline void * mymalloc(size_t size)
 	return ret;
 }
 
+#ifdef 0
+#define TLB_MAX_DOMAIN_ENTRIES 100
+bool task_tlb_create(Thread_Control * executing,  Thread_Control * creating)
+{
+	int i;
+	rtems_status_code status;
+	rtems_memory_protection_entry *mp_entry;
+	rtems_memory_protection_region_descriptor r = {
+		.name = "1",
+		//.base = (void *)0xBB00000000,
+		.base = (void *)0x00aa000000,
+		.bounds = 0x2000
+	};
+	
+	rtems_memory_protection_domain *protection_domain = NULL;
+	
+	char namea[6];
+	if( !strncmp(rtems_object_get_name(creating->Object.id, 5, namea),"TA",2)){
+		printk("task create ");
+		printk(namea);
+		printk(" %d", creating->Object.id);
+		printk(" \n ");
 
+		protection_domain = (rtems_memory_protection_domain *)calloc(1, sizeof(rtems_memory_protection_domain)) ;
+		status = rtems_memory_protection_initialize_domain( protection_domain, TLB_MAX_DOMAIN_ENTRIES+1 );
+		directive_failed( status, "rtems_memory_protection_initialize_domain" );
 
-bool test_create(Thread_Control * executing,  Thread_Control * creating)
+		for(i=0;i<10;i++,r.base+= 0x2000 )
+		{
+			status = rtems_memory_protection_create_entry(
+			  protection_domain,
+			  &r,
+			  RTEMS_MEMORY_PROTECTION_READ_PERMISSION,
+			  &mp_entry
+				);
+			directive_failed( status, "rtems_memory_protection_create_entry" );
+		}
+		/*
+		rtems_memory_protection_domain * the_domain = protection_domain;
+		rtems_memory_protection_entry *mpe;
+  		rtems_chain_node              *node;
+  		node = rtems_chain_first( &the_domain->active_mpe_chain );
+  		while ( ! rtems_chain_is_tail( &the_domain->active_mpe_chain, node ) ) {
+   			// mpe = (rtems_memory_protection_entry*)node;
+    		printk("i1 ");
+			node = rtems_chain_next( node );
+  		}
+		printk("a1 %lx\n", the_domain);
+		*/
+	}
+	creating->extensions = (void **) protection_domain;
+	return true;
+}
+
+void task_tlb_switch (  Thread_Control * current,  Thread_Control * next)
+
+{
+	char namecurrent[6];
+	char namenext[6];
+	//rtems_object_get_name(current->Object.id, 6, namecurrent);
+	//rtems_object_get_name(next->Object.id, 6, namenext);
+	//printk(namecurrent);
+	//printk(namenext);
+	
+	if(!strncmp(rtems_object_get_name(current->Object.id, 6, namecurrent),"TA",2)){
+		rtems_memory_protection_uninstall_domain( (rtems_memory_protection_domain *) current->extensions);
+	}
+	if(!strncmp(rtems_object_get_name(next->Object.id, 6, namenext),"TA",2)){
+		rtems_memory_protection_install_domain( (rtems_memory_protection_domain *) next->extensions);
+		/*
+		rtems_memory_protection_domain * the_domain = (rtems_memory_protection_domain *) next->extensions;
+		printk("a1 %lx\n", the_domain);
+
+		rtems_memory_protection_entry 	*mpe;
+  		rtems_chain_node              	*node;
+		rtems_status_code 				status;
+  		node = rtems_chain_first( &the_domain->active_mpe_chain );
+  		while ( ! rtems_chain_is_tail( &the_domain->active_mpe_chain, node ) ) {
+   			mpe = (rtems_memory_protection_entry*)node;
+    		printk("i1 %lx \n", mpe->region.base);
+    		if ( ! mpe->installed ) {
+		      status = rtems_memory_protection_install_entry( mpe );
+  	          if(status != 0){
+				printk("end in fatal error \n");
+  	          }
+		    }
+			node = rtems_chain_next( node );
+  		}
+		printk("d1 \n");
+		*/
+	}
+	
+
+}
+#endif
+
+bool task_container_create(Thread_Control * executing,  Thread_Control * creating)
 {
 	char namea[6];
-
 	if( !strncmp(rtems_object_get_name(creating->Object.id, 5, namea),"TA",2)){
-		
 		char nameb[6];
 		char filename[22];
 		rtems_object_get_name(executing->Object.id, 5, namea); 
@@ -30,27 +124,15 @@ bool test_create(Thread_Control * executing,  Thread_Control * creating)
 		nameb[3] = 0;
 
 		sprintf(filename,"contUSE_%s.txt",nameb);
-
-
-
-//		int * x = (int *) malloc( 2 * sizeof(int));
-//		x[0] = 3;
-//		x[1] = 4;
-//		creating->extensions = (void **)x;
 		LoadContainersFromDecodedAccessListFile(filename,  creating);
-		//creating->extensions[0] = 0xABCDEF;
-		//creating->extensions[1] = 0xABCDEF;
-
 		printf( "Thread create extensions %s.\n" ,filename);
-		
 	}
-
 	return true;
 }
 
 
 
-void test_switch (  Thread_Control * a,  Thread_Control * b)
+void task_container_switch (  Thread_Control * a,  Thread_Control * b)
 {
 
 	char namea[6];
@@ -98,7 +180,7 @@ void test_switch (  Thread_Control * a,  Thread_Control * b)
 
 rtems_task KillTaskFunction(rtems_task_argument argument)
 {
-  printf( "DONE !\n");
+  printk( "DONE !\n");
   MAGIC_BREAKPOINT;
   exit(0);
 }
