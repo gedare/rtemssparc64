@@ -1,4 +1,3 @@
-#include "system.h"
 #include <stdio.h>
 #include "../../common/magic-instruction.h"
 #include "../../common/allow.h"
@@ -142,10 +141,10 @@ int dijkstra(int chStart, int chEnd)
 	    }
 	}
 
-      printf("Shortest path is %d in cost. ", rgnNodes[chEnd].iDist);
-      printf("Path is: ");
-      print_path(rgnNodes, chEnd);
-      printf("\n");
+      //printf("Shortest path is %d in cost. ", rgnNodes[chEnd].iDist);
+      //printf("Path is: ");
+      //print_path(rgnNodes, chEnd);
+      //printf("\n");
     }
   return 0;
 }
