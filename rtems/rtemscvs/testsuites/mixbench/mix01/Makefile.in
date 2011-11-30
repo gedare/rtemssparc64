@@ -64,7 +64,8 @@ am__installdirs = "$(DESTDIR)$(rtems_testsdir)"
 PROGRAMS = $(rtems_tests_PROGRAMS)
 am_mix01_OBJECTS = init.$(OBJEXT) FileSystemImage.$(OBJEXT) \
 	crc_32.$(OBJEXT) qsort_small.$(OBJEXT) susan.$(OBJEXT) \
-	dijkstra.$(OBJEXT) allow.$(OBJEXT)
+	dijkstra.$(OBJEXT) allow.$(OBJEXT) dhry_1.$(OBJEXT) \
+	dhry_2.$(OBJEXT)
 mix01_OBJECTS = $(am_mix01_OBJECTS)
 mix01_DEPENDENCIES = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
 DEFAULT_INCLUDES = -I.@am__isrc@
@@ -207,7 +208,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 MANAGERS = io semaphore
 #mix01_SOURCES = init.c system.h FileSystemImage.c ../../mibench/crc/crc_32.c ../../mibench/qsort_small/qsort_small.c ../../mibench/susan_corners/susan.c
-mix01_SOURCES = init.c system.h FileSystemImage.c ../../mibench/crc/crc_32.c ../../mibench/qsort_small/qsort_small.c ../../mibench/susan_corners/susan.c ../../mibench/dijkstra/dijkstra.c ../../common/allow.c
+mix01_SOURCES = init.c system.h FileSystemImage.c ../../mibench/crc/crc_32.c ../../mibench/qsort_small/qsort_small.c ../../mibench/susan_corners/susan.c ../../mibench/dijkstra/dijkstra.c ../../common/allow.c ../dhrystone/dhry_1.c ../dhrystone/dhry_2.c
 AM_CPPFLAGS = -I$(top_srcdir)/../support/include \
 	-I$(top_srcdir)/../mibench/crc
 AM_CFLAGS = 
@@ -301,6 +302,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FileSystemImage.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/allow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/crc_32.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dhry_1.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dhry_2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dijkstra.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/init.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qsort_small.Po@am__quote@
@@ -389,6 +392,34 @@ allow.obj: ../../common/allow.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../../common/allow.c' object='allow.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o allow.obj `if test -f '../../common/allow.c'; then $(CYGPATH_W) '../../common/allow.c'; else $(CYGPATH_W) '$(srcdir)/../../common/allow.c'; fi`
+
+dhry_1.o: ../dhrystone/dhry_1.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT dhry_1.o -MD -MP -MF $(DEPDIR)/dhry_1.Tpo -c -o dhry_1.o `test -f '../dhrystone/dhry_1.c' || echo '$(srcdir)/'`../dhrystone/dhry_1.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/dhry_1.Tpo $(DEPDIR)/dhry_1.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../dhrystone/dhry_1.c' object='dhry_1.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o dhry_1.o `test -f '../dhrystone/dhry_1.c' || echo '$(srcdir)/'`../dhrystone/dhry_1.c
+
+dhry_1.obj: ../dhrystone/dhry_1.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT dhry_1.obj -MD -MP -MF $(DEPDIR)/dhry_1.Tpo -c -o dhry_1.obj `if test -f '../dhrystone/dhry_1.c'; then $(CYGPATH_W) '../dhrystone/dhry_1.c'; else $(CYGPATH_W) '$(srcdir)/../dhrystone/dhry_1.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/dhry_1.Tpo $(DEPDIR)/dhry_1.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../dhrystone/dhry_1.c' object='dhry_1.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o dhry_1.obj `if test -f '../dhrystone/dhry_1.c'; then $(CYGPATH_W) '../dhrystone/dhry_1.c'; else $(CYGPATH_W) '$(srcdir)/../dhrystone/dhry_1.c'; fi`
+
+dhry_2.o: ../dhrystone/dhry_2.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT dhry_2.o -MD -MP -MF $(DEPDIR)/dhry_2.Tpo -c -o dhry_2.o `test -f '../dhrystone/dhry_2.c' || echo '$(srcdir)/'`../dhrystone/dhry_2.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/dhry_2.Tpo $(DEPDIR)/dhry_2.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../dhrystone/dhry_2.c' object='dhry_2.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o dhry_2.o `test -f '../dhrystone/dhry_2.c' || echo '$(srcdir)/'`../dhrystone/dhry_2.c
+
+dhry_2.obj: ../dhrystone/dhry_2.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT dhry_2.obj -MD -MP -MF $(DEPDIR)/dhry_2.Tpo -c -o dhry_2.obj `if test -f '../dhrystone/dhry_2.c'; then $(CYGPATH_W) '../dhrystone/dhry_2.c'; else $(CYGPATH_W) '$(srcdir)/../dhrystone/dhry_2.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/dhry_2.Tpo $(DEPDIR)/dhry_2.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../dhrystone/dhry_2.c' object='dhry_2.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o dhry_2.obj `if test -f '../dhrystone/dhry_2.c'; then $(CYGPATH_W) '../dhrystone/dhry_2.c'; else $(CYGPATH_W) '$(srcdir)/../dhrystone/dhry_2.c'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

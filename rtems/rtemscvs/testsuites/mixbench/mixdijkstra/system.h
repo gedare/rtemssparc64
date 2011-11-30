@@ -20,17 +20,17 @@ rtems_task Init(
 );
 
 
-void test_switch (  Thread_Control * a,  Thread_Control * b);
-bool test_create(Thread_Control * executing,  Thread_Control * creating);
+void task_container_switch(  Thread_Control * a,  Thread_Control * b);
+bool task_container_create(Thread_Control * executing,  Thread_Control * creating);
 
 
 #define CONFIGURE_INITIAL_EXTENSIONS \
   { \
-    test_create,             /* create  */ \
+    task_container_create,   /* create  */ \
     NULL,                    /* start   */ \
     NULL,                    /* restart */ \
     NULL,                    /* delete  */ \
-    test_switch,             /* switch  */ \
+    task_container_switch,   /* switch  */ \
     NULL,                    /* begin   */ \
     NULL,                    /* exitted */ \
     NULL          			 /* fatal   */ \

@@ -40,12 +40,12 @@
 int dijkstra_main(int argc, char *argv[]);
 rtems_task TaskFunction( rtems_task_argument argument)
 {
-  printf( "\n\n*** dijkstra benchmark ***\n" );
+  puts( "\n\n*** dijkstra benchmark ***\n" );
 
   char *argv[] = {"dijkstra","/input.dat"}; /* small */
   dijkstra_main(2,argv);
 
-  printf( "*** end of dijkstra benchmark ***\n" );
+  puts( "*** end of dijkstra benchmark ***\n" );
 
 
   rtems_status_code status = rtems_task_delete( RTEMS_SELF );
@@ -62,9 +62,9 @@ rtems_task Init(
   rtems_status_code status;
 
 
-  printf("Unpacking tar filesystem\nThis may take awhile...\n");
+  puts("Unpacking tar filesystem\nThis may take awhile...\n");
 	if(Untar_FromMemory((void*)FileSystemImage, FileSystemImage_size) != 0) {
-	  printf("Can't unpack tar filesystem\n");
+	  puts("Can't unpack tar filesystem\n");
 	  exit(1);
 	}
 
