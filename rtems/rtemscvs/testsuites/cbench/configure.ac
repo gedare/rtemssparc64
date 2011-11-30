@@ -4,7 +4,7 @@
 
 AC_PREREQ(2.60)
 AC_INIT([rtems-c-src-tests-cbench],[_RTEMS_VERSION],[http://www.rtems.org/bugzilla])
-AC_CONFIG_SRCDIR([cbench01])
+AC_CONFIG_SRCDIR([cbench_ts_002t_0005f])
 RTEMS_TOP([../..],[..])
 
 RTEMS_CANONICAL_TARGET_CPU
@@ -60,6 +60,6 @@ AM_CONDITIONAL(LIBCHIP,[test "$RTEMS_BSP_FAMILY" != "posix"])
 
 # Explicitly list all Makefiles here
 AC_CONFIG_FILES([Makefile
-cbench_ts_2t_5f/Makefile
+cbench_ts_002t_0005f/Makefile
 ])
 AC_OUTPUT
