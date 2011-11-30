@@ -15,9 +15,22 @@ rtems_task Init(
   rtems_task_argument argument
 );
 
-rtems_task Task_1_through_3(
-  rtems_task_argument argument
-);
+void task_container_switch(  Thread_Control * a,  Thread_Control * b);
+bool task_container_create(Thread_Control * executing,  Thread_Control * creating);
+
+
+#define CONFIGURE_INITIAL_EXTENSIONS \
+  { \
+    task_container_create,   /* create  */ \
+    NULL,                    /* start   */ \
+    NULL,                    /* restart */ \
+    NULL,                    /* delete  */ \
+    task_container_switch,   /* switch  */ \
+    NULL,                    /* begin   */ \
+    NULL,                    /* exitted */ \
+    NULL          			 /* fatal   */ \
+  }
+
 
 /* configuration information */
 
