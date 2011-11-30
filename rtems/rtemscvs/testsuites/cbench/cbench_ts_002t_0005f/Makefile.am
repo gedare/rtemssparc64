@@ -8,7 +8,7 @@ rtems_tests_PROGRAMS = cbench01
 cbench01_SOURCES = ../shared/init.c ../shared/cbench.h \
 									../shared/params.h ../shared/params.i \
 									system.h cbench.c \
-									cbench01.c cbench01.h
+									generated.h generated.c
 
 #dist_rtems_tests_DATA = cbench01.scn
 #dist_rtems_tests_DATA += cbench01.doc
