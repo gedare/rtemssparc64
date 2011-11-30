@@ -4,27 +4,26 @@
 
 MANAGERS = all
 
-rtems_tests_PROGRAMS = iheap
-iheap_SOURCES = ../shared/init.c ../shared/pqbench.h \
- 									../shared/workload.c ../shared/workload.h \
+rtems_tests_PROGRAMS = cbench01
+cbench01_SOURCES = ../shared/init.c ../shared/cbench.h \
 									../shared/params.h ../shared/params.i \
-									system.h pqbench.c \
-									iheap.c iheap.h
+									system.h cbench.c \
+									cbench01.c cbench01.h
 
-#dist_rtems_tests_DATA = iheap.scn
-#dist_rtems_tests_DATA += iheap.doc
+#dist_rtems_tests_DATA = cbench01.scn
+#dist_rtems_tests_DATA += cbench01.doc
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../automake/compile.am
 include $(top_srcdir)/../automake/leaf.am
 
-iheap_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
+cbench01_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
 
-LINK_OBJS = $(iheap_OBJECTS) $(iheap_LDADD)
-LINK_LIBS = $(iheap_LDLIBS)
+LINK_OBJS = $(cbench01_OBJECTS) $(cbench01_LDADD)
+LINK_LIBS = $(cbench01_LDLIBS)
 
-iheap$(EXEEXT): $(iheap_OBJECTS) $(iheap_DEPENDENCIES)
-	@rm -f iheap$(EXEEXT)
+cbench01$(EXEEXT): $(cbench01_OBJECTS) $(cbench01_DEPENDENCIES)
+	@rm -f cbench01$(EXEEXT)
 	$(make-exe)
 
 include $(top_srcdir)/../automake/local.am
