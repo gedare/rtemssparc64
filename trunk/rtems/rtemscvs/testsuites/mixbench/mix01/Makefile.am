@@ -6,7 +6,7 @@ MANAGERS = io semaphore
 
 rtems_tests_PROGRAMS = mix01
 #mix01_SOURCES = init.c system.h FileSystemImage.c ../../mibench/crc/crc_32.c ../../mibench/qsort_small/qsort_small.c ../../mibench/susan_corners/susan.c
-mix01_SOURCES = init.c system.h FileSystemImage.c ../../mibench/crc/crc_32.c ../../mibench/qsort_small/qsort_small.c ../../mibench/susan_corners/susan.c ../../mibench/dijkstra/dijkstra.c ../../common/allow.c
+mix01_SOURCES = init.c system.h FileSystemImage.c ../../mibench/crc/crc_32.c ../../mibench/qsort_small/qsort_small.c ../../mibench/susan_corners/susan.c ../../mibench/dijkstra/dijkstra.c ../../common/allow.c ../dhrystone/dhry_1.c ../dhrystone/dhry_2.c
 
 #dist_rtems_tests_DATA = mix01.scn
 #dist_rtems_tests_DATA += mix01.doc

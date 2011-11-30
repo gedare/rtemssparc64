@@ -10,7 +10,9 @@
 #include <tmacros.h>
 
 #include "FileSystemImage.h"
+#include "FileSystemImage.h"
 #include <rtems/untar.h>
+
 
 /* functions */
 
@@ -18,30 +20,40 @@ rtems_task Init(
   rtems_task_argument argument
 );
 
-rtems_task Task_1_through_3(
-  rtems_task_argument argument
-);
-
-void test_switch (
-  Thread_Control * a,
-  Thread_Control * b
-);
-
-bool test_create(Thread_Control * executing,  Thread_Control * creating);
-
+#if 1
+void task_container_switch (  Thread_Control * a,  Thread_Control * b);
+bool task_container_create (Thread_Control * executing,  Thread_Control * creating);
 
 #define CONFIGURE_INITIAL_EXTENSIONS \
   { \
-    test_create,             /* create  */ \
+    task_container_create,   /* create  */ \
     NULL,                    /* start   */ \
     NULL,                    /* restart */ \
     NULL,                    /* delete  */ \
-    test_switch,             /* switch  */ \
+    task_container_switch,   /* switch  */ \
     NULL,                    /* begin   */ \
     NULL,                    /* exitted */ \
     NULL          			 /* fatal   */ \
   }
 
+#else
+
+void task_tlb_switch (  Thread_Control * a,  Thread_Control * b);
+bool task_tlb_create (Thread_Control * executing,  Thread_Control * creating);
+
+#define CONFIGURE_INITIAL_EXTENSIONS \
+  { \
+    task_tlb_create,   		 /* create  */ \
+    NULL,                    /* start   */ \
+    NULL,                    /* restart */ \
+    NULL,                    /* delete  */ \
+    task_tlb_switch,   		 /* switch  */ \
+    NULL,                    /* begin   */ \
+    NULL,                    /* exitted */ \
+    NULL          			 /* fatal   */ \
+  }
+
+#endif
 
 
 /* configuration information */
@@ -58,21 +70,21 @@ bool test_create(Thread_Control * executing,  Thread_Control * creating);
 /* tasks */
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 #define CONFIGURE_TICKS_PER_TIMESLICE       1
-#define CONFIGURE_MICROSECONDS_PER_TICK		RTEMS_MILLISECONDS_TO_MICROSECONDS(5)
+#define CONFIGURE_MICROSECONDS_PER_TICK		RTEMS_MILLISECONDS_TO_MICROSECONDS(10)
 
 
 
 #define CONFIGURE_INIT_TASK_STACK_SIZE 20*RTEMS_MINIMUM_STACK_SIZE
 
 #define CONFIGURE_EXTRA_TASK_STACKS         (20 * RTEMS_MINIMUM_STACK_SIZE)
-#define CONFIGURE_MAXIMUM_TASKS             6
+#define CONFIGURE_MAXIMUM_TASKS             7
 
 #include <rtems/confdefs.h>
 
 /* global variables */
 
-TEST_EXTERN rtems_id   Task_id[ 5 ];         /* array of task ids */
-TEST_EXTERN rtems_name Task_name[ 5 ];       /* array of task names */
+TEST_EXTERN rtems_id   Task_id[ 6 ];         /* array of task ids */
+TEST_EXTERN rtems_name Task_name[ 6 ];       /* array of task names */
 
 /* end of include file */
 

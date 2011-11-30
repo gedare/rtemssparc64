@@ -23,6 +23,12 @@
 #define CONFIGURE_INIT
 #include "system.h"
 #include "../../common/magic-instruction.h"
+#include "../../common/allow.h"
+#include <libcpu/mmu_support.h>
+#include <rtems/libmmu.h>
+#define ALIGN_UP(s, a)  (((s) + ((a) - 1)) & ~((a) - 1))
+
+
 
 
 rtems_task TaskFunction(
@@ -30,24 +36,44 @@ rtems_task TaskFunction(
 )
 
 {
-  int run= 20;
-  while(run){
-  	printf( "Hello World %d %d\n", (int)argument, run);
-  	run --;
+ 
+  int i;
+  void * base = (void *)0x0;
+  int bound = 0x2000;
+  rtems_status_code status;
+  rtems_memory_protection_entry *mp_entry;
+  rtems_memory_protection_region_descriptor r = {
+    .name = "1",
+    .base = 0xBB00000000,
+    .bounds = 0x2000
+  };
+  rtems_memory_protection_domain *protection_domain = NULL;
+
+  puts("go\n");
+  status = rtems_memory_protection_initialize();
+  directive_failed( status, "rtems_memory_protection_initialize" );
+  status = rtems_memory_protection_initialize_domain( protection_domain, 100 );
+  directive_failed( status, "rtems_memory_protection_initialize_domain" );
+
+  for(i=0;i<100;i++,r.base+= 0x2000 )
+  {
+	status = rtems_memory_protection_create_entry(
+      protection_domain,
+      &r,
+      RTEMS_MEMORY_PROTECTION_READ_PERMISSION,
+      &mp_entry
+  	);
+    directive_failed( status, "rtems_memory_protection_create_entry" );
   }
   
-  rtems_status_code status = rtems_task_delete( RTEMS_SELF );
+  rtems_memory_protection_install_domain(protection_domain);
+  rtems_memory_protection_uninstall_domain(protection_domain);
+
+  puts("end\n");
+  status = rtems_task_delete( RTEMS_SELF );
   directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
 }
 
-rtems_task KillTaskFunction(
-  rtems_task_argument argument
-)
-{
-  printf( "DONE !\n");
-  MAGIC_BREAKPOINT;
-  exit(0);
-}
 
 
 rtems_task Init(
@@ -57,7 +83,7 @@ rtems_task Init(
   rtems_time_of_day time;
   rtems_status_code status;
 
-  puts( "\n\n*** TEST 1 ***" );
+  puts( "\n\n*** TEST 1 XXY***" );
 
   build_time( &time, 12, 31, 1988, 9, 0, 0, 0 );
   status = rtems_clock_set( &time );
@@ -115,12 +141,14 @@ rtems_task Init(
   status = rtems_task_start( Task_id[ 1 ], TaskFunction, 1 );
   directive_failed( status, "rtems_task_start of TA1" );
 
+/*
   status = rtems_task_start( Task_id[ 2 ], TaskFunction, 2 );
   directive_failed( status, "rtems_task_start of TA2" );
 
   status = rtems_task_start( Task_id[ 3 ], TaskFunction, 3 );
   directive_failed( status, "rtems_task_start of TA3" );
 
+*/
   status = rtems_task_start( Task_id[ 4 ], KillTaskFunction, 3 );
   directive_failed( status, "rtems_task_start of TA4" );
 
