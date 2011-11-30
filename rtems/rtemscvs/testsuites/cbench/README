@@ -5,7 +5,7 @@ Naming convention
       rm=rate monotonic (periodic)
       co=cooperative (non-preemptive)
     
-    xt is x number of tasks
+    xxxt is xxx number (0 fill) of tasks
 
-    yf is y number of functions
+    yyyyf is yyyy (0 fill) number of functions
 
