@@ -1,0 +1,11 @@
+Naming convention
+  cbench_SP_xt_yf:
+    SP is scheduling policy, one of:
+      ts=timeslice
+      rm=rate monotonic (periodic)
+      co=cooperative (non-preemptive)
+    
+    xt is x number of tasks
+
+    yf is y number of functions
+
