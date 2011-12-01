@@ -5,9 +5,11 @@
 extern "C" {
 #endif
 
-#include "rtems/rtems/types.h"
+#include <rtems.h>
+#include <allow.h>
 
 /* cbench interface */
+extern void cbench_task_entry(rtems_task_argument argument);
 extern void cbench_initialize( void );
 extern void cbench_warmup( void );
 extern void cbench_work( void );
