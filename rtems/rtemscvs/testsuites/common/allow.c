@@ -1,8 +1,10 @@
 #include "allow.h"
 #include <stdlib.h>
+
+#ifdef MMUSTUFF
 #include <libcpu/mmu_support.h>
 #include <rtems/libmmu.h>
-
+#endif
 
 
 inline void * mymalloc(size_t size)
@@ -17,7 +19,7 @@ inline void * mymalloc(size_t size)
 	return ret;
 }
 
-#ifdef 0
+#ifdef MMUSTUFF
 #define TLB_MAX_DOMAIN_ENTRIES 100
 bool task_tlb_create(Thread_Control * executing,  Thread_Control * creating)
 {
