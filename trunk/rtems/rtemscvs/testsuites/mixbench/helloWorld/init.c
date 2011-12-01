@@ -24,11 +24,11 @@
 #include "system.h"
 #include "../../common/magic-instruction.h"
 #include "../../common/allow.h"
+
+#if 0
 #include <libcpu/mmu_support.h>
 #include <rtems/libmmu.h>
 #define ALIGN_UP(s, a)  (((s) + ((a) - 1)) & ~((a) - 1))
-
-
 
 
 rtems_task TaskFunction(
@@ -72,6 +72,19 @@ rtems_task TaskFunction(
   puts("end\n");
   status = rtems_task_delete( RTEMS_SELF );
   directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
+}
+#endif
+
+
+rtems_task TaskFunction(
+  rtems_task_argument argument
+)
+
+{
+	rtems_status_code status;
+	puts("end\n");
+	  status = rtems_task_delete( RTEMS_SELF );
+	  directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
 }
 
 

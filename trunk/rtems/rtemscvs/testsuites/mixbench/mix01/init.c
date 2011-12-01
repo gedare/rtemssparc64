@@ -23,9 +23,11 @@
 #define CONFIGURE_INIT
 #include "system.h"
 #include "../../common/magic-instruction.h"
+
+#if 0
 #include <libcpu/mmu_support.h>
 #include <rtems/libmmu.h>
-
+#endif
 
 #include "crc.h"
 #include <errno.h>
@@ -170,8 +172,8 @@ rtems_task Init(
 	}
 
   puts( "\n\n*** TEST 1 ***" );
-  status = rtems_memory_protection_initialize();
-  directive_failed( status, "rtems_memory_protection_initialize" );
+//  status = rtems_memory_protection_initialize();
+//  directive_failed( status, "rtems_memory_protection_initialize" );
 
   build_time( &time, 12, 31, 1988, 9, 0, 0, 0 );
   status = rtems_clock_set( &time );
