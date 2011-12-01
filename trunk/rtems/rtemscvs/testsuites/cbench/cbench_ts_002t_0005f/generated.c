@@ -3,6 +3,11 @@
  * GENERATED FILE (or it will be...)
  */
 
+void cbench_func_task_entry( void )
+{
+
+}
+
 int* cbench_func_001(ARGS_LIST)
 {
   CBENCH_PROLOG;

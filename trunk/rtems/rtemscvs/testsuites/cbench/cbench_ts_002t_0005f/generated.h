@@ -4,6 +4,7 @@
 
 #include "../shared/params.h"
 
+void cbench_func_task_entry(void);
 int* cbench_func_001(ARGS_LIST);
 int* cbench_func_002(ARGS_LIST);
 int* cbench_func_003(ARGS_LIST);
