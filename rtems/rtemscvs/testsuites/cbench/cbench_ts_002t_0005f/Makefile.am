@@ -4,26 +4,28 @@
 
 MANAGERS = all
 
-rtems_tests_PROGRAMS = cbench01
-cbench01_SOURCES = ../shared/init.c ../shared/cbench.h \
+rtems_tests_PROGRAMS = cbench_ts_002t_0005f
+cbench_ts_002t_0005f_SOURCES = ../shared/init.c ../shared/cbench.h \
 									../shared/params.h ../shared/params.i \
-									system.h cbench.c \
+									system.h cbench.c ../../common/allow.c \
 									generated.h generated.c
 
-#dist_rtems_tests_DATA = cbench01.scn
-#dist_rtems_tests_DATA += cbench01.doc
+#dist_rtems_tests_DATA = cbench_ts_002t_0005f.scn
+#dist_rtems_tests_DATA += cbench_ts_002t_0005f.doc
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(top_srcdir)/../automake/compile.am
 include $(top_srcdir)/../automake/leaf.am
 
-cbench01_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
+cbench_ts_002t_0005f_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
 
-LINK_OBJS = $(cbench01_OBJECTS) $(cbench01_LDADD)
-LINK_LIBS = $(cbench01_LDLIBS)
+AM_CPPFLAGS += -I$(top_srcdir)/../support/include -I$(top_srcdir)/../common
 
-cbench01$(EXEEXT): $(cbench01_OBJECTS) $(cbench01_DEPENDENCIES)
-	@rm -f cbench01$(EXEEXT)
+LINK_OBJS = $(cbench_ts_002t_0005f_OBJECTS) $(cbench_ts_002t_0005f_LDADD)
+LINK_LIBS = $(cbench_ts_002t_0005f_LDLIBS)
+
+cbench_ts_002t_0005f$(EXEEXT): $(cbench_ts_002t_0005f_OBJECTS) $(cbench_ts_002t_0005f_DEPENDENCIES)
+	@rm -f cbench_ts_002t_0005f$(EXEEXT)
 	$(make-exe)
 
 include $(top_srcdir)/../automake/local.am

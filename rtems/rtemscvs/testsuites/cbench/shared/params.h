@@ -2,12 +2,10 @@
 #define CBENCH_PARAM_NUM_CALL_BY_REF (2)
 #define CBENCH_PARAM_NUM_CALL_BY_VALUE (2)
 #define CBENCH_PARAM_FUNC_CALLS_PER_100_INSN (5)
-#define CBENCH_FUNC_RETURN_PTR (3)
-#define CBENCH_FUNC_RETURN_INT (1)
-#define CBENCH_FUNC_RETURN_VOID (1)
 
 #define DEFAULT_PERMISSION (3LL)
-#define ARGS_LIST (int* a, int* b, int c, int d)
+#define ARGS_LIST \
+  int* a, int* b, int c, int d
 
 #define DECLARATIONS \
   int *d1; \
@@ -16,8 +14,8 @@
   int s2;
 
 #define ALLOCATIONS \
-  d1 = mymalloc( *sizeof(int));\
-  d2 = mymalloc( *sizeof(int));
+  d1 = mymalloc(1*sizeof(int));\
+  d2 = mymalloc(1*sizeof(int));
 
 #define ASSIGNMENTS \
   *d1 = 68937693;\
