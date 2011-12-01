@@ -17,7 +17,7 @@ rtems_task Init(
 )
 {
 
-  /* initialize benchmark */
+  /* initialize benchmark. create tasks and initialize structures. */
   cbench_initialize();
 
   /* start measurement */
