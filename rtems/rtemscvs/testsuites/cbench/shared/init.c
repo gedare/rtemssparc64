@@ -12,6 +12,8 @@
 
 #include "cbench.h"
 
+#include <magic-instruction.h>
+
 rtems_task Init(
   rtems_task_argument ignored
 )

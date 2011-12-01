@@ -3,6 +3,8 @@
 
 #include "generated.h"
 
+#define CBENCH_DEBUG
+
 #include <tmacros.h>
 static rtems_id Barrier;
 static rtems_id Tasks[NUM_TASKS];
@@ -73,5 +75,10 @@ void cbench_work( ) {
   if ( released != NUM_TASKS ) {
     printf("ERROR: barrier released %" PRIu32 " < %d\n", released, NUM_TASKS);
   }
+
+#ifdef CBENCH_DEBUG
+  /* sleep for a bit to allow printfs to flush to console */
+  rtems_task_wake_after(2);
+#endif
 }
 
