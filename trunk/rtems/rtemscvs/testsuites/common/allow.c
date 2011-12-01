@@ -1,6 +1,7 @@
 #include "allow.h"
 #include <stdlib.h>
 
+#include "magic-instruction.h"
 #ifdef MMUSTUFF
 #include <libcpu/mmu_support.h>
 #include <rtems/libmmu.h>
