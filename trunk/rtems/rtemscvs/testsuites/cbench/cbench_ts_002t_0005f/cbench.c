@@ -5,6 +5,12 @@
 
 #define CBENCH_DEBUG
 
+#if defined(CBENCH_DEBUG)
+#define DPRINTF(str, vargs) printf(str, vargs)
+#else
+#define DPRINTF(str, vargs) do { } while 0
+#endif
+
 #include <tmacros.h>
 static rtems_id Barrier;
 static rtems_id Tasks[NUM_TASKS];
