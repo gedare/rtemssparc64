@@ -62,5 +62,6 @@ AM_CONDITIONAL(LIBCHIP,[test "$RTEMS_BSP_FAMILY" != "posix"])
 AC_CONFIG_FILES([Makefile
 cbench_ts_002t_0005f/Makefile
 cbench_ts_002t_0020f/Makefile
+cbench_ts_002t_0100f/Makefile
 ])
 AC_OUTPUT
