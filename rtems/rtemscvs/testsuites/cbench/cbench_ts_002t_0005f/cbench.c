@@ -6,13 +6,15 @@
 #define CBENCH_DEBUG
 
 #if defined(CBENCH_DEBUG)
-#define DPRINTF(str, vargs) printf(str, vargs)
+#include <stdio.h>
+#define DPRINTF(...) \
+      printf(__VA_ARGS__)
 #else
-#define DPRINTF(str, vargs) do { } while 0
+#define DPRINTF(...)
 #endif
 
 #include <tmacros.h>
-static rtems_id Barrier;
+rtems_id Barrier;
 static rtems_id Tasks[NUM_TASKS];
 static int Priorities[NUM_TASKS] = { 1, 2 }; /* Must be <250 */
 
@@ -22,9 +24,11 @@ void cbench_task_entry( rtems_task_argument argument )
   CBENCH_PROLOG;
   int *rv;
 
+  DPRINTF("%d: Entering barrier\n", argument);
   status = rtems_barrier_wait( Barrier, RTEMS_NO_TIMEOUT );
   directive_failed(status, "rtems_barrier_wait");
 
+  DPRINTF("%d: Calling cbench_func_001\n", argument);
   FCALL( rv, cbench_func_001 );
 
   if ( rv )
@@ -49,6 +53,7 @@ void cbench_initialize( ) {
 
   /* create tasks */
   for ( i = 0; i < NUM_TASKS; i++ ) {
+    DPRINTF("Creating task\n");
     status = rtems_task_create(
       rtems_build_name('T','A','0'+i/10,'0'+i%10),
       Priorities[i],
@@ -62,6 +67,7 @@ void cbench_initialize( ) {
 
   /* start tasks, should preempt this task */
   for ( i = 0; i < NUM_TASKS; i++ ) {
+    DPRINTF("Starting task\n");
     status = rtems_task_start( Tasks[i], cbench_task_entry, i );
     directive_failed(status, "rtems_task_start" );
   }
@@ -75,6 +81,7 @@ void cbench_work( ) {
   rtems_status_code status;
   uint32_t          released;
 
+  DPRINTF("Releasing tasks\n");
   /* release the tasks. preempts this task. */
   status = rtems_barrier_release( Barrier, &released );
   directive_failed(status, "rtems_barrier_release");
