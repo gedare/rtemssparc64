@@ -7,8 +7,8 @@ MANAGERS = all
 rtems_tests_PROGRAMS = cbench_ts_002t_0005f
 cbench_ts_002t_0005f_SOURCES = ../shared/init.c ../shared/cbench.h \
 									../shared/params.h ../shared/params.i \
-									system.h cbench.c ../../common/allow.c \
-									generated.h generated.c
+									system.h ../../common/allow.c \
+									generated.h generated.c ../shared/cbench_ts_002t.c
 
 #dist_rtems_tests_DATA = cbench_ts_002t_0005f.scn
 #dist_rtems_tests_DATA += cbench_ts_002t_0005f.doc
@@ -20,6 +20,7 @@ include $(top_srcdir)/../automake/leaf.am
 cbench_ts_002t_0005f_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
 
 AM_CPPFLAGS += -I$(top_srcdir)/../support/include -I$(top_srcdir)/../common
+AM_CPPFLAGS += -I$(top_srcdir)/./ -I$(top_srcdir)/../shared
 
 LINK_OBJS = $(cbench_ts_002t_0005f_OBJECTS) $(cbench_ts_002t_0005f_LDADD)
 LINK_LIBS = $(cbench_ts_002t_0005f_LDLIBS)
