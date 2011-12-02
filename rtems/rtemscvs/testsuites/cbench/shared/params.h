@@ -1,53 +1,84 @@
+/* this will be a generated file */
+/* Parameters:
+ *  num pointer arguments
+ *  num integer arguments
+ *  num dynamic return val
+ *  num function calls per 100 insn (% insn call)
+ *  num memops per 100 insn (%mem)
+ *  workload layout
+ */
+
+#ifndef __PARAMS_H_
+#define __PARAMS_H_
+
+#include <rtems.h>
+
+#define CBENCH_INSN_MULTIPLIER (1)
+#define CBENCH_WORKLOAD CBENCH_WORKLOAD_CPU_MEM_CALL
 
 #define CBENCH_PARAM_NUM_CALL_BY_REF (2)
 #define CBENCH_PARAM_NUM_CALL_BY_VALUE (2)
-#define CBENCH_PARAM_FUNC_CALLS_PER_100_INSN (5)
+#define CBENCH_PARAM_FUNC_CALLS_PER_1000_INSN (10)
+#define CBENCH_PARAM_MEMOP_PER_1000_INSN (200)
 
-#define DEFAULT_PERMISSION (3LL)
 #define ARGS_LIST \
-  int* a, int* b, int c, int d
+  int* buf1,\
+  int len1,\
+  int* buf2,\
+  int len2,\
+  int depth,\
+  rtems_task_argument argument
 
-#define DECLARATIONS \
-  int *d1; \
-  int *d2; \
-  int s1; \
-  int s2;
+#define CALL_ARGS buf1, len1, buf2, len2, depth+1, argument
 
-#define ALLOCATIONS \
-  d1 = mymalloc(1*sizeof(int));\
-  d2 = mymalloc(1*sizeof(int));
+typedef int* (*ptrfuncptr)(ARGS_LIST);
+typedef int (*intfuncptr)(ARGS_LIST);
+typedef void (*voidfuncptr)(ARGS_LIST);
 
-#define ASSIGNMENTS \
-  *d1 = 68937693;\
-  *d2 = 1928616;\
-  s1 = 29373;\
-  s2 = 3289073;
+#define TASK_DECLARATIONS \
+  int *buf1; \
+  int len1 = 1000; \
+  int *buf2; \
+  int len2 = 20; \
+  int depth = 0; \
+  int i = 0;
 
-#define CBENCH_PROLOG \
-  DECLARATIONS \
-  ALLOCATIONS \
-  ASSIGNMENTS
+#define TASK_ALLOCATIONS \
+  buf1 = mymalloc(len1*sizeof(int));\
+  buf2 = mymalloc(len2*sizeof(int));
 
-#define CBENCH_EPILOG_RET_PTR \
-  ALLOW(d1, sizeof(int), DEFAULT_PERMISSION);\
-  free(d2);\
-  return d1;
+#define TASK_ASSIGNMENTS \
+  for ( i = 0; i < len1; i++ ) buf1[i] = 1;\
+  for ( i = 0; i < len2; i++ ) buf2[i] = 2;
 
-#define CBENCH_EPILOG_RET_INT \
-  free(d1);\
-  free(d2);\
-  return s1;
+#define CBENCH_TASK_PROLOG \
+  TASK_DECLARATIONS \
+  TASK_ALLOCATIONS \
+  TASK_ASSIGNMENTS 
 
-#define CBENCH_EPILOG_VOID \
-  free(d1);\
-  free(d2);\
-  return;
+#define CBENCH_TASK_EPILOG \
+  free(buf1);\
+  free(buf2);\
+  rtems_task_delete(rtems_task_self());
 
 #define ALLOWS \
-  ALLOW(d1, sizeof(int), DEFAULT_PERMISSION);\
-  ALLOW(d2, sizeof(int), DEFAULT_PERMISSION);
+  ALLOW(buf1, len1*sizeof(int), DEFAULT_PERMISSION);\
+  ALLOW(buf2, len2*sizeof(int), DEFAULT_PERMISSION);
 
-#define FCALL(retval, fname) \
+#define FCALL(fptr) \
   ALLOWS\
-  retval = fname(d1, d2, s1, s2)
+  if ( FUNC_RETURN_PTR > depth+1 ) {\
+    int * retval;\
+    ptrfuncptr newfptr = fptr;\
+    retval = (*newfptr)(CALL_ARGS);\
+    free(retval);\
+  } else if ( FUNC_RETURN_INT > FUNC_RETURN_PTR+depth+1 ) {\
+    int retval;\
+    intfuncptr newfptr = fptr;\
+    retval = (*newfptr)(CALL_ARGS);\
+  } else {\
+    voidfuncptr newfptr = fptr;\
+    (*newfptr)(CALL_ARGS);\
+  }
 
+#endif
