@@ -67,26 +67,98 @@ def get_layout( l ):
     assert False, "Invalid layout"
 
 ## Function arguments are more involved
+def get_intlist(v):
+  return ['len'+str(x) for x in range(1,v+1)]
+
+def get_reflist(r):
+  return ['buf'+str(x) for x in range(1,r+1)]
+
 def get_args_list(a,r,v):
-  return ''
+  intlist = get_intlist(v)
+  reflist = get_reflist(r)
+
+  args_list = '#define ARGS_LIST \\\n'
+  for s in reflist:
+    args_list = args_list + '  int* ' + s + ', \\\n'
+  for s in intlist:
+    args_list = args_list + '  int ' + s + ', \\\n'
+  args_list = args_list + '  int depth, \\\n'
+  args_list = args_list + '  rtems_task_argument argument\n'
+  
+  return args_list
 
 def get_call_list(a,r,v):
-  return ''
+  intlist = get_intlist(v)
+  reflist = get_reflist(r)
+  
+  call_list = '#define CALL_ARGS '
+  for s in reflist:
+    call_list = call_list + s + ', '
+  for s in intlist:
+    call_list = call_list + s + ', '
+  call_list = call_list + 'depth+1, argument\n'
+
+  return call_list
+
+def get_intlen( s ):
+#  return str(int(random.random() * 1000)) #[0,1000]
+  return str(1000)
 
 def get_task_decls(a,r,v):
-  return ''
+  intlist = get_intlist(v)
+  reflist = get_reflist(r)
+  
+  decls = '#define TASK_DECLARATIONS \\\n'
+  for s in reflist:
+    decls = decls + '  int *' + s + '; \\\n'
+  for s in intlist:
+    decls = decls + '  int ' + s + ' = ' + get_intlen(s) + '; \\\n'
+  decls = decls + '  int depth = 0; \\\n'
+  decls = decls + '  int i = 0; \\\n'
+  return decls
 
-def get_task_alloc(r):
-  return ''
+def get_task_alloc(r,v):
+  intlist = get_intlist(v)
+  reflist = get_reflist(r)
+
+  alloc = '#define TASK_ALLOCATIONS \\\n'
+  for x in range(len(reflist)-1):
+    alloc = alloc + '  '  + reflist[x] + ' = mymalloc(' + intlist[x] + '*sizeof(int));\\\n'
+  alloc = alloc + '  ' + reflist[len(reflist)-1] + ' = mymalloc(' + intlist[len(reflist)-1] + '*sizeof(int));\n'
+
+  return alloc
 
 def get_task_assign(r,v):
-  return ''
+  intlist = get_intlist(v)
+  reflist = get_reflist(r)
+
+  assign = '#define TASK_ASSIGNMENTS \\\n'
+  for x in range(len(reflist)-1):
+    assign = assign + '  for ( i = 0; i < ' + intlist[x] + '; i++ ) ' + reflist[x] + '[i] = 1;\\\n'
+  assign = assign + '  for ( i = 0; i < ' + intlist[len(reflist)-1] + '; i++ ) ' + reflist[len(reflist)-1] + '[i] = 1;\n'
+
+  return assign
 
 def get_task_epilog(r):
-  return ''
+  reflist = get_reflist(r)
+
+  epilog = '#define CBENCH_TASK_EPILOG \\\n'
+  for s in reflist:
+    epilog = epilog + '  free(' + s + ');\\\n'
+  epilog = epilog + '  rtems_task_delete(rtems_task_self());\n'
+  return epilog
 
 def get_allows(r,v):
-  return ''
+  intlist = get_intlist(v)
+  reflist = get_reflist(r)
+
+  allows = '#define ALLOWS \\\n'
+  for x in range(len(reflist)-1):
+    allows = allows + '  ALLOW(' + reflist[x] + ', ' + intlist[x] + '*sizeof(int), DEFAULT_PERMISSION);\\\n'
+
+  allows = allows + '  ALLOW(' + reflist[len(reflist)-1] + ', ' + intlist[len(reflist)-1] + '*sizeof(int), DEFAULT_PERMISSION);\\\n'
+
+  return allows
 
 def get_includes():
   return '#include <rtems.h>\n'
@@ -159,8 +231,15 @@ def main():
     else:
       assert False, "unhandled option"
     header = header + opt + " " + arg + " "
-
   header = header + " */"
+
+  ## error check inputs
+  assert (insnmult > 0), "Error: i <= 0"
+  assert (numargs == callbyref+callbyval), "Error: n != r+v"
+  assert (callbyref <= callbyval), "Error: callbyval must be >= callbyref"
+  assert (memoprate < 1000), "Error: m >= 1000"
+  assert (fcallrate < 1000), "Error: f >= 1000"
+  assert (layout < 8), "Error: l > 7"
 
   # Create output
   f = open('params.h', 'w')
@@ -180,7 +259,7 @@ def main():
   f.write(get_call_list(numargs,callbyref,callbyval) + '\n')
   f.write(get_typedefs() + '\n')
   f.write(get_task_decls(numargs,callbyref,callbyval) + '\n')
-  f.write(get_task_alloc(callbyref) + '\n')
+  f.write(get_task_alloc(callbyref,callbyval) + '\n')
   f.write(get_task_assign(callbyref,callbyval) + '\n')
   f.write(get_task_epilog(callbyref) + '\n')
   f.write(get_allows(callbyref,callbyval) + '\n')
