@@ -6,7 +6,7 @@ MANAGERS = all
 
 rtems_tests_PROGRAMS = cbench_ts_002t_0005f
 cbench_ts_002t_0005f_SOURCES = ../shared/init.c ../shared/cbench.h \
-									../shared/params.h ../shared/params.i \
+									../shared/params.h \
 									system.h ../../common/allow.c \
 									generated.h generated.c ../shared/cbench_ts_002t.c
 
