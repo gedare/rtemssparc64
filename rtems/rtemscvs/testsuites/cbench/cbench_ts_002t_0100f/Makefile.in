@@ -207,7 +207,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 MANAGERS = all
 cbench_ts_002t_0100f_SOURCES = ../shared/init.c ../shared/cbench.h \
-									../shared/params.h ../shared/params.i \
+									../shared/params.h \
 									system.h ../../common/allow.c \
 									generated.h generated.c ../shared/cbench_ts_002t.c
 
