@@ -53,7 +53,7 @@ extern void cbench_work( void );
       if ( p >= buf1 + len1 ) p = buf1;\
     }\
     if ( depth < NUM_FUNCTIONS ) { \
-      if ( i % (1000/CBENCH_PARAM_FUNC_CALLS_PER_1000_INSN) == 0 ) { \
+      if ( i % (depth*1000/CBENCH_PARAM_FUNC_CALLS_PER_1000_INSN) == 0 ) { \
         FCALL(f);\
       }\
     }\
@@ -61,7 +61,9 @@ extern void cbench_work( void );
 
 #define MEM_WORKLOAD \
   p = buf1;\
-  for ( i = 0; i < CBENCH_INSN_MULTIPLIER * CBENCH_PARAM_MEMOP_PER_1000_INSN; i++ ) {\
+  for ( i = 0; \
+      i < CBENCH_INSN_MULTIPLIER * CBENCH_PARAM_MEMOP_PER_1000_INSN;\
+      i++ ) {\
     *p++ = i;\
   }\
 
@@ -76,7 +78,7 @@ extern void cbench_work( void );
 #define CALL_WORKLOAD \
   if ( depth < NUM_FUNCTIONS ) { \
     for ( i = 0;\
-        i < CBENCH_INSN_MULTIPLIER * CBENCH_PARAM_FUNC_CALLS_PER_1000_INSN;\
+        i < 1 + (CBENCH_INSN_MULTIPLIER * CBENCH_PARAM_FUNC_CALLS_PER_1000_INSN)/depth;\
         i++ ) { \
       FCALL(f);\
     }\
