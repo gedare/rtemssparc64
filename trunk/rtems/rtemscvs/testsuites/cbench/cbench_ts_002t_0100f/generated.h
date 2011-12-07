@@ -3,14 +3,18 @@
 #define __GENERATED_H_
 
 #define NUM_TASKS (2)
-#define NUM_FUNCTIONS (20)
+#define NUM_FUNCTIONS (100)
 
 #define FUNC_RETURN_PTR (3)
 #define FUNC_RETURN_INT (1)
-#define FUNC_RETURN_VOID (16)
+#define FUNC_RETURN_VOID (96)
 
 #include "../shared/params.h"
 #include "../shared/cbench.h"
+
+int* cbench_func_pleaf(ARGS_LIST);
+int cbench_func_ileaf(ARGS_LIST);
+void cbench_func_vleaf(ARGS_LIST);
 
 int* cbench_func_0001(ARGS_LIST);
 int* cbench_func_0002(ARGS_LIST);

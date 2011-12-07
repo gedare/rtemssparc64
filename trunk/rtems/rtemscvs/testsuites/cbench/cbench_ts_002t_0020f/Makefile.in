@@ -63,7 +63,7 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(rtems_testsdir)"
 PROGRAMS = $(rtems_tests_PROGRAMS)
 am_cbench_ts_002t_0020f_OBJECTS = init.$(OBJEXT) allow.$(OBJEXT) \
-	generated.$(OBJEXT) cbench_ts_002t.$(OBJEXT)
+	generated.$(OBJEXT) cbench_ts.$(OBJEXT)
 cbench_ts_002t_0020f_OBJECTS = $(am_cbench_ts_002t_0020f_OBJECTS)
 cbench_ts_002t_0020f_DEPENDENCIES =  \
 	$(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
@@ -208,12 +208,12 @@ top_srcdir = @top_srcdir@
 MANAGERS = all
 cbench_ts_002t_0020f_SOURCES = ../shared/init.c ../shared/cbench.h \
 									../shared/params.h \
-									system.h ../../common/allow.c \
-									generated.h generated.c ../shared/cbench_ts_002t.c
+									../shared/system.h ../../common/allow.c \
+									generated.h generated.c ../shared/cbench_ts.c
 
 AM_CPPFLAGS = -I$(top_srcdir)/../support/include \
-	-I$(top_srcdir)/../common -I$(top_srcdir)/./ \
-	-I$(top_srcdir)/../shared
+	-I$(top_srcdir)/../common -I$(top_srcdir)/ \
+	-I$(top_srcdir)/shared
 AM_CFLAGS = 
 AM_CXXFLAGS = 
 CLEANFILES = *.num *.nxe *.elf *.srec* *.bin *.bt *.ralf
@@ -302,7 +302,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/allow.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cbench_ts_002t.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cbench_ts.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/generated.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/init.Po@am__quote@
 
@@ -348,19 +348,19 @@ allow.obj: ../../common/allow.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o allow.obj `if test -f '../../common/allow.c'; then $(CYGPATH_W) '../../common/allow.c'; else $(CYGPATH_W) '$(srcdir)/../../common/allow.c'; fi`
 
-cbench_ts_002t.o: ../shared/cbench_ts_002t.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cbench_ts_002t.o -MD -MP -MF $(DEPDIR)/cbench_ts_002t.Tpo -c -o cbench_ts_002t.o `test -f '../shared/cbench_ts_002t.c' || echo '$(srcdir)/'`../shared/cbench_ts_002t.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/cbench_ts_002t.Tpo $(DEPDIR)/cbench_ts_002t.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../shared/cbench_ts_002t.c' object='cbench_ts_002t.o' libtool=no @AMDEPBACKSLASH@
+cbench_ts.o: ../shared/cbench_ts.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cbench_ts.o -MD -MP -MF $(DEPDIR)/cbench_ts.Tpo -c -o cbench_ts.o `test -f '../shared/cbench_ts.c' || echo '$(srcdir)/'`../shared/cbench_ts.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/cbench_ts.Tpo $(DEPDIR)/cbench_ts.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../shared/cbench_ts.c' object='cbench_ts.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cbench_ts_002t.o `test -f '../shared/cbench_ts_002t.c' || echo '$(srcdir)/'`../shared/cbench_ts_002t.c
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cbench_ts.o `test -f '../shared/cbench_ts.c' || echo '$(srcdir)/'`../shared/cbench_ts.c
 
-cbench_ts_002t.obj: ../shared/cbench_ts_002t.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cbench_ts_002t.obj -MD -MP -MF $(DEPDIR)/cbench_ts_002t.Tpo -c -o cbench_ts_002t.obj `if test -f '../shared/cbench_ts_002t.c'; then $(CYGPATH_W) '../shared/cbench_ts_002t.c'; else $(CYGPATH_W) '$(srcdir)/../shared/cbench_ts_002t.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/cbench_ts_002t.Tpo $(DEPDIR)/cbench_ts_002t.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../shared/cbench_ts_002t.c' object='cbench_ts_002t.obj' libtool=no @AMDEPBACKSLASH@
+cbench_ts.obj: ../shared/cbench_ts.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cbench_ts.obj -MD -MP -MF $(DEPDIR)/cbench_ts.Tpo -c -o cbench_ts.obj `if test -f '../shared/cbench_ts.c'; then $(CYGPATH_W) '../shared/cbench_ts.c'; else $(CYGPATH_W) '$(srcdir)/../shared/cbench_ts.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/cbench_ts.Tpo $(DEPDIR)/cbench_ts.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../shared/cbench_ts.c' object='cbench_ts.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cbench_ts_002t.obj `if test -f '../shared/cbench_ts_002t.c'; then $(CYGPATH_W) '../shared/cbench_ts_002t.c'; else $(CYGPATH_W) '$(srcdir)/../shared/cbench_ts_002t.c'; fi`
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cbench_ts.obj `if test -f '../shared/cbench_ts.c'; then $(CYGPATH_W) '../shared/cbench_ts.c'; else $(CYGPATH_W) '$(srcdir)/../shared/cbench_ts.c'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

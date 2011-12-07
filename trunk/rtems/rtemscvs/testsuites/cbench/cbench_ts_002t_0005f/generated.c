@@ -44,7 +44,7 @@ int cbench_func_0004(ARGS_LIST)
 void cbench_func_0005(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = NULL;
+  voidfuncptr f = &cbench_func_vleaf;
 
   CBENCH_WORKLOAD;
 
