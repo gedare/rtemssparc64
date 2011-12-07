@@ -5,178 +5,178 @@
 
 #include "generated.h"
 
-int* cbench_func_0001(ARGS_LIST)
+int* cbench_func_00001(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  ptrfuncptr f = &cbench_func_0002;
+  ptrfuncptr f = &cbench_func_00002;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_RET_PTR;
 }
-int* cbench_func_0002(ARGS_LIST)
+int* cbench_func_00002(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  ptrfuncptr f = &cbench_func_0003;
+  ptrfuncptr f = &cbench_func_00003;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_RET_PTR;
 }
-int* cbench_func_0003(ARGS_LIST)
+int* cbench_func_00003(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  intfuncptr f = &cbench_func_0004;
+  intfuncptr f = &cbench_func_00004;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_RET_PTR;
 }
-int cbench_func_0004(ARGS_LIST)
+int cbench_func_00004(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0005;
+  voidfuncptr f = &cbench_func_00005;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_RET_INT;
 }
-void cbench_func_0005(ARGS_LIST)
+void cbench_func_00005(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0006;
+  voidfuncptr f = &cbench_func_00006;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0006(ARGS_LIST)
+void cbench_func_00006(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0007;
+  voidfuncptr f = &cbench_func_00007;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0007(ARGS_LIST)
+void cbench_func_00007(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0008;
+  voidfuncptr f = &cbench_func_00008;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0008(ARGS_LIST)
+void cbench_func_00008(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0009;
+  voidfuncptr f = &cbench_func_00009;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0009(ARGS_LIST)
+void cbench_func_00009(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0010;
+  voidfuncptr f = &cbench_func_00010;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0010(ARGS_LIST)
+void cbench_func_00010(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0011;
+  voidfuncptr f = &cbench_func_00011;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0011(ARGS_LIST)
+void cbench_func_00011(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0012;
+  voidfuncptr f = &cbench_func_00012;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0012(ARGS_LIST)
+void cbench_func_00012(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0013;
+  voidfuncptr f = &cbench_func_00013;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0013(ARGS_LIST)
+void cbench_func_00013(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0014;
+  voidfuncptr f = &cbench_func_00014;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0014(ARGS_LIST)
+void cbench_func_00014(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0015;
+  voidfuncptr f = &cbench_func_00015;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0015(ARGS_LIST)
+void cbench_func_00015(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0016;
+  voidfuncptr f = &cbench_func_00016;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0016(ARGS_LIST)
+void cbench_func_00016(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0017;
+  voidfuncptr f = &cbench_func_00017;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0017(ARGS_LIST)
+void cbench_func_00017(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0018;
+  voidfuncptr f = &cbench_func_00018;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0018(ARGS_LIST)
+void cbench_func_00018(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0019;
+  voidfuncptr f = &cbench_func_00019;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0019(ARGS_LIST)
+void cbench_func_00019(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = &cbench_func_0020;
+  voidfuncptr f = &cbench_func_00020;
 
   CBENCH_WORKLOAD;
 
   CBENCH_EPILOG_VOID;
 }
-void cbench_func_0020(ARGS_LIST)
+void cbench_func_00020(ARGS_LIST)
 {
   CBENCH_PROLOG;
   voidfuncptr f = &cbench_func_vleaf;

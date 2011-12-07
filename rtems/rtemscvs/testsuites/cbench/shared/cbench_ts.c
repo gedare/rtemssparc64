@@ -5,7 +5,7 @@
 
 #include <tmacros.h>
 rtems_id Barrier;
-static rtems_id Tasks[NUM_TASKS];
+static rtems_id Tasks[CBENCH_NUM_TASKS];
 
 int* cbench_func_pleaf(ARGS_LIST) {
   CBENCH_PROLOG;
@@ -29,11 +29,11 @@ void cbench_task_entry( rtems_task_argument argument )
 {
   rtems_status_code status;
 #if (1 <= FUNC_RETURN_PTR)
-    ptrfuncptr f = &cbench_func_0001;
+    ptrfuncptr f = &cbench_func_00001;
 #elif (1 <= FUNC_RETURN_PTR + FUNC_RETURN_INT)
-    intfuncptr f = &cbench_func_0001;
+    intfuncptr f = &cbench_func_00001;
 #else
-    voidfuncptr f = &cbench_func_0001;
+    voidfuncptr f = &cbench_func_00001;
 #endif
   CBENCH_TASK_PROLOG;
 
@@ -47,7 +47,7 @@ void cbench_task_entry( rtems_task_argument argument )
   status = rtems_barrier_wait( Barrier, RTEMS_NO_TIMEOUT );
   directive_failed(status, "rtems_barrier_wait");
 
-  DPRINTF("%d: Calling cbench_func_0001\n", argument);
+  DPRINTF("%d: Calling cbench_func_00001\n", argument);
   FCALL(f);
 
   CBENCH_TASK_EPILOG;
@@ -68,7 +68,7 @@ void cbench_initialize( ) {
   directive_failed(status, "rtems_barrier_create");
 
   /* create tasks */
-  for ( i = 0; i < NUM_TASKS; i++ ) {
+  for ( i = 0; i < CBENCH_NUM_TASKS; i++ ) {
     DPRINTF("Creating task\n");
     status = rtems_task_create(
       rtems_build_name('T','A','0'+i/10,'0'+i%10),
@@ -83,7 +83,7 @@ void cbench_initialize( ) {
   }
 
   /* start tasks, should preempt this task */
-  for ( i = 0; i < NUM_TASKS; i++ ) {
+  for ( i = 0; i < CBENCH_NUM_TASKS; i++ ) {
     DPRINTF("Starting task\n");
     status = rtems_task_start( Tasks[i], cbench_task_entry, i );
     directive_failed(status, "rtems_task_start" );
@@ -100,8 +100,8 @@ void cbench_warmup( ) {
   /* release the tasks. preempts this task. */
   status = rtems_barrier_release( Barrier, &released );
   directive_failed(status, "rtems_barrier_release");
-  if ( released != NUM_TASKS ) {
-    printf("ERROR: barrier released %" PRIu32 " < %d\n", released, NUM_TASKS);
+  if ( released != CBENCH_NUM_TASKS ) {
+    printf("ERROR: barrier released %" PRIu32 " < %d\n", released, CBENCH_NUM_TASKS);
   }
 
   rtems_task_wake_after(0);
@@ -115,8 +115,8 @@ void cbench_work( ) {
   /* release the tasks. preempts this task. */
   status = rtems_barrier_release( Barrier, &released );
   directive_failed(status, "rtems_barrier_release");
-  if ( released != NUM_TASKS ) {
-    printf("ERROR: barrier released %" PRIu32 " < %d\n", released, NUM_TASKS);
+  if ( released != CBENCH_NUM_TASKS ) {
+    printf("ERROR: barrier released %" PRIu32 " < %d\n", released, CBENCH_NUM_TASKS);
   }
 
   rtems_task_wake_after(0);
