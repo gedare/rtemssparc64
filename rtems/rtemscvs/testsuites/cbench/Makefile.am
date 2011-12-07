@@ -4,9 +4,9 @@
 
 ACLOCAL_AMFLAGS = -I ../aclocal
 
-SUBDIRS = cbench_ts_002t_0005f
-SUBDIRS += cbench_ts_002t_0020f
-SUBDIRS += cbench_ts_002t_0100f
+SUBDIRS = cbench_ts_00005f
+SUBDIRS += cbench_ts_00020f
+SUBDIRS += cbench_ts_00100f
 
 if MPTESTS
 SUBDIRS +=
