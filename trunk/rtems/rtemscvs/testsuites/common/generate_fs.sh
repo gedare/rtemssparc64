@@ -1,6 +1,7 @@
 #!/bin/bash
 
-TOTAL=456710
+#TOTAL=456710
+TOTAL=496710
 PERM=`ls -lt files/cont* | awk '{tot += $5} END {tot=tot ; printf("%4.2d\n",tot)}'`
 
 #PAD=`expr $TOTAL-$PERM`

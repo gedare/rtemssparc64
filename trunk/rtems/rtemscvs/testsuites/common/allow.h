@@ -2,8 +2,7 @@
 #define ALLOW__H
 
 #include <stdio.h>
-#include <system.h>
-#define WITHALLOW 0
+#define WITHALLOW 1
 
 
 struct perm_record
@@ -11,7 +10,7 @@ struct perm_record
 	long long int addr;
 	unsigned int perm: 3;
 	unsigned int multi: 1;
-	unsigned long long int sz: 60; 
+	unsigned long long int sz: 60;
 };
 
 
@@ -29,7 +28,7 @@ struct perm_record
        "impdep2  %[rs1], %[rs2] ,%%g0\n\t" \
 	   : \
        : [rs1] "r" (_addr),[rs2] "r" ( 1LL << 61 | _size) \
-   ); 
+   );
 
 #define ALLOWCTX( _addr ) \
    __asm__ __volatile__ ( \
@@ -41,13 +40,13 @@ struct perm_record
 
 #else
 
-	#define ALLOW( _start, _size, _perm ) 
-	#define ALLOWM( _size, _addr ) 
-	#define ALLOWCTX( _addr ) 
+	#define ALLOW( _start, _size, _perm )
+	#define ALLOWM( _size, _addr )
+	#define ALLOWCTX( _addr )
 
-	
+
 #endif
-	
+
 
 /*
 #define ALLOW(_start, _size, _perm ) \
@@ -57,7 +56,7 @@ struct perm_record
 #define ALLOWM(_size, _addr  ) \
 	__asm__ ("\n");
 	//nothing
-	
+
 */
 
 /* data structures */
@@ -79,7 +78,7 @@ typedef struct staticpermlist{
 	md_addr_t endAddress;
 	md_addr_t opalOffsetLocateContainerInPermissions;
 	md_addr_t opalSizeOfPermissionLists;//use in the opal module.
-	
+
 } staticpermlist;
 
 
@@ -105,11 +104,11 @@ typedef struct staticpermssions
 	uint64 dynamicPermissionBufferSize;
 	packed_permission_rec *dynamicPermissionBuffer;
 	uint64 dynamicContainerRuntimeRecordSize;
-	packed_permission_rec *dynamicContainerRuntimeRecord;	
+	packed_permission_rec *dynamicContainerRuntimeRecord;
 } staticpermssions;
 
 
-	
+
 inline void * mymalloc(size_t);
 
 packed_permission_rec create_permrec(uint64 startaddr,uint64 endaddr,char perm);
