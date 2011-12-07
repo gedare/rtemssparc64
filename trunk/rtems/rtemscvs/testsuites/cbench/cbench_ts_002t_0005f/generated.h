@@ -16,10 +16,49 @@ int* cbench_func_pleaf(ARGS_LIST);
 int cbench_func_ileaf(ARGS_LIST);
 void cbench_func_vleaf(ARGS_LIST);
 
-int* cbench_func_0001(ARGS_LIST);
-int* cbench_func_0002(ARGS_LIST);
-int* cbench_func_0003(ARGS_LIST);
-int cbench_func_0004(ARGS_LIST);
-void cbench_func_0005(ARGS_LIST);
+#if (1 <= FUNC_RETURN_PTR)
+int *
+#elif (1 <= FUNC_RETURN_PTR + FUNC_RETURN_INT)
+int
+#else
+void
+#endif
+cbench_func_0001(ARGS_LIST);
+
+#if (2 <= FUNC_RETURN_PTR)
+int *
+#elif (2 <= FUNC_RETURN_PTR + FUNC_RETURN_INT)
+int
+#else
+void
+#endif
+cbench_func_0002(ARGS_LIST);
+
+#if (3 <= FUNC_RETURN_PTR)
+int *
+#elif (3 <= FUNC_RETURN_PTR + FUNC_RETURN_INT)
+int
+#else
+void
+#endif
+cbench_func_0003(ARGS_LIST);
+
+#if (4 <= FUNC_RETURN_PTR)
+int *
+#elif (4 <= FUNC_RETURN_PTR + FUNC_RETURN_INT)
+int
+#else
+void
+#endif
+cbench_func_0004(ARGS_LIST);
+
+#if (5 <= FUNC_RETURN_PTR)
+int *
+#elif (5 <= FUNC_RETURN_PTR + FUNC_RETURN_INT)
+int
+#else
+void
+#endif
+cbench_func_0005(ARGS_LIST);
 
 #endif
