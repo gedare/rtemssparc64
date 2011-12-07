@@ -7,6 +7,24 @@
 rtems_id Barrier;
 static rtems_id Tasks[NUM_TASKS];
 
+int* cbench_func_pleaf(ARGS_LIST) {
+  CBENCH_PROLOG;
+  __asm__ __volatile__("nop\n\t");
+  CBENCH_EPILOG_RET_PTR;
+}
+
+int cbench_func_ileaf(ARGS_LIST) {
+  CBENCH_PROLOG;
+  __asm__ __volatile__("nop\n\t");
+  CBENCH_EPILOG_RET_INT;
+}
+
+void cbench_func_vleaf(ARGS_LIST) {
+  CBENCH_PROLOG;
+  __asm__ __volatile__("nop\n\t");
+  CBENCH_EPILOG_VOID;
+}
+
 void cbench_task_entry( rtems_task_argument argument )
 {
   rtems_status_code status;
@@ -49,7 +67,7 @@ void cbench_initialize( ) {
     status = rtems_task_create(
       rtems_build_name('T','A','0'+i/10,'0'+i%10),
       10,
-      RTEMS_MINIMUM_STACK_SIZE,
+      ((NUM_FUNCTIONS+19)/20)*RTEMS_MINIMUM_STACK_SIZE,
       RTEMS_PREEMPT|RTEMS_TIMESLICE,
 //      RTEMS_DEFAULT_MODES,
       RTEMS_DEFAULT_ATTRIBUTES,

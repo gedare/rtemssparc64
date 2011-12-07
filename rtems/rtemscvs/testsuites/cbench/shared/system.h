@@ -18,6 +18,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <generated.h>
+
 /* functions */
 rtems_task Init(
   rtems_task_argument argument
@@ -34,9 +36,10 @@ rtems_task Init(
 #define CONFIGURE_MAXIMUM_BARRIERS 1
 
 /* tasks */
-#define CONFIGURE_MAXIMUM_TASKS             3
+#define CONFIGURE_MAXIMUM_TASKS             1+NUM_TASKS
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
-//#define CONFIGURE_EXTRA_TASK_STACKS         (3 * RTEMS_MINIMUM_STACK_SIZE)
+
+#define CONFIGURE_EXTRA_TASK_STACKS NUM_TASKS*((NUM_FUNCTIONS+19)/20*RTEMS_MINIMUM_STACK_SIZE)
 
 #define CONFIGURE_RTEMS_INIT_TASKS_TABLE
 #define CONFIGURE_TICKS_PER_TIMESLICE       1

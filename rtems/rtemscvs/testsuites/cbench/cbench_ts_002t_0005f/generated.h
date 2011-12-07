@@ -12,6 +12,10 @@
 #include "../shared/params.h"
 #include "../shared/cbench.h"
 
+int* cbench_func_pleaf(ARGS_LIST);
+int cbench_func_ileaf(ARGS_LIST);
+void cbench_func_vleaf(ARGS_LIST);
+
 int* cbench_func_0001(ARGS_LIST);
 int* cbench_func_0002(ARGS_LIST);
 int* cbench_func_0003(ARGS_LIST);

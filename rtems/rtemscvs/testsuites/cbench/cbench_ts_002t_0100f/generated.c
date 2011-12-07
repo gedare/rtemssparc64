@@ -899,7 +899,7 @@ void cbench_func_0099(ARGS_LIST)
 void cbench_func_0100(ARGS_LIST)
 {
   CBENCH_PROLOG;
-  voidfuncptr f = NULL;
+  voidfuncptr f = &cbench_func_vleaf;
 
   CBENCH_WORKLOAD;
 
