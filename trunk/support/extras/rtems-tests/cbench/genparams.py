@@ -13,15 +13,16 @@ import copy
 
 
 def usage():
-  print "\
-Usage: genparams.py -[hi:a:p:v:m:f:l:]\n\
+  print "Usage: genparams.py -[hi:R:V:a:r:v:m:f:l:]\n\
   -h --help           print this help\n\
-  -i --insnmult=      specify instruction multiplier [1]\n\
-  -a --numargs=       specify number of function args [4]\n\
-  -r --callbyref=     specify number of function args to call by reference [2]\n\
-  -v --callbyval=     specify number of function args to call by value [2]\n\
-  -m --memoprate=     specify number of memops per 1000 iterations [200]\n\
-  -f --fcallrate=     specify number of function calls per 1000 iterations [1]\n\
+  -i --insnmult=      instruction multiplier [1]\n\
+  -R --returnref=     number of functions out of 1000 that return int* [600]\n\
+  -V --returnval=     number of functions out of 1000 that return int [200]\n\
+  -a --numargs=       number of function args [4]\n\
+  -r --callbyref=     number of function args to call by reference [2]\n\
+  -v --callbyval=     number of function args to call by value [2]\n\
+  -m --memoprate=     number of memops per 1000 iterations [200]\n\
+  -f --fcallrate=     number of function calls per 1000 iterations [1]\n\
   -l --layout=        specify workload layout [1], one of:\n\
                         1. CPU-Memory-Call\n\
                         2. CPU-Call-Memory\n\
@@ -46,6 +47,16 @@ def get_memoprate( m ):
 
 def get_fcallrate( f ):
   return "#define CBENCH_PARAM_FUNC_CALLS_PER_1000_INSN (" + str(f) + ")"
+
+## note that returnref and returnint are purposely not protected with parens
+def get_returnref( R ):
+  return "#define CBENCH_PARAM_PERCENT_RETURN_REF " + str(R) + "/1000"
+
+def get_returnval( V ):
+  return "#define CBENCH_PARAM_PERCENT_RETURN_INT " + str(V) + "/1000"
+
+def get_returnvoid( R, V ):
+  return "#define CBENCH_PARAM_PERCENT_RETURN_VOID " + str(1000-V-R) + "/1000"
 
 def get_layout( l ):
   p = "#define CBENCH_WORKLOAD "
@@ -195,6 +206,8 @@ def main():
 
   header = "/* command line: "
   insnmult = 1
+  returnref = 600
+  returnval = 200
   numargs = 4
   callbyref = 2
   callbyval = 2
@@ -204,8 +217,8 @@ def main():
 
   # Process args
   try:
-    opts, args = getopt.getopt(sys.argv[1:], "hi:a:r:v:m:f:l:",
-        ["help", "insnmult=", "numargs=", "callbyref=", "callbyval=", "memoprate=", "fcallrate=", "layout="])
+    opts, args = getopt.getopt(sys.argv[1:], "hi:R:V:a:r:v:m:f:l:",
+        ["help", "insnmult=", "returnref=", "returnval=", "numargs=", "callbyref=", "callbyval=", "memoprate=", "fcallrate=", "layout="])
   except getopt.GetoptError, err:
     print str(err)
     usage()
@@ -216,6 +229,10 @@ def main():
       sys.exit()
     elif opt in ("-i", "--insnmult"):
       insnmult = int(arg)
+    elif opt in ("-R", "--returnref"):
+      returnref = int(arg)
+    elif opt in ("-V", "--returnval"):
+      returnval = int(arg)
     elif opt in ("-a", "--numargs"):
       numargs = int(arg)
     elif opt in ("-r", "--callbyref"):
@@ -236,6 +253,7 @@ def main():
   ## error check inputs
   assert (insnmult > 0), "Error: i <= 0"
   assert (numargs == callbyref+callbyval), "Error: n != r+v"
+  assert (returnref + returnval <= 1000), "Error: R+V > 1000"
   assert (callbyref <= callbyval), "Error: callbyval must be >= callbyref"
   assert (memoprate < 1000), "Error: m >= 1000"
   assert (fcallrate < 1000), "Error: f >= 1000"
@@ -254,6 +272,10 @@ def main():
   f.write(get_callbyval(callbyval) + '\n')
   f.write(get_fcallrate(fcallrate) + '\n')
   f.write(get_memoprate(memoprate) + '\n')
+  f.write("/* Not protected with parens on purpose (arithmetic) */\n")
+  f.write(get_returnref(returnref) + '\n')
+  f.write(get_returnval(returnval) + '\n')
+  f.write(get_returnvoid(returnref,returnval) + '\n')
   f.write('\n')
   f.write(get_args_list(numargs,callbyref,callbyval) + '\n')
   f.write(get_call_list(numargs,callbyref,callbyval) + '\n')
