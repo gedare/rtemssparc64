@@ -2,6 +2,7 @@
 #define ALLOW__H
 
 #include <stdio.h>
+#include <rtems.h>
 #define WITHALLOW 1
 
 
