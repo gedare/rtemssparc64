@@ -28,7 +28,13 @@ void cbench_func_vleaf(ARGS_LIST) {
 void cbench_task_entry( rtems_task_argument argument )
 {
   rtems_status_code status;
-  ptrfuncptr f = cbench_func_0001;
+#if (1 <= FUNC_RETURN_PTR)
+    ptrfuncptr f = &cbench_func_0001;
+#elif (1 <= FUNC_RETURN_PTR + FUNC_RETURN_INT)
+    intfuncptr f = &cbench_func_0001;
+#else
+    voidfuncptr f = &cbench_func_0001;
+#endif
   CBENCH_TASK_PROLOG;
 
   DPRINTF("%d: Entering warmup barrier\n", argument);

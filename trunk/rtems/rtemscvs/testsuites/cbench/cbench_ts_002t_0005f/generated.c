@@ -15,7 +15,13 @@ void
 cbench_func_0001(ARGS_LIST)
 {
   CBENCH_PROLOG;
+#if (2 <= FUNC_RETURN_PTR)
   ptrfuncptr f = &cbench_func_0002;
+#elif (2 <= FUNC_RETURN_PTR + FUNC_RETURN_INT)
+  intfuncptr f = &cbench_func_0002;
+#else
+  voidfuncptr f = &cbench_func_0002;
+#endif
 
   CBENCH_WORKLOAD;
 
