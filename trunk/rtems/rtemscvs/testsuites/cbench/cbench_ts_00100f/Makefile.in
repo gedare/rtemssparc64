@@ -34,12 +34,12 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-rtems_tests_PROGRAMS = cbench_ts_002t_0100f$(EXEEXT)
+rtems_tests_PROGRAMS = cbench_ts_00100f$(EXEEXT)
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/../automake/compile.am \
 	$(top_srcdir)/../automake/leaf.am \
 	$(top_srcdir)/../automake/local.am
-subdir = cbench_ts_002t_0100f
+subdir = cbench_ts_00100f
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps =  \
 	$(top_srcdir)/../aclocal/canonical-target-name.m4 \
@@ -62,10 +62,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(rtems_testsdir)"
 PROGRAMS = $(rtems_tests_PROGRAMS)
-am_cbench_ts_002t_0100f_OBJECTS = init.$(OBJEXT) allow.$(OBJEXT) \
-	generated.$(OBJEXT) cbench_ts.$(OBJEXT)
-cbench_ts_002t_0100f_OBJECTS = $(am_cbench_ts_002t_0100f_OBJECTS)
-cbench_ts_002t_0100f_DEPENDENCIES =  \
+am_cbench_ts_00100f_OBJECTS = init.$(OBJEXT) cbench_ts.$(OBJEXT) \
+	allow.$(OBJEXT) generated.$(OBJEXT)
+cbench_ts_00100f_OBJECTS = $(am_cbench_ts_00100f_OBJECTS)
+cbench_ts_00100f_DEPENDENCIES =  \
 	$(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/../../depcomp
@@ -75,8 +75,8 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(cbench_ts_002t_0100f_SOURCES)
-DIST_SOURCES = $(cbench_ts_002t_0100f_SOURCES)
+SOURCES = $(cbench_ts_00100f_SOURCES)
+DIST_SOURCES = $(cbench_ts_00100f_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -206,11 +206,9 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 MANAGERS = all
-cbench_ts_002t_0100f_SOURCES = ../shared/init.c ../shared/cbench.h \
-									../shared/params.h \
-									../shared/system.h ../../common/allow.c \
-									generated.h generated.c ../shared/cbench_ts.c
-
+cbench_ts_00100f_SOURCES = ../shared/init.c ../shared/cbench.h \
+	../shared/params.h ../shared/system.h ../shared/cbench_ts.c \
+	../../common/allow.c generated.h generated.c
 AM_CPPFLAGS = -I$(top_srcdir)/../support/include \
 	-I$(top_srcdir)/../common -I$(top_srcdir)/ \
 	-I$(top_srcdir)/shared
@@ -219,9 +217,9 @@ AM_CXXFLAGS =
 CLEANFILES = *.num *.nxe *.elf *.srec* *.bin *.bt *.ralf
 CXXLINK_APP = $(CXXLINK) $(LDLIBS) $(LINK_OBJS) $(LINK_LIBS)
 LINK_APP = $(LINK) $(LDLIBS) $(LINK_OBJS) $(LINK_LIBS)
-cbench_ts_002t_0100f_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
-LINK_OBJS = $(cbench_ts_002t_0100f_OBJECTS) $(cbench_ts_002t_0100f_LDADD)
-LINK_LIBS = $(cbench_ts_002t_0100f_LDLIBS)
+cbench_ts_00100f_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
+LINK_OBJS = $(cbench_ts_00100f_OBJECTS) $(cbench_ts_00100f_LDADD)
+LINK_LIBS = $(cbench_ts_00100f_LDLIBS)
 PROJECT_TOOLS = $(PROJECT_RELEASE)/build-tools
 all: all-am
 
@@ -236,9 +234,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign cbench_ts_002t_0100f/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign cbench_ts_00100f/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign cbench_ts_002t_0100f/Makefile
+	  $(AUTOMAKE) --foreign cbench_ts_00100f/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -334,20 +332,6 @@ init.obj: ../shared/init.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o init.obj `if test -f '../shared/init.c'; then $(CYGPATH_W) '../shared/init.c'; else $(CYGPATH_W) '$(srcdir)/../shared/init.c'; fi`
 
-allow.o: ../../common/allow.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT allow.o -MD -MP -MF $(DEPDIR)/allow.Tpo -c -o allow.o `test -f '../../common/allow.c' || echo '$(srcdir)/'`../../common/allow.c
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/allow.Tpo $(DEPDIR)/allow.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../../common/allow.c' object='allow.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o allow.o `test -f '../../common/allow.c' || echo '$(srcdir)/'`../../common/allow.c
-
-allow.obj: ../../common/allow.c
-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT allow.obj -MD -MP -MF $(DEPDIR)/allow.Tpo -c -o allow.obj `if test -f '../../common/allow.c'; then $(CYGPATH_W) '../../common/allow.c'; else $(CYGPATH_W) '$(srcdir)/../../common/allow.c'; fi`
-@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/allow.Tpo $(DEPDIR)/allow.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../../common/allow.c' object='allow.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o allow.obj `if test -f '../../common/allow.c'; then $(CYGPATH_W) '../../common/allow.c'; else $(CYGPATH_W) '$(srcdir)/../../common/allow.c'; fi`
-
 cbench_ts.o: ../shared/cbench_ts.c
 @am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT cbench_ts.o -MD -MP -MF $(DEPDIR)/cbench_ts.Tpo -c -o cbench_ts.o `test -f '../shared/cbench_ts.c' || echo '$(srcdir)/'`../shared/cbench_ts.c
 @am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/cbench_ts.Tpo $(DEPDIR)/cbench_ts.Po
@@ -361,6 +345,20 @@ cbench_ts.obj: ../shared/cbench_ts.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../shared/cbench_ts.c' object='cbench_ts.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o cbench_ts.obj `if test -f '../shared/cbench_ts.c'; then $(CYGPATH_W) '../shared/cbench_ts.c'; else $(CYGPATH_W) '$(srcdir)/../shared/cbench_ts.c'; fi`
+
+allow.o: ../../common/allow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT allow.o -MD -MP -MF $(DEPDIR)/allow.Tpo -c -o allow.o `test -f '../../common/allow.c' || echo '$(srcdir)/'`../../common/allow.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/allow.Tpo $(DEPDIR)/allow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../../common/allow.c' object='allow.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o allow.o `test -f '../../common/allow.c' || echo '$(srcdir)/'`../../common/allow.c
+
+allow.obj: ../../common/allow.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT allow.obj -MD -MP -MF $(DEPDIR)/allow.Tpo -c -o allow.obj `if test -f '../../common/allow.c'; then $(CYGPATH_W) '../../common/allow.c'; else $(CYGPATH_W) '$(srcdir)/../../common/allow.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/allow.Tpo $(DEPDIR)/allow.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../../common/allow.c' object='allow.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o allow.obj `if test -f '../../common/allow.c'; then $(CYGPATH_W) '../../common/allow.c'; else $(CYGPATH_W) '$(srcdir)/../../common/allow.c'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -562,9 +560,6 @@ uninstall-am: uninstall-rtems_testsPROGRAMS
 	tags uninstall uninstall-am uninstall-rtems_testsPROGRAMS
 
 
-#dist_rtems_tests_DATA = cbench_ts_002t_0100f.scn
-#dist_rtems_tests_DATA += cbench_ts_002t_0100f.doc
-
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(RTEMS_ROOT)/make/leaf.cfg
 ifndef make-cxx-exe
@@ -578,8 +573,8 @@ define make-exe
 endef
 @ENDIF@
 
-cbench_ts_002t_0100f$(EXEEXT): $(cbench_ts_002t_0100f_OBJECTS) $(cbench_ts_002t_0100f_DEPENDENCIES)
-	@rm -f cbench_ts_002t_0100f$(EXEEXT)
+cbench_ts_00100f$(EXEEXT): $(cbench_ts_00100f_OBJECTS) $(cbench_ts_00100f_DEPENDENCIES)
+	@rm -f cbench_ts_00100f$(EXEEXT)
 	$(make-exe)
 
 preinstall:

@@ -7,24 +7,6 @@
 rtems_id Barrier;
 static rtems_id Tasks[CBENCH_NUM_TASKS];
 
-int* cbench_func_pleaf(ARGS_LIST) {
-  CBENCH_PROLOG;
-  __asm__ __volatile__("nop\n\t");
-  CBENCH_EPILOG_RET_PTR;
-}
-
-int cbench_func_ileaf(ARGS_LIST) {
-  CBENCH_PROLOG;
-  __asm__ __volatile__("nop\n\t");
-  CBENCH_EPILOG_RET_INT;
-}
-
-void cbench_func_vleaf(ARGS_LIST) {
-  CBENCH_PROLOG;
-  __asm__ __volatile__("nop\n\t");
-  CBENCH_EPILOG_VOID;
-}
-
 void cbench_task_entry( rtems_task_argument argument )
 {
   rtems_status_code status;
