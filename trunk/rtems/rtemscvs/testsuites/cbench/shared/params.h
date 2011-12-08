@@ -1,40 +1,32 @@
-/* this will be a generated file */
-/* Parameters:
- *  num pointer arguments
- *  num integer arguments
- *  num dynamic return val
- *  num function calls per 100 insn (% insn call)
- *  num memops per 100 insn (%mem)
- *  workload layout
- */
+/* This is a generated file. DO NOT EDIT. */
+
+/* command line:  */
 
 #ifndef __PARAMS_H_
 #define __PARAMS_H_
-
 #include <rtems.h>
 
 #define CBENCH_INSN_MULTIPLIER (1)
 #define CBENCH_WORKLOAD CBENCH_WORKLOAD_CPU_MEM_CALL
-
 #define CBENCH_NUM_TASKS (2)
 #define CBENCH_PARAM_NUM_CALL_BY_REF (2)
 #define CBENCH_PARAM_NUM_CALL_BY_VALUE (2)
-#define CBENCH_PARAM_FUNC_CALLS_PER_1000_INSN (100)
+#define CBENCH_PARAM_FUNC_CALLS_PER_1000_INSN (1)
 #define CBENCH_PARAM_MEMOP_PER_1000_INSN (200)
-/* purposely not protected arithmetic!! */
+/* Not protected with parens on purpose (arithmetic) */
 #define CBENCH_PARAM_PERCENT_RETURN_REF 600/1000
 #define CBENCH_PARAM_PERCENT_RETURN_INT 200/1000
 #define CBENCH_PARAM_PERCENT_RETURN_VOID 200/1000
 
 #define ARGS_LIST \
-  int* buf1,\
-  int len1,\
-  int* buf2,\
-  int len2,\
-  int depth,\
+  int* buf1, \
+  int* buf2, \
+  int len1, \
+  int len2, \
+  int depth, \
   rtems_task_argument argument
 
-#define CALL_ARGS buf1, len1, buf2, len2, depth+1, argument
+#define CALL_ARGS buf1, buf2, len1, len2, depth+1, argument
 
 typedef int* (*ptrfuncptr)(ARGS_LIST);
 typedef int (*intfuncptr)(ARGS_LIST);
@@ -42,11 +34,11 @@ typedef void (*voidfuncptr)(ARGS_LIST);
 
 #define TASK_DECLARATIONS \
   int *buf1; \
-  int len1 = 1000; \
   int *buf2; \
-  int len2 = 20; \
+  int len1 = 1000; \
+  int len2 = 1000; \
   int depth = 0; \
-  int i = 0;
+  int i = 0; \
 
 #define TASK_ALLOCATIONS \
   buf1 = mymalloc(len1*sizeof(int));\
@@ -54,13 +46,12 @@ typedef void (*voidfuncptr)(ARGS_LIST);
 
 #define TASK_ASSIGNMENTS \
   for ( i = 0; i < len1; i++ ) buf1[i] = 1;\
-  for ( i = 0; i < len2; i++ ) buf2[i] = 2;
+  for ( i = 0; i < len2; i++ ) buf2[i] = 1;
 
 #define CBENCH_TASK_PROLOG \
   TASK_DECLARATIONS \
   TASK_ALLOCATIONS \
-  TASK_ASSIGNMENTS 
-
+  TASK_ASSIGNMENTS
 #define CBENCH_TASK_EPILOG \
   free(buf1);\
   free(buf2);\
@@ -68,7 +59,7 @@ typedef void (*voidfuncptr)(ARGS_LIST);
 
 #define ALLOWS \
   ALLOW(buf1, len1*sizeof(int), DEFAULT_PERMISSION);\
-  ALLOW(buf2, len2*sizeof(int), DEFAULT_PERMISSION);
+  ALLOW(buf2, len2*sizeof(int), DEFAULT_PERMISSION);\
 
 #define FCALL(fptr) \
   ALLOWS\
@@ -85,5 +76,6 @@ typedef void (*voidfuncptr)(ARGS_LIST);
     voidfuncptr newfptr = fptr;\
     (*newfptr)(CALL_ARGS);\
   }
+
 
 #endif
