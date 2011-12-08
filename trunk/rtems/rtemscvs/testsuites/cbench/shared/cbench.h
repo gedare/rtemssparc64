@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#define CBENCH_DEBUG
+//#define CBENCH_DEBUG
 
 #if defined(CBENCH_DEBUG)
 #include <stdio.h>
