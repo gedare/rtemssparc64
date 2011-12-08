@@ -1,9 +1,16 @@
-/* This will be an automatically generated file */
+/* This is a generated file. DO NOT EDIT. */
+
+/* command line: -f 5  */
+
+
 #ifndef __GENERATED_H_
 #define __GENERATED_H_
 
-#define NUM_FUNCTIONS (5)
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+#define NUM_FUNCTIONS (5)
 #define FUNC_RETURN_PTR (NUM_FUNCTIONS*CBENCH_PARAM_PERCENT_RETURN_REF)
 #define FUNC_RETURN_INT (NUM_FUNCTIONS*CBENCH_PARAM_PERCENT_RETURN_INT)
 #define FUNC_RETURN_VOID (NUM_FUNCTIONS*CBENCH_PARAM_PERCENT_RETURN_VOID)
@@ -59,5 +66,9 @@ int
 void
 #endif
 cbench_func_00005(ARGS_LIST);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
