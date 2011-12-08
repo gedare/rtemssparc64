@@ -292,6 +292,7 @@ def main():
   f.write(get_task_decls(numargs,callbyref,callbyval) + '\n')
   f.write(get_task_alloc(callbyref,callbyval) + '\n')
   f.write(get_task_assign(callbyref,callbyval) + '\n')
+  f.write(get_task_prolog() + '\n')
   f.write(get_task_epilog(callbyref) + '\n')
   f.write(get_allows(callbyref,callbyval) + '\n')
   f.write(get_fcall() + '\n')
