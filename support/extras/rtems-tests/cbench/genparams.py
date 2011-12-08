@@ -13,11 +13,12 @@ import copy
 
 
 def usage():
-  print "Usage: genparams.py -[hi:R:V:a:r:v:m:f:l:]\n\
+  print "Usage: genparams.py -[hi:R:V:t:a:r:v:m:f:l:]\n\
   -h --help           print this help\n\
   -i --insnmult=      instruction multiplier [1]\n\
   -R --returnref=     number of functions out of 1000 that return int* [600]\n\
   -V --returnval=     number of functions out of 1000 that return int [200]\n\
+  -t --tasks=         number of tasks [2]\n\
   -a --numargs=       number of function args [4]\n\
   -r --callbyref=     number of function args to call by reference [2]\n\
   -v --callbyval=     number of function args to call by value [2]\n\
@@ -47,6 +48,9 @@ def get_memoprate( m ):
 
 def get_fcallrate( f ):
   return "#define CBENCH_PARAM_FUNC_CALLS_PER_1000_INSN (" + str(f) + ")"
+
+def get_tasks( t ):
+  return "#define CBENCH_NUM_TASKS (" + str(t) + ")"
 
 ## note that returnref and returnint are purposely not protected with parens
 def get_returnref( R ):
@@ -208,6 +212,7 @@ def main():
   insnmult = 1
   returnref = 600
   returnval = 200
+  tasks = 2
   numargs = 4
   callbyref = 2
   callbyval = 2
@@ -217,8 +222,8 @@ def main():
 
   # Process args
   try:
-    opts, args = getopt.getopt(sys.argv[1:], "hi:R:V:a:r:v:m:f:l:",
-        ["help", "insnmult=", "returnref=", "returnval=", "numargs=", "callbyref=", "callbyval=", "memoprate=", "fcallrate=", "layout="])
+    opts, args = getopt.getopt(sys.argv[1:], "hi:R:V:t:a:r:v:m:f:l:",
+        ["help", "insnmult=", "returnref=", "returnval=", "tasks=", "numargs=", "callbyref=", "callbyval=", "memoprate=", "fcallrate=", "layout="])
   except getopt.GetoptError, err:
     print str(err)
     usage()
@@ -233,6 +238,8 @@ def main():
       returnref = int(arg)
     elif opt in ("-V", "--returnval"):
       returnval = int(arg)
+    elif opt in ("-t", "--tasks"):
+      tasks = int(arg)
     elif opt in ("-a", "--numargs"):
       numargs = int(arg)
     elif opt in ("-r", "--callbyref"):
@@ -252,6 +259,7 @@ def main():
 
   ## error check inputs
   assert (insnmult > 0), "Error: i <= 0"
+  assert (tasks > 0), "Error: t <= 0"
   assert (numargs == callbyref+callbyval), "Error: n != r+v"
   assert (returnref + returnval <= 1000), "Error: R+V > 1000"
   assert (callbyref <= callbyval), "Error: callbyval must be >= callbyref"
@@ -268,6 +276,7 @@ def main():
   f.write(get_includes() + '\n')
   f.write(get_insnmult(insnmult) + '\n')
   f.write(get_layout(layout) + '\n')
+  f.write(get_tasks(tasks) + '\n')
   f.write(get_callbyref(callbyref) + '\n')
   f.write(get_callbyval(callbyval) + '\n')
   f.write(get_fcallrate(fcallrate) + '\n')
