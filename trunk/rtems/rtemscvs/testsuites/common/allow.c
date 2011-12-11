@@ -47,7 +47,7 @@ bool task_tlb_create(Thread_Control * executing,  Thread_Control * creating)
 		status = rtems_memory_protection_initialize_domain( protection_domain, TLB_MAX_DOMAIN_ENTRIES+1 );
 		directive_failed( status, "rtems_memory_protection_initialize_domain" );
 
-		for(i=0;i<10;i++,r.base+= 0x2000 )
+		for(i=0;i<TLB_MAX_DOMAIN_ENTRIES;i++,r.base+= 0x2000 )
 		{
 			status = rtems_memory_protection_create_entry(
 			  protection_domain,
