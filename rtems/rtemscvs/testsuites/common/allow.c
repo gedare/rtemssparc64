@@ -1,6 +1,6 @@
 #include "allow.h"
 #include <stdlib.h>
-
+#define MMUSTUFF
 #include "magic-instruction.h"
 #ifdef MMUSTUFF
 #include <libcpu/mmu_support.h>
@@ -16,7 +16,7 @@ inline void * mymalloc(size_t size)
 	#if defined(WITHALLOW)
 		ALLOW( ret, size, 3LL );
 	#endif
-	
+
 	return ret;
 }
 
@@ -33,9 +33,9 @@ bool task_tlb_create(Thread_Control * executing,  Thread_Control * creating)
 		.base = (void *)0x00aa000000,
 		.bounds = 0x2000
 	};
-	
+
 	rtems_memory_protection_domain *protection_domain = NULL;
-	
+
 	char namea[6];
 	if( !strncmp(rtems_object_get_name(creating->Object.id, 5, namea),"TA",2)){
 		printk("task create ");
@@ -83,7 +83,7 @@ void task_tlb_switch (  Thread_Control * current,  Thread_Control * next)
 	//rtems_object_get_name(next->Object.id, 6, namenext);
 	//printk(namecurrent);
 	//printk(namenext);
-	
+
 	if(!strncmp(rtems_object_get_name(current->Object.id, 6, namecurrent),"TA",2)){
 		rtems_memory_protection_uninstall_domain( (rtems_memory_protection_domain *) current->extensions);
 	}
@@ -111,7 +111,7 @@ void task_tlb_switch (  Thread_Control * current,  Thread_Control * next)
 		printk("d1 \n");
 		*/
 	}
-	
+
 
 }
 #endif
@@ -122,7 +122,7 @@ bool task_container_create(Thread_Control * executing,  Thread_Control * creatin
 	if( !strncmp(rtems_object_get_name(creating->Object.id, 5, namea),"TA",2)){
 		char nameb[6];
 		char filename[22];
-		rtems_object_get_name(executing->Object.id, 5, namea); 
+		rtems_object_get_name(executing->Object.id, 5, namea);
 		rtems_object_get_name(creating->Object.id, 5, nameb);
 		nameb[3] = 0;
 
@@ -140,13 +140,13 @@ void task_container_switch (  Thread_Control * a,  Thread_Control * b)
 
 	char namea[6];
 	char nameb[6];
-	rtems_object_get_name(a->Object.id, 6, namea); 
+	rtems_object_get_name(a->Object.id, 6, namea);
 	if(!strncmp(rtems_object_get_name(b->Object.id, 6, nameb),"TA",2)){
-	
+
 		//staticpermssions * sstatic = (staticpermssions *)b->extensions;
 		ALLOWCTX(b->extensions);
 		//printk("%d \n", sstatic->containersSize);
-#if 0			 
+#if 0
 		int i=0;
 		for(;i< sstatic->containersSize ; i++){
 			unsigned long long  s = sstatic->containers[i].entryAddress;
@@ -156,7 +156,7 @@ void task_container_switch (  Thread_Control * a,  Thread_Control * b)
 			//addressList nn = sstatic->pStatic[i]->opalCodeAccessList;
 			//while(nn){
 			//	unsigned long long  ss = nn->startAddress;
-			//	unsigned long long  se = nn->endAddress;	
+			//	unsigned long long  se = nn->endAddress;
 			//	nn = nn->next;
 			//}
 			//printf("%llx %llx ", s , e);
@@ -173,7 +173,7 @@ void task_container_switch (  Thread_Control * a,  Thread_Control * b)
 
 		}
 #endif
-		//printk( "User extension thread switch %s %s\n",namea, nameb);	
+		//printk( "User extension thread switch %s %s\n",namea, nameb);
 	}
 
 
@@ -224,12 +224,12 @@ void LoadContainersFromDecodedAccessListFile(const char * FileWithPrefix, Thread
 	char junk[7][200];
 	FILE * file;
 	int totalCount;
-	
+
 	file = fopen(FileWithPrefix,"r");
 
 	if(!file){ printf("\n\n Runtime ERROR : unable to open symbol file %s",FileWithPrefix);exit(0);}
-	
-	
+
+
  	fscanf(file,"count: %x\n",&totalCount);
  	fscanf(file,"data: %llx %llx stack: %llx %llx\n",&codeA,&codeB,&stackA,&stackB);
 	fscanf(file,"%s %s\t%s\t%s\t%s\t%s\t%s\n",junk[0],junk[1],junk[2],junk[3],junk[4],junk[5],junk[6]);
@@ -242,7 +242,7 @@ void LoadContainersFromDecodedAccessListFile(const char * FileWithPrefix, Thread
 
 	creating->extensions = (void **) sstatic;
 	//printk( "creating->extensions =  %x \n", creating->extensions);
-	
+
 	#if 0
 		printf("count:%d\n",totalCount);
  		printf("data: %llx %llx stack: %llx %llx\n",codeA,codeB,stackA,stackB);
@@ -259,13 +259,13 @@ void LoadContainersFromDecodedAccessListFile(const char * FileWithPrefix, Thread
 		int usableListLength;
 		int totalHeapCalls;
 		int totalStackPushes;
-		
+
 		fscanf(file,"%llx %llx\t%s\t%d\t%d\t%d\t%d\n",&addrStart,&addrEnd,name,&totalHeapCalls,&totalStackPushes,&fullListLength,&usableListLength);
 		#if 0
 			printf("\n %llx %llx\t%s\t%d\t%d\t%d ",addrStart,addrEnd,name,totalHeapCalls,totalStackPushes,listLength);
 			fflush(stdout);
 		#endif
-	
+
 		staticpermlist * newcont = &(sstatic->containers[idx++]);
 		newcont->opalOffsetLocateContainerInPermissions = offset;
 		newcont->opalSizeOfPermissionLists = usableListLength;
@@ -285,8 +285,8 @@ void LoadContainersFromDecodedAccessListFile(const char * FileWithPrefix, Thread
 	sstatic->dynamicContainerRuntimeRecord = (packed_permission_rec *) calloc (1, 5*RTEMS_MINIMUM_STACK_SIZE );
 	sstatic->dynamicPermissionBufferSize = 0;
 	sstatic->dynamicPermissionBuffer = (packed_permission_rec *) calloc (1, 5*RTEMS_MINIMUM_STACK_SIZE );
-	
-	 
+
+
 	//printf("sizeof(packed_permission_rec *) = %ld ", sizeof(packed_permission_rec *));
 	//printf("%llx %llx %lld %lld \n", (uint64)sstatic->staticPermissions,(uint64)sstatic->permissionStack,sstatic->staticPermissionsSize, sstatic->permissionStackMaxSize );
 	idx = 0;
@@ -295,7 +295,7 @@ void LoadContainersFromDecodedAccessListFile(const char * FileWithPrefix, Thread
 		fscanf(file,"%d ", &usableListLength);
 		int i=0 ;
 		for (; i < usableListLength; i++){
-			
+
 			//packed_permission_rec * itt = &( sstatic->staticPermissions[idx]);
 			char c;
 			uint64 astart;
@@ -305,11 +305,11 @@ void LoadContainersFromDecodedAccessListFile(const char * FileWithPrefix, Thread
 			//printf("%c[%llx,%llx) ", c, sstatic->staticPermissions[idx].startaddr, sstatic->staticPermissions[idx].permandsize);
 			idx++;
 		}
-		fscanf(file,"\n"); 
+		fscanf(file,"\n");
 		//printf("\n");
 	}
 
-	
+
 	fclose(file);
 
 }
