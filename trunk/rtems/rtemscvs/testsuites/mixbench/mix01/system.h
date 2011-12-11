@@ -3,7 +3,7 @@
  *  This include file contains information that is included in every
  *  function in the test set.
  *
- *	
+ *
  */
 
 
@@ -20,7 +20,7 @@ rtems_task Init(
   rtems_task_argument argument
 );
 
-#if 1
+#if 0
 void task_container_switch (  Thread_Control * a,  Thread_Control * b);
 bool task_container_create (Thread_Control * executing,  Thread_Control * creating);
 
