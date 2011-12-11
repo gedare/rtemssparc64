@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <rtems.h>
-#define WITHALLOW 1
+#define WITHALLOW 0
 
 
 struct perm_record
