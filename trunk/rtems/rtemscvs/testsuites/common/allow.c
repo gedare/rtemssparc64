@@ -1,5 +1,6 @@
 #include "allow.h"
 #include <stdlib.h>
+#include <tmacros.h>
 #define MMUSTUFF
 #include "magic-instruction.h"
 #ifdef MMUSTUFF
