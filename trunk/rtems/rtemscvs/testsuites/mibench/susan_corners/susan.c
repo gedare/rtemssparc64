@@ -341,11 +341,11 @@ usage()
 
 /* {{{ int getint(fp) derived from XV */
 
+  static char dummy[10000];
 int getint(fd)
   FILE *fd;
 {
   int c, i;
-  char dummy[10000];
 
   c = getc(fd);
   while (1) /* find next integer */

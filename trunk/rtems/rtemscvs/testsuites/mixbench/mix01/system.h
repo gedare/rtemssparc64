@@ -20,7 +20,10 @@ rtems_task Init(
   rtems_task_argument argument
 );
 
-#if 0
+#define use_tlb
+//#define use_container
+
+#if defined(use_container)
 void task_container_switch (  Thread_Control * a,  Thread_Control * b);
 bool task_container_create (Thread_Control * executing,  Thread_Control * creating);
 
@@ -36,7 +39,7 @@ bool task_container_create (Thread_Control * executing,  Thread_Control * creati
     NULL          			 /* fatal   */ \
   }
 
-#else
+#elif defined(use_tlb)
 
 void task_tlb_switch (  Thread_Control * a,  Thread_Control * b);
 bool task_tlb_create (Thread_Control * executing,  Thread_Control * creating);
@@ -54,7 +57,6 @@ bool task_tlb_create (Thread_Control * executing,  Thread_Control * creating);
   }
 
 #endif
-
 
 /* configuration information */
 //#define CONFIGURE_ZERO_WORKSPACE_AUTOMATICALLY 1
@@ -76,7 +78,7 @@ bool task_tlb_create (Thread_Control * executing,  Thread_Control * creating);
 
 #define CONFIGURE_INIT_TASK_STACK_SIZE 20*RTEMS_MINIMUM_STACK_SIZE
 
-#define CONFIGURE_EXTRA_TASK_STACKS         (20 * RTEMS_MINIMUM_STACK_SIZE)
+#define CONFIGURE_EXTRA_TASK_STACKS         7*(5 * RTEMS_MINIMUM_STACK_SIZE)
 #define CONFIGURE_MAXIMUM_TASKS             7
 
 #include <rtems/confdefs.h>

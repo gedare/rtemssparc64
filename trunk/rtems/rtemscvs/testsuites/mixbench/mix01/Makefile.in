@@ -208,7 +208,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 MANAGERS = io semaphore
 #mix01_SOURCES = init.c system.h FileSystemImage.c ../../mibench/crc/crc_32.c ../../mibench/qsort_small/qsort_small.c ../../mibench/susan_corners/susan.c
-mix01_SOURCES = init.c system.h FileSystemImage.c ../../mibench/crc/crc_32.c ../../mibench/qsort_small/qsort_small.c ../../mibench/susan_corners/susan.c ../../mibench/dijkstra/dijkstra.c ../../common/allow.c ../dhrystone/dhry_1.c ../dhrystone/dhry_2.c
+mix01_SOURCES = init.c system.h FileSystemImage.c ../../mibench/crc/crc_32.c ../../mibench/qsort_small/qsort_small.c ../../mibench/susan_corners/susan.c ../../mibench/dijkstra/dijkstra.c ../../common/allow.c ../dhrystone/dhry_1.c ../dhrystone/dhry_2.c ../../common/debug.h
 AM_CPPFLAGS = -I$(top_srcdir)/../support/include \
 	-I$(top_srcdir)/../mibench/crc
 AM_CFLAGS = 

@@ -1,4 +1,5 @@
 #include "allow.h"
+#include "debug.h"
 #include <stdlib.h>
 #include <tmacros.h>
 #define MMUSTUFF
@@ -39,10 +40,10 @@ bool task_tlb_create(Thread_Control * executing,  Thread_Control * creating)
 
 	char namea[6];
 	if( !strncmp(rtems_object_get_name(creating->Object.id, 5, namea),"TA",2)){
-		printk("task create ");
-		printk(namea);
-		printk(" %d", creating->Object.id);
-		printk(" \n ");
+		DPRINTK("task create ");
+		DPRINTK(namea);
+		DPRINTK(" %d", creating->Object.id);
+		DPRINTK(" \n ");
 
 		protection_domain = (rtems_memory_protection_domain *)calloc(1, sizeof(rtems_memory_protection_domain)) ;
 		status = rtems_memory_protection_initialize_domain( protection_domain, TLB_MAX_DOMAIN_ENTRIES+1 );
@@ -65,10 +66,10 @@ bool task_tlb_create(Thread_Control * executing,  Thread_Control * creating)
   		node = rtems_chain_first( &the_domain->active_mpe_chain );
   		while ( ! rtems_chain_is_tail( &the_domain->active_mpe_chain, node ) ) {
    			// mpe = (rtems_memory_protection_entry*)node;
-    		printk("i1 ");
+    		DPRINTK("i1 ");
 			node = rtems_chain_next( node );
   		}
-		printk("a1 %lx\n", the_domain);
+		DPRINTK("a1 %lx\n", the_domain);
 		*/
 	}
 	creating->extensions = (void **) protection_domain;
@@ -82,8 +83,8 @@ void task_tlb_switch (  Thread_Control * current,  Thread_Control * next)
 	char namenext[6];
 	//rtems_object_get_name(current->Object.id, 6, namecurrent);
 	//rtems_object_get_name(next->Object.id, 6, namenext);
-	//printk(namecurrent);
-	//printk(namenext);
+	//DPRINTK(namecurrent);
+	//DPRINTK(namenext);
 
 	if(!strncmp(rtems_object_get_name(current->Object.id, 6, namecurrent),"TA",2)){
 		rtems_memory_protection_uninstall_domain( (rtems_memory_protection_domain *) current->extensions);
@@ -92,7 +93,7 @@ void task_tlb_switch (  Thread_Control * current,  Thread_Control * next)
 		rtems_memory_protection_install_domain( (rtems_memory_protection_domain *) next->extensions);
 		/*
 		rtems_memory_protection_domain * the_domain = (rtems_memory_protection_domain *) next->extensions;
-		printk("a1 %lx\n", the_domain);
+		DPRINTK("a1 %lx\n", the_domain);
 
 		rtems_memory_protection_entry 	*mpe;
   		rtems_chain_node              	*node;
@@ -100,16 +101,16 @@ void task_tlb_switch (  Thread_Control * current,  Thread_Control * next)
   		node = rtems_chain_first( &the_domain->active_mpe_chain );
   		while ( ! rtems_chain_is_tail( &the_domain->active_mpe_chain, node ) ) {
    			mpe = (rtems_memory_protection_entry*)node;
-    		printk("i1 %lx \n", mpe->region.base);
+    		DPRINTK("i1 %lx \n", mpe->region.base);
     		if ( ! mpe->installed ) {
 		      status = rtems_memory_protection_install_entry( mpe );
   	          if(status != 0){
-				printk("end in fatal error \n");
+				DPRINTK("end in fatal error \n");
   	          }
 		    }
 			node = rtems_chain_next( node );
   		}
-		printk("d1 \n");
+		DPRINTK("d1 \n");
 		*/
 	}
 
@@ -129,7 +130,7 @@ bool task_container_create(Thread_Control * executing,  Thread_Control * creatin
 
 		sprintf(filename,"contUSE_%s.txt",nameb);
 		LoadContainersFromDecodedAccessListFile(filename,  creating);
-		printf( "Thread create extensions %s.\n" ,filename);
+//		printf( "Thread create extensions %s.\n" ,filename);
 	}
 	return true;
 }
@@ -146,7 +147,7 @@ void task_container_switch (  Thread_Control * a,  Thread_Control * b)
 
 		//staticpermssions * sstatic = (staticpermssions *)b->extensions;
 		ALLOWCTX(b->extensions);
-		//printk("%d \n", sstatic->containersSize);
+		//DPRINTK("%d \n", sstatic->containersSize);
 #if 0
 		int i=0;
 		for(;i< sstatic->containersSize ; i++){
@@ -174,7 +175,7 @@ void task_container_switch (  Thread_Control * a,  Thread_Control * b)
 
 		}
 #endif
-		//printk( "User extension thread switch %s %s\n",namea, nameb);
+		//DPRINTK( "User extension thread switch %s %s\n",namea, nameb);
 	}
 
 
@@ -184,7 +185,7 @@ void task_container_switch (  Thread_Control * a,  Thread_Control * b)
 
 rtems_task KillTaskFunction(rtems_task_argument argument)
 {
-  printk( "DONE !\n");
+  DPRINTK( "DONE !\n");
   MAGIC_BREAKPOINT;
   exit(0);
 }
@@ -236,13 +237,13 @@ void LoadContainersFromDecodedAccessListFile(const char * FileWithPrefix, Thread
 	fscanf(file,"%s %s\t%s\t%s\t%s\t%s\t%s\n",junk[0],junk[1],junk[2],junk[3],junk[4],junk[5],junk[6]);
 
 	staticpermssions * sstatic = (staticpermssions *) calloc(1,  sizeof(staticpermssions));
-	if( !sstatic ){ printk( "ERROR ON MALLOC \n"); exit(0);}
+	if( !sstatic ){ DPRINTK( "ERROR ON MALLOC \n"); exit(0);}
 	sstatic->containersSize =  totalCount;
 	sstatic->containers =  (staticpermlist *)calloc( 1000,  sizeof( staticpermlist));
-	if( !sstatic->containers ){ printk( "ERROR ON MALLOC \n"); exit(0);}
+	if( !sstatic->containers ){ DPRINTK( "ERROR ON MALLOC \n"); exit(0);}
 
 	creating->extensions = (void **) sstatic;
-	//printk( "creating->extensions =  %x \n", creating->extensions);
+	//DPRINTK( "creating->extensions =  %x \n", creating->extensions);
 
 	#if 0
 		printf("count:%d\n",totalCount);

@@ -37,7 +37,7 @@ int quicksort_main(int argc, char *argv[]) {
 	 count++;
     }
   }
-  printf("\nSorting %d elements.\n\n",count);
+  //printf("\nSorting %d elements.\n\n",count);
 
   qsort(array,count,sizeof(struct myStringStruct),compare);
   //for(i=0;i<count;i++)
