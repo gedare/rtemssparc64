@@ -1,0 +1,18 @@
+Usage:
+To use this module, add the following into your .simics scripts and change
+the variables tarfile_(base, size, filename);
+  * tarfile_base must be the address where the program is going 
+    to look for the tar file.
+  * filename must point to a valid (tar) file
+
+Example:
+
+$tarfile_base = 0x100000000
+$tarfile_filename = "FileSystemImage"
+
+load-module tarfile
+new-tarfile
+tarfile0.set-base $tarfile_base
+tarfile0.set-filename $tarfile_filename
+tarfile0.load
+
