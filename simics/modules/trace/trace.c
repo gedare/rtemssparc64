@@ -1785,7 +1785,7 @@ set_trace_print_threads(void *arg, conf_object_t *obj, attr_value_t *val, attr_v
 static attr_value_t
 get_trace_containerstatistics(void *arg, conf_object_t *obj, attr_value_t *idx){
 	printf("GICA get_trace_containerstatistics\n");
-	container_printStatistics(0);
+	container_printStatisticsThreads(0);
 	return SIM_make_attr_integer(1);
 }
 
@@ -1793,14 +1793,14 @@ static set_error_t
 set_trace_containerstatistics(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
 {
 	printf("GICA set_trace_containerstatistics\n");
-	container_printStatistics(val->u.integer);
+	container_printStatisticsThreads(val->u.integer);
 	return Sim_Set_Ok;
 }
 
 static attr_value_t
 get_trace_printAccessList(void *arg, conf_object_t *obj, attr_value_t *idx){
 	printf("GICA get_trace_printAccessList\n");
-	container_printMemoryRanges(0);
+	container_printMemoryRangesThreads(0);
 	return SIM_make_attr_integer(1);
 }
 
@@ -1808,21 +1808,21 @@ static set_error_t
 set_trace_printAccessList(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
 {
 	printf("GICA set_trace_printAccessList\n");
-	container_printMemoryRanges(val->u.integer);
+	container_printMemoryRangesThreads(val->u.integer);
 	return Sim_Set_Ok;
 }
 
 
 static attr_value_t
 get_trace_printDecodedAccessList(void *arg, conf_object_t *obj, attr_value_t *idx){
-	container_printDecodedMemoryRanges(0);
+	container_printDecodedMemoryRangesThreads(0);
 	return SIM_make_attr_integer(1);
 }
 
 static set_error_t
 set_trace_printDecodedAccessList(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
 {
-	container_printDecodedMemoryRanges(0);
+	container_printDecodedMemoryRangesThreads(0);
 	return Sim_Set_Ok;
 }
 

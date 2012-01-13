@@ -638,7 +638,7 @@ void container_quickprint(container* containerTable,int containerSize )
 	}
 }
 
-void container_printMemoryRanges(int bAll){
+void container_printMemoryRangesThreads(int bAll){
 	thread_monitor_t* iterate;
 	thread_monitor_t* starthere = thread_active;
 	iterate = thread_active->next;
@@ -681,7 +681,7 @@ void container_printMemoryRanges(int bAll, container* containerTable,int contain
 	}
 }
 
-void container_printDecodedMemoryRanges(int bAll){
+void container_printDecodedMemoryRangesThreads(int bAll){
 	thread_monitor_t* iterate;
 	thread_monitor_t* starthere = thread_active;
 	iterate = thread_active->next;
@@ -1060,7 +1060,7 @@ void printAllStatsFiles(char * fStatsFileBaseName)
 	printf("Done PRINTING stat files \n"); fflush(stdin);
 }
 
-void container_printStatistics(int bAll){
+void container_printStatisticsThreads(int bAll){
 	thread_monitor_t* iterate;
 	thread_monitor_t* starthere = thread_active;
 	iterate = thread_active->next;

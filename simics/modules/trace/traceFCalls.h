@@ -171,9 +171,9 @@ void container_printStatistics(int bAll, container* containerTable,int container
 void container_printMemoryRanges(int bAll,  container* containerTable,int containerSize);
 void container_printDecodedMemoryRanges(int bAll,  container* containerTable,int containerSize);
 
-void container_printStatistics(int bAll);
-void container_printMemoryRanges(int bAll);
-void container_printDecodedMemoryRanges(int bAll);
+void container_printStatisticsThreads(int bAll);
+void container_printMemoryRangesThreads(int bAll);
+void container_printDecodedMemoryRangesThreads(int bAll);
 
 
 void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes);
