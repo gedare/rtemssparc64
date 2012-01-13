@@ -8,7 +8,6 @@
 //#include "debugio.h"
 
 
-#define CONTAINERMAX 6000
 #define PRINTBUFFMAX 100000
 
 typedef struct traceData_def traceData;
