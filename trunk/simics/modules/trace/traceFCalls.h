@@ -249,6 +249,15 @@ typedef struct thread_monitor
 	uint64 minFP;
 	uint64 maxFP;
 
+	md_addr_t ld_text_base;
+	md_addr_t ld_text_bound;
+	md_addr_t ld_stack_size;
+	md_addr_t ld_stack_base;
+
+	container threadContainerTable[CONTAINERMAX]; 	//this array contains all containers
+	int threadContainerSize;				//keps the size of the containerList
+
+
 } thread_monitor_t;
 
 extern thread_monitor_t *thread_active;
