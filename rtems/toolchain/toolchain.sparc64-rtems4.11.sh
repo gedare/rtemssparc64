@@ -16,14 +16,14 @@ check_error() {
 }
 
 OPTIONDOWNLOAD=0
-OPTIONUNPACK=0
-OPTIONPATCH=0
+OPTIONUNPACK=1
+OPTIONPATCH=1
 
-BINUTILS_VERSION="2.20.1"
-GCC_VERSION="4.5.1"
-NEWLIB_VERSION="1.18.0"
+BINUTILS_VERSION="2.22"
+GCC_VERSION="4.6.2"
+NEWLIB_VERSION="1.19.0"
 
-MYTOOLSVERSION="0.2"
+MYTOOLSVERSION="0.3"
 
 CROSS_PREFIX=/home/eugen/work/rtemssparc64/rtems/compilers/rtems11-sparc64-newlib-${NEWLIB_VERSION}-binutils-${BINUTILS_VERSION}-gcc-${GCC_VERSION}_${MYTOOLSVERSION}
 
@@ -32,9 +32,9 @@ if [ -z "${CROSS_PREFIX}" ] ; then
     CROSS_PREFIX="/opt/rtems-4.11"
 fi
 
-BINUTILS="binutils-${BINUTILS_VERSION}.tar.gz"
+BINUTILS="binutils-${BINUTILS_VERSION}.tar.bz2"
 GCC_CORE="gcc-core-${GCC_VERSION}.tar.bz2"
-GCC_OBJC="gcc-objc-${GCC_VERSION}.tar.bz2"
+GCC_OBJC="gcc-objc-4.5.1.tar.bz2"
 GCC_CPP="gcc-g++-${GCC_VERSION}.tar.bz2"
 NEWLIB="newlib-${NEWLIB_VERSION}.tar.gz"
 
@@ -111,13 +111,13 @@ then
 	echo ">>>>>> Skipping Unpacking tarballs"
 else
 	rm ${BINUTILSDIR} -rf 
-	tar -xvzf "${BINUTILS}"
+	tar -xvjf "${BINUTILS}"
 	check_error $? "Error unpacking binutils."
 	rm ${GCCDIR} -rf
 	tar -xvjf "${GCC_CORE}"
 	check_error $? "Error unpacking GCC Core."
-	tar -xvjf "${GCC_OBJC}"
-	check_error $? "Error unpacking GCC Objective C."
+#	tar -xvjf "${GCC_OBJC}"
+#	check_error $? "Error unpacking GCC Objective C."
 	tar -xvjf "${GCC_CPP}"
 	check_error $? "Error unpacking GCC C++."
 	rm newlib-${NEWLIB_VERSION} -rf 
