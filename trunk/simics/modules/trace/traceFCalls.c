@@ -82,9 +82,9 @@ thread_monitor_t* ThreadAdd(uint64 id, uint64 name)
 
 	newThread->container_runtime_stack = stack_create();
 
-	char name[4];
-	toStringRTEMSTaksName(name,newThread->thread_name);
-	newThread->string_name= strcpy(name);
+	char tname[4];
+	toStringRTEMSTaksName(tname,newThread->thread_name);
+	newThread->string_name= strdup(tname);
 
 	for(int i=0;i < initialEmptyContainerSize; i++)
 	{
@@ -105,9 +105,7 @@ thread_monitor_t* ThreadAdd(uint64 id, uint64 name)
 			itoa(id,idstr);
 			strcat(fname,idstr);
 			strcat(fname,"_");
-			char taskName[5];
-			toStringRTEMSTaksName(taskName,name);
-			strcat(fname,taskName);
+			strcat(fname,newThread->string_name);
 		}
 		newThread->traceFD = fopen(fname,"w");
 	}
