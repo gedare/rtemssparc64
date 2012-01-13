@@ -164,10 +164,10 @@ void container_close();
 container * container_add(md_addr_t addr, char * name);
 
 struct loadingPenalties container_traceFunctioncall(md_addr_t addr, mem_tp * mem, char displayLineNumbers);
-void container_quickprint();
-void container_printStatistics(int bAll);
-void container_printMemoryRanges(int bAll);
-void container_printDecodedMemoryRanges(int bAll);
+void container_quickprint( container* containerTable,int containerSize);
+void container_printStatistics(int bAll, container* containerTable,int containerSize);
+void container_printMemoryRanges(int bAll,  container* containerTable,int containerSize);
+void container_printDecodedMemoryRanges(int bAll,  container* containerTable,int containerSize);
 
 
 void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes);
