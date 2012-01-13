@@ -953,12 +953,12 @@ void printAllStatsFiles(char * fStatsFileBaseName)
 	const char * containerCallListFileNameTMPL = "ContainerCallList_%s.txt";
 	const char * containerStatisticsFileNameTMPL = "ContainerStats_%s.txt";
 
-	char * fullAddressAccessListFileName[100];
-	char * fullDecodedAddressAccessListFileName[100];
-	char * fullDecodedAddressForRTEMSThreadAccessListFileName[100];
-	char * simpleCountAddressAcessFileName[100];
-	char * containerCallListFileName[100];
-	char * containerStatisticsFileName[100];
+	char fullAddressAccessListFileName[100];
+	char fullDecodedAddressAccessListFileName[100];
+	char fullDecodedAddressForRTEMSThreadAccessListFileName[100];
+	char simpleCountAddressAcessFileName[100];
+	char containerCallListFileName[100];
+	char containerStatisticsFileName[100];
 
 	FILE * fullAddressAccessListFile;
 	FILE * fullDecodedAddressAccessListFile;
