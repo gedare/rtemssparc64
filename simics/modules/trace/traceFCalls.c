@@ -638,6 +638,16 @@ void container_quickprint(container* containerTable,int containerSize )
 	}
 }
 
+void container_printMemoryRanges(int bAll){
+	thread_monitor_t* iterate;
+	thread_monitor_t* starthere = thread_active;
+	iterate = thread_active->next;
+	while (iterate != starthere)
+	{
+		container_printMemoryRanges (bAll, iterate->threadContainerTable, iterate->threadContainerSize );
+		iterate = iterate->next;
+	}
+}
 void container_printMemoryRanges(int bAll, container* containerTable,int containerSize  )
 {
 	sprintf(printBuffer,"entryAddress endAddress\tname\tcount\tLIST\n");
@@ -668,6 +678,17 @@ void container_printMemoryRanges(int bAll, container* containerTable,int contain
 			sprintf(printBuffer,"\n");
 			myprint(printBuffer);
 		}
+	}
+}
+
+void container_printDecodedMemoryRanges(int bAll){
+	thread_monitor_t* iterate;
+	thread_monitor_t* starthere = thread_active;
+	iterate = thread_active->next;
+	while (iterate != starthere)
+	{
+		container_printDecodedMemoryRanges (bAll, iterate->threadContainerTable, iterate->threadContainerSize );
+		iterate = iterate->next;
 	}
 }
 
@@ -1037,6 +1058,17 @@ void printAllStatsFiles(char * fStatsFileBaseName)
 		}
 
 	printf("Done PRINTING stat files \n"); fflush(stdin);
+}
+
+void container_printStatistics(int bAll){
+	thread_monitor_t* iterate;
+	thread_monitor_t* starthere = thread_active;
+	iterate = thread_active->next;
+	while (iterate != starthere)
+	{
+		container_printStatistics (bAll, iterate->threadContainerTable, iterate->threadContainerSize );
+		iterate = iterate->next;
+	}
 }
 
 
