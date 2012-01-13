@@ -88,7 +88,7 @@ thread_monitor_t* ThreadAdd(uint64 id, uint64 name)
 
 	for(int i=0;i < initialEmptyContainerSize; i++)
 	{
-		container_copy(initialEmptyContainerTable[i],newThread->threadContainerTable[i]);
+		container_copy(&initialEmptyContainerTable[i],&newThread->threadContainerTable[i]);
 	}
 	newThread->threadContainerSize = initialEmptyContainerSize;
 	
