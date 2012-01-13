@@ -77,7 +77,7 @@ struct loadingPenalties
 	int containerDynamicListSize;
 };
 
-extern container containerTable[];
+extern container * containerTable;
 extern int componentTableSize ;
 extern int containerSize ;
 
@@ -248,6 +248,7 @@ typedef struct thread_monitor
 	struct thread_monitor* next;
 	int64 thread_id;
 	int64 thread_name;
+	char *string_name;
 	mystack container_runtime_stack;
 	FILE *traceFD;
 	uint64 minStack;
