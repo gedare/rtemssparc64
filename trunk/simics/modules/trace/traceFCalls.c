@@ -330,7 +330,7 @@ void loadContainersFromSymtable(const char* symFileName)
 	//exit(0);
 }
 
-container_copy(container* a, container* b)
+void container_copy(container* a, container* b)
 {
 	*b=*a;
 }
@@ -946,12 +946,12 @@ void printAllStatsFiles(char * fStatsFileBaseName)
 		baseFileName = fStatsFileBaseName;
 	}
 
-	char * fullAddressAccessListFileNameTMPL = "FullAddressAccessList_%s.txt";
-	char * fullDecodedAddressAccessListFileNameTMPL = "FullDecodedAddressAccessList_%s.txt";
-	char * fullDecodedAddressForRTEMSThreadAccessListFileNameTMPL = "FullDecodedForRTEMSThreadAddressAccessList_%s.txt";
-	char * simpleCountAddressAcessFileNameTMPL = "SimpleCountAddressAccessList_%s.txt";
-	char * containerCallListFileNameTMPL = "ContainerCallList_%s.txt";
-	char * containerStatisticsFileNameTMPL = "ContainerStats_%s.txt";
+	const char * fullAddressAccessListFileNameTMPL = "FullAddressAccessList_%s.txt";
+	const char * fullDecodedAddressAccessListFileNameTMPL = "FullDecodedAddressAccessList_%s.txt";
+	const char * fullDecodedAddressForRTEMSThreadAccessListFileNameTMPL = "FullDecodedForRTEMSThreadAddressAccessList_%s.txt";
+	const char * simpleCountAddressAcessFileNameTMPL = "SimpleCountAddressAccessList_%s.txt";
+	const char * containerCallListFileNameTMPL = "ContainerCallList_%s.txt";
+	const char * containerStatisticsFileNameTMPL = "ContainerStats_%s.txt";
 
 	char * fullAddressAccessListFileName[100];
 	char * fullDecodedAddressAccessListFileName[100];
