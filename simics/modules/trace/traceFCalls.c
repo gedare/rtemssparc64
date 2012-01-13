@@ -54,12 +54,6 @@ FILE *compilerInfofd = NULL;
 FILE *fullTracefd = NULL;
 FILE *overrideOutputfd = NULL;
 
-md_addr_t ld_text_base = 0x0;
-md_addr_t ld_text_bound = 0x0;
-md_addr_t ld_stack_size = 0x0;
-md_addr_t ld_stack_base = 0x0;
-
-
 conf_object_t *proc = NULL; //Simics Sparc current processor
 int o7id; //Simics Sparc registerid for the "i7" register ( %i7 + 8 is the return address)
 int o6id;  //sp
@@ -76,6 +70,13 @@ thread_monitor_t* ThreadAdd(uint64 id, uint64 name)
 	newThread->minStack = ULLONG_MAX ;
 	newThread->maxFP = 0;
 	newThread->minFP = ULLONG_MAX ;
+
+	newThread->ld_text_base = 0x0;
+	newThread->ld_text_bound = 0x0;
+	newThread->ld_stack_size = 0x0;
+	newThread->ld_stack_base = 0x0;
+
+	newThread->threadContainerSize = 0;
 
 	newThread->container_runtime_stack = stack_create();
 	//create a name for the thread trace file
@@ -136,21 +137,29 @@ void Thread_switch( uint64 id, uint64 name)
 	printRTEMSTaksName(thread_active->thread_name);
 	printf("\n");
 
-	md_addr_t StackArea = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Start.Initial_stack.area");
-	uint64 StackSize = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Start.Initial_stack.size");
+	md_addr_t StackArea = mySimicsIntSymbolRead("_Per_CPU_Information[0].executing.Start.Initial_stack.area");
+	uint64 StackSize = mySimicsIntSymbolRead("_Per_CPU_Information[0].executing.Start.Initial_stack.size");
 
-	ld_stack_base = StackArea;
-	ld_stack_size = StackSize;
+	newThread->ld_stack_base = StackArea;
+	newThread->ld_stack_size = StackSize;
+	printf("%s stack: %llx %lld %llx \n",__PRETTY_FUNCTION__, StackArea, StackSize, StackArea + StackSize);
 
-	ld_text_base = mySimicsIntSymbolRead("start");
-	ld_text_bound = mySimicsIntSymbolRead("end");
+	newThread->ld_text_base = mySimicsIntSymbolRead("start");
+	newThread->ld_text_bound = mySimicsIntSymbolRead("end");
+
+	printf("%s static: %llx %llx \n",__PRETTY_FUNCTION__, newThread->ld_text_base, newThread->ld_text_bound);
+
+	for(int i=0;i < containerSize; i++)
+	{
+		container_copy(containerTable[i],newThread->);
+	}
 }
 
 
 void ThreadInitializeOnStart()
 {
-	uint64 threadNameNew = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Object.name.name_u32");
-	uint64 threadIdNew = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Object.id");
+	uint64 threadNameNew = mySimicsIntSymbolRead("_Per_CPU_Information[0].executing.Object.name.name_u32");
+	uint64 threadIdNew = mySimicsIntSymbolRead("_Per_CPU_Information[0].executing.Object.id");
 	Thread_switch( threadIdNew, threadNameNew);
 }
 
@@ -308,6 +317,12 @@ void loadContainersFromSymtable(const char* symFileName)
 	//container_quickprint();
 	//exit(0);
 }
+
+container_copy(container* a, container* b)
+{
+	*b=*a;
+}
+
 
 container* container_add(md_addr_t addr, char * name)
 {
@@ -533,7 +548,7 @@ int isLocalStackAccess(md_addr_t addr, int nbytes)
 {
 	uint64 sp = getSP() + STACK_BIAS;
 	uint64 fp = getFP() + STACK_BIAS;
-	//printf("%llx %llx is local ? stack [%llx %llx] stack limits[%llx %llx]\n",addr, addr +nbytes, fp, sp,ld_stack_base, ld_stack_base+ld_stack_size);
+	printf("%llx %llx is local ? stack [%llx %llx] stack limits[%llx %llx]\n",addr, addr +nbytes, fp, sp,ld_stack_base, ld_stack_base+ld_stack_size);
 	if(sp < fp) //the stack might grow different ways
 	{
 		uint64 t = fp;
@@ -577,9 +592,9 @@ void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes)
 		UpdateAddressList(&( t.containerObj->addressAccessList), addr, nbytes);
 		UpdateAddressList(&( t.containerObj->addressAccessListInstance), addr, nbytes);
 
-		if(!isLocalStackAccess(addr, nbytes)){
+		//if(!isLocalStackAccess(addr, nbytes)){
 			UpdateAddressList(&( t.containerObj->addressAccessListWithoutLocalStackAccesses), addr, nbytes);
-		}
+		//}
 
 		if(cmd == Read)
 		{
@@ -718,14 +733,18 @@ void container_printDecodedMemoryRangesForRTEMSThread(int bAll )
 	sprintf(printBuffer,"entryAddress endAddress\tname\ttotalHeap\ttotalPushes\tcount\tLIST\n");
 	myprint(printBuffer);
 
+
+
 	for (int i=0 ; i < containerSize; i++)
 	{
 		addressList l = containerTable[i].addressAccessListWithoutLocalStackAccesses;
+		printAddressListStdout(containerTable[i].addressAccessListWithoutLocalStackAccesses);
+		printf("\n");
 		while(l!=NULL)
 		{
 		 	if(!isHypervisorRange(l->startAddress)){
 				decodedMemRange md = decodeMemoryRange(l->startAddress, l->endAddress);
-				//printbuff += sprintf(printbuff,"%c[%llx,%llx) ",md.type,md.base,md.bound);
+				printf("%c[%llx,%llx) ",md.type,md.base,md.bound);
 				if(md.type == 'f')
 					containerTable[i].opalCodeAccessList = consAddressList(l->startAddress,l->endAddress,containerTable[i].opalCodeAccessList);
 				else if(md.type == 'c')
@@ -744,7 +763,7 @@ void container_printDecodedMemoryRangesForRTEMSThread(int bAll )
 		{
 		 	if(!isHypervisorRange(l->startAddress)){
 				decodedMemRange md = decodeMemoryRange(l->startAddress, l->endAddress);
-				//printbuff += sprintf(printbuff,"%c[%llx,%llx) ",md.type,md.base,md.bound);
+				printf("%c[%llx,%llx) ",md.type,md.base,md.bound);
 				if(md.type == 'f')
 					containerTable[i].opalCodeAccessList = consAddressList(l->startAddress,l->endAddress,containerTable[i].opalCodeAccessList);
 				else if(md.type == 'c')
@@ -1382,6 +1401,7 @@ decodedMemRange decodeMemoryRange(md_addr_t base, md_addr_t bound)
 	else
 		ret.type = 'h'; //heap
 
+	printf("DEBUG %s ld_text_base=%llx ld_text_bound=%llx ld_stack_base=%llx ld_stack_base + ld_stack_size=%llx tocheckbase=%llx tocheckbasebound=%llx %c \n", __PRETTY_FUNCTION__,ld_text_base , ld_text_bound, ld_stack_base, ld_stack_base + ld_stack_size, base, bound, ret.type );
 	return ret;
 }
 

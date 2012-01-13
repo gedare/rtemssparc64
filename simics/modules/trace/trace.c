@@ -1649,8 +1649,8 @@ void ThreadMonitor_callback_after(lang_void *userdata,
 	integer_t exception_number,
 	generic_transaction_t *memop)
 {
-	uint64 threadNameNew = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Object.name.name_u32");
-	uint64 threadIdNew = mySimicsIntSymbolRead("_Per_CPU_Information.executing.Object.id");
+	uint64 threadNameNew = mySimicsIntSymbolRead("_Per_CPU_Information[0].executing.Object.name.name_u32");
+	uint64 threadIdNew = mySimicsIntSymbolRead("_Per_CPU_Information[0].executing.Object.id");
 
 	base_trace_t * bt = (base_trace_t *)SIM_get_object("trace0");
 	//printf("threadskip %s\n",bt->threadSkip);
@@ -1690,7 +1690,7 @@ void ThreadMonitor_callback_before(lang_void *userdata,
 {
 
 	uinteger_t memTranVal = SIM_get_mem_op_value_cpu(memop);
-	attr_value_t evalThreadPtr = myeval("_Per_CPU_Information.executing");
+	attr_value_t evalThreadPtr = myeval("_Per_CPU_Information[0].executing");
 	uint64 uievalThreadPtr = evalThreadPtr.u.list.vector[1].u.integer;
 
 	if(memTranVal != 0 && uievalThreadPtr != 0){
@@ -1728,7 +1728,7 @@ void ThreadMonitor_register()
 {
 	//attr_value_t evalThreadAddress = myeval("&_Per_CPU_Information.executing");
 	//ASSERT(evalThreadAddress.kind == 4);
-	uint64 breakAddress = mySimicsIntSymbolRead("&_Per_CPU_Information.executing");
+	uint64 breakAddress = mySimicsIntSymbolRead("&_Per_CPU_Information[0].executing");
 
 	breakpoint_id_t bkpt = SIM_breakpoint(
 			SIM_get_object("gicacontext"),//memory object ?
