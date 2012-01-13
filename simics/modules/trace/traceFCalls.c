@@ -13,8 +13,11 @@
 
 typedef struct traceData_def traceData;
 //External Variables
-container containerTable[CONTAINERMAX]; 	//this array contains all containers( functions and is loaded in Loader.c)
+container * containerTable; 	//this array contains all containers( functions and is loaded in Loader.c)
 int containerSize = 0;				//keps the size of the containerList
+container initialEmptyContainerTable[CONTAINERMAX]; 	//this array contains all containers( functions and is loaded in Loader.c)
+int initialEmptyContainerSize = 0;				//keps the size of the containerList
+
 int componentTableSize = 1;
 int containerInitialized = 0; 	//local flag to track wheater the containers were initialized
 
@@ -79,6 +82,13 @@ thread_monitor_t* ThreadAdd(uint64 id, uint64 name)
 	newThread->threadContainerSize = 0;
 
 	newThread->container_runtime_stack = stack_create();
+
+	for(int i=0;i < initialEmptyContainerSize; i++)
+	{
+		container_copy(initialEmptyContainerTable[i],newThread->threadContainerTable[i]);
+	}
+	newThread->threadContainerSize = initialEmptyContainerSize;
+	
 	//create a name for the thread trace file
 	if(fullTracefdFileName != NULL){
 		char fname[500];
@@ -106,6 +116,8 @@ thread_monitor_t* ThreadAdd(uint64 id, uint64 name)
 		thread_active = newThread;
 		newThread->next = newThread;
 	}
+	
+
 	return newThread;
 }
 
@@ -149,10 +161,9 @@ void Thread_switch( uint64 id, uint64 name)
 
 	printf("%s static: %llx %llx \n",__PRETTY_FUNCTION__, newThread->ld_text_base, newThread->ld_text_bound);
 
-	for(int i=0;i < containerSize; i++)
-	{
-		container_copy(containerTable[i],newThread->);
-	}
+	containerTable = newThread->threadContainerTable;
+	containerSize = newThread->threadContainerSize;
+	
 }
 
 
@@ -380,10 +391,10 @@ container* container_add(md_addr_t addr, char * name)
 		newContainer->nonFunction = 1;
 		//printf("%s %d\n\n",newContainer->name, newContainer->nonFunction);
 	}
-	containerTable[containerSize++] = *newContainer;
+	initialEmptyContainerTable[initialEmptyContainerSize++] = *newContainer;
 	//printf("%lld = %llx %s %d %d\n", addr,containerTable[containerSize-1].entryAddress, containerTable[containerSize-1].name, containerTable[containerSize-1].traceLoadedAddressCount, containerTable[containerSize-1].traceLoadeduniqueChildContainersCalled);
 	free(newContainer);
-	return &containerTable[containerSize-1];
+	return &initialEmptyContainerTable[initialEmptyContainerSize-1];
 }
 
 
@@ -616,7 +627,7 @@ void container_MemoryCall(mem_tp cmd,md_addr_t addr, int nbytes)
 
 }
 
-void container_quickprint()
+void container_quickprint(container* containerTable,int containerSize )
 {
 	for (int i=0 ; i < containerSize; i++)
 	{
@@ -628,7 +639,7 @@ void container_quickprint()
 	}
 }
 
-void container_printMemoryRanges(int bAll )
+void container_printMemoryRanges(int bAll, container* containerTable,int containerSize  )
 {
 	sprintf(printBuffer,"entryAddress endAddress\tname\tcount\tLIST\n");
 	myprint(printBuffer);
@@ -661,7 +672,7 @@ void container_printMemoryRanges(int bAll )
 	}
 }
 
-void container_printDecodedMemoryRanges(int bAll )
+void container_printDecodedMemoryRanges(int bAll, container* containerTable,int containerSize  )
 {
 	int count = 0;
 	for (int i=0 ; i < containerSize; i++){
@@ -718,7 +729,7 @@ void container_printDecodedMemoryRanges(int bAll )
 }
 
 
-void container_printDecodedMemoryRangesForRTEMSThread(int bAll )
+void container_printDecodedMemoryRangesForRTEMSThread(int bAll , container* containerTable,int containerSize )
 {
 	int count = 0;
 	for (int i=0 ; i < containerSize; i++){
@@ -844,7 +855,8 @@ void container_printDecodedMemoryRangesForRTEMSThread(int bAll )
 }
 
 
-void container_printSimpleCountAddressAcess(int bAll )
+void container_printSimpleCountAddressAcess(int bAll, container* containerTable,int containerSize )
+	
 {
 	sprintf(printBuffer,"entryAddress endAddress\tname\tcode initialized stack heap\n");
 	myprint(printBuffer);
@@ -869,7 +881,7 @@ void container_printSimpleCountAddressAcess(int bAll )
 
 }
 
-void container_printChildFunctionsCalled(int bAll)
+void container_printChildFunctionsCalled(int bAll,  container* containerTable,int containerSize)
 {
 	sprintf(printBuffer,"entryAddress endAddress\tname\tcount\tLIST\n");
 		myprint(printBuffer);
@@ -912,12 +924,19 @@ void printAllStatsFiles(char * fStatsFileBaseName)
 		baseFileName = fStatsFileBaseName;
 	}
 
-	char * fullAddressAccessListFileName = "FullAddressAccessList.txt";
-	char * fullDecodedAddressAccessListFileName = "FullDecodedAddressAccessList.txt";
-	char * fullDecodedAddressForRTEMSThreadAccessListFileName = "FullDecodedForRTEMSThreadAddressAccessList.txt";
-	char * simpleCountAddressAcessFileName = "SimpleCountAddressAccessList.txt";
-	char * containerCallListFileName = "ContainerCallList.txt";
-	char * containerStatisticsFileName = "ContainerStats.txt";
+	char * fullAddressAccessListFileNameTMPL = "FullAddressAccessList_%s.txt";
+	char * fullDecodedAddressAccessListFileNameTMPL = "FullDecodedAddressAccessList_%s.txt";
+	char * fullDecodedAddressForRTEMSThreadAccessListFileNameTMPL = "FullDecodedForRTEMSThreadAddressAccessList_%s.txt";
+	char * simpleCountAddressAcessFileNameTMPL = "SimpleCountAddressAccessList_%s.txt";
+	char * containerCallListFileNameTMPL = "ContainerCallList_%s.txt";
+	char * containerStatisticsFileNameTMPL = "ContainerStats_%s.txt";
+
+	char * fullAddressAccessListFileName[100];
+	char * fullDecodedAddressAccessListFileName[100];
+	char * fullDecodedAddressForRTEMSThreadAccessListFileName[100];
+	char * simpleCountAddressAcessFileName[100];
+	char * containerCallListFileName[100];
+	char * containerStatisticsFileName[100];
 
 	FILE * fullAddressAccessListFile;
 	FILE * fullDecodedAddressAccessListFile;
@@ -926,87 +945,103 @@ void printAllStatsFiles(char * fStatsFileBaseName)
 	FILE * containerCallListFile;
 	FILE * containerStatisticsFile;
 
-	char *s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullAddressAccessListFileName) + 1);
-	sprintf(s, "%s%s", baseFileName, fullAddressAccessListFileName);
-    fullAddressAccessListFile = fopen(s,"w");
-		if(!fullAddressAccessListFile){
-			printf("\n\n Unable to open %s, using stdout \n\n",s);
-			fullAddressAccessListFile = stdout;
-		}
-	free(s);
-	s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullDecodedAddressAccessListFileName) + 1);
-	sprintf(s, "%s%s", baseFileName, fullDecodedAddressAccessListFileName);
-	fullDecodedAddressAccessListFile = fopen(s,"w");
-		if(!fullDecodedAddressAccessListFile){
-			printf("\n\n Unable to open %s, using stdout \n\n",s);
-			fullDecodedAddressAccessListFile = stdout;
-		}
-	free(s);
-	s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullDecodedAddressForRTEMSThreadAccessListFileName) + 1);
-		sprintf(s, "%s%s", baseFileName, fullDecodedAddressForRTEMSThreadAccessListFileName);
-		fullDecodedAddressForRTEMSThreadAccessListFile = fopen(s,"w");
-			if(!fullDecodedAddressForRTEMSThreadAccessListFile){
-				printf("\n\n Unable to open %s, using stdout \n\n",s);
-				fullDecodedAddressForRTEMSThreadAccessListFile = stdout;
-			}
-	free(s);
-	s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, simpleCountAddressAcessFileName) + 1);
-	sprintf(s, "%s%s", baseFileName, simpleCountAddressAcessFileName);
-	simpleCountAddressAcessFile = fopen(s,"w");
-		if(!simpleCountAddressAcessFile){
-			printf("\n\n Unable to open %s, using stdout \n\n",s);
-			simpleCountAddressAcessFile = stdout;
-		}
-	free(s);
-	s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, containerCallListFileName) + 1);
-	sprintf(s, "%s%s", baseFileName, containerCallListFileName);
-	containerCallListFile = fopen(s,"w");
-		if(!containerCallListFile){
-			printf("\n\n Unable to open %s, using stdout \n\n",s);
-			containerCallListFile = stdout;
-		}
-	free(s);
-	s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, containerStatisticsFileName) + 1);
-	sprintf(s, "%s%s", baseFileName, containerStatisticsFileName);
-	containerStatisticsFile = fopen(s,"w");
-		if(!containerStatisticsFile){
-			printf("\n\n Unable to open %s, using stdout \n\n",s);
-			containerStatisticsFile = stdout;
-		}
-	free(s);
+	thread_monitor_t* iterate;
+	thread_monitor_t* starthere = thread_active;
+	iterate = thread_active->next;
+	while (iterate != starthere)
+	{
+			thread_active = iterate;
+			sprintf(fullAddressAccessListFileName, fullAddressAccessListFileNameTMPL,iterate->thread_name);
+			char *s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullAddressAccessListFileName) + 1);
+			sprintf(s, "%s%s", baseFileName, fullAddressAccessListFileName);
+		    	fullAddressAccessListFile = fopen(s,"w");
+				if(!fullAddressAccessListFile){
+					printf("\n\n Unable to open %s, using stdout \n\n",s);
+					fullAddressAccessListFile = stdout;
+				}
+			free(s);
+			sprintf(fullDecodedAddressAccessListFileName, fullDecodedAddressAccessListFileNameTMPL,iterate->thread_name);
+			s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullDecodedAddressAccessListFileName) + 1);
+			sprintf(s, "%s%s", baseFileName, fullDecodedAddressAccessListFileName);
+			fullDecodedAddressAccessListFile = fopen(s,"w");
+				if(!fullDecodedAddressAccessListFile){
+					printf("\n\n Unable to open %s, using stdout \n\n",s);
+					fullDecodedAddressAccessListFile = stdout;
+				}
+			free(s);
+			sprintf(fullDecodedAddressForRTEMSThreadAccessListFileName,fullDecodedAddressForRTEMSThreadAccessListFileNameTMPL,iterate->thread_name);
+			s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, fullDecodedAddressForRTEMSThreadAccessListFileName) + 1);
+				sprintf(s, "%s%s", baseFileName, fullDecodedAddressForRTEMSThreadAccessListFileName);
+				fullDecodedAddressForRTEMSThreadAccessListFile = fopen(s,"w");
+					if(!fullDecodedAddressForRTEMSThreadAccessListFile){
+						printf("\n\n Unable to open %s, using stdout \n\n",s);
+						fullDecodedAddressForRTEMSThreadAccessListFile = stdout;
+					}
+			free(s);
+			sprintf(simpleCountAddressAcessFileName,simpleCountAddressAcessFileNameTMPL,iterate->thread_name);
+			s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, simpleCountAddressAcessFileName) + 1);
+			sprintf(s, "%s%s", baseFileName, simpleCountAddressAcessFileName);
+			simpleCountAddressAcessFile = fopen(s,"w");
+				if(!simpleCountAddressAcessFile){
+					printf("\n\n Unable to open %s, using stdout \n\n",s);
+					simpleCountAddressAcessFile = stdout;
+				}
+			free(s);
+			sprintf(containerCallListFileName,containerCallListFileNameTMPL,iterate->thread_name);
+			s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, containerCallListFileName) + 1);
+			sprintf(s, "%s%s", baseFileName, containerCallListFileName);
+			containerCallListFile = fopen(s,"w");
+				if(!containerCallListFile){
+					printf("\n\n Unable to open %s, using stdout \n\n",s);
+					containerCallListFile = stdout;
+				}
+			free(s);
+			sprintf(containerStatisticsFileName,containerStatisticsFileNameTMPL,iterate->thread_name);
+			s = (char *)malloc(snprintf(NULL, 0, "%s %s", baseFileName, containerStatisticsFileName) + 1);
+			sprintf(s, "%s%s", baseFileName, containerStatisticsFileName);
+			containerStatisticsFile = fopen(s,"w");
+				if(!containerStatisticsFile){
+					printf("\n\n Unable to open %s, using stdout \n\n",s);
+					containerStatisticsFile = stdout;
+				}
+			free(s);
 
 
-	overrideOutputfd = containerStatisticsFile;
-	container_printStatistics(0);
-	fflush(overrideOutputfd);
-	fclose(overrideOutputfd);
-	overrideOutputfd = fullAddressAccessListFile;
-	container_printMemoryRanges(0);
-	fflush(overrideOutputfd);
-	fclose(overrideOutputfd);
-	overrideOutputfd = fullDecodedAddressForRTEMSThreadAccessListFile;
-	container_printDecodedMemoryRangesForRTEMSThread(0);
-	fflush(overrideOutputfd);
-	fclose(overrideOutputfd);
-	overrideOutputfd = fullDecodedAddressAccessListFile;
-	container_printDecodedMemoryRanges(0);
-	fflush(overrideOutputfd);
-	fclose(overrideOutputfd);
-	overrideOutputfd = simpleCountAddressAcessFile;
-	container_printSimpleCountAddressAcess(0);
-	fflush(overrideOutputfd);
-	fclose(overrideOutputfd);
-	overrideOutputfd = containerCallListFile;
-	container_printChildFunctionsCalled(0);
-	fflush(overrideOutputfd);
-	fclose(overrideOutputfd);
-	overrideOutputfd = NULL;
+			overrideOutputfd = containerStatisticsFile;
+			container_printStatistics(0, iterate->threadContainerTable, iterate->threadContainerSize);
+			fflush(overrideOutputfd);
+			fclose(overrideOutputfd);
+			overrideOutputfd = fullAddressAccessListFile;
+			container_printMemoryRanges(0, iterate->threadContainerTable, iterate->threadContainerSize);
+			fflush(overrideOutputfd);
+			fclose(overrideOutputfd);
+			overrideOutputfd = fullDecodedAddressForRTEMSThreadAccessListFile;
+			container_printDecodedMemoryRangesForRTEMSThread(0, iterate->threadContainerTable, iterate->threadContainerSize);
+			fflush(overrideOutputfd);
+			fclose(overrideOutputfd);
+			overrideOutputfd = fullDecodedAddressAccessListFile;
+			container_printDecodedMemoryRanges(0, iterate->threadContainerTable, iterate->threadContainerSize);
+			fflush(overrideOutputfd);
+			fclose(overrideOutputfd);
+			overrideOutputfd = simpleCountAddressAcessFile;
+			container_printSimpleCountAddressAcess(0, iterate->threadContainerTable, iterate->threadContainerSize);
+			fflush(overrideOutputfd);
+			fclose(overrideOutputfd);
+			overrideOutputfd = containerCallListFile;
+			container_printChildFunctionsCalled(0, iterate->threadContainerTable, iterate->threadContainerSize);
+			fflush(overrideOutputfd);
+			fclose(overrideOutputfd);
+			overrideOutputfd = NULL;
+
+
+			iterate = iterate->next;
+		}
 
 	printf("Done PRINTING stat files \n"); fflush(stdin);
 }
 
 
-void container_printStatistics (int bAll)
+void container_printStatistics (int bAll,  container* containerTable,int containerSize )
 {
 	int i;
 	int totalFunctionCalls = 0;
@@ -1391,17 +1426,18 @@ void updateHeapCalls(container* c,addressList l)
 
 decodedMemRange decodeMemoryRange(md_addr_t base, md_addr_t bound)
 {
+
 	decodedMemRange ret;
  	ret.base = base;
 	ret.bound = bound;
-	if( base >= ld_text_base && bound <= ld_text_bound )
+	if( base >= thread_active->ld_text_base && bound <= thread_active->ld_text_bound )
 		ret.type = 'c';
-	else if(base >= ld_stack_base  && bound <= ld_stack_base + ld_stack_size)
+	else if(base >=thread_active->ld_stack_base  && bound <= thread_active->ld_stack_base + thread_active->ld_stack_size)
 		ret.type = 's'; //stack
 	else
 		ret.type = 'h'; //heap
 
-	printf("DEBUG %s ld_text_base=%llx ld_text_bound=%llx ld_stack_base=%llx ld_stack_base + ld_stack_size=%llx tocheckbase=%llx tocheckbasebound=%llx %c \n", __PRETTY_FUNCTION__,ld_text_base , ld_text_bound, ld_stack_base, ld_stack_base + ld_stack_size, base, bound, ret.type );
+	printf("DEBUG %s ld_text_base=%llx ld_text_bound=%llx ld_stack_base=%llx ld_stack_base + ld_stack_size=%llx tocheckbase=%llx tocheckbasebound=%llx %c \n", __PRETTY_FUNCTION__,thread_active->ld_text_base , thread_active->ld_text_bound, thread_active->ld_stack_base, thread_active->ld_stack_base + thread_active->ld_stack_size, base, bound, ret.type );
 	return ret;
 }
 
