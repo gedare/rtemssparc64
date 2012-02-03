@@ -1997,7 +1997,7 @@ corner_list[n].info=7;
 /* {{{ main(argc, argv) */
 
 CORNER_LIST corner_list;
-main(argc, argv)
+susan_main(argc, argv)
   int   argc;
   char  *argv [];
 {
@@ -2218,7 +2218,7 @@ rtems_task Init(
 //  char * argv2[] = {"susan_edges","/input_small.pgm", "/susan_edges.pgm","-e"};
 //  char * argv3[] = {"susan_smoothing","/input_small.pgm", "/susan_smoothing.pgm","-s"};
   MAGIC_BREAKPOINT;
-  main(4,argv);
+  susan_main(4,argv);
   MAGIC_BREAKPOINT;
 
   printf( "*** end of susan_corners benchmark ***\n" );

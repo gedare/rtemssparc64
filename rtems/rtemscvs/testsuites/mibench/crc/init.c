@@ -67,13 +67,14 @@ int cccc(void)
 	return s;
 }
 
+
+int crc_main(int argc, char *argv[]);
+
 rtems_task Init(
   rtems_task_argument ignored
 )
 {
   
-
-  char in_file[20] = "/image.img";
 
   printf("Unpacking tar filesystem\nThis may take awhile...\n");
   if(Untar_FromMemory(FileSystemImage, FileSystemImage_size) != 0) {
@@ -90,8 +91,7 @@ rtems_task Init(
 	
   printf( "\n\n*** crc benchmark ***\n" );
 
-  DWORD crc;
-  long charcnt;
+
 
  /* 
  	__asm__ ( "testpcd:"
@@ -143,11 +143,12 @@ rtems_task Init(
 */
 	
   MAGIC_BREAKPOINT;
-  crc32file(in_file,&crc, &charcnt);
-  printf("%08lX %7ld %s\n", crc, charcnt, in_file);
+  crc_main("crc","/image.img");
   MAGIC_BREAKPOINT;
 
   printf( "*** end of crc benchmark ***\n" );
   exit( 0 );
 }
+
+
 

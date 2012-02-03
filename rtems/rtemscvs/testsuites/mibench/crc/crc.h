@@ -53,5 +53,4 @@ unsigned checksum(void *buffer, size_t len, unsigned int seed);
 void checkexe(char *fname);
 
 
-
 #endif /* CRC__H */

@@ -170,4 +170,13 @@ DWORD crc32buf(char *buf, size_t len)
       
 }
 
+int crc_main(int argc, char ** argv){
+	
+  char* in_file = argv[1]; 
+  DWORD crc;
+  long charcnt;
+  crc32file(in_file,&crc, &charcnt);
+  printf("%08lX %7ld %s\n", crc, charcnt, in_file);
+}
+
 

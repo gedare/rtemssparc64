@@ -2,7 +2,7 @@
 #include "../../common/magic-instruction.h"
 #include "../../common/allow.h"
 
-#define NUM_NODES                          100
+#define NUM_NODES                          10
 #define NONE                               9999
 
 struct _NODE
