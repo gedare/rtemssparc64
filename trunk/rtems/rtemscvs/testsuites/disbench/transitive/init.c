@@ -22,8 +22,9 @@
 
 #define CONFIGURE_INIT
 #include "system.h"
+#include "../../common/magic-instruction.h"
 
-int main(int argc, char *argv[]);
+int transitive_main(int argc, char *argv[]);
 
 rtems_task Init(
   rtems_task_argument ignored
@@ -45,9 +46,9 @@ rtems_task Init(
 #define FILE5 "/tc05.in"
 
   char *argv[] = {"transitive",FILE5};
-
-  main(2,argv);
-  
+  MAGIC_BREAKPOINT;
+  transitive_main(2,argv);
+  MAGIC_BREAKPOINT;  
   printf( "*** end of transitive benchmark ***\n" );
   exit( 0 );
 }
