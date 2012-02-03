@@ -22,8 +22,10 @@
 
 #define CONFIGURE_INIT
 #include "system.h"
+#include "../../common/magic-instruction.h"
 
-int main(int argc, char *argv[]);
+
+int field_main(int argc, char *argv[]);
 
 rtems_task Init(
   rtems_task_argument ignored
@@ -44,8 +46,9 @@ rtems_task Init(
 #define FILE4 "/f04.in"
 
   char *argv[] = {"field",FILE4};
-
-  main(2,argv);
+  MAGIC_BREAKPOINT;
+  field_main(2,argv);
+  MAGIC_BREAKPOINT;
   
   printf( "*** end of field benchmark ***\n" );
   exit( 0 );

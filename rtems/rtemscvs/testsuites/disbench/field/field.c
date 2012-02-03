@@ -17,7 +17,10 @@
 #include <time.h>
 #include <assert.h>
 #include <stdlib.h>
-#include "DISstressmarkRNG.h"
+#include "../common/DISstressmarkRNG.h"
+
+#include "../../common/allow.h"
+
 
 
 #define MIN_FIELD_SIZE 16
@@ -38,7 +41,7 @@
  * main()
  */
 
-int main(int argc, char *argv[]){
+int field_main(int argc, char *argv[]){
   
   unsigned char *field;
   unsigned int f;
@@ -90,7 +93,7 @@ int main(int argc, char *argv[]){
 	token[l].length = index;
     }
 
-  field = (unsigned char*)malloc(f*sizeof(unsigned char));
+  field = (unsigned char*)mymalloc(f*sizeof(unsigned char));
   assert(field);
 
   randInit(seed);

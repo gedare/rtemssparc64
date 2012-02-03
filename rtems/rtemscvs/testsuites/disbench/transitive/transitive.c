@@ -17,7 +17,10 @@
 #include <time.h>
 #include <assert.h>
 #include <stdlib.h>
-#include "DISstressmarkRNG.h"
+#include "../common/DISstressmarkRNG.h"
+
+#include "../../common/allow.h"
+
 
 #define MIN_VERTICES 8
 #define MAX_VERTICES 16384
@@ -34,7 +37,7 @@
  * main()
  */
 
-int main(int argc, char *argv[]){
+int transitive_main(int argc, char *argv[]){
   unsigned int *din, *dout;
   unsigned int n;
   unsigned int m;
@@ -58,9 +61,9 @@ int main(int argc, char *argv[]){
   assert (m <= n*n);
   assert ((seed >= MIN_SEED) && (seed <= MAX_SEED));
 
- din = (unsigned int *)malloc(n*n*sizeof(unsigned int));
+ din = (unsigned int *)mymalloc(n*n*sizeof(unsigned int));
   assert(din);
- dout = (unsigned int *)malloc(n*n*sizeof(unsigned int));
+ dout = (unsigned int *)mymalloc(n*n*sizeof(unsigned int));
   assert(dout);
 
  for (i=0; i<n*n; i++){

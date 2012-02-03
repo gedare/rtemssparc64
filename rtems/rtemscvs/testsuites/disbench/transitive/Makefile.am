@@ -5,7 +5,7 @@
 MANAGERS = io semaphore
 
 rtems_tests_PROGRAMS = transitive
-transitive_SOURCES = FileSystemImage.c system.h init.c transitive.c
+transitive_SOURCES = FileSystemImage.c system.h init.c transitive.c ../../common/allow.c ../common/DISstressmarkRNG.c
 
 #dist_rtems_tests_DATA = transitive.scn
 #dist_rtems_tests_DATA += transitive.doc
