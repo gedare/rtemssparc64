@@ -65,5 +65,7 @@ mix01/Makefile
 fft/Makefile
 mixdijkstra/Makefile
 dhrystone/Makefile
+mixmibench/Makefile
+mixcpp01/Makefile
 ])
 AC_OUTPUT

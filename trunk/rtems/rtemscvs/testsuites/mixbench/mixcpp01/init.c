@@ -21,21 +21,33 @@
  */
 
 #define CONFIGURE_INIT
+
 #include "system.h"
-
-#include "../../common/allow.h"
 #include "../../common/magic-instruction.h"
+#include "../../common/allow.h"
+
+rtems_task TaskFunction(   rtems_task_argument argument ) __attribute__ ((optimize(0)));
+int testAnotherClass(int x);
+int testSimpleClass();
 
 
-rtems_task Dhrystone_TaskFunction(
+rtems_task TaskFunction(
   rtems_task_argument argument
-)
+) 
 {
-  char *argv[] = {"dihry","10000"}; /* small */
-  dhrystone_main(2, argv);
-  rtems_status_code status = rtems_task_delete( RTEMS_SELF );
-  directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
+	rtems_status_code status;
+
+	int i=0;
+	int a = testSimpleClass();
+	int b = testAnotherClass(5);
+	for(i=0;i<200;i++)
+		printf("%d %d\n",a, b);
+	
+	//puts("end\n");	
+	status = rtems_task_delete( RTEMS_SELF );
+	directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
 }
+
 
 rtems_task Init(
   rtems_task_argument argument
@@ -44,20 +56,14 @@ rtems_task Init(
   rtems_time_of_day time;
   rtems_status_code status;
 
-  puts("Unpacking tar filesystem\nThis may take awhile...\n");
-	  if(Untar_FromMemory((void*)FileSystemImage, FileSystemImage_size) != 0) {
-		puts("Can't unpack tar filesystem\n");
-		exit(1);
-	  }
-
-  puts( "\n\n*** TEST 1 ***" );
+  //puts( "\n\n*** TEST 1 XXY***" );
 
   build_time( &time, 12, 31, 1988, 9, 0, 0, 0 );
   status = rtems_clock_set( &time );
   directive_failed( status, "rtems_clock_set" );
 
-  Task_name[ 1 ] = rtems_build_name( 'T', 'A', '0', '0' );
-  Task_name[ 2 ] = rtems_build_name( 'K', 'I', 'L', 'L' );
+  Task_name[ 1 ] = rtems_build_name( 'T', 'A', '0', '1' );
+  Task_name[ 4 ] = rtems_build_name( 'K', 'I', 'L', 'L' );
 
   status = rtems_task_create(
      Task_name[ 1 ],
@@ -70,12 +76,12 @@ rtems_task Init(
   directive_failed( status, "rtems_task_create of TA1" );
 
   status = rtems_task_create(
-     Task_name[ 2 ],
+     Task_name[ 4 ],
      2,
      RTEMS_MINIMUM_STACK_SIZE ,
      RTEMS_PREEMPT|RTEMS_TIMESLICE,
      RTEMS_DEFAULT_ATTRIBUTES,
-     &Task_id[ 2 ]
+     &Task_id[ 4 ]
   );
   directive_failed( status, "rtems_task_create of KILL" );
 
@@ -83,10 +89,10 @@ rtems_task Init(
 
   MAGIC_BREAKPOINT;
 
-  status = rtems_task_start( Task_id[ 1 ], Dhrystone_TaskFunction, 1 );
+  status = rtems_task_start( Task_id[ 1 ], TaskFunction, 1 );
   directive_failed( status, "rtems_task_start of TA1" );
 
-  status = rtems_task_start( Task_id[ 2 ], KillTaskFunction, 3 );
+  status = rtems_task_start( Task_id[ 4 ], KillTaskFunction, 3 );
   directive_failed( status, "rtems_task_start of TA4" );
 
   status = rtems_task_delete( RTEMS_SELF );
@@ -94,4 +100,5 @@ rtems_task Init(
 
 
 }
+
 

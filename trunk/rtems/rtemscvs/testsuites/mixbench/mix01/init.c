@@ -27,11 +27,6 @@
 #undef DEBUG
 #include "../../common/debug.h"
 
-#if 0
-#include <libcpu/mmu_support.h>
-#include <rtems/libmmu.h>
-#endif
-
 #include "crc.h"
 #include <errno.h>
 #include "../../common/allow.h"

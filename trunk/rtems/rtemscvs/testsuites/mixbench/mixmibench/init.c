@@ -22,20 +22,40 @@
 
 #define CONFIGURE_INIT
 #include "system.h"
+#include <errno.h>
 
-#include "../../common/allow.h"
 #include "../../common/magic-instruction.h"
+#include "../../common/allow.h"
+#include "../../common/debug.h"
 
 
-rtems_task Dhrystone_TaskFunction(
-  rtems_task_argument argument
-)
+
+
+#define PERMISSION_RECORD_SIZE sizeof(packed_permission_rec)
+#define CONTMGR_PERM_STACKFIRST 1
+#define CONTMGR_SINGLESTACKRANGE 1
+#define CONTMGR_PERM_USEFETCH 1
+
+//#define QUICK_RUN
+#define MIBENCHNAME "transitive"
+#define MIBENCHMAIN char *argv[] = {"transitive","/tc05.in"}; transitive_main(2,argv);
+#define MIBENCHPROT int transitive_main(int argc, char *argv[]);
+
+
+MIBENCHPROT
+rtems_task TaskFunction( rtems_task_argument argument)
 {
-  char *argv[] = {"dihry","10000"}; /* small */
-  dhrystone_main(2, argv);
+  DPUTS( "\n\n*** mibench " MIBENCHNAME " benchmark ***\n" );
+
+  MIBENCHMAIN
+
+  DPUTS( "*** end of mibench " MIBENCHNAME " benchmark ***\n" );
+
   rtems_status_code status = rtems_task_delete( RTEMS_SELF );
   directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
 }
+
+
 
 rtems_task Init(
   rtems_task_argument argument
@@ -44,11 +64,12 @@ rtems_task Init(
   rtems_time_of_day time;
   rtems_status_code status;
 
+
   puts("Unpacking tar filesystem\nThis may take awhile...\n");
-	  if(Untar_FromMemory((void*)FileSystemImage, FileSystemImage_size) != 0) {
-		puts("Can't unpack tar filesystem\n");
-		exit(1);
-	  }
+	if(Untar_FromMemory((void*)FileSystemImage, FileSystemImage_size) != 0) {
+	  puts("Can't unpack tar filesystem\n");
+	  exit(1);
+	}
 
   puts( "\n\n*** TEST 1 ***" );
 
@@ -57,41 +78,51 @@ rtems_task Init(
   directive_failed( status, "rtems_clock_set" );
 
   Task_name[ 1 ] = rtems_build_name( 'T', 'A', '0', '0' );
-  Task_name[ 2 ] = rtems_build_name( 'K', 'I', 'L', 'L' );
+  Task_name[ 2 ] = rtems_build_name( 'T', 'A', '0', '1' );
+  Task_name[ 3 ] = rtems_build_name( 'T', 'A', '0', '2' );
+  Task_name[ 4 ] = rtems_build_name( 'K', 'I', 'L', 'L' );
+
 
   status = rtems_task_create(
      Task_name[ 1 ],
      1,
-     RTEMS_MINIMUM_STACK_SIZE ,
-     RTEMS_PREEMPT|RTEMS_TIMESLICE,
+     5*RTEMS_MINIMUM_STACK_SIZE ,
+     //RTEMS_PREEMPT|RTEMS_TIMESLICE,
+     RTEMS_NO_PREEMPT|RTEMS_NO_TIMESLICE,
      RTEMS_DEFAULT_ATTRIBUTES,
      &Task_id[ 1 ]
   );
   directive_failed( status, "rtems_task_create of TA1" );
 
+
   status = rtems_task_create(
-     Task_name[ 2 ],
-     2,
-     RTEMS_MINIMUM_STACK_SIZE ,
-     RTEMS_PREEMPT|RTEMS_TIMESLICE,
-     RTEMS_DEFAULT_ATTRIBUTES,
-     &Task_id[ 2 ]
+	 Task_name[ 4 ],
+	 2,
+	 5*RTEMS_MINIMUM_STACK_SIZE ,
+	 //RTEMS_PREEMPT|RTEMS_TIMESLICE,
+     RTEMS_NO_PREEMPT|RTEMS_NO_TIMESLICE,
+	 RTEMS_DEFAULT_ATTRIBUTES,
+	 &Task_id[ 4 ]
   );
   directive_failed( status, "rtems_task_create of KILL" );
 
-  puts( "\n\n*** TEST START *** \n" );
+
+  DPUTS( "\n\n*** TEST START *** \n" );
 
   MAGIC_BREAKPOINT;
 
-  status = rtems_task_start( Task_id[ 1 ], Dhrystone_TaskFunction, 1 );
+  status = rtems_task_start( Task_id[ 1 ], TaskFunction, 1 );
   directive_failed( status, "rtems_task_start of TA1" );
 
-  status = rtems_task_start( Task_id[ 2 ], KillTaskFunction, 3 );
-  directive_failed( status, "rtems_task_start of TA4" );
+  status = rtems_task_start( Task_id[ 4 ], KillTaskFunction, 4 );
+  directive_failed( status, "rtems_task_start of KILL" );
 
   status = rtems_task_delete( RTEMS_SELF );
   directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
 
 
 }
+
+
+
 

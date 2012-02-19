@@ -127,7 +127,7 @@ dhrystone_main (int argc, char* argv[])
   }
   //DPUTS ("\n");
 
-  //DPRINTF ("Execution starts, %d runs through Dhrystone\n", Number_Of_Runs);
+  DPRINTF ("Execution starts, %d runs through Dhrystone\n", Number_Of_Runs);
 
   /***************/
   /* Start timer */

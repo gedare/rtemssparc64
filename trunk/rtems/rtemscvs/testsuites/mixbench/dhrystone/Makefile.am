@@ -5,7 +5,7 @@
 MANAGERS = io semaphore
 
 rtems_tests_PROGRAMS = dhrystone
-dhrystone_SOURCES = init.c system.h dhry_1.c dhry_2.c dhry.h ../../common/allow.c FileSystemImage.c
+dhrystone_SOURCES = init.c system.h FileSystemImage.c dhry_1.c dhry_2.c dhry.h ../../common/allow.c
 
 #dist_rtems_tests_DATA = dhrystone.scn
 #dist_rtems_tests_DATA += dhrystone.doc

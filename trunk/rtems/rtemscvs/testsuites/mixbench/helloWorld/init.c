@@ -75,16 +75,33 @@ rtems_task TaskFunction(
 }
 #endif
 
+int Recurse(int x) __attribute__ ((optimize(0)));
+
+int Recurse(int x) 
+{
+	int a=x;
+	//printf("%s %llx %d \n", __PRETTY_FUNCTION__, &a, a);
+	if(!x) return x;
+	return Recurse(--x);
+}
+
+rtems_task TaskFunction(   rtems_task_argument argument ) __attribute__ ((optimize(0)));
 
 rtems_task TaskFunction(
   rtems_task_argument argument
-)
-
+) 
 {
+	int a=0;
+	int i=0;
 	rtems_status_code status;
-	puts("end\n");
-	  status = rtems_task_delete( RTEMS_SELF );
-	  directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
+	
+	a = Recurse(20);
+	for (i=0; i< 20;i++){
+		printf("%s %llx %d %d\n", __PRETTY_FUNCTION__, &a,a, i);
+	}
+	puts("end\n");	
+	status = rtems_task_delete( RTEMS_SELF );
+	directive_failed( status, "rtems_task_delete of RTEMS_SELF" );
 }
 
 
@@ -102,9 +119,9 @@ rtems_task Init(
   status = rtems_clock_set( &time );
   directive_failed( status, "rtems_clock_set" );
 
-  Task_name[ 1 ] = rtems_build_name( 'T', 'A', '1', ' ' );
-  Task_name[ 2 ] = rtems_build_name( 'T', 'A', '2', ' ' );
-  Task_name[ 3 ] = rtems_build_name( 'T', 'A', '3', ' ' );
+  Task_name[ 1 ] = rtems_build_name( 'T', 'A', '0', '1' );
+  Task_name[ 2 ] = rtems_build_name( 'T', 'A', '0', '2' );
+  Task_name[ 3 ] = rtems_build_name( 'T', 'A', '0', '3' );
   Task_name[ 4 ] = rtems_build_name( 'K', 'I', 'L', 'L' );
 
   status = rtems_task_create(
