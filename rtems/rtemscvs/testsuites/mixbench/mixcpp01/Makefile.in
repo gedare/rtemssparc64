@@ -34,12 +34,12 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-rtems_tests_PROGRAMS = dhrystone$(EXEEXT)
+rtems_tests_PROGRAMS = mixcpp01$(EXEEXT)
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/../automake/compile.am \
 	$(top_srcdir)/../automake/leaf.am \
 	$(top_srcdir)/../automake/local.am
-subdir = dhrystone
+subdir = mixcpp01
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps =  \
 	$(top_srcdir)/../aclocal/canonical-target-name.m4 \
@@ -62,10 +62,10 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(rtems_testsdir)"
 PROGRAMS = $(rtems_tests_PROGRAMS)
-am_dhrystone_OBJECTS = init.$(OBJEXT) FileSystemImage.$(OBJEXT) \
-	dhry_1.$(OBJEXT) dhry_2.$(OBJEXT) allow.$(OBJEXT)
-dhrystone_OBJECTS = $(am_dhrystone_OBJECTS)
-dhrystone_DEPENDENCIES =  \
+am_mixcpp01_OBJECTS = init.$(OBJEXT) SimpleClass.$(OBJEXT) \
+	DerivedClass.$(OBJEXT) allow.$(OBJEXT)
+mixcpp01_OBJECTS = $(am_mixcpp01_OBJECTS)
+mixcpp01_DEPENDENCIES =  \
 	$(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/../../depcomp
@@ -75,8 +75,13 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(dhrystone_SOURCES)
-DIST_SOURCES = $(dhrystone_SOURCES)
+CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
+	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
+CXXLD = $(CXX)
+CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
+	-o $@
+SOURCES = $(mixcpp01_SOURCES)
+DIST_SOURCES = $(mixcpp01_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -206,21 +211,22 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 MANAGERS = io semaphore
-dhrystone_SOURCES = init.c system.h FileSystemImage.c dhry_1.c dhry_2.c dhry.h ../../common/allow.c
+mixcpp01_SOURCES = init.c SimpleClass.cpp DerivedClass.cpp system.h ../../common/allow.c
+mixcpp01_LDLIBS = -lstdc++
 AM_CPPFLAGS = -I$(top_srcdir)/../support/include
 AM_CFLAGS = 
 AM_CXXFLAGS = 
 CLEANFILES = *.num *.nxe *.elf *.srec* *.bin *.bt *.ralf
 CXXLINK_APP = $(CXXLINK) $(LDLIBS) $(LINK_OBJS) $(LINK_LIBS)
 LINK_APP = $(LINK) $(LDLIBS) $(LINK_OBJS) $(LINK_LIBS)
-dhrystone_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
-LINK_OBJS = $(dhrystone_OBJECTS) $(dhrystone_LDADD)
-LINK_LIBS = $(dhrystone_LDLIBS)
+mixcpp01_LDADD = $(MANAGERS_NOT_WANTED:%=$(PROJECT_LIB)/no-%.rel)
+LINK_OBJS = $(mixcpp01_OBJECTS) $(mixcpp01_LDADD)
+LINK_LIBS = $(mixcpp01_LDLIBS)
 PROJECT_TOOLS = $(PROJECT_RELEASE)/build-tools
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .c .o .obj
+.SUFFIXES: .c .cpp .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir)/../automake/compile.am $(top_srcdir)/../automake/leaf.am $(top_srcdir)/../automake/local.am $(am__configure_deps)
 	@for dep in $?; do \
 	  case '$(am__configure_deps)' in \
@@ -230,9 +236,9 @@ $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.am $(top_srcdir
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign dhrystone/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign mixcpp01/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign dhrystone/Makefile
+	  $(AUTOMAKE) --foreign mixcpp01/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -295,10 +301,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FileSystemImage.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/DerivedClass.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/SimpleClass.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/allow.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dhry_1.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dhry_2.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/init.Po@am__quote@
 
 .c.o:
@@ -328,6 +333,20 @@ allow.obj: ../../common/allow.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='../../common/allow.c' object='allow.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o allow.obj `if test -f '../../common/allow.c'; then $(CYGPATH_W) '../../common/allow.c'; else $(CYGPATH_W) '$(srcdir)/../../common/allow.c'; fi`
+
+.cpp.o:
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) depmode=gcc $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ $<
+
+.cpp.obj:
+@am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -529,8 +548,8 @@ uninstall-am: uninstall-rtems_testsPROGRAMS
 	tags uninstall uninstall-am uninstall-rtems_testsPROGRAMS
 
 
-#dist_rtems_tests_DATA = dhrystone.scn
-#dist_rtems_tests_DATA += dhrystone.doc
+#dist_rtems_tests_DATA = mixcpp01.scn
+#dist_rtems_tests_DATA += mixcpp01.doc
 
 include $(RTEMS_ROOT)/make/custom/@RTEMS_BSP@.cfg
 include $(RTEMS_ROOT)/make/leaf.cfg
@@ -545,8 +564,8 @@ define make-exe
 endef
 @ENDIF@
 
-dhrystone$(EXEEXT): $(dhrystone_OBJECTS) $(dhrystone_DEPENDENCIES)
-	@rm -f dhrystone$(EXEEXT)
+mixcpp01$(EXEEXT): $(mixcpp01_OBJECTS) $(mixcpp01_DEPENDENCIES)
+	@rm -f mixcpp01$(EXEEXT)
 	$(make-exe)
 
 preinstall:

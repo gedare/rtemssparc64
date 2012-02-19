@@ -75,10 +75,10 @@ rtems_task Init(
   status = rtems_clock_set( &time );
   directive_failed( status, "rtems_clock_set" );
 
-  Task_name[ 1 ] = rtems_build_name( 'T', 'A', '1', ' ' );
-  Task_name[ 2 ] = rtems_build_name( 'T', 'A', '2', ' ' );
-  Task_name[ 3 ] = rtems_build_name( 'T', 'A', '3', ' ' );
-  //Task_name[ 4 ] = rtems_build_name( 'T', 'A', '4', ' ' );
+  Task_name[ 1 ] = rtems_build_name( 'T', 'A', '0', '1' );
+  Task_name[ 2 ] = rtems_build_name( 'T', 'A', '0', '2' );
+  Task_name[ 3 ] = rtems_build_name( 'T', 'A', '0', '3' );
+  //Task_name[ 4 ] = rtems_build_name( 'T', 'A', '0', '4' );
   Task_name[ 4 ] = rtems_build_name( 'K', 'I', 'L', 'L' );
   
 
