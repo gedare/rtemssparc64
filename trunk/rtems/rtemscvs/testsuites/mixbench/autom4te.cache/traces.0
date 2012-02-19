@@ -596,19 +596,21 @@ AC_MSG_RESULT([$am_cv_prog_tar_$1])])
 AC_SUBST([am__tar])
 AC_SUBST([am__untar])
 ])
-m4trace:../aclocal/canonical-target-name.m4:11: -1- AC_DEFUN([RTEMS_CANONICAL_TARGET_CPU], [
-AC_CANONICAL_HOST
+m4trace:../aclocal/canonical-target-name.m4:11: -1- AC_DEFUN([RTEMS_CANONICAL_TARGET_CPU], [AC_REQUIRE([AC_CANONICAL_HOST])
 AC_MSG_CHECKING(rtems target cpu)
 case "${host}" in
-  no_cpu-*rtems*)
-        RTEMS_CPU=no_cpu
-	;;
-  *) 
-	RTEMS_CPU=`echo $host | sed 's%^\([[^-]]*\)-\(.*\)$%\1%'`
+*-*-rtems*)
+	RTEMS_CPU="$host_cpu";;
+*)
 	;;
 esac
+AS_IF([test -n "$RTEMS_CPU"],
+[dnl
+AC_MSG_RESULT($RTEMS_CPU)],
+[dnl
+AC_MSG_RESULT([<none>])
+AC_MSG_ERROR([unsupported host $host])])
 AC_SUBST(RTEMS_CPU)
-AC_MSG_RESULT($RTEMS_CPU)
 ])
 m4trace:../aclocal/canonicalize-tools.m4:7: -1- AC_DEFUN([RTEMS_CANONICALIZE_TOOLS], [AC_REQUIRE([RTEMS_PROG_CC])dnl
 
@@ -735,7 +737,7 @@ AC_SUBST([PROJECT_INCLUDE],["\$(PROJECT_ROOT)/lib/include"])
 AC_SUBST([PROJECT_LIB],["\$(PROJECT_ROOT)/lib"])
 AC_SUBST([PROJECT_RELEASE],["\$(PROJECT_ROOT)"])
 
-AC_SUBST([rtems_testsdir],["\$(libdir)/rtems-][RTEMS_API][/tests"])
+AC_SUBST([rtems_testsdir],["\$(libdir)/rtems-][_RTEMS_API][/tests"])
 ])
 m4trace:../aclocal/prog-cc.m4:7: -1- AC_DEFUN([RTEMS_PROG_CC], [
 AC_BEFORE([$0], [AC_PROG_CPP])dnl
@@ -810,7 +812,7 @@ AC_CONFIG_AUX_DIR([$1])
 AC_CHECK_PROGS(MAKE, gmake make)
 AC_BEFORE([$0], [AM_INIT_AUTOMAKE])dnl
 
-AC_PREFIX_DEFAULT([/opt/rtems-][RTEMS_API])
+AC_PREFIX_DEFAULT([/opt/rtems-][_RTEMS_API])
 
 ## HACK to allow gnu-make conditionals in automake-Makefiles.
 ENDIF=endif
@@ -953,7 +955,7 @@ m4trace:configure.ac:12: -1- AM_INIT_AUTOMAKE([no-define foreign 1.10])
 m4trace:configure.ac:12: -1- m4_pattern_allow([^AM_[A-Z]+FLAGS$])
 m4trace:configure.ac:12: -1- AM_SET_CURRENT_AUTOMAKE_VERSION
 m4trace:configure.ac:12: -1- AM_AUTOMAKE_VERSION([1.11.1])
-m4trace:configure.ac:12: -1- _AM_AUTOCONF_VERSION([2.67])
+m4trace:configure.ac:12: -1- _AM_AUTOCONF_VERSION([2.68])
 m4trace:configure.ac:12: -1- m4_pattern_allow([^INSTALL_PROGRAM$])
 m4trace:configure.ac:12: -1- m4_pattern_allow([^INSTALL_SCRIPT$])
 m4trace:configure.ac:12: -1- m4_pattern_allow([^INSTALL_DATA$])
@@ -1156,11 +1158,11 @@ m4trace:configure.ac:59: -1- m4_pattern_allow([^LIBCHIP_TRUE$])
 m4trace:configure.ac:59: -1- m4_pattern_allow([^LIBCHIP_FALSE$])
 m4trace:configure.ac:59: -1- _AM_SUBST_NOTMAKE([LIBCHIP_TRUE])
 m4trace:configure.ac:59: -1- _AM_SUBST_NOTMAKE([LIBCHIP_FALSE])
-m4trace:configure.ac:69: -1- m4_pattern_allow([^LIB@&t@OBJS$])
-m4trace:configure.ac:69: -1- m4_pattern_allow([^LTLIBOBJS$])
-m4trace:configure.ac:69: -1- AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
-m4trace:configure.ac:69: -1- m4_pattern_allow([^am__EXEEXT_TRUE$])
-m4trace:configure.ac:69: -1- m4_pattern_allow([^am__EXEEXT_FALSE$])
-m4trace:configure.ac:69: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_TRUE])
-m4trace:configure.ac:69: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_FALSE])
-m4trace:configure.ac:69: -1- _AM_OUTPUT_DEPENDENCY_COMMANDS
+m4trace:configure.ac:71: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.ac:71: -1- m4_pattern_allow([^LTLIBOBJS$])
+m4trace:configure.ac:71: -1- AM_CONDITIONAL([am__EXEEXT], [test -n "$EXEEXT"])
+m4trace:configure.ac:71: -1- m4_pattern_allow([^am__EXEEXT_TRUE$])
+m4trace:configure.ac:71: -1- m4_pattern_allow([^am__EXEEXT_FALSE$])
+m4trace:configure.ac:71: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_TRUE])
+m4trace:configure.ac:71: -1- _AM_SUBST_NOTMAKE([am__EXEEXT_FALSE])
+m4trace:configure.ac:71: -1- _AM_OUTPUT_DEPENDENCY_COMMANDS
