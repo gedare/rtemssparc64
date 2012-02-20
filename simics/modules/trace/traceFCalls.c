@@ -266,6 +266,8 @@ void setFullTraceFile(char *fullTraceFileName)
 	}
 }
 
+#define MAX_LINE 5000
+
 //Obtain a list of symbols
 void loadContainersFromSymtable(const char* symFileName)
 {
@@ -274,6 +276,7 @@ void loadContainersFromSymtable(const char* symFileName)
 	char type[4];
 	char name[200];
 	char linenumber[2000];
+	char line[MAX_LINE];
 	symfile = fopen(symFileName,"r");
 	if(!symfile)
 	{
@@ -281,8 +284,12 @@ void loadContainersFromSymtable(const char* symFileName)
 	}
 	//printf("\nSymbol file loaded\n");
 	while(!feof(symfile)){
-		fscanf(symfile,"%llx %s %s\t%s",&addr,type,name,linenumber);
-		//printf("%llx %s %s %s\n",addr, type, name,linenumber);
+		fgets(line,MAX_LINE, symfile);
+		int nrd = sscanf(line,"%llx %s %s \t%s",&addr,type,name,linenumber);
+		//sscanf(line,"\t%s", &addr,type,name,linenumber);
+		if(nrd < 4)
+			linenumber[0] = '\0';
+		printf("%d: %llx %s %s %s\n",nrd, addr, type, name,linenumber);
 		container * newcont = container_add(addr,name);
 		strncpy(newcont->linenumber,linenumber,1000);
 	}
