@@ -7,7 +7,7 @@
 
 #define STRINGTABLEID 24
 #define STACK_BIAS (2047)
-#define CONTAINERMAX 6000
+#define CONTAINERMAX 10000
 
 
 extern char stdoutPrintBuffer[];
