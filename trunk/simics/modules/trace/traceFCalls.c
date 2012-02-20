@@ -8,7 +8,8 @@
 //#include "debugio.h"
 
 
-#define PRINTBUFFMAX 100000
+#define PRINTBUFFMAX 1000000
+#define MAXACCESSLIST 512
 
 typedef struct traceData_def traceData;
 //External Variables
@@ -326,7 +327,7 @@ void loadContainersFromSymtable(const char* symFileName)
 	//fclose(functionsoutFD);
 	//printf("\nloadContainersFromSymtable ended");
 
-	//container_quickprint();
+	//container_quickprint(initialEmptyContainerTable, initialEmptyContainerSize);
 	//exit(0);
 }
 
@@ -659,6 +660,7 @@ void container_printMemoryRanges(int bAll, container* containerTable,int contain
 		addressList l = containerTable[i].addressAccessList;
 		int bUsed = containerTable[i].totalStackPushes > 0;
 		if(bAll || bUsed){
+			//printAddressListStdout(l); printf("\n");
 			//count (we do not have a size of the list)
 			int jcnt = 0;
 			addressList jl = l;
@@ -712,13 +714,22 @@ void container_printDecodedMemoryRanges(int bAll, container* containerTable,int 
 
 	for (int i=0 ; i < containerSize; i++)
 	{
-		addressList l = invertAddressList(containerTable[i].addressAccessListWithoutLocalStackAccesses);
-		addressList m = invertAddressList(containerTable[i].instructionFetches);
+		//addressList l = invertAddressList(containerTable[i].addressAccessListWithoutLocalStackAccesses);
+		//printAddressListStdout(containerTable[i].addressAccessList);
+		//printf("\n");
+		addressList l = invertAddressList(&containerTable[i].addressAccessList);
+		//printAddressListStdout(l);
+		//printf("\n");
+		addressList m = invertAddressList(&containerTable[i].instructionFetches);
 		//addressList l = containerTable[i].addressAccessListWithoutLocalStackAccesses;
 		//addressList m = containerTable[i].instructionFetches;
 
 		int bUsed = containerTable[i].totalStackPushes > 0;
 		if(bAll || bUsed){
+			//printAddressListStdout(l);
+			//printf("\n");
+			//printAddressListStdout(containerTable[i].addressAccessList);
+			//printf("\n");
 			//count (we do not have a size of the list)
 			int jcnt = 0;
 			addressList jl = l;
@@ -746,6 +757,8 @@ void container_printDecodedMemoryRanges(int bAll, container* containerTable,int 
 			sprintf(printBuffer,"\n");
 			myprint(printBuffer);
 		}
+		//printAddressListStdout(l);
+		//printf("\n");
 	}
 
 }
@@ -766,18 +779,24 @@ void container_printDecodedMemoryRangesForRTEMSThread(int bAll , container* cont
 	sprintf(printBuffer,"entryAddress endAddress\tname\ttotalHeap\ttotalPushes\tcount\tLIST\n");
 	myprint(printBuffer);
 
+	for (int i=0 ; i < containerSize; i++)
+		{
+			truncateAddressList(containerTable[i].addressAccessListWithoutLocalStackAccesses,MAXACCESSLIST);
+			truncateAddressList(containerTable[i].instructionFetches, MAXACCESSLIST);
+		}
+
 
 
 	for (int i=0 ; i < containerSize; i++)
 	{
 		addressList l = containerTable[i].addressAccessListWithoutLocalStackAccesses;
-		printAddressListStdout(containerTable[i].addressAccessListWithoutLocalStackAccesses);
-		printf("\n");
+		//printAddressListStdout(containerTable[i].addressAccessListWithoutLocalStackAccesses);
+		//printf("\n");
 		while(l!=NULL)
 		{
 		 	if(!isHypervisorRange(l->startAddress)){
 				decodedMemRange md = decodeMemoryRange(l->startAddress, l->endAddress);
-				printf("%c[%llx,%llx) ",md.type,md.base,md.bound);
+				//printf("%c[%llx,%llx) ",md.type,md.base,md.bound);
 				if(md.type == 'f')
 					containerTable[i].opalCodeAccessList = consAddressList(l->startAddress,l->endAddress,containerTable[i].opalCodeAccessList);
 				else if(md.type == 'c')
@@ -796,7 +815,7 @@ void container_printDecodedMemoryRangesForRTEMSThread(int bAll , container* cont
 		{
 		 	if(!isHypervisorRange(l->startAddress)){
 				decodedMemRange md = decodeMemoryRange(l->startAddress, l->endAddress);
-				printf("%c[%llx,%llx) ",md.type,md.base,md.bound);
+				//printf("%c[%llx,%llx) ",md.type,md.base,md.bound);
 				if(md.type == 'f')
 					containerTable[i].opalCodeAccessList = consAddressList(l->startAddress,l->endAddress,containerTable[i].opalCodeAccessList);
 				else if(md.type == 'c')
@@ -1470,7 +1489,7 @@ decodedMemRange decodeMemoryRange(md_addr_t base, md_addr_t bound)
 	else
 		ret.type = 'h'; //heap
 
-	printf("DEBUG %s ld_text_base=%llx ld_text_bound=%llx ld_stack_base=%llx ld_stack_base + ld_stack_size=%llx tocheckbase=%llx tocheckbasebound=%llx %c \n", __PRETTY_FUNCTION__,thread_active->ld_text_base , thread_active->ld_text_bound, thread_active->ld_stack_base, thread_active->ld_stack_base + thread_active->ld_stack_size, base, bound, ret.type );
+	//printf("DEBUG %s ld_text_base=%llx ld_text_bound=%llx ld_stack_base=%llx ld_stack_base + ld_stack_size=%llx tocheckbase=%llx tocheckbasebound=%llx %c \n", __PRETTY_FUNCTION__,thread_active->ld_text_base , thread_active->ld_text_bound, thread_active->ld_stack_base, thread_active->ld_stack_base + thread_active->ld_stack_size, base, bound, ret.type );
 	return ret;
 }
 
@@ -1556,10 +1575,10 @@ addressList freeAddressList(addressList l)
     return NULL;
 }
 
-addressList invertAddressList(addressList l)
+addressList invertAddressList(addressList *l)
 {
 	addressList prev = NULL;
-	addressList next = l;
+	addressList next = *l;
 	while(next)
 	{
 		addressList save = next->next ;
@@ -1567,7 +1586,23 @@ addressList invertAddressList(addressList l)
 		prev = next;
 		next = save;
 	}
+	*l = prev;
 	return prev;
+}
+
+int truncateAddressList(addressList l, int size)
+{
+	addressList next = l;
+	int cnt = 0;
+	while(next != NULL){
+		cnt++;
+		if(cnt>=size){
+			next->next = NULL;
+			break;
+		}
+		next = next->next;
+	}
+	return cnt;
 }
 
 
