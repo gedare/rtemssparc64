@@ -5,7 +5,7 @@
 MANAGERS = io semaphore
 
 rtems_tests_PROGRAMS = richards
-richards_SOURCES = init.c system.h bench.c
+richards_SOURCES = init.c system.h bench.c ../../common/allow.c
 
 #dist_rtems_tests_DATA = richards.scn
 #dist_rtems_tests_DATA += richards.doc

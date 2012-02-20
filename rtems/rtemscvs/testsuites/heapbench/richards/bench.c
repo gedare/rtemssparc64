@@ -21,6 +21,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../../common/allow.h"
+
+
 #ifdef bench100
 #define                Count           10000*100
 #define                Qpktcountval    2326410
@@ -82,10 +85,20 @@ struct task
     long            t_v2;
 };
 
+
+
 char  alphabet[28] = "0ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 struct task *tasktab[11]  =  {(struct task *)10,0,0,0,0,0,0,0,0,0,0};
 struct task *tasklist    =  0;
 struct task *tcb;
+int tasknumber = 0;
+int pktnumber = 0;
+
+struct perm_record taskpermissions[11];
+struct perm_record pktpermissions[11];
+
+
+
 long    taskid;
 long    v1;
 long    v2;
@@ -94,7 +107,7 @@ int     holdcount    =  0;
 int     tracing      =  0;
 int     layout       =  0;
 
-void append(struct packet *pkt, struct packet *ptr);
+inline void append(struct packet *pkt, struct packet *ptr);
 
 void createtask(int id,
                 int pri,
@@ -104,7 +117,7 @@ void createtask(int id,
                 long v1,
                 long v2)
 {
-    struct task *t = (struct task *)malloc(sizeof(struct task));
+    struct task *t = (struct task *)mymalloc(sizeof(struct task));
 
     tasktab[id] = t;
     t->t_link   = tasklist;
@@ -116,12 +129,20 @@ void createtask(int id,
     t->t_v1     = v1;
     t->t_v2     = v2;
     tasklist    = t;
+
+	tasknumber++;
+	taskpermissions[tasknumber].addr = t;
+	taskpermissions[tasknumber].multi= 0;
+	taskpermissions[tasknumber].perm = 3;
+	taskpermissions[tasknumber].sz = sizeof(struct task);
+	
+	ALLOW(t,sizeof(struct task),3LL);
 }
 
 struct packet *pkt(struct packet *link, int id, int kind)
 {
     int i;
-    struct packet *p = (struct packet *)malloc(sizeof(struct packet));
+    struct packet *p = (struct packet *)mymalloc(sizeof(struct packet));
 
     for (i=0; i<=BUFSIZE; i++)
         p->p_a2[i] = 0;
@@ -130,7 +151,13 @@ struct packet *pkt(struct packet *link, int id, int kind)
     p->p_id = id;
     p->p_kind = kind;
     p->p_a1 = 0;
-
+	pktnumber++;
+	pktpermissions[pktnumber].addr = p;
+	pktpermissions[pktnumber].multi= 0;
+	pktpermissions[pktnumber].perm = 3;
+	pktpermissions[pktnumber].sz = sizeof(struct packet);
+	
+	ALLOW(p,sizeof(struct packet),3LL);
     return (p);
 }
 
@@ -169,6 +196,23 @@ void schedule()
                 if (tracing) {
 		  trace(taskid+'0');
 		}
+
+#ifdef WITHALLOW
+/*
+				struct task * ttmp = tasklist;
+				while(ttmp){
+					ALLOW(ttmp,sizeof(struct task),3LL);
+					ttmp = ttmp->t_link;
+				}
+				struct packet * ptmp = pkt;
+				while(ptmp){
+					ALLOW(ptmp,sizeof(struct packet),3LL);
+					ptmp = ptmp->p_link;
+				}
+*/
+	ALLOWM(tasknumber, taskpermissions);
+	ALLOWM(pktnumber, pktpermissions);
+#endif
                 newtcb = (*(tcb->t_fn))(pkt);
                 tcb->t_v1 = v1;
                 tcb->t_v2 = v2;
@@ -189,20 +233,20 @@ void schedule()
     }
 }
 
-struct task *wait(void)
+inline struct task *wait(void)
 {
     tcb->t_state |= WAITBIT;
     return (tcb);
 }
 
-struct task *holdself(void)
+inline struct task *holdself(void)
 {
     ++holdcount;
     tcb->t_state |= HOLDBIT;
     return (tcb->t_link) ;
 }
 
-struct task *findtcb(int id)
+inline struct task *findtcb(int id)
 {
     struct task *t = 0;
 
@@ -212,7 +256,7 @@ struct task *findtcb(int id)
     return(t);
 }
 
-struct task *release(int id)
+inline struct task *release(int id)
 {
     struct task *t;
 
@@ -226,7 +270,7 @@ struct task *release(int id)
 }
 
 
-struct task *qpkt(struct packet *pkt)
+inline struct task *qpkt(struct packet *pkt)
 {
     struct task *t;
 
@@ -285,6 +329,7 @@ struct task *workfn(struct packet *pkt)
             if ( v2 > 26 ) v2 = 1;
             (pkt->p_a2)[i] = alphabet[v2];
         }
+		
         return ( qpkt(pkt) );
     }
 }
@@ -312,6 +357,7 @@ struct task *handlerfn(struct packet *pkt)
       v2 = (long)(((struct packet *)v2)->p_link);
       devpkt->p_a1 = workpkt->p_a2[count];
       workpkt->p_a1 = count+1;
+  
       return( qpkt(devpkt) );
     }
   }
@@ -325,6 +371,7 @@ struct task *devfn(struct packet *pkt)
         if ( v1==0 ) return ( wait() );
         pkt = (struct packet *)v1;
         v1 = 0;
+
         return ( qpkt(pkt) );
     }
     else
@@ -335,7 +382,7 @@ struct task *devfn(struct packet *pkt)
     }
 }
 
-void append(struct packet *pkt, struct packet *ptr)
+inline void append(struct packet *pkt, struct packet *ptr)
 {
     pkt->p_link = 0;
 
@@ -344,7 +391,7 @@ void append(struct packet *pkt, struct packet *ptr)
     ptr->p_link = pkt;
 }
 
-int main()
+int richards_main()
 {
     struct packet *wkq = 0;
 
@@ -382,6 +429,22 @@ int main()
     tracing = FALSE;
     layout = 0;
 
+#ifdef WITHALLOW
+/*
+	struct task * ttmp = tasklist;
+	while(ttmp){
+		ALLOW(ttmp,sizeof(struct task),3LL);
+		struct packet * ptmp = ttmp->t_wkq;
+		while(ptmp){
+			ALLOW(ptmp,sizeof(struct packet),3LL);
+			ptmp = ptmp->p_link;
+		}
+		ttmp = ttmp->t_link;
+	}
+*/
+	ALLOWM(tasknumber, taskpermissions);
+	ALLOWM(pktnumber, pktpermissions);
+#endif
     schedule();
 
     printf("\nfinished\n");
