@@ -4,7 +4,7 @@
 
 ACLOCAL_AMFLAGS = -I ../aclocal
 
-SUBDIRS = boxed cfrac deltablue richards 
+SUBDIRS = boxed deltablue richards 
 
 if MPTESTS
 endif

@@ -22,8 +22,10 @@
 
 #define CONFIGURE_INIT
 #include "system.h"
+#include "../../common/magic-instruction.h"
 
-int main(int argc, char *argv[]);
+
+int richards_main(int argc, char *argv[]);
 
 rtems_task Init(
   rtems_task_argument ignored
@@ -34,8 +36,9 @@ rtems_task Init(
   printf( "\n\n*** richards benchmark ***\n" );
 
   char *argv[] = {"richards"};
-
-  main(1,argv);
+  MAGIC_BREAKPOINT;
+  richards_main(1,argv);
+  MAGIC_BREAKPOINT;
   
   printf( "*** end of richards benchmark ***\n" );
   exit( 0 );

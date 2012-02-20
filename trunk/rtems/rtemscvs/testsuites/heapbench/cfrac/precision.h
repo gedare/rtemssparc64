@@ -1,6 +1,6 @@
 /*
  * Arbitrary precision integer math package
- * 
+ *
  * (c) Copyright 1991 by David A. Barrett (barrett@asgard.UUCP)
  *
  * Not to be used for profit or distributed in systems sold for profit
@@ -100,7 +100,7 @@ typedef pvector		*parray;	/* 2d array */
  *
  *    pnew, pdestroy, pparm, presult and pset
  *
- * Other variants are internal only!  
+ * Other variants are internal only!
  * All are side-effect safe except for pparm and presult.
  * -DDEBUG will enable argument checking for pset and pparm
  */
@@ -110,7 +110,7 @@ extern inline precision pnew(precision u) { (* (prefc *) u)++; return u; }
 extern inline void      pdestroy(precision u) {
    if (u != pUndef && --(*(prefc *) u) == 0) pfree(u);
 }
-extern inline precision pparmq(precision u) { 
+extern inline precision pparmq(precision u) {
    if (u != pUndef) (* (prefc *) u)++; return u;
 }
 extern inline precision presult(precision u) {
@@ -175,7 +175,7 @@ extern	precision	padd(precision, precision);	/* add */
 extern	precision	psub(precision, precision);	/* subtract */
 extern	precision	pmul(precision, precision);	/* multiply */
 
-extern	precision	pdivmod(precision, precision, 
+extern	precision	pdivmod(precision, precision,
 			        precision *q, precision *r);
 
 extern 	precision	pidiv(precision, int);		/* single digit pdiv */
@@ -213,12 +213,12 @@ extern	int				/* precision to base */
    ptob(precision, char *result, unsigned size, char *alphabet, unsigned radix);
 
 /*
- * Can't do prototyping for these unless stdio.h has been included 
+ * Can't do prototyping for these unless stdio.h has been included
  */
 #ifdef BUFSIZ
 extern	precision	fgetp(FILE *stream);	        /* input precision */
 extern	int		fputp(FILE *stream, precision); /* output precision */
-extern	int		
+extern	int
    fprintp(FILE *stream, precision, int minWidth); /* output within a field */
 #else
 extern	precision	fgetp();	        /* input precision */
