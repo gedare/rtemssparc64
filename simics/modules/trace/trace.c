@@ -1822,7 +1822,7 @@ get_trace_printDecodedAccessList(void *arg, conf_object_t *obj, attr_value_t *id
 static set_error_t
 set_trace_printDecodedAccessList(void *arg, conf_object_t *obj, attr_value_t *val, attr_value_t *idx)
 {
-	container_printDecodedMemoryRangesThreads(0);
+	container_printDecodedMemoryRangesThreads(val->u.integer);
 	return Sim_Set_Ok;
 }
 

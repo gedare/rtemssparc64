@@ -106,7 +106,9 @@ extern llist cdr_and_free(llist l);
 
 addressList consAddressList(md_addr_t startAddress, md_addr_t endAddress, addressList l);
 addressList freeAddressList(addressList l);
-addressList invertAddressList(addressList l);
+addressList invertAddressList(addressList *l);
+int truncateAddressList(addressList l, int size);
+
 
 void UpdateAddressList(addressList *l,md_addr_t addr,int nbytes);
 void joinAddress(addressList future, addressList present);
