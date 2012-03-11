@@ -27,6 +27,10 @@
 #include <string.h>
 #include <time.h>
 #include "sha.h"
+#include "../../common/magic-instruction.h"
+
+int sha_main(int argc, char* argv[]);
+
 
 rtems_task Init(
   rtems_task_argument ignored
@@ -44,6 +48,7 @@ rtems_task Init(
     exit(1);
   }
 
+  char *argv[] = {"dijkstra",in_file};
   fin = fopen(in_file,"r");
   if (!fin) {
     printf("error opening %s for reading\n", in_file);
@@ -51,10 +56,7 @@ rtems_task Init(
   }
 
   printf( "\n\n*** sha benchmark ***\n" );
-
-  sha_stream(&sha_info, fin);
-  sha_print(&sha_info);
-  fclose(fin);
+  sha_main(2,argv);
 
   printf( "*** end of sha benchmark ***\n" );
   exit( 0 );

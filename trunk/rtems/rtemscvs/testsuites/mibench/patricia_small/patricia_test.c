@@ -51,14 +51,23 @@
 #include <arpa/inet.h>
 
 #include "patricia.h"
+#include "../../common/allow.h"
+#include "../../common/debug.h"
+
 
 struct MyNode {
 	int foo;
 	double bar;
 };
 
+
+struct perm_record multipermission[MAXRECORDS];
+int multipermissioncount = 0;
+
+int insertions = 0;
+
 int
-main(int argc, char **argv)
+patricia_main(int argc, char **argv)
 {
 	struct ptree *phead;
 	struct ptree *p,*pfind;
@@ -94,25 +103,28 @@ main(int argc, char **argv)
 	 *   5. Point the head's 'left' and 'right' pointers to itself.
 	 * NOTE: This should go into an intialization function.
 	 */
-	phead = (struct ptree *)malloc(sizeof(struct ptree));
+	phead = (struct ptree *)mymalloc(sizeof(struct ptree));
 	if (!phead) {
 		perror("Allocating p-trie node");
 		exit(0);
 	}
+	ALLOW(phead, sizeof(struct ptree), 3LL);
 	bzero(phead, sizeof(*phead));
-	phead->p_m = (struct ptree_mask *)malloc(
+	phead->p_m = (struct ptree_mask *)mymalloc(
 			sizeof(struct ptree_mask));
 	if (!phead->p_m) {
 		perror("Allocating p-trie mask data");
 		exit(0);
 	}
+	ALLOW(phead->p_m, sizeof(*phead->p_m), 3LL);
 	bzero(phead->p_m, sizeof(*phead->p_m));
 	pm = phead->p_m;
-	pm->pm_data = (struct MyNode *)malloc(sizeof(struct MyNode));
+	pm->pm_data = (struct MyNode *)mymalloc(sizeof(struct MyNode));
 	if (!pm->pm_data) {
 		perror("Allocating p-trie mask's node data");
 		exit(0);
 	}
+	ALLOW(pm->pm_data, sizeof(*pm->pm_data), 3LL);
 	bzero(pm->pm_data, sizeof(*pm->pm_data));
 	/*******
 	 *
@@ -137,22 +149,24 @@ main(int argc, char **argv)
 		/*
 		 * Create a Patricia trie node to insert.
 		 */
-		p = (struct ptree *)malloc(sizeof(struct ptree));
+		p = (struct ptree *)mymalloc(sizeof(struct ptree));
 		if (!p) {
 			perror("Allocating p-trie node");
 			exit(0);
 		}
+		ALLOW(p, sizeof(p), 3LL);
 		bzero(p, sizeof(*p));
 
 		/*
 		 * Allocate the mask data.
 		 */
-		p->p_m = (struct ptree_mask *)malloc(
+		p->p_m = (struct ptree_mask *)mymalloc(
 				sizeof(struct ptree_mask));
 		if (!p->p_m) {
 			perror("Allocating p-trie mask data");
 			exit(0);
 		}
+		ALLOW(p->p_m, sizeof(*p->p_m), 3LL);
 		bzero(p->p_m, sizeof(*p->p_m));
 
 		/*
@@ -160,11 +174,12 @@ main(int argc, char **argv)
 		 * Replace 'struct MyNode' with whatever you'd like.
 		 */
 		pm = p->p_m;
-		pm->pm_data = (struct MyNode *)malloc(sizeof(struct MyNode));
+		pm->pm_data = (struct MyNode *)mymalloc(sizeof(struct MyNode));
 		if (!pm->pm_data) {
 			perror("Allocating p-trie mask's node data");
 			exit(0);
 		}
+		ALLOW(pm->pm_data, sizeof(*pm->pm_data), 3LL);
 		bzero(pm->pm_data, sizeof(*pm->pm_data));
 
 		/*
@@ -174,13 +189,17 @@ main(int argc, char **argv)
 		p->p_key = addr.s_addr;		/* Network-byte order */
 		p->p_m->pm_mask = htonl(mask);
 
+		ALLOWM(multipermissioncount, multipermission);
+		ALLOW(p, sizeof(p), 3LL);
+		ALLOW(p->p_m, sizeof(*p->p_m), 3LL);
+		ALLOW(pm->pm_data, sizeof(*pm->pm_data), 3LL);
 		pfind=pat_search(addr.s_addr,phead);
 		//printf("%08x %08x %08x\n",p->p_key, addr.s_addr, p->p_m->pm_mask);
 		//if(pfind->p_key==(addr.s_addr&pfind->p_m->pm_mask))
 		if(pfind->p_key==addr.s_addr)
 		{
-			printf("%f %08x: ", time, addr.s_addr);
-			printf("Found.\n");
+			DPRINTF("%f %08x: ", time, addr.s_addr);
+			DPRINTF("Found.\n");
 		}
 		else
 		{
@@ -190,6 +209,24 @@ main(int argc, char **argv)
 		 	*/
 			//printf("%08x: ", addr.s_addr);
 			//printf("Inserted.\n");
+			#if WITHALLOW
+			multipermissioncount+=3;
+			multipermission[multipermissioncount+1].addr = p;
+			multipermission[multipermissioncount+1].multi= 0;
+			multipermission[multipermissioncount+1].perm = 3;
+			multipermission[multipermissioncount+1].sz = sizeof(struct ptree);
+
+			multipermission[multipermissioncount+2].addr = p->p_m;
+			multipermission[multipermissioncount+2].multi= 0;
+			multipermission[multipermissioncount+2].perm = 3;
+			multipermission[multipermissioncount+2].sz = sizeof(struct ptree_mask);
+
+			multipermission[multipermissioncount+3].addr = p->p_m->pm_data;
+			multipermission[multipermissioncount+3].multi= 0;
+			multipermission[multipermissioncount+3].perm = 3;
+			multipermission[multipermissioncount+3].sz = sizeof(sizeof(*pm->pm_data));
+			#endif
+			ALLOWM(multipermissioncount, multipermission);
 			p = pat_insert(p, phead);
 		}
 		if (!p) {
@@ -198,5 +235,5 @@ main(int argc, char **argv)
 		}
 	}
 
-	exit(1);
+	return 1;
 }

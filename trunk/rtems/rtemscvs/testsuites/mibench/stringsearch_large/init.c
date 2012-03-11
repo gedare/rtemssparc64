@@ -23,7 +23,7 @@
 #define CONFIGURE_INIT
 #include "system.h"
 
-int main(int argc, char *argv[]);
+int stringsearch_main(int argc, char* argv[]);
 
 rtems_task Init(
   rtems_task_argument ignored
@@ -36,7 +36,7 @@ rtems_task Init(
   char *argv[] = {"stringsearch_small"}; /* small */
   //char *argv[] = {"stringsearch_large"}; /* large */
 
-  main(1,argv);
+  stringsearch_main(1,argv);
   
   printf( "*** end of stringsearch benchmark ***\n" );
   exit( 0 );

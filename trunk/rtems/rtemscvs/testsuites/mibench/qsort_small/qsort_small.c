@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "system.h"
+#include "../../common/magic-instruction.h"
 
 
 #define UNLIMIT
@@ -32,13 +33,13 @@ int quicksort_main(int argc, char *argv[]) {
   }
   else {
     fp = fopen(argv[1],"r");
-    
+    if(!fp) { printf("Unable to open file %s \n",argv[1]); return;}
     while((fscanf(fp, "%s", &array[count].qstring) == 1) && (count < MAXARRAY)) {
 	 count++;
     }
   }
   //printf("\nSorting %d elements.\n\n",count);
-
+  MAGIC_BREAKPOINT;
   qsort(array,count,sizeof(struct myStringStruct),compare);
   //for(i=0;i<count;i++)
   //  printf("%s\n", array[i].qstring);

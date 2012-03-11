@@ -22,6 +22,8 @@
 
 #define CONFIGURE_INIT
 #include "system.h"
+#include "../../common/magic-instruction.h"
+
 
 rtems_task Init(
   rtems_task_argument ignored
@@ -37,8 +39,10 @@ rtems_task Init(
   printf( "\n\n*** patricia benchmark ***\n" );
 
   char *argv[] = {"patricia_small","/small.udp"};
-  main(2,argv);
 
+  MAGIC_BREAKPOINT;
+  patricia_main(2,argv);
+  MAGIC_BREAKPOINT;
   printf( "*** end of patricia benchmark ***\n" );
   exit( 0 );
 }
