@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <rtems.h>
 #define WITHALLOW 0
-
+#define WITHALLOWCTX 1
 
 struct perm_record
 {
@@ -31,22 +31,24 @@ struct perm_record
        : [rs1] "r" (_addr),[rs2] "r" ( 1LL << 61 | _size) \
    );
 
+#else
+
+	#define ALLOW( _start, _size, _perm )
+	#define ALLOWM( _size, _addr )
+
+#endif
+
+#if WITHALLOWCTX
 #define ALLOWCTX( _addr ) \
    __asm__ __volatile__ ( \
        "impdep2  %[rs1], %[rs2] ,%%g0\n\t" \
 	   : \
        : [rs1] "r" (_addr),[rs2] "r" ( 1LL << 60 | 0) \
    );
-
-
 #else
-
-	#define ALLOW( _start, _size, _perm )
-	#define ALLOWM( _size, _addr )
-	#define ALLOWCTX( _addr )
-
-
+#define ALLOWCTX( _addr )
 #endif
+
 
 
 /*

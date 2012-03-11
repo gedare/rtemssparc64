@@ -120,17 +120,18 @@ void task_tlb_switch (  Thread_Control * current,  Thread_Control * next)
 
 bool task_container_create(Thread_Control * executing,  Thread_Control * creating)
 {
+	DPRINTK( "task_container_create\n"); 
 	char namea[6];
 	if( !strncmp(rtems_object_get_name(creating->Object.id, 5, namea),"TA",2)){
 		char nameb[6];
 		char filename[22];
 		rtems_object_get_name(executing->Object.id, 5, namea);
 		rtems_object_get_name(creating->Object.id, 5, nameb);
-		nameb[3] = 0;
+		nameb[4] = 0;
 
 		sprintf(filename,"contUSE_%s.txt",nameb);
 		LoadContainersFromDecodedAccessListFile(filename,  creating);
-//		printf( "Thread create extensions %s.\n" ,filename);
+		DPRINTK( "Thread create extensions %s.\n" ,filename);
 	}
 	return true;
 }
@@ -139,14 +140,14 @@ bool task_container_create(Thread_Control * executing,  Thread_Control * creatin
 
 void task_container_switch (  Thread_Control * a,  Thread_Control * b)
 {
-
+	
 	char namea[6];
 	char nameb[6];
 	rtems_object_get_name(a->Object.id, 6, namea);
 	if(!strncmp(rtems_object_get_name(b->Object.id, 6, nameb),"TA",2)){
 
 		//staticpermssions * sstatic = (staticpermssions *)b->extensions;
-		ALLOWCTX(b->extensions);
+		//ALLOWCTX(b->extensions);
 		//DPRINTK("%d \n", sstatic->containersSize);
 #if 0
 		int i=0;
@@ -175,7 +176,7 @@ void task_container_switch (  Thread_Control * a,  Thread_Control * b)
 
 		}
 #endif
-		//DPRINTK( "User extension thread switch %s %s\n",namea, nameb);
+		DPRINTK( "User extension thread switch %s %s\n",namea, nameb);
 	}
 
 
