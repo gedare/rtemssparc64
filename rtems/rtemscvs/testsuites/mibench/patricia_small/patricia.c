@@ -25,6 +25,11 @@
 #include <stdlib.h>	/* free(), malloc() */
 #include <string.h>	/* bcopy() */
 #include "patricia.h"
+#include "../../common/allow.h"
+
+
+extern struct perm_record multipermission[MAXRECORDS];
+extern int multipermissioncount;
 
 
 /*
@@ -133,9 +138,9 @@ pat_insert(struct ptree *n, struct ptree *head)
 		/*
 		 * Allocate space for a new set of masks.
 		 */
-		buf = (struct ptree_mask *)malloc(
+		buf = (struct ptree_mask *)mymalloc(
 		       sizeof(struct ptree_mask)*(t->p_mlen+1));
-
+		
 		/*
 		 * Insert the new mask in the proper order from least
 		 * to greatest mask.
@@ -143,16 +148,22 @@ pat_insert(struct ptree *n, struct ptree *head)
 		copied = 0;
 		for (i=0, pm=buf; i < t->p_mlen; pm++) {
 			if (n->p_m->pm_mask > t->p_m[i].pm_mask) {
+				ALLOW(t->p_m + i, sizeof(struct ptree_mask), 3LL);
+				ALLOW(pm, sizeof(struct ptree_mask), 3LL);
 				bcopy(t->p_m + i, pm, sizeof(struct ptree_mask));
 				i++;
 			}
 			else {
+				ALLOW(n->p_m, sizeof(struct ptree_mask), 3LL);
+				ALLOW(pm, sizeof(struct ptree_mask), 3LL);
 				bcopy(n->p_m, pm, sizeof(struct ptree_mask));
 				n->p_m->pm_mask = 0xffffffff;
 				copied = 1;
 			}
 		}
 		if (!copied) {
+			ALLOW(n->p_m, sizeof(struct ptree_mask), 3LL);
+			ALLOW(pm, sizeof(struct ptree_mask), 3LL);
 			bcopy(n->p_m, pm, sizeof(struct ptree_mask));
 		}
 		free(n->p_m);
@@ -177,6 +188,7 @@ pat_insert(struct ptree *n, struct ptree *head)
 	/*
 	 * Recursive step.
 	 */
+    ALLOWM(multipermissioncount, multipermission);
 	if (bit(head->p_b, n->p_key))
 		head->p_right = insertR(head->p_right, n, i, head);
 	else
@@ -289,11 +301,13 @@ pat_remove(struct ptree *n, struct ptree *head)
 	/*
 	 * Allocate space for a new set of masks.
 	 */
-	buf = (struct ptree_mask *)malloc(
+	buf = (struct ptree_mask *)mymalloc(
 	       sizeof(struct ptree_mask)*(t->p_mlen-1));
 
 	for (i=0, pm=buf; i < t->p_mlen; i++) {
 		if (n->p_m->pm_mask != t->p_m[i].pm_mask) {
+			ALLOW(t->p_m + i, sizeof(struct ptree_mask), 3LL);
+			ALLOW(pm++, sizeof(struct ptree_mask),3LL);
 			bcopy(t->p_m + i, pm++, sizeof(struct ptree_mask));
 		}
 	}

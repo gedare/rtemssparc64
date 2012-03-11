@@ -10,6 +10,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "sha.h"
+#include "../../common/magic-instruction.h"
+#include "../../common/allow.h"
+
+
 
 /* SHA f()-functions */
 
@@ -144,14 +148,19 @@ void sha_update(SHA_INFO *sha_info, BYTE *buffer, int count)
     sha_info->count_lo += (LONG) count << 3;
     sha_info->count_hi += (LONG) count >> 29;
     while (count >= SHA_BLOCKSIZE) {
+	ALLOW(sha_info->data,SHA_BLOCKSIZE,3LL);
+	ALLOW(buffer,SHA_BLOCKSIZE,3LL);
 	memcpy(sha_info->data, buffer, SHA_BLOCKSIZE);
 #ifdef LITTLE_ENDIAN
 	byte_reverse(sha_info->data, SHA_BLOCKSIZE);
 #endif /* LITTLE_ENDIAN */
+	ALLOW(sha_info,sizeof(SHA_INFO),3LL);
 	sha_transform(sha_info);
 	buffer += SHA_BLOCKSIZE;
 	count -= SHA_BLOCKSIZE;
     }
+	ALLOW(sha_info->data,count,3LL);
+	ALLOW(buffer,count,3LL);
     memcpy(sha_info->data, buffer, count);
 }
 
@@ -167,13 +176,17 @@ void sha_final(SHA_INFO *sha_info)
     count = (int) ((lo_bit_count >> 3) & 0x3f);
     ((BYTE *) sha_info->data)[count++] = 0x80;
     if (count > 56) {
+	ALLOW((BYTE *) &sha_info->data + count,64 - count,3LL);
 	memset((BYTE *) &sha_info->data + count, 0, 64 - count);
 #ifdef LITTLE_ENDIAN
 	byte_reverse(sha_info->data, SHA_BLOCKSIZE);
 #endif /* LITTLE_ENDIAN */
+	ALLOW(sha_info,sizeof(SHA_INFO),3LL);
 	sha_transform(sha_info);
+	ALLOW(sha_info->data,56,3LL);
 	memset(&sha_info->data, 0, 56);
     } else {
+    ALLOW( &sha_info->data + count,56 - count,3LL);
 	memset((BYTE *) &sha_info->data + count, 0, 56 - count);
     }
 #ifdef LITTLE_ENDIAN
@@ -181,6 +194,7 @@ void sha_final(SHA_INFO *sha_info)
 #endif /* LITTLE_ENDIAN */
     sha_info->data[14] = hi_bit_count;
     sha_info->data[15] = lo_bit_count;
+	ALLOW(sha_info,sizeof(SHA_INFO),3LL);
     sha_transform(sha_info);
 }
 
@@ -192,11 +206,15 @@ void sha_stream(SHA_INFO *sha_info, FILE *fin)
 {
     int i;
     BYTE data[BLOCK_SIZE];
-
+	ALLOW(sha_info,sizeof(SHA_INFO),3LL);
     sha_init(sha_info);
+	ALLOW(data,sizeof(data),3LL);
     while ((i = fread(data, 1, BLOCK_SIZE, fin)) > 0) {
+	ALLOW(sha_info,sizeof(SHA_INFO),3LL);
+	ALLOW(data,sizeof(data),3LL);
 	sha_update(sha_info, data, i);
     }
+	ALLOW(sha_info,sizeof(SHA_INFO),3LL);
     sha_final(sha_info);
 }
 
@@ -207,4 +225,28 @@ void sha_print(SHA_INFO *sha_info)
     printf("%08lx %08lx %08lx %08lx %08lx\n",
 	sha_info->digest[0], sha_info->digest[1], sha_info->digest[2],
 	sha_info->digest[3], sha_info->digest[4]);
+}
+
+
+int sha_main(int argc, char* argv[])
+{
+	FILE *fin;
+  SHA_INFO sha_info;
+ 
+   fin = fopen(argv[1],"r");
+  if (!fin) {
+    printf("error opening %s for reading\n", argv[1]);
+    exit(1);
+  }
+
+  printf( "\n\n*** sha benchmark ***\n" );
+  
+
+  ALLOW(fin,sizeof(FILE),3LL);
+  ALLOW(&sha_info,sizeof(SHA_INFO),3LL);
+  sha_stream(&sha_info, fin);
+  ALLOW(&sha_info,sizeof(SHA_INFO),3LL);
+  sha_print(&sha_info);
+  fclose(fin);
+
 }

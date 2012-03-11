@@ -25,6 +25,7 @@
 #ifndef _PATRICIA_H_
 #define _PATRICIA_H_
 
+#define MAXRECORDS 2000
 
 /*
  * Patricia tree mask.

@@ -15,6 +15,9 @@
 #include <stddef.h>
 #include <string.h>
 #include <limits.h>
+#include "../../common/allow.h"
+#include "../../common/debug.h"
+
 
 static size_t table[UCHAR_MAX + 1];
 static size_t len;
@@ -2735,7 +2738,7 @@ NULL};
 "worth But trust me on the sunscreen"
 };
 
-main()
+stringsearch_main(int argc, char* argv[])
 {
       char *here;
       int i;
@@ -2744,11 +2747,11 @@ main()
       {
             init_search(find_strings[i]);
             here = strsearch(search_strings[i]);
-            printf("\"%s\" is%s in \"%s\"", find_strings[i],
+            DPRINTF("\"%s\" is%s in \"%s\"", find_strings[i],
                   here ? "" : " not", search_strings[i]);
             if (here)
-                  printf(" [\"%s\"]", here);
-            putchar('\n');
+                  DPRINTF(" [\"%s\"]", here);
+            DPRINTF("\n");
       }
 
       return 0;
