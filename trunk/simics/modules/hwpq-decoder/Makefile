@@ -8,7 +8,7 @@
 MODULE_CLASSES=hwpq-decoder
 
 # USER-TODO: set file-names
-SRC_FILES = hwpq-decoder.c pq.h opal-bitlib.h
+SRC_FILES = hwpq-decoder.c pq.h opal-bitlib.h gab_helper.h
 
 MODULE_CFLAGS =
 
