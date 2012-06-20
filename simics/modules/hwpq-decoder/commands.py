@@ -21,6 +21,48 @@
 from cli import *
 import sim_commands
 
+def new_hwpq_cmd():
+  hwpq_name = "hwpq0"
+  try:
+    obj = SIM_get_object(hwpq_name)
+    print "HWPQ '%s' already exists." % hwpq_name
+    SIM_command_has_problem()
+    return (obj,)
+  except:
+    pass
+
+  try:
+    obj = SIM_create_object("hwpq-decoder", hwpq_name, [])
+    print ("'%s' created." % hwpq_name)
+    return (obj,)
+  except:
+    print "Failed creating hwpq-decoder object '%s'." % hwpq_name
+    SIM_command_has_problem()
+
+new_command("new-hwpq",
+            new_hwpq_cmd,
+            [],
+            alias = "",
+            type = "hwpq-decoder commands",
+            short = "create a new hwpq",
+            doc = """ Create a new hwpq instance """
+           )
+
+def hwpq_set_size(obj, size):
+  try:
+    obj.hwpq_size = size
+  except:
+    print "Error setting hwpq size"
+
+new_command("set_size",
+            hwpq_set_size,
+            [arg(int_t, "hwpq_size")],
+            type = "hwpq-decoder commands",
+            short = "set the hwpq size",
+            namespace = "hwpq-decoder",
+            doc =""" Set a hwpq size """
+           )
+
 # increment command
 def increment_value_cmd(obj):
     try:
@@ -31,9 +73,9 @@ def increment_value_cmd(obj):
 
 new_command("increment", increment_value_cmd, [],
             alias = "",
-            type  = "container-manager-decoder commands",
+            type  = "hwpq-decoder commands",
             short = "increment value",
-	    namespace = "container-manager-decoder",
+	    namespace = "hwpq-decoder",
             doc = """
 Increments the value by adding 1 to it.
 """)
@@ -46,7 +88,7 @@ def get_info(obj):
     # USER-TODO: Return something useful here
     return []
 
-sim_commands.new_info_command('container-manager-decoder', get_info)
+sim_commands.new_info_command('hwpq-decoder', get_info)
 
 #
 # ------------------------ status -----------------------
@@ -57,4 +99,4 @@ def get_status(obj):
     return [("Internals",
              [("Attribute 'value'", SIM_get_attribute(obj, "value"))])]
 
-sim_commands.new_status_command('container-manager-decoder', get_status)
+sim_commands.new_status_command('hwpq-decoder', get_status)
