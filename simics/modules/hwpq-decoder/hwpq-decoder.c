@@ -105,8 +105,8 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
   static uint64 pointer = 0;
   static int current_queue = 0;
 
+  // FIXME: add per queue?
   static uint64 trap_payload = 0;
-  static uint64 trap_result = 0;
 //  static uint64 trap_context;
 
   payload = SIM_read_register(cpu, rs1);
@@ -146,9 +146,9 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
       #ifdef GAB_DEBUG
       fprintf(stderr, "context switch: %d->%d\n",current_queue, queue_idx); 
       #endif
-      if ( trap_result ) {
-        result = trap_result;
-        trap_payload = trap_result = 0;
+      if ( trap_payload ) {
+        result = trap_payload;
+        trap_payload = 0;
         SIM_write_register(cpu, rd, result);
         return re;
       }
@@ -183,7 +183,6 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
       re = Interrupt_Level_2;
     }
     if (re != Sim_PE_No_Exception) {
-      trap_payload = payload;
 //      trap_context = encoded;
       //        SIM_write_register(cpu, rd, result);
       return re;
@@ -368,8 +367,8 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
       result = trap_payload;
       break;
 
-    case 20: // set trap result
-      trap_result = payload;
+    case 20: // set trap payload
+      trap_payload = payload;
       break;
 
     default:
