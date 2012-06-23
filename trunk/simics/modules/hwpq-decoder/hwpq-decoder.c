@@ -92,7 +92,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
   int queue_idx;
   int operation;
   int priority;
-  int pointer_priority;
+//  int pointer_priority;
   int last_operation;
   uint64 payload;
   uint64 encoded;
@@ -106,7 +106,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
   static int current_queue = 0;
 
   // FIXME: add per queue?
-  static uint64 trap_payload = 0;
+  static uint64 trap_payload = (uint64)-2;
 //  static uint64 trap_context;
 
   payload = SIM_read_register(cpu, rs1);
@@ -132,13 +132,14 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
 
   // check for exceptions
   if (operation != 5 /* get_context */ &&
+      operation != 10 /* get payload */ &&
       operation != 11 /* adjust_spill_count */ &&
       operation != 12 /* get_size */ &&
       operation != 13 /* set current id */ && 
       operation != 14 /* get current id */ &&
       operation != 16 /* invalidate */ &&
       operation != 19 /* get trap payload */ &&
-      operation != 20 /* set trap result */ &&
+      operation != 20 /* set trap payload */ &&
       1 /* true */
      ) {
     // check if the chosen queue is available
@@ -146,12 +147,13 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
       #ifdef GAB_DEBUG
       fprintf(stderr, "context switch: %d->%d\n",current_queue, queue_idx); 
       #endif
-      if ( trap_payload ) {
+      if ( trap_payload != (uint64)-2 ) {
         result = trap_payload;
-        trap_payload = 0;
+        trap_payload = (uint64)-2;
         SIM_write_register(cpu, rd, result);
         return re;
       }
+      pointer = payload;
       SIM_write_register(
           cpu, 
           SIM_get_register_number(cpu,"softint"), 
@@ -192,9 +194,9 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
   switch ( operation ) {
     case 1: // first
       // FIXME: allow to failover (and check for past failover)
-      if ( trap_payload ) {
+      if ( trap_payload != (uint64)-2 ) {
         result = trap_payload;
-        trap_payload = 0;
+        trap_payload = (uint64)-2;
         SIM_write_register(cpu, rd, result);
         return re;
       }
@@ -208,9 +210,9 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
 
     case 2: // enqueue
       // FIXME: allow to failover (and check for past failover)
-      if ( trap_payload ) {
+      if ( trap_payload != (uint64)-2 ) {
         result = trap_payload;
-        trap_payload = 0;
+        trap_payload = (uint64)-2;
         SIM_write_register(cpu, rd, result);
         return re;
       }
@@ -231,9 +233,9 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
 
     case 3: // extract
       /* check the pointer field first */
-      if ( trap_payload ) {
+      if ( trap_payload != (uint64)-2 ) {
         result = trap_payload;
-        trap_payload = 0;
+        trap_payload = (uint64)-2;
         SIM_write_register(cpu, rd, result);
         return re;
       }
@@ -307,7 +309,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
       break;
 
     case 11: // adjust spill count
-      --queues[queue_idx].spill_count;
+      queues[queue_idx].spill_count += (int32_t)payload;
       break;
 
     case 12: // get size limit
@@ -332,9 +334,9 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
       break;
 
     case 17: // search
-      if ( trap_payload ) {
+      if ( trap_payload != (uint64)-2) {
         result = trap_payload;
-        trap_payload = 0;
+        trap_payload = (uint64)-2;
         SIM_write_register(cpu, rd, result);
         return re;
       }
