@@ -26,11 +26,13 @@ typedef struct pq_node {
   struct pq_node *next;
   struct pq_node *prev;
   int valid;
+  struct pq_node *next_lru;
 } pq_node;
 
 typedef struct priority_queue {
   pq_node *head;
   pq_node *tail;
+  pq_node *lru;
   int options;  // 0 for min, 1 for max, 2 for timer
   int max_size;
   int current_size;
@@ -45,6 +47,7 @@ void pq_init(priority_queue *pq, int opts, int size)
   pq->max_size = size;
   pq->head = NULL;
   pq->tail = NULL;
+  pq->lru = NULL;
   pq->current_size = 0;
   pq->queue_id = 0;
   pq->spill_bounds = 0;
@@ -65,6 +68,41 @@ void pq_print_queue(priority_queue *pq) {
   }
 }
 
+void pq_extract_lru(priority_queue *pq, pq_node *x_lru) {
+  pq_node *tmp = pq->lru;
+  if ( tmp == x_lru ) {
+    pq->lru = x_lru->next_lru;
+    return;
+  }
+
+   while ( tmp ) {
+    if (tmp->next_lru == x_lru) {
+      tmp->next_lru = x_lru->next_lru;
+      return;;
+    }
+    tmp = tmp->next_lru;
+  }
+}
+
+void pq_insert_lru(priority_queue *pq, pq_node *new_lru) {
+  new_lru->next_lru = pq->lru;
+  pq->lru = new_lru;
+}
+
+void pq_update_lru(priority_queue *pq, pq_node *new_lru) {
+  pq_node *tmp = pq->lru;
+  if ( tmp == new_lru ) return; // nothing to do already lru!
+  pq_extract_lru(pq, new_lru);
+  pq_insert_lru(pq, new_lru);
+}
+
+pq_node* pq_get_lru(priority_queue *pq) {
+  pq_node *lru = pq->lru;
+  while ( lru->next_lru )
+    lru = lru->next_lru;
+  return lru;
+}
+
 pq_node* pq_extract_last(priority_queue *pq) { 
 #ifdef GAB_DEBUG
   fprintf(stderr,"pq_extract_last:\n");
@@ -75,8 +113,11 @@ pq_node* pq_extract_last(priority_queue *pq) {
 #endif
   pq_node *last = pq->tail;
   if (last) {
+    pq_extract_lru(pq, last);
     pq->tail = last->prev;
     --pq->current_size;
+    pq_update_lru(pq, last);
+    pq->lru = last->next_lru;
   }
 
   if (pq->tail) {
@@ -89,6 +130,7 @@ pq_node* pq_extract_last(priority_queue *pq) {
 }
 
 pq_node* pq_last(priority_queue *pq) {
+  pq_update_lru(pq, pq->tail);
   return pq->tail;
 }
 
@@ -105,6 +147,7 @@ pq_node* pq_first(priority_queue *pq) {
     fprintf(stderr, "invalid first node (%d spilled, %d current)\n",pq->spill_count, pq->current_size);
     pq_print_queue(pq);
   }
+  pq_update_lru(pq, pq->head);
   return pq->head;
 }
 
@@ -113,6 +156,9 @@ pq_node* pq_search(priority_queue *pq, int key)
   pq_node *node = pq->head;
   while (node && node->priority != key)
     node = node->next;
+  if ( node ) {
+    pq_update_lru(pq, node);
+  }
   return node;
 }
 
@@ -121,6 +167,7 @@ pq_node* pq_extract(priority_queue *pq, int priority)
   pq_node *node = pq_search(pq, priority);
 
   if (node) {
+    pq_extract_lru(pq, node);
     if (node->prev) 
       node->prev->next = node->next;
     else 
@@ -151,6 +198,7 @@ void pq_insert(priority_queue *pq, pq_node *node)
   pq_node *prev = NULL;
   node->next = NULL;
   node->prev = NULL;
+  pq_update_lru(pq, node);
   
   if (!iter) {
     pq->head = node;
