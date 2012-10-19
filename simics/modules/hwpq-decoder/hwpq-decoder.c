@@ -326,7 +326,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
 
       // FIXME 
     case 15: // set size limit
-      fprintf(stderr,"Unimplemented operation: %d\n", operation);
+      pq_set_max_size(&queues[queue_idx], (uint32_t)payload);
       break;
 
     case 16: // invalidate
