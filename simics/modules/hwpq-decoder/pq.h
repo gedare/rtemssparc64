@@ -14,6 +14,9 @@
 
 //#define GAB_DEBUG
 
+//#define GAB_HWPQ
+#define GAB_USE_LRU
+
 #include <simics/api.h>
 #include <simics/alloc.h>
 #include <simics/utils.h>
@@ -72,35 +75,43 @@ void pq_extract_lru(priority_queue *pq, pq_node *x_lru) {
   pq_node *tmp = pq->lru;
   if ( tmp == x_lru ) {
     pq->lru = x_lru->next_lru;
+    x_lru->next_lru = NULL;
     return;
   }
 
    while ( tmp ) {
     if (tmp->next_lru == x_lru) {
       tmp->next_lru = x_lru->next_lru;
-      return;;
+      x_lru->next_lru = NULL;
+      return;
     }
     tmp = tmp->next_lru;
   }
 }
 
 void pq_insert_lru(priority_queue *pq, pq_node *new_lru) {
-  new_lru->next_lru = pq->lru;
-  pq->lru = new_lru;
+  pq_node *temp = pq->lru;
+  new_lru->next_lru = NULL;
+  if ( !temp ) {
+    pq->lru = new_lru;
+    return;
+  }
+  while ( temp->next_lru ) {
+    temp = temp->next_lru;
+  }
+  temp->next_lru = new_lru;
 }
 
 void pq_update_lru(priority_queue *pq, pq_node *new_lru) {
-  pq_node *tmp = pq->lru;
-  if ( tmp == new_lru ) return; // nothing to do already lru!
+  if ( !new_lru )
+    return;
+
   pq_extract_lru(pq, new_lru);
   pq_insert_lru(pq, new_lru);
 }
 
 pq_node* pq_get_lru(priority_queue *pq) {
-  pq_node *lru = pq->lru;
-  while ( lru->next_lru )
-    lru = lru->next_lru;
-  return lru;
+  return pq->lru;
 }
 
 pq_node* pq_extract_last(priority_queue *pq) { 
@@ -116,8 +127,8 @@ pq_node* pq_extract_last(priority_queue *pq) {
     pq_extract_lru(pq, last);
     pq->tail = last->prev;
     --pq->current_size;
-    pq_update_lru(pq, last);
-    pq->lru = last->next_lru;
+    //pq_update_lru(pq, last);
+    //pq->lru = last->next_lru;
   }
 
   if (pq->tail) {
@@ -162,25 +173,30 @@ pq_node* pq_search(priority_queue *pq, int key)
   return node;
 }
 
+void pq_remove(priority_queue *pq, pq_node *node)
+{
+  pq_extract_lru(pq, node);
+  if (node->prev) 
+    node->prev->next = node->next;
+  else 
+    pq->head = node->next;
+  if (node->next) {
+    node->next->prev = node->prev;
+  } else {
+    pq->tail = node->prev;
+  }
+  --pq->current_size;
+}
+
 pq_node* pq_extract(priority_queue *pq, int priority)
 {
   pq_node *node = pq_search(pq, priority);
 
   if (node) {
-    pq_extract_lru(pq, node);
-    if (node->prev) 
-      node->prev->next = node->next;
-    else 
-      pq->head = node->next;
-    if (node->next) {
-      node->next->prev = node->prev;
-    } else {
-      pq->tail = node->prev;
-    }
+    pq_remove(pq, node);
   } else {
     return 0;
   }
-  --pq->current_size;
 #ifdef GAB_DEBUG
   fprintf(stderr,"pq_extract:\n");
   pq_print_queue(pq);
@@ -203,19 +219,23 @@ void pq_insert(priority_queue *pq, pq_node *node)
   if (!iter) {
     pq->head = node;
     pq->tail = node;
+#if defined(GAB_HWPQ)
     if (pq->spill_count)
       node->valid = 0;
     else
       node->valid = 1;
+#endif
     goto out;
   }
-
+#if defined(GAB_HWPQ)
   node->valid = iter->valid;
+#endif
 
   if ( pq->options == 0 || pq->options == 2 ) { /* min sort, timer chain */
     while( iter ) {
       /* The ordering here matters. First fix the valid bits then see whether
        * to insert the node (before iter). */
+#if defined(GAB_HWPQ)
       if (!iter->valid) {
         if (pq->spill_count) {
           node->valid = 0;
@@ -226,7 +246,7 @@ void pq_insert(priority_queue *pq, pq_node *node)
           iter->valid = 1; 
         }
       }
-
+#endif
       /* see if found node's place */
       if ( node->priority <= iter->priority ) {
         if (iter->prev)
@@ -245,6 +265,7 @@ void pq_insert(priority_queue *pq, pq_node *node)
   } else if (pq->options == 1) { /* max sort */
     fprintf(stderr,"untested option: max sort\n");
     while( iter ) {
+#if defined(GAB_HWPQ)
       if (!iter->valid)  {
         if (pq->spill_count) {
           node->valid = 0;
@@ -255,6 +276,7 @@ void pq_insert(priority_queue *pq, pq_node *node)
           iter->valid = 1; 
         }
       }
+#endif
 
       if ( node->priority > iter->priority ) {
         if (iter->prev)
@@ -279,8 +301,10 @@ void pq_insert(priority_queue *pq, pq_node *node)
   node->next = NULL;
   node->prev = prev;
   pq->tail = node;
+#if defined(GAB_HWPQ)
   if (pq->spill_count)
     node->valid = 0; /* special case */ 
+#endif
 out:
   ++pq->current_size;
   if ( pq->current_size > pq->max_size ) {
@@ -301,6 +325,7 @@ out:
  */
 uint64 pq_spill(priority_queue *pq) {
   pq_node *last;
+  pq_node *tmp;
   uint64 payload;
 
 #ifdef GAB_DEBUG
@@ -309,7 +334,19 @@ uint64 pq_spill(priority_queue *pq) {
 #endif
 
   // remove last element from hwpq
+#if defined(GAB_HWPQ)
   last = pq_extract_last(pq);
+#elif defined(GAB_USE_LRU)
+  last = pq_get_lru(pq);
+  if ( last ) {
+    pq_remove(pq, last);
+  } else {
+    fprintf(stderr, "no lru found!\n");
+    last = pq_extract_last(pq);
+  }
+#else
+  last = pq_extract_last(pq);
+#endif
   if (!last) {
 #ifdef GAB_DEBUG
     fprintf(stderr,"empty queue\n");
@@ -323,9 +360,11 @@ uint64 pq_spill(priority_queue *pq) {
   // update count
   ++pq->spill_count;
 
+#if defined(GAB_HWPQ)
   // update valid
   if (pq->tail)
     pq->tail->valid = 0;
+#endif
  
 #ifdef GAB_DEBUG
   fprintf(stderr,"PQ after spill:\n");
@@ -352,6 +391,7 @@ void pq_fill(priority_queue *pq, pq_node *node)
   // update count
   --pq->spill_count;
 
+#if defined(GAB_HWPQ)
   // fix valid bits (should be done while inserting, but this is easy)
   tmp = pq->head;
   while (tmp && tmp != node) {
@@ -367,6 +407,7 @@ void pq_fill(priority_queue *pq, pq_node *node)
       tmp = tmp->next;
     }
   }
+#endif
 
 #ifdef GAB_DEBUG
   fprintf(stderr,"PQ after fill:\n");
@@ -383,9 +424,11 @@ int pq_need_fill(priority_queue *pq) {
   if (!pq->head) {
     return pq->spill_count;
   }
+#if defined(GAB_HWPQ)
   if (!pq->head->valid) {
     return pq->spill_count;
   }
+#endif
   return ((pq->spill_count && pq->current_size < pq->max_size/4));
 }
 
