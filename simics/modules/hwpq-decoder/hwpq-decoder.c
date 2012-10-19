@@ -93,7 +93,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
   int operation;
   int priority;
 //  int pointer_priority;
-  int last_operation;
+//  int last_operation;
   uint64 payload;
   uint64 encoded;
   uint64 result = 0;
@@ -117,7 +117,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
   //    priority = maskBits32( encoded, 19, 4 );
   priority = maskBits64( payload, 63, 32 );
   operation = maskBits32( encoded, 16, 0 );
-  last_operation = maskBits32( context, 16, 0 );
+//  last_operation = maskBits32( context, 16, 0 );
 
 #ifdef GAB_DEBUG
   fprintf(stderr,"Queue %d\n", queue_idx);
