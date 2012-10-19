@@ -331,7 +331,6 @@ out:
  */
 uint64 pq_spill(priority_queue *pq) {
   pq_node *last;
-  pq_node *tmp;
   uint64 payload;
 
 #ifdef GAB_DEBUG
@@ -384,8 +383,6 @@ uint64 pq_spill(priority_queue *pq) {
 
 void pq_fill(priority_queue *pq, pq_node *node)
 {
-  pq_node *tmp;
-
 #ifdef GAB_DEBUG
   fprintf(stderr,"PQ before fill:\n");
   pq_print_queue(pq);
@@ -398,6 +395,8 @@ void pq_fill(priority_queue *pq, pq_node *node)
   --pq->spill_count;
 
 #if defined(GAB_HWPQ)
+  pq_node *tmp;
+
   // fix valid bits (should be done while inserting, but this is easy)
   tmp = pq->head;
   while (tmp && tmp != node) {
