@@ -17,7 +17,7 @@
 #include "pq.h"
 
 #define QUEUE_SIZE (101)
-priority_queue queues[10];
+priority_queue queues[1024];
 
 #define DEVICE_NAME "hwpq-decoder"
 
@@ -561,7 +561,7 @@ new_instance(parse_object_t *parse_obj)
 
   empty->hwpq_size = QUEUE_SIZE;
 
-  for (int i = 0;i < 10; i++) {
+  for (int i = 0;i < 1024; i++) {
     pq_init(&queues[i],0,empty->hwpq_size);
     queues[i].queue_id = i;
   }
@@ -598,7 +598,7 @@ set_hwpq_size_attribute(void *arg, conf_object_t *obj,
   fprintf(stderr,"gica-decoder \"set pq size\"\n");
 #endif
 
-  for (int i = 0;i < 10; i++) {
+  for (int i = 0;i < 1024; i++) {
     pq_init(&queues[i],0,empty->hwpq_size);
   }
 
