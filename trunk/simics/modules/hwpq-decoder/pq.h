@@ -44,10 +44,14 @@ typedef struct priority_queue {
   int spill_count;  // number of spilled nodes in spill area
 } priority_queue;
 
+void pq_set_max_size(priority_queue *pq, int size)
+{
+  if ( pq->current_size < size )
+    pq->max_size = size;
+}
+
 void pq_init(priority_queue *pq, int opts, int size)
 {
-  pq->options = opts;
-  pq->max_size = size;
   pq->head = NULL;
   pq->tail = NULL;
   pq->lru = NULL;
@@ -55,6 +59,8 @@ void pq_init(priority_queue *pq, int opts, int size)
   pq->queue_id = 0;
   pq->spill_bounds = 0;
   pq->spill_count = 0;
+  pq->options = opts;
+  pq_set_max_size(pq, size);
 }
 
 void pq_print_node(pq_node *n) {
