@@ -213,6 +213,8 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
       if ( trap_payload != (uint64)-2 ) {
         result = trap_payload;
         trap_payload = (uint64)-2;
+        //queues[queue_idx].spill_count++;
+
         SIM_write_register(cpu, rd, result);
         return re;
       }
@@ -236,6 +238,8 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
       if ( trap_payload != (uint64)-2 ) {
         result = trap_payload;
         trap_payload = (uint64)-2;
+        if ( result != (uint64)-1 )
+          //queues[queue_idx].spill_count--;
         SIM_write_register(cpu, rd, result);
         return re;
       }
@@ -279,7 +283,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
       break;
 
     case 7: // spill at
-      result = pq_spill(&queues[queue_idx]);
+      result = pq_spill(&queues[queue_idx], (uint32_t)payload);
       break;
 
     case 8: // fill at

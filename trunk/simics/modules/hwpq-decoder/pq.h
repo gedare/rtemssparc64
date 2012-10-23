@@ -15,7 +15,6 @@
 //#define GAB_DEBUG
 
 //#define GAB_HWPQ
-#define GAB_USE_LRU
 
 #include <simics/api.h>
 #include <simics/alloc.h>
@@ -111,7 +110,10 @@ void pq_insert_lru(priority_queue *pq, pq_node *new_lru) {
 void pq_update_lru(priority_queue *pq, pq_node *new_lru) {
   if ( !new_lru )
     return;
-
+  if ( !pq->lru ) {
+    pq->lru = new_lru;
+    return;
+  }
   pq_extract_lru(pq, new_lru);
   pq_insert_lru(pq, new_lru);
 }
@@ -133,8 +135,6 @@ pq_node* pq_extract_last(priority_queue *pq) {
     pq_extract_lru(pq, last);
     pq->tail = last->prev;
     --pq->current_size;
-    //pq_update_lru(pq, last);
-    //pq->lru = last->next_lru;
   }
 
   if (pq->tail) {
@@ -160,10 +160,13 @@ pq_node* pq_first(priority_queue *pq) {
 #ifdef GAB_DEBUG
     fprintf(stderr,"Nothing at head of queue\n");
 #endif
-  } else if (!pq->head->valid) {
+  }
+#if defined(GAB_HWPQ)
+  else if (!pq->head->valid) {
     fprintf(stderr, "invalid first node (%d spilled, %d current)\n",pq->spill_count, pq->current_size);
     pq_print_queue(pq);
   }
+#endif
   pq_update_lru(pq, pq->head);
   return pq->head;
 }
@@ -220,6 +223,7 @@ void pq_insert(priority_queue *pq, pq_node *node)
   pq_node *prev = NULL;
   node->next = NULL;
   node->prev = NULL;
+  node->next_lru = NULL;
   pq_update_lru(pq, node);
   
   if (!iter) {
@@ -329,8 +333,8 @@ out:
 /**
  * latest and greatest spill and fill routines
  */
-uint64 pq_spill(priority_queue *pq) {
-  pq_node *last;
+uint64 pq_spill(priority_queue *pq, uint32_t spill_from) {
+  pq_node *last = NULL;
   uint64 payload;
 
 #ifdef GAB_DEBUG
@@ -338,20 +342,36 @@ uint64 pq_spill(priority_queue *pq) {
   pq_print_queue(pq);
 #endif
 
-  // remove last element from hwpq
+  switch (spill_from) {
+    case 0:
+      last = pq_extract_last(pq);
+      break;
+
+    case 1:
+      last = pq_get_lru(pq);
+      if ( last ) {
 #if defined(GAB_HWPQ)
-  last = pq_extract_last(pq);
-#elif defined(GAB_USE_LRU)
-  last = pq_get_lru(pq);
-  if ( last ) {
-    pq_remove(pq, last);
-  } else {
-    fprintf(stderr, "no lru found!\n");
-    last = pq_extract_last(pq);
-  }
-#else
-  last = pq_extract_last(pq);
+        if ( last->prev )
+          last->prev->valid = 0;
+        pq_node *tmp = last;
+        while (tmp && tmp != pq->tail) {
+          tmp->valid = 0;
+          tmp = tmp->next;
+        }
+        tmp->valid = 0;
 #endif
+        pq_remove(pq, last);
+      } else {
+        fprintf(stderr, "no lru found!\n");
+        last = pq_extract_last(pq);
+      }
+      break;
+
+    default:
+        fprintf(stderr, "invalid spill_from: %u\n", spill_from);
+      break;
+  }
+
   if (!last) {
 #ifdef GAB_DEBUG
     fprintf(stderr,"empty queue\n");
