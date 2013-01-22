@@ -103,7 +103,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
   // maintain context for HWDS
   static uint64 context = 0;
   static uint64 pointer = 0;
-  static int current_queue = 0;
+  static int current_queue = -1;
 
   // FIXME: add per queue?
   static uint64 trap_payload = (uint64)-2;
@@ -130,7 +130,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
     context = (context<<32|encoded);
   }
 
-  // check for exceptions
+  // check for exceptions, except for instructions that are non-exceptable
   if (operation != 5 /* get_context */ &&
       operation != 10 /* get payload */ &&
       operation != 11 /* adjust_spill_count */ &&
@@ -140,6 +140,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
       operation != 16 /* invalidate */ &&
       operation != 19 /* get trap payload */ &&
       operation != 20 /* set trap payload */ &&
+      operation != 21 /* get spill count */ &&
       1 /* true */
      ) {
     // check if the chosen queue is available
@@ -160,7 +161,8 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
           (1<<4) /* 0x44 -- softint<4> */
           );
       re = Interrupt_Level_4;
-    } else if (operation != 7 && pq_need_spill(&queues[queue_idx])) {
+//    } else if (operation != 7 && pq_need_spill(&queues[queue_idx])) {
+    } else if ((operation == 8 || operation == 2) && pq_need_spill(&queues[queue_idx])) {
       SIM_write_register(
           cpu, 
           SIM_get_register_number(cpu,"softint"), 
@@ -282,7 +284,7 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
       }
       break;
 
-    case 7: // spill at
+    case 7: // ppill at
       result = pq_spill(&queues[queue_idx], (uint32_t)payload);
       break;
 
@@ -375,6 +377,11 @@ impdep2_execute(conf_object_t *cpu, unsigned int arg, void *user_data)
 
     case 20: // set trap payload
       trap_payload = payload;
+      break;
+
+    case 21: // get (print) spill count
+      printf(" (%d) ", queues[queue_idx].spill_count);
+      result = queues[queue_idx].spill_count;
       break;
 
     default:
