@@ -14,7 +14,7 @@
 
 //#define GAB_DEBUG
 
-//#define GAB_HWPQ
+#define GAB_HWPQ
 
 #include <simics/api.h>
 #include <simics/alloc.h>
@@ -29,12 +29,15 @@ typedef struct pq_node {
   struct pq_node *prev;
   int valid;
   struct pq_node *next_lru;
+  struct pq_node *next_lfu;
+  int cnt;
 } pq_node;
 
 typedef struct priority_queue {
   pq_node *head;
   pq_node *tail;
   pq_node *lru;
+  pq_node *lfu;
   int options;  // 0 for min, 1 for max, 2 for timer
   int max_size;
   int current_size;
@@ -54,6 +57,7 @@ void pq_init(priority_queue *pq, int opts, int size)
   pq->head = NULL;
   pq->tail = NULL;
   pq->lru = NULL;
+  pq->lfu = NULL;
   pq->current_size = 0;
   pq->queue_id = 0;
   pq->spill_bounds = 0;
@@ -76,6 +80,7 @@ void pq_print_queue(priority_queue *pq) {
   }
 }
 
+
 void pq_extract_lru(priority_queue *pq, pq_node *x_lru) {
   pq_node *tmp = pq->lru;
   if ( tmp == x_lru ) {
@@ -94,6 +99,25 @@ void pq_extract_lru(priority_queue *pq, pq_node *x_lru) {
   }
 }
 
+/* copy-paste from lru */
+void pq_extract_lfu(priority_queue *pq, pq_node *x_lfu) {
+  pq_node *tmp = pq->lfu;
+  if ( tmp == x_lfu ) {
+    pq->lfu = x_lfu->next_lfu;
+    x_lfu->next_lfu = NULL;
+    return;
+  }
+
+   while ( tmp ) {
+    if (tmp->next_lfu == x_lfu) {
+      tmp->next_lfu = x_lfu->next_lfu;
+      x_lfu->next_lfu = NULL;
+      return;
+    }
+    tmp = tmp->next_lfu;
+  }
+}
+
 void pq_insert_lru(priority_queue *pq, pq_node *new_lru) {
   pq_node *temp = pq->lru;
   new_lru->next_lru = NULL;
@@ -107,6 +131,21 @@ void pq_insert_lru(priority_queue *pq, pq_node *new_lru) {
   temp->next_lru = new_lru;
 }
 
+void pq_insert_lfu(priority_queue *pq, pq_node *new_lfu) {
+  pq_node *temp = pq->lfu;
+  if ( !temp || temp->cnt > new_lfu->cnt ) {
+    pq->lfu = new_lfu;
+    new_lfu->next_lfu = temp;
+    return;
+  }
+  while ( temp->next_lfu && temp->next_lfu->cnt <= new_lfu->cnt ) {
+    temp = temp->next_lfu;
+  }
+  new_lfu->next_lfu = temp->next_lfu;
+  temp->next_lfu = new_lfu;
+}
+
+
 void pq_update_lru(priority_queue *pq, pq_node *new_lru) {
   if ( !new_lru )
     return;
@@ -118,8 +157,33 @@ void pq_update_lru(priority_queue *pq, pq_node *new_lru) {
   pq_insert_lru(pq, new_lru);
 }
 
+void pq_update_lfu(priority_queue *pq, pq_node *new_lfu) {
+  if ( !new_lfu )
+    return;
+  if ( !pq->lfu ) {
+    pq->lfu = new_lfu;
+    return;
+  }
+  pq_extract_lfu(pq, new_lfu);
+  new_lfu->cnt++;
+  pq_insert_lfu(pq, new_lfu);
+}
+
 pq_node* pq_get_lru(priority_queue *pq) {
   return pq->lru;
+}
+
+pq_node* pq_get_lfu(priority_queue *pq) {
+  return pq->lfu;
+}
+
+pq_node* pq_get_tail(priority_queue *pq) {
+  return pq->tail;
+}
+
+void pq_reset_lfu(priority_queue *pq) {
+  pq_node *temp = pq->lfu;
+  // TODO
 }
 
 pq_node* pq_extract_last(priority_queue *pq) { 
@@ -133,6 +197,7 @@ pq_node* pq_extract_last(priority_queue *pq) {
   pq_node *last = pq->tail;
   if (last) {
     pq_extract_lru(pq, last);
+    pq_extract_lfu(pq, last);
     pq->tail = last->prev;
     --pq->current_size;
   }
@@ -148,6 +213,7 @@ pq_node* pq_extract_last(priority_queue *pq) {
 
 pq_node* pq_last(priority_queue *pq) {
   pq_update_lru(pq, pq->tail);
+  pq_update_lfu(pq, pq->tail);
   return pq->tail;
 }
 
@@ -168,6 +234,7 @@ pq_node* pq_first(priority_queue *pq) {
   }
 #endif
   pq_update_lru(pq, pq->head);
+  pq_update_lfu(pq, pq->head);
   return pq->head;
 }
 
@@ -178,6 +245,7 @@ pq_node* pq_search(priority_queue *pq, int key)
     node = node->next;
   if ( node ) {
     pq_update_lru(pq, node);
+    pq_update_lfu(pq, node);
   }
   return node;
 }
@@ -185,6 +253,7 @@ pq_node* pq_search(priority_queue *pq, int key)
 void pq_remove(priority_queue *pq, pq_node *node)
 {
   pq_extract_lru(pq, node);
+  pq_extract_lfu(pq, node);
   if (node->prev) 
     node->prev->next = node->next;
   else 
@@ -224,7 +293,10 @@ void pq_insert(priority_queue *pq, pq_node *node)
   node->next = NULL;
   node->prev = NULL;
   node->next_lru = NULL;
+  node->next_lfu = NULL;
+  node->cnt = 1; // FIXME: preserve?
   pq_update_lru(pq, node);
+  pq_update_lfu(pq, node);
   
   if (!iter) {
     pq->head = node;
@@ -344,27 +416,15 @@ uint64 pq_spill(priority_queue *pq, uint32_t spill_from) {
 
   switch (spill_from) {
     case 0:
-      last = pq_extract_last(pq);
+      last = pq_get_tail(pq);
       break;
 
     case 1:
       last = pq_get_lru(pq);
-      if ( last ) {
-#if defined(GAB_HWPQ)
-        if ( last->prev )
-          last->prev->valid = 0;
-        pq_node *tmp = last;
-        while (tmp && tmp != pq->tail) {
-          tmp->valid = 0;
-          tmp = tmp->next;
-        }
-        tmp->valid = 0;
-#endif
-        pq_remove(pq, last);
-      } else {
-        fprintf(stderr, "no lru found!\n");
-        last = pq_extract_last(pq);
-      }
+      break;
+
+    case 2:
+      last = pq_get_lfu(pq);
       break;
 
     default:
@@ -378,6 +438,17 @@ uint64 pq_spill(priority_queue *pq, uint32_t spill_from) {
 #endif
     return 0; // exception?
   }
+#if defined(GAB_HWPQ)
+  if ( last->prev )
+    last->prev->valid = 0;
+  pq_node *tmp = last;
+  while (tmp && tmp != pq->tail) {
+    tmp->valid = 0;
+    tmp = tmp->next;
+  }
+  tmp->valid = 0;
+#endif
+  pq_remove(pq, last);
 
   // store return value
   payload = last->payload;
@@ -442,7 +513,7 @@ void pq_fill(priority_queue *pq, pq_node *node)
 
 /** Overflow/Underflow routines */
 int pq_need_spill(priority_queue *pq) {
-  return pq->current_size == pq->max_size;
+  return pq->current_size >= pq->max_size;
 }
 
 int pq_need_fill(priority_queue *pq) {
